@@ -10,7 +10,7 @@ EGY,SOCIALIST_REPUBLIC,Egyptian People's Republic,Ägyptische Volksrepublik
 EGY,SOCIALIST_DEMOCRACY,Egypt,Ägypten
 EGY,PEOPLES_STATE,Egyptian People's Republic,Ägyptische Volksrepublik
 EGY,DICTATORSHIP,Egyptian State,Ägyptischer Staat
-EGY,MILITARY,Egyptian State,Ägyptischer Staat
+EGY,MILITARY,Mamluk Realm,Mamlukenreich
 EGY,NATIONAL_STATE,Egyptian State,Ägyptischer Staat
 EGY,NATIONAL_REPUBLIC,Republic of Egypt,Republik Ägypten
 EGY,THEOCRACY,Realm of the Pharaohs,Reich der Pharaonen
@@ -31,7 +31,7 @@ IND,SOCIALIST_REPUBLIC,Union of Bharat,Union Bharat
 IND,SOCIALIST_DEMOCRACY,Indian Union,Indische Union
 IND,PEOPLES_STATE,Union of Bharat,Union Bharat
 IND,DICTATORSHIP,Hindustan,Hindustan
-IND,MILITARY,Hindustan,Hindustan
+IND,MILITARY,Realm of Hindustan,Reich von Hindustan
 IND,NATIONAL_STATE,Hindustan,Hindustan
 IND,NATIONAL_REPUBLIC,Republic of India,Republik Indien
 IND,THEOCRACY,Sacred Realm of Bharat,Heiliges Reich Bharat
@@ -52,7 +52,7 @@ CHI,SOCIALIST_REPUBLIC,People's Republic of China,Volksrepublik China
 CHI,SOCIALIST_DEMOCRACY,China,China
 CHI,PEOPLES_STATE,People's Republic of China,Volksrepublik China
 CHI,DICTATORSHIP,Chinese State,Chinesischer Staat
-CHI,MILITARY,Chinese Directorate,Chinesisches Direktorium
+CHI,MILITARY,Celestial Directorate,Himmlisches Direktorium
 CHI,NATIONAL_STATE,Chinese State,Chinesischer Staat
 CHI,NATIONAL_REPUBLIC,Republic of China,Republik China
 CHI,THEOCRACY,Heavenly Kingdom of Great Peace,Himmlisches Reich des Großen Friedens
@@ -73,7 +73,7 @@ BAB,SOCIALIST_REPUBLIC,Mesopotamian Union,Mesopotamische Union
 BAB,SOCIALIST_DEMOCRACY,Mesopotamian Federation,Mesopotamischer Bund
 BAB,PEOPLES_STATE,Mesopotamian Union,Mesopotamische Union
 BAB,DICTATORSHIP,Babylonian State,Babylonischer Staat
-BAB,MILITARY,Babylonian State,Babylonischer Staat
+BAB,MILITARY,Babylonian Imperium,Babylonisches Imperium
 BAB,NATIONAL_STATE,Babylonian State,Babylonischer Staat
 BAB,NATIONAL_REPUBLIC,Republic of Babylon,Republik Babylon
 BAB,THEOCRACY,Sacred Realm of Babylon,Heiliges Reich Babylon
@@ -94,7 +94,7 @@ GRE,SOCIALIST_REPUBLIC,Hellenic Union,Hellenische Union
 GRE,SOCIALIST_DEMOCRACY,Hellas,Hellas
 GRE,PEOPLES_STATE,Hellenic Union,Hellenische Union
 GRE,DICTATORSHIP,Hellenic State,Griechischer Staat
-GRE,MILITARY,Hellenic State,Griechischer Staat
+GRE,MILITARY,Hellenic Stratocracy,Hellenische Stratokratie
 GRE,NATIONAL_STATE,Hellenic State,Griechischer Staat
 GRE,NATIONAL_REPUBLIC,Hellenic Republic,Griechische Republik
 GRE,THEOCRACY,Sacred League of Hellas,Heiliger Bund von Hellas
@@ -115,7 +115,7 @@ PER,SOCIALIST_REPUBLIC,Persian People's Republic,Persische Volksrepublik
 PER,SOCIALIST_DEMOCRACY,Iran,Iran
 PER,PEOPLES_STATE,Persian People's Republic,Persische Volksrepublik
 PER,DICTATORSHIP,Imperial State of Iran,Kaiserlicher Staat Iran
-PER,MILITARY,Imperial State of Iran,Kaiserlicher Staat Iran
+PER,MILITARY,Empire of Iran,Kaiserreich Iran
 PER,NATIONAL_STATE,Imperial State of Iran,Kaiserlicher Staat Iran
 PER,NATIONAL_REPUBLIC,Republic of Iran,Republik Iran
 PER,THEOCRACY,Sacred Realm of Iran,Heiliges Reich Iran
@@ -136,7 +136,7 @@ CAR,SOCIALIST_REPUBLIC,Punic Commonwealth,Punisches Gemeinwesen
 CAR,SOCIALIST_DEMOCRACY,Punic Federation,Punischer Bund
 CAR,PEOPLES_STATE,Punic Commonwealth,Punisches Gemeinwesen
 CAR,DICTATORSHIP,Punic State,Punischer Staat
-CAR,MILITARY,Punic State,Punischer Staat
+CAR,MILITARY,Punic Hegemony,Punische Hegemonie
 CAR,NATIONAL_STATE,Punic State,Punischer Staat
 CAR,NATIONAL_REPUBLIC,Republic of Carthage,Republik Karthago
 CAR,THEOCRACY,Sacred Council of Carthage,Heiliger Rat von Karthago
@@ -157,7 +157,7 @@ ROM,SOCIALIST_REPUBLIC,Roman Commune,Römische Kommune
 ROM,SOCIALIST_DEMOCRACY,Roman Republic,Römische Republik
 ROM,PEOPLES_STATE,Roman Commune,Römische Kommune
 ROM,DICTATORSHIP,Roman State,Römischer Staat
-ROM,MILITARY,Roman State,Römischer Staat
+ROM,MILITARY,Roman Imperium,Römisches Imperium
 ROM,NATIONAL_STATE,Roman State,Römischer Staat
 ROM,NATIONAL_REPUBLIC,Repubblica Italiana,Italienische Republik
 ROM,THEOCRACY,Sacred Roman Commonwealth,Heiliges Römisches Gemeinwesen
@@ -199,7 +199,7 @@ ETH,SOCIALIST_REPUBLIC,People's Republic of Ethiopia,Volksrepublik Äthiopien
 ETH,SOCIALIST_DEMOCRACY,Ethiopia,Äthiopien
 ETH,PEOPLES_STATE,People's Republic of Ethiopia,Volksrepublik Äthiopien
 ETH,DICTATORSHIP,Ethiopian State,Äthiopischer Staat
-ETH,MILITARY,Ethiopian State,Äthiopischer Staat
+ETH,MILITARY,Abyssinian Military Directorate,Abessinisches Militärdirektorium
 ETH,NATIONAL_STATE,Ethiopian State,Äthiopischer Staat
 ETH,NATIONAL_REPUBLIC,Republic of Ethiopia,Republik Äthiopien
 ETH,THEOCRACY,Sacred Kingdom of Abyssinia,Heiliges Königreich Abessinien
@@ -220,7 +220,7 @@ MAY,SOCIALIST_REPUBLIC,Maya Commune,Kommune der Maya
 MAY,SOCIALIST_DEMOCRACY,United Maya States,Vereinigte Maya-Staaten
 MAY,PEOPLES_STATE,Maya Commune,Kommune der Maya
 MAY,DICTATORSHIP,Maya State,Staat der Maya
-MAY,MILITARY,Maya State,Staat der Maya
+MAY,MILITARY,Jaguar Realm,Jaguarreich
 MAY,NATIONAL_STATE,Maya State,Staat der Maya
 MAY,NATIONAL_REPUBLIC,League of Mayapan,Bund von Mayapán
 MAY,THEOCRACY,Sacred League of the Maya,Heiliger Bund der Maya
@@ -241,7 +241,7 @@ VIK,SOCIALIST_REPUBLIC,Nordic People's Union,Nordische Volksunion
 VIK,SOCIALIST_DEMOCRACY,Scandinavian Union,Skandinavische Union
 VIK,PEOPLES_STATE,Nordic People's Union,Nordische Volksunion
 VIK,DICTATORSHIP,Scandinavian State,Skandinavischer Staat
-VIK,MILITARY,Scandinavian State,Skandinavischer Staat
+VIK,MILITARY,Realm of the North,Nordreich
 VIK,NATIONAL_STATE,Scandinavian State,Skandinavischer Staat
 VIK,NATIONAL_REPUBLIC,Nordic Commonwealth,Nordisches Gemeinwesen
 VIK,THEOCRACY,Sacred Realm of the North,Heiliges Nordreich
@@ -262,7 +262,7 @@ ARA,SOCIALIST_REPUBLIC,Arab People's Republic,Arabische Volksrepublik
 ARA,SOCIALIST_DEMOCRACY,Arabian Federation,Arabischer Bund
 ARA,PEOPLES_STATE,Arab People's Republic,Arabische Volksrepublik
 ARA,DICTATORSHIP,Arab Union,Arabische Union
-ARA,MILITARY,Arab Union,Arabische Union
+ARA,MILITARY,Arab Revolutionary Republic,Arabische Revolutionsrepublik
 ARA,NATIONAL_STATE,Arab Union,Arabische Union
 ARA,NATIONAL_REPUBLIC,Arab Republic,Arabische Republik
 ARA,THEOCRACY,Sacred Realm of Arabia,Heiliges Reich Arabien
@@ -283,7 +283,7 @@ KHM,SOCIALIST_REPUBLIC,People's Republic of Kampuchea,Volksrepublik Kampuchea
 KHM,SOCIALIST_DEMOCRACY,Cambodia,Kambodscha
 KHM,PEOPLES_STATE,People's Republic of Kampuchea,Volksrepublik Kampuchea
 KHM,DICTATORSHIP,State of Cambodia,Staat Kambodscha
-KHM,MILITARY,State of Cambodia,Staat Kambodscha
+KHM,MILITARY,Khmer Military Directorate,Militärdirektorium der Khmer
 KHM,NATIONAL_STATE,State of Cambodia,Staat Kambodscha
 KHM,NATIONAL_REPUBLIC,Khmer Republic,Republik der Khmer
 KHM,THEOCRACY,Sacred Kingdom of Angkor,Heiliges Königreich Angkor
@@ -304,7 +304,7 @@ SPA,SOCIALIST_REPUBLIC,Iberian Commune,Iberische Kommune
 SPA,SOCIALIST_DEMOCRACY,Spain,Spanien
 SPA,PEOPLES_STATE,Iberian Commune,Iberische Kommune
 SPA,DICTATORSHIP,Spanish State,Spanischer Staat
-SPA,MILITARY,Spanish State,Spanischer Staat
+SPA,MILITARY,Spanish Military Junta,Spanische Militärjunta
 SPA,NATIONAL_STATE,Spanish State,Spanischer Staat
 SPA,NATIONAL_REPUBLIC,Spanish Republic,Spanische Republik
 SPA,THEOCRACY,Sacred Crown of Iberia,Heilige Krone Iberiens
@@ -325,7 +325,7 @@ FRA,SOCIALIST_REPUBLIC,French Commune,Französische Kommune
 FRA,SOCIALIST_DEMOCRACY,French Commune,Französische Kommune
 FRA,PEOPLES_STATE,French Commune,Französische Kommune
 FRA,DICTATORSHIP,French State,Französischer Staat
-FRA,MILITARY,French State,Französischer Staat
+FRA,MILITARY,French Consulate,Französisches Konsulat
 FRA,NATIONAL_STATE,French State,Französischer Staat
 FRA,NATIONAL_REPUBLIC,French Republic,Französische Republik
 FRA,THEOCRACY,Sacred Crown of France,Heilige Krone Frankreichs
@@ -388,7 +388,7 @@ RUS,SOCIALIST_REPUBLIC,Russian Soviet Republic,Russische Sowjetrepublik
 RUS,SOCIALIST_DEMOCRACY,Russian Union,Russische Union
 RUS,PEOPLES_STATE,Russian Soviet Republic,Russische Sowjetrepublik
 RUS,DICTATORSHIP,Russian State,Russischer Staat
-RUS,MILITARY,Russian State,Russischer Staat
+RUS,MILITARY,Russian Supreme Directorate,Oberstes Direktorium Russlands
 RUS,NATIONAL_STATE,Russian State,Russischer Staat
 RUS,NATIONAL_REPUBLIC,Russian Republic,Russische Republik
 RUS,THEOCRACY,Sacred Realm of Rus,Heiliges Reich der Rus
@@ -409,7 +409,7 @@ NED,SOCIALIST_REPUBLIC,Dutch People's Republic,Niederländische Volksrepublik
 NED,SOCIALIST_DEMOCRACY,Netherlands,Niederlande
 NED,PEOPLES_STATE,Dutch People's Republic,Niederländische Volksrepublik
 NED,DICTATORSHIP,Dutch State,Niederländischer Staat
-NED,MILITARY,Dutch State,Niederländischer Staat
+NED,MILITARY,Batavian Protectorate,Batavisches Protektorat
 NED,NATIONAL_STATE,Dutch State,Niederländischer Staat
 NED,NATIONAL_REPUBLIC,Batavian Republic,Batavische Republik
 NED,THEOCRACY,Sacred Union of the Low Countries,Heiliger Bund der Niederlande
@@ -430,7 +430,7 @@ MAL,SOCIALIST_REPUBLIC,Malian People's Union,Malische Volksunion
 MAL,SOCIALIST_DEMOCRACY,Mali Federation,Mali-Föderation
 MAL,PEOPLES_STATE,Malian People's Union,Malische Volksunion
 MAL,DICTATORSHIP,Malian State,Malischer Staat
-MAL,MILITARY,Malian State,Malischer Staat
+MAL,MILITARY,Military Empire of the Sahel,Militärreich am Sahel
 MAL,NATIONAL_STATE,Malian State,Malischer Staat
 MAL,NATIONAL_REPUBLIC,Republic of Mali,Republik Mali
 MAL,THEOCRACY,Sacred Realm of Mali,Heiliges Reich Mali
@@ -451,7 +451,7 @@ POR,SOCIALIST_REPUBLIC,Lusitanian Commune,Lusitanische Kommune
 POR,SOCIALIST_DEMOCRACY,Portugal,Portugal
 POR,PEOPLES_STATE,Lusitanian Commune,Lusitanische Kommune
 POR,DICTATORSHIP,Estado Novo,Estado Novo
-POR,MILITARY,Estado Novo,Estado Novo
+POR,MILITARY,Lusitanian Directorate,Lusitanisches Direktorium
 POR,NATIONAL_STATE,Estado Novo,Estado Novo
 POR,NATIONAL_REPUBLIC,Portuguese Republic,Portugiesische Republik
 POR,THEOCRACY,Sacred Crown of Portugal,Heilige Krone Portugals
@@ -472,7 +472,7 @@ INC,SOCIALIST_REPUBLIC,Andean People's Union,Andinische Volksunion
 INC,SOCIALIST_DEMOCRACY,Andean Federation,Andenbund
 INC,PEOPLES_STATE,Andean People's Union,Andinische Volksunion
 INC,DICTATORSHIP,Andean State,Andenstaat
-INC,MILITARY,Andean State,Andenstaat
+INC,MILITARY,Realm of the Condor,Reich des Kondors
 INC,NATIONAL_STATE,Andean State,Andenstaat
 INC,NATIONAL_REPUBLIC,Andean Republic,Andenrepublik
 INC,THEOCRACY,Realm of the Sun,Reich der Sonne
@@ -493,7 +493,7 @@ MON,SOCIALIST_REPUBLIC,Mongolian People's Republic,Mongolische Volksrepublik
 MON,SOCIALIST_DEMOCRACY,Mongolia,Mongolei
 MON,PEOPLES_STATE,Mongolian People's Republic,Mongolische Volksrepublik
 MON,DICTATORSHIP,Mongol State,Mongolischer Staat
-MON,MILITARY,Mongol State,Mongolischer Staat
+MON,MILITARY,Great Mongol Horde,Große Mongolenhorde
 MON,NATIONAL_STATE,Mongol State,Mongolischer Staat
 MON,NATIONAL_REPUBLIC,Republic of Mongolia,Republik Mongolei
 MON,THEOCRACY,Sacred Realm of the Steppe,Heiliges Steppenreich
@@ -514,7 +514,7 @@ AZT,SOCIALIST_REPUBLIC,Mexican People's Republic,Mexikanische Volksrepublik
 AZT,SOCIALIST_DEMOCRACY,United Mexican States,Vereinigte Mexikanische Staaten
 AZT,PEOPLES_STATE,Mexican People's Republic,Mexikanische Volksrepublik
 AZT,DICTATORSHIP,Mexican State,Mexikanischer Staat
-AZT,MILITARY,Mexican State,Mexikanischer Staat
+AZT,MILITARY,Eagle Imperium,Adlerimperium
 AZT,NATIONAL_STATE,Mexican State,Mexikanischer Staat
 AZT,NATIONAL_REPUBLIC,Mexican Republic,Mexikanische Republik
 AZT,THEOCRACY,Sacred Realm of Anahuac,Heiliges Reich Anáhuac
@@ -535,7 +535,7 @@ TUR,SOCIALIST_REPUBLIC,Turkish People's Republic,Türkische Volksrepublik
 TUR,SOCIALIST_DEMOCRACY,Turkey,Türkei
 TUR,PEOPLES_STATE,Turkish People's Republic,Türkische Volksrepublik
 TUR,DICTATORSHIP,Turkish State,Türkischer Staat
-TUR,MILITARY,Turkish State,Türkischer Staat
+TUR,MILITARY,Anatolian Military Directorate,Anatolisches Militärdirektorium
 TUR,NATIONAL_STATE,Turkish State,Türkischer Staat
 TUR,NATIONAL_REPUBLIC,Republic of Turkey,Republik Türkei
 TUR,THEOCRACY,Sacred Realm of Anatolia,Heiliges Reich Anatolien
@@ -556,7 +556,7 @@ AME,SOCIALIST_REPUBLIC,United American Communes,Vereinigte Amerikanische Kommune
 AME,SOCIALIST_DEMOCRACY,United States of America,Vereinigte Staaten von Amerika
 AME,PEOPLES_STATE,United American Communes,Vereinigte Amerikanische Kommunen
 AME,DICTATORSHIP,American Union,Amerikanische Union
-AME,MILITARY,American Union,Amerikanische Union
+AME,MILITARY,Continental Protectorate,Kontinentales Protektorat
 AME,NATIONAL_STATE,American Union,Amerikanische Union
 AME,NATIONAL_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
 AME,THEOCRACY,Sacred Commonwealth of America,Heiliges Amerikanisches Commonwealth

@@ -62,12 +62,35 @@ Other evocative titles include Egypt's **Realm of the Two Lands**, Persia's
 Greece's merchant **Delian League**. Some names are literary adaptations of
 historical titles; their civic mappings are roleplaying choices.
 
+### Military regimes
+
+Every civilization has an individually authored `MILITARY` title rather than
+inheriting its ordinary dictatorship name. This family applies to Dictatorship
+with Professional Army or Conscription, unless religion, Planned Economy, or
+Nationalism selects a higher-priority family. Those other families retain their
+own names.
+
+Examples include **Mamluk Realm**, **Punic Hegemony**, **Roman Imperium**,
+**French Consulate**, **Celestial Directorate**, **Batavian Protectorate**,
+**Jaguar Realm**, **Great Mongol Horde**, and **Continental Protectorate**.
+The Japanese Shogunate, English Protectorate, and German Reich remain available.
+Names such as Batavian Protectorate and Jaguar Realm are invented
+alternate-history identities. Mamluk Realm and French Consulate draw on
+historical institutions without requiring their historical dates or borders.
+
+English and German titles describe the same institutions, with natural phrasing
+in each language: examples include **Mamlukenreich**, **Babylonisches
+Imperium**, **Kaiserreich Iran**, **Nordreich**, **Reich des Kondors**, and
+**Anatolisches Militärdirektorium**. Existing titles such as Punische Hegemonie,
+Französisches Konsulat, Japanisches Shogunat, and Batavisches Protektorat retain
+their different institutional character.
+
 Civic changes and conversions refresh names through the original event hooks.
 Names also refresh once per player turn, including in existing saves. Existing
 pre-spawn names, country short names, and nationality adjectives use the original
 RFC text. Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 569 entries representing 333 distinct English/German
+`CountryNames.csv` lists 569 entries representing 356 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.
@@ -89,3 +112,6 @@ Historical references used for selected identities:
 - [Regno d'Italia, Italian Presidency](https://www.quirinale.it/it/comunicato/dichiarazione-presidente-mattarella-occasione-giornata-nazionale-bandiera)
 - [Egypt's Two Lands, Louvre](https://www.louvre.fr/en/exhibitions-and-events/exhibitions/pharaoh-of-the-two-lands)
 - [Persian King of Kings, British Museum](https://www.britishmuseum.org/blog/long-live-king-kings-accession-ritual-ancient-persia)
+- [Mamluk military elite, Metropolitan Museum of Art](https://www.metmuseum.org/de/toah/ht/08/afe)
+- [French Consulate and the coup of Brumaire, Fondation Napoléon](https://www.napoleon.org/en/history-of-the-two-empires/close-up/the-coup-detat-of-18-and-19-brumaire-an-viii-9-and-10-november1799)
+- [Cromwell's army and Protectorate, National Army Museum](https://www.nam.ac.uk/explore/british-civil-wars)

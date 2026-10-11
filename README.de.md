@@ -232,7 +232,7 @@ und Reichsgröße. Bestehende Vasallen- und Kolonialnamen haben Vorrang. Namen
 werden nach Staatsformen- und Religionswechseln sowie einmal pro Spielerzug
 aktualisiert.
 
-Der Katalog enthält **569 Einträge mit 333 unterschiedlichen deutsch-englischen
+Der Katalog enthält **569 Einträge mit 356 unterschiedlichen deutsch-englischen
 Namenspaaren**. Die Namen verwenden passende historische Bezeichnungen und
 plausible alternative Entwicklungen. Ein Name muss nicht jede aktive Staatsform
 abbilden.

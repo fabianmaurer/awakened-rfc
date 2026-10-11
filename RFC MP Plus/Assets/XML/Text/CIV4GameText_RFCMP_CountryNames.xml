@@ -90,11 +90,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_MILITARY</Tag>
-    <English>Egyptian State</English>
-    <French>Egyptian State</French>
-    <German>&#196;gyptischer Staat</German>
-    <Italian>Egyptian State</Italian>
-    <Spanish>Egyptian State</Spanish>
+    <English>Mamluk Realm</English>
+    <French>Mamluk Realm</French>
+    <German>Mamlukenreich</German>
+    <Italian>Mamluk Realm</Italian>
+    <Spanish>Mamluk Realm</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_NATIONAL_STATE</Tag>
@@ -258,11 +258,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_MILITARY</Tag>
-    <English>Hindustan</English>
-    <French>Hindustan</French>
-    <German>Hindustan</German>
-    <Italian>Hindustan</Italian>
-    <Spanish>Hindustan</Spanish>
+    <English>Realm of Hindustan</English>
+    <French>Realm of Hindustan</French>
+    <German>Reich von Hindustan</German>
+    <Italian>Realm of Hindustan</Italian>
+    <Spanish>Realm of Hindustan</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_NATIONAL_STATE</Tag>
@@ -426,11 +426,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_MILITARY</Tag>
-    <English>Chinese Directorate</English>
-    <French>Chinese Directorate</French>
-    <German>Chinesisches Direktorium</German>
-    <Italian>Chinese Directorate</Italian>
-    <Spanish>Chinese Directorate</Spanish>
+    <English>Celestial Directorate</English>
+    <French>Celestial Directorate</French>
+    <German>Himmlisches Direktorium</German>
+    <Italian>Celestial Directorate</Italian>
+    <Spanish>Celestial Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_NATIONAL_STATE</Tag>
@@ -594,11 +594,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_MILITARY</Tag>
-    <English>Babylonian State</English>
-    <French>Babylonian State</French>
-    <German>Babylonischer Staat</German>
-    <Italian>Babylonian State</Italian>
-    <Spanish>Babylonian State</Spanish>
+    <English>Babylonian Imperium</English>
+    <French>Babylonian Imperium</French>
+    <German>Babylonisches Imperium</German>
+    <Italian>Babylonian Imperium</Italian>
+    <Spanish>Babylonian Imperium</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_NATIONAL_STATE</Tag>
@@ -762,11 +762,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_MILITARY</Tag>
-    <English>Hellenic State</English>
-    <French>Hellenic State</French>
-    <German>Griechischer Staat</German>
-    <Italian>Hellenic State</Italian>
-    <Spanish>Hellenic State</Spanish>
+    <English>Hellenic Stratocracy</English>
+    <French>Hellenic Stratocracy</French>
+    <German>Hellenische Stratokratie</German>
+    <Italian>Hellenic Stratocracy</Italian>
+    <Spanish>Hellenic Stratocracy</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_NATIONAL_STATE</Tag>
@@ -930,11 +930,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_MILITARY</Tag>
-    <English>Imperial State of Iran</English>
-    <French>Imperial State of Iran</French>
-    <German>Kaiserlicher Staat Iran</German>
-    <Italian>Imperial State of Iran</Italian>
-    <Spanish>Imperial State of Iran</Spanish>
+    <English>Empire of Iran</English>
+    <French>Empire of Iran</French>
+    <German>Kaiserreich Iran</German>
+    <Italian>Empire of Iran</Italian>
+    <Spanish>Empire of Iran</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_NATIONAL_STATE</Tag>
@@ -1098,11 +1098,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CAR_MILITARY</Tag>
-    <English>Punic State</English>
-    <French>Punic State</French>
-    <German>Punischer Staat</German>
-    <Italian>Punic State</Italian>
-    <Spanish>Punic State</Spanish>
+    <English>Punic Hegemony</English>
+    <French>Punic Hegemony</French>
+    <German>Punische Hegemonie</German>
+    <Italian>Punic Hegemony</Italian>
+    <Spanish>Punic Hegemony</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CAR_NATIONAL_STATE</Tag>
@@ -1266,11 +1266,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_MILITARY</Tag>
-    <English>Roman State</English>
-    <French>Roman State</French>
-    <German>R&#246;mischer Staat</German>
-    <Italian>Roman State</Italian>
-    <Spanish>Roman State</Spanish>
+    <English>Roman Imperium</English>
+    <French>Roman Imperium</French>
+    <German>R&#246;misches Imperium</German>
+    <Italian>Roman Imperium</Italian>
+    <Spanish>Roman Imperium</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_NATIONAL_STATE</Tag>
@@ -1602,11 +1602,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ETH_MILITARY</Tag>
-    <English>Ethiopian State</English>
-    <French>Ethiopian State</French>
-    <German>&#196;thiopischer Staat</German>
-    <Italian>Ethiopian State</Italian>
-    <Spanish>Ethiopian State</Spanish>
+    <English>Abyssinian Military Directorate</English>
+    <French>Abyssinian Military Directorate</French>
+    <German>Abessinisches Milit&#228;rdirektorium</German>
+    <Italian>Abyssinian Military Directorate</Italian>
+    <Spanish>Abyssinian Military Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ETH_NATIONAL_STATE</Tag>
@@ -1770,11 +1770,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_MILITARY</Tag>
-    <English>Maya State</English>
-    <French>Maya State</French>
-    <German>Staat der Maya</German>
-    <Italian>Maya State</Italian>
-    <Spanish>Maya State</Spanish>
+    <English>Jaguar Realm</English>
+    <French>Jaguar Realm</French>
+    <German>Jaguarreich</German>
+    <Italian>Jaguar Realm</Italian>
+    <Spanish>Jaguar Realm</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_NATIONAL_STATE</Tag>
@@ -1938,11 +1938,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_MILITARY</Tag>
-    <English>Scandinavian State</English>
-    <French>Scandinavian State</French>
-    <German>Skandinavischer Staat</German>
-    <Italian>Scandinavian State</Italian>
-    <Spanish>Scandinavian State</Spanish>
+    <English>Realm of the North</English>
+    <French>Realm of the North</French>
+    <German>Nordreich</German>
+    <Italian>Realm of the North</Italian>
+    <Spanish>Realm of the North</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_NATIONAL_STATE</Tag>
@@ -2106,11 +2106,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_MILITARY</Tag>
-    <English>Arab Union</English>
-    <French>Arab Union</French>
-    <German>Arabische Union</German>
-    <Italian>Arab Union</Italian>
-    <Spanish>Arab Union</Spanish>
+    <English>Arab Revolutionary Republic</English>
+    <French>Arab Revolutionary Republic</French>
+    <German>Arabische Revolutionsrepublik</German>
+    <Italian>Arab Revolutionary Republic</Italian>
+    <Spanish>Arab Revolutionary Republic</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_NATIONAL_STATE</Tag>
@@ -2274,11 +2274,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_KHM_MILITARY</Tag>
-    <English>State of Cambodia</English>
-    <French>State of Cambodia</French>
-    <German>Staat Kambodscha</German>
-    <Italian>State of Cambodia</Italian>
-    <Spanish>State of Cambodia</Spanish>
+    <English>Khmer Military Directorate</English>
+    <French>Khmer Military Directorate</French>
+    <German>Milit&#228;rdirektorium der Khmer</German>
+    <Italian>Khmer Military Directorate</Italian>
+    <Spanish>Khmer Military Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_KHM_NATIONAL_STATE</Tag>
@@ -2442,11 +2442,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_MILITARY</Tag>
-    <English>Spanish State</English>
-    <French>Spanish State</French>
-    <German>Spanischer Staat</German>
-    <Italian>Spanish State</Italian>
-    <Spanish>Spanish State</Spanish>
+    <English>Spanish Military Junta</English>
+    <French>Spanish Military Junta</French>
+    <German>Spanische Milit&#228;rjunta</German>
+    <Italian>Spanish Military Junta</Italian>
+    <Spanish>Spanish Military Junta</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_NATIONAL_STATE</Tag>
@@ -2610,11 +2610,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_MILITARY</Tag>
-    <English>French State</English>
-    <French>French State</French>
-    <German>Franz&#246;sischer Staat</German>
-    <Italian>French State</Italian>
-    <Spanish>French State</Spanish>
+    <English>French Consulate</English>
+    <French>French Consulate</French>
+    <German>Franz&#246;sisches Konsulat</German>
+    <Italian>French Consulate</Italian>
+    <Spanish>French Consulate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_NATIONAL_STATE</Tag>
@@ -3114,11 +3114,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_MILITARY</Tag>
-    <English>Russian State</English>
-    <French>Russian State</French>
-    <German>Russischer Staat</German>
-    <Italian>Russian State</Italian>
-    <Spanish>Russian State</Spanish>
+    <English>Russian Supreme Directorate</English>
+    <French>Russian Supreme Directorate</French>
+    <German>Oberstes Direktorium Russlands</German>
+    <Italian>Russian Supreme Directorate</Italian>
+    <Spanish>Russian Supreme Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_NATIONAL_STATE</Tag>
@@ -3282,11 +3282,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_NED_MILITARY</Tag>
-    <English>Dutch State</English>
-    <French>Dutch State</French>
-    <German>Niederl&#228;ndischer Staat</German>
-    <Italian>Dutch State</Italian>
-    <Spanish>Dutch State</Spanish>
+    <English>Batavian Protectorate</English>
+    <French>Batavian Protectorate</French>
+    <German>Batavisches Protektorat</German>
+    <Italian>Batavian Protectorate</Italian>
+    <Spanish>Batavian Protectorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_NED_NATIONAL_STATE</Tag>
@@ -3450,11 +3450,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAL_MILITARY</Tag>
-    <English>Malian State</English>
-    <French>Malian State</French>
-    <German>Malischer Staat</German>
-    <Italian>Malian State</Italian>
-    <Spanish>Malian State</Spanish>
+    <English>Military Empire of the Sahel</English>
+    <French>Military Empire of the Sahel</French>
+    <German>Milit&#228;rreich am Sahel</German>
+    <Italian>Military Empire of the Sahel</Italian>
+    <Spanish>Military Empire of the Sahel</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAL_NATIONAL_STATE</Tag>
@@ -3618,11 +3618,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_POR_MILITARY</Tag>
-    <English>Estado Novo</English>
-    <French>Estado Novo</French>
-    <German>Estado Novo</German>
-    <Italian>Estado Novo</Italian>
-    <Spanish>Estado Novo</Spanish>
+    <English>Lusitanian Directorate</English>
+    <French>Lusitanian Directorate</French>
+    <German>Lusitanisches Direktorium</German>
+    <Italian>Lusitanian Directorate</Italian>
+    <Spanish>Lusitanian Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_POR_NATIONAL_STATE</Tag>
@@ -3786,11 +3786,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_MILITARY</Tag>
-    <English>Andean State</English>
-    <French>Andean State</French>
-    <German>Andenstaat</German>
-    <Italian>Andean State</Italian>
-    <Spanish>Andean State</Spanish>
+    <English>Realm of the Condor</English>
+    <French>Realm of the Condor</French>
+    <German>Reich des Kondors</German>
+    <Italian>Realm of the Condor</Italian>
+    <Spanish>Realm of the Condor</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_NATIONAL_STATE</Tag>
@@ -3954,11 +3954,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MON_MILITARY</Tag>
-    <English>Mongol State</English>
-    <French>Mongol State</French>
-    <German>Mongolischer Staat</German>
-    <Italian>Mongol State</Italian>
-    <Spanish>Mongol State</Spanish>
+    <English>Great Mongol Horde</English>
+    <French>Great Mongol Horde</French>
+    <German>Gro&#223;e Mongolenhorde</German>
+    <Italian>Great Mongol Horde</Italian>
+    <Spanish>Great Mongol Horde</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MON_NATIONAL_STATE</Tag>
@@ -4122,11 +4122,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AZT_MILITARY</Tag>
-    <English>Mexican State</English>
-    <French>Mexican State</French>
-    <German>Mexikanischer Staat</German>
-    <Italian>Mexican State</Italian>
-    <Spanish>Mexican State</Spanish>
+    <English>Eagle Imperium</English>
+    <French>Eagle Imperium</French>
+    <German>Adlerimperium</German>
+    <Italian>Eagle Imperium</Italian>
+    <Spanish>Eagle Imperium</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AZT_NATIONAL_STATE</Tag>
@@ -4290,11 +4290,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_MILITARY</Tag>
-    <English>Turkish State</English>
-    <French>Turkish State</French>
-    <German>T&#252;rkischer Staat</German>
-    <Italian>Turkish State</Italian>
-    <Spanish>Turkish State</Spanish>
+    <English>Anatolian Military Directorate</English>
+    <French>Anatolian Military Directorate</French>
+    <German>Anatolisches Milit&#228;rdirektorium</German>
+    <Italian>Anatolian Military Directorate</Italian>
+    <Spanish>Anatolian Military Directorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_NATIONAL_STATE</Tag>
@@ -4458,11 +4458,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_MILITARY</Tag>
-    <English>American Union</English>
-    <French>American Union</French>
-    <German>Amerikanische Union</German>
-    <Italian>American Union</Italian>
-    <Spanish>American Union</Spanish>
+    <English>Continental Protectorate</English>
+    <French>Continental Protectorate</French>
+    <German>Kontinentales Protektorat</German>
+    <Italian>Continental Protectorate</Italian>
+    <Spanish>Continental Protectorate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_NATIONAL_STATE</Tag>

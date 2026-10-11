@@ -220,7 +220,7 @@ Country names reflect government, legitimacy, economy, state religion, and
 empire size. Existing vassal and colonial naming takes priority. Names refresh
 after civic/religion changes and once per player turn.
 
-The catalogue contains **569 entries covering 333 distinct English/German name
+The catalogue contains **569 entries covering 356 distinct English/German name
 pairs**. Names are written individually, using historical identities where
 appropriate and plausible alternate-history names elsewhere. A name need not
 encode every active civic.
