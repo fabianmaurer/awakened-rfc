@@ -33,13 +33,13 @@ Sacred Realm of Bharat | Heiliges Reich Bharat
 CHI
 Huaxia | Huaxia
 Middle Kingdom | Reich der Mitte
-Chinese Empire | Chinesisches Kaiserreich
+Celestial Empire | Reich des Himmels
 Republic of China | Republik China
 China | China
 League of the Silk Road | Seidenstraßenbund
 People's Republic of China | Volksrepublik China
 Chinese State | Chinesischer Staat
-Celestial Empire | Reich des Himmels
+Heavenly Kingdom of Great Peace | Himmlisches Reich des Großen Friedens
 BAB
 Peoples of Mesopotamia | Völker Mesopotamiens
 Kingdom of Babylon | Königreich Babylon
@@ -232,7 +232,7 @@ Estado Novo | Estado Novo
 Sacred Crown of Portugal | Heilige Krone Portugals
 INC
 Andean Peoples | Andenvölker
-Kingdom of Cusco | Königreich Cusco
+Tawantinsuyu | Tawantinsuyu
 Tawantinsuyu | Tawantinsuyu
 Andean Republic | Andenrepublik
 Andean Federation | Andenbund
@@ -319,6 +319,18 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    # Literary and historical identities, selected by existing civic families.
+    ('CHI', 'THEOCRATIC_REPUBLIC'): ('Commonwealth of Great Peace', 'Gemeinwesen des Großen Friedens'),
+    ('INC', 'EMPIRE'): ('Land of the Four Quarters', 'Land der vier Weltgegenden'),
+    ('INC', 'THEOCRACY'): ('Realm of the Sun', 'Reich der Sonne'),
+    ('INC', 'HOLY_KINGDOM'): ('Realm of the Sun', 'Reich der Sonne'),
+    ('ROM', 'CONSTITUTIONAL'): ("Regno d'Italia", 'Königreich Italien'),
+    ('ROM', 'NATIONAL_REPUBLIC'): ('Repubblica Italiana', 'Italienische Republik'),
+    ('EGY', 'EMPIRE'): ('Realm of the Two Lands', 'Reich der beiden Länder'),
+    ('PER', 'EMPIRE'): ('Empire of the King of Kings', 'Reich des Königs der Könige'),
+    ('JAP', 'THEOCRACY'): ('Land of the Gods', 'Land der Götter'),
+    ('JAP', 'HOLY_KINGDOM'): ('Land of the Gods', 'Land der Götter'),
+    ('GRE', 'MERCHANT_REPUBLIC'): ('Delian League', 'Attischer Seebund'),
     ('GER', 'HOLY_ROMAN'): ('Holy Roman Empire', 'Heiliges Römisches Reich'),
     ('ROM', 'PAPAL_STATES'): ('Papal States', 'Kirchenstaat'),
     ('ENG', 'CONSTITUTIONAL'): ('United Kingdom', 'Vereinigtes Königreich'),

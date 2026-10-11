@@ -18,11 +18,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_EMPIRE</Tag>
-    <English>Egyptian Empire</English>
-    <French>Egyptian Empire</French>
-    <German>&#196;gyptisches Reich</German>
-    <Italian>Egyptian Empire</Italian>
-    <Spanish>Egyptian Empire</Spanish>
+    <English>Realm of the Two Lands</English>
+    <French>Realm of the Two Lands</French>
+    <German>Reich der beiden L&#228;nder</German>
+    <Italian>Realm of the Two Lands</Italian>
+    <Spanish>Realm of the Two Lands</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_CONSTITUTIONAL</Tag>
@@ -354,11 +354,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_EMPIRE</Tag>
-    <English>Chinese Empire</English>
-    <French>Chinese Empire</French>
-    <German>Chinesisches Kaiserreich</German>
-    <Italian>Chinese Empire</Italian>
-    <Spanish>Chinese Empire</Spanish>
+    <English>Celestial Empire</English>
+    <French>Celestial Empire</French>
+    <German>Reich des Himmels</German>
+    <Italian>Celestial Empire</Italian>
+    <Spanish>Celestial Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_CONSTITUTIONAL</Tag>
@@ -450,27 +450,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_THEOCRACY</Tag>
-    <English>Celestial Empire</English>
-    <French>Celestial Empire</French>
-    <German>Reich des Himmels</German>
-    <Italian>Celestial Empire</Italian>
-    <Spanish>Celestial Empire</Spanish>
+    <English>Heavenly Kingdom of Great Peace</English>
+    <French>Heavenly Kingdom of Great Peace</French>
+    <German>Himmlisches Reich des Gro&#223;en Friedens</German>
+    <Italian>Heavenly Kingdom of Great Peace</Italian>
+    <Spanish>Heavenly Kingdom of Great Peace</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_HOLY_KINGDOM</Tag>
-    <English>Celestial Empire</English>
-    <French>Celestial Empire</French>
-    <German>Reich des Himmels</German>
-    <Italian>Celestial Empire</Italian>
-    <Spanish>Celestial Empire</Spanish>
+    <English>Heavenly Kingdom of Great Peace</English>
+    <French>Heavenly Kingdom of Great Peace</French>
+    <German>Himmlisches Reich des Gro&#223;en Friedens</German>
+    <Italian>Heavenly Kingdom of Great Peace</Italian>
+    <Spanish>Heavenly Kingdom of Great Peace</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_THEOCRATIC_REPUBLIC</Tag>
-    <English>Republic of China</English>
-    <French>Republic of China</French>
-    <German>Republik China</German>
-    <Italian>Republic of China</Italian>
-    <Spanish>Republic of China</Spanish>
+    <English>Commonwealth of Great Peace</English>
+    <French>Commonwealth of Great Peace</French>
+    <German>Gemeinwesen des Gro&#223;en Friedens</German>
+    <Italian>Commonwealth of Great Peace</Italian>
+    <Spanish>Commonwealth of Great Peace</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_ISLAMIC_REPUBLIC</Tag>
@@ -722,11 +722,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_MERCHANT_REPUBLIC</Tag>
-    <English>Aegean League</English>
-    <French>Aegean League</French>
-    <German>&#196;g&#228;ischer Bund</German>
-    <Italian>Aegean League</Italian>
-    <Spanish>Aegean League</Spanish>
+    <English>Delian League</English>
+    <French>Delian League</French>
+    <German>Attischer Seebund</German>
+    <Italian>Delian League</Italian>
+    <Spanish>Delian League</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_SOCIALIST_REPUBLIC</Tag>
@@ -858,11 +858,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_EMPIRE</Tag>
-    <English>Persian Empire</English>
-    <French>Persian Empire</French>
-    <German>Persisches Reich</German>
-    <Italian>Persian Empire</Italian>
-    <Spanish>Persian Empire</Spanish>
+    <English>Empire of the King of Kings</English>
+    <French>Empire of the King of Kings</French>
+    <German>Reich des K&#246;nigs der K&#246;nige</German>
+    <Italian>Empire of the King of Kings</Italian>
+    <Spanish>Empire of the King of Kings</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_CONSTITUTIONAL</Tag>
@@ -1202,11 +1202,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_CONSTITUTIONAL</Tag>
-    <English>Kingdom of Rome</English>
-    <French>Kingdom of Rome</French>
-    <German>K&#246;nigreich Rom</German>
-    <Italian>Kingdom of Rome</Italian>
-    <Spanish>Kingdom of Rome</Spanish>
+    <English>Regno d'Italia</English>
+    <French>Regno d'Italia</French>
+    <German>K&#246;nigreich Italien</German>
+    <Italian>Regno d'Italia</Italian>
+    <Spanish>Regno d'Italia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_REPUBLIC</Tag>
@@ -1282,11 +1282,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_NATIONAL_REPUBLIC</Tag>
-    <English>Senate and People of Rome</English>
-    <French>Senate and People of Rome</French>
-    <German>Senat und Volk von Rom</German>
-    <Italian>Senate and People of Rome</Italian>
-    <Spanish>Senate and People of Rome</Spanish>
+    <English>Repubblica Italiana</English>
+    <French>Repubblica Italiana</French>
+    <German>Italienische Republik</German>
+    <Italian>Repubblica Italiana</Italian>
+    <Spanish>Repubblica Italiana</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_THEOCRACY</Tag>
@@ -1458,19 +1458,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_THEOCRACY</Tag>
-    <English>Sacred Realm of Yamato</English>
-    <French>Sacred Realm of Yamato</French>
-    <German>Heiliges Yamato-Reich</German>
-    <Italian>Sacred Realm of Yamato</Italian>
-    <Spanish>Sacred Realm of Yamato</Spanish>
+    <English>Land of the Gods</English>
+    <French>Land of the Gods</French>
+    <German>Land der G&#246;tter</German>
+    <Italian>Land of the Gods</Italian>
+    <Spanish>Land of the Gods</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_HOLY_KINGDOM</Tag>
-    <English>Sacred Realm of Yamato</English>
-    <French>Sacred Realm of Yamato</French>
-    <German>Heiliges Yamato-Reich</German>
-    <Italian>Sacred Realm of Yamato</Italian>
-    <Spanish>Sacred Realm of Yamato</Spanish>
+    <English>Land of the Gods</English>
+    <French>Land of the Gods</French>
+    <German>Land der G&#246;tter</German>
+    <Italian>Land of the Gods</Italian>
+    <Spanish>Land of the Gods</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_THEOCRATIC_REPUBLIC</Tag>
@@ -3706,14 +3706,6 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_KINGDOM</Tag>
-    <English>Kingdom of Cusco</English>
-    <French>Kingdom of Cusco</French>
-    <German>K&#246;nigreich Cusco</German>
-    <Italian>Kingdom of Cusco</Italian>
-    <Spanish>Kingdom of Cusco</Spanish>
-  </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_DN_INC_EMPIRE</Tag>
     <English>Tawantinsuyu</English>
     <French>Tawantinsuyu</French>
     <German>Tawantinsuyu</German>
@@ -3721,12 +3713,20 @@
     <Spanish>Tawantinsuyu</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_INC_EMPIRE</Tag>
+    <English>Land of the Four Quarters</English>
+    <French>Land of the Four Quarters</French>
+    <German>Land der vier Weltgegenden</German>
+    <Italian>Land of the Four Quarters</Italian>
+    <Spanish>Land of the Four Quarters</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_INC_CONSTITUTIONAL</Tag>
-    <English>Kingdom of Cusco</English>
-    <French>Kingdom of Cusco</French>
-    <German>K&#246;nigreich Cusco</German>
-    <Italian>Kingdom of Cusco</Italian>
-    <Spanish>Kingdom of Cusco</Spanish>
+    <English>Tawantinsuyu</English>
+    <French>Tawantinsuyu</French>
+    <German>Tawantinsuyu</German>
+    <Italian>Tawantinsuyu</Italian>
+    <Spanish>Tawantinsuyu</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_REPUBLIC</Tag>
@@ -3810,19 +3810,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_THEOCRACY</Tag>
-    <English>Sacred Realm of the Andes</English>
-    <French>Sacred Realm of the Andes</French>
-    <German>Heiliges Andenreich</German>
-    <Italian>Sacred Realm of the Andes</Italian>
-    <Spanish>Sacred Realm of the Andes</Spanish>
+    <English>Realm of the Sun</English>
+    <French>Realm of the Sun</French>
+    <German>Reich der Sonne</German>
+    <Italian>Realm of the Sun</Italian>
+    <Spanish>Realm of the Sun</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_HOLY_KINGDOM</Tag>
-    <English>Sacred Realm of the Andes</English>
-    <French>Sacred Realm of the Andes</French>
-    <German>Heiliges Andenreich</German>
-    <Italian>Sacred Realm of the Andes</Italian>
-    <Spanish>Sacred Realm of the Andes</Spanish>
+    <English>Realm of the Sun</English>
+    <French>Realm of the Sun</French>
+    <German>Reich der Sonne</German>
+    <Italian>Realm of the Sun</Italian>
+    <Spanish>Realm of the Sun</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_THEOCRATIC_REPUBLIC</Tag>

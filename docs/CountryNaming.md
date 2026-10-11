@@ -37,19 +37,37 @@ a monarchy into a republic. Constitutional monarchies keep their name at any
 size. Religion and economics take priority over nationalism when both apply.
 
 Country-specific alternatives include the Hanseatic League, Middle Kingdom,
-Commonwealth of England, Batavian Republic, Novgorod Republic, North Sea Empire,
-Tawantinsuyu, and the United Kingdom. Invented alternatives include the Nile
+Celestial Empire, Heavenly Kingdom of Great Peace, Land of the Four Quarters,
+Regno d'Italia, Commonwealth of England, Batavian Republic, Novgorod Republic,
+North Sea Empire, Tawantinsuyu, and the United Kingdom. Invented alternatives include the Nile
 League, League of the Jade Cities, Andean Federation, and Union of Bharat.
 Germany uses the Holy Roman Empire for a Christian religious monarchy. Rome
 uses the Papal States for a Christian religious government which is not a
 Republic or Democracy. Other state religions use the ordinary country entries.
+
+China uses **Celestial Empire** for a monarchy with more than six cities, and
+**Heavenly Kingdom of Great Peace** for a non-Islamic religious monarchy or
+theocracy. A religious republic uses the alternate-history **Commonwealth of
+Great Peace**. The Taiping-inspired title follows the civic family rather than
+requiring Christianity or a particular historical date.
+
+The Inca use **Tawantinsuyu** for a smaller or constitutional monarchy and
+**Land of the Four Quarters** for a larger empire. Religious rulers use
+**Realm of the Sun**. Rome's constitutional monarchy becomes **Regno d'Italia**;
+its nationalist republic uses **Repubblica Italiana**. Ancient Rome's ordinary
+kingdom, empire, and republican names remain available.
+
+Other evocative titles include Egypt's **Realm of the Two Lands**, Persia's
+**Empire of the King of Kings**, Japan's religious **Land of the Gods**, and
+Greece's merchant **Delian League**. Some names are literary adaptations of
+historical titles; their civic mappings are roleplaying choices.
 
 Civic changes and conversions refresh names through the original event hooks.
 Names also refresh once per player turn, including in existing saves. Existing
 pre-spawn names, country short names, and nationality adjectives use the original
 RFC text. Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 569 entries representing 330 distinct English/German
+`CountryNames.csv` lists 569 entries representing 333 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.
@@ -65,3 +83,9 @@ Historical references used for selected identities:
 - [Commonwealth of England, UK National Archives](https://www.nationalarchives.gov.uk/education/students/videos/history-hook/christmas-is-cancelled/)
 - [Holy Roman Empire, German Historical Museum](https://www.dhm.de/publikation/heiliges-roemisches-reich-deutscher-nation-962-1806/)
 - [Papal States, Vatican City State](https://www.vaticanstate.va/en/state-and-government/general-informations/flag.html)
+- [Celestial Empire, National Library of Australia](https://www.library.gov.au/learn/digital-classroom/celestial-empire/contact-and-conflict)
+- [Taiping Heavenly Kingdom correspondence, US Office of the Historian](https://history.state.gov/historicaldocuments/frus1862/d669)
+- [Tawantinsuyu and its four regions, NIST Museum](https://www.nist.gov/nist-museum/standardizing-empire)
+- [Regno d'Italia, Italian Presidency](https://www.quirinale.it/it/comunicato/dichiarazione-presidente-mattarella-occasione-giornata-nazionale-bandiera)
+- [Egypt's Two Lands, Louvre](https://www.louvre.fr/en/exhibitions-and-events/exhibitions/pharaoh-of-the-two-lands)
+- [Persian King of Kings, British Museum](https://www.britishmuseum.org/blog/long-live-king-kings-accession-ritual-ancient-persia)

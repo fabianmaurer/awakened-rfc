@@ -1,7 +1,7 @@
 ﻿Civilization,Naming rule,English,German
 EGY,TRIBAL,Peoples of the Nile,Völker am Nil
 EGY,KINGDOM,Kingdom of Egypt,Königreich Ägypten
-EGY,EMPIRE,Egyptian Empire,Ägyptisches Reich
+EGY,EMPIRE,Realm of the Two Lands,Reich der beiden Länder
 EGY,CONSTITUTIONAL,Kingdom of Egypt,Königreich Ägypten
 EGY,REPUBLIC,Republic of Egypt,Republik Ägypten
 EGY,DEMOCRACY,Egypt,Ägypten
@@ -43,7 +43,7 @@ IND,SULTANATE,Sultanate of Hindustan,Sultanat Hindustan
 IND,SECULAR_REPUBLIC,Indian Union,Indische Union
 CHI,TRIBAL,Huaxia,Huaxia
 CHI,KINGDOM,Middle Kingdom,Reich der Mitte
-CHI,EMPIRE,Chinese Empire,Chinesisches Kaiserreich
+CHI,EMPIRE,Celestial Empire,Reich des Himmels
 CHI,CONSTITUTIONAL,Middle Kingdom,Reich der Mitte
 CHI,REPUBLIC,Republic of China,Republik China
 CHI,DEMOCRACY,China,China
@@ -55,9 +55,9 @@ CHI,DICTATORSHIP,Chinese State,Chinesischer Staat
 CHI,MILITARY,Chinese Directorate,Chinesisches Direktorium
 CHI,NATIONAL_STATE,Chinese State,Chinesischer Staat
 CHI,NATIONAL_REPUBLIC,Republic of China,Republik China
-CHI,THEOCRACY,Celestial Empire,Reich des Himmels
-CHI,HOLY_KINGDOM,Celestial Empire,Reich des Himmels
-CHI,THEOCRATIC_REPUBLIC,Republic of China,Republik China
+CHI,THEOCRACY,Heavenly Kingdom of Great Peace,Himmlisches Reich des Großen Friedens
+CHI,HOLY_KINGDOM,Heavenly Kingdom of Great Peace,Himmlisches Reich des Großen Friedens
+CHI,THEOCRATIC_REPUBLIC,Commonwealth of Great Peace,Gemeinwesen des Großen Friedens
 CHI,ISLAMIC_REPUBLIC,Islamic Republic of China,Islamische Republik China
 CHI,CALIPHATE,Caliphate of China,Kalifat China
 CHI,SULTANATE,Sultanate of China,Sultanat China
@@ -89,7 +89,7 @@ GRE,EMPIRE,Hellenic Empire,Hellenisches Reich
 GRE,CONSTITUTIONAL,Kingdom of Greece,Königreich Griechenland
 GRE,REPUBLIC,Hellenic Republic,Griechische Republik
 GRE,DEMOCRACY,Hellas,Hellas
-GRE,MERCHANT_REPUBLIC,Aegean League,Ägäischer Bund
+GRE,MERCHANT_REPUBLIC,Delian League,Attischer Seebund
 GRE,SOCIALIST_REPUBLIC,Hellenic Union,Hellenische Union
 GRE,SOCIALIST_DEMOCRACY,Hellas,Hellas
 GRE,PEOPLES_STATE,Hellenic Union,Hellenische Union
@@ -106,7 +106,7 @@ GRE,SULTANATE,Sultanate of Greece,Sultanat Griechenland
 GRE,SECULAR_REPUBLIC,Hellas,Hellas
 PER,TRIBAL,Iranian Tribes,Iranische Stämme
 PER,KINGDOM,Kingdom of Persia,Königreich Persien
-PER,EMPIRE,Persian Empire,Persisches Reich
+PER,EMPIRE,Empire of the King of Kings,Reich des Königs der Könige
 PER,CONSTITUTIONAL,Kingdom of Persia,Königreich Persien
 PER,REPUBLIC,Republic of Iran,Republik Iran
 PER,DEMOCRACY,Iran,Iran
@@ -149,7 +149,7 @@ CAR,SECULAR_REPUBLIC,Punic Federation,Punischer Bund
 ROM,TRIBAL,Latin Tribes,Latinische Stämme
 ROM,KINGDOM,Kingdom of Rome,Königreich Rom
 ROM,EMPIRE,Roman Empire,Römisches Reich
-ROM,CONSTITUTIONAL,Kingdom of Rome,Königreich Rom
+ROM,CONSTITUTIONAL,Regno d'Italia,Königreich Italien
 ROM,REPUBLIC,Senate and People of Rome,Senat und Volk von Rom
 ROM,DEMOCRACY,Roman Republic,Römische Republik
 ROM,MERCHANT_REPUBLIC,League of the Seven Hills,Siebenhügelbund
@@ -159,7 +159,7 @@ ROM,PEOPLES_STATE,Roman Commune,Römische Kommune
 ROM,DICTATORSHIP,Roman State,Römischer Staat
 ROM,MILITARY,Roman State,Römischer Staat
 ROM,NATIONAL_STATE,Roman State,Römischer Staat
-ROM,NATIONAL_REPUBLIC,Senate and People of Rome,Senat und Volk von Rom
+ROM,NATIONAL_REPUBLIC,Repubblica Italiana,Italienische Republik
 ROM,THEOCRACY,Sacred Roman Commonwealth,Heiliges Römisches Gemeinwesen
 ROM,HOLY_KINGDOM,Sacred Roman Commonwealth,Heiliges Römisches Gemeinwesen
 ROM,THEOCRATIC_REPUBLIC,Senate and People of Rome,Senat und Volk von Rom
@@ -181,8 +181,8 @@ JAP,DICTATORSHIP,Japanese State,Japanischer Staat
 JAP,MILITARY,Japanese Shogunate,Japanisches Shogunat
 JAP,NATIONAL_STATE,Japanese State,Japanischer Staat
 JAP,NATIONAL_REPUBLIC,Republic of Japan,Republik Japan
-JAP,THEOCRACY,Sacred Realm of Yamato,Heiliges Yamato-Reich
-JAP,HOLY_KINGDOM,Sacred Realm of Yamato,Heiliges Yamato-Reich
+JAP,THEOCRACY,Land of the Gods,Land der Götter
+JAP,HOLY_KINGDOM,Land of the Gods,Land der Götter
 JAP,THEOCRATIC_REPUBLIC,Republic of Japan,Republik Japan
 JAP,ISLAMIC_REPUBLIC,Islamic Republic of Japan,Islamische Republik Japan
 JAP,CALIPHATE,Caliphate of Japan,Kalifat Japan
@@ -462,9 +462,9 @@ POR,CALIPHATE,Caliphate of Portugal,Kalifat Portugal
 POR,SULTANATE,Sultanate of Portugal,Sultanat Portugal
 POR,SECULAR_REPUBLIC,Portugal,Portugal
 INC,TRIBAL,Andean Peoples,Andenvölker
-INC,KINGDOM,Kingdom of Cusco,Königreich Cusco
-INC,EMPIRE,Tawantinsuyu,Tawantinsuyu
-INC,CONSTITUTIONAL,Kingdom of Cusco,Königreich Cusco
+INC,KINGDOM,Tawantinsuyu,Tawantinsuyu
+INC,EMPIRE,Land of the Four Quarters,Land der vier Weltgegenden
+INC,CONSTITUTIONAL,Tawantinsuyu,Tawantinsuyu
 INC,REPUBLIC,Andean Republic,Andenrepublik
 INC,DEMOCRACY,Andean Federation,Andenbund
 INC,MERCHANT_REPUBLIC,League of the Andean Cities,Bund der Andenstädte
@@ -475,8 +475,8 @@ INC,DICTATORSHIP,Andean State,Andenstaat
 INC,MILITARY,Andean State,Andenstaat
 INC,NATIONAL_STATE,Andean State,Andenstaat
 INC,NATIONAL_REPUBLIC,Andean Republic,Andenrepublik
-INC,THEOCRACY,Sacred Realm of the Andes,Heiliges Andenreich
-INC,HOLY_KINGDOM,Sacred Realm of the Andes,Heiliges Andenreich
+INC,THEOCRACY,Realm of the Sun,Reich der Sonne
+INC,HOLY_KINGDOM,Realm of the Sun,Reich der Sonne
 INC,THEOCRATIC_REPUBLIC,Andean Republic,Andenrepublik
 INC,ISLAMIC_REPUBLIC,Andean Islamic Republic,Islamische Andenrepublik
 INC,CALIPHATE,Caliphate of the Andes,Andenkalifat

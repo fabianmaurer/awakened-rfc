@@ -232,13 +232,15 @@ und Reichsgröße. Bestehende Vasallen- und Kolonialnamen haben Vorrang. Namen
 werden nach Staatsformen- und Religionswechseln sowie einmal pro Spielerzug
 aktualisiert.
 
-Der Katalog enthält **569 Einträge mit 330 unterschiedlichen deutsch-englischen
+Der Katalog enthält **569 Einträge mit 333 unterschiedlichen deutsch-englischen
 Namenspaaren**. Die Namen verwenden passende historische Bezeichnungen und
 plausible alternative Entwicklungen. Ein Name muss nicht jede aktive Staatsform
 abbilden.
 
 Beispiele sind das **Heilige Römische Reich**, die **Hanse**, die **Batavische
-Republik**, die **Republik Nowgorod** und **Tawantinsuyu**. Unterschiedliche
+Republik**, die **Republik Nowgorod**, das **Reich des Himmels**, das **Himmlische
+Reich des Großen Friedens**, das **Land der vier Weltgegenden**, das **Königreich
+Italien** und **Tawantinsuyu**. Unterschiedliche
 Staatsformen-Kombinationen können bewusst denselben natürlichen Ländernamen
 verwenden.
 

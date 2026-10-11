@@ -220,14 +220,15 @@ Country names reflect government, legitimacy, economy, state religion, and
 empire size. Existing vassal and colonial naming takes priority. Names refresh
 after civic/religion changes and once per player turn.
 
-The catalogue contains **569 entries covering 330 distinct English/German name
+The catalogue contains **569 entries covering 333 distinct English/German name
 pairs**. Names are written individually, using historical identities where
 appropriate and plausible alternate-history names elsewhere. A name need not
 encode every active civic.
 
 Examples include the **Holy Roman Empire**, **Hanseatic League**, **Commonwealth
 of England**, **Batavian Republic**, **Novgorod Republic**, **North Sea Empire**,
-**Tawantinsuyu**, **Nile League**, and **Union of Bharat**. Different civic
+**Celestial Empire**, **Heavenly Kingdom of Great Peace**, **Land of the Four
+Quarters**, **Regno d'Italia**, **Tawantinsuyu**, **Nile League**, and **Union of Bharat**. Different civic
 combinations can intentionally share the same natural country name.
 
 See [CountryNames.csv](docs/CountryNames.csv) for the catalogue and
