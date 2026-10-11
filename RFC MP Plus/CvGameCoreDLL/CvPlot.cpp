@@ -8452,6 +8452,101 @@ void CvPlot::doFeature()
 }
 
 
+// Cultural rebellions expel population rather than transferring the city.
+// All choices use shared game state and fixed iteration order for multiplayer.
+static void doCulturalUprising(CvCity* pCity, PlayerTypes eRebelCulture)
+{
+    CvPlot* pCityPlot = pCity->plot();
+    PlayerTypes eOwner = pCity->getOwnerINLINE();
+    int iOldPopulation = pCity->getPopulation();
+    int iLoss = std::min(iOldPopulation - 1, (iOldPopulation + 3) / 4);
+    iLoss = std::max(0, iLoss);
+
+    UnitTypes eRebelUnit = NO_UNIT;
+    int iBestCombat = -1;
+    for (int iClass = 0; iClass < GC.getNumUnitClassInfos(); ++iClass)
+    {
+        UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(GET_PLAYER(BARBARIAN_PLAYER).getCivilizationType()).getCivilizationUnits(iClass);
+        if (eUnit == NO_UNIT)
+            continue;
+        CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+        UnitCombatTypes eCombat = (UnitCombatTypes)kUnit.getUnitCombatType();
+        if (kUnit.getDomainType() != DOMAIN_LAND || kUnit.getCombat() <= 0 || kUnit.isAnimal() || kUnit.isNoCapture() ||
+            (eCombat != GC.getInfoTypeForString("UNITCOMBAT_MELEE") &&
+             eCombat != GC.getInfoTypeForString("UNITCOMBAT_ARCHER") &&
+             eCombat != GC.getInfoTypeForString("UNITCOMBAT_GUN")))
+            continue;
+        bool bAvailable = true;
+        TechTypes eTech = (TechTypes)kUnit.getPrereqAndTech();
+        if (eTech != NO_TECH && !GET_TEAM(pCity->getTeam()).isHasTech(eTech))
+            bAvailable = false;
+        for (int iTech = 0; iTech < GC.getNUM_UNIT_AND_TECH_PREREQS(); ++iTech)
+        {
+            eTech = (TechTypes)kUnit.getPrereqAndTechs(iTech);
+            if (eTech != NO_TECH && !GET_TEAM(pCity->getTeam()).isHasTech(eTech))
+                bAvailable = false;
+        }
+        if (bAvailable && kUnit.getCombat() > iBestCombat)
+        {
+            eRebelUnit = eUnit;
+            iBestCombat = kUnit.getCombat();
+        }
+    }
+
+    std::vector<CvPlot*> spawnPlots;
+    for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+    {
+        CvPlot* pSpawn = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)iDirection);
+        if (pSpawn == NULL || pSpawn == pCityPlot || pSpawn->isWater() || pSpawn->isImpassable() || pSpawn->isCity())
+            continue;
+        bool bOccupied = false;
+        CLLNode<IDInfo>* pNode = pSpawn->headUnitNode();
+        while (pNode != NULL)
+        {
+            CvUnit* pUnit = ::getUnit(pNode->m_data);
+            if (pUnit != NULL && !pUnit->isBarbarian())
+                bOccupied = true;
+            pNode = pSpawn->nextUnitNode(pNode);
+        }
+        if (!bOccupied)
+            spawnPlots.push_back(pSpawn);
+    }
+
+    pCity->changePopulation(-iLoss);
+    // The expelled population takes the corresponding share of its culture.
+    // Size-one cities still lose one quarter of the rebellious culture.
+    int iCultureNumerator = iLoss > 0 ? iLoss : 1;
+    int iCultureDenominator = iLoss > 0 ? iOldPopulation : 4;
+    int iCityCulture = pCity->getCultureTimes100(eRebelCulture);
+    int iPlotCulture = pCityPlot->getCulture(eRebelCulture);
+    pCity->setCultureTimes100(eRebelCulture,
+        iCityCulture - (int)(((__int64)iCityCulture * iCultureNumerator + iCultureDenominator - 1) / iCultureDenominator), false, false);
+    pCityPlot->setCulture(eRebelCulture,
+        iPlotCulture - (int)(((__int64)iPlotCulture * iCultureNumerator + iCultureDenominator - 1) / iCultureDenominator), false, true);
+    pCity->changeNumRevolts(eRebelCulture, 1);
+    pCity->changeOccupationTimer(std::max(1, GC.getDefineINT("BASE_REVOLT_OCCUPATION_TURNS")));
+
+    int iSpawned = 0;
+    if (eRebelUnit != NO_UNIT && !spawnPlots.empty() && !GC.getGameINLINE().isOption(GAMEOPTION_NO_BARBARIANS))
+    {
+        for (int iRebel = 0; iRebel < 2 * iLoss; ++iRebel)
+        {
+            CvPlot* pSpawn = spawnPlots[iRebel % spawnPlots.size()];
+            CvUnit* pRebel = GET_PLAYER(BARBARIAN_PLAYER).initUnit(eRebelUnit, pSpawn->getX_INLINE(), pSpawn->getY_INLINE(), UNITAI_ATTACK_CITY);
+            if (pRebel != NULL)
+            {
+                // Prevent movement during placement; subsequent turns use normal unit rules.
+                pRebel->finishMoves();
+                ++iSpawned;
+            }
+        }
+    }
+    CvWString szMessage = gDLL->getText("TXT_KEY_RFCMP_CULTURAL_UPRISING", pCity->getNameKey(), iLoss, iSpawned);
+    gDLL->getInterfaceIFace()->addMessage(eOwner, false, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_CITY_REVOLT",
+        MESSAGE_TYPE_MAJOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_RESISTANCE")->getPath(),
+        (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pCity->getX_INLINE(), pCity->getY_INLINE(), true, true);
+}
+
 void CvPlot::doCulture()
 {
 	PROFILE("CvPlot::doCulture()")
@@ -8515,58 +8610,63 @@ void CvPlot::doCulture()
 							tempModifier =  GC.getGameINLINE().getFakeRandNum(iCityStrength);
 						if (tempModifier > iGarrison || pCity->isBarbarian() || iOldOwner != -1)
 						{
-							CLinkList<IDInfo> oldUnits;
-
-							pUnitNode = headUnitNode();
-
-							while (pUnitNode != NULL)
+							if (!pCity->isBarbarian() && getOwnerINLINE() != INDEPENDENT && getOwnerINLINE() != INDEPENDENT2)
+								doCulturalUprising(pCity, eCulturalOwner);
+							else
 							{
-								oldUnits.insertAtEnd(pUnitNode->m_data);
-								pUnitNode = nextUnitNode(pUnitNode);
-							}
+								CLinkList<IDInfo> oldUnits;
 
-							pUnitNode = oldUnits.head();
+								pUnitNode = headUnitNode();
 
-							while (pUnitNode != NULL)
-							{
-								pLoopUnit = ::getUnit(pUnitNode->m_data);
-								pUnitNode = nextUnitNode(pUnitNode);
-
-								if (pLoopUnit)
+								while (pUnitNode != NULL)
 								{
-									if (pLoopUnit->isBarbarian())
-									{
-										pLoopUnit->kill(false, eCulturalOwner);
-									}
-									else if (pLoopUnit->canDefend())
-									{
-										pLoopUnit->changeDamage((pLoopUnit->currHitPoints() / 2), eCulturalOwner);
-									}
+									oldUnits.insertAtEnd(pUnitNode->m_data);
+									pUnitNode = nextUnitNode(pUnitNode);
 								}
 
-							}
+								pUnitNode = oldUnits.head();
 
-							if (pCity->isBarbarian() || (!(GC.getGameINLINE().isOption(GAMEOPTION_NO_CITY_FLIPPING)) && (GC.getGameINLINE().isOption(GAMEOPTION_FLIPPING_AFTER_CONQUEST) || !(pCity->isEverOwned(eCulturalOwner))) && (pCity->getNumRevolts(eCulturalOwner) >= GC.getDefineINT("NUM_WARNING_REVOLTS"))))
-							{
-								if (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && GET_PLAYER(eCulturalOwner).isHuman())
+								while (pUnitNode != NULL)
 								{
-									pCity->kill(true);
+									pLoopUnit = ::getUnit(pUnitNode->m_data);
+									pUnitNode = nextUnitNode(pUnitNode);
+
+									if (pLoopUnit)
+									{
+										if (pLoopUnit->isBarbarian())
+										{
+											pLoopUnit->kill(false, eCulturalOwner);
+										}
+										else if (pLoopUnit->canDefend())
+										{
+											pLoopUnit->changeDamage((pLoopUnit->currHitPoints() / 2), eCulturalOwner);
+										}
+									}
+
+								}
+
+								if (pCity->isBarbarian() || (!(GC.getGameINLINE().isOption(GAMEOPTION_NO_CITY_FLIPPING)) && (GC.getGameINLINE().isOption(GAMEOPTION_FLIPPING_AFTER_CONQUEST) || !(pCity->isEverOwned(eCulturalOwner))) && (pCity->getNumRevolts(eCulturalOwner) >= GC.getDefineINT("NUM_WARNING_REVOLTS"))))
+								{
+									if (GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE) && GET_PLAYER(eCulturalOwner).isHuman())
+									{
+										pCity->kill(true);
+									}
+									else
+									{
+										setOwner(eCulturalOwner, true, true); // will delete pCity
+									}
+									pCity = NULL;
 								}
 								else
 								{
-									setOwner(eCulturalOwner, true, true); // will delete pCity
-								}
-								pCity = NULL;
-							}
-							else
-							{
-								pCity->changeNumRevolts(eCulturalOwner, 1);
-								pCity->changeOccupationTimer(GC.getDefineINT("BASE_REVOLT_OCCUPATION_TURNS") + ((iCityStrength * GC.getDefineINT("REVOLT_OCCUPATION_TURNS_PERCENT")) / 100));
+									pCity->changeNumRevolts(eCulturalOwner, 1);
+									pCity->changeOccupationTimer(GC.getDefineINT("BASE_REVOLT_OCCUPATION_TURNS") + ((iCityStrength * GC.getDefineINT("REVOLT_OCCUPATION_TURNS_PERCENT")) / 100));
 
-								// XXX announce for all seen cities?
-								szBuffer = gDLL->getText("TXT_KEY_MISC_REVOLT_IN_CITY", GET_PLAYER(eCulturalOwner).getCivilizationAdjective(), pCity->getNameKey());
-								gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CITY_REVOLT", MESSAGE_TYPE_MINOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_RESISTANCE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), getX_INLINE(), getY_INLINE(), true, true);
-								gDLL->getInterfaceIFace()->addMessage(eCulturalOwner, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CITY_REVOLT", MESSAGE_TYPE_MINOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_RESISTANCE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), getX_INLINE(), getY_INLINE(), true, true);
+									// XXX announce for all seen cities?
+									szBuffer = gDLL->getText("TXT_KEY_MISC_REVOLT_IN_CITY", GET_PLAYER(eCulturalOwner).getCivilizationAdjective(), pCity->getNameKey());
+									gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CITY_REVOLT", MESSAGE_TYPE_MINOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_RESISTANCE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), getX_INLINE(), getY_INLINE(), true, true);
+									gDLL->getInterfaceIFace()->addMessage(eCulturalOwner, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CITY_REVOLT", MESSAGE_TYPE_MINOR_EVENT, ARTFILEMGR.getInterfaceArtInfo("INTERFACE_RESISTANCE")->getPath(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), getX_INLINE(), getY_INLINE(), true, true);
+								}
 							}
 						}
 					}

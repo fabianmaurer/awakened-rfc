@@ -32,6 +32,8 @@ victory goals, and other inherited systems form the underlying game.
   was removed. Inherited scenario, timeline, and human/AI research pacing remains.
 - **No inflation:** the inflation rate is fixed at zero rather than increasing
   automatically with time.
+- **Cultural uprisings:** foreign cultural pressure causes population loss and
+  barbarian rebels instead of directly transferring a non-barbarian city.
 
 ### Scope of civilization consistency
 
@@ -213,6 +215,35 @@ The schedule accounts for the spawn/flip delays used by the birth logic.
 Affected human owners receive a message using the civilization's early dynamic
 name, for example **“The [people] are rising up!”** This warning accompanies the inherited flip
 system; it does not introduce a separate unit-flipping rule.
+
+## Cultural uprisings
+
+Successful cultural revolts in regular civilizations' cities now cause an uprising instead
+of an automatic change of owner. The existing cultural-pressure and garrison
+checks determine whether it occurs. Historical civilization-spawn flips remain
+separate, as does the existing cultural flipping of barbarian and independent cities.
+
+- The city loses **25% of its population, rounded up**, but remains at least size 1.
+- The rebellious civilization's culture in the city and on the city tile decreases
+  proportionally to the population lost. Other civilizations' culture is preserved.
+  In a size-one city, rebellious culture decreases by 25% without population loss.
+- **Two barbarian units per lost population point** appear on adjacent, passable
+  land tiles without cities or non-barbarian units. They are distributed across
+  eligible tiles and may stack. If no eligible tile exists, no units appear.
+- Rebels use the strongest standard melee, archer, or gunpowder infantry type
+  unlocked by the owner's technologies; strategic resources are not required.
+- The city enters unrest using the base revolt occupation duration. Its garrison
+  is not automatically damaged by this uprising.
+
+Size-one cities spawn no rebels. The No Barbarians option suppresses rebel units,
+while the population, culture, and unrest effects still apply. The owner receives
+a message with the actual losses and number of spawned rebels. Barbarians can later
+capture the city through combat; cultural pressure cannot directly transfer it.
+
+The culture reduction normally lowers the foreign share, but a city with no
+other culture can remain entirely foreign in percentage terms. Culture on nearby
+tiles and existing units is not erased. The mechanism uses shared game state
+and fixed unit/tile iteration order; multiplayer runtime validation is pending.
 
 ## Dynamic country names
 

@@ -33,6 +33,8 @@ Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
   entfällt. Gemeinsame Anpassungen für Szenarien, Zeitverlauf und menschliche
   beziehungsweise KI-Spieler bleiben erhalten.
 - **Keine Inflation:** Die Inflationsrate bleibt bei null.
+- **Kulturaufstände:** Fremder kultureller Druck führt zu Bevölkerungsverlust und
+  barbarischen Rebellen statt zum direkten Überlaufen einer nichtbarbarischen Stadt.
 
 ### Umfang der Vereinheitlichung
 
@@ -224,6 +226,40 @@ Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen
 dynamischen Namen der Zivilisation, etwa **„Die [Völker] erheben sich!“**.
 Diese Vorwarnung begleitet das bestehende Gebietswechsel-System und führt
 keine eigene Regel für den Wechsel stationierter Einheiten ein.
+
+## Kulturaufstände
+
+Erfolgreiche Kulturrevolten in Städten regulärer Zivilisationen lösen einen Aufstand
+statt eines automatischen Besitzerwechsels aus. Die bestehenden Prüfungen für
+kulturellen Druck und Garnison entscheiden weiterhin über das Auftreten.
+Historische Gebietswechsel bei der Gründung von Zivilisationen und die bisherige
+kulturelle Übernahme barbarischer und unabhängiger Städte bleiben eigenständige Mechaniken.
+
+- Die Stadt verliert **aufgerundet 25% ihrer Bevölkerung**, bleibt aber mindestens Größe 1.
+- Die Kultur der aufständischen Zivilisation in der Stadt und auf dem Stadtfeld
+  sinkt entsprechend dem verlorenen Bevölkerungsanteil. Andere Kulturen bleiben
+  erhalten. Bei Größe 1 sinkt die aufständische Kultur ohne Bevölkerungsverlust um 25%.
+- **Zwei Barbareneinheiten je verlorenem Bevölkerungspunkt** erscheinen auf direkt
+  angrenzenden, passierbaren Landfeldern ohne Städte oder nichtbarbarische Einheiten.
+  Sie werden über geeignete Felder verteilt und können sich stapeln. Gibt es kein
+  geeignetes Feld, erscheinen keine Einheiten.
+- Die Rebellen verwenden den stärksten regulären Nahkampf-, Bogenschützen- oder
+  Schießpulver-Infanterietyp, den die Technologien des Besitzers erlauben.
+  Strategische Ressourcen werden dafür nicht benötigt.
+- Die Stadt erhält Unruhen für die grundlegende Besatzungsdauer eines Aufstands.
+  Die Garnison wird durch diesen Aufstand nicht automatisch beschädigt.
+
+Städte der Größe 1 erzeugen keine Rebellen. Die Option „Keine Barbaren“ unterdrückt
+die Rebelleneinheiten; Bevölkerungs-, Kultur- und Unruheneffekte bleiben bestehen.
+Der Besitzer erhält eine Nachricht mit den tatsächlichen Verlusten und der
+Rebellenzahl. Barbaren können die Stadt später im Kampf erobern; kultureller Druck
+überträgt sie nicht direkt.
+
+Der Fremdkulturanteil sinkt normalerweise. Besteht jedoch ausschließlich fremde
+Kultur, kann ihr prozentualer Anteil trotz sinkender Kulturpunkte bei 100% bleiben.
+Kultur auf umliegenden Feldern und bestehende Einheiten werden nicht gelöscht.
+Die Mechanik verwendet gemeinsamen Spielzustand und feste Auswahlreihenfolgen;
+die Prüfung im Mehrspielerbetrieb steht noch aus.
 
 ## Dynamische Ländernamen
 
