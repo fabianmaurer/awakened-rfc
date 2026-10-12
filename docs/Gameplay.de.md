@@ -345,6 +345,28 @@ Kultur auf umliegenden Feldern und bestehende Einheiten werden nicht gelöscht.
 Die Mechanik verwendet gemeinsamen Spielzustand und feste Auswahlreihenfolgen;
 die Prüfung im Mehrspielerbetrieb steht noch aus.
 
+## Eroberte Städte umsiedeln
+
+Der Eroberungsdialog bietet **Umsiedeln (Siedler erhalten)** an, wenn mehr als
+**25%** der gespeicherten Stadtkultur zum eigenen Team gehören. Es gilt die
+ungerundete Stadtkultur, nicht die Feldkultur; genau 25% genügt nicht. Die Option
+steht nur in der Runde des Besitzerwechsels zur Verfügung.
+
+Die Stadt und alle Gebäude werden entfernt; ein Siedler der eigenen Zivilisation
+entsteht auf ihrem Feld und hat in dieser Runde keine Bewegung mehr. Ändert sich
+durch die Entfernung der Feldbesitzer, können die normalen Gebietsregeln den
+Siedler auf ein zulässiges Feld versetzen. Andere Einheiten und Feldkultur folgen
+den normalen Stadtentfernungsregeln. Die Umsiedlung verwendet die Stadtauflösung
+und löst keine abbrennspezifischen Diplomatie- oder Ereignisstrafen aus. Behalten,
+Abbrennen (soweit erlaubt), Verschenken und Stadtansicht bleiben verfügbar.
+
+Auch berechtigte Städte der Größe 1 erhalten die Wahl, statt automatisch zerstört
+zu werden. Kein Städtezerstören, Ein-Stadt-Herausforderung und Stadteliminierungsmodi
+behalten ihre Einschränkungen. KI-Eroberungsentscheidungen bleiben unverändert.
+Die Aktion läuft über die vorhandene synchronisierte Stadtaufgaben-Nachricht
+und prüft die Bedingungen beim Ausführen erneut. Neue gespeicherte Zustände
+oder Änderungen bestehender Aufgabenindizes sind nicht erforderlich.
+
 ## Dynamische Ländernamen
 
 Ländernamen reagieren auf Regierung, Legitimation, Wirtschaft, Staatsreligion

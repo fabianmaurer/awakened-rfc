@@ -4699,7 +4699,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	if (GC.getCivicInfo(eCivic).getFreeExperience() != 0)
 	{
 		szHelpText.append(NEWLINE);
-		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_XP", GC.getCivicInfo(eCivic).getFreeExperience()));
+		if (eCivic == GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"))
+            szHelpText.append(gDLL->getText("TXT_KEY_BUILDING_FREE_XP", GC.getUnitCombatInfo((UnitCombatTypes)GC.getInfoTypeForString("UNITCOMBAT_MELEE")).getTextKeyWide(), GC.getCivicInfo(eCivic).getFreeExperience()));
+        else
+            szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_XP", GC.getCivicInfo(eCivic).getFreeExperience()));
 	}
 
 	//	Worker speed modifier

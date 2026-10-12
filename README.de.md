@@ -37,6 +37,8 @@ Fähigkeiten und Siegziele bleiben erhalten.
   fremde Kultur einer einzelnen Zivilisation auf dem Stadtfeld.
 - **Dynamische deutsche und englische Ländernamen**, inspiriert von historischen
   Staaten und plausiblen alternativen Entwicklungen.
+- **Eroberte Städte umsiedeln:** Bei mehr als 25% eigener Team-Stadtkultur lässt
+  sich die Stadt im Eroberungsdialog auflösen und durch einen Siedler ersetzen.
 
 ## Produktionskonvertierungen
 

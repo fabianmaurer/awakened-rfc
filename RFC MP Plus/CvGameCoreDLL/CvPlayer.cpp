@@ -1762,7 +1762,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		if (lResult == 1)
 		{
 			//auto raze based on game rules
-			if (pNewCity->isAutoRaze())
+			if (pNewCity->isAutoRaze() && !(isHuman() && canRelocate(pNewCity)))
 			{
 				if (iCaptureGold > 0)
 				{
@@ -1787,7 +1787,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 							|| GET_TEAM(getTeam()).isOpenBorders(GET_PLAYER(eHighestCulturePlayer).getTeam()) 
 							|| GET_TEAM(GET_PLAYER(eHighestCulturePlayer).getTeam()).isVassal(getTeam())));
 
-				if (bRaze || bGift)
+				if (bRaze || bGift || canRelocate(pNewCity))
 				{
 					CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_RAZECITY);
 					pInfo->setData1(pNewCity->getID());
@@ -4649,6 +4649,44 @@ int CvPlayer::getNumGovernmentCenters() const
 	return iCount;
 }
 
+
+bool CvPlayer::canRelocate(CvCity* pCity) const
+{
+    if (pCity == NULL || pCity->getOwnerINLINE() != getID()) return false;
+    if (GC.getGameINLINE().isOption(GAMEOPTION_NO_CITY_RAZING)) return false;
+    if (GC.getGameINLINE().getMaxCityElimination() > 0) return false;
+    if (isHuman() && GC.getGameINLINE().isOption(GAMEOPTION_ONE_CITY_CHALLENGE)) return false;
+    if (pCity->getGameTurnAcquired() != GC.getGameINLINE().getGameTurn() || pCity->getPreviousOwner() == getID()) return false;
+    UnitClassTypes eSettlerClass = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_SETTLER");
+    if (eSettlerClass == NO_UNITCLASS || GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eSettlerClass) == NO_UNIT) return false;
+
+    __int64 iTotalCulture = pCity->countTotalCultureTimes100();
+    if (iTotalCulture <= 0) return false;
+    __int64 iOwnCulture = 0;
+    for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+        if (GET_PLAYER((PlayerTypes)iPlayer).isAlive() && GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getTeam())
+            iOwnCulture += pCity->getCultureTimes100((PlayerTypes)iPlayer);
+    return iOwnCulture * 100 > iTotalCulture * 25;
+}
+
+void CvPlayer::relocate(CvCity* pCity)
+{
+    // Recheck eligibility on every peer when the synchronized task executes.
+    if (!canRelocate(pCity)) return;
+    UnitClassTypes eSettlerClass = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_SETTLER");
+    UnitTypes eSettler = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eSettlerClass);
+    int iX = pCity->getX_INLINE();
+    int iY = pCity->getY_INLINE();
+    CvWString szCityName = pCity->getName();
+    CvUnit* pSettler = initUnit(eSettler, iX, iY, UNITAI_SETTLE);
+    if (pSettler == NULL) return;
+    pSettler->finishMoves();
+    // Create before removal so normal territory changes relocate the settler
+    // together with the garrison if this tile becomes inaccessible.
+    disband(pCity); // deletes pCity; no further access to it
+    CvWString szMessage = gDLL->getText("TXT_KEY_RFCMP_CITY_RELOCATED", szCityName.GetCString());
+    gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(), szMessage, "AS2D_CITYCAPTURE", MESSAGE_TYPE_MAJOR_EVENT, GC.getUnitInfo(eSettler).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), iX, iY, true, true);
+}
 
 bool CvPlayer::canRaze(CvCity* pCity) const
 {

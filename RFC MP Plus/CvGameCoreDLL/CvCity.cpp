@@ -1249,6 +1249,10 @@ void CvCity::doTask(TaskTypes eTask, int iData1, int iData2, bool bOption, bool 
 		GET_PLAYER(getOwnerINLINE()).raze(this);
 		break;
 
+	case TASK_RELOCATE:
+        GET_PLAYER(getOwnerINLINE()).relocate(this);
+        break;
+
 	case TASK_DISBAND:
 		GET_PLAYER(getOwnerINLINE()).disband(this);
 		break;
@@ -2481,6 +2485,14 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 
 	iExperience = getFreeExperience();
 	iExperience += GET_PLAYER(getOwnerINLINE()).getFreeExperience();
+
+    // Warrior Society's generic XML experience is restricted to melee here.
+    // Preserve the cached player bonus so existing saves and civic transitions
+    // remain consistent; other sources of experience are unaffected.
+    CivicTypes eWarriorSociety = (CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY");
+    if (GET_PLAYER(getOwnerINLINE()).isCivic(eWarriorSociety) &&
+        (eUnit == NO_UNIT || GC.getUnitInfo(eUnit).getUnitCombatType() != GC.getInfoTypeForString("UNITCOMBAT_MELEE")))
+        iExperience -= GC.getCivicInfo(eWarriorSociety).getFreeExperience();
 
 	if (eUnit != NO_UNIT)
 	{

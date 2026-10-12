@@ -325,6 +325,26 @@ other culture can remain entirely foreign in percentage terms. Culture on nearby
 tiles and existing units is not erased. The mechanism uses shared game state
 and fixed unit/tile iteration order; multiplayer runtime validation is pending.
 
+## Relocating conquered cities
+
+The conquest popup offers **Relocate (receive a settler)** when more than **25%**
+of the captured city's stored culture belongs to your team. This is city culture,
+not tile culture; the comparison uses its unrounded stored value. Exactly 25%
+does not qualify. The option is available only during the turn of acquisition.
+
+Relocation removes the city and all its buildings and grants one settler of your
+civilization on that tile, with no remaining movement for the turn. Normal
+territory rules can move it to a valid tile when removal changes ownership.
+Other units and tile culture follow the normal city-removal rules. This uses
+city disbanding rather than the razing-specific diplomatic and event penalties.
+Keeping, razing (where permitted), gifting and inspecting retain their usual options.
+
+Eligible population-one cities receive the choice rather than automatically
+being razed. No City Razing, One City Challenge and city-elimination modes
+retain their restrictions. AI capture decisions are unchanged. Relocation uses
+the existing synchronized city-task network message and rechecks eligibility
+when executed; no new saved state or task-index changes are introduced.
+
 ## Dynamic country names
 
 Country names reflect government, legitimacy, economy, state religion, and

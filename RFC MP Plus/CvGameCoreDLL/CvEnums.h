@@ -1064,6 +1064,7 @@ enum TaskTypes				// Exposed to Python
 	TASK_RALLY_PLOT,
 	TASK_CLEAR_RALLY_PLOT,
 	TASK_LIBERATE,
+    TASK_RELOCATE, // appended: preserve existing synchronized task indexes
 
 #ifdef _USRDLL
 	NUM_TASK_TYPES

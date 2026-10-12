@@ -35,6 +35,8 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
   barbarian and independent cities retain cultural flipping under that condition.
 - **Dynamic English and German country names**, inspired by historical states
   and plausible alternate histories.
+- **Relocate conquered cities:** above 25% of your team's city culture, dismantle
+  the city and receive a settler through the conquest popup.
 
 ## Production conversions
 

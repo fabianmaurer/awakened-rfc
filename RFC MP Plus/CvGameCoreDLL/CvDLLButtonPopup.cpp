@@ -286,7 +286,11 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		break;
 
 	case BUTTONPOPUP_RAZECITY:
-		if (pPopupReturn->getButtonClicked() == 1)
+        if (pPopupReturn->getButtonClicked() == 4)
+        {
+            CvMessageControl::getInstance().sendDoTask(info.getData1(), TASK_RELOCATE, -1, -1, false, false, false, false);
+        }
+        else if (pPopupReturn->getButtonClicked() == 1)
 		{
 			CvMessageControl::getInstance().sendDoTask(info.getData1(), TASK_RAZE, -1, -1, false, false, false, false);
 		}
@@ -1366,7 +1370,7 @@ bool CvDLLButtonPopup::launchRazeCityPopup(CvPopup* pPopup, CvPopupInfo &info)
 		return (false);
 	}
 
-	if (0 != GC.getDefineINT("PLAYER_ALWAYS_RAZES_CITIES"))
+	if (0 != GC.getDefineINT("PLAYER_ALWAYS_RAZES_CITIES") && !player.canRelocate(pNewCity))
 	{
 		player.raze(pNewCity);
 		return false;
@@ -1396,6 +1400,10 @@ bool CvDLLButtonPopup::launchRazeCityPopup(CvPopup* pPopup, CvPopupInfo &info)
 	{
 		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_POPUP_RAZE_CAPTURED_CITY").c_str(), NULL, 1, WIDGET_GENERAL);
 	}
+    if (player.canRelocate(pNewCity))
+    {
+        gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_RFCMP_RELOCATE_CITY").c_str(), NULL, 4, WIDGET_GENERAL);
+    }
 	if (bGift)
 	{
 		szBuffer = gDLL->getText("TXT_KEY_POPUP_RETURN_ALLIED_CITY", GET_PLAYER(eHighestCulturePlayer).getCivilizationDescriptionKey());

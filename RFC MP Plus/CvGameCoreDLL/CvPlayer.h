@@ -169,7 +169,9 @@ public:
 	DllExport int getNumGovernmentCenters() const;																												// Exposed to Python 
 
 	DllExport bool canRaze(CvCity* pCity) const;																													// Exposed to Python 
-	void raze(CvCity* pCity);																																				// Exposed to Python  
+	void raze(CvCity* pCity);
+    bool canRelocate(CvCity* pCity) const;
+    void relocate(CvCity* pCity);																																				// Exposed to Python  
 	void disband(CvCity* pCity);																																		// Exposed to Python
 
 	bool canReceiveGoody(CvPlot* pPlot, GoodyTypes eGoody, CvUnit* pUnit) const;													// Exposed to Python

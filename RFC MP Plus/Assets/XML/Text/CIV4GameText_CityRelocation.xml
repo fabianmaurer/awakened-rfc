@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_RELOCATE_CITY</Tag>
+    <English>Relocate (receive a settler)</English>
+    <French>Relocate (receive a settler)</French>
+    <German>Umsiedeln (Siedler erhalten)</German>
+    <Italian>Relocate (receive a settler)</Italian>
+    <Spanish>Relocate (receive a settler)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_CITY_RELOCATED</Tag>
+    <English>%s1_City has been dismantled. Its inhabitants provide a settler.</English>
+    <French>%s1_City has been dismantled. Its inhabitants provide a settler.</French>
+    <German>%s1_City wurde aufgel&#246;st. Aus der Bev&#246;lkerung entsteht ein Siedler.</German>
+    <Italian>%s1_City has been dismantled. Its inhabitants provide a settler.</Italian>
+    <Spanish>%s1_City has been dismantled. Its inhabitants provide a settler.</Spanish>
+  </TEXT>
+</Civ4GameText>

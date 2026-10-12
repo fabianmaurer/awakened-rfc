@@ -761,6 +761,7 @@ void CyEnumsPythonInterface()
 		.value("TASK_RALLY_PLOT", TASK_RALLY_PLOT)
 		.value("TASK_CLEAR_RALLY_PLOT", TASK_CLEAR_RALLY_PLOT)
 		.value("TASK_LIBERATE", TASK_LIBERATE)
+        .value("TASK_RELOCATE", TASK_RELOCATE)
 		.value("NUM_TASK_TYPES", NUM_TASK_TYPES)
 		;
 
