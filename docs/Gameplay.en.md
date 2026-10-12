@@ -125,6 +125,9 @@ queued orders. Rates are shared by all civilizations and players.
   Water-assisted trade runs at **50% instead of 100%** unless both cities have
   a harbor (civilization-specific replacements count). This applies to river
   and mixed road/water connections too, but not to a continuous road-only path.
+  Cities rank candidates by the exact route value before rounding, so an
+  infrastructure-efficient route wins even when several routes would each round
+  up to one displayed commerce point.
 - **Military access** replaces the name Open Borders. It governs unit entry,
   including civilian units, independently of trade. The agreement remains
   reciprocal; one-sided agreements are not implemented yet.

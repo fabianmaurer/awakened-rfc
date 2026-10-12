@@ -8407,6 +8407,16 @@ static int tradeInfrastructureEfficiency(const CvCity* pCity, const CvCity* pPar
     if (iDistance >= iZeroDistance) return 0;
     return iMaxEfficiency * (iZeroDistance - iDistance) / (iZeroDistance - iFullDistance);
 }
+
+// Retain precision while ranking candidates. The displayed route yield has a
+// one-commerce minimum, which otherwise makes weak routes tie with efficient ones.
+static __int64 tradeInfrastructureValue(const CvCity* pCity, CvCity* pPartner, bool bConnected, bool bRoadConnected)
+{
+    int iEfficiency = tradeInfrastructureEfficiency(pCity, pPartner, bConnected, bRoadConnected);
+    if (iEfficiency <= 0) return 0;
+    return (__int64)pCity->getBaseTradeProfit(pPartner) * pCity->totalTradeModifier(pPartner) * iEfficiency;
+}
+
 int CvCity::getTradeInfrastructureEfficiency(CvCity* pCity) const
 {
     std::vector<bool> reachable;
@@ -8425,10 +8435,9 @@ int CvCity::calculateTradeProfit(CvCity* pCity) const
 
 int CvCity::calculateInfrastructureTradeProfit(CvCity* pCity, bool bConnected, bool bRoadConnected) const
 {
-    int iEfficiency = tradeInfrastructureEfficiency(this, pCity, bConnected, bRoadConnected);
     // Zero must stay zero: the one-commerce floor cannot bypass the range limit.
-    if (iEfficiency <= 0) return 0;
-    __int64 iProfit = (__int64)getBaseTradeProfit(pCity) * totalTradeModifier(pCity) * iEfficiency;
+    __int64 iProfit = tradeInfrastructureValue(this, pCity, bConnected, bRoadConnected);
+    if (iProfit <= 0) return 0;
     // Civ4 stores route income as whole commerce points. Retain a one-point floor.
     return std::max(1, (int)(iProfit / 1000000));
 }
@@ -11170,15 +11179,15 @@ void CvCity::updateTradeRoutes()
     std::vector<bool> reachable;
     std::vector<bool> roads;
     buildTradeInfrastructure(this, reachable, roads);
-	int* paiBestValue;
+	__int64* paiBestValue;
 	CvCity* pLoopCity;
 	int iTradeRoutes;
 	int iTradeProfit;
-	int iValue;
+	__int64 iValue;
 	int iLoop;
 	int iI, iJ, iK;
 
-	paiBestValue = new int[GC.getDefineINT("MAX_TRADE_ROUTES")];
+	paiBestValue = new __int64[GC.getDefineINT("MAX_TRADE_ROUTES")];
 
 	for (iI = 0; iI < GC.getDefineINT("MAX_TRADE_ROUTES"); iI++)
 	{
@@ -11205,7 +11214,7 @@ void CvCity::updateTradeRoutes()
 						{
 							if (pLoopCity->plot()->isRevealed(getTeam(), false))
 							{
-								iValue = calculateInfrastructureTradeProfit(pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
+								iValue = tradeInfrastructureValue(this, pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
 
 								for (iJ = 0; iJ < iTradeRoutes; iJ++)
 								{

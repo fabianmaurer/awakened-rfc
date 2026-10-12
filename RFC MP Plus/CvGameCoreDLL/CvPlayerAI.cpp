@@ -10297,7 +10297,15 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	int iHappiness;
 	int iValue;
 	int iTempValue;
+	int iCurrentDistanceModifier;
+	int iCurrentNumCitiesModifier;
+	int iCandidateDistanceModifier;
+	int iCandidateNumCitiesModifier;
+	int iMaintenanceTimes100;
+	int iLoop;
 	int iI, iJ;
+	CivicTypes eCurrentCivic;
+	CvCity* pLoopCity;
 
 	bool bCultureVictory3 = AI_isDoStrategy(AI_STRATEGY_CULTURE3);
 	bool bCultureVictory2 = AI_isDoStrategy(AI_STRATEGY_CULTURE2);
@@ -10332,8 +10340,59 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iValue += ((kCivic.getGreatPeopleRateModifier() * getNumCities()) / 10);
 	iValue += ((kCivic.getGreatGeneralRateModifier() * getNumMilitaryUnits()) / 50);
 	iValue += ((kCivic.getDomesticGreatGeneralRateModifier() * getNumMilitaryUnits()) / 100);
-	iValue += -((kCivic.getDistanceMaintenanceModifier() * std::max(0, (getNumCities() - 3))) / 8);
-	iValue += -((kCivic.getNumCitiesMaintenanceModifier() * std::max(0, (getNumCities() - 3))) / 8);
+
+	// Evaluate the actual city-maintenance cost of this candidate.  The old
+	// city-count heuristic did not reflect how far the cities are from the
+	// capital, and made a no-upkeep civic look attractive even when its
+	// maintenance multiplier consumed the saving.
+	eCurrentCivic = getCivics((CivicOptionTypes)kCivic.getCivicOptionType());
+	iCurrentDistanceModifier = getDistanceMaintenanceModifier();
+	iCurrentNumCitiesModifier = getNumCitiesMaintenanceModifier();
+	if (eCurrentCivic != NO_CIVIC)
+	{
+		iCurrentDistanceModifier -= GC.getCivicInfo(eCurrentCivic).getDistanceMaintenanceModifier();
+		iCurrentNumCitiesModifier -= GC.getCivicInfo(eCurrentCivic).getNumCitiesMaintenanceModifier();
+	}
+	iCandidateDistanceModifier = iCurrentDistanceModifier + kCivic.getDistanceMaintenanceModifier();
+	iCandidateNumCitiesModifier = iCurrentNumCitiesModifier + kCivic.getNumCitiesMaintenanceModifier();
+	iMaintenanceTimes100 = 0;
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	{
+		if (!pLoopCity->isDisorder() && !pLoopCity->isWeLoveTheKingDay() && (pLoopCity->getPopulation() > 0))
+		{
+			int iDistanceMaintenance = pLoopCity->calculateDistanceMaintenanceTimes100();
+			int iNumCitiesMaintenance = pLoopCity->calculateNumCitiesMaintenanceTimes100();
+			int iCurrentDistanceFactor = std::max(0, getDistanceMaintenanceModifier() + 100);
+			int iCurrentNumCitiesFactor = std::max(0, getNumCitiesMaintenanceModifier() + 100);
+
+			if (iCurrentDistanceFactor > 0)
+			{
+				iDistanceMaintenance *= 100;
+				iDistanceMaintenance /= iCurrentDistanceFactor;
+				iDistanceMaintenance *= std::max(0, iCandidateDistanceModifier + 100);
+				iDistanceMaintenance /= 100;
+			}
+			if (iCurrentNumCitiesFactor > 0)
+			{
+				iNumCitiesMaintenance *= 100;
+				iNumCitiesMaintenance /= iCurrentNumCitiesFactor;
+				iNumCitiesMaintenance *= std::max(0, iCandidateNumCitiesModifier + 100);
+				iNumCitiesMaintenance /= 100;
+			}
+
+			iMaintenanceTimes100 += ((iDistanceMaintenance + iNumCitiesMaintenance) * std::max(0, pLoopCity->getMaintenanceModifier() + 100)) / 100;
+		}
+	}
+	iValue -= (iMaintenanceTimes100 / 100);
+
+	// CivicHappiness is a direct all-cities effect.  It is not covered by the
+	// other happiness fields below, so account for both its benefit and the
+	// loss when considering a move away from the current civic.
+	iTempValue = kCivic.getCivicHappiness();
+	if (iTempValue != 0)
+	{
+		iValue += (getNumCities() * 8 * AI_getHappinessWeight(isCivic(eCivic) ? -iTempValue : iTempValue, 1)) / 100;
+	}
 	iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent) / 100; 
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);

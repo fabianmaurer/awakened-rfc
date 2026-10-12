@@ -133,6 +133,9 @@ einheitlich für alle Zivilisationen und Spieler.
   Wasserhandel liefert **50% statt 100%**, wenn nicht beide Städte einen Hafen
   besitzen; zivilisationsspezifische Ersatzgebäude zählen mit. Das gilt auch für
   Flüsse und gemischte Straßen-/Wasserwege, nicht für durchgehende reine Straßenwege.
+  Städte bewerten mögliche Partner mit dem exakten Routenwert vor der Rundung.
+  Infrastruktur-Effizienz entscheidet damit auch zwischen Routen, die jeweils
+  auf einen angezeigten Wirtschaftspunkt aufgerundet würden.
 - **Militärzugang** ersetzt die Bezeichnung Offene Grenzen und regelt die
   Einreise von Einheiten, einschließlich ziviler Einheiten, unabhängig vom Handel.
   Das Abkommen bleibt gegenseitig; einseitige Abkommen sind noch nicht umgesetzt.

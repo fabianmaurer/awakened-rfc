@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_TRIBAL_SYSTEM_STRATEGY</Tag>
+        <English>+20% unit production, -20% research, +100% distance and city-count maintenance.</English>
+        <French>+20% unit production, -20% research, +100% distance and city-count maintenance.</French>
+        <German>+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und st&#228;dtezahlabh&#228;ngiger Unterhalt.</German>
+        <Italian>+20% unit production, -20% research, +100% distance and city-count maintenance.</Italian>
+        <Spanish>+20% unit production, -20% research, +100% distance and city-count maintenance.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
+        <English>+25% production for world, team and national wonders.</English>
+        <French>+25% production for world, team and national wonders.</French>
+        <German>+25% Produktion f&#252;r Welt-, Team- und nationale Wunder.</German>
+        <Italian>+25% production for world, team and national wonders.</Italian>
+        <Spanish>+25% production for world, team and national wonders.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>
+        <English>+50% Great Person birth rate.</English>
+        <French>+50% Great Person birth rate.</French>
+        <German>+50% Geburtenrate Gro&#223;er Pers&#246;nlichkeiten.</German>
+        <Italian>+50% Great Person birth rate.</Italian>
+        <Spanish>+50% Great Person birth rate.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_DICTATORSHIP_STRATEGY</Tag>
+        <English>+20% production and no war weariness, but -2 happiness in every city.</English>
+        <French>+20% production and no war weariness, but -2 happiness in every city.</French>
+        <German>+20% Produktion und keine Kriegsm&#252;digkeit, aber -2 Zufriedenheit in jeder Stadt.</German>
+        <Italian>+20% production and no war weariness, but -2 happiness in every city.</Italian>
+        <Spanish>+20% production and no war weariness, but -2 happiness in every city.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_DEMOCRACY_STRATEGY</Tag>
+        <English>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</English>
+        <French>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</French>
+        <German>+2 Zufriedenheit in jeder Stadt. Wahlen &#228;ndern alle zehn Runden zuf&#228;llig eine andere Staatsformen-Kategorie.</German>
+        <Italian>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</Italian>
+        <Spanish>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_DESPOTISM_STRATEGY</Tag>
+        <English>+1 happiness from palaces and monuments, including unique replacements.</English>
+        <French>+1 happiness from palaces and monuments, including unique replacements.</French>
+        <German>+1 Zufriedenheit durch Pal&#228;ste und Monumente, einschlie&#223;lich einzigartiger Ersatzgeb&#228;ude.</German>
+        <Italian>+1 happiness from palaces and monuments, including unique replacements.</Italian>
+        <Spanish>+1 happiness from palaces and monuments, including unique replacements.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_THEOCRATIC_LEGITIMACY_STRATEGY</Tag>
+        <English>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</English>
+        <French>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</French>
+        <German>+10% Kampfst&#228;rke. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, Geb&#228;ude anderer Religionen -2 Zufriedenheit.</German>
+        <Italian>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</Italian>
+        <Spanish>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_PLUTOCRACY_STRATEGY</Tag>
+        <English>+25% gold income and +50% trade-route commerce.</English>
+        <French>+25% gold income and +50% trade-route commerce.</French>
+        <German>+25% Goldeinnahmen und +50% Wirtschaftspunkte durch Handelsrouten.</German>
+        <Italian>+25% gold income and +50% trade-route commerce.</Italian>
+        <Spanish>+25% gold income and +50% trade-route commerce.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_NATIONALISM_STRATEGY</Tag>
+        <English>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</English>
+        <French>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</French>
+        <German>+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit, wenn die Kultur eines anderen Spielers auf dem Stadtfeld gr&#246;&#223;er ist als die des Besitzers.</German>
+        <Italian>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</Italian>
+        <Spanish>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_RULE_OF_LAW_STRATEGY</Tag>
+        <English>+2 happiness in every city and +10% commerce.</English>
+        <French>+2 happiness in every city and +10% commerce.</French>
+        <German>+2 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.</German>
+        <Italian>+2 happiness in every city and +10% commerce.</Italian>
+        <Spanish>+2 happiness in every city and +10% commerce.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_SELF_SUFFICIENCY_STRATEGY</Tag>
+        <English>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</English>
+        <French>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</French>
+        <German>+2 Gesundheit in jeder Stadt. H&#252;ttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt, freie Spezialisten bleiben.</German>
+        <Italian>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</Italian>
+        <Spanish>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_SLAVERY_STRATEGY</Tag>
+        <English>Sacrifice population to rush production. Plantations give +2 commerce.</English>
+        <French>Sacrifice population to rush production. Plantations give +2 commerce.</French>
+        <German>Bev&#246;lkerung f&#252;r Produktion opfern. Plantagen geben +2 Wirtschaftspunkte.</German>
+        <Italian>Sacrifice population to rush production. Plantations give +2 commerce.</Italian>
+        <Spanish>Sacrifice population to rush production. Plantations give +2 commerce.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
+        <English>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</English>
+        <French>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe, -1 Wirtschaftspunkt durch D&#246;rfer; Bautrupps errichten Verbesserungen 50% schneller.</German>
+        <Italian>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</Italian>
+        <Spanish>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
+        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</English>
+        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</French>
+        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -20% Wirtschaftspunkte.</German>
+        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</Italian>
+        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_CORPORATE_ECONOMY_STRATEGY</Tag>
+        <English>+1 free specialist in every city; cottage improvements grow twice as fast.</English>
+        <French>+1 free specialist in every city; cottage improvements grow twice as fast.</French>
+        <German>+1 freier Spezialist in jeder Stadt; H&#252;ttenverbesserungen wachsen doppelt so schnell.</German>
+        <Italian>+1 free specialist in every city; cottage improvements grow twice as fast.</Italian>
+        <Spanish>+1 free specialist in every city; cottage improvements grow twice as fast.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_WARRIOR_SOCIETY_STRATEGY</Tag>
+        <English>Melee units start with +2 experience; siege units have -20% combat strength.</English>
+        <French>Melee units start with +2 experience; siege units have -20% combat strength.</French>
+        <German>Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfst&#228;rke.</German>
+        <Italian>Melee units start with +2 experience; siege units have -20% combat strength.</Italian>
+        <Spanish>Melee units start with +2 experience; siege units have -20% combat strength.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_MILITIA_STRATEGY</Tag>
+        <English>+30% city defense, but -10% combat strength outside your own territory.</English>
+        <French>+30% city defense, but -10% combat strength outside your own territory.</French>
+        <German>+30% Stadtverteidigung, aber -10% Kampfst&#228;rke au&#223;erhalb des eigenen Gebiets.</German>
+        <Italian>+30% city defense, but -10% combat strength outside your own territory.</Italian>
+        <Spanish>+30% city defense, but -10% combat strength outside your own territory.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD_STRATEGY</Tag>
+        <English>+25% mounted-unit production and +10% city attack.</English>
+        <French>+25% mounted-unit production and +10% city attack.</French>
+        <German>+25% Produktion f&#252;r berittene Einheiten und +10% Stadtangriff.</German>
+        <Italian>+25% mounted-unit production and +10% city attack.</Italian>
+        <Spanish>+25% mounted-unit production and +10% city attack.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>
+        <English>Units start with +5 experience.</English>
+        <French>Units start with +5 experience.</French>
+        <German>Einheiten starten mit +5 Erfahrung.</German>
+        <Italian>Units start with +5 experience.</Italian>
+        <Spanish>Units start with +5 experience.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_CONSCRIPTION_STRATEGY</Tag>
+        <English>+25% unit production.</English>
+        <French>+25% unit production.</French>
+        <German>+25% Einheitenproduktion.</German>
+        <Italian>+25% unit production.</Italian>
+        <Spanish>+25% unit production.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_ANCESTOR_CULT_STRATEGY</Tag>
+        <English>+1 culture from monuments, including unique replacements.</English>
+        <French>+1 culture from monuments, including unique replacements.</French>
+        <German>+1 Kultur durch Monumente, einschlie&#223;lich einzigartiger Ersatzgeb&#228;ude.</German>
+        <Italian>+1 culture from monuments, including unique replacements.</Italian>
+        <Spanish>+1 culture from monuments, including unique replacements.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_STATE_RELIGION_STRATEGY</Tag>
+        <English>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</English>
+        <French>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</French>
+        <German>+1 Zufriedenheit in St&#228;dten mit Staatsreligion; +100% Produktion f&#252;r Missionare aller Religionen.</German>
+        <Italian>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</Italian>
+        <Spanish>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_GOD_STATE_STRATEGY</Tag>
+        <English>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</English>
+        <French>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</French>
+        <German>St&#228;dte mit Staatsreligion erhalten +2 Zufriedenheit und +10% Produktion; St&#228;dte ohne sie erhalten -2 Zufriedenheit.</German>
+        <Italian>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Italian>
+        <Spanish>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>
+        <English>Removes unhappiness caused by foreign religions.</English>
+        <French>Removes unhappiness caused by foreign religions.</French>
+        <German>Entfernt Unzufriedenheit durch fremde Religionen.</German>
+        <Italian>Removes unhappiness caused by foreign religions.</Italian>
+        <Spanish>Removes unhappiness caused by foreign religions.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_STATE_ATHEISM_STRATEGY</Tag>
+        <English>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</English>
+        <French>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</French>
+        <German>+10% Forschung. Religi&#246;se Geb&#228;ude haben keine Effekte; Religionen k&#246;nnen sich in den eigenen St&#228;dten nicht verbreiten.</German>
+        <Italian>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</Italian>
+        <Spanish>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</Spanish>
+    </TEXT>
+</Civ4GameText>
