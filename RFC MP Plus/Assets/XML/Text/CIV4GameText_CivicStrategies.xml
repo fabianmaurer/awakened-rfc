@@ -106,19 +106,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
-        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</English>
-        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</French>
-        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -20% Wirtschaftspunkte.</German>
-        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</Italian>
-        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.</Spanish>
+        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</English>
+        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</French>
+        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -20% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.</German>
+        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</Italian>
+        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CORPORATE_ECONOMY_STRATEGY</Tag>
-        <English>+1 free specialist in every city; cottage improvements grow twice as fast.</English>
-        <French>+1 free specialist in every city; cottage improvements grow twice as fast.</French>
-        <German>+1 freier Spezialist in jeder Stadt; H&#252;ttenverbesserungen wachsen doppelt so schnell.</German>
-        <Italian>+1 free specialist in every city; cottage improvements grow twice as fast.</Italian>
-        <Spanish>+1 free specialist in every city; cottage improvements grow twice as fast.</Spanish>
+        <English>+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.</English>
+        <French>+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.</French>
+        <German>+1 freier Spezialist in jeder Stadt; H&#252;ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten.</German>
+        <Italian>+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.</Italian>
+        <Spanish>+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_WARRIOR_SOCIETY_STRATEGY</Tag>

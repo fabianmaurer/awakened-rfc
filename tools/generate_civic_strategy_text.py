@@ -46,11 +46,11 @@ SUMMARIES = {
         '+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.',
         '+1 Nahrung durch Bauernh\u00f6fe, -1 Wirtschaftspunkt durch D\u00f6rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
     'PLANNED_ECONOMY': (
-        '+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.',
-        '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -20% Wirtschaftspunkte.'),
+        '+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.',
+        '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -20% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.'),
     'CORPORATE_ECONOMY': (
-        '+1 free specialist in every city; cottage improvements grow twice as fast.',
-        '+1 freier Spezialist in jeder Stadt; Hüttenverbesserungen wachsen doppelt so schnell.'),
+        '+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.',
+        '+1 freier Spezialist in jeder Stadt; Hüttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten.'),
     'WARRIOR_SOCIETY': (
         'Melee units start with +2 experience; siege units have -20% combat strength.',
         'Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke.'),

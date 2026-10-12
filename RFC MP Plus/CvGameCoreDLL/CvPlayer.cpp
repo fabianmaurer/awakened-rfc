@@ -21683,6 +21683,16 @@ bool CvPlayer::canHaveTradeRoutesWith(PlayerTypes ePlayer) const
 		return false;
 	}
 
+	const CivicTypes ePlannedEconomy = (CivicTypes)GC.getInfoTypeForString("CIVIC_PLANNED_ECONOMY");
+	const CivicTypes eMarketEconomy = (CivicTypes)GC.getInfoTypeForString("CIVIC_CORPORATE_ECONOMY");
+
+	// Ideological blocs do not exchange trade routes, even within an alliance.
+	if ((isCivic(ePlannedEconomy) && kOtherPlayer.isCivic(eMarketEconomy)) ||
+		(isCivic(eMarketEconomy) && kOtherPlayer.isCivic(ePlannedEconomy)))
+	{
+		return false;
+	}
+
 	if (getTeam() == kOtherPlayer.getTeam())
 	{
 		return true;

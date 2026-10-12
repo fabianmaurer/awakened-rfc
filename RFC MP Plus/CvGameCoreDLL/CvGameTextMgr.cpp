@@ -10991,6 +10991,16 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 			szBuffer.append(szTempBuffer);
 		}
 
+		iAttitudeChange = kPlayer.AI_getEconomicIdeologyAttitude(eTargetPlayer);
+		if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
+		{
+			const CivicTypes ePlannedEconomy = (CivicTypes)GC.getInfoTypeForString("CIVIC_PLANNED_ECONOMY");
+			const char* szTextKey = GET_PLAYER(eTargetPlayer).isCivic(ePlannedEconomy) ? "TXT_KEY_MISC_ATTITUDE_FILTHY_COMMUNISTS" : "TXT_KEY_MISC_ATTITUDE_FILTHY_CAPITALISTS";
+			szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR((iAttitudeChange > 0) ? "COLOR_POSITIVE_TEXT" : "COLOR_NEGATIVE_TEXT"), gDLL->getText(szTextKey, iAttitudeChange).GetCString());
+			szBuffer.append(NEWLINE);
+			szBuffer.append(szTempBuffer);
+		}
+
 		iAttitudeChange = kPlayer.AI_getTradeAttitude(eTargetPlayer);
 		if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
 		{

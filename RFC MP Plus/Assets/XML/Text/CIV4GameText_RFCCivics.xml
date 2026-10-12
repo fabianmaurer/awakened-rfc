@@ -615,4 +615,37 @@
         <Italian>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</Italian>
         <Spanish>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</Spanish>
     </TEXT>
+
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_PLANNED_ECONOMY</Tag>
+        <English>[ICON_BULLET]No trade routes with Capitalists</English>
+        <French>[ICON_BULLET]No trade routes with Capitalists</French>
+        <German>[ICON_BULLET]Keine Handelswege mit Kapitalisten</German>
+        <Italian>[ICON_BULLET]No trade routes with Capitalists</Italian>
+        <Spanish>[ICON_BULLET]No trade routes with Capitalists</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MARKET_ECONOMY</Tag>
+        <English>[ICON_BULLET]No trade routes with Communists</English>
+        <French>[ICON_BULLET]No trade routes with Communists</French>
+        <German>[ICON_BULLET]Keine Handelswege mit Kommunisten</German>
+        <Italian>[ICON_BULLET]No trade routes with Communists</Italian>
+        <Spanish>[ICON_BULLET]No trade routes with Communists</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISC_ATTITUDE_FILTHY_COMMUNISTS</Tag>
+        <English>%D1: filthy communists</English>
+        <French>%D1: filthy communists</French>
+        <German>%D1: dreckige Kommunisten</German>
+        <Italian>%D1: filthy communists</Italian>
+        <Spanish>%D1: filthy communists</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISC_ATTITUDE_FILTHY_CAPITALISTS</Tag>
+        <English>%D1: filthy capitalists</English>
+        <French>%D1: filthy capitalists</French>
+        <German>%D1: dreckige Kapitalisten</German>
+        <Italian>%D1: filthy capitalists</Italian>
+        <Spanish>%D1: filthy capitalists</Spanish>
+    </TEXT>
 </Civ4GameText>

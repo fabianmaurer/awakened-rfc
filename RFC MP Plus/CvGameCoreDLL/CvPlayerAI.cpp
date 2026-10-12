@@ -5899,6 +5899,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += AI_getRivalVassalAttitude(ePlayer);
 	iAttitude += AI_getShareWarAttitude(ePlayer);
 	iAttitude += AI_getFavoriteCivicAttitude(ePlayer);
+	iAttitude += AI_getEconomicIdeologyAttitude(ePlayer);
 	iAttitude += AI_getTradeAttitude(ePlayer);
 	iAttitude += AI_getRivalTradeAttitude(ePlayer);
 
@@ -6218,6 +6219,21 @@ int CvPlayerAI::AI_getFavoriteCivicAttitude(PlayerTypes ePlayer) const
 	}
 
 	return iAttitude;
+}
+
+
+int CvPlayerAI::AI_getEconomicIdeologyAttitude(PlayerTypes ePlayer) const
+{
+	const CivicTypes ePlannedEconomy = (CivicTypes)GC.getInfoTypeForString("CIVIC_PLANNED_ECONOMY");
+	const CivicTypes eMarketEconomy = (CivicTypes)GC.getInfoTypeForString("CIVIC_CORPORATE_ECONOMY");
+
+	if ((isCivic(ePlannedEconomy) && GET_PLAYER(ePlayer).isCivic(eMarketEconomy)) ||
+		(isCivic(eMarketEconomy) && GET_PLAYER(ePlayer).isCivic(ePlannedEconomy)))
+	{
+		return -8;
+	}
+
+	return 0;
 }
 
 
