@@ -98,11 +98,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
-        <English>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</English>
-        <French>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</French>
-        <German>+1 Nahrung durch Bauernh&#246;fe, -1 Wirtschaftspunkt durch D&#246;rfer; Bautrupps errichten Verbesserungen 50% schneller.</German>
-        <Italian>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</Italian>
-        <Spanish>+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.</Spanish>
+        <English>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</English>
+        <French>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe, -1 Wirtschaftspunkt durch D&#246;rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev&#246;lkerung kann Einheiten beschleunigen.</German>
+        <Italian>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</Italian>
+        <Spanish>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
@@ -154,11 +154,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CONSCRIPTION_STRATEGY</Tag>
-        <English>+25% unit production.</English>
-        <French>+25% unit production.</French>
-        <German>+25% Einheitenproduktion.</German>
-        <Italian>+25% unit production.</Italian>
-        <Spanish>+25% unit production.</Spanish>
+        <English>+25% unit production. Surplus food is converted into production for military units.</English>
+        <French>+25% unit production. Surplus food is converted into production for military units.</French>
+        <German>+25% Einheitenproduktion. Nahrungs&#252;bersch&#252;sse werden bei Milit&#228;reinheiten zu Produktion.</German>
+        <Italian>+25% unit production. Surplus food is converted into production for military units.</Italian>
+        <Spanish>+25% unit production. Surplus food is converted into production for military units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_ANCESTOR_CULT_STRATEGY</Tag>

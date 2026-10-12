@@ -7160,9 +7160,14 @@ int CvPlayer::calculateTotalCityUnhealthiness() const
 }
 
 
-int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& iPaidUnits, int& iPaidMilitaryUnits, int& iBaseUnitCost, int& iMilitaryCost, int& iExtraCost) const
+int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& iPaidUnits, int& iPaidMilitaryUnits, int& iBaseUnitCost, int& iMilitaryCost, int& iExtraCost, int& iMercenaryCost) const
 {
 	int iSupport;
+	int iMercenaryUnits = 0;
+	int iMercenaryMilitaryUnits = 0;
+	int iLoop;
+	CvUnit* pLoopUnit;
+	const PromotionTypes eMercenary = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY");
 
 	iFreeUnits = GC.getHandicapInfo(getHandicapType()).getFreeUnits();
 
@@ -7181,8 +7186,24 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 		}
 	}
 
-	iPaidUnits = std::max(0, getNumUnits() - iFreeUnits);
-	iPaidMilitaryUnits = std::max(0, getNumMilitaryUnits() - iFreeMilitaryUnits);
+	for (pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
+	{
+		if (eMercenary != NO_PROMOTION && pLoopUnit->isHasPromotion(eMercenary))
+		{
+			iMercenaryUnits++;
+			if (GC.getUnitInfo(pLoopUnit->getUnitType()).isMilitarySupport())
+			{
+				iMercenaryMilitaryUnits++;
+			}
+		}
+	}
+
+	// Mercenaries neither consume ordinary free-unit allowances nor benefit
+	// from them. Their regular cost plus a 100% surcharge is charged here.
+	iPaidUnits = std::max(0, getNumUnits() - iMercenaryUnits - iFreeUnits);
+	iPaidMilitaryUnits = std::max(0, getNumMilitaryUnits() - iMercenaryMilitaryUnits - iFreeMilitaryUnits);
+	iMercenaryCost = iMercenaryUnits * getGoldPerUnit() * 2;
+	iMercenaryCost += iMercenaryMilitaryUnits * getGoldPerMilitaryUnit() * 2;
 
 	iSupport = 0;
 
@@ -7190,7 +7211,7 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 	iMilitaryCost = iPaidMilitaryUnits * getGoldPerMilitaryUnit();
 	iExtraCost = getExtraUnitCost();
 
-	iSupport = iMilitaryCost + iBaseUnitCost + iExtraCost;
+	iSupport = iMilitaryCost + iBaseUnitCost + iExtraCost + iMercenaryCost;
 
 	//Rhye - start
 	//iSupport *= GC.getHandicapInfo(getHandicapType()).getUnitCostPercent();
@@ -7235,8 +7256,9 @@ int CvPlayer::calculateUnitCost() const
 	int iMilitaryCost;
 	int iBaseUnitCost;
 	int iExtraCost;
+	int iMercenaryCost;
 
-	return calculateUnitCost(iFreeUnits, iFreeMilitaryUnits, iPaidUnits, iPaidMilitaryUnits, iBaseUnitCost, iMilitaryCost, iExtraCost);
+	return calculateUnitCost(iFreeUnits, iFreeMilitaryUnits, iPaidUnits, iPaidMilitaryUnits, iBaseUnitCost, iMilitaryCost, iExtraCost, iMercenaryCost);
 }
 
 int CvPlayer::calculateUnitSupply() const
@@ -12259,6 +12281,11 @@ int CvPlayer::getHurryCount(HurryTypes eIndex) const
 
 bool CvPlayer::canHurry(HurryTypes eIndex) const
 {
+	if (eIndex == (HurryTypes)GC.getInfoTypeForString("HURRY_GOLD") && GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_BANKING")))
+	{
+		return true;
+	}
+
 	return (getHurryCount(eIndex) > 0);
 }
 

@@ -11298,8 +11298,9 @@ void CvGameTextMgr::buildFinanceUnitCostString(CvWStringBuffer& szBuffer, Player
 	int iMilitaryCost = 0;
 	int iBaseUnitCost = 0;
 	int iExtraCost = 0;
-	int iCost = player.calculateUnitCost(iFreeUnits, iFreeMilitaryUnits, iPaidUnits, iPaidMilitaryUnits, iBaseUnitCost, iMilitaryCost, iExtraCost);
-	int iHandicap = iCost-iBaseUnitCost-iMilitaryCost-iExtraCost;
+	int iMercenaryCost = 0;
+	int iCost = player.calculateUnitCost(iFreeUnits, iFreeMilitaryUnits, iPaidUnits, iPaidMilitaryUnits, iBaseUnitCost, iMilitaryCost, iExtraCost, iMercenaryCost);
+	int iHandicap = iCost-iBaseUnitCost-iMilitaryCost-iExtraCost-iMercenaryCost;
 
 	szBuffer.append(NEWLINE);
 	szBuffer.append(gDLL->getText("TXT_KEY_FINANCE_ADVISOR_UNIT_COST", iPaidUnits, iFreeUnits, iBaseUnitCost));
@@ -11311,6 +11312,10 @@ void CvGameTextMgr::buildFinanceUnitCostString(CvWStringBuffer& szBuffer, Player
 	if (iExtraCost != 0)
 	{
 		szBuffer.append(gDLL->getText("TXT_KEY_FINANCE_ADVISOR_UNIT_COST_3", iExtraCost));
+	}
+	if (iMercenaryCost != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FINANCE_MERCENARY_COST", iMercenaryCost));
 	}
 	if (iHandicap != 0)
 	{

@@ -214,7 +214,7 @@ public:
 	int calculateTotalCityHealthiness() const;																														// Exposed to Python
 	int calculateTotalCityUnhealthiness() const;																													// Exposed to Python
 
-	int calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& iPaidUnits, int& iPaidMilitaryUnits, int& iBaseUnitCost, int& iMilitaryCost, int& iExtraCost) const;
+	int calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& iPaidUnits, int& iPaidMilitaryUnits, int& iBaseUnitCost, int& iMilitaryCost, int& iExtraCost, int& iMercenaryCost) const;
 	int calculateUnitCost() const;																																				// Exposed to Python
 	int calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const;																	// Exposed to Python
 	int calculateUnitSupply() const;																																			// Exposed to Python

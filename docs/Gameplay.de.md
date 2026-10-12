@@ -463,6 +463,26 @@ Die Aktion läuft über die vorhandene synchronisierte Stadtaufgaben-Nachricht
 und prüft die Bedingungen beim Ausführen erneut. Neue gespeicherte Zustände
 oder Änderungen bestehender Aufgabenindizes sind nicht erforderlich.
 
+## Produktionsbeschleunigung
+
+- **Sklaverei** kann Bevölkerung opfern, um jede Produktion abzuschließen.
+- **Leibeigenschaft** kann Bevölkerung für Einheiten opfern, aber nicht für
+  Gebäude oder Projekte.
+- Mit **Bankwesen** kann Gold eine Einheit sofort abschließen. Die fertige
+  Einheit ist ein **Söldner**: Sie startet mit einer bis drei gültigen
+  zufälligen Beförderungen, kann weder Erfahrung noch weitere Beförderungen
+  erhalten und nicht aufgerüstet werden. Söldner
+  verbrauchen keine freien Einheiten- oder Militäreinheitenkontingente. Sie
+  zahlen ihre regulären Einheitenkosten plus 100% Zuschlag vor
+  Schwierigkeitsmodifikatoren.
+- Mit **Kapitalgesellschaft** kann Gold zusätzlich Gebäude abschließen.
+- **Wehrpflicht** wandelt Nahrungsüberschüsse beim Bau von Militäreinheiten
+  in Produktion um. Diese Nahrung wird also nicht für Stadtwachstum gespeichert.
+
+Alle Söldner-Zufallsentscheidungen verwenden Civ4s synchronisierten
+Spielzufall und entstehen beim Abschluss des Goldauftrags. Es ist kein
+zusätzlicher gespeicherter Stadtzustand erforderlich.
+
 ## Dynamische Ländernamen
 
 Ländernamen reagieren auf Regierung, Legitimation, Wirtschaft, Staatsreligion

@@ -43,8 +43,8 @@ SUMMARIES = {
         'Sacrifice population to rush production. Plantations give +2 commerce.',
         'Bevölkerung für Produktion opfern. Plantagen geben +2 Wirtschaftspunkte.'),
     'SERFDOM': (
-        '+1 food from farms, -1 commerce from villages, and workers build improvements 50% faster.',
-        '+1 Nahrung durch Bauernhöfe, -1 Wirtschaftspunkt durch Dörfer; Bautrupps errichten Verbesserungen 50% schneller.'),
+        '+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.',
+        '+1 Nahrung durch Bauernh\u00f6fe, -1 Wirtschaftspunkt durch D\u00f6rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
     'PLANNED_ECONOMY': (
         '+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce.',
         '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -20% Wirtschaftspunkte.'),
@@ -64,8 +64,8 @@ SUMMARIES = {
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),
     'CONSCRIPTION': (
-        '+25% unit production.',
-        '+25% Einheitenproduktion.'),
+        '+25% unit production. Surplus food is converted into production for military units.',
+        '+25% Einheitenproduktion. Nahrungs\u00fcbersch\u00fcsse werden bei Milit\u00e4reinheiten zu Produktion.'),
     'ANCESTOR_CULT': (
         '+1 culture from monuments, including unique replacements.',
         '+1 Kultur durch Monumente, einschließlich einzigartiger Ersatzgebäude.'),

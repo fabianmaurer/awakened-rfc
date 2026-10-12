@@ -837,7 +837,7 @@ public:
 
 	void clearOrderQueue();																														// Exposed to Python
 	void pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bool bPop, bool bAppend, bool bForce = false);		// Exposed to Python
-	void popOrder(int iNum, bool bFinish = false, bool bChoose = false);		// Exposed to Python
+	void popOrder(int iNum, bool bFinish = false, bool bChoose = false, bool bMercenary = false);		// Exposed to Python
 	void startHeadOrder();
 	void stopHeadOrder();
 	int getOrderQueueLength();																		// Exposed to Python

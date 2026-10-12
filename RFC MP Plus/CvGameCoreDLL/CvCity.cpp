@@ -3383,6 +3383,27 @@ int CvCity::getExtraProductionDifference(int iExtra, int iModifier) const
 
 bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 {
+	const HurryTypes eGoldHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_GOLD");
+	const HurryTypes ePopulationHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_POPULATION");
+	const TechTypes eBanking = (TechTypes)GC.getInfoTypeForString("TECH_BANKING");
+	const TechTypes eCorporation = (TechTypes)GC.getInfoTypeForString("TECH_CORPORATION");
+
+	if (eHurry == eGoldHurry)
+	{
+		if (!GET_TEAM(getTeam()).isHasTech(eBanking))
+		{
+			return false;
+		}
+		if (!isProductionUnit() && !(isProductionBuilding() && GET_TEAM(getTeam()).isHasTech(eCorporation)))
+		{
+			return false;
+		}
+	}
+	if (eHurry == ePopulationHurry && GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_SERFDOM")) && !isProductionUnit())
+	{
+		return false;
+	}
+
 	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
 	{
 		return false;
@@ -3421,6 +3442,13 @@ bool CvCity::canHurry(HurryTypes eHurry, bool bTestVisible) const
 
 bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) const
 {
+	const HurryTypes eGoldHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_GOLD");
+	const TechTypes eBanking = (TechTypes)GC.getInfoTypeForString("TECH_BANKING");
+	if (eHurry == eGoldHurry && !GET_TEAM(getTeam()).isHasTech(eBanking))
+	{
+		return false;
+	}
+
 	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
 	{
 		return false;
@@ -3451,6 +3479,18 @@ bool CvCity::canHurryUnit(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) c
 
 bool CvCity::canHurryBuilding(HurryTypes eHurry, BuildingTypes eBuilding, bool bIgnoreNew) const
 {
+	const HurryTypes eGoldHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_GOLD");
+	const HurryTypes ePopulationHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_POPULATION");
+	const TechTypes eCorporation = (TechTypes)GC.getInfoTypeForString("TECH_CORPORATION");
+	if (eHurry == eGoldHurry && !GET_TEAM(getTeam()).isHasTech(eCorporation))
+	{
+		return false;
+	}
+	if (eHurry == ePopulationHurry && GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_SERFDOM")))
+	{
+		return false;
+	}
+
 	if (!(GET_PLAYER(getOwnerINLINE()).canHurry(eHurry)))
 	{
 		return false;
@@ -3485,6 +3525,8 @@ void CvCity::hurry(HurryTypes eHurry)
 	int iHurryGold;
 	int iHurryPopulation;
 	int iHurryAngerLength;
+	const HurryTypes eGoldHurry = (HurryTypes)GC.getInfoTypeForString("HURRY_GOLD");
+	const bool bMercenary = (eHurry == eGoldHurry && isProductionUnit());
 
 	if (!canHurry(eHurry))
 	{
@@ -3496,6 +3538,14 @@ void CvCity::hurry(HurryTypes eHurry)
 	iHurryAngerLength = hurryAngerLength(eHurry);
 
 	changeProduction(hurryProduction(eHurry));
+
+	// Gold-rushed units are hired immediately.  Marking them during order
+	// completion avoids adding state to city saves and is deterministic on all
+	// multiplayer peers.
+	if (bMercenary && getProduction() >= getProductionNeeded())
+	{
+		popOrder(0, true, true, true);
+	}
 
 	GET_PLAYER(getOwnerINLINE()).changeGold(-(iHurryGold));
 	changePopulation(-(iHurryPopulation));
@@ -11395,7 +11445,7 @@ void CvCity::pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bo
 }
 
 
-void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
+void CvCity::popOrder(int iNum, bool bFinish, bool bChoose, bool bMercenary)
 {
 	CLLNode<OrderData>* pOrderNode;
 	CvUnit* pUnit;
@@ -11492,6 +11542,44 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			pUnit->finishMoves();
 
 			addProductionExperience(pUnit);
+
+			if (bMercenary)
+			{
+				PromotionTypes eMercenary = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY");
+				if (eMercenary != NO_PROMOTION)
+				{
+					int iPromotions = 1 + GC.getGameINLINE().getSorenRandNum(3, "Mercenary promotion count");
+					for (int iPromotion = 0; iPromotion < iPromotions; ++iPromotion)
+					{
+						int iEligible = 0;
+						for (int iI = 0; iI < GC.getNumPromotionInfos(); ++iI)
+						{
+							if ((PromotionTypes)iI != eMercenary && !GC.getPromotionInfo((PromotionTypes)iI).isLeader() && pUnit->canAcquirePromotion((PromotionTypes)iI))
+							{
+								iEligible++;
+							}
+						}
+						if (iEligible == 0)
+						{
+							break;
+						}
+
+						int iChoice = GC.getGameINLINE().getSorenRandNum(iEligible, "Mercenary promotion");
+						for (int iI = 0; iI < GC.getNumPromotionInfos(); ++iI)
+						{
+							if ((PromotionTypes)iI != eMercenary && !GC.getPromotionInfo((PromotionTypes)iI).isLeader() && pUnit->canAcquirePromotion((PromotionTypes)iI))
+							{
+								if (iChoice-- == 0)
+								{
+									pUnit->setHasPromotion((PromotionTypes)iI, true);
+									break;
+								}
+							}
+						}
+					}
+					pUnit->setHasPromotion(eMercenary, true);
+				}
+			}
 
 			pRallyPlot = getRallyPlot();
 

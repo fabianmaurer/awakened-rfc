@@ -6880,7 +6880,7 @@ bool CvUnit::canUpgrade(UnitTypes eUnit, bool bTestVisible) const
 	}
 
 	//Rhye - start mercenaries fix
-	if (isHasPromotion((PromotionTypes)54)) //Mercenary
+	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")))
 	{
 		return false;
 	}
@@ -10010,6 +10010,11 @@ void CvUnit::setExperience(int iNewValue, int iMax)
 
 void CvUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInBorders, bool bUpdateGlobal)
 {
+	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")))
+	{
+		return;
+	}
+
 	int iUnitExperience = iChange;
 
 	if (bFromCombat)
@@ -11352,6 +11357,12 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion) const
 {
 	FAssertMsg(ePromotion >= 0, "ePromotion is expected to be non-negative (invalid Index)");
 	FAssertMsg(ePromotion < GC.getNumPromotionInfos(), "ePromotion is expected to be within maximum bounds (invalid Index)");
+
+	PromotionTypes eMercenary = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY");
+	if (eMercenary != NO_PROMOTION && isHasPromotion(eMercenary))
+	{
+		return false;
+	}
 
 	if (isHasPromotion(ePromotion))
 	{

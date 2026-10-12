@@ -437,6 +437,23 @@ retain their restrictions. AI capture decisions are unchanged. Relocation uses
 the existing synchronized city-task network message and rechecks eligibility
 when executed; no new saved state or task-index changes are introduced.
 
+## Production rushes
+
+- **Slavery** can sacrifice population to finish any production.
+- **Serfdom** can sacrifice population to finish units, but cannot use this rush
+  for buildings or projects.
+- With **Banking**, gold can immediately finish a unit. The completed unit is a
+  **mercenary**: it starts with one to three valid random promotions, cannot
+  gain experience or further promotions, and cannot upgrade.
+  Mercenaries do not consume free-unit or free-military-unit allowances. Each
+  pays its regular unit cost plus a 100% surcharge, before difficulty modifiers.
+- With **Corporation**, gold can also finish buildings.
+- **Conscription** sends surplus food into production while training military
+  units. Food is therefore not stored for city growth during that production.
+
+All mercenary random choices use Civ4's synchronized game RNG and are made while
+the gold-rush command completes, so no additional persistent city state is used.
+
 ## Dynamic country names
 
 Country names reflect government, legitimacy, economy, state religion, and

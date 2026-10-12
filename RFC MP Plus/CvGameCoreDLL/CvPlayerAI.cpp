@@ -10404,7 +10404,10 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iValue += -(kCivic.getGoldPerUnit() * getNumUnits());
 	iValue += -(kCivic.getGoldPerMilitaryUnit() * getNumMilitaryUnits() * iWarmongerPercent) / 200;
 
-	//iValue += ((kCivic.isMilitaryFoodProduction()) ? 0 : 0);
+	if (kCivic.isMilitaryFoodProduction())
+	{
+		iValue += getNumCities() * (bWarPlan ? 10 : 4);
+	}
 	iValue += (getWorldSizeMaxConscript(eCivic) * ((bWarPlan) ? (20 + getNumCities()) : ((8 + getNumCities()) / 2)));
 	iValue += ((kCivic.isNoUnhealthyPopulation()) ? (getTotalPopulation() / 3) : 0);
 	if (bWarPlan)
