@@ -22,7 +22,7 @@ an in-game or multiplayer check.
 | Leibeigenschaft | +1 food from farms; −1 commerce from villages; +50% worker speed | civic XML |
 | Planwirtschaft | +1 production from workshops, watermills and windmills; +1 food from farms; −20% commerce yield | civic XML |
 | Marktwirtschaft | +1 free specialist per city; +100% improvement upgrade rate | civic XML |
-| Kriegergesellschaft | +2 starting experience; −20% siege combat strength | civic XML; `CvUnit::maxCombatStr` |
+| Kriegergesellschaft | +2 starting experience for melee units only; −20% siege combat strength | civic XML; `CvCity::getProductionExperience`; `CvUnit::maxCombatStr` |
 | Miliz | +30% city defense; −10% combat strength on tiles outside the unit owner's territory | `CvCity::getTotalDefense`; `CvUnit::maxCombatStr` |
 | Rittertum | +25% mounted unit production; +10% city attack | `CvCity::getProductionModifier(UnitTypes)`; `CvUnit::cityAttackModifier` |
 | Berufsarmee | +5 starting experience | civic XML |

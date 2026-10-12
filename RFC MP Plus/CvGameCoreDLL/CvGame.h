@@ -56,6 +56,7 @@ public:
 	DllExport void updateBuildingCommerce();
 	DllExport void updateCitySight(bool bIncrement);
 	DllExport void updateTradeRoutes();
+    void updateFoodTrade();
 
 	DllExport void updateSelectionList();
 	DllExport void updateTestEndTurn();

@@ -25,6 +25,9 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
   both directions; this replaces the old passive religion spread. Missionaries
   remain. Cultural homogeneity and holy cities resist trade-based religion spread;
   State Atheism blocks religious spread.
+- **Food trade feeds wealthy cities:** routes move food from poorer cities,
+  capped at one food per population point of the supplier. Embargoes and
+  blockades can leave import-dependent cities short of food.
 - **Military access** replaces Open Borders and remains reciprocal.
   **Trade embargoes** are available from Currency in the Foreign Advisor.
 - **Advance spawn warnings:** tile tooltips show future flip areas; affected
@@ -89,7 +92,7 @@ culture and espionage, distinct from gold income.
 
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
-| **Warrior Society** | None | None | Units start with +2 experience; siege units have -20% combat strength. |
+| **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
 | **Knighthood** | Engineering | Medium | +25% production for mounted units; +10% city attack. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |

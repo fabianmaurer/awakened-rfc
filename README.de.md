@@ -26,6 +26,9 @@ Fähigkeiten und Siegziele bleiben erhalten.
   beide Richtungen und ersetzen die bisherige passive Religionsverbreitung.
   Missionare bleiben erhalten. Kulturelle Homogenität und heilige Städte hemmen
   Religionen durch Handel; Staatsatheismus verhindert religiöse Verbreitung.
+- **Nahrungshandel versorgt wohlhabende Städte:** Routen verlagern Nahrung
+  aus ärmeren Städten, begrenzt auf eine Nahrung je Bevölkerungspunkt des Lieferanten.
+  Embargos und Blockaden können importabhängige Städte in Hungersnot bringen.
 - **Militärzugang** ersetzt Offene Grenzen und bleibt gegenseitig.
   **Handelsembargos** sind ab Währung im Außenberater möglich.
 - **Vorwarnungen vor Gründungen:** Feld-Tooltips zeigen zukünftige Wechselgebiete;
@@ -91,7 +94,7 @@ die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
-| **Kriegergesellschaft** | Keine | Keiner | Einheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
+| **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
 | **Rittertum** | Maschinenbau | Mittel | +25% Produktion für berittene Einheiten; +10% Stadtangriff. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |

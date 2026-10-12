@@ -12140,7 +12140,10 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 		iBaseModifier += iCivicMod;
 	}
 
-	FAssertMsg((iBaseModifier * iBaseProduction) / 100 == city.getYieldRate(eYieldType), "Yield Modifier in setProductionHelp does not agree with actual value");
+    int iFoodNet = eYieldType == YIELD_FOOD ? city.getFoodTradeImports() - city.getFoodTradeExports() : 0;
+    if (eYieldType == YIELD_FOOD)
+        szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_TOTAL", city.getFoodTradeImports(), city.getFoodTradeExports()));
+	FAssertMsg((iBaseModifier * iBaseProduction) / 100 + iFoodNet == city.getYieldRate(eYieldType), "Yield Modifier in setProductionHelp does not agree with actual value");
 }
 
 void CvGameTextMgr::setConvertHelp(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, ReligionTypes eReligion)
@@ -13537,6 +13540,8 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
 		if (NULL != pOtherCity)
 		{
 			szBuffer.append(pOtherCity->getName());
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_ROUTE", pCity->getFoodTradeWith(pOtherCity)));
 
 			int iProfit = pCity->getBaseTradeProfit(pOtherCity);
 

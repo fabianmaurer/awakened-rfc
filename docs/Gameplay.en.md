@@ -118,6 +118,47 @@ Route tooltips show infrastructure efficiency and cultural contributions.
 Tuning values are in `Assets/XML/GlobalDefines.xml` (`RFCMP_*TRADE*`). Embargo
 actions use synchronized network messages; religious spread uses game RNG.
 
+### Food transfers
+
+Actual trade routes also move food from the poorer city to the wealthier one,
+including domestic routes. Wealth is **local commerce yield after modifiers,
+excluding trade-route commerce**; gold from specialists or the tax slider does
+not determine direction. Equal wealth means no transfer.
+
+- Requested food is `route commerce / 2 × (richer wealth − poorer wealth) / richer wealth`.
+  Small wealth differences weaken the transfer; a large difference approaches
+  one food per two route-commerce points. For reciprocal routes, use the stronger
+  request once rather than counting the city pair twice.
+- A supplier's combined exports are capped at **one food per population point**.
+  Exports need not come from
+  surplus: supplying cities can grow more slowly or starve. Size-one cities may
+  export only their local surplus after consumption and health costs.
+- When requests exceed capacity, destinations receive proportional shares.
+  Total food is rounded down to whole points, with the remaining whole points
+  assigned to the largest fractional shares; ties use deterministic city/route
+  order. Small requests may yield no food.
+- All allocations are computed together once per game turn before player turns,
+  then saved. A falling supplier cap reduces commitments during the round.
+  Destroyed/captured cities, lost routes, disorder, blockades, war and embargoes
+  invalidate affected transfers immediately. Freed capacity is redistributed
+  at the next allocation, not mid-turn.
+- Food is deducted from the supplier and added to the recipient **after yield
+  modifiers**. Imports are not multiplied by food bonuses and cannot be exported
+  again. They affect ordinary growth, starvation, and food-based unit production.
+  Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
+- Hover the population bar for total imports/exports, or a trade route for the
+  signed food exchange with that partner. Positive means import, negative export.
+  Existing saves start receiving allocations at the next game turn.
+
+Example: a size-four city can export at most four food. If
+destinations request four, two and two, they receive two, one and one. Losing
+the routes restores the supplier's food but removes the recipients' imports.
+
+The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
+settings in `Assets/XML/GlobalDefines.xml` control the population cap and route
+capacity. No era- or technology-based local food penalty is included.
+
+
 ## New civics
 
 Each column allows one active civic. Bonuses from different columns combine;
@@ -168,7 +209,7 @@ idle citizens remain available under Self-sufficiency as a population fallback.
 
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
-| **Warrior Society** | None | None | Units start with +2 experience; siege units have -20% combat strength. |
+| **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
 | **Knighthood** | Engineering | Medium | +25% production for mounted units; +10% city attack. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |

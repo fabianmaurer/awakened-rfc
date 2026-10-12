@@ -14,6 +14,15 @@ class CvArea;
 class CvGenericBuilding;
 class CvArtInfoBuilding;
 
+// A signed, saved food commitment. Positive amounts are imports.
+struct FoodTradeTransfer
+{
+    IDInfo partner;
+    int partnerFounded;
+    bool routeFromSelf;
+    int amount;
+};
+
 class CvCity : public CvDLLEntity
 {
 
@@ -596,6 +605,15 @@ public:
 	int getBonusYieldRateModifier(YieldTypes eIndex) const;											// Exposed to Python 
 	void changeBonusYieldRateModifier(YieldTypes eIndex, int iChange);
 
+    int getLocalFoodYield() const;
+    int getLocalTradeWealth() const;
+    int getFoodExportLimit() const;
+    int getFoodTradeImports() const;
+    int getFoodTradeExports() const;
+    int getFoodTradeWith(const CvCity* pPartner) const;
+    int getFoodTradeChecksum() const;
+    void clearFoodTrade();
+    void addFoodTrade(CvCity* pPartner, bool bRouteFromSelf, int iAmount);
 	int getTradeYield(YieldTypes eIndex) const;																	// Exposed to Python
 	int totalTradeModifier(CvCity* pOtherCity = NULL) const;																							// Exposed to Python
 	int getPopulationTradeModifier() const;
@@ -1052,6 +1070,8 @@ protected:
 	int* m_aiYieldRateModifier;
 	int* m_aiPowerYieldRateModifier;
 	int* m_aiBonusYieldRateModifier;
+    std::vector<FoodTradeTransfer> m_foodTrade;
+    int foodTradeAmount(const FoodTradeTransfer& transfer) const;
 	int* m_aiTradeYield;
 	int* m_aiCorporationYield;
 	int* m_aiExtraSpecialistYield;

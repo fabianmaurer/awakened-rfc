@@ -2376,6 +2376,125 @@ void CvGame::updateCitySight(bool bIncrement)
 }
 
 
+
+namespace
+{
+struct FoodTradeRequest
+{
+    CvCity* supplier;
+    CvCity* recipient;
+    CvCity* routeOrigin;
+    int demandTimes100;
+    int allocated;
+    __int64 remainder;
+};
+
+bool foodCityOrder(const CvCity* a, const CvCity* b)
+{
+    if (a->getOwnerINLINE() != b->getOwnerINLINE()) return a->getOwnerINLINE() < b->getOwnerINLINE();
+    return a->getID() < b->getID();
+}
+}
+
+void CvGame::updateFoodTrade()
+{
+    // One synchronized snapshot for all players, before anyone's city growth.
+    // Only actual selected routes count; reciprocal routes form one food link.
+    std::vector<CvCity*> cities;
+    std::vector<FoodTradeRequest> requests;
+    for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+    {
+        int iLoop;
+        for (CvCity* pCity = GET_PLAYER((PlayerTypes)iPlayer).firstCity(&iLoop); pCity != NULL;
+            pCity = GET_PLAYER((PlayerTypes)iPlayer).nextCity(&iLoop))
+        {
+            pCity->clearFoodTrade();
+            cities.push_back(pCity);
+        }
+    }
+    std::sort(cities.begin(), cities.end(), foodCityOrder);
+    int iFoodDivisor = std::max(1, GC.getDefineINT("RFCMP_TRADE_FOOD_COMMERCE_DIVISOR"));
+    for (unsigned int i = 0; i < cities.size(); ++i)
+    {
+        CvCity* pOrigin = cities[i];
+        if (pOrigin->isDisorder() || pOrigin->isPlundered()) continue;
+        for (int iRoute = 0; iRoute < pOrigin->getTradeRoutes(); ++iRoute)
+        {
+            CvCity* pPartner = pOrigin->getTradeCity(iRoute);
+            if (pPartner == NULL || pPartner == pOrigin || pPartner->isDisorder() || pPartner->isPlundered()) continue;
+            if (!GET_PLAYER(pOrigin->getOwnerINLINE()).canHaveTradeRoutesWith(pPartner->getOwnerINLINE())) continue;
+            if (pOrigin->getTeam() != pPartner->getTeam() && !GET_TEAM(pOrigin->getTeam()).isFreeTrade(pPartner->getTeam())) continue;
+            int iOwnWealth = pOrigin->getLocalTradeWealth();
+            int iOtherWealth = pPartner->getLocalTradeWealth();
+            if (iOwnWealth == iOtherWealth) continue;
+            CvCity* pSupplier = iOwnWealth < iOtherWealth ? pOrigin : pPartner;
+            CvCity* pRecipient = iOwnWealth < iOtherWealth ? pPartner : pOrigin;
+            int iRichWealth = std::max(iOwnWealth, iOtherWealth);
+            int iValue = pOrigin->calculateTradeYield(YIELD_COMMERCE, pOrigin->calculateTradeProfit(pPartner));
+            int iDemand = (int)((__int64)iValue * 100 * std::abs(iOwnWealth - iOtherWealth) / ((__int64)iFoodDivisor * iRichWealth));
+            if (iDemand <= 0) continue;
+            unsigned int j;
+            for (j = 0; j < requests.size(); ++j)
+                if (requests[j].supplier == pSupplier && requests[j].recipient == pRecipient) break;
+            if (j == requests.size())
+            {
+                FoodTradeRequest request;
+                request.supplier = pSupplier;
+                request.recipient = pRecipient;
+                request.routeOrigin = pOrigin;
+                request.demandTimes100 = iDemand;
+                request.allocated = 0;
+                request.remainder = 0;
+                requests.push_back(request);
+            }
+            else if (iDemand > requests[j].demandTimes100)
+            {
+                requests[j].demandTimes100 = iDemand;
+                requests[j].routeOrigin = pOrigin;
+            }
+        }
+    }
+    for (unsigned int i = 0; i < cities.size(); ++i)
+    {
+        CvCity* pSupplier = cities[i];
+        __int64 iDemandTotal = 0;
+        for (unsigned int j = 0; j < requests.size(); ++j)
+            if (requests[j].supplier == pSupplier) iDemandTotal += requests[j].demandTimes100;
+        if (iDemandTotal == 0) continue;
+        int iBudget = (int)std::min((__int64)pSupplier->getFoodExportLimit(), iDemandTotal / 100);
+        int iAssigned = 0;
+        for (unsigned int j = 0; j < requests.size(); ++j)
+        {
+            FoodTradeRequest& r = requests[j];
+            if (r.supplier != pSupplier) continue;
+            __int64 iShare = (__int64)iBudget * r.demandTimes100;
+            r.allocated = (int)(iShare / iDemandTotal);
+            r.remainder = iShare % iDemandTotal;
+            iAssigned += r.allocated;
+        }
+        // Largest remainders, ties in stable city/route order; no RNG or floats.
+        while (iAssigned < iBudget)
+        {
+            int iBest = -1;
+            for (unsigned int j = 0; j < requests.size(); ++j)
+                if (requests[j].supplier == pSupplier && requests[j].remainder >= 0 &&
+                    (iBest < 0 || requests[j].remainder > requests[iBest].remainder)) iBest = j;
+            if (iBest < 0) break;
+            ++requests[iBest].allocated;
+            requests[iBest].remainder = -1;
+            ++iAssigned;
+        }
+    }
+    for (unsigned int i = 0; i < requests.size(); ++i)
+    {
+        FoodTradeRequest& r = requests[i];
+        if (r.allocated == 0) continue;
+        r.supplier->addFoodTrade(r.recipient, r.routeOrigin == r.supplier, -r.allocated);
+        r.recipient->addFoodTrade(r.supplier, r.routeOrigin == r.recipient, r.allocated);
+    }
+    gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
+}
+
 void CvGame::updateTradeRoutes()
 {
 	int iI;
@@ -5953,6 +6072,9 @@ void CvGame::doTurn()
 	incrementGameTurn();
 	incrementElapsedGameTurns();
 
+    updateTradeRoutes();
+    updateFoodTrade();
+
 	if (isMPOption(MPOPTION_SIMULTANEOUS_TURNS))
 	{
 		shuffleArray(aiShuffle, MAX_PLAYERS, getSorenRand());
@@ -7607,6 +7729,13 @@ int CvGame::calculateSyncChecksum()
             if (GET_TEAM((TeamTypes)iEmbargoTeam).isTradeEmbargo((TeamTypes)iEmbargoTarget))
                 iValue += (iEmbargoTeam + 1) * (iEmbargoTarget + 1) * 7919;
 
+    for (int iFoodPlayer = 0; iFoodPlayer < MAX_PLAYERS; ++iFoodPlayer)
+    {
+        int iFoodLoop;
+        for (CvCity* pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).firstCity(&iFoodLoop); pFoodCity != NULL;
+            pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).nextCity(&iFoodLoop))
+            iValue += pFoodCity->getFoodTradeChecksum() * (iFoodPlayer + 1) + pFoodCity->getID();
+    }
 	iValue += getNumCities();
 	iValue += getTotalPopulation();
 	iValue += getNumDeals();

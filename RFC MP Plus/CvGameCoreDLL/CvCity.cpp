@@ -546,6 +546,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iSpaceProductionModifier = 0;
 	m_iExtraTradeRoutes = 0;
 	m_iTradeRouteModifier = 0;
+    m_foodTrade.clear();
 	m_iForeignTradeRouteModifier = 0;
 	m_iBuildingDefense = 0;
 	m_iBuildingBombardDefense = 0;
@@ -4790,11 +4791,11 @@ int CvCity::foodDifference(bool bBottom) const
 
 	if (isFoodProduction())
 	{
-		iDifference = std::min(0, (getYieldRate(YIELD_FOOD) - foodConsumption()));
+		iDifference = std::min(0, (getLocalFoodYield() + getFoodTradeImports() - getFoodTradeExports() - foodConsumption()));
 	}
 	else
 	{
-		iDifference = (getYieldRate(YIELD_FOOD) - foodConsumption());
+		iDifference = (getLocalFoodYield() + getFoodTradeImports() - getFoodTradeExports() - foodConsumption());
 	}
 
 	if (bBottom)
@@ -7974,9 +7975,112 @@ int CvCity::getBaseYieldRateModifier(YieldTypes eIndex, int iExtra) const
 }
 
 
+
+int CvCity::getLocalFoodYield() const
+{
+    return (getBaseYieldRate(YIELD_FOOD) * getBaseYieldRateModifier(YIELD_FOOD)) / 100;
+}
+
+int CvCity::getLocalTradeWealth() const
+{
+    return std::max(0, getBaseYieldRate(YIELD_COMMERCE) - getTradeYield(YIELD_COMMERCE)) * getBaseYieldRateModifier(YIELD_COMMERCE) / 100;
+}
+
+int CvCity::getFoodExportLimit() const
+{
+    int iLimit = getPopulation() * std::max(0, GC.getDefineINT("RFCMP_FOOD_EXPORT_PER_POPULATION"));
+    if (getPopulation() <= 1)
+        iLimit = std::min(iLimit, std::max(0, getLocalFoodYield() - foodConsumption()));
+    return std::max(0, iLimit);
+}
+
+int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
+{
+    CvCity* pPartner = getCity(transfer.partner);
+    if (pPartner == NULL || pPartner->getGameTurnFounded() != transfer.partnerFounded ||
+        isDisorder() || pPartner->isDisorder() || isPlundered() || pPartner->isPlundered()) return 0;
+    const CvCity* pOrigin = transfer.routeFromSelf ? this : pPartner;
+    const CvCity* pDestination = transfer.routeFromSelf ? pPartner : this;
+    if (!GET_PLAYER(pOrigin->getOwnerINLINE()).canHaveTradeRoutesWith(pDestination->getOwnerINLINE())) return 0;
+    if (getTeam() != pPartner->getTeam() && !GET_TEAM(getTeam()).isFreeTrade(pPartner->getTeam())) return 0;
+    bool bRouteExists = false;
+    for (int i = 0; i < pOrigin->getTradeRoutes(); ++i)
+        if (pOrigin->getTradeCity(i) == pDestination) { bRouteExists = true; break; }
+    if (!bRouteExists) return 0;
+
+    // If the supplier loses population/food during this round, both sides
+    // apply the same downward scaling. Never exceed its current export cap.
+    const CvCity* pSupplier = transfer.amount < 0 ? this : pPartner;
+    int iCommitted = 0;
+    for (unsigned int i = 0; i < pSupplier->m_foodTrade.size(); ++i)
+        if (pSupplier->m_foodTrade[i].amount < 0) iCommitted -= pSupplier->m_foodTrade[i].amount;
+    int iAmount = std::abs(transfer.amount);
+    if (iCommitted > 0)
+        iAmount = (int)((__int64)iAmount * std::min(iCommitted, pSupplier->getFoodExportLimit()) / iCommitted);
+    return transfer.amount < 0 ? -iAmount : iAmount;
+}
+
+int CvCity::getFoodTradeImports() const
+{
+    int iTotal = 0;
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+        if (m_foodTrade[i].amount > 0) iTotal += foodTradeAmount(m_foodTrade[i]);
+    return iTotal;
+}
+
+int CvCity::getFoodTradeExports() const
+{
+    int iTotal = 0;
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+        if (m_foodTrade[i].amount < 0) iTotal -= foodTradeAmount(m_foodTrade[i]);
+    return iTotal;
+}
+
+int CvCity::getFoodTradeWith(const CvCity* pPartner) const
+{
+    int iTotal = 0;
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+        if (getCity(m_foodTrade[i].partner) == pPartner) iTotal += foodTradeAmount(m_foodTrade[i]);
+    return iTotal;
+}
+
+int CvCity::getFoodTradeChecksum() const
+{
+    int iResult = 0;
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+    {
+        const FoodTradeTransfer& t = m_foodTrade[i];
+        iResult += (t.partner.eOwner + 1) * 7919 + (t.partner.iID + 1) * 3571 +
+            t.partnerFounded * 31 + (t.routeFromSelf ? 101 : 0) + t.amount * 65537;
+    }
+    return iResult;
+}
+
+void CvCity::clearFoodTrade()
+{
+    m_foodTrade.clear();
+    setInfoDirty(true);
+    AI_setAssignWorkDirty(true);
+}
+
+void CvCity::addFoodTrade(CvCity* pPartner, bool bRouteFromSelf, int iAmount)
+{
+    FoodTradeTransfer transfer;
+    transfer.partner = pPartner->getIDInfo();
+    transfer.partnerFounded = pPartner->getGameTurnFounded();
+    transfer.routeFromSelf = bRouteFromSelf;
+    transfer.amount = iAmount;
+    m_foodTrade.push_back(transfer);
+}
+
 int CvCity::getYieldRate(YieldTypes eIndex) const
 {
-	return ((getBaseYieldRate(eIndex) * getBaseYieldRateModifier(eIndex)) / 100);
+    int iYield = (getBaseYieldRate(eIndex) * getBaseYieldRateModifier(eIndex)) / 100;
+    // Transfers are added after modifiers: imported food cannot be multiplied
+    // by buildings/civics and cannot become exportable local production.
+    if (eIndex == YIELD_FOOD)
+        iYield += getFoodTradeImports() - getFoodTradeExports();
+    return std::max(0, iYield);
 }
 
 
@@ -12605,13 +12709,30 @@ void CvCity::read(FDataStreamBase* pStream)
 		pStream->Read(&iChange);
 		m_aBuildingHealthChange.push_back(std::make_pair((BuildingClassTypes)iBuildingClass, iChange));
 	}
+    // Expansion bit 0: old saves have no food ledger and start next round.
+    if (uiFlag & 1)
+    {
+        int iCount;
+        pStream->Read(&iCount);
+        for (int i = 0; i < iCount; ++i)
+        {
+            FoodTradeTransfer t;
+            pStream->Read((int*)&t.partner.eOwner);
+            pStream->Read(&t.partner.iID);
+            pStream->Read(&t.partnerFounded);
+            pStream->Read(&t.routeFromSelf);
+            pStream->Read(&t.amount);
+            m_foodTrade.push_back(t);
+        }
+    }
+
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=0;
+	uint uiFlag=1;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12826,6 +12947,17 @@ void CvCity::write(FDataStreamBase* pStream)
 		pStream->Write((*it).first);
 		pStream->Write((*it).second);
 	}
+    pStream->Write((int)m_foodTrade.size());
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+    {
+        const FoodTradeTransfer& t = m_foodTrade[i];
+        pStream->Write(t.partner.eOwner);
+        pStream->Write(t.partner.iID);
+        pStream->Write(t.partnerFounded);
+        pStream->Write(t.routeFromSelf);
+        pStream->Write(t.amount);
+    }
+
 }
 
 

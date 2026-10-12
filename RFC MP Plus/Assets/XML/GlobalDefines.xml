@@ -1699,4 +1699,7 @@
     <Define><DefineName>RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT</DefineName><iDefineIntVal>12</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_OWNER_CULTURE_START_PERCENT</DefineName><iDefineIntVal>75</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
+    <!-- Food is redistributed along actual trade routes, not created. -->
+    <Define><DefineName>RFCMP_FOOD_EXPORT_PER_POPULATION</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_FOOD_COMMERCE_DIVISOR</DefineName><iDefineIntVal>2</iDefineIntVal></Define>
 </Civ4Defines>

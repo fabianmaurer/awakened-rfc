@@ -125,6 +125,49 @@ Routen-Tooltips zeigen Infrastruktur-Effektivität und Kulturbeiträge. Die Wert
 stehen zentral in `Assets/XML/GlobalDefines.xml` (`RFCMP_*TRADE*`). Embargo-Aktionen
 verwenden synchronisierte Netzwerk-Nachrichten, die Religion den Spiel-Zufallsgenerator.
 
+### Nahrungstransfers
+
+Bestehende Handelsrouten verlagern Nahrung von der ärmeren zur wohlhabenderen
+Stadt, auch innerhalb desselben Landes. Wohlstand ist der **lokale Handelsertrag
+nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten**. Spezialisten-Gold
+und die Einstellung des Goldreglers bestimmen die Richtung nicht. Bei gleichem
+Wohlstand findet kein Transfer statt.
+
+- Angeforderte Nahrung: `Routenwert / 2 × (reicherer Wohlstand − ärmerer Wohlstand) / reicherer Wohlstand`.
+  Kleine Wohlstandsunterschiede schwächen den Transfer. Bei großem Unterschied
+  nähert er sich einer Nahrung je zwei Wirtschaftspunkten der Route. Bei
+  gegenseitigen Routen zählt die stärkere Anforderung einmal pro Städtepaar.
+- Die gesamten Exporte einer Stadt sind auf **eine Nahrung je Bevölkerungspunkt** begrenzt.
+  Es muss kein Überschuss sein: Lieferstädte können langsamer wachsen oder hungern.
+  Städte der Größe eins exportieren nur ihren lokalen Überschuss nach Verbrauch
+  und Gesundheitskosten.
+- Bei übermäßiger Nachfrage werden Exporte proportional aufgeteilt. Die
+  Gesamtmenge wird auf ganze Nahrungspunkte abgerundet; verbleibende Punkte
+  erhalten die größten Nachkommareste. Gleichstände werden durch eine feste
+  Städte-/Routenreihenfolge entschieden. Kleine Anforderungen können leer ausgehen.
+- Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerzügen
+  und werden gespeichert. Sinkende Lieferkapazität reduziert Zusagen während
+  der Runde. Zerstörte/eroberte Städte, verlorene Routen, Unruhen, Blockaden,
+  Krieg und Embargos beenden betroffene Transfers sofort. Freie Kapazität wird
+  bei der nächsten Zuteilung neu verteilt.
+- Nahrung wird beim Lieferanten abgezogen und beim Empfänger **nach allen
+  Ertragsmodifikatoren** hinzugefügt. Importe werden weder vervielfacht noch erneut
+  exportiert. Sie wirken auf Wachstum, Hunger und nahrungsbasierte Einheitenproduktion.
+  Infrastruktur, Segeln, Astronomie und Häfen beeinflussen bereits den Routenwert.
+- Der Tooltip des Bevölkerungsbalkens zeigt gesamte Importe/Exporte, eine
+  Handelsroute den Austausch mit der Partnerstadt: positiv für Import, negativ
+  für Export. Bestehende Spielstände beginnen mit der nächsten Spielrunde.
+
+Beispiel: Eine Stadt der Größe vier kann vier Nahrung exportieren.
+  Fordern die Ziele vier, zwei und zwei, erhalten sie zwei, eins und eins.
+  Verlorene Routen geben dem Lieferanten Nahrung zurück und entziehen sie den Empfängern.
+
+Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
+in `Assets/XML/GlobalDefines.xml` steuern Bevölkerungsgrenze
+und Routenkapazität. Ein Epochen- oder Technologie-Malus auf lokale Nahrung ist
+noch nicht enthalten.
+
+
 ## Neue Staatsformen
 
 In jeder Kategorie ist eine Staatsform aktiv. Boni verschiedener Kategorien
@@ -177,7 +220,7 @@ als Möglichkeit für überschüssige Bevölkerung verfügbar.
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
-| **Kriegergesellschaft** | Keine | Keiner | Einheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
+| **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
 | **Rittertum** | Maschinenbau | Mittel | +25% Produktion für berittene Einheiten; +10% Stadtangriff. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
