@@ -51,11 +51,28 @@ theocracy. A religious republic uses the alternate-history **Commonwealth of
 Great Peace**. The Taiping-inspired title follows the civic family rather than
 requiring Christianity or a particular historical date.
 
-The Inca use **Tawantinsuyu** for a smaller or constitutional monarchy and
-**Land of the Four Quarters** for a larger empire. Religious rulers use
+The Inca use **Kingdom of Cusco / Königreich Cusco** for a smaller or
+constitutional monarchy and **Land of the Four Quarters / Land der vier
+Weltgegenden** for a larger empire. **Tawantinsuyu** is the Quechua name for
+the same imperial identity, rather than a separate civic outcome. Religious rulers use
 **Realm of the Sun**. Rome's constitutional monarchy becomes **Regno d'Italia**;
 its nationalist republic uses **Repubblica Italiana**. Ancient Rome's ordinary
 kingdom, empire, and republican names remain available.
+
+America's tribal form is **American Settlements / Amerikanische Siedlungen**,
+reflecting its settler-founded identity rather than implying an indigenous
+people. The Maya, Inca and Aztecs retain their indigenous tribal identities;
+European colonial powers retain names for their own homelands.
+
+American religious forms use **Kingdom of Providence / Königreich der Vorsehung**
+for a religious monarchy, **State of Deseret / Staat Deseret** for a theocracy,
+and **Puritan Commonwealth / Puritanisches Gemeinwesen** for a religious republic.
+The kingdom is an invented alternate-history title; Deseret and the Puritan
+commonwealth provide historical inspiration. These names follow the existing
+non-Islamic religious families: the game does not distinguish Amish, Puritan
+or Mormon denominations, nor require their original historical locations.
+An Amish kingdom was avoided because Amish church/state separation makes it
+a weaker model for a religious government.
 
 Other evocative titles include Egypt's **Realm of the Two Lands**, Persia's
 **Empire of the King of Kings**, Japan's religious **Land of the Gods**, and
@@ -90,7 +107,7 @@ Names also refresh once per player turn, including in existing saves. Existing
 pre-spawn names, country short names, and nationality adjectives use the original
 RFC text. Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 569 entries representing 356 distinct English/German
+`CountryNames.csv` lists 569 entries representing 358 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.
@@ -115,3 +132,6 @@ Historical references used for selected identities:
 - [Mamluk military elite, Metropolitan Museum of Art](https://www.metmuseum.org/de/toah/ht/08/afe)
 - [French Consulate and the coup of Brumaire, Fondation Napoléon](https://www.napoleon.org/en/history-of-the-two-empires/close-up/the-coup-detat-of-18-and-19-brumaire-an-viii-9-and-10-november1799)
 - [Cromwell's army and Protectorate, National Army Museum](https://www.nam.ac.uk/explore/british-civil-wars)
+- [State of Deseret, Utah Division of Archives and Records Service](https://archives.utah.gov/research/entities/5548/)
+- [Puritan Commonwealth, National Park Service](https://home.nps.gov/bost/learn/historyculture/puritans.htm)
+- [Amish separation of church and government, Associated Press](https://apnews.com/article/02879042c8ee425c345daa971ecd341e)

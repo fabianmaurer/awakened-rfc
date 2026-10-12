@@ -232,8 +232,8 @@ Estado Novo | Estado Novo
 Sacred Crown of Portugal | Heilige Krone Portugals
 INC
 Andean Peoples | Andenvölker
-Tawantinsuyu | Tawantinsuyu
-Tawantinsuyu | Tawantinsuyu
+Kingdom of Cusco | Königreich Cusco
+Land of the Four Quarters | Land der vier Weltgegenden
 Andean Republic | Andenrepublik
 Andean Federation | Andenbund
 League of the Andean Cities | Bund der Andenstädte
@@ -271,7 +271,7 @@ Turkish People's Republic | Türkische Volksrepublik
 Turkish State | Türkischer Staat
 Sacred Realm of Anatolia | Heiliges Reich Anatolien
 AME
-Peoples of the New World | Völker der Neuen Welt
+American Settlements | Amerikanische Siedlungen
 Kingdom of America | Königreich Amerika
 American Empire | Amerikanisches Reich
 United States of America | Vereinigte Staaten von Amerika
@@ -279,7 +279,7 @@ United States of America | Vereinigte Staaten von Amerika
 Atlantic Commonwealth | Atlantisches Commonwealth
 United American Communes | Vereinigte Amerikanische Kommunen
 American Union | Amerikanische Union
-Sacred Commonwealth of America | Heiliges Amerikanisches Commonwealth
+State of Deseret | Staat Deseret
 """
 
 
@@ -320,6 +320,10 @@ ALIASES = {
 
 SPECIAL_NAMES = {
     # Literary and historical identities, selected by existing civic families.
+    # America represents a settler-founded nation, not an indigenous tribal group.
+    # Religious names are historical inspirations, not denominational checks.
+    ('AME', 'HOLY_KINGDOM'): ('Kingdom of Providence', 'Königreich der Vorsehung'),
+    ('AME', 'THEOCRATIC_REPUBLIC'): ('Puritan Commonwealth', 'Puritanisches Gemeinwesen'),
     ('CHI', 'THEOCRATIC_REPUBLIC'): ('Commonwealth of Great Peace', 'Gemeinwesen des Großen Friedens'),
     ('INC', 'EMPIRE'): ('Land of the Four Quarters', 'Land der vier Weltgegenden'),
     ('INC', 'THEOCRACY'): ('Realm of the Sun', 'Reich der Sonne'),

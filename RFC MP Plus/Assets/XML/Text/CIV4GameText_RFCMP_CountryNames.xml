@@ -3706,11 +3706,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_KINGDOM</Tag>
-    <English>Tawantinsuyu</English>
-    <French>Tawantinsuyu</French>
-    <German>Tawantinsuyu</German>
-    <Italian>Tawantinsuyu</Italian>
-    <Spanish>Tawantinsuyu</Spanish>
+    <English>Kingdom of Cusco</English>
+    <French>Kingdom of Cusco</French>
+    <German>K&#246;nigreich Cusco</German>
+    <Italian>Kingdom of Cusco</Italian>
+    <Spanish>Kingdom of Cusco</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_EMPIRE</Tag>
@@ -3722,11 +3722,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_CONSTITUTIONAL</Tag>
-    <English>Tawantinsuyu</English>
-    <French>Tawantinsuyu</French>
-    <German>Tawantinsuyu</German>
-    <Italian>Tawantinsuyu</Italian>
-    <Spanish>Tawantinsuyu</Spanish>
+    <English>Kingdom of Cusco</English>
+    <French>Kingdom of Cusco</French>
+    <German>K&#246;nigreich Cusco</German>
+    <Italian>Kingdom of Cusco</Italian>
+    <Spanish>Kingdom of Cusco</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_REPUBLIC</Tag>
@@ -4370,11 +4370,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_TRIBAL</Tag>
-    <English>Peoples of the New World</English>
-    <French>Peoples of the New World</French>
-    <German>V&#246;lker der Neuen Welt</German>
-    <Italian>Peoples of the New World</Italian>
-    <Spanish>Peoples of the New World</Spanish>
+    <English>American Settlements</English>
+    <French>American Settlements</French>
+    <German>Amerikanische Siedlungen</German>
+    <Italian>American Settlements</Italian>
+    <Spanish>American Settlements</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_KINGDOM</Tag>
@@ -4482,27 +4482,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_THEOCRACY</Tag>
-    <English>Sacred Commonwealth of America</English>
-    <French>Sacred Commonwealth of America</French>
-    <German>Heiliges Amerikanisches Commonwealth</German>
-    <Italian>Sacred Commonwealth of America</Italian>
-    <Spanish>Sacred Commonwealth of America</Spanish>
+    <English>State of Deseret</English>
+    <French>State of Deseret</French>
+    <German>Staat Deseret</German>
+    <Italian>State of Deseret</Italian>
+    <Spanish>State of Deseret</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_HOLY_KINGDOM</Tag>
-    <English>Sacred Commonwealth of America</English>
-    <French>Sacred Commonwealth of America</French>
-    <German>Heiliges Amerikanisches Commonwealth</German>
-    <Italian>Sacred Commonwealth of America</Italian>
-    <Spanish>Sacred Commonwealth of America</Spanish>
+    <English>Kingdom of Providence</English>
+    <French>Kingdom of Providence</French>
+    <German>K&#246;nigreich der Vorsehung</German>
+    <Italian>Kingdom of Providence</Italian>
+    <Spanish>Kingdom of Providence</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_THEOCRATIC_REPUBLIC</Tag>
-    <English>United States of America</English>
-    <French>United States of America</French>
-    <German>Vereinigte Staaten von Amerika</German>
-    <Italian>United States of America</Italian>
-    <Spanish>United States of America</Spanish>
+    <English>Puritan Commonwealth</English>
+    <French>Puritan Commonwealth</French>
+    <German>Puritanisches Gemeinwesen</German>
+    <Italian>Puritan Commonwealth</Italian>
+    <Spanish>Puritan Commonwealth</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_ISLAMIC_REPUBLIC</Tag>

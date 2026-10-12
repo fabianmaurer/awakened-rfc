@@ -462,9 +462,9 @@ POR,CALIPHATE,Caliphate of Portugal,Kalifat Portugal
 POR,SULTANATE,Sultanate of Portugal,Sultanat Portugal
 POR,SECULAR_REPUBLIC,Portugal,Portugal
 INC,TRIBAL,Andean Peoples,Andenvölker
-INC,KINGDOM,Tawantinsuyu,Tawantinsuyu
+INC,KINGDOM,Kingdom of Cusco,Königreich Cusco
 INC,EMPIRE,Land of the Four Quarters,Land der vier Weltgegenden
-INC,CONSTITUTIONAL,Tawantinsuyu,Tawantinsuyu
+INC,CONSTITUTIONAL,Kingdom of Cusco,Königreich Cusco
 INC,REPUBLIC,Andean Republic,Andenrepublik
 INC,DEMOCRACY,Andean Federation,Andenbund
 INC,MERCHANT_REPUBLIC,League of the Andean Cities,Bund der Andenstädte
@@ -545,7 +545,7 @@ TUR,ISLAMIC_REPUBLIC,Islamic Republic of Turkey,Islamische Republik Türkei
 TUR,CALIPHATE,Ottoman Caliphate,Osmanisches Kalifat
 TUR,SULTANATE,Ottoman Sultanate,Osmanisches Sultanat
 TUR,SECULAR_REPUBLIC,Turkey,Türkei
-AME,TRIBAL,Peoples of the New World,Völker der Neuen Welt
+AME,TRIBAL,American Settlements,Amerikanische Siedlungen
 AME,KINGDOM,Kingdom of America,Königreich Amerika
 AME,EMPIRE,American Empire,Amerikanisches Reich
 AME,CONSTITUTIONAL,Kingdom of America,Königreich Amerika
@@ -559,9 +559,9 @@ AME,DICTATORSHIP,American Union,Amerikanische Union
 AME,MILITARY,Continental Protectorate,Kontinentales Protektorat
 AME,NATIONAL_STATE,American Union,Amerikanische Union
 AME,NATIONAL_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
-AME,THEOCRACY,Sacred Commonwealth of America,Heiliges Amerikanisches Commonwealth
-AME,HOLY_KINGDOM,Sacred Commonwealth of America,Heiliges Amerikanisches Commonwealth
-AME,THEOCRATIC_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
+AME,THEOCRACY,State of Deseret,Staat Deseret
+AME,HOLY_KINGDOM,Kingdom of Providence,Königreich der Vorsehung
+AME,THEOCRATIC_REPUBLIC,Puritan Commonwealth,Puritanisches Gemeinwesen
 AME,ISLAMIC_REPUBLIC,Islamic Republic of America,Islamische Republik Amerika
 AME,CALIPHATE,Caliphate of the New World,Kalifat der Neuen Welt
 AME,SULTANATE,Sultanate of America,Sultanat Amerika
