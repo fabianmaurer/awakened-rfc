@@ -13292,6 +13292,20 @@ bool CvCity::isStarCity() const
 
 bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
 {
+    // Harbors (including unique replacements) can serve an ocean coast
+    // through one intervening land tile. Other coastal requirements, such
+    // as ship construction, continue to use the normal isCoastal check.
+    if (GC.getBuildingInfo(eBuilding).getBuildingClassType() == GC.getInfoTypeForString("BUILDINGCLASS_HARBOR"))
+    {
+        int iMinWaterSize = std::max(GC.getMIN_WATER_SIZE_FOR_OCEAN(), GC.getBuildingInfo(eBuilding).getMinAreaSize());
+        for (int i = 0; i < NUM_DIRECTION_TYPES; ++i)
+        {
+            CvPlot* pCoast = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)i);
+            if (pCoast != NULL && !pCoast->isWater() && !pCoast->isImpassable() &&
+                pCoast->area() == area() && pCoast->isCoastalLand(iMinWaterSize))
+                return true;
+        }
+    }
 	// if both the river and water flags are set, we require one of the two conditions, not both
 	if (GC.getBuildingInfo(eBuilding).isWater())
 	{

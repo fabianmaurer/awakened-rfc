@@ -25,6 +25,8 @@ Fähigkeiten und Siegziele bleiben erhalten.
   danach linear sinkend auf null bei 15. Straßen ermöglichen 100% ohne Entfernungslimit; Wasserwege
   benötigen Segeln und sind bis Astronomie auf zwölf Felder begrenzt.
   Wasserhandel wird halbiert, wenn nicht beide Städte einen Hafen besitzen.
+  Häfen sind auch eine Landkachel hinter der Meeresküste baubar und verbessern
+  bearbeitete Wasserfelder.
   Routen verbreiten Kultur und Religion in
   beide Richtungen und ersetzen die bisherige passive Religionsverbreitung.
   Missionare bleiben erhalten. Kulturelle Homogenität und heilige Städte hemmen

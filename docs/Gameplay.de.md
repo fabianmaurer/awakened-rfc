@@ -98,6 +98,9 @@ einheitlich für alle Zivilisationen und Spieler.
 
 ## Handelsrouten, Militärzugang und Embargos
 
+- **Häfen sind auch eine Landkachel hinter einer Meeresküste baubar**, einschließlich
+  einzigartiger Ersatzgebäude wie des Kothons. Ihr bestehender Nahrungsbonus gilt
+  für bearbeitete Wasserfelder. Schiffe können dort weiterhin nicht gebaut werden.
 - Bekannte Städte handeln auch ohne Straßen oder Militärzugangsabkommen.
   Die üblichen Routenbegrenzungen, Krieg, städtische Unruhen, Blockaden und
   Staatsformen-Einschränkungen bleiben wirksam. Ohne Infrastruktur beträgt die

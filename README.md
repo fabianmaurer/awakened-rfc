@@ -23,7 +23,8 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
 - **Trade without roads or border agreements:** 50% efficiency through distance 5,
   declining linearly to zero at 15. Roads enable 100% at any distance; water connections require
   Sailing and have a twelve-tile limit until Astronomy. Water trade is halved
-  unless both cities have harbors.
+  unless both cities have harbors. Harbors can also be built one tile inland
+  from an ocean coast, boosting worked water tiles.
   Routes exchange culture and religion in
   both directions; this replaces the old passive religion spread. Missionaries
   remain. Cultural homogeneity and holy cities resist trade-based religion spread;

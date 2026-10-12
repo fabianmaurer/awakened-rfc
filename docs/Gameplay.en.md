@@ -93,6 +93,9 @@ queued orders. Rates are shared by all civilizations and players.
 
 ## Trade routes, military access and embargoes
 
+- **Harbors can be built one land tile inland from an ocean coast**, including
+  unique replacements such as the Cothon. Their existing food bonus applies to
+  worked water tiles. This does not enable inland ship construction.
 - Known cities can trade without roads or a Military access treaty. Normal
   route limits, war, city disorder, blockades and foreign-trade civic restrictions
   still apply. Infrastructure-free routes use **50% efficiency through distance 5**,
