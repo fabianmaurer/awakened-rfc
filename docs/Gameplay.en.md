@@ -106,6 +106,9 @@ queued orders. Rates are shared by all civilizations and players.
 
 ## Trade routes, military access and embargoes
 
+Cities may select undiscovered cities as trade partners. When a route is
+selected, the partner city's tile becomes revealed to the route owner's team.
+
 - **Harbors can be built one land tile inland from an ocean coast**, including
   unique replacements such as the Cothon. Their existing food bonus applies to
   worked water tiles. This does not enable inland ship construction.
@@ -204,10 +207,18 @@ Example: a size-four city can export at most four food. If
 destinations request four, two and two, they receive two, one and one. Losing
 the routes restores the supplier's food but removes the recipients' imports.
 
-The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
-settings in `Assets/XML/GlobalDefines.xml` control the population cap and route
-capacity. The technology-based growth penalty affects positive surplus after
-these transfers; it does not reduce food production or transferred amounts.
+Net unhappiness and unhealthiness create migration pressure, increasing a
+supplier's route demand by up to 100%. Each net unhappy citizen adds twice the
+pressure of one net unhealthy citizen. Surplus happiness and health counter that
+pressure at lower strength: one surplus happiness cancels one pressure point,
+while one surplus health cancels half a point. The population export cap still
+applies.
+
+The `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`,
+and `RFCMP_FOOD_TRADE_MIGRATION_*` settings in `Assets/XML/GlobalDefines.xml`
+control the population cap, route capacity, and migration pressure. The
+technology-based growth penalty affects positive surplus after these transfers;
+it does not reduce food production or transferred amounts.
 
 
 ## New civics
@@ -226,7 +237,7 @@ each qualifying building or worked improvement.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. |
+| **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. Enables inheritance events. |
 | **Republic** | Code of Laws | Low | +50% great person birth rate. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
 | **Democracy** | Democracy | High | +2 happiness in every city; elections every ten turns randomly change one other civic column. |
@@ -318,6 +329,16 @@ government remains Democracy, and elections have no additional transition
 stability penalty.
 
 ## Civic stability
+
+### Dynastic inheritance
+
+When a monarchy with a state religion collapses, it has a **50%** chance to be
+inherited instead of fragmenting. An heir must be a living monarchy with the
+same state religion, at least **0 stability**, and at least one city on the
+continent of the collapsing monarchy's capital. One eligible heir is selected
+deterministically; there is no size requirement. The heir receives every city
+and unit of the collapsed realm. If no heir qualifies or the chance fails, the
+normal collapse rules apply.
 
 The following combinations contribute to base stability:
 

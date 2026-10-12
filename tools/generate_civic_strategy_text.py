@@ -10,8 +10,8 @@ SUMMARIES = {
         '+20% unit production, -20% research, +100% distance and city-count maintenance.',
         '+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und städtezahlabhängiger Unterhalt.'),
     'MONARCHY': (
-        '+25% production for world, team and national wonders.',
-        '+25% Produktion für Welt-, Team- und nationale Wunder.'),
+        '+25% production for world, team and national wonders. Enables inheritance events.',
+        '+25% Produktion f\u00fcr Welt-, Team- und nationale Wunder. Erm\u00f6glicht Erbfolgeereignisse.'),
     'REPUBLIC': (
         '+50% Great Person birth rate.',
         '+50% Geburtenrate Großer Persönlichkeiten.'),

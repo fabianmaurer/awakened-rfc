@@ -14,6 +14,8 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
   one other civic column.
 - **Civic stability rewards compatible institutions**, capped at −5 to +5.
   The outdated-civics penalty is removed.
+- **Dynastic inheritance:** a collapsing monarchy can pass its realm to an
+  eligible same-religion monarchy on the same continent.
 - **More consistent civilization economics:** individual growth, production,
   research and upkeep tuning is removed, and inflation stays at zero.
   Shared civilization-group rules remain.
@@ -69,7 +71,7 @@ culture and espionage, distinct from gold income.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. |
+| **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. Enables inheritance events. |
 | **Republic** | Code of Laws | Low | +50% great person birth rate. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
 | **Democracy** | Democracy | High | +2 happiness in every city; elections every ten turns randomly change one other civic column. |

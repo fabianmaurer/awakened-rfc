@@ -489,11 +489,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MONARCHY</Tag>
-        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders</English>
-        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders</French>
-        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Wunder</German>
-        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders</Italian>
-        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders</Spanish>
+        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</English>
+        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</French>
+        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Wunder[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
+        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
+        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DICTATORSHIP</Tag>

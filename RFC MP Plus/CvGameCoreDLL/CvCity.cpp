@@ -8063,6 +8063,20 @@ int CvCity::getFoodExportLimit() const
     return std::max(0, iLimit);
 }
 
+int CvCity::getFoodTradeMigrationPressurePercent() const
+{
+    const int iUnhappiness = std::max(0, unhappyLevel() - happyLevel());
+    const int iUnhealthiness = std::max(0, badHealth() - goodHealth());
+    const int iHappinessSurplus = std::max(0, happyLevel() - unhappyLevel());
+    const int iHealthSurplus = std::max(0, goodHealth() - badHealth());
+    // Pressure: 2 per net unhappy citizen, 1 per net unhealthy citizen.
+    // Retention: 1 per surplus happiness and 0.5 per surplus health.
+    const int iPressureTimes2 = std::max(0, 4 * iUnhappiness + 2 * iUnhealthiness -
+        2 * iHappinessSurplus - iHealthSurplus);
+    const int iPercentPerPressure = std::max(0, GC.getDefineINT("RFCMP_FOOD_TRADE_MIGRATION_PERCENT_PER_PRESSURE"));
+    const int iMaxPercent = std::max(0, GC.getDefineINT("RFCMP_FOOD_TRADE_MIGRATION_MAX_PERCENT"));
+    return std::min(iMaxPercent, (iPressureTimes2 * iPercentPerPressure) / 2);
+}
 int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
 {
     CvCity* pPartner = getCity(transfer.partner);
@@ -11262,7 +11276,7 @@ void CvCity::updateTradeRoutes()
 					{
 						if (!(pLoopCity->isTradeRoute(getOwnerINLINE())) || (getTeam() == GET_PLAYER((PlayerTypes)iI).getTeam()))
 						{
-							if (pLoopCity->plot()->isRevealed(getTeam(), false))
+							// Trade contacts can establish routes to previously undiscovered cities.
 							{
 								iValue = tradeInfrastructureValue(this, pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
 
@@ -11278,6 +11292,9 @@ void CvCity::updateTradeRoutes()
 
 										paiBestValue[iJ] = iValue;
 										m_paTradeCities[iJ] = pLoopCity->getIDInfo();
+
+																		// The selected route makes the partner city known to this team.
+																		pLoopCity->plot()->setRevealed(getTeam(), true, false, NO_TEAM, false);
 
 										break;
 									}

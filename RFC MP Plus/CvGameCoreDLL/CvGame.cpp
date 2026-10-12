@@ -2436,6 +2436,7 @@ void CvGame::updateFoodTrade()
             int iValue = pOrigin->calculateTradeYield(YIELD_COMMERCE, pOrigin->calculateTradeProfit(pPartner));
             int iDemand = (int)((__int64)iValue * 100 * (iRichWealth - std::min(iOwnWealth, iOtherWealth)) / ((__int64)iFoodDivisor * iRichWealth));
             if (iDemand <= 0) continue;
+            iDemand = (int)((__int64)iDemand * (100 + pSupplier->getFoodTradeMigrationPressurePercent()) / 100);
             unsigned int j;
             for (j = 0; j < requests.size(); ++j)
                 if (requests[j].supplier == pSupplier && requests[j].recipient == pRecipient) break;

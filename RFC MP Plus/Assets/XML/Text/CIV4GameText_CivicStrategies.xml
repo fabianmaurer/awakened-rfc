@@ -10,11 +10,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
-        <English>+25% production for world, team and national wonders.</English>
-        <French>+25% production for world, team and national wonders.</French>
-        <German>+25% Produktion f&#252;r Welt-, Team- und nationale Wunder.</German>
-        <Italian>+25% production for world, team and national wonders.</Italian>
-        <Spanish>+25% production for world, team and national wonders.</Spanish>
+        <English>+25% production for world, team and national wonders. Enables inheritance events.</English>
+        <French>+25% production for world, team and national wonders. Enables inheritance events.</French>
+        <German>+25% Produktion f&#252;r Welt-, Team- und nationale Wunder. Erm&#246;glicht Erbfolgeereignisse.</German>
+        <Italian>+25% production for world, team and national wonders. Enables inheritance events.</Italian>
+        <Spanish>+25% production for world, team and national wonders. Enables inheritance events.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>

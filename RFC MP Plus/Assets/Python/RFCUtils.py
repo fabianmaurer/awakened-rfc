@@ -841,8 +841,53 @@ class RFCUtils:
                 self.setLastTurnAlive(iCiv, gc.getGame().getGameTurn())
 
 
+        def getMonarchyInheritanceHeir(self, iCiv):
+                pCollapsed = gc.getPlayer(iCiv)
+                iGovernment = gc.getInfoTypeForString("CIVICOPTION_GOVERNMENT")
+                iMonarchy = gc.getInfoTypeForString("CIVIC_MONARCHY")
+                iReligion = pCollapsed.getStateReligion()
+                if (iGovernment == -1 or iMonarchy == -1 or iReligion == -1 or pCollapsed.getCivics(iGovernment) != iMonarchy):
+                        return -1
+
+                capital = pCollapsed.getCapitalCity()
+                if (capital.isNone()):
+                        cityList = PyPlayer(iCiv).getCityList()
+                        if (not len(cityList)):
+                                return -1
+                        capital = cityList[0].GetCy()
+                iContinent = capital.plot().getArea()
+                heirs = []
+                for iCandidate in range(iNumPlayers):
+                        pCandidate = gc.getPlayer(iCandidate)
+                        if (iCandidate == iCiv or not pCandidate.isAlive() or pCandidate.getCivics(iGovernment) != iMonarchy or pCandidate.getStateReligion() != iReligion or self.getStability(iCandidate) < 0):
+                                continue
+                        for pyCity in PyPlayer(iCandidate).getCityList():
+                                if (pyCity.GetCy().plot().getArea() == iContinent):
+                                        heirs.append(iCandidate)
+                                        break
+                if (not len(heirs)):
+                        return -1
+
+                iChance = max(0, min(100, gc.getDefineINT("RFCMP_MONARCHY_INHERITANCE_CHANCE")))
+                iSeed = gc.getGame().getSorenRand().getSeed() + gc.getGame().getGameTurn() * 31 + iCiv * 17
+                if (iSeed % 100 >= iChance):
+                        return -1
+                return heirs[(iSeed + iCiv * 29) % len(heirs)]
+
+
+        def tryMonarchyInheritance(self, iCiv):
+                iHeir = self.getMonarchyInheritanceHeir(iCiv)
+                if (iHeir == -1):
+                        return False
+                print ("MONARCHY INHERITANCE", gc.getPlayer(iCiv).getCivilizationAdjective(0), "->", gc.getPlayer(iHeir).getCivilizationAdjective(0))
+                self.killCiv(iCiv, iHeir)
+                return True
+
+
 
         def pickFragmentation(self, iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities):
+                if (not bAssignCities and self.tryMonarchyInheritance(iPlayer)):
+                        return
                 if (iPlayer == con.iAztecs or \
                     iPlayer == con.iInca or \
                     iPlayer == con.iMaya or \

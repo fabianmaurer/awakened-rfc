@@ -113,6 +113,10 @@ einheitlich für alle Zivilisationen und Spieler.
 
 ## Handelsrouten, Militärzugang und Embargos
 
+Städte können auch unbekannte Städte als Handelspartner wählen. Sobald eine
+Route ausgewählt wird, wird das Stadtfeld der Partnerstadt für das Team des
+Routenbesitzers aufgedeckt.
+
 - **Häfen sind auch eine Landkachel hinter einer Meeresküste baubar**, einschließlich
   einzigartiger Ersatzgebäude wie des Kothons. Ihr bestehender Nahrungsbonus gilt
   für bearbeitete Wasserfelder. Schiffe können dort weiterhin nicht gebaut werden.
@@ -215,10 +219,18 @@ Beispiel: Eine Stadt der Größe vier kann vier Nahrung exportieren.
   Fordern die Ziele vier, zwei und zwei, erhalten sie zwei, eins und eins.
   Verlorene Routen geben dem Lieferanten Nahrung zurück und entziehen sie den Empfängern.
 
-Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
-in `Assets/XML/GlobalDefines.xml` steuern Bevölkerungsgrenze
-und Routenkapazität. Der technologieabhängige Wachstumsmalus betrifft positiven
-Überschuss nach den Transfers, nicht die Nahrungsproduktion oder Transfermengen.
+Netto-Unzufriedenheit und -Krankheit erzeugen Migrationsdruck und erhöhen die
+Nahrungsnachfrage einer Lieferstadt um bis zu 100%. Jede netto unzufriedene
+Bevölkerung erzeugt doppelt so viel Druck wie eine netto kranke. Überschüssige
+Zufriedenheit und Gesundheit dämpfen ihn schwächer: ein Punkt Zufriedenheit
+hebt einen Druckpunkt auf, ein Punkt Gesundheit einen halben. Die
+Bevölkerungsgrenze für Exporte bleibt bestehen.
+
+Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
+und `RFCMP_FOOD_TRADE_MIGRATION_*` in `Assets/XML/GlobalDefines.xml` steuern
+Bevölkerungsgrenze, Routenkapazität und Migrationsdruck. Der technologieabhängige
+Wachstumsmalus betrifft positiven Überschuss nach den Transfers, nicht die
+Nahrungsproduktion oder Transfermengen.
 
 
 ## Neue Staatsformen
@@ -238,7 +250,7 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | +25% Produktion für Welt-, Team- und nationale Wunder. |
+| **Monarchie** | Monarchie | Mittel | +25% Produktion für Welt-, Team- und nationale Wunder. Ermöglicht Erbfolgeereignisse. |
 | **Republik** | Gesetzgebung | Niedrig | +50% Geburtenrate Großer Persönlichkeiten. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
 | **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; Wahlen alle zehn Runden ändern zufällig eine andere Staatsformen-Kategorie. |
@@ -335,6 +347,17 @@ Die Regierung bleibt Demokratie; Wahlen verursachen keinen zusätzlichen
 Stabilitätsmalus für den Übergang.
 
 ## Stabilität durch Staatsformen
+
+### Dynastische Erbfolge
+
+Wenn eine Monarchie mit Staatsreligion kollabiert, kann sie mit **50%**
+Wahrscheinlichkeit vererbt werden, statt zu zerfallen. Ein Erbe muss eine
+lebende Monarchie mit derselben Staatsreligion, mindestens **0 Stabilität** und
+mindestens einer Stadt auf dem Kontinent der Hauptstadt der kollabierenden
+Monarchie sein. Ein zulässiger Erbe wird deterministisch ausgewählt; eine
+Größenvoraussetzung gibt es nicht. Der Erbe erhält alle Städte und Einheiten
+des kollabierten Reichs. Ohne zulässigen Erben oder bei fehlgeschlagenem Wurf
+gelten die normalen Kollapsregeln.
 
 Die folgenden Kombinationen tragen zur Basisstabilität bei:
 
