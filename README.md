@@ -86,7 +86,7 @@ each qualifying building or worked improvement.
 | **Slavery** | Bronze Working | Low | May sacrifice population to rush production; +2 commerce from plantations. |
 | **Serfdom** | Feudalism | Low | +1 food from farms; -1 commerce from villages; workers build improvements 50% faster. |
 | **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -20% commerce yield. |
-| **Market Economy** | Corporation | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. |
+| **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. |
 
 Improvement growth includes every upgrade stage: **Cottage → Hamlet → Village →
 Town**. Self-sufficiency stops upgrades; Market Economy doubles their rate.
