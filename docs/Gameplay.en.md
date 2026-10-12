@@ -121,8 +121,7 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   Eligible routes retain a minimum of one commerce point. A continuous road,
   connection gives **100% efficiency without a range limit**. Water-assisted
   connections (sea or river, including mixed road/water paths) require **Sailing**
-  and give 100% only within distance **12** until **Astronomy** removes the range
-  limit. The existing terrain-navigation restrictions still apply.
+  and give 100% within distance **12**, or **20** when the originating city has a harbor, until **Astronomy** removes the range limit. The existing terrain-navigation restrictions still apply.
   Cities on different landmasses require an actual navigable connection;
   infrastructure-free caravan routes cannot bypass these sea-trade restrictions.
   Water-assisted trade runs at **50% instead of 100%** unless both cities have
@@ -173,53 +172,19 @@ actions use synchronized network messages; religious spread uses game RNG.
 
 ### Food transfers
 
-Actual trade routes also move food from the poorer city to the wealthier one,
-including domestic routes. Wealth is **local commerce yield per population point
-after modifiers, excluding trade-route commerce**; gold from specialists or the tax slider does
-not determine direction. Equal wealth means no transfer.
+Food flows along actual trade routes toward the city with the stronger combined attraction. The comparison uses local commerce per population point after modifiers, excluding trade-route commerce, plus wellbeing per population point. Wellbeing is happiness minus unhappiness plus good health minus bad health. Gold from specialists or the tax slider does not determine direction.
 
-- Requested food is `route commerce / 2 × (richer wealth per capita − poorer wealth per capita) / richer wealth per capita`.
-  Small wealth differences weaken the transfer; a large difference approaches
-  one food per two route-commerce points. For reciprocal routes, use the stronger
-  request once rather than counting the city pair twice.
-- A supplier's combined exports are capped at **one food per population point**.
-  Exports need not come from
-  surplus: supplying cities can grow more slowly or starve. Size-one cities may
-  export only their local surplus after consumption and health costs.
-- When requests exceed capacity, destinations receive proportional shares.
-  Total food is rounded down to whole points, with the remaining whole points
-  assigned to the largest fractional shares; ties use deterministic city/route
-  order. Small requests may yield no food.
-- All allocations are computed together once per game turn before player turns,
-  then saved. A falling supplier cap reduces commitments during the round.
-  Destroyed/captured cities, lost routes, disorder, blockades, war and embargoes
-  invalidate affected transfers immediately. Freed capacity is redistributed
-  at the next allocation, not mid-turn.
-- Food is deducted from the supplier and added to the recipient **after yield
-  modifiers**. Imports are not multiplied by food bonuses and cannot be exported
-  again. They affect ordinary growth, starvation, and food-based unit production.
-  Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
-- Hover the population bar for total imports/exports, or a trade route for the
-  signed food exchange with that partner. Positive means import, negative export.
-  Existing saves start receiving allocations at the next game turn.
+- Wealth inequality contributes up to **100 pressure points**. Wellbeing inequality contributes up to **50 pressure points**, so it is notable but generally weaker. The signed pressures are added before the food-flow direction and amount are chosen. A healthy, happy new city can therefore attract food despite a modest wealth disadvantage; wellbeing cannot overcome a large wealth gap by itself.
+- Requested food is `route commerce ? absolute combined pressure / 100` at the default doubled base amount. For reciprocal routes, use the stronger request once rather than counting the city pair twice.
+- A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or starve. Size-one cities may export only their local surplus after consumption and health costs.
+- When requests exceed capacity, destinations receive proportional shares. Total food is rounded down to whole points, with the remaining whole points assigned to the largest fractional shares; ties use deterministic city/route order. Small requests may yield no food.
+- All allocations are computed together once per game turn before player turns, then saved. A falling supplier cap reduces commitments during the round. Destroyed/captured cities, lost routes, disorder, blockades, war and embargoes invalidate affected transfers immediately. Freed capacity is redistributed at the next allocation, not mid-turn.
+- Food is deducted from the supplier and added to the recipient **after yield modifiers**. Imports are not multiplied by food bonuses and cannot be exported again. They affect ordinary growth, starvation, and food-based unit production. Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
+- Hover the population bar for total imports/exports, or a trade route for the signed food exchange with that partner. Positive means import, negative export. Existing saves start receiving allocations at the next game turn.
 
-Example: a size-four city can export at most four food. If
-destinations request four, two and two, they receive two, one and one. Losing
-the routes restores the supplier's food but removes the recipients' imports.
+Example: a size-four city can export at most four food. If destinations request four, two and two, they receive two, one and one. Losing the routes restores the supplier's food but removes the recipients' imports.
 
-Net unhappiness and unhealthiness create migration pressure, increasing a
-supplier's route demand by up to 100%. Each net unhappy citizen adds twice the
-pressure of one net unhealthy citizen. Surplus happiness and health counter that
-pressure at lower strength: one surplus happiness cancels one pressure point,
-while one surplus health cancels half a point. The population export cap still
-applies.
-
-The `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`,
-and `RFCMP_FOOD_TRADE_MIGRATION_*` settings in `Assets/XML/GlobalDefines.xml`
-control the population cap, route capacity, and migration pressure. The
-technology-based growth penalty affects positive surplus after these transfers;
-it does not reduce food production or transferred amounts.
-
+The `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`, and `RFCMP_TRADE_FOOD_AMOUNT_PERCENT` settings in `Assets/XML/GlobalDefines.xml` control the population cap, route capacity, and base transfer amount. The technology-based growth penalty affects positive surplus after these transfers; it does not reduce food production or transferred amounts.
 
 ## New civics
 

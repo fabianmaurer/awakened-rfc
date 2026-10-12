@@ -612,7 +612,7 @@ public:
     int getLocalFoodYield() const;
     int getLocalTradeWealth() const;
     int getFoodExportLimit() const;
-    int getFoodTradeMigrationPressurePercent() const;
+    int getFoodTradeWellbeingScore() const;
     int getFoodTradeImports() const;
     int getFoodTradeExports() const;
     int getFoodTradeWith(const CvCity* pPartner) const;

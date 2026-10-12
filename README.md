@@ -33,9 +33,10 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
   both directions; this replaces the old passive religion spread. Missionaries
   remain. Cultural homogeneity and holy cities resist trade-based religion spread;
   State Atheism blocks religious spread.
-- **Food trade feeds wealthy cities:** routes move food from poorer cities,
-  capped at one food per population point of the supplier. Embargoes and
-  blockades can leave import-dependent cities short of food.
+- **Food trade follows city attraction:** wealth per resident drives most food
+  transfers, while health and happiness add a weaker pull. Supplier exports are
+  capped at one food per population point; embargoes and blockades can leave
+  import-dependent cities short of food.
 - **Military access** replaces Open Borders and remains reciprocal.
   **Trade embargoes** are available from Currency in the Foreign Advisor.
 - **Advance spawn warnings:** tile tooltips show future flip areas; affected

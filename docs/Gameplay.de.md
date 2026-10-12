@@ -130,8 +130,7 @@ Routenbesitzers aufgedeckt.
   liefern mindestens einen Wirtschaftspunkt. Eine durchgehende Straßenverbindung
   liefert **100% ohne Entfernungslimit**. Wasserverbindungen (Meer oder Fluss,
   auch gemischte Straßen-/Wasserwege) benötigen **Segeln** und liefern bis
-  **Astronomie** nur bis Entfernung **12** die 100%. Astronomie hebt dieses Limit
-  auf. Die bestehenden Beschränkungen für befahrbare Geländearten gelten weiterhin.
+  **Astronomie** nur bis Entfernung **12** die 100%, oder bis **20**, wenn die Ausgangsstadt einen Hafen besitzt. Astronomie hebt dieses Limit auf. Die bestehenden Beschränkungen für befahrbare Geländearten gelten weiterhin.
   Städte auf verschiedenen Landmassen benötigen eine tatsächlich befahrbare
   Verbindung; Handel ohne Infrastruktur umgeht diese Seehandelsregeln nicht.
   Wasserhandel liefert **50% statt 100%**, wenn nicht beide Städte einen Hafen
@@ -184,54 +183,19 @@ verwenden synchronisierte Netzwerk-Nachrichten, die Religion den Spiel-Zufallsge
 
 ### Nahrungstransfers
 
-Bestehende Handelsrouten verlagern Nahrung von der ärmeren zur wohlhabenderen
-Stadt, auch innerhalb desselben Landes. Wohlstand ist der **lokale Handelsertrag
-je Bevölkerungspunkt nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten**. Spezialisten-Gold
-und die Einstellung des Goldreglers bestimmen die Richtung nicht. Bei gleichem
-Wohlstand findet kein Transfer statt.
+Nahrung flie?t ?ber bestehende Handelsrouten zu der Stadt mit der h?heren kombinierten Anziehungskraft. Verglichen werden lokaler Handelsertrag je Bev?lkerungspunkt nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten, und Wohlbefinden je Bev?lkerungspunkt. Wohlbefinden ist Zufriedenheit minus Unzufriedenheit plus Gesundheit minus Krankheit. Spezialisten-Gold und die Einstellung des Goldreglers bestimmen die Richtung nicht.
 
-- Angeforderte Nahrung: `Routenwert / 2 × (reicherer Pro-Kopf-Wohlstand − ärmerer Pro-Kopf-Wohlstand) / reicherer Pro-Kopf-Wohlstand`.
-  Kleine Wohlstandsunterschiede schwächen den Transfer. Bei großem Unterschied
-  nähert er sich einer Nahrung je zwei Wirtschaftspunkten der Route. Bei
-  gegenseitigen Routen zählt die stärkere Anforderung einmal pro Städtepaar.
-- Die gesamten Exporte einer Stadt sind auf **eine Nahrung je Bevölkerungspunkt** begrenzt.
-  Es muss kein Überschuss sein: Lieferstädte können langsamer wachsen oder hungern.
-  Städte der Größe eins exportieren nur ihren lokalen Überschuss nach Verbrauch
-  und Gesundheitskosten.
-- Bei übermäßiger Nachfrage werden Exporte proportional aufgeteilt. Die
-  Gesamtmenge wird auf ganze Nahrungspunkte abgerundet; verbleibende Punkte
-  erhalten die größten Nachkommareste. Gleichstände werden durch eine feste
-  Städte-/Routenreihenfolge entschieden. Kleine Anforderungen können leer ausgehen.
-- Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerzügen
-  und werden gespeichert. Sinkende Lieferkapazität reduziert Zusagen während
-  der Runde. Zerstörte/eroberte Städte, verlorene Routen, Unruhen, Blockaden,
-  Krieg und Embargos beenden betroffene Transfers sofort. Freie Kapazität wird
-  bei der nächsten Zuteilung neu verteilt.
-- Nahrung wird beim Lieferanten abgezogen und beim Empfänger **nach allen
-  Ertragsmodifikatoren** hinzugefügt. Importe werden weder vervielfacht noch erneut
-  exportiert. Sie wirken auf Wachstum, Hunger und nahrungsbasierte Einheitenproduktion.
-  Infrastruktur, Segeln, Astronomie und Häfen beeinflussen bereits den Routenwert.
-- Der Tooltip des Bevölkerungsbalkens zeigt gesamte Importe/Exporte, eine
-  Handelsroute den Austausch mit der Partnerstadt: positiv für Import, negativ
-  für Export. Bestehende Spielstände beginnen mit der nächsten Spielrunde.
+- Wohlstandsunterschiede liefern bis zu **100 Druckpunkte**. Wohlbefindensunterschiede liefern bis zu **50 Druckpunkte** und sind damit sp?rbar, aber im Allgemeinen schw?cher. Beide vorzeichenbehafteten Werte werden addiert, bevor Richtung und Menge des Nahrungstransfers feststehen. Eine gesunde und zufriedene neue Stadt kann somit trotz eines kleinen Wohlstandsnachteils Nahrung anziehen; Wohlbefinden allein ?berwindet keinen gro?en Wohlstandsunterschied.
+- Angeforderte Nahrung: `Routenwert ? absoluter Gesamtdruck / 100` bei der standardm??ig verdoppelten Basismenge. Bei gegenseitigen Routen z?hlt die st?rkere Anforderung einmal pro St?dtepar.
+- Die gesamten Exporte einer Stadt sind auf **eine Nahrung je Bev?lkerungspunkt** begrenzt. Es muss kein ?berschuss sein: Lieferst?dte k?nnen langsamer wachsen oder hungern. St?dte der Gr??e eins exportieren nur ihren lokalen ?berschuss nach Verbrauch und Gesundheitskosten.
+- Bei ?berm??iger Nachfrage werden Exporte proportional aufgeteilt. Die Gesamtmenge wird auf ganze Nahrungspunkte abgerundet; verbleibende Punkte erhalten die gr??ten Nachkommareste. Gleichst?nde werden durch eine feste St?dte-/Routenreihenfolge entschieden. Kleine Anforderungen k?nnen leer ausgehen.
+- Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerz?gen und werden gespeichert. Sinkende Lieferkapazit?t reduziert Zusagen w?hrend der Runde. Zerst?rte/eroberte St?dte, verlorene Routen, Unruhen, Blockaden, Krieg und Embargos beenden betroffene Transfers sofort. Freie Kapazit?t wird bei der n?chsten Zuteilung neu verteilt.
+- Nahrung wird beim Lieferanten abgezogen und beim Empf?nger **nach allen Ertragsmodifikatoren** hinzugef?gt. Importe werden weder vervielfacht noch erneut exportiert. Sie wirken auf Wachstum, Hunger und nahrungsbasierte Einheitenproduktion. Infrastruktur, Segeln, Astronomie und H?fen beeinflussen bereits den Routenwert.
+- Der Tooltip des Bev?lkerungsbalkens zeigt gesamte Importe/Exporte, eine Handelsroute den Austausch mit der Partnerstadt: positiv f?r Import, negativ f?r Export. Bestehende Spielst?nde beginnen mit der n?chsten Spielrunde.
 
-Beispiel: Eine Stadt der Größe vier kann vier Nahrung exportieren.
-  Fordern die Ziele vier, zwei und zwei, erhalten sie zwei, eins und eins.
-  Verlorene Routen geben dem Lieferanten Nahrung zurück und entziehen sie den Empfängern.
+Beispiel: Eine Stadt der Gr??e vier kann vier Nahrung exportieren. Fordern die Ziele vier, zwei und zwei, erhalten sie zwei, eins und eins. Verlorene Routen geben dem Lieferanten Nahrung zur?ck und entziehen sie den Empf?ngern.
 
-Netto-Unzufriedenheit und -Krankheit erzeugen Migrationsdruck und erhöhen die
-Nahrungsnachfrage einer Lieferstadt um bis zu 100%. Jede netto unzufriedene
-Bevölkerung erzeugt doppelt so viel Druck wie eine netto kranke. Überschüssige
-Zufriedenheit und Gesundheit dämpfen ihn schwächer: ein Punkt Zufriedenheit
-hebt einen Druckpunkt auf, ein Punkt Gesundheit einen halben. Die
-Bevölkerungsgrenze für Exporte bleibt bestehen.
-
-Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
-und `RFCMP_FOOD_TRADE_MIGRATION_*` in `Assets/XML/GlobalDefines.xml` steuern
-Bevölkerungsgrenze, Routenkapazität und Migrationsdruck. Der technologieabhängige
-Wachstumsmalus betrifft positiven Überschuss nach den Transfers, nicht die
-Nahrungsproduktion oder Transfermengen.
-
+Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR` und `RFCMP_TRADE_FOOD_AMOUNT_PERCENT` in `Assets/XML/GlobalDefines.xml` steuern Bev?lkerungsgrenze, Routenkapazit?t und Basismenge. Der technologieabh?ngige Wachstumsmalus betrifft positiven ?berschuss nach den Transfers, nicht die Nahrungsproduktion oder Transfermengen.
 
 ## Neue Staatsformen
 

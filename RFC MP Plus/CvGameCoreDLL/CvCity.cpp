@@ -8063,19 +8063,10 @@ int CvCity::getFoodExportLimit() const
     return std::max(0, iLimit);
 }
 
-int CvCity::getFoodTradeMigrationPressurePercent() const
+int CvCity::getFoodTradeWellbeingScore() const
 {
-    const int iUnhappiness = std::max(0, unhappyLevel() - happyLevel());
-    const int iUnhealthiness = std::max(0, badHealth() - goodHealth());
-    const int iHappinessSurplus = std::max(0, happyLevel() - unhappyLevel());
-    const int iHealthSurplus = std::max(0, goodHealth() - badHealth());
-    // Pressure: 2 per net unhappy citizen, 1 per net unhealthy citizen.
-    // Retention: 1 per surplus happiness and 0.5 per surplus health.
-    const int iPressureTimes2 = std::max(0, 4 * iUnhappiness + 2 * iUnhealthiness -
-        2 * iHappinessSurplus - iHealthSurplus);
-    const int iPercentPerPressure = std::max(0, GC.getDefineINT("RFCMP_FOOD_TRADE_MIGRATION_PERCENT_PER_PRESSURE"));
-    const int iMaxPercent = std::max(0, GC.getDefineINT("RFCMP_FOOD_TRADE_MIGRATION_MAX_PERCENT"));
-    return std::min(iMaxPercent, (iPressureTimes2 * iPercentPerPressure) / 2);
+    // A signed condition score lets happier and healthier cities attract food.
+    return happyLevel() - unhappyLevel() + goodHealth() - badHealth();
 }
 int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
 {
@@ -8385,6 +8376,8 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 
 // Trade infrastructure ignores military access, but respects war and terrain.
 // This local flood fill is calculated once per route selection, without a UI cache.
+static bool cityHasHarbor(const CvCity* pCity);
+
 static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& reachable, std::vector<bool>& roads)
 {
     CvMap& kMap = GC.getMapINLINE();
@@ -8392,6 +8385,8 @@ static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& rea
     bool bSailing = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_SAILING"));
     bool bAstronomy = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_ASTRONOMY"));
     int iWaterRange = GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_BEFORE_ASTRONOMY");
+    if (!bAstronomy && cityHasHarbor(pCity))
+        iWaterRange = std::max(iWaterRange, GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_WITH_HARBOR_BEFORE_ASTRONOMY"));
     reachable.assign(kMap.numPlotsINLINE(), false);
     roads.assign(kMap.numPlotsINLINE(), false);
     // Separate road-only and water-assisted networks: long roads must not be
