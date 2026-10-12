@@ -1702,4 +1702,7 @@
     <!-- Food is redistributed along actual trade routes, not created. -->
     <Define><DefineName>RFCMP_FOOD_EXPORT_PER_POPULATION</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_FOOD_COMMERCE_DIVISOR</DefineName><iDefineIntVal>2</iDefineIntVal></Define>
+    <!-- Growth only: 30% initial penalty, reduced by 0.5 percentage points per known tech. -->
+    <Define><DefineName>RFCMP_GROWTH_BASE_PENALTY_TIMES100</DefineName><iDefineIntVal>3000</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_GROWTH_TECH_REDUCTION_TIMES100</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
 </Civ4Defines>

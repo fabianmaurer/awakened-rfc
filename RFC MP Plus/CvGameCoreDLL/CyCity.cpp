@@ -150,6 +150,16 @@ bool CyCity::canJoin()
 	return m_pCity ? m_pCity->canJoin() : false;
 }
 
+int CyCity::getGrowthFoodTimes100()
+{
+    return m_pCity ? m_pCity->getGrowthFoodTimes100() : 0;
+}
+
+int CyCity::getGrowthFoodStoredTimes100()
+{
+    return m_pCity ? m_pCity->getGrowthFoodStoredTimes100() : 0;
+}
+
 int CyCity::getFoodTurnsLeft()
 {
 	return m_pCity ? m_pCity->getFoodTurnsLeft() : 0;

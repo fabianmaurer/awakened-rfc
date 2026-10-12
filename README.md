@@ -17,6 +17,9 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
 - **More consistent civilization economics:** individual growth, production,
   research and upkeep tuning is removed, and inflation stays at zero.
   Shared civilization-group rules remain.
+- **Technology-based growth:** a shared 30% penalty to positive growth surplus
+  falls by 0.5 percentage points per known technology, disappearing at 60 techs.
+  Food production and population consumption remain unchanged.
 - **Trade without roads or border agreements:** 50% efficiency through distance 5,
   declining linearly to zero at 15. Roads enable 100% at any distance; water connections require
   Sailing and have a twelve-tile limit until Astronomy. Water trade is halved

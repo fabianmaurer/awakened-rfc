@@ -538,6 +538,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iNoUnhealthyPopulationCount = 0;
 	m_iBuildingOnlyHealthyCount = 0;
 	m_iFood = 0;
+    m_iGrowthFoodRemainder = 0;
 	m_iFoodKept = 0;
 	m_iMaxFoodKeptPercent = 0;
 	m_iOverflowProduction = 0;
@@ -2337,26 +2338,41 @@ bool CvCity::canJoin() const
 }
 
 
+int CvCity::getGrowthRateTimes100() const
+{
+    int iKnown = 0;
+    const CvTeam& kTeam = GET_TEAM(getTeam());
+    for (int i = 0; i < GC.getNumTechInfos(); ++i)
+        if (kTeam.isHasTech((TechTypes)i) || kTeam.getTechCount((TechTypes)i) > 0) ++iKnown;
+    int iPenalty = std::max(0, GC.getDefineINT("RFCMP_GROWTH_BASE_PENALTY_TIMES100") -
+        iKnown * GC.getDefineINT("RFCMP_GROWTH_TECH_REDUCTION_TIMES100"));
+    return 10000 - std::min(10000, iPenalty);
+}
+
+int CvCity::getGrowthFoodTimes100() const
+{
+    int iSurplus = foodDifference();
+    return iSurplus > 0 ? (int)((__int64)iSurplus * getGrowthRateTimes100() / 100) : iSurplus * 100;
+}
+
+int CvCity::getGrowthFoodStoredTimes100() const
+{
+    return getFood() * 100 + m_iGrowthFoodRemainder / 100;
+}
+
+int CvCity::getGrowthFoodRemainder() const
+{
+    return m_iGrowthFoodRemainder;
+}
+
 int CvCity::getFoodTurnsLeft() const
 {
-	int iFoodLeft;
-	int iTurnsLeft;
-
-	iFoodLeft = (growthThreshold() - getFood());
-
-	if (foodDifference() <= 0)
-	{
-		return iFoodLeft;
-	}
-
-	iTurnsLeft = (iFoodLeft / foodDifference());
-
-	if ((iTurnsLeft * foodDifference()) <  iFoodLeft)
-	{
-		iTurnsLeft++;
-	}
-
-	return std::max(1, iTurnsLeft);
+    int iSurplus = foodDifference();
+    if (iSurplus <= 0) return growthThreshold() - getFood();
+    __int64 iRate = (__int64)iSurplus * getGrowthRateTimes100();
+    if (iRate <= 0) return MAX_INT;
+    __int64 iRemaining = (__int64)(growthThreshold() - getFood()) * 10000 - m_iGrowthFoodRemainder;
+    return std::max(1, (int)((iRemaining + iRate - 1) / iRate));
 }
 
 
@@ -6934,9 +6950,10 @@ int CvCity::getFood() const
 
 void CvCity::setFood(int iNewValue)
 {
-	if (getFood() != iNewValue)
+	if (getFood() != iNewValue || m_iGrowthFoodRemainder != 0)
 	{
 		m_iFood = iNewValue;
+        m_iGrowthFoodRemainder = 0;
 
 		if (getTeam() == GC.getGameINLINE().getActiveTeam())
 		{
@@ -6948,7 +6965,9 @@ void CvCity::setFood(int iNewValue)
 
 void CvCity::changeFood(int iChange)
 {
+    int iFraction = m_iGrowthFoodRemainder;
 	setFood(getFood() + iChange);
+    m_iGrowthFoodRemainder = iFraction;
 }
 
 
@@ -11849,6 +11868,15 @@ void CvCity::doGrowth()
 	//Rhye - end
 
 	iDiff = foodDifference();
+    // Only positive growth surplus is reduced. Consumption, trade amounts,
+    // starvation and food used to produce units keep their original values.
+    if (iDiff > 0)
+    {
+        __int64 iAdjusted = (__int64)iDiff * getGrowthRateTimes100() + m_iGrowthFoodRemainder;
+        iDiff = (int)(iAdjusted / 10000);
+        m_iGrowthFoodRemainder = (int)(iAdjusted % 10000);
+        setInfoDirty(true);
+    }
 
 	changeFood(iDiff);
 	changeFoodKept(iDiff);
@@ -11873,6 +11901,7 @@ void CvCity::doGrowth()
 	else if (getFood() < 0)
 	{
 		changeFood(-(getFood()));
+        m_iGrowthFoodRemainder = 0;
 
 		if (getPopulation() > 1)
 		{
@@ -12726,13 +12755,15 @@ void CvCity::read(FDataStreamBase* pStream)
         }
     }
 
+    if (uiFlag & 2) pStream->Read(&m_iGrowthFoodRemainder);
+
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=1;
+	uint uiFlag=3;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12957,6 +12988,8 @@ void CvCity::write(FDataStreamBase* pStream)
         pStream->Write(t.routeFromSelf);
         pStream->Write(t.amount);
     }
+
+    pStream->Write(m_iGrowthFoodRemainder);
 
 }
 
@@ -13209,15 +13242,15 @@ bool CvCity::getFoodBarPercentages(std::vector<float>& afPercentages) const
 	}
 
 	afPercentages.resize(NUM_INFOBAR_TYPES, 0.0f);
-	if (foodDifference() < 0)
+	if ((getGrowthFoodTimes100() / 100.0f) < 0)
 	{
-		afPercentages[INFOBAR_STORED] = std::max(0, (getFood() + foodDifference())) / (float) growthThreshold();
-		afPercentages[INFOBAR_RATE_EXTRA] = std::min(-foodDifference(), getFood()) / (float) growthThreshold();
+		afPercentages[INFOBAR_STORED] = std::max(0.0f, ((getGrowthFoodStoredTimes100() / 100.0f) + (getGrowthFoodTimes100() / 100.0f))) / (float) growthThreshold();
+		afPercentages[INFOBAR_RATE_EXTRA] = std::min(-(getGrowthFoodTimes100() / 100.0f), (getGrowthFoodStoredTimes100() / 100.0f)) / (float) growthThreshold();
 	}
 	else
 	{
-		afPercentages[INFOBAR_STORED] = getFood() / (float) growthThreshold();
-		afPercentages[INFOBAR_RATE] = foodDifference() / (float) growthThreshold();
+		afPercentages[INFOBAR_STORED] = (getGrowthFoodStoredTimes100() / 100.0f) / (float) growthThreshold();
+		afPercentages[INFOBAR_RATE] = (getGrowthFoodTimes100() / 100.0f) / (float) growthThreshold();
 	}
 
 	return true;

@@ -7734,7 +7734,8 @@ int CvGame::calculateSyncChecksum()
         int iFoodLoop;
         for (CvCity* pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).firstCity(&iFoodLoop); pFoodCity != NULL;
             pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).nextCity(&iFoodLoop))
-            iValue += pFoodCity->getFoodTradeChecksum() * (iFoodPlayer + 1) + pFoodCity->getID();
+            iValue += (pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101) *
+                (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
 	iValue += getNumCities();
 	iValue += getTotalPopulation();

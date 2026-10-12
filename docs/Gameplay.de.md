@@ -50,6 +50,38 @@ sowie wirtschaftliche Stabilitätsregeln. Einzigartige Einheiten, Gebäude,
 Fähigkeiten und historische Gründungszeitpunkte unterscheiden die Zivilisationen
 weiterhin. Sonderregeln für kleinere Fraktionen bleiben separat bestehen.
 
+## Technologieabhängiges Wachstum
+
+Alle Zivilisationen haben einen **Wachstumsmalus von 30% auf den positiven
+Nahrungsüberschuss**, der je unterschiedlicher bekannter Technologie um
+**0,5 Prozentpunkte** sinkt. Ab 60 Technologien entfällt er; ein Bonus entsteht
+nicht. Starttechnologien und erworbene Technologien zählen ebenso wie erforschte.
+Wiederholbare Technologien zählen nur einmal. Maßgeblich ist der Wissensstand
+des Teams, entsprechend dem normalen Technologiesystem.
+
+| Bekannte Technologien | Wachstumsmalus |
+| --- | --- |
+| 0 | 30% |
+| 2 | 29% |
+| 20 | 20% |
+| 40 | 10% |
+| 60+ | Keiner |
+
+Beispiel: Vier Nahrungsüberschuss bringen bei zwei bekannten Technologien
+**2,84 Nahrung** pro Runde für das Wachstum. Nachkommastellen werden intern
+erhalten und gespeichert. Wachstumsdauer und Nahrungsbalken verwenden den
+angepassten Wert; der Tooltip des Bevölkerungsbalkens zeigt Malus und Wachstum.
+
+Nahrungsproduktion, Verbrauch, Handelstransfers, Hunger und Nahrung für
+Siedler/Bautrupps bleiben unverändert. Der Malus greift nach Handel und Verbrauch,
+also auch auf positiven Überschuss aus importierter Nahrung. Bestehende gemeinsame
+Wachstumsschwellen und die Nahrungserhaltung durch Kornspeicher bleiben bestehen.
+
+`RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) und
+`RFCMP_GROWTH_TECH_REDUCTION_TIMES100` (50) in `Assets/XML/GlobalDefines.xml`
+verwenden Hundertstel eines Prozentpunkts. Bestehende Spielstände beginnen ohne
+gespeicherten Nachkommarest und verwenden den neuen Malus sofort.
+
 ## Produktionskonvertierungen
 
 | Konvertierung | Voraussetzung | Effektivität |
@@ -164,8 +196,8 @@ Beispiel: Eine Stadt der Größe vier kann vier Nahrung exportieren.
 
 Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
 in `Assets/XML/GlobalDefines.xml` steuern Bevölkerungsgrenze
-und Routenkapazität. Ein Epochen- oder Technologie-Malus auf lokale Nahrung ist
-noch nicht enthalten.
+und Routenkapazität. Der technologieabhängige Wachstumsmalus betrifft positiven
+Überschuss nach den Transfers, nicht die Nahrungsproduktion oder Transfermengen.
 
 
 ## Neue Staatsformen

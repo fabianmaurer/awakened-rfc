@@ -9,6 +9,9 @@ ENTRIES = [
     ('TXT_KEY_RFCMP_FOOD_TRADE_ROUTE',
      'Food exchange with this city: %D1_Food[ICON_FOOD] per turn',
      'Nahrungsaustausch mit dieser Stadt: %D1_Food[ICON_FOOD] pro Runde'),
+    ('TXT_KEY_RFCMP_TECH_GROWTH',
+     'Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]',
+     'Wachstumsmalus: %s1_Penalty%%; Wachstum pro Runde: %s2_Growth[ICON_FOOD]'),
 ]
 
 root = ET.Element('Civ4GameText', {'xmlns': 'http://www.firaxis.com'})

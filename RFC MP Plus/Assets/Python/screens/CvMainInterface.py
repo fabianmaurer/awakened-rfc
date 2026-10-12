@@ -1998,14 +1998,14 @@ class CvMainInterface:
 
 				if (iFoodDifference < 0):
 
-					if ( pHeadSelectedCity.getFood() + iFoodDifference > 0 ):
-						iDeltaFood = pHeadSelectedCity.getFood() + iFoodDifference
+					if ( (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iFoodDifference > 0 ):
+						iDeltaFood = (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iFoodDifference
 					else:
 						iDeltaFood = 0
-					if ( -iFoodDifference < pHeadSelectedCity.getFood() ):
+					if ( -iFoodDifference < (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) ):
 						iExtraFood = -iFoodDifference
 					else:
-						iExtraFood = pHeadSelectedCity.getFood()
+						iExtraFood = (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)
 					iFirst = float(iDeltaFood) / float(pHeadSelectedCity.growthThreshold())
 					screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_STORED, float(iDeltaFood) / pHeadSelectedCity.growthThreshold() )
 					screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_RATE, 0.0 )
@@ -2016,10 +2016,10 @@ class CvMainInterface:
 					
 				else:
 
-					iFirst = float(pHeadSelectedCity.getFood()) / float(pHeadSelectedCity.growthThreshold())
-					screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_STORED, float(pHeadSelectedCity.getFood()) / pHeadSelectedCity.growthThreshold() )
-					if ( pHeadSelectedCity.growthThreshold() >  pHeadSelectedCity.getFood()):
-						screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_RATE, float(iFoodDifference) / (pHeadSelectedCity.growthThreshold() - pHeadSelectedCity.getFood()) )
+					iFirst = float((pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)) / float(pHeadSelectedCity.growthThreshold())
+					screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_STORED, float((pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)) / pHeadSelectedCity.growthThreshold() )
+					if ( pHeadSelectedCity.growthThreshold() >  (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)):
+						screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_RATE, (pHeadSelectedCity.getGrowthFoodTimes100() / 100.0) / (pHeadSelectedCity.growthThreshold() - (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)) )
 					else:
 						screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_RATE, 0.0 )
 					screen.setBarPercentage( "PopulationBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0 )

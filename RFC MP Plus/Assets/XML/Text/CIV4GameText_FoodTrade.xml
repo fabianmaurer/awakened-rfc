@@ -16,4 +16,12 @@
         <Italian>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</Italian>
         <Spanish>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</Spanish>
     </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_TECH_GROWTH</Tag>
+        <English>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</English>
+        <French>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</French>
+        <German>Wachstumsmalus: %s1_Penalty%%; Wachstum pro Runde: %s2_Growth[ICON_FOOD]</German>
+        <Italian>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</Italian>
+        <Spanish>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</Spanish>
+    </TEXT>
 </Civ4GameText>

@@ -47,6 +47,37 @@ adjustments, China/Japan's research discount, and regional and economic stabilit
 rules. Unique units, buildings, powers, and historical spawn dates also continue
 to distinguish civilizations. Minor-faction tuning remains separate.
 
+## Technology-based growth
+
+All civilizations have a **30% penalty to positive food surplus used for growth**,
+reduced by **0.5 percentage points per distinct known technology**. It reaches
+zero at 60 technologies and never becomes a bonus. Starting, acquired and traded
+technologies count; repeatable technologies count only once. Knowledge is shared
+at team level, as in the normal technology system.
+
+| Known technologies | Growth penalty |
+| --- | --- |
+| 0 | 30% |
+| 2 | 29% |
+| 20 | 20% |
+| 40 | 10% |
+| 60+ | None |
+
+For example, a surplus of four food with two known technologies adds **2.84 food**
+toward growth each turn. Fractional progress is retained internally and saved;
+the growth countdown and food bars use the adjusted rate. Hover the population
+bar to see the current penalty and growth rate.
+
+Food production, consumption, trade transfers, starvation and food used for
+settlers/workers are unaffected. The penalty applies after trade and consumption,
+so positive surplus from imported food is reduced too. Existing shared growth
+threshold rules and granary retention remain in effect.
+
+The settings `RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) and
+`RFCMP_GROWTH_TECH_REDUCTION_TIMES100` (50) in `Assets/XML/GlobalDefines.xml`
+use hundredths of a percentage point. Existing saves begin with zero fractional
+growth remainder and use the new rate immediately.
+
 ## Production conversions
 
 | Conversion | Required technology | Efficiency |
@@ -156,7 +187,8 @@ the routes restores the supplier's food but removes the recipients' imports.
 
 The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`
 settings in `Assets/XML/GlobalDefines.xml` control the population cap and route
-capacity. No era- or technology-based local food penalty is included.
+capacity. The technology-based growth penalty affects positive surplus after
+these transfers; it does not reduce food production or transferred amounts.
 
 
 ## New civics

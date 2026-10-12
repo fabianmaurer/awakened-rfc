@@ -54,6 +54,8 @@ public:
 	bool canMaintain( int iProcess, bool bContinue );
 	bool canJoin();
 	int getFoodTurnsLeft();
+    int getGrowthFoodTimes100();
+    int getGrowthFoodStoredTimes100();
 	bool isProduction();
 	bool isProductionLimited();
 	bool isProductionUnit();

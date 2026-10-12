@@ -82,6 +82,10 @@ public:
 	bool canMaintain(ProcessTypes eProcess, bool bContinue = false) const;														// Exposed to Python  
 	bool canJoin() const;																													// Exposed to Python
 
+    int getGrowthRateTimes100() const;
+    int getGrowthFoodTimes100() const;
+    int getGrowthFoodStoredTimes100() const;
+    int getGrowthFoodRemainder() const;
 	int getFoodTurnsLeft() const;																				// Exposed to Python
 	bool isProduction() const;																					// Exposed to Python
 	bool isProductionLimited() const;																							// Exposed to Python
@@ -1019,6 +1023,7 @@ protected:
 	int m_iNoUnhealthyPopulationCount;
 	int m_iBuildingOnlyHealthyCount;
 	int m_iFood;
+    int m_iGrowthFoodRemainder; // 1/10000 food, saved and synchronized
 	int m_iFoodKept;
 	int m_iMaxFoodKeptPercent;
 	int m_iOverflowProduction;
