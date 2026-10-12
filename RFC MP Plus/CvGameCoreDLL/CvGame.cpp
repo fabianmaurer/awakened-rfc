@@ -2424,14 +2424,17 @@ void CvGame::updateFoodTrade()
             if (pPartner == NULL || pPartner == pOrigin || pPartner->isDisorder() || pPartner->isPlundered()) continue;
             if (!GET_PLAYER(pOrigin->getOwnerINLINE()).canHaveTradeRoutesWith(pPartner->getOwnerINLINE())) continue;
             if (pOrigin->getTeam() != pPartner->getTeam() && !GET_TEAM(pOrigin->getTeam()).isFreeTrade(pPartner->getTeam())) continue;
-            int iOwnWealth = pOrigin->getLocalTradeWealth();
-            int iOtherWealth = pPartner->getLocalTradeWealth();
+            // Compare commerce per citizen by cross-multiplying. The common
+            // population denominator cancels in the relative wealth gap too,
+            // preserving fractional differences without floating point.
+            __int64 iOwnWealth = (__int64)pOrigin->getLocalTradeWealth() * std::max(1, pPartner->getPopulation());
+            __int64 iOtherWealth = (__int64)pPartner->getLocalTradeWealth() * std::max(1, pOrigin->getPopulation());
             if (iOwnWealth == iOtherWealth) continue;
             CvCity* pSupplier = iOwnWealth < iOtherWealth ? pOrigin : pPartner;
             CvCity* pRecipient = iOwnWealth < iOtherWealth ? pPartner : pOrigin;
-            int iRichWealth = std::max(iOwnWealth, iOtherWealth);
+            __int64 iRichWealth = std::max(iOwnWealth, iOtherWealth);
             int iValue = pOrigin->calculateTradeYield(YIELD_COMMERCE, pOrigin->calculateTradeProfit(pPartner));
-            int iDemand = (int)((__int64)iValue * 100 * std::abs(iOwnWealth - iOtherWealth) / ((__int64)iFoodDivisor * iRichWealth));
+            int iDemand = (int)((__int64)iValue * 100 * (iRichWealth - std::min(iOwnWealth, iOtherWealth)) / ((__int64)iFoodDivisor * iRichWealth));
             if (iDemand <= 0) continue;
             unsigned int j;
             for (j = 0; j < requests.size(); ++j)

@@ -161,11 +161,11 @@ verwenden synchronisierte Netzwerk-Nachrichten, die Religion den Spiel-Zufallsge
 
 Bestehende Handelsrouten verlagern Nahrung von der ärmeren zur wohlhabenderen
 Stadt, auch innerhalb desselben Landes. Wohlstand ist der **lokale Handelsertrag
-nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten**. Spezialisten-Gold
+je Bevölkerungspunkt nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten**. Spezialisten-Gold
 und die Einstellung des Goldreglers bestimmen die Richtung nicht. Bei gleichem
 Wohlstand findet kein Transfer statt.
 
-- Angeforderte Nahrung: `Routenwert / 2 × (reicherer Wohlstand − ärmerer Wohlstand) / reicherer Wohlstand`.
+- Angeforderte Nahrung: `Routenwert / 2 × (reicherer Pro-Kopf-Wohlstand − ärmerer Pro-Kopf-Wohlstand) / reicherer Pro-Kopf-Wohlstand`.
   Kleine Wohlstandsunterschiede schwächen den Transfer. Bei großem Unterschied
   nähert er sich einer Nahrung je zwei Wirtschaftspunkten der Route. Bei
   gegenseitigen Routen zählt die stärkere Anforderung einmal pro Städtepaar.

@@ -152,11 +152,11 @@ actions use synchronized network messages; religious spread uses game RNG.
 ### Food transfers
 
 Actual trade routes also move food from the poorer city to the wealthier one,
-including domestic routes. Wealth is **local commerce yield after modifiers,
-excluding trade-route commerce**; gold from specialists or the tax slider does
+including domestic routes. Wealth is **local commerce yield per population point
+after modifiers, excluding trade-route commerce**; gold from specialists or the tax slider does
 not determine direction. Equal wealth means no transfer.
 
-- Requested food is `route commerce / 2 × (richer wealth − poorer wealth) / richer wealth`.
+- Requested food is `route commerce / 2 × (richer wealth per capita − poorer wealth per capita) / richer wealth per capita`.
   Small wealth differences weaken the transfer; a large difference approaches
   one food per two route-commerce points. For reciprocal routes, use the stronger
   request once rather than counting the city pair twice.
