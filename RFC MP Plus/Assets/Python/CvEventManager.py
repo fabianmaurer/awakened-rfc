@@ -291,6 +291,10 @@ class CvEventManager:
 		'Called whenever CyMessageControl().sendModNetMessage() is called - this is all for you modders!'
 		
 		iData1, iData2, iData3, iData4, iData5 = argsList
+		if iData1 == 19001:
+			import TradePolicy
+			TradePolicy.applyEmbargo(iData2, iData3, iData4)
+			return
 		
 		print("Modder's net message!")
 		

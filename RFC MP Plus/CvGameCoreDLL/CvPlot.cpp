@@ -8567,29 +8567,26 @@ void CvPlot::doCulture()
 
 		if (eCulturalOwner != NO_PLAYER)
 		{
-			//Rhye - start
-			//if (GET_PLAYER(eCulturalOwner).getTeam() != getTeam())
-			//{
-			int iOldOwner = -1;
-			int iMax = -1;
-			int iMaxValue = 0;
-			if (getOwnerINLINE() >= NUM_MAJOR_PLAYERS) {
-				for (int i=0; i<NUM_MAJOR_PLAYERS; i++){
-					if (getCulture((PlayerTypes)i) > iMaxValue && GET_PLAYER((PlayerTypes)i).isAlive()) {
-						iMaxValue = getCulture((PlayerTypes)i);
-						iMax = i;
-					}
-				}
-			}
-			if (GET_PLAYER(eCulturalOwner).getTeam() != getTeam() ||
-					(iMax != -1 && getCulture((PlayerTypes)eCulturalOwner)<10*iMaxValue))  //Rhye
-			{ 
-				if (iMax != -1 && getCulture((PlayerTypes)eCulturalOwner)<10*iMaxValue) {
-					iOldOwner = eCulturalOwner;
-					eCulturalOwner = (PlayerTypes)iMax;
-				}
-				//Rhye - end
-
+            // Minor cities may choose a major civilization outside its normal
+            // border radius, but only if it holds a strict majority of tile culture.
+            __int64 iTotalCulture = 0;
+            for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+                if (GET_PLAYER((PlayerTypes)iPlayer).isAlive())
+                    iTotalCulture += getCulture((PlayerTypes)iPlayer);
+            if (getOwnerINLINE() >= NUM_MAJOR_PLAYERS)
+            {
+                eCulturalOwner = NO_PLAYER;
+                for (int iPlayer = 0; iPlayer < NUM_MAJOR_PLAYERS; iPlayer++)
+                    if (GET_PLAYER((PlayerTypes)iPlayer).isAlive() && (__int64)getCulture((PlayerTypes)iPlayer) * 2 > iTotalCulture)
+                    {
+                        eCulturalOwner = (PlayerTypes)iPlayer;
+                        break;
+                    }
+            }
+            // A plurality or an exact 50/50 split cannot trigger a cultural revolt.
+            if (eCulturalOwner != NO_PLAYER && GET_PLAYER(eCulturalOwner).getTeam() != getTeam() &&
+                (__int64)getCulture(eCulturalOwner) * 2 > iTotalCulture)
+            {
 				//if (!(pCity->isOccupation())) //RFCMP
 				if (!(pCity->isOccupation()) && getTeam() != ETHIOPIA) //RFCMP
 				{
@@ -8600,15 +8597,13 @@ void CvPlot::doCulture()
 						iCityStrength = pCity->cultureStrength(eCulturalOwner);
 						iGarrison = pCity->cultureGarrison(eCulturalOwner);
 
-						//if ((GC.getGameINLINE().getSorenRandNum(iCityStrength, "Revolt #2") > iGarrison) || pCity->isBarbarian()) //Rhye
-						//if ((GC.getGameINLINE().getSorenRandNum(iCityStrength, "Revolt #2") > iGarrison) || pCity->isBarbarian() || iOldOwner != -1) //Rhye
 						//RFCMP
 						int tempModifier;
 						if (iCityStrength == 0)
 							tempModifier = 0;
 						else
 							tempModifier =  GC.getGameINLINE().getFakeRandNum(iCityStrength);
-						if (tempModifier > iGarrison || pCity->isBarbarian() || iOldOwner != -1)
+						if (tempModifier > iGarrison)
 						{
 							if (!pCity->isBarbarian() && getOwnerINLINE() != INDEPENDENT && getOwnerINLINE() != INDEPENDENT2)
 								doCulturalUprising(pCity, eCulturalOwner);

@@ -997,7 +997,7 @@ void CvCity::doTurn()
 
 	doDecay();
 
-	doReligion();
+	doTradeInfluence();
 
 	doGreatPeople();
 
@@ -8184,14 +8184,118 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 	return iProfit;
 }
 
+// Trade infrastructure ignores military access, but respects war and terrain.
+// This local flood fill is calculated once per route selection, without a UI cache.
+static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& reachable, std::vector<bool>& roads)
+{
+    CvMap& kMap = GC.getMapINLINE();
+    CvTeam& kTeam = GET_TEAM(pCity->getTeam());
+    bool bSailing = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_SAILING"));
+    bool bAstronomy = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_ASTRONOMY"));
+    int iWaterRange = GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_BEFORE_ASTRONOMY");
+    reachable.assign(kMap.numPlotsINLINE(), false);
+    roads.assign(kMap.numPlotsINLINE(), false);
+    // Separate road-only and water-assisted networks: long roads must not be
+    // mistaken for limited pre-Astronomy maritime connections (or vice versa).
+    for (int iMode = 0; iMode < (bSailing ? 2 : 1); iMode++)
+    {
+        std::vector<bool> visited(kMap.numPlotsINLINE(), false);
+        std::vector<int> pending;
+        int iStart = kMap.plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+        visited[iStart] = true;
+        pending.push_back(iStart);
+        for (unsigned int i = 0; i < pending.size(); i++)
+        {
+            CvPlot* pFrom = kMap.plotByIndexINLINE(pending[i]);
+            if (iMode == 0) roads[pending[i]] = true;
+            if (iMode == 0 || bAstronomy || plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pFrom->getX_INLINE(), pFrom->getY_INLINE()) <= iWaterRange)
+                reachable[pending[i]] = true;
+            for (int j = 0; j < NUM_DIRECTION_TYPES; j++)
+            {
+                CvPlot* pTo = plotDirection(pFrom->getX_INLINE(), pFrom->getY_INLINE(), (DirectionTypes)j);
+                if (pTo == NULL || pTo->isImpassable() || !pTo->isRevealed(pCity->getTeam(), false)) continue;
+                int iIndex = kMap.plotNum(pTo->getX_INLINE(), pTo->getY_INLINE());
+                if (visited[iIndex]) continue;
+                TeamTypes eOwner = pTo->getTeam();
+                if (eOwner != NO_TEAM && kTeam.isAtWar(eOwner)) continue;
+                if (iMode == 0)
+                {
+                    if (pTo->isWater() || (!pTo->isRoute() && !pTo->isCity())) continue;
+                }
+                else
+                {
+                    bool bFromRiver = pFrom->isRiverNetwork(pCity->getTeam());
+                    bool bToRiver = pTo->isRiverNetwork(pCity->getTeam());
+                    bool bRiver = bFromRiver && bToRiver && (pFrom->isRiverConnection((DirectionTypes)j) || pTo->isRiverConnection(directionXY(pTo, pFrom)));
+                    if (pTo->isWater())
+                    {
+                        if (!kTeam.isTerrainTrade(pTo->getTerrainType())) continue;
+                        if (!pFrom->isWater() && !pFrom->isCity() && !(bFromRiver && pFrom->isRiverConnection((DirectionTypes)j))) continue;
+                    }
+                    else
+                    {
+                        if (!pTo->isRoute() && !pTo->isCity() && !bRiver && !(pFrom->isWater() && bToRiver && pTo->isRiverConnection(directionXY(pTo, pFrom)))) continue;
+                        if (pFrom->isWater() && !pTo->isCity() && !(bToRiver && pTo->isRiverConnection(directionXY(pTo, pFrom)))) continue;
+                    }
+                }
+                visited[iIndex] = true;
+                pending.push_back(iIndex);
+            }
+        }
+    }
+}
+static bool cityHasHarbor(const CvCity* pCity)
+{
+    BuildingClassTypes eHarbor = (BuildingClassTypes)GC.getInfoTypeForString("BUILDINGCLASS_HARBOR");
+    if (eHarbor == NO_BUILDINGCLASS) return false;
+    for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+        if (GC.getBuildingInfo((BuildingTypes)i).getBuildingClassType() == eHarbor && pCity->getNumBuilding((BuildingTypes)i) > 0)
+            return true;
+    return false;
+}
+static int tradeInfrastructureEfficiency(const CvCity* pCity, const CvCity* pPartner, bool bConnected, bool bRoadConnected)
+{
+    if (bConnected)
+    {
+        int iEfficiency = GC.getDefineINT("RFCMP_CONNECTED_TRADE_PERCENT");
+        if (!bRoadConnected && (!cityHasHarbor(pCity) || !cityHasHarbor(pPartner)))
+            iEfficiency = iEfficiency * GC.getDefineINT("RFCMP_WATER_TRADE_WITHOUT_BOTH_HARBORS_PERCENT") / 100;
+        return iEfficiency;
+    }
+    // Caravans can operate without roads, but cannot bypass sea navigation.
+    if (pCity->area() != pPartner->area()) return 0;
+    int iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pPartner->getX_INLINE(), pPartner->getY_INLINE());
+    int iFullDistance = std::max(0, GC.getDefineINT("RFCMP_TRADE_FULL_EFFICIENCY_DISTANCE"));
+    int iZeroDistance = std::max(iFullDistance + 1, GC.getDefineINT("RFCMP_TRADE_ZERO_EFFICIENCY_DISTANCE"));
+    int iMaxEfficiency = std::max(0, GC.getDefineINT("RFCMP_BASE_TRADE_PERCENT"));
+    if (iDistance <= iFullDistance) return iMaxEfficiency;
+    if (iDistance >= iZeroDistance) return 0;
+    return iMaxEfficiency * (iZeroDistance - iDistance) / (iZeroDistance - iFullDistance);
+}
+int CvCity::getTradeInfrastructureEfficiency(CvCity* pCity) const
+{
+    std::vector<bool> reachable;
+    std::vector<bool> roads;
+    buildTradeInfrastructure(this, reachable, roads);
+    bool bConnected = reachable[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())];
+    return tradeInfrastructureEfficiency(this, pCity, bConnected, roads[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())]);
+}
 int CvCity::calculateTradeProfit(CvCity* pCity) const
 {
-	int iProfit = getBaseTradeProfit(pCity);
+    std::vector<bool> reachable;
+    std::vector<bool> roads;
+    buildTradeInfrastructure(this, reachable, roads);
+    return calculateInfrastructureTradeProfit(pCity, reachable[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())]);
+}
 
-	iProfit *= totalTradeModifier(pCity);
-	iProfit /= 10000;
-
-	return iProfit;
+int CvCity::calculateInfrastructureTradeProfit(CvCity* pCity, bool bConnected, bool bRoadConnected) const
+{
+    int iEfficiency = tradeInfrastructureEfficiency(this, pCity, bConnected, bRoadConnected);
+    // Zero must stay zero: the one-commerce floor cannot bypass the range limit.
+    if (iEfficiency <= 0) return 0;
+    __int64 iProfit = (__int64)getBaseTradeProfit(pCity) * totalTradeModifier(pCity) * iEfficiency;
+    // Civ4 stores route income as whole commerce points. Retain a one-point floor.
+    return std::max(1, (int)(iProfit / 1000000));
 }
 
 
@@ -9138,9 +9242,6 @@ int CvCity::getRevoltTestProbability() const
 		case CELTIA:
 			result *= 3;
 			result /= 2;
-		case INDEPENDENT:
-		case INDEPENDENT2:
-		case BARBARIAN:
 			result *= 3;
 			result = std::min(std::max(result, 3), 12);
 		default:
@@ -10931,6 +11032,9 @@ void CvCity::clearTradeRoutes()
 // XXX eventually, this needs to be done when roads are built/destroyed...
 void CvCity::updateTradeRoutes()
 {
+    std::vector<bool> reachable;
+    std::vector<bool> roads;
+    buildTradeInfrastructure(this, reachable, roads);
 	int* paiBestValue;
 	CvCity* pLoopCity;
 	int iTradeRoutes;
@@ -10964,9 +11068,9 @@ void CvCity::updateTradeRoutes()
 					{
 						if (!(pLoopCity->isTradeRoute(getOwnerINLINE())) || (getTeam() == GET_PLAYER((PlayerTypes)iI).getTeam()))
 						{
-							if (pLoopCity->plotGroup(getOwnerINLINE()) == plotGroup(getOwnerINLINE()) || GC.getDefineINT("IGNORE_PLOT_GROUP_FOR_TRADE_ROUTES"))
+							if (pLoopCity->plot()->isRevealed(getTeam(), false))
 							{
-								iValue = calculateTradeProfit(pLoopCity);
+								iValue = calculateInfrastructureTradeProfit(pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
 
 								for (iJ = 0; iJ < iTradeRoutes; iJ++)
 								{
@@ -11002,7 +11106,7 @@ void CvCity::updateTradeRoutes()
 		{
 			pLoopCity->setTradeRoute(getOwnerINLINE(), true);
 
-			iTradeProfit += calculateTradeProfit(pLoopCity);
+			iTradeProfit += calculateInfrastructureTradeProfit(pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
 		}
 	}
 
@@ -12063,86 +12167,80 @@ void CvCity::doDecay()
 }
 
 
-void CvCity::doReligion()
+int CvCity::calculateTradeCultureTimes100(int iRouteValue) const
 {
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return;
-
-	CvCity* pLoopCity;
-	int iRandThreshold;
-	int iSpread;
-	int iLoop;
-	int iI, iJ;
-
-	//Rhye - start
-//Speed: Modified by Kael 04/19/2007
-//	CyCity* pyCity = new CyCity(this);
-//	CyArgsList argsList;
-//	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));	// pass in city class
-//	long lResult=0;
-//	gDLL->getPythonIFace()->callFunction(PYGameModule, "doReligion", argsList.makeFunctionArgs(), &lResult);
-//	delete pyCity;	// python fxn must not hold on to this pointer
-//	if (lResult == 1)
-//	{
-//		return;
-//	}
-//Speed: End Modify
-	//Rhye - end
-
-	if (getReligionCount() == 0)
-	{
-		for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
-		{
-			if (!isHasReligion((ReligionTypes)iI))
-			{
-				if ((iI == GET_PLAYER(getOwnerINLINE()).getStateReligion()) || !(GET_PLAYER(getOwnerINLINE()).isNoNonStateReligionSpread()))
-				{
-					iRandThreshold = 0;
-
-					for (iJ = 0; iJ < MAX_PLAYERS; iJ++)
-					{
-						if (GET_PLAYER((PlayerTypes)iJ).isAlive())
-						{
-							for (pLoopCity = GET_PLAYER((PlayerTypes)iJ).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iJ).nextCity(&iLoop))
-							{
-								if (pLoopCity->isConnectedTo(this))
-								{
-									iSpread = pLoopCity->getReligionInfluence((ReligionTypes)iI);
-
-									//Rhye - start
-									//iSpread *= GC.getReligionInfo((ReligionTypes)iI).getSpreadFactor();
-									int iBaseSpreadFactor = GC.getReligionInfo((ReligionTypes)iI).getSpreadFactor();
-									int iSpreadFactor = civSpreadFactor[getOwnerINLINE()][iI] * iBaseSpreadFactor / 100;
-									iSpread *= iSpreadFactor;
-
-									if (GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4) //late start condition (RFCMP)
-										if (iI == 1 && getOwnerINLINE() == CELTIA) //no spread of Christianity in the Byzantine empire, because otherwise the Turks will get it
-											iSpread = 0;
-									//Rhye - end
-
-									if (iSpread > 0)
-									{
-										iSpread /= std::max(1, (((GC.getDefineINT("RELIGION_SPREAD_DISTANCE_DIVISOR") * plotDistance(getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())) / GC.getMapINLINE().maxPlotDistance()) - 5));
-
-										//iSpread /= (getReligionCount() + 1);
-
-										iRandThreshold = std::max(iRandThreshold, iSpread);
-									}
-								}
-							}
-						}
-					}
-
-					if (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("RELIGION_SPREAD_RAND"), "Religion Spread") < iRandThreshold)
-					{
-						setHasReligion(((ReligionTypes)iI), true, true, true);
-						break;
-					}
-				}
-			}
-		}
-	}
+    // Fixed-point city culture, quantized downward to tenths per route/direction.
+    __int64 iNumerator = (__int64)std::max(0, iRouteValue) * GC.getDefineINT("RFCMP_TRADE_CULTURE_TIMES100_FACTOR");
+    return (int)(iNumerator / (std::max(1, getPopulation()) * 10)) * 10;
+}
+// Influence is exchanged in both directions per route. Small amounts are discarded.
+static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
+{
+    int iPopulation = std::max(1, pTarget->getPopulation());
+    // Measure cultural identity before this route adds culture.
+    __int64 iTotalCulture = pTarget->countTotalCultureTimes100();
+    __int64 iOwnerCulture = pTarget->getCultureTimes100(pTarget->getOwnerINLINE());
+    PlayerTypes eSource = pSource->getOwnerINLINE();
+    int iCultureTimes100 = pTarget->calculateTradeCultureTimes100(iValue);
+    if (iCultureTimes100 > 0)
+    {
+        int iPreviousWhole = pTarget->getCulture(eSource);
+        pTarget->changeCultureTimes100(eSource, iCultureTimes100, false, false);
+        int iTileCulture = pTarget->getCulture(eSource) - iPreviousWhole;
+        if (iTileCulture > 0) pTarget->plot()->changeCulture(eSource, iTileCulture, true);
+    }
+    CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
+    if (GET_PLAYER(eSource).isCivic(eAtheism) || GET_PLAYER(pTarget->getOwnerINLINE()).isCivic(eAtheism)) return;
+    int iChance = iValue * GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR") / (iPopulation * std::max(1, GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR")));
+    int iMaxChance = std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT"));
+    iChance = std::min(iMaxChance, iChance);
+    int iCultureStart = std::max(0, std::min(99, GC.getDefineINT("RFCMP_TRADE_RELIGION_OWNER_CULTURE_START_PERCENT")));
+    if (iTotalCulture > 0)
+    {
+        __int64 iExcess = std::max((__int64)0, 100 * iOwnerCulture - iCultureStart * iTotalCulture);
+        __int64 iRange = (100 - iCultureStart) * iTotalCulture;
+        // Rounding the penalty up rounds the final spread chance down. At 100%
+        // owner culture it always removes the entire maximum possible chance.
+        int iPenalty = (int)((iMaxChance * iExcess + iRange - 1) / iRange);
+        iChance = std::max(0, iChance - iPenalty);
+    }
+    if (iChance <= 0) return;
+    for (int j = 0; j < GC.getNumReligionInfos(); j++)
+    {
+        ReligionTypes eReligion = (ReligionTypes)j;
+        if (!pSource->isHasReligion(eReligion) || pTarget->isHasReligion(eReligion)) continue;
+        if (GET_PLAYER(pTarget->getOwnerINLINE()).isNoNonStateReligionSpread() && GET_PLAYER(pTarget->getOwnerINLINE()).getStateReligion() != eReligion) continue;
+        int iReligionChance = iChance;
+        if (pTarget->isHolyCity() && !pTarget->isHolyCity(eReligion))
+            iReligionChance = std::max(0, iReligionChance - GC.getDefineINT("RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT"));
+        if (iReligionChance > 0 && GC.getGameINLINE().getSorenRandNum(100, "Trade religion spread") < iReligionChance)
+            pTarget->setHasReligion(eReligion, true, true, true);
+    }
 }
 
+void CvCity::doTradeInfluence()
+{
+    if (isDisorder() || isPlundered()) return;
+    std::vector<bool> reachable;
+    std::vector<bool> roads;
+    buildTradeInfrastructure(this, reachable, roads);
+    for (int i = 0; i < GC.getDefineINT("MAX_TRADE_ROUTES"); i++)
+    {
+        CvCity* pPartner = getTradeCity(i);
+        if (pPartner == NULL) continue;
+        bool bConnected = reachable[GC.getMapINLINE().plotNum(pPartner->getX_INLINE(), pPartner->getY_INLINE())];
+        int iValue = calculateTradeYield(YIELD_COMMERCE, calculateInfrastructureTradeProfit(pPartner, bConnected, roads[GC.getMapINLINE().plotNum(pPartner->getX_INLINE(), pPartner->getY_INLINE())]));
+        if (iValue <= 0) continue;
+        applyTradeInfluence(pPartner, this, iValue);
+        applyTradeInfluence(this, pPartner, iValue);
+    }
+}
+
+void CvCity::doReligion()
+{
+    // Passive religion spread is handled exclusively by doTradeInfluence().
+    // Missionaries and historical founding mechanics use their existing paths.
+}
 
 void CvCity::doGreatPeople()
 {

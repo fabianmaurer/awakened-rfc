@@ -7602,6 +7602,10 @@ int CvGame::calculateSyncChecksum()
 
 	iValue += getMapRand().getSeed();
 	iValue += getSorenRand().getSeed();
+    for (int iEmbargoTeam = 0; iEmbargoTeam < MAX_TEAMS; iEmbargoTeam++)
+        for (int iEmbargoTarget = 0; iEmbargoTarget < MAX_TEAMS; iEmbargoTarget++)
+            if (GET_TEAM((TeamTypes)iEmbargoTeam).isTradeEmbargo((TeamTypes)iEmbargoTarget))
+                iValue += (iEmbargoTeam + 1) * (iEmbargoTarget + 1) * 7919;
 
 	iValue += getNumCities();
 	iValue += getTotalPopulation();

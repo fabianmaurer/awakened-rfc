@@ -160,6 +160,8 @@ public:
 
 	bool isFreeTrade(int /*TeamTypes*/ eIndex);
 	bool isOpenBorders(int /*TeamTypes*/ eIndex);
+    bool isTradeEmbargo(int eIndex);
+    void setTradeEmbargo(int eIndex, bool bNewValue);
 	bool isForcePeace(int /*TeamTypes*/ eIndex);
 	bool isVassal(int /*TeamTypes*/ eIndex);
 	void setVassal(int /*TeamTypes*/ eIndex, bool bVassal, bool bCapitulated);

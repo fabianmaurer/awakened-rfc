@@ -601,7 +601,10 @@ public:
 	int getPopulationTradeModifier() const;
 	int getPeaceTradeModifier(TeamTypes eTeam) const;
 	int getBaseTradeProfit(CvCity* pCity) const;
-	int calculateTradeProfit(CvCity* pCity) const;															// Exposed to Python
+	int calculateTradeProfit(CvCity* pCity) const;
+    int calculateInfrastructureTradeProfit(CvCity* pCity, bool bConnected, bool bRoadConnected) const;
+    int getTradeInfrastructureEfficiency(CvCity* pCity) const;
+    int calculateTradeCultureTimes100(int iRouteValue) const;															// Exposed to Python
 	int calculateTradeYield(YieldTypes eIndex, int iTradeProfit) const;					// Exposed to Python
 	void setTradeYield(YieldTypes eIndex, int iNewValue);
 
@@ -1130,6 +1133,7 @@ protected:
 	void doProduction(bool bAllowNoProduction);
 	void doDecay();
 	void doReligion();
+    void doTradeInfluence();
 	void doGreatPeople();
 	void doMeltdown();
 	bool doCheckProduction();

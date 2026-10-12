@@ -4163,6 +4163,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 		break;
 
 	case TRADE_EMBARGO:
+        if (!GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_CURRENCY"))) return false;
 		if (!(GET_TEAM(getTeam()).isHuman()))
 		{
 			if (GET_TEAM(getTeam()).isHasMet((TeamTypes)(item.m_iData)) && GET_TEAM(GET_PLAYER(eWhoTo).getTeam()).isHasMet((TeamTypes)(item.m_iData)))
@@ -4454,6 +4455,14 @@ bool CvPlayer::isTradingWithTeam(TeamTypes eTeam, bool bIncludeCancelable) const
 		return false;
 	}
 
+    // Trade routes no longer require a diplomatic deal, but still count as trade.
+    int iTradeCity;
+    for (CvCity* pTradeCity = firstCity(&iTradeCity); pTradeCity != NULL; pTradeCity = nextCity(&iTradeCity))
+        for (int iRoute = 0; iRoute < GC.getDefineINT("MAX_TRADE_ROUTES"); iRoute++)
+        {
+            CvCity* pPartner = pTradeCity->getTradeCity(iRoute);
+            if (pPartner != NULL && pPartner->getTeam() == eTeam) return true;
+        }
 	for (CvDeal* pLoopDeal = GC.getGameINLINE().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGameINLINE().nextDeal(&iLoop))
 	{
 		if (bIncludeCancelable || pLoopDeal->isCancelable(getID()))
@@ -4511,6 +4520,7 @@ bool CvPlayer::canStopTradingWithTeam(TeamTypes eTeam, bool bContinueNotTrading)
 
 void CvPlayer::stopTradingWithTeam(TeamTypes eTeam)
 {
+    GET_TEAM(getTeam()).setTradeEmbargo(eTeam, true);
 	CvDeal* pLoopDeal;
 	int iLoop;
 	int iI;
@@ -22286,6 +22296,7 @@ bool CvPlayer::getItemTradeString(PlayerTypes eOtherPlayer, bool bOffer, bool bS
 		}
 		break;
 	case TRADE_EMBARGO:
+        if (!GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_CURRENCY"))) return false;
 		if (bOffer)
 		{
 			szString = gDLL->getText("TXT_KEY_TRADE_STOP_TRADING_WITH");

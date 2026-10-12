@@ -658,6 +658,16 @@ bool CyTeam::isFreeTrade(int /*TeamTypes*/ eIndex)
 	return m_pTeam ? m_pTeam->isFreeTrade((TeamTypes)eIndex) : false;
 }
 
+bool CyTeam::isTradeEmbargo(int eIndex)
+{
+    return m_pTeam ? m_pTeam->isTradeEmbargo((TeamTypes)eIndex) : false;
+}
+
+void CyTeam::setTradeEmbargo(int eIndex, bool bNewValue)
+{
+    if (m_pTeam) m_pTeam->setTradeEmbargo((TeamTypes)eIndex, bNewValue);
+}
+
 bool CyTeam::isOpenBorders(int /*TeamTypes*/ eIndex)
 {
 	return m_pTeam ? m_pTeam->isOpenBorders((TeamTypes)eIndex) : false;

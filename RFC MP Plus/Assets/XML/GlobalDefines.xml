@@ -1684,4 +1684,19 @@
 		<DefineName>FORCE_UNOWNED_CITY_TIMER</DefineName>
 		<iDefineIntVal>2</iDefineIntVal>
 	</Define>
+
+    <!-- RFC MP Plus: trade is available without infrastructure; a real road/sea
+         connection doubles efficiency. Influence is per route and direction. -->
+    <Define><DefineName>RFCMP_BASE_TRADE_PERCENT</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_FULL_EFFICIENCY_DISTANCE</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_ZERO_EFFICIENCY_DISTANCE</DefineName><iDefineIntVal>15</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_WATER_TRADE_MAX_DISTANCE_BEFORE_ASTRONOMY</DefineName><iDefineIntVal>12</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_WATER_TRADE_WITHOUT_BOTH_HARBORS_PERCENT</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_CONNECTED_TRADE_PERCENT</DefineName><iDefineIntVal>100</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_CULTURE_TIMES100_FACTOR</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR</DefineName><iDefineIntVal>2</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT</DefineName><iDefineIntVal>12</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_OWNER_CULTURE_START_PERCENT</DefineName><iDefineIntVal>75</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
 </Civ4Defines>

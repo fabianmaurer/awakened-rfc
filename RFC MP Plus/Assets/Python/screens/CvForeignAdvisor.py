@@ -142,6 +142,7 @@ class CvForeignAdvisor:
 	
 		if (self.iScreen == FOREIGN_RELATIONS_SCREEN):
 			self.drawRelations(bInitial)
+			self.drawEmbargoControl()
 		elif (self.iScreen == FOREIGN_ACTIVE_TRADE_SCREEN):
 			self.drawActive()
 		else:
@@ -725,8 +726,36 @@ class CvForeignAdvisor:
 		self.clearAllLines()			
 			
 	# Handles the input for this screen...
+	def drawEmbargoControl(self):
+		import TradePolicy
+		if self.iActiveLeader != CyGame().getActivePlayer():
+			return
+		iTarget = self.iSelectedLeader
+		if not TradePolicy.validTarget(self.iActiveLeader, iTarget):
+			return
+		team = gc.getTeam(gc.getPlayer(self.iActiveLeader).getTeam())
+		eTarget = gc.getPlayer(iTarget).getTeam()
+		screen = self.getScreen()
+		szCountry = gc.getPlayer(iTarget).getCivilizationShortDescription(0)
+		szStatus = localText.getText("TXT_KEY_RFCMP_EMBARGO_STATUS", (szCountry,))
+		if gc.getTeam(eTarget).isTradeEmbargo(team.getID()):
+			szStatus += u" " + localText.getText("TXT_KEY_RFCMP_EMBARGO_BY_PARTNER", ())
+		screen.setLabel(self.getNextWidgetName(), "", u"<font=2>" + szStatus + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, 210, 662, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		if team.isTradeEmbargo(eTarget):
+			szKey = "TXT_KEY_RFCMP_EMBARGO_LIFT"
+		elif team.isHasTech(gc.getInfoTypeForString("TECH_CURRENCY")):
+			szKey = "TXT_KEY_RFCMP_EMBARGO_IMPOSE"
+		else:
+			screen.setLabel(self.getNextWidgetName(), "", u"<font=2>" + localText.getText("TXT_KEY_RFCMP_EMBARGO_REQUIRES_CURRENCY", ()) + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, 210, 687, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+			return
+		screen.setText(self.getNextWidgetName(), "", u"<font=3>" + localText.getText(szKey, ()) + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, 210, 687, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 19001, iTarget)
+
 	def handleInput (self, inputClass):
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED):
+			if inputClass.getButtonType() == WidgetTypes.WIDGET_GENERAL and inputClass.getData1() == 19001:
+				import TradePolicy
+				TradePolicy.requestEmbargo(self.iActiveLeader, inputClass.getData2())
+				return 1
 			if (inputClass.getButtonType() == WidgetTypes.WIDGET_LEADERHEAD):
 				if (inputClass.getFlags() & MouseFlags.MOUSE_LBUTTONUP):
 					self.iSelectedLeader = inputClass.getData1()

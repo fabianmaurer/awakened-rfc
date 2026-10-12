@@ -43,6 +43,7 @@ CvTeam::CvTeam()
 	m_abHasEverMet = new bool[MAX_TEAMS]; //Rhye
 	m_abPermanentWarPeace = new bool[MAX_TEAMS];
 	m_abOpenBorders = new bool[MAX_TEAMS];
+    m_abTradeEmbargo = new bool[MAX_TEAMS];
 	m_abDefensivePact = new bool[MAX_TEAMS];
 	m_abForcePeace = new bool[MAX_TEAMS];
 	m_abVassal = new bool[MAX_TEAMS];
@@ -88,6 +89,7 @@ CvTeam::~CvTeam()
 	SAFE_DELETE_ARRAY(m_abHasEverMet); //Rhye
 	SAFE_DELETE_ARRAY(m_abPermanentWarPeace);
 	SAFE_DELETE_ARRAY(m_abOpenBorders);
+    SAFE_DELETE_ARRAY(m_abTradeEmbargo);
 	SAFE_DELETE_ARRAY(m_abDefensivePact);
 	SAFE_DELETE_ARRAY(m_abForcePeace);
 	SAFE_DELETE_ARRAY(m_abVassal);
@@ -197,6 +199,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 		m_abAtWar[iI] = false;
 		m_abPermanentWarPeace[iI] = false;
 		m_abOpenBorders[iI] = false;
+        m_abTradeEmbargo[iI] = false;
 		m_abDefensivePact[iI] = false;
 		m_abForcePeace[iI] = false;
 		m_abVassal[iI] = false;
@@ -215,6 +218,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 			kLoopTeam.m_abAtWar[getID()] = false;
 			kLoopTeam.m_abPermanentWarPeace[getID()] = false;
 			kLoopTeam.m_abOpenBorders[getID()] = false;
+            kLoopTeam.m_abTradeEmbargo[getID()] = false;
 			kLoopTeam.m_abDefensivePact[getID()] = false;
 			kLoopTeam.m_abForcePeace[getID()] = false;
 			kLoopTeam.m_abVassal[getID()] = false;
@@ -354,6 +358,17 @@ void CvTeam::addTeam(TeamTypes eTeam)
 
 	FAssert(eTeam != NO_TEAM);
 	FAssert(eTeam != getID());
+
+    // Preserve both partners' embargo policies when teams merge.
+    for (int iEmbargo = 0; iEmbargo < MAX_TEAMS; iEmbargo++)
+    {
+        if (iEmbargo == getID() || iEmbargo == eTeam) continue;
+        m_abTradeEmbargo[iEmbargo] = m_abTradeEmbargo[iEmbargo] || GET_TEAM(eTeam).m_abTradeEmbargo[iEmbargo];
+        CvTeam& kOther = GET_TEAM((TeamTypes)iEmbargo);
+        kOther.m_abTradeEmbargo[getID()] = kOther.m_abTradeEmbargo[getID()] || kOther.m_abTradeEmbargo[eTeam];
+    }
+    m_abTradeEmbargo[eTeam] = false;
+    GET_TEAM(eTeam).m_abTradeEmbargo[getID()] = false;
 
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 	{
@@ -640,6 +655,17 @@ void CvTeam::shareItems(TeamTypes eTeam)
 
 	FAssert(eTeam != NO_TEAM);
 	FAssert(eTeam != getID());
+
+    // Preserve both partners' embargo policies when teams merge.
+    for (int iEmbargo = 0; iEmbargo < MAX_TEAMS; iEmbargo++)
+    {
+        if (iEmbargo == getID() || iEmbargo == eTeam) continue;
+        m_abTradeEmbargo[iEmbargo] = m_abTradeEmbargo[iEmbargo] || GET_TEAM(eTeam).m_abTradeEmbargo[iEmbargo];
+        CvTeam& kOther = GET_TEAM((TeamTypes)iEmbargo);
+        kOther.m_abTradeEmbargo[getID()] = kOther.m_abTradeEmbargo[getID()] || kOther.m_abTradeEmbargo[eTeam];
+    }
+    m_abTradeEmbargo[eTeam] = false;
+    GET_TEAM(eTeam).m_abTradeEmbargo[getID()] = false;
 
 	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
 	{
@@ -1703,6 +1729,17 @@ void CvTeam::signOpenBorders(TeamTypes eTeam)
 	FAssert(eTeam != NO_TEAM);
 	FAssert(eTeam != getID());
 
+    // Preserve both partners' embargo policies when teams merge.
+    for (int iEmbargo = 0; iEmbargo < MAX_TEAMS; iEmbargo++)
+    {
+        if (iEmbargo == getID() || iEmbargo == eTeam) continue;
+        m_abTradeEmbargo[iEmbargo] = m_abTradeEmbargo[iEmbargo] || GET_TEAM(eTeam).m_abTradeEmbargo[iEmbargo];
+        CvTeam& kOther = GET_TEAM((TeamTypes)iEmbargo);
+        kOther.m_abTradeEmbargo[getID()] = kOther.m_abTradeEmbargo[getID()] || kOther.m_abTradeEmbargo[eTeam];
+    }
+    m_abTradeEmbargo[eTeam] = false;
+    GET_TEAM(eTeam).m_abTradeEmbargo[getID()] = false;
+
 	if (!isAtWar(eTeam) && (getID() != eTeam))
 	{
 		setTradeItem(&item, TRADE_OPEN_BORDERS);
@@ -1729,6 +1766,17 @@ void CvTeam::signDefensivePact(TeamTypes eTeam)
 
 	FAssert(eTeam != NO_TEAM);
 	FAssert(eTeam != getID());
+
+    // Preserve both partners' embargo policies when teams merge.
+    for (int iEmbargo = 0; iEmbargo < MAX_TEAMS; iEmbargo++)
+    {
+        if (iEmbargo == getID() || iEmbargo == eTeam) continue;
+        m_abTradeEmbargo[iEmbargo] = m_abTradeEmbargo[iEmbargo] || GET_TEAM(eTeam).m_abTradeEmbargo[iEmbargo];
+        CvTeam& kOther = GET_TEAM((TeamTypes)iEmbargo);
+        kOther.m_abTradeEmbargo[getID()] = kOther.m_abTradeEmbargo[getID()] || kOther.m_abTradeEmbargo[eTeam];
+    }
+    m_abTradeEmbargo[eTeam] = false;
+    GET_TEAM(eTeam).m_abTradeEmbargo[getID()] = false;
 
 	if (!isAtWar(eTeam) && (getID() != eTeam))
 	{
@@ -3728,9 +3776,25 @@ bool CvTeam::isFreeTrade(TeamTypes eIndex) const
 		return false;
 	}
 
-	return (isOpenBorders(eIndex) || GC.getGameINLINE().isFreeTrade());
+	return !isTradeEmbargo(eIndex) && !GET_TEAM(eIndex).isTradeEmbargo(getID());
 }
 
+
+bool CvTeam::isTradeEmbargo(TeamTypes eIndex) const
+{
+    return eIndex >= 0 && eIndex < MAX_TEAMS && m_abTradeEmbargo[eIndex];
+}
+
+void CvTeam::setTradeEmbargo(TeamTypes eIndex, bool bNewValue)
+{
+    if (eIndex < 0 || eIndex >= MAX_TEAMS || eIndex == getID()) return;
+    if (bNewValue && (!isHasMet(eIndex) || !isHasTech((TechTypes)GC.getInfoTypeForString("TECH_CURRENCY")))) return;
+    if (m_abTradeEmbargo[eIndex] == bNewValue) return;
+    m_abTradeEmbargo[eIndex] = bNewValue;
+    GC.getGameINLINE().updateTradeRoutes();
+    gDLL->getInterfaceIFace()->setDirty(Foreign_Screen_DIRTY_BIT, true);
+    gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
+}
 
 bool CvTeam::isOpenBorders(TeamTypes eIndex) const
 {
@@ -6277,6 +6341,7 @@ void CvTeam::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_TEAMS, m_abAtWar);
 	pStream->Read(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Read(MAX_TEAMS, m_abOpenBorders);
+    if (uiFlag & 1) pStream->Read(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Read(MAX_TEAMS, m_abDefensivePact);
 	pStream->Read(MAX_TEAMS, m_abForcePeace);
 	pStream->Read(MAX_TEAMS, m_abVassal);
@@ -6330,7 +6395,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag = 0;
+	uint uiFlag = 1;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iNumMembers);
@@ -6378,6 +6443,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_TEAMS, m_abAtWar);
 	pStream->Write(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Write(MAX_TEAMS, m_abOpenBorders);
+    pStream->Write(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Write(MAX_TEAMS, m_abDefensivePact);
 	pStream->Write(MAX_TEAMS, m_abForcePeace);
 	pStream->Write(MAX_TEAMS, m_abVassal);

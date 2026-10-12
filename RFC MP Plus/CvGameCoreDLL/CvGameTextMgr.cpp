@@ -13613,10 +13613,17 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
 
 			FAssert(pCity->totalTradeModifier(pOtherCity) == iModifier);
 
-			iProfit *= iModifier;
-			iProfit /= 10000;
-
-			FAssert(iProfit == pCity->calculateTradeProfit(pOtherCity));
+            int iEfficiency = pCity->getTradeInfrastructureEfficiency(pOtherCity);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_EFFICIENCY", iEfficiency));
+            int iRouteValue = pCity->calculateTradeYield(YIELD_COMMERCE, pCity->calculateTradeProfit(pOtherCity));
+            int iCultureHere = pCity->calculateTradeCultureTimes100(iRouteValue);
+            int iCultureThere = pOtherCity->calculateTradeCultureTimes100(iRouteValue);
+            CvWString szCultureHere = CvWString::format(L"%d.%d", iCultureHere / 100, (iCultureHere % 100) / 10);
+            CvWString szCultureThere = CvWString::format(L"%d.%d", iCultureThere / 100, (iCultureThere % 100) / 10);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_CULTURE", szCultureHere.GetCString(), szCultureThere.GetCString()));
+            iProfit = pCity->calculateTradeProfit(pOtherCity);
 
 			szBuffer.append(SEPARATOR);
 

@@ -3,10 +3,10 @@ from pathlib import Path
 from xml.sax.saxutils import escape
 
 ENTRIES = [
-    ('BASIC_WEALTH', 'Basic Wealth', 'Einfache Geldkonvertierung'),
+    ('BASIC_WEALTH', 'Sale of goods', 'Warenverkauf'),
     ('BASIC_WEALTH_STRATEGY',
-     'Converts 25% of production into gold. Available from the beginning; Currency replaces it with Wealth at 50% efficiency.',
-     'Wandelt 25% der Produktion in Gold um. Von Beginn an verfügbar; Währung ersetzt diese Konvertierung durch die Geldkonvertierung mit 50% Effektivität.'),
+     'Sell goods to convert 25% of production into gold. Available from the beginning; Currency replaces Sale of goods with Wealth at 50% efficiency.',
+     'Verkauft Waren und wandelt 25% der Produktion in Gold um. Von Beginn an verfügbar; Währung ersetzt Warenverkauf durch Wohlstand mit 50% Effektivität.'),
     ('WEALTH_STRATEGY', 'Converts 50% of production into gold. Requires Currency.',
      'Wandelt 50% der Produktion in Gold um. Benötigt Währung.'),
     ('RESEARCH_STRATEGY', 'Converts 25% of production into research. Requires Alphabet.',
