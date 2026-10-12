@@ -50,6 +50,20 @@ sowie wirtschaftliche Stabilitätsregeln. Einzigartige Einheiten, Gebäude,
 Fähigkeiten und historische Gründungszeitpunkte unterscheiden die Zivilisationen
 weiterhin. Sonderregeln für kleinere Fraktionen bleiben separat bestehen.
 
+## Produktionskonvertierungen
+
+| Konvertierung | Voraussetzung | Effektivität |
+| --- | --- | --- |
+| Einfache Geldkonvertierung | Keine; von Beginn an verfügbar | 25% Produktion in Gold |
+| Geldkonvertierung | Währung | 50% Produktion in Gold |
+| Forschung | Alphabet | 25% Produktion in Forschung |
+| Kultur | Musik | 50% Produktion in Kultur |
+
+Währung ersetzt die einfache durch die stärkere Geldkonvertierung. Laufende
+und vorgemerkte einfache Geldkonvertierungen werden automatisch umgestellt;
+andere Aufträge in der Produktionsliste bleiben erhalten. Die Werte gelten
+einheitlich für alle Zivilisationen und Spieler.
+
 ## Neue Staatsformen
 
 In jeder Kategorie ist eine Staatsform aktiv. Boni verschiedener Kategorien

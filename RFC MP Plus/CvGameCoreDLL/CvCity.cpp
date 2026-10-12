@@ -4032,6 +4032,33 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 }
 
 
+// Replace queued basic conversion without discarding other production orders.
+void CvCity::upgradeBasicWealth()
+{
+	ProcessTypes eBasic = (ProcessTypes)GC.getInfoTypeForString("PROCESS_BASIC_WEALTH");
+	ProcessTypes eWealth = (ProcessTypes)GC.getInfoTypeForString("PROCESS_WEALTH");
+	if (eBasic == NO_PROCESS || eWealth == NO_PROCESS || !GET_PLAYER(getOwnerINLINE()).canMaintain(eWealth))
+		return;
+
+	for (CLLNode<OrderData>* pNode = headOrderQueueNode(); pNode != NULL; pNode = nextOrderQueueNode(pNode))
+	{
+		if (pNode->m_data.eOrderType == ORDER_MAINTAIN && pNode->m_data.iData1 == eBasic)
+		{
+			bool bActive = pNode == headOrderQueueNode();
+			if (bActive) processProcess(eBasic, -1);
+			pNode->m_data.iData1 = eWealth;
+			if (bActive) processProcess(eWealth, 1);
+			setInfoDirty(true);
+			if (isCitySelected())
+			{
+				gDLL->getInterfaceIFace()->setDirty(InfoPane_DIRTY_BIT, true);
+				gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+				gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
+			}
+		}
+	}
+}
+
 void CvCity::processProcess(ProcessTypes eProcess, int iChange)
 {
 	int iI;
@@ -11782,6 +11809,7 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 
 bool CvCity::doCheckProduction()
 {
+	upgradeBasicWealth();
 	CLLNode<OrderData>* pOrderNode;
 	OrderData* pOrder;
 	UnitTypes eUpgradeUnit;

@@ -5076,6 +5076,21 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
 
+		// Research, trading and scenario grants all upgrade the team's conversion.
+		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_CURRENCY"))
+		{
+			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+			{
+				CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+				if (kPlayer.getTeam() == getID())
+				{
+					int iCityLoop;
+					for (CvCity* pUpgradeCity = kPlayer.firstCity(&iCityLoop); pUpgradeCity != NULL; pUpgradeCity = kPlayer.nextCity(&iCityLoop))
+						pUpgradeCity->upgradeBasicWealth();
+				}
+			}
+		}
+
 		if (isHasTech(eIndex))
 		{
 			for (iI = 0; iI < MAX_PLAYERS; iI++)

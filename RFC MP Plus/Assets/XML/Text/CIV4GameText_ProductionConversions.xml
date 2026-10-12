@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_PROCESS_BASIC_WEALTH</Tag>
+    <English>Basic Wealth</English>
+    <French>Basic Wealth</French>
+    <German>Einfache Geldkonvertierung</German>
+    <Italian>Basic Wealth</Italian>
+    <Spanish>Basic Wealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_PROCESS_BASIC_WEALTH_STRATEGY</Tag>
+    <English>Converts 25% of production into gold. Available from the beginning; Currency replaces it with Wealth at 50% efficiency.</English>
+    <French>Converts 25% of production into gold. Available from the beginning; Currency replaces it with Wealth at 50% efficiency.</French>
+    <German>Wandelt 25% der Produktion in Gold um. Von Beginn an verf&#252;gbar; W&#228;hrung ersetzt diese Konvertierung durch die Geldkonvertierung mit 50% Effektivit&#228;t.</German>
+    <Italian>Converts 25% of production into gold. Available from the beginning; Currency replaces it with Wealth at 50% efficiency.</Italian>
+    <Spanish>Converts 25% of production into gold. Available from the beginning; Currency replaces it with Wealth at 50% efficiency.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_PROCESS_WEALTH_STRATEGY</Tag>
+    <English>Converts 50% of production into gold. Requires Currency.</English>
+    <French>Converts 50% of production into gold. Requires Currency.</French>
+    <German>Wandelt 50% der Produktion in Gold um. Ben&#246;tigt W&#228;hrung.</German>
+    <Italian>Converts 50% of production into gold. Requires Currency.</Italian>
+    <Spanish>Converts 50% of production into gold. Requires Currency.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_PROCESS_RESEARCH_STRATEGY</Tag>
+    <English>Converts 25% of production into research. Requires Alphabet.</English>
+    <French>Converts 25% of production into research. Requires Alphabet.</French>
+    <German>Wandelt 25% der Produktion in Forschung um. Ben&#246;tigt Alphabet.</German>
+    <Italian>Converts 25% of production into research. Requires Alphabet.</Italian>
+    <Spanish>Converts 25% of production into research. Requires Alphabet.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_PROCESS_CULTURE_STRATEGY</Tag>
+    <English>Converts 50% of production into culture. Requires Music.</English>
+    <French>Converts 50% of production into culture. Requires Music.</French>
+    <German>Wandelt 50% der Produktion in Kultur um. Ben&#246;tigt Musik.</German>
+    <Italian>Converts 50% of production into culture. Requires Music.</Italian>
+    <Spanish>Converts 50% of production into culture. Requires Music.</Spanish>
+  </TEXT>
+</Civ4GameText>

@@ -5977,7 +5977,14 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 
 bool CvPlayer::canMaintain(ProcessTypes eProcess, bool bContinue) const
 {
-	if (!(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getProcessInfo(eProcess).getTechPrereq()))))
+	// Basic Wealth is available without a technology, until Currency replaces it.
+	if (eProcess == GC.getInfoTypeForString("PROCESS_BASIC_WEALTH"))
+	{
+		TechTypes eCurrency = (TechTypes)GC.getInfoTypeForString("TECH_CURRENCY");
+		return eCurrency == NO_TECH || !GET_TEAM(getTeam()).isHasTech(eCurrency);
+	}
+	TechTypes ePrereq = (TechTypes)GC.getProcessInfo(eProcess).getTechPrereq();
+	if (ePrereq != NO_TECH && !GET_TEAM(getTeam()).isHasTech(ePrereq))
 	{
 		return false;
 	}

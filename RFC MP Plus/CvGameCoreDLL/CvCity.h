@@ -143,6 +143,7 @@ public:
 	void processBonus(BonusTypes eBonus, int iChange);
 	void processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolete = false, bool bCivicTransition = false);
 	void processProcess(ProcessTypes eProcess, int iChange);
+	void upgradeBasicWealth();
 	void processSpecialist(SpecialistTypes eSpecialist, int iChange);
 
 	HandicapTypes getHandicapType() const;												// Exposed to Python

@@ -47,6 +47,19 @@ adjustments, China/Japan's research discount, and regional and economic stabilit
 rules. Unique units, buildings, powers, and historical spawn dates also continue
 to distinguish civilizations. Minor-faction tuning remains separate.
 
+## Production conversions
+
+| Conversion | Required technology | Efficiency |
+| --- | --- | --- |
+| Basic Wealth | None; available from the beginning | 25% production into gold |
+| Wealth | Currency | 50% production into gold |
+| Research | Alphabet | 25% production into research |
+| Culture | Music | 50% production into culture |
+
+Currency replaces Basic Wealth with Wealth. Cities already using or queuing
+Basic Wealth automatically switch to the stronger version, preserving other
+queued orders. Rates are shared by all civilizations and players.
+
 ## New civics
 
 Each column allows one active civic. Bonuses from different columns combine;
