@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_BUILD_DRAIN_MARSH</Tag>
+        <English>Drain marsh</English>
+        <French>Drain marsh</French>
+        <German>Sumpf trockenlegen</German>
+        <Italian>Drain marsh</Italian>
+        <Spanish>Drain marsh</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_BUILD_DRAIN_MARSH_HELP</Tag>
+        <English>Converts marsh to grassland and removes swamp features. No production is gained. Requires Engineering.</English>
+        <French>Converts marsh to grassland and removes swamp features. No production is gained. Requires Engineering.</French>
+        <German>Wandelt Sumpf in Grasland um und entfernt die Sumpfdarstellung. Kein Produktionsgewinn. Erfordert Maschinenbau.</German>
+        <Italian>Converts marsh to grassland and removes swamp features. No production is gained. Requires Engineering.</Italian>
+        <Spanish>Converts marsh to grassland and removes swamp features. No production is gained. Requires Engineering.</Spanish>
+    </TEXT>
+</Civ4GameText>

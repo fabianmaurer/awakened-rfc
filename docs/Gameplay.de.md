@@ -82,6 +82,21 @@ Wachstumsschwellen und die Nahrungserhaltung durch Kornspeicher bleiben bestehen
 verwenden Hundertstel eines Prozentpunkts. Bestehende Spielstände beginnen ohne
 gespeicherten Nachkommarest und verwenden den neuen Malus sofort.
 
+## Landerschließung
+
+- **Bauernhöfe auf Schwemmland** benötigen nur Landwirtschaft und die üblichen
+  Voraussetzungen für Bauernhöfe. Das Schwemmland bleibt erhalten; es gibt keine
+  zusätzliche Technologie oder zusätzliche Bauzeit für dieses Geländemerkmal.
+- **Sumpf trockenlegen** steht Bautrupps und indischen Schnellen Bautrupps ab
+  **Maschinenbau** innerhalb des eigenen Teamgebiets zur Verfügung. Die Aktion
+  wandelt Sumpfgelände in Grasland um, entfernt das Schlamm-Geländemerkmal und die
+  zusätzliche Sumpfdarstellung und liefert **keine Produktion**. Normale
+  Verbesserungen können anschließend separat errichtet werden.
+- Trockenlegen benötigt **1200 Basis-Arbeitspunkte**, normalerweise zwölf Runden
+  für einen normalen Bautrupp vor Spieltempo-, Szenario-Epochen- und
+  Arbeitsgeschwindigkeits-Modifikatoren. KI und automatisierte Bautrupps
+  berücksichtigen den Ertrag des erschlossenen Landes bei ihrer Aktionswahl.
+
 ## Produktionskonvertierungen
 
 | Konvertierung | Voraussetzung | Effektivität |

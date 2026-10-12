@@ -78,6 +78,19 @@ The settings `RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) and
 use hundredths of a percentage point. Existing saves begin with zero fractional
 growth remainder and use the new rate immediately.
 
+## Land reclamation
+
+- **Flood-plain farms** require only Agriculture and the usual farm conditions.
+  Farming preserves the flood plains; there is no additional technology or
+  construction-time requirement for the feature.
+- **Drain marsh** is available to workers and Indian Fast Workers from
+  **Engineering**, within their team's territory. It converts marsh terrain
+  into grassland, removes the mud feature and decorative swamp resource, and
+  grants **no production**. Normal improvements can then be built separately.
+- Drainage costs **1200 base work**, normally twelve turns for one standard
+  worker before game-speed, scenario-era and worker-speed modifiers. AI and
+  automated workers consider the reclaimed land's yields when choosing actions.
+
 ## Production conversions
 
 | Conversion | Required technology | Efficiency |

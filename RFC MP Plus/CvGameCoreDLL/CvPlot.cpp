@@ -2295,6 +2295,15 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 		return false;
 	}
 
+    if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH"))
+    {
+        // Terrain conversion is allowed only within the worker's own team.
+        return getTerrainType() == GC.getInfoTypeForString("TERRAIN_MARSH") &&
+            !isWater() && !isCity() && !isImpassable() &&
+            getTeam() == GET_PLAYER(ePlayer).getTeam() &&
+            (getFeatureType() == NO_FEATURE || getFeatureType() == GC.getInfoTypeForString("FEATURE_MUD"));
+    }
+
 	bValid = false;
 
 	eImprovement = ((ImprovementTypes)(GC.getBuildInfo(eBuild).getImprovement()));
@@ -7669,6 +7678,12 @@ bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam
 				}
 			}
 
+            if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH"))
+            {
+                if (getBonusType() == GC.getInfoTypeForString("BONUS_SWAMP")) setBonusType(NO_BONUS);
+                setTerrainType((TerrainTypes)GC.getInfoTypeForString("TERRAIN_GRASS"), true, true);
+            }
+
 			bFinished = true;
 		}
 	}
@@ -8991,7 +9006,8 @@ void CvPlot::read(FDataStreamBase* pStream)
 	pStream->Read(&iCount);
 	if (iCount > 0)
 	{
-		m_paiBuildProgress = new short[iCount];
+		m_paiBuildProgress = new short[std::max(iCount, GC.getNumBuildInfos())];
+        for (int iBuild = 0; iBuild < GC.getNumBuildInfos(); ++iBuild) m_paiBuildProgress[iBuild] = 0;
 		pStream->Read(iCount, m_paiBuildProgress);
 	}
 
@@ -9502,6 +9518,17 @@ int CvPlot::getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUp
 	}
 		
 	iYield += calculateNatureYield(eYield, getTeam(), bIgnoreFeature);
+    if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH") &&
+        getTerrainType() == GC.getInfoTypeForString("TERRAIN_MARSH"))
+    {
+        const CvTerrainInfo& grass = GC.getTerrainInfo((TerrainTypes)GC.getInfoTypeForString("TERRAIN_GRASS"));
+        const CvTerrainInfo& oldTerrain = GC.getTerrainInfo(getTerrainType());
+        iYield += grass.getYield(eYield) - oldTerrain.getYield(eYield);
+        if (isRiver()) iYield += grass.getRiverYieldChange(eYield) - oldTerrain.getRiverYieldChange(eYield);
+        if (isHills()) iYield += grass.getHillsYieldChange(eYield) - oldTerrain.getHillsYieldChange(eYield);
+        if (getBonusType(getTeam()) == GC.getInfoTypeForString("BONUS_SWAMP"))
+            iYield -= GC.getBonusInfo(getBonusType(getTeam())).getYieldChange(eYield);
+    }
 	
 	ImprovementTypes eImprovement = (ImprovementTypes)GC.getBuildInfo(eBuild).getImprovement();
 	

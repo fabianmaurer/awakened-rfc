@@ -21,6 +21,8 @@ Fähigkeiten und Siegziele bleiben erhalten.
 - **Technologieabhängiges Wachstum:** Ein gemeinsamer Malus von 30% auf den
   positiven Wachstumsüberschuss sinkt je bekannter Technologie um 0,5 Prozentpunkte
   und entfällt ab 60 Technologien. Nahrungsproduktion und Verbrauch bleiben gleich.
+- **Landerschließung:** Bauernhöfe auf Schwemmland ab Landwirtschaft;
+  Bautrupps können Sumpf ab Maschinenbau zu Grasland trockenlegen.
 - **Handel ohne Straßen oder Grenzabkommen:** 50% Effektivität bis Entfernung 5,
   danach linear sinkend auf null bei 15. Straßen ermöglichen 100% ohne Entfernungslimit; Wasserwege
   benötigen Segeln und sind bis Astronomie auf zwölf Felder begrenzt.

@@ -8689,6 +8689,23 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 			}
 		}
 
+    // Drainage reclaims unusable terrain, even when its decorative mud is
+    // absent. Evaluate the resulting yields and use the full action time.
+    BuildTypes eDrainMarsh = (BuildTypes)GC.getInfoTypeForString("BUILD_DRAIN_MARSH");
+    if (eDrainMarsh != NO_BUILD && GET_PLAYER(getOwnerINLINE()).canBuild(pPlot, eDrainMarsh))
+    {
+        int iDrainValue = 0;
+        iDrainValue += std::max(0, pPlot->getYieldWithBuild(eDrainMarsh, YIELD_FOOD, false) - pPlot->getYield(YIELD_FOOD)) * iFoodPriority;
+        iDrainValue += std::max(0, pPlot->getYieldWithBuild(eDrainMarsh, YIELD_PRODUCTION, false) - pPlot->getYield(YIELD_PRODUCTION)) * iProductionPriority;
+        iDrainValue += std::max(0, pPlot->getYieldWithBuild(eDrainMarsh, YIELD_COMMERCE, false) - pPlot->getYield(YIELD_COMMERCE)) * iCommercePriority;
+        iDrainValue = iDrainValue * 400 / std::max(1, pPlot->getBuildTime(eDrainMarsh) + 100);
+        if (iDrainValue > iBestValue)
+        {
+            iBestValue = iDrainValue;
+            eBestBuild = eDrainMarsh;
+        }
+    }
+
 	if (iClearFeatureValue > 0)
 	{
 		FAssert(pPlot->getFeatureType() != NO_FEATURE);
