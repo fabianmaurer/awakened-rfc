@@ -6416,7 +6416,9 @@ int CvCity::getMilitaryHappinessUnits() const
 
 int CvCity::getMilitaryHappiness() const
 {
-	return (getMilitaryHappinessUnits() * GET_PLAYER(getOwnerINLINE()).getHappyPerMilitaryUnit());
+	// Universal garrison support: one happiness per pair, capped at three.
+	return std::min(3, getMilitaryHappinessUnits() / 2) +
+		(getMilitaryHappinessUnits() * GET_PLAYER(getOwnerINLINE()).getHappyPerMilitaryUnit());
 }
 
 

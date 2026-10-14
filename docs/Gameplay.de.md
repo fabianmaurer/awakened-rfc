@@ -200,6 +200,8 @@ Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_PRESS
 
 ## Neue Staatsformen
 
+Stationierte Militäreinheiten geben **+1 Zufriedenheit je zwei Einheiten**, abgerundet, bis maximal **+3 bei sechs Einheiten**. Dies gilt unter jeder Staatsform und erscheint in der städtischen Zufriedenheitsaufschlüsselung als Militärpräsenz.
+
 Stadtfelder behalten ihre natürlichen Erträge aus Gelände, Hügeln, Flüssen, Landschaftsmerkmalen und bekannten Ressourcen und erhalten **+1 Produktion und +1 Handel**. Es gibt keinen Mindestnahrungsertrag: Ein kahles Wüstenstadtfeld erzeugt keine Nahrung. Bei Stadtgründung bleibt Schwemmland einschließlich seiner Erträge erhalten. Die Ertragsregel gilt für alle Stadtfelder; bereits entferntes Schwemmland wird in bestehenden Spielständen nicht wiederhergestellt.
 
 In jeder Kategorie ist eine Staatsform aktiv. Boni verschiedener Kategorien
