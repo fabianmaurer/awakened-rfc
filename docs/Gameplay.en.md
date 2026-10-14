@@ -545,3 +545,29 @@ technology penalties affect positive surplus differently from starvation.
 Redistributing food can increase population growth without increasing food
 production. Imports from foreign cities also need not balance exports within
 one country; the balance is global.
+
+### Armed-slave upgrades
+
+Slave units can upgrade directly to the most advanced armed-slave tier unlocked
+by their team. Earlier armed tiers are no longer offered once a newer weapon
+technology is known; normal upgrade costs and city requirements still apply.
+
+Armed-slave equipment costs increase by weapon tier, before normal upgrade
+discounts and AI adjustments:
+The destination tier alone determines the price: direct upgrades do not pay
+for skipped weapon tiers. Existing free-upgrade unique powers still apply.
+
+| Armed-slave tier | Technology | Strength | Equipment gold |
+| --- | --- | ---: | ---: |
+| Bronze weapons | Bronze Working | 3 | 15 |
+| Swordsman | Iron Working | 4 | 25 |
+| Maceman | Machinery | 6 | 40 |
+| Musketeer | Gunpowder | 7 | 60 |
+| Rifleman | Rifling | 10 | 80 |
+| Infantry | Assembly Line | 14 | 100 |
+| Modern infantry | Robotics | 20 | 130 |
+
+All tiers remain melee-class slave units with cannon fodder and quarter upkeep;
+firearm tiers use their corresponding infantry models. The final tier uses
+modern infantry art rather than a mechanized vehicle. Revolts and garrison
+suppression calculations use the strongest tier the owner has unlocked.

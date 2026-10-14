@@ -6851,6 +6851,28 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 
 	iPrice += (std::max(0, (GET_PLAYER(getOwnerINLINE()).getProductionNeeded(eUnit) - GET_PLAYER(getOwnerINLINE()).getProductionNeeded(getUnitType()))) * GC.getDefineINT("UNIT_UPGRADE_COST_PER_PRODUCTION"));
 
+    // Slave units are unbuildable (all have XML cost -1). Price their new
+    // weapons explicitly instead of treating every tier as a 10-gold upgrade.
+    // A direct jump buys only the destination's equipment, not skipped tiers.
+    const char* aszSlaveTypes[] = {
+        "UNIT_SLAVE", "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN",
+        "UNIT_SLAVE_MACEMAN", "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN",
+        "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+    };
+    const int aiSlaveEquipmentCosts[] = { 0, 15, 25, 40, 60, 80, 100, 130 };
+    bool bSlaveSource = false;
+    int iSlaveEquipmentCost = -1;
+    for (int iSlaveTier = 0; iSlaveTier < (int)(sizeof(aszSlaveTypes) / sizeof(aszSlaveTypes[0])); ++iSlaveTier)
+    {
+        UnitTypes eSlaveTier = (UnitTypes)GC.getInfoTypeForString(aszSlaveTypes[iSlaveTier]);
+        if (eSlaveTier == NO_UNIT) continue;
+        if (getUnitType() == eSlaveTier) bSlaveSource = true;
+        if (eUnit == eSlaveTier && iSlaveTier > 0)
+            iSlaveEquipmentCost = aiSlaveEquipmentCosts[iSlaveTier];
+    }
+    if (bSlaveSource && iSlaveEquipmentCost >= 0)
+        iPrice = iSlaveEquipmentCost;
+
 	if (!isHuman() && !isBarbarian())
 	{
 		iPrice *= GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAIUnitUpgradePercent();
@@ -7030,6 +7052,28 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 	
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	CvUnitInfo& kUnitInfo = GC.getUnitInfo(eUnit);
+
+    // Only the newest weapon tier unlocked by this team is an armed-slave
+    // upgrade target. Keep the XML chain so obsolete slaves can skip directly
+    // to it; do not offer cheaper intermediate tiers to the player or AI.
+    const char* aszArmedSlaveTypes[] = {
+        "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN",
+        "UNIT_SLAVE_MACEMAN", "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN",
+        "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+    };
+    UnitTypes eLatestArmedSlave = NO_UNIT;
+    bool bArmedSlaveTarget = false;
+    for (int iSlaveTier = 0; iSlaveTier < (int)(sizeof(aszArmedSlaveTypes) / sizeof(aszArmedSlaveTypes[0])); ++iSlaveTier)
+    {
+        UnitTypes eSlaveTier = (UnitTypes)GC.getInfoTypeForString(aszArmedSlaveTypes[iSlaveTier]);
+        if (eSlaveTier == NO_UNIT) continue;
+        if (eUnit == eSlaveTier) bArmedSlaveTarget = true;
+        TechTypes eWeaponTech = (TechTypes)GC.getUnitInfo(eSlaveTier).getPrereqAndTech();
+        if (eWeaponTech == NO_TECH || GET_TEAM(getTeam()).isHasTech(eWeaponTech))
+            eLatestArmedSlave = eSlaveTier;
+    }
+    if (bArmedSlaveTarget && eUnit != eLatestArmedSlave)
+        return NULL;
 
 	if (GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(kUnitInfo.getUnitClassType()) != eUnit)
 	{

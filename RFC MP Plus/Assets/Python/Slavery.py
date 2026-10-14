@@ -231,7 +231,7 @@ class Slavery:
 
 	def _latestRebelUnit(self, iPlayer):
 		team = gc.getTeam(gc.getPlayer(iPlayer).getTeam())
-		for name, techName in [("UNIT_SLAVE_MUSKETMAN", "TECH_GUNPOWDER"), ("UNIT_SLAVE_MACEMAN", "TECH_MACHINERY"), ("UNIT_SLAVE_SPEARMAN", "TECH_IRON_WORKING"), ("UNIT_ARMED_SLAVE", "TECH_BRONZE_WORKING")]:
+		for name, techName in [("UNIT_SLAVE_MODERN_INFANTRY", "TECH_ROBOTICS"), ("UNIT_SLAVE_INFANTRY", "TECH_ASSEMBLY_LINE"), ("UNIT_SLAVE_RIFLEMAN", "TECH_RIFLING"), ("UNIT_SLAVE_MUSKETMAN", "TECH_GUNPOWDER"), ("UNIT_SLAVE_MACEMAN", "TECH_MACHINERY"), ("UNIT_SLAVE_SWORDSMAN", "TECH_IRON_WORKING"), ("UNIT_ARMED_SLAVE", "TECH_BRONZE_WORKING")]:
 			unit = self._info(name)
 			if unit >= 0 and team.isHasTech(self._info(techName)): return unit
 		return self._info("UNIT_SLAVE")

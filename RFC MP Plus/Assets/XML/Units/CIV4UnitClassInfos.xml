@@ -821,13 +821,13 @@
 			<DefaultUnit>UNIT_ARMED_SLAVE</DefaultUnit>
 		</UnitClassInfo>
 		<UnitClassInfo>
-			<Type>UNITCLASS_SLAVE_SPEARMAN</Type>
-			<Description>TXT_KEY_RFCMP_UNIT_SLAVE_SPEARMAN</Description>
+			<Type>UNITCLASS_SLAVE_SWORDSMAN</Type>
+			<Description>TXT_KEY_RFCMP_UNIT_SLAVE_SWORDSMAN</Description>
 			<iMaxGlobalInstances>-1</iMaxGlobalInstances>
 			<iMaxTeamInstances>-1</iMaxTeamInstances>
 			<iMaxPlayerInstances>-1</iMaxPlayerInstances>
 			<iInstanceCostModifier>0</iInstanceCostModifier>
-			<DefaultUnit>UNIT_SLAVE_SPEARMAN</DefaultUnit>
+			<DefaultUnit>UNIT_SLAVE_SWORDSMAN</DefaultUnit>
 		</UnitClassInfo>
 		<UnitClassInfo>
 			<Type>UNITCLASS_SLAVE_MACEMAN</Type>
@@ -847,5 +847,32 @@
 			<iInstanceCostModifier>0</iInstanceCostModifier>
 			<DefaultUnit>UNIT_SLAVE_MUSKETMAN</DefaultUnit>
 		</UnitClassInfo>
+			<UnitClassInfo>
+            <Type>UNITCLASS_SLAVE_RIFLEMAN</Type>
+            <Description>TXT_KEY_RFCMP_UNIT_SLAVE_RIFLEMAN</Description>
+            <iMaxGlobalInstances>-1</iMaxGlobalInstances>
+            <iMaxTeamInstances>-1</iMaxTeamInstances>
+            <iMaxPlayerInstances>-1</iMaxPlayerInstances>
+            <iInstanceCostModifier>0</iInstanceCostModifier>
+            <DefaultUnit>UNIT_SLAVE_RIFLEMAN</DefaultUnit>
+        </UnitClassInfo>
+			<UnitClassInfo>
+            <Type>UNITCLASS_SLAVE_INFANTRY</Type>
+            <Description>TXT_KEY_RFCMP_UNIT_SLAVE_INFANTRY</Description>
+            <iMaxGlobalInstances>-1</iMaxGlobalInstances>
+            <iMaxTeamInstances>-1</iMaxTeamInstances>
+            <iMaxPlayerInstances>-1</iMaxPlayerInstances>
+            <iInstanceCostModifier>0</iInstanceCostModifier>
+            <DefaultUnit>UNIT_SLAVE_INFANTRY</DefaultUnit>
+        </UnitClassInfo>
+			<UnitClassInfo>
+            <Type>UNITCLASS_SLAVE_MODERN_INFANTRY</Type>
+            <Description>TXT_KEY_RFCMP_UNIT_SLAVE_MODERN_INFANTRY</Description>
+            <iMaxGlobalInstances>-1</iMaxGlobalInstances>
+            <iMaxTeamInstances>-1</iMaxTeamInstances>
+            <iMaxPlayerInstances>-1</iMaxPlayerInstances>
+            <iInstanceCostModifier>0</iInstanceCostModifier>
+            <DefaultUnit>UNIT_SLAVE_MODERN_INFANTRY</DefaultUnit>
+        </UnitClassInfo>
 	</UnitClassInfos>
 </Civ4UnitClassInfos>

@@ -581,3 +581,32 @@ Die Bilanz der transferierten Nahrung ist weltweit null; innerhalb eines
 Landes können Importe und Exporte durch Außenhandel voneinander abweichen.
 Die Bevölkerung kann trotzdem schneller wachsen, wenn kleine Städte Nahrung
 effizienter in neue Einwohner umsetzen.
+
+### Aufwertung bewaffneter Sklaven
+
+Sklaveneinheiten können direkt zur modernsten durch die Technologien ihres
+Teams freigeschalteten bewaffneten Sklaveneinheit aufgewertet werden.
+Ältere Waffenstufen werden dann nicht mehr angeboten. Die normalen
+Aufwertungskosten und Stadtvoraussetzungen gelten weiterhin.
+
+Die Bewaffnung wird mit jeder Waffenstufe teurer; die folgenden Preise gelten
+vor normalen Aufwertungsrabatten und KI-Anpassungen.
+Nur die Zielstufe bestimmt den Preis; übersprungene Waffenstufen werden
+nicht mitbezahlt. Einzigartige Fähigkeiten für kostenlose Aufwertungen
+gelten weiterhin.
+
+| Bewaffnete Sklaveneinheit | Technologie | Stärke | Gold |
+| --- | --- | ---: | ---: |
+| Bronzewaffen | Bronzebearbeitung | 3 | 15 |
+| Schwertkämpfer | Eisenverarbeitung | 4 | 25 |
+| Streitkolbenträger | Maschinen | 6 | 40 |
+| Musketier | Schießpulver | 7 | 60 |
+| Schütze | Drall | 10 | 80 |
+| Infanterie | Fließband | 14 | 100 |
+| Moderne Infanterie | Robotik | 20 | 130 |
+
+Alle Stufen bleiben Nahkampf-Sklaveneinheiten mit Kanonenfutter und einem Viertel
+des Unterhalts. Die Schusswaffenstufen verwenden passende Infanteriemodelle;
+die letzte Stufe erhält ein modernes Infanteriemodell statt eines Fahrzeugs.
+Aufstände und die Berechnung der nötigen Garnisonsstärke berücksichtigen
+die modernste durch den Besitzer freigeschaltete Stufe.
