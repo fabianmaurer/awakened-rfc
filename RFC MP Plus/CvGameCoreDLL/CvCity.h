@@ -21,6 +21,7 @@ struct FoodTradeTransfer
     int partnerFounded;
     bool routeFromSelf;
     int amount;
+    bool locked; // Both endpoints agree once either city processes growth.
 };
 
 class CvCity : public CvDLLEntity
@@ -621,6 +622,7 @@ public:
     int getFoodTradeExports() const;
     int getFoodTradeWith(const CvCity* pPartner) const;
     int getFoodTradeChecksum() const;
+    void lockFoodTrade();
     void clearFoodTrade();
     void addFoodTrade(CvCity* pPartner, bool bRouteFromSelf, int iAmount);
 	int getTradeYield(YieldTypes eIndex) const;																	// Exposed to Python

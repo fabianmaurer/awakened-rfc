@@ -4900,7 +4900,9 @@ int CvCity::foodDifference(bool bBottom) const
 
 	if (isDisorder())
 	{
-		return 0;
+        // Local growth stops, but a shipment already booked by the partner
+        // still has its matching credit/debit here. Unbooked routes cancel.
+		return getFoodTradeImports() - getFoodTradeExports();
 	}
 
 	if (isFoodProduction())
@@ -8164,6 +8166,9 @@ int CvCity::getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const
 
 int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
 {
+    // Once one endpoint has booked this shipment, the other must book the
+    // identical amount even if a cap, route or disorder state changes later.
+    if (transfer.locked) return transfer.amount;
     CvCity* pPartner = getCity(transfer.partner);
     if (pPartner == NULL || pPartner->getGameTurnFounded() != transfer.partnerFounded ||
         isDisorder() || pPartner->isDisorder() || isPlundered() || pPartner->isPlundered()) return 0;
@@ -8220,9 +8225,40 @@ int CvCity::getFoodTradeChecksum() const
     {
         const FoodTradeTransfer& t = m_foodTrade[i];
         iResult += (t.partner.eOwner + 1) * 7919 + (t.partner.iID + 1) * 3571 +
-            t.partnerFounded * 31 + (t.routeFromSelf ? 101 : 0) + t.amount * 65537;
+            t.partnerFounded * 31 + (t.routeFromSelf ? 101 : 0) + (t.locked ? 211 : 0) + t.amount * 65537;
     }
     return iResult;
+}
+
+void CvCity::lockFoodTrade()
+{
+    for (unsigned int i = 0; i < m_foodTrade.size(); ++i)
+    {
+        FoodTradeTransfer& t = m_foodTrade[i];
+        if (t.locked) continue;
+        CvCity* pPartner = getCity(t.partner);
+        const int iAmount = foodTradeAmount(t);
+        bool bMatched = false;
+        if (pPartner != NULL && pPartner->getGameTurnFounded() == t.partnerFounded)
+        {
+            for (unsigned int j = 0; j < pPartner->m_foodTrade.size(); ++j)
+            {
+                FoodTradeTransfer& other = pPartner->m_foodTrade[j];
+                if (other.partner.eOwner == getOwnerINLINE() && other.partner.iID == getID() &&
+                    other.partnerFounded == getGameTurnFounded() &&
+                    other.routeFromSelf != t.routeFromSelf && other.amount == -t.amount)
+                {
+                    other.amount = -iAmount;
+                    other.locked = true;
+                    bMatched = true;
+                    break;
+                }
+            }
+        }
+        // No unmatched credit or debit may enter growth accounting.
+        t.amount = bMatched ? iAmount : 0;
+        t.locked = true;
+    }
 }
 
 void CvCity::clearFoodTrade()
@@ -8239,6 +8275,7 @@ void CvCity::addFoodTrade(CvCity* pPartner, bool bRouteFromSelf, int iAmount)
     transfer.partnerFounded = pPartner->getGameTurnFounded();
     transfer.routeFromSelf = bRouteFromSelf;
     transfer.amount = iAmount;
+    transfer.locked = false;
     m_foodTrade.push_back(transfer);
 }
 
@@ -12112,6 +12149,7 @@ const std::vector< std::pair<float, float> >& CvCity::getWallOverridePoints() co
 
 void CvCity::doGrowth()
 {
+    lockFoodTrade();
 	int iDiff;
 
 	//Rhye - start
@@ -13012,6 +13050,7 @@ void CvCity::read(FDataStreamBase* pStream)
             pStream->Read(&t.partnerFounded);
             pStream->Read(&t.routeFromSelf);
             pStream->Read(&t.amount);
+            pStream->Read(&t.locked);
             m_foodTrade.push_back(t);
         }
     }
@@ -13271,6 +13310,7 @@ void CvCity::write(FDataStreamBase* pStream)
         pStream->Write(t.partnerFounded);
         pStream->Write(t.routeFromSelf);
         pStream->Write(t.amount);
+        pStream->Write(t.locked);
     }
 
     pStream->Write(m_iGrowthFoodRemainder);

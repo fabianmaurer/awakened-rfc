@@ -183,11 +183,11 @@ Food flows along actual trade routes toward the city with the stronger combined 
 - Route selection values the expected food import or export as one commerce per food, alongside the route's ordinary commerce. The estimate does not reserve a supplier's food: the shared export cap is still applied after all routes have been selected.
 - A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or starve. Size-one cities may export only their local surplus after consumption and health costs.
 - When requests exceed capacity, destinations receive proportional shares. Total food is rounded down to whole points, with the remaining whole points assigned to the largest fractional shares; ties use deterministic city/route order. Small requests may yield no food.
-- All allocations are computed together once per game turn before player turns, then saved. A falling supplier cap reduces commitments during the round. Destroyed/captured cities, lost routes, disorder, blockades, war and embargoes invalidate affected transfers immediately. Freed capacity is redistributed at the next allocation, not mid-turn.
+- All allocations are computed together once per game turn before player turns, then saved. Before either endpoint processes growth, the shipment is checked against current routes, disruption and export capacity. Its final amount is then locked identically at both ends: a later population/cap change or disruption cannot erase only the debit or only the credit. Already booked shipments finish their matching accounting, even if a city enters disorder; later allocations reflect the disruption. Freed capacity is redistributed at the next allocation, not mid-turn.
 - Food is deducted from the supplier and added to the recipient **after yield modifiers**. Imports are not multiplied by food bonuses and cannot be exported again. They affect ordinary growth, starvation, and food-based unit production. Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
 - Hover the population bar for total imports/exports, or a trade route for the signed food exchange with that partner. Positive means import, negative export. Existing saves start receiving allocations at the next game turn.
 
-Example: a size-four city can export at most four food. If destinations request four, two and two, they receive two, one and one. Losing the routes restores the supplier's food but removes the recipients' imports.
+Example: a size-four city can export at most four food. If destinations request four, two and two, they receive two, one and one. Routes lost before booking cancel both sides. Routes lost after booking stop future shipments once the current shipment has been accounted for at both ends.
 
 The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` settings in `Assets/XML/GlobalDefines.xml` control the population cap and base transfer amount. The technology-based growth penalty affects positive surplus after these transfers; it does not reduce food production or transferred amounts.
 
@@ -534,3 +534,14 @@ is handled by `Assets/Python/Scenario840AD.py`.
 
 Starting city sizes follow an approximate ninth-century urban hierarchy; see
 the [population roster and historical rationale](840ADPopulation.md).
+
+### Food-transfer accounting
+
+Each booked shipment has an equal export debit and import credit; rounding is
+shared rather than performed independently by its endpoints. Raw trade food
+therefore sums to zero across the participating cities. Growth speed need not:
+small cities have cheaper population thresholds, granaries retain food, and
+technology penalties affect positive surplus differently from starvation.
+Redistributing food can increase population growth without increasing food
+production. Imports from foreign cities also need not balance exports within
+one country; the balance is global.

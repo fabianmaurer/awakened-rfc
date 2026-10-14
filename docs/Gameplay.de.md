@@ -195,7 +195,7 @@ Nahrung fließt über bestehende Handelsrouten zu der Stadt mit der höheren kom
 - Bei der Routenauswahl zählt die erwartete importierte oder exportierte Nahrung mit dem Wert eines Handelspunkts je Nahrung zusätzlich zum gewöhnlichen Routenhandel. Dies reserviert noch keine Nahrung: Die gemeinsame Exportgrenze wird erst nach Auswahl aller Routen angewandt.
 - Die gesamten Exporte einer Stadt sind auf **eine Nahrung je Bev?lkerungspunkt** begrenzt. Es muss kein ?berschuss sein: Lieferst?dte k?nnen langsamer wachsen oder hungern. St?dte der Gr??e eins exportieren nur ihren lokalen ?berschuss nach Verbrauch und Gesundheitskosten.
 - Bei ?berm??iger Nachfrage werden Exporte proportional aufgeteilt. Die Gesamtmenge wird auf ganze Nahrungspunkte abgerundet; verbleibende Punkte erhalten die gr??ten Nachkommareste. Gleichst?nde werden durch eine feste St?dte-/Routenreihenfolge entschieden. Kleine Anforderungen k?nnen leer ausgehen.
-- Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerz?gen und werden gespeichert. Sinkende Lieferkapazit?t reduziert Zusagen w?hrend der Runde. Zerst?rte/eroberte St?dte, verlorene Routen, Unruhen, Blockaden, Krieg und Embargos beenden betroffene Transfers sofort. Freie Kapazit?t wird bei der n?chsten Zuteilung neu verteilt.
+- Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerzügen und werden gespeichert. Vor der ersten Wachstumsabrechnung einer beteiligten Stadt werden Route und Exportgrenze geprüft; anschließend wird derselbe Lieferbetrag an beiden Enden festgeschrieben. Spätere Änderungen können nicht nur eine Seite der Verbuchung aufheben. Bereits verbuchte Lieferungen werden beidseitig abgeschlossen; Störungen wirken auf die folgenden Lieferungen. Freie Kapazität wird bei der nächsten Zuteilung neu verteilt.
 - Nahrung wird beim Lieferanten abgezogen und beim Empf?nger **nach allen Ertragsmodifikatoren** hinzugef?gt. Importe werden weder vervielfacht noch erneut exportiert. Sie wirken auf Wachstum, Hunger und nahrungsbasierte Einheitenproduktion. Infrastruktur, Segeln, Astronomie und H?fen beeinflussen bereits den Routenwert.
 - Der Tooltip des Bev?lkerungsbalkens zeigt gesamte Importe/Exporte, eine Handelsroute den Austausch mit der Partnerstadt: positiv f?r Import, negativ f?r Export. Bestehende Spielst?nde beginnen mit der n?chsten Spielrunde.
 
@@ -570,3 +570,14 @@ Die Initialisierung erfolgt in `Assets/Python/Scenario840AD.py`.
 
 Die Stadtgrößen orientieren sich an der ungefähren urbanen Bedeutung im
 9. Jahrhundert; siehe [Bevölkerungsliste und historische Begründung](840ADPopulation.md).
+
+### Verbuchung der Nahrungstransfers
+
+Jede Lieferung wird vor der ersten Wachstumsabrechnung an beiden Enden auf
+denselben Betrag festgelegt. Spätere Änderungen von Route, Exportgrenze oder
+Unruhen dürfen nicht nur eine Seite der bereits verbuchten Lieferung aufheben.
+Noch nicht verbuchte Lieferungen können an beiden Enden gemeinsam entfallen.
+Die Bilanz der transferierten Nahrung ist weltweit null; innerhalb eines
+Landes können Importe und Exporte durch Außenhandel voneinander abweichen.
+Die Bevölkerung kann trotzdem schneller wachsen, wenn kleine Städte Nahrung
+effizienter in neue Einwohner umsetzen.
