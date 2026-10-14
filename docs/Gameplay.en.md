@@ -207,8 +207,8 @@ each qualifying building or worked improvement.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. Enables inheritance events. |
-| **Republic** | Code of Laws | Low | +50% great person birth rate. |
+| **Monarchy** | Monarchy | Medium | Each active, constructed capital building gives +1 culture and +1 commerce. Each active capital world wonder gives +1 happiness in all cities, capped at +3. Enables inheritance events. |
+| **Republic** | Code of Laws | Medium | Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
 | **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Adoption randomizes all other civic columns; elections every ten turns change one column. Other columns cannot be changed manually while Democracy is retained. Leaving adds two turns to normal revolution anarchy. |
 
@@ -217,8 +217,8 @@ each qualifying building or worked improvement.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Despotism** | None | None | +1 happiness from palaces and monuments, including their civilization-specific replacements. |
-| **Theocracy** | Divine Right | High | +1 happiness per building of the state religion; -2 happiness per building of another religion; +10% combat strength for all units. |
-| **Plutocracy** | Banking | Low | +25% gold income; +50% commerce from trade routes. |
+| **Theocracy** | Divine Right | High | +1 happiness per building of the state religion; -2 happiness per building of another religion. With a state religion, land units receive +15% combat strength against barbarians and countries with a different or no state religion, on attack and defense. |
+| **Plutocracy** | Banking | Medium | +25% gold income; +50% commerce from trade routes. |
 | **Nationalism** | Nationalism | Medium | +5 culture in every city; +20% production; -5 happiness in cities where another player's culture exceeds the owner's culture on the city tile. |
 | **Rule of Law** | Constitution | High | +2 happiness in every city; +10% commerce yield. |
 
@@ -251,13 +251,13 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | --- | --- | --- | --- |
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
-| **Knighthood** | Engineering | Medium | +25% production for mounted units; +10% city attack. |
+| **Knighthood** | Engineering | High | Newly trained mounted units start with +6 experience. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
-| **Conscription** | Military Science | Medium | +25% production for all units. |
+| **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships and aircraft do not use this food conversion. |
 
 Tribal System and Conscription's production bonuses include workers, settlers,
-and missionaries. Conscription's name does not grant an additional drafting
-ability; its implemented effect is the production bonus listed above.
+and missionaries. Conscription's food conversion is limited to military land units;
+it does not grant an additional drafting ability.
 
 ### Religion
 
@@ -266,8 +266,8 @@ ability; its implemented effect is the production bonus listed above.
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. |
 | **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for missionaries of any religion. |
 | **Holy State** | Theology | High | +2 happiness and +10% production in cities with the state religion; -2 happiness in cities without it. |
-| **Tolerance** | Liberalism | Medium | Removes unhappiness caused by foreign religions. |
-| **State Atheism** | Scientific Method | High | +10% research; religious buildings have no effects; religions cannot spread in your cities. |
+| **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. |
+| **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
 
 State Atheism disables a state religion; the other four Religion civics allow one.
@@ -455,7 +455,7 @@ when executed; no new saved state or task-index changes are introduced.
   pays its regular unit cost plus a 100% surcharge, before difficulty modifiers.
 - With **Corporation**, gold can also finish buildings.
 - **Conscription** sends surplus food into production while training military
-  units. Food is therefore not stored for city growth during that production.
+  land units. Food is therefore not stored for city growth during that production.
 
 All mercenary random choices use Civ4's synchronized game RNG and are made while
 the gold-rush command completes, so no additional persistent city state is used.

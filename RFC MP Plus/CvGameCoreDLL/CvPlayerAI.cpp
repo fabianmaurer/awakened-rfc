@@ -6046,6 +6046,11 @@ int CvPlayerAI::AI_getDifferentReligionAttitude(PlayerTypes ePlayer) const
 {
 	int iAttitudeChange;
 	int iAttitude;
+	const CivicTypes eTolerance = (CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE");
+	const bool bDifferentFaith = getStateReligion() != NO_RELIGION && GET_PLAYER(ePlayer).getStateReligion() != NO_RELIGION && getStateReligion() != GET_PLAYER(ePlayer).getStateReligion();
+	if (isCivic(eTolerance) || GET_PLAYER(ePlayer).isCivic(eTolerance))
+		return bDifferentFaith && GET_PLAYER(ePlayer).isCivic(eTolerance) &&
+			!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) ? 2 : 0;
 
 	iAttitude = 0;
 
@@ -10347,6 +10352,31 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iWarmongerPercent = 25000 / std::max(100, (100 + GC.getLeaderHeadInfo(getPersonalityType()).getMaxWarRand())); 
 
 	iValue = (getNumCities() * 6);
+	if (eCivic == GC.getInfoTypeForString("CIVIC_MONARCHY") && getCapitalCity() != NULL)
+	{
+		int iBuildings = 0;
+		int iWonders = 0;
+		for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); ++iBuilding)
+		{
+			int iCount = std::min(getCapitalCity()->getNumRealBuilding((BuildingTypes)iBuilding), getCapitalCity()->getNumActiveBuilding((BuildingTypes)iBuilding));
+			iBuildings += iCount;
+			if (isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType())) iWonders += iCount;
+		}
+		iValue += iBuildings * 5 + std::min(3, iWonders) * getNumCities() * 8;
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_REPUBLIC"))
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			iValue += std::max(0, pLoopCity->getSpecialistPopulation() - pLoopCity->getSpecialistCount((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"))) * 6;
+	if (eCivic == GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))
+		iValue += getNumCities() * (bWarPlan ? 18 : 12);
+	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") && getStateReligion() != NO_RELIGION)
+		iValue += getNumCities() * (bWarPlan ? 8 : 3);
+	if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE"))
+		for (int iOther = 0; iOther < MAX_CIV_PLAYERS; ++iOther)
+			if (iOther != getID() && GET_PLAYER((PlayerTypes)iOther).isAlive() && GET_TEAM(getTeam()).isHasMet(GET_PLAYER((PlayerTypes)iOther).getTeam()) &&
+				getStateReligion() != NO_RELIGION && GET_PLAYER((PlayerTypes)iOther).getStateReligion() != NO_RELIGION &&
+				getStateReligion() != GET_PLAYER((PlayerTypes)iOther).getStateReligion() && !GET_PLAYER((PlayerTypes)iOther).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")))
+				iValue += 8;
 	if (eCivic == GC.getInfoTypeForString("CIVIC_DEMOCRACY"))
 	{
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))

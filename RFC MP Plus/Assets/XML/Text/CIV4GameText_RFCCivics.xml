@@ -487,13 +487,13 @@
         <Italian>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Italian>
         <Spanish>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MONARCHY</Tag>
-        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</English>
-        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</French>
-        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Wunder[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
-        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
-        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for wonders[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</English>
+        <French>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</French>
+        <German>[ICON_BULLET]+1 [ICON_CULTURE] und +1 [ICON_COMMERCE] je aktivem errichtetem Geb&#228;ude in der Hauptstadt[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in allen St&#228;dten je aktivem Weltwunder der Hauptstadt (maximal +3)[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
+        <Italian>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DICTATORSHIP</Tag>
@@ -503,13 +503,13 @@
         <Italian>[ICON_BULLET]+20% [ICON_PRODUCTION] in all cities</Italian>
         <Spanish>[ICON_BULLET]+20% [ICON_PRODUCTION] in all cities</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+10% [ICON_STRENGTH] for all units</English>
-        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+10% [ICON_STRENGTH] for all units</French>
-        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+10% [ICON_STRENGTH] f&#252;r alle Einheiten</German>
-        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+10% [ICON_STRENGTH] for all units</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+10% [ICON_STRENGTH] for all units</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige; erfordert Staatsreligion</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NATIONALISM</Tag>
@@ -535,13 +535,13 @@
         <Italian>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Italian>
         <Spanish>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_KNIGHTHOOD</Tag>
-        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for mounted units[NEWLINE][ICON_BULLET]+10% city attack</English>
-        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for mounted units[NEWLINE][ICON_BULLET]+10% city attack</French>
-        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r berittene Einheiten[NEWLINE][ICON_BULLET]+10% Stadtangriff</German>
-        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for mounted units[NEWLINE][ICON_BULLET]+10% city attack</Italian>
-        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for mounted units[NEWLINE][ICON_BULLET]+10% city attack</Spanish>
+        <English>[ICON_BULLET]+6 experience for newly trained mounted units</English>
+        <French>[ICON_BULLET]+6 experience for newly trained mounted units</French>
+        <German>[ICON_BULLET]+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten</German>
+        <Italian>[ICON_BULLET]+6 experience for newly trained mounted units</Italian>
+        <Spanish>[ICON_BULLET]+6 experience for newly trained mounted units</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_ANCESTOR_CULT</Tag>
@@ -583,13 +583,13 @@
         <Italian>[ICON_BULLET]-20% [ICON_STRENGTH] for siege units</Italian>
         <Spanish>[ICON_BULLET]-20% [ICON_STRENGTH] for siege units</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TOLERANCE</Tag>
-        <English>[ICON_BULLET]No [ICON_UNHAPPY] from foreign religions</English>
-        <French>[ICON_BULLET]No [ICON_UNHAPPY] from foreign religions</French>
-        <German>[ICON_BULLET]Keine [ICON_UNHAPPY] durch fremde Religionen</German>
-        <Italian>[ICON_BULLET]No [ICON_UNHAPPY] from foreign religions</Italian>
-        <Spanish>[ICON_BULLET]No [ICON_UNHAPPY] from foreign religions</Spanish>
+        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</English>
+        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</French>
+        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Keine diplomatischen Religionsmali mit eurem Land[NEWLINE][ICON_BULLET]+2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion (au&#223;er Staatsatheismus)</German>
+        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Italian>
+        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TRIBAL</Tag>
@@ -599,13 +599,13 @@
         <Italian>[ICON_BULLET]+20% [ICON_PRODUCTION] for units</Italian>
         <Spanish>[ICON_BULLET]+20% [ICON_PRODUCTION] for units</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_CONSCRIPTION</Tag>
-        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for units</English>
-        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for units</French>
-        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Einheiten</German>
-        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for units</Italian>
-        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for units</Spanish>
+        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</English>
+        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</French>
+        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Einheiten[NEWLINE][ICON_BULLET]Nahrungs&#252;berschuss produziert milit&#228;rische Landeinheiten</German>
+        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Italian>
+        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DEMOCRACY</Tag>
@@ -656,5 +656,21 @@
         <German>[ICON_BULLET]Erm&#246;glicht Sklavenspezialisten[NEWLINE][ICON_BULLET]Versklavt eroberte V&#246;lker</German>
         <Italian>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Italian>
         <Spanish>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_REPUBLIC</Tag>
+        <English>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</English>
+        <French>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</French>
+        <German>[ICON_BULLET]Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 [ICON_FOOD] weniger[NEWLINE][ICON_BULLET]Freie Spezialisten und angesiedelte Gro&#223;e Pers&#246;nlichkeiten sind ausgenommen</German>
+        <Italian>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Italian>
+        <Spanish>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ATTITUDE_TOLERANCE</Tag>
+        <English>%D1: Your religious tolerance is appreciated.</English>
+        <French>%D1: Your religious tolerance is appreciated.</French>
+        <German>%D1: Eure religi&#246;se Toleranz wird gesch&#228;tzt.</German>
+        <Italian>%D1: Your religious tolerance is appreciated.</Italian>
+        <Spanish>%D1: Your religious tolerance is appreciated.</Spanish>
     </TEXT>
 </Civ4GameText>

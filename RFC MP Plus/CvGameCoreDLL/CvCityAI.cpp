@@ -433,6 +433,11 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 	{
 		aiYields[iI] = GET_PLAYER(getOwnerINLINE()).specialistYield(eSpecialist, ((YieldTypes)iI));
 	}
+	// Value the food saved when assigning a citizen under Republic. This does
+	// not change specialist yields or give food to free/settled specialists.
+	if (eSpecialist != GC.getInfoTypeForString("SPECIALIST_SLAVE") &&
+		GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")))
+		aiYields[YIELD_FOOD] += 1;
 
 	short int aiCommerceYields[NUM_COMMERCE_TYPES];
 	

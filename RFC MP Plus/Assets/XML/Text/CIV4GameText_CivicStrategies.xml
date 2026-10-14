@@ -8,21 +8,21 @@
         <Italian>+20% unit production, -20% research, +100% distance and city-count maintenance.</Italian>
         <Spanish>+20% unit production, -20% research, +100% distance and city-count maintenance.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
-        <English>+25% production for world, team and national wonders. Enables inheritance events.</English>
-        <French>+25% production for world, team and national wonders. Enables inheritance events.</French>
-        <German>+25% Produktion f&#252;r Welt-, Team- und nationale Wunder. Erm&#246;glicht Erbfolgeereignisse.</German>
-        <Italian>+25% production for world, team and national wonders. Enables inheritance events.</Italian>
-        <Spanish>+25% production for world, team and national wonders. Enables inheritance events.</Spanish>
+        <English>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</English>
+        <French>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</French>
+        <German>Hauptstadtgeb&#228;ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm&#246;glicht Erbfolgeereignisse.</German>
+        <Italian>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Italian>
+        <Spanish>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>
-        <English>+50% Great Person birth rate.</English>
-        <French>+50% Great Person birth rate.</French>
-        <German>+50% Geburtenrate Gro&#223;er Pers&#246;nlichkeiten.</German>
-        <Italian>+50% Great Person birth rate.</Italian>
-        <Spanish>+50% Great Person birth rate.</Spanish>
+        <English>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</English>
+        <French>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</French>
+        <German>Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Gro&#223;e Pers&#246;nlichkeiten sind ausgenommen.</German>
+        <Italian>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</Italian>
+        <Spanish>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DICTATORSHIP_STRATEGY</Tag>
@@ -48,13 +48,13 @@
         <Italian>+1 happiness from palaces and monuments, including unique replacements.</Italian>
         <Spanish>+1 happiness from palaces and monuments, including unique replacements.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_THEOCRATIC_LEGITIMACY_STRATEGY</Tag>
-        <English>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</English>
-        <French>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</French>
-        <German>+10% Kampfst&#228;rke. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, Geb&#228;ude anderer Religionen -2 Zufriedenheit.</German>
-        <Italian>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</Italian>
-        <Spanish>+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.</Spanish>
+        <English>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</English>
+        <French>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</French>
+        <German>+15% Kampfst&#228;rke f&#252;r Landeinheiten gegen Barbaren und L&#228;nder mit anderer oder keiner Staatsreligion; erfordert eigene Staatsreligion. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, andere religi&#246;se Geb&#228;ude -2 Zufriedenheit.</German>
+        <Italian>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Italian>
+        <Spanish>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLUTOCRACY_STRATEGY</Tag>
@@ -136,13 +136,13 @@
         <Italian>+30% city defense, but -10% combat strength outside your own territory.</Italian>
         <Spanish>+30% city defense, but -10% combat strength outside your own territory.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD_STRATEGY</Tag>
-        <English>+25% mounted-unit production and +10% city attack.</English>
-        <French>+25% mounted-unit production and +10% city attack.</French>
-        <German>+25% Produktion f&#252;r berittene Einheiten und +10% Stadtangriff.</German>
-        <Italian>+25% mounted-unit production and +10% city attack.</Italian>
-        <Spanish>+25% mounted-unit production and +10% city attack.</Spanish>
+        <English>+6 experience for newly trained mounted units.</English>
+        <French>+6 experience for newly trained mounted units.</French>
+        <German>+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten.</German>
+        <Italian>+6 experience for newly trained mounted units.</Italian>
+        <Spanish>+6 experience for newly trained mounted units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>
@@ -152,13 +152,13 @@
         <Italian>Units start with +5 experience.</Italian>
         <Spanish>Units start with +5 experience.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CONSCRIPTION_STRATEGY</Tag>
-        <English>+25% unit production. Surplus food is converted into production for military units.</English>
-        <French>+25% unit production. Surplus food is converted into production for military units.</French>
-        <German>+25% Einheitenproduktion. Nahrungs&#252;bersch&#252;sse werden bei Milit&#228;reinheiten zu Produktion.</German>
-        <Italian>+25% unit production. Surplus food is converted into production for military units.</Italian>
-        <Spanish>+25% unit production. Surplus food is converted into production for military units.</Spanish>
+        <English>+25% unit production. Food surplus contributes to land military unit production.</English>
+        <French>+25% unit production. Food surplus contributes to land military unit production.</French>
+        <German>+25% Einheitenproduktion. Nahrungs&#252;berschuss tr&#228;gt zur Produktion milit&#228;rischer Landeinheiten bei.</German>
+        <Italian>+25% unit production. Food surplus contributes to land military unit production.</Italian>
+        <Spanish>+25% unit production. Food surplus contributes to land military unit production.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_ANCESTOR_CULT_STRATEGY</Tag>
@@ -184,20 +184,20 @@
         <Italian>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Italian>
         <Spanish>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>
-        <English>Removes unhappiness caused by foreign religions.</English>
-        <French>Removes unhappiness caused by foreign religions.</French>
-        <German>Entfernt Unzufriedenheit durch fremde Religionen.</German>
-        <Italian>Removes unhappiness caused by foreign religions.</Italian>
-        <Spanish>Removes unhappiness caused by foreign religions.</Spanish>
+        <English>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</English>
+        <French>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</French>
+        <German>Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion, au&#223;er Staatsatheismus.</German>
+        <Italian>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Italian>
+        <Spanish>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Spanish>
     </TEXT>
-    <TEXT>
+        <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_STATE_ATHEISM_STRATEGY</Tag>
-        <English>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</English>
-        <French>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</French>
-        <German>+10% Forschung. Religi&#246;se Geb&#228;ude haben keine Effekte; Religionen k&#246;nnen sich in den eigenen St&#228;dten nicht verbreiten.</German>
-        <Italian>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</Italian>
-        <Spanish>+10% research. Religious buildings have no effects; religions cannot spread in your cities.</Spanish>
+        <English>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</English>
+        <French>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</French>
+        <German>+10% Forschung und +10% Produktion; -1 Zufriedenheit in allen St&#228;dten. Religi&#246;se Geb&#228;ude wirken nicht und Religionen verbreiten sich nicht.</German>
+        <Italian>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</Italian>
+        <Spanish>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</Spanish>
     </TEXT>
 </Civ4GameText>

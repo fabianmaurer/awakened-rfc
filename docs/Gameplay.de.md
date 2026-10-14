@@ -219,8 +219,8 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | +25% Produktion für Welt-, Team- und nationale Wunder. Ermöglicht Erbfolgeereignisse. |
-| **Republik** | Gesetzgebung | Niedrig | +50% Geburtenrate Großer Persönlichkeiten. |
+| **Monarchie** | Monarchie | Mittel | Jedes aktive, errichtete Hauptstadtgebäude gibt +1 Kultur und +1 Handel. Aktive Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3. Ermöglicht Erbfolgeereignisse. |
+| **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
 | **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
 
@@ -229,8 +229,8 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Despotismus** | Keine | Keiner | +1 Zufriedenheit durch Paläste und Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit je Gebäude der Staatsreligion; -2 Zufriedenheit je Gebäude einer anderen Religion; +10% Kampfstärke für alle Einheiten. |
-| **Plutokratie** | Bankwesen | Niedrig | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
+| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit je Gebäude der Staatsreligion; -2 Zufriedenheit je Gebäude einer anderen Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit anderer oder keiner Staatsreligion, bei Angriff und Verteidigung. |
+| **Plutokratie** | Bankwesen | Mittel | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
 | **Nationalismus** | Nationalismus | Mittel | +5 Kultur in jeder Stadt; +20% Produktion; -5 Zufriedenheit in Städten, in denen die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers. |
 | **Rechtsstaat** | Verfassung | Hoch | +2 Zufriedenheit in jeder Stadt; +10% Handel. |
 
@@ -264,9 +264,9 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Mittel | +25% Produktion für berittene Einheiten; +10% Stadtangriff. |
+| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten starten mit +6 Erfahrung. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
-| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. |
+| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe und Flugzeuge nutzen diese Nahrungsumwandlung nicht. |
 
 Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
@@ -279,8 +279,8 @@ Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
 | **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare aller Religionen. |
 | **Gottesstaat** | Theologie | Hoch | +2 Zufriedenheit und +10% Produktion in Städten mit Staatsreligion; -2 Zufriedenheit in Städten ohne Staatsreligion. |
-| **Toleranz** | Liberalismus | Mittel | Entfernt Unzufriedenheit durch fremde Religionen. |
-| **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung; religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
+| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. |
+| **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
 Staatsatheismus deaktiviert die Staatsreligion; die anderen vier religiösen
 Staatsformen erlauben eine Staatsreligion.
@@ -481,7 +481,7 @@ oder Änderungen bestehender Aufgabenindizes sind nicht erforderlich.
   zahlen ihre regulären Einheitenkosten plus 100% Zuschlag vor
   Schwierigkeitsmodifikatoren.
 - Mit **Kapitalgesellschaft** kann Gold zusätzlich Gebäude abschließen.
-- **Wehrpflicht** wandelt Nahrungsüberschüsse beim Bau von Militäreinheiten
+- **Wehrpflicht** wandelt Nahrungsüberschüsse beim Bau von militärischen Landeinheiten
   in Produktion um. Diese Nahrung wird also nicht für Stadtwachstum gespeichert.
 
 Alle Söldner-Zufallsentscheidungen verwenden Civ4s synchronisierten

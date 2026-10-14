@@ -10,11 +10,11 @@ SUMMARIES = {
         '+20% unit production, -20% research, +100% distance and city-count maintenance.',
         '+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und städtezahlabhängiger Unterhalt.'),
     'MONARCHY': (
-        '+25% production for world, team and national wonders. Enables inheritance events.',
-        '+25% Produktion f\u00fcr Welt-, Team- und nationale Wunder. Erm\u00f6glicht Erbfolgeereignisse.'),
+        'Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.',
+        'Hauptstadtgeb\xe4ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm\xf6glicht Erbfolgeereignisse.'),
     'REPUBLIC': (
-        '+50% Great Person birth rate.',
-        '+50% Geburtenrate Großer Persönlichkeiten.'),
+        'Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.',
+        'Zugewiesene Spezialisten au\xdfer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Gro\xdfe Pers\xf6nlichkeiten sind ausgenommen.'),
     'DICTATORSHIP': (
         '+20% production and no war weariness, but -2 happiness in every city.',
         '+20% Produktion und keine Kriegsmüdigkeit, aber -2 Zufriedenheit in jeder Stadt.'),
@@ -25,8 +25,8 @@ SUMMARIES = {
         '+1 happiness from palaces and monuments, including unique replacements.',
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),
     'THEOCRATIC_LEGITIMACY': (
-        '+10% combat strength. State-religion buildings give +1 happiness; buildings of other religions give -2 happiness.',
-        '+10% Kampfstärke. Gebäude der Staatsreligion geben +1 Zufriedenheit, Gebäude anderer Religionen -2 Zufriedenheit.'),
+        '+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.',
+        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit anderer oder keiner Staatsreligion; erfordert eigene Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, andere religi\xf6se Geb\xe4ude -2 Zufriedenheit.'),
     'PLUTOCRACY': (
         '+25% gold income and +50% trade-route commerce.',
         '+25% Goldeinnahmen und +50% Wirtschaftspunkte durch Handelsrouten.'),
@@ -58,14 +58,14 @@ SUMMARIES = {
         '+30% city defense, but -10% combat strength outside your own territory.',
         '+30% Stadtverteidigung, aber -10% Kampfstärke außerhalb des eigenen Gebiets.'),
     'KNIGHTHOOD': (
-        '+25% mounted-unit production and +10% city attack.',
-        '+25% Produktion für berittene Einheiten und +10% Stadtangriff.'),
+        '+6 experience for newly trained mounted units.',
+        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten.'),
     'PROFESSIONAL_ARMY': (
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),
     'CONSCRIPTION': (
-        '+25% unit production. Surplus food is converted into production for military units.',
-        '+25% Einheitenproduktion. Nahrungs\u00fcbersch\u00fcsse werden bei Milit\u00e4reinheiten zu Produktion.'),
+        '+25% unit production. Food surplus contributes to land military unit production.',
+        '+25% Einheitenproduktion. Nahrungs\xfcberschuss tr\xe4gt zur Produktion milit\xe4rischer Landeinheiten bei.'),
     'ANCESTOR_CULT': (
         '+1 culture from monuments, including unique replacements.',
         '+1 Kultur durch Monumente, einschließlich einzigartiger Ersatzgebäude.'),
@@ -76,11 +76,11 @@ SUMMARIES = {
         'Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.',
         'Städte mit Staatsreligion erhalten +2 Zufriedenheit und +10% Produktion; Städte ohne sie erhalten -2 Zufriedenheit.'),
     'TOLERANCE': (
-        'Removes unhappiness caused by foreign religions.',
-        'Entfernt Unzufriedenheit durch fremde Religionen.'),
+        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.',
+        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus.'),
     'STATE_ATHEISM': (
-        '+10% research. Religious buildings have no effects; religions cannot spread in your cities.',
-        '+10% Forschung. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten.'),
+        '+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.',
+        '+10% Forschung und +10% Produktion; -1 Zufriedenheit in allen St\xe4dten. Religi\xf6se Geb\xe4ude wirken nicht und Religionen verbreiten sich nicht.'),
 }
 
 def main():

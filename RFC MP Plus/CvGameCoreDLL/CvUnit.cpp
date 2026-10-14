@@ -7868,10 +7868,6 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 	iExtraModifier = getExtraCombatPercent();
 
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
-	{
-		iExtraModifier += 10;
-	}
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{
 		iExtraModifier -= 20;
@@ -7887,6 +7883,22 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	// do modifiers for animals and barbarians (leaving these out for bAttackingUnknownDefender case)
 	if (pAttacker != NULL)
 	{
+		const CvPlayer& kDefender = GET_PLAYER(getOwnerINLINE());
+		const CvPlayer& kAttacker = GET_PLAYER(pAttacker->getOwnerINLINE());
+		const CivicTypes eTheocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY");
+		if (getDomainType() == DOMAIN_LAND && kDefender.isCivic(eTheocracy) && kDefender.getStateReligion() != NO_RELIGION &&
+			(pAttacker->isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		{
+			iModifier += 15;
+			if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += 15;
+		}
+		if (pAttacker->getDomainType() == DOMAIN_LAND && kAttacker.isCivic(eTheocracy) && kAttacker.getStateReligion() != NO_RELIGION &&
+			(isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		{
+			// Civ4 applies opponent-specific attack bonuses against the defender.
+			iModifier -= 15;
+			if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent -= 15;
+		}
 		if (isAnimal())
 		{
 			if (pAttacker->isHuman())
@@ -8908,10 +8920,6 @@ int CvUnit::collateralDamageMaxUnits() const
 int CvUnit::cityAttackModifier() const
 {
 	int iModifier = m_pUnitInfo->getCityAttackModifier() + getExtraCityAttackPercent();
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_KNIGHTHOOD")))
-	{
-		iModifier += 10;
-	}
 	return iModifier;
 }
 

@@ -1,5 +1,9 @@
 # RFC MP Plus build notes
 
+## Save compatibility
+
+The user explicitly does not require compatibility with existing saves. Implement gameplay changes for new games; do not add save migrations or preserve old mechanics solely for existing saves.
+
 ## Civ4 game DLL
 
 Use the original 32-bit VC7.1 toolchain (Microsoft Visual C++ Toolkit 2003, compiler 13.10.3077 / linker 7.10.3077). The Civilization IV DLL uses Python 2.4, Boost.Python 1.32 and the VC7.1 runtime. A modern-MSVC rebuild changes runtime dependencies and previously caused this mod to fail loading, so do not use the CMake/modern-MSVC build for the game DLL.

@@ -10294,6 +10294,7 @@ void CvPlayer::setCapitalCity(CvCity* pNewCapitalCity)
 		}
 
 		updateMaintenance();
+		updateExtraSpecialistYield(); // Royal capital commerce follows the palace.
 		updateTradeRoutes();
 
 		if (pOldCapitalCity != NULL)

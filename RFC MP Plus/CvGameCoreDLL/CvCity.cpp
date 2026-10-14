@@ -32,6 +32,21 @@
 
 // Public Functions...
 
+// Only real, active buildings contribute to royal capital prestige.
+static int royalCapitalBuildings(const CvCity* pCity, bool bWorldWonders)
+{
+	if (pCity == NULL || !pCity->isCapital() ||
+		!GET_PLAYER(pCity->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY"))) return 0;
+	int iCount = 0;
+	for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+	{
+		BuildingTypes eBuilding = (BuildingTypes)i;
+		if (!bWorldWonders || isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
+			iCount += std::min(pCity->getNumRealBuilding(eBuilding), pCity->getNumActiveBuilding(eBuilding));
+	}
+	return iCount;
+}
+
 CvCity::CvCity()
 {
 	m_aiSeaPlotYield = new int[NUM_YIELD_TYPES];
@@ -1150,6 +1165,7 @@ void CvCity::doTurn()
 
 			iCount += getTradeYield((YieldTypes)iI);
 			iCount += getCorporationYield((YieldTypes)iI);
+			if (iI == YIELD_COMMERCE) iCount += royalCapitalBuildings(this, false);
 
 			FAssert(iCount == getBaseYieldRate((YieldTypes)iI));
 		}
@@ -2542,6 +2558,8 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 
 	if (eUnit != NO_UNIT)
 	{
+		if (GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") &&
+			GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))) iExperience += 6;
 		if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iExperience += getUnitCombatFreeExperience((UnitCombatTypes)(GC.getUnitInfo(eUnit).getUnitCombatType()));
@@ -2864,7 +2882,7 @@ bool CvCity::isFoodProduction(UnitTypes eUnit) const
 
 	if (GET_PLAYER(getOwnerINLINE()).isMilitaryFoodProduction())
 	{
-		if (GC.getUnitInfo(eUnit).isMilitaryProduction())
+		if (GC.getUnitInfo(eUnit).isMilitaryProduction() && GC.getUnitInfo(eUnit).getDomainType() == DOMAIN_LAND)
 		{
 			return true;
 		}
@@ -3283,10 +3301,6 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM"))) iMultiplier += 20;
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))) iMultiplier += 25;
 
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_KNIGHTHOOD")) && GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED"))
-	{
-		iMultiplier += 25;
-	}
 
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
@@ -3324,10 +3338,6 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 		}
 	}
 
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY")) && isLimitedWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
-	{
-		iMultiplier += 25;
-	}
 
 	if (GET_PLAYER(getOwnerINLINE()).getStateReligion() != NO_RELIGION)
 	{
@@ -4134,8 +4144,10 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 		GET_PLAYER(getOwnerINLINE()).changeWondersScore(getWonderScore((BuildingClassTypes)(GC.getBuildingInfo(eBuilding).getBuildingClassType())) * iChange);
 	}
 
+	updateExtraSpecialistYield(); // Includes the royal capital's building commerce.
 	updateBuildingCommerce();
-
+	updateCommerce();
+	GET_PLAYER(getOwnerINLINE()).AI_makeAssignWorkDirty();
 	setLayoutDirty(true);
 }
 
@@ -4872,7 +4884,13 @@ int CvCity::healthRate(bool bNoAngry, int iExtra) const
 
 int CvCity::foodConsumption(bool bNoAngry, int iExtra) const
 {
-	return ((((getPopulation() + iExtra) - ((bNoAngry) ? angryPopulation(iExtra) : 0)) * GC.getFOOD_CONSUMPTION_PER_POPULATION()) - healthRate(bNoAngry, iExtra));
+	int iDiscount = 0;
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")))
+	{
+		for (int i = 0; i < GC.getNumSpecialistInfos(); ++i)
+			if (i != GC.getInfoTypeForString("SPECIALIST_SLAVE")) iDiscount += getSpecialistCount((SpecialistTypes)i);
+	}
+	return std::max(0, (((getPopulation() + iExtra) - ((bNoAngry) ? angryPopulation(iExtra) : 0)) * GC.getFOOD_CONSUMPTION_PER_POPULATION()) - healthRate(bNoAngry, iExtra) - iDiscount);
 }
 
 
@@ -6792,6 +6810,7 @@ int CvCity::getExtraHappiness() const
 {
 	int iHappiness = m_iExtraHappiness;
 	CvPlayer& kPlayer = GET_PLAYER(getOwnerINLINE());
+	iHappiness += std::min(3, royalCapitalBuildings(kPlayer.getCapitalCity(), true));
 
 	if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && (kPlayer.getStateReligion() == NO_RELIGION || !isHasReligion(kPlayer.getStateReligion())))
 	{
@@ -8645,6 +8664,7 @@ void CvCity::updateExtraSpecialistYield(YieldTypes eYield)
 	{
 		iNewYield += getExtraSpecialistYield(eYield, ((SpecialistTypes)iI));
 	}
+	if (eYield == YIELD_COMMERCE) iNewYield += royalCapitalBuildings(this, false);
 
 	if (iOldYield != iNewYield)
 	{
@@ -8725,6 +8745,7 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 
 	if (eIndex == COMMERCE_CULTURE)
 	{
+		iBaseCommerceRate += 100 * royalCapitalBuildings(this, false);
 		if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_NATIONALISM")))
 		{
 			iBaseCommerceRate += 500;
