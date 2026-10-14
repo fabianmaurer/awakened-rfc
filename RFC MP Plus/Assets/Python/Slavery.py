@@ -49,7 +49,7 @@ class Slavery:
 			unit.setHasPromotion(promotion, True)
 
 	def _slaveCount(self, city):
-		return city.getFreeSpecialistCount(self._slaveSpecialist())
+		return city.getFreeSpecialistCount(self._slaveSpecialist()) + city.getSpecialistCount(self._slaveSpecialist())
 
 	def _capturePrice(self, city):
 		return max(30, (city.getPopulation() + 1) * 10)

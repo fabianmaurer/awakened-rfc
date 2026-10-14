@@ -10344,6 +10344,12 @@ void CvCity::addSlaveRefugeeUnhappiness(int iTurns)
 void CvCity::emancipateSlaveSpecialists()
 {
 	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (eSlave != NO_SPECIALIST)
+	{
+		setForceSpecialistCount(eSlave, 0);
+		setSpecialistCount(eSlave, 0);
+		AI_setAssignWorkDirty(true);
+	}
 	if (eSlave != NO_SPECIALIST && getFreeSpecialistCount(eSlave) > 0)
 		changeFreeSpecialistCount(eSlave, -getFreeSpecialistCount(eSlave));
 	m_aiSlaveSpecialistExpiryTurns.clear();

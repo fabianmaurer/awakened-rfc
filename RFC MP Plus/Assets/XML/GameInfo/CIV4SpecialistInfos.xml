@@ -384,7 +384,7 @@
 			<Strategy>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Strategy>
 			<Help>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Help>
 			<Texture>Art/Interface/MainScreen/CityScreen/Citizen.dds</Texture>
-			<bVisible>0</bVisible>
+			<bVisible>1</bVisible>
 			<GreatPeopleUnitClass>NONE</GreatPeopleUnitClass>
 			<iGreatPeopleRateChange>0</iGreatPeopleRateChange>
 			<Yields>

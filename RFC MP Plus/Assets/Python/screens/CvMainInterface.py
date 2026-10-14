@@ -107,6 +107,9 @@ g_pSelectedUnit = 0
 
 
 class CvMainInterface:
+
+	def specialistRow(self, specialist):
+		return len([i for i in range(specialist) if gc.getSpecialistInfo(i).isVisible()])
 	"Main Interface Screen"
 
 	#m_iNumPlotListButtons = (CyGInterfaceScreen( "MainInterface", CvScreenEnums.MAIN_INTERFACE ).getXResolution() - (iMultiListXL+iMultiListXR) - 68) / 34 #Rhye (bugfix)
@@ -457,13 +460,13 @@ class CvMainInterface:
 			if (gc.getSpecialistInfo(i).isVisible()):
 			
 				szName = "CitizenDisabledButton" + str(i)
-				screen.setImageButton( szName, gc.getSpecialistInfo(i).getTexture(), xResolution - 74, (yResolution - 272 - (26 * i)), 24, 24, WidgetTypes.WIDGET_DISABLED_CITIZEN, i, -1 )
+				screen.setImageButton( szName, gc.getSpecialistInfo(i).getTexture(), xResolution - 74, (yResolution - 272 - (26 * self.specialistRow(i))), 24, 24, WidgetTypes.WIDGET_DISABLED_CITIZEN, i, -1 )
 				screen.enable( szName, False )
 				screen.hide( szName )
 
 				for j in range(MAX_CITIZEN_BUTTONS):
 					szName = "CitizenButton" + str((i * 100) + j)
-					screen.addCheckBoxGFC( szName, gc.getSpecialistInfo(i).getTexture(), "", xResolution - 74 - (26 * j), (yResolution - 272 - (26 * i)), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j, ButtonStyles.BUTTON_STYLE_LABEL )
+					screen.addCheckBoxGFC( szName, gc.getSpecialistInfo(i).getTexture(), "", xResolution - 74 - (26 * j), (yResolution - 272 - (26 * self.specialistRow(i))), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j, ButtonStyles.BUTTON_STYLE_LABEL )
 					screen.hide( szName )
 
 		# **********************************************************
@@ -1678,10 +1681,10 @@ class CvMainInterface:
 					for j in range( iCount ):
 						bHandled = True
 						szName = "CitizenButton" + str((i * 100) + j)
-						screen.addCheckBoxGFC( szName, gc.getSpecialistInfo(i).getTexture(), "", xResolution - 74 - (26 * j), (yResolution - 272 - (26 * i)), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j, ButtonStyles.BUTTON_STYLE_LABEL )
+						screen.addCheckBoxGFC( szName, gc.getSpecialistInfo(i).getTexture(), "", xResolution - 74 - (26 * j), (yResolution - 272 - (26 * self.specialistRow(i))), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j, ButtonStyles.BUTTON_STYLE_LABEL )
 						screen.show( szName )
 						szName = "CitizenButtonHighlight" + str((i * 100) + j)
-						screen.addDDSGFC( szName, ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), xResolution - 74 - (26 * j), (yResolution - 272 - (26 * i)), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j )
+						screen.addDDSGFC( szName, ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), xResolution - 74 - (26 * j), (yResolution - 272 - (26 * self.specialistRow(i))), 24, 24, WidgetTypes.WIDGET_CITIZEN, i, j )
 						if ( pHeadSelectedCity.getForceSpecialistCount(i) > j ):
 							screen.show( szName )
 						else:
