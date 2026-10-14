@@ -6125,7 +6125,6 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 	ImprovementTypes eImprovement;
 	RouteTypes eRoute;
 	PlayerTypes ePlayer;
-	bool bCity;
 	int iYield;
 
 	if (bDisplay && GC.getGameINLINE().isDebugMode())
@@ -6143,7 +6142,6 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		return 0;
 	}
 
-	bCity = false;
 
 	if (bDisplay)
 	{
@@ -6183,12 +6181,10 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		{
 			if (!bDisplay || pCity->isRevealed(GC.getGameINLINE().getActiveTeam(), false))
 			{
-				iYield += GC.getYieldInfo(eYield).getCityChange();
-				if (GC.getYieldInfo(eYield).getPopulationChangeDivisor() != 0)
-				{
-					iYield += ((pCity->getPopulation() + GC.getYieldInfo(eYield).getPopulationChangeOffset()) / GC.getYieldInfo(eYield).getPopulationChangeDivisor());
-				}
-				bCity = true;
+				// City centres retain natural terrain/feature yields. Settlement
+				// adds one production and one commerce, without a food floor.
+				if (eYield == YIELD_PRODUCTION || eYield == YIELD_COMMERCE)
+					iYield += 1;
 			}
 		}
 
@@ -6225,11 +6221,6 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 				}
 			}
 		}
-	}
-
-	if (bCity)
-	{
-		iYield = std::max(iYield, GC.getYieldInfo(eYield).getMinCity());
 	}
 
 	iYield += GC.getGameINLINE().getPlotExtraYield(m_iX, m_iY, eYield);

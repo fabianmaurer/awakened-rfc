@@ -222,7 +222,8 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 
 	if (lResult == 1)
 	{
-		if (pPlot->getFeatureType() != NO_FEATURE)
+		if (pPlot->getFeatureType() != NO_FEATURE &&
+			pPlot->getFeatureType() != GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS"))
 		{
 			pPlot->setFeatureType(NO_FEATURE);
 		}

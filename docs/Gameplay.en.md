@@ -189,6 +189,8 @@ The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` 
 
 ## New civics
 
+City tiles retain their natural terrain, hill, river, feature and revealed resource yields, then gain **+1 production and +1 commerce**. There is no minimum food yield: a bare desert city tile produces no food. Founding a city preserves flood plains and their natural yields. This applies to all city tiles; previously removed flood plains are not restored in existing saves.
+
 Each column allows one active civic. Bonuses from different columns combine;
 for example, Dictatorship and Nationalism together provide +40% production.
 

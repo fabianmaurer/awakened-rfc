@@ -200,6 +200,8 @@ Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_PRESS
 
 ## Neue Staatsformen
 
+Stadtfelder behalten ihre natürlichen Erträge aus Gelände, Hügeln, Flüssen, Landschaftsmerkmalen und bekannten Ressourcen und erhalten **+1 Produktion und +1 Handel**. Es gibt keinen Mindestnahrungsertrag: Ein kahles Wüstenstadtfeld erzeugt keine Nahrung. Bei Stadtgründung bleibt Schwemmland einschließlich seiner Erträge erhalten. Die Ertragsregel gilt für alle Stadtfelder; bereits entferntes Schwemmland wird in bestehenden Spielständen nicht wiederhergestellt.
+
 In jeder Kategorie ist eine Staatsform aktiv. Boni verschiedener Kategorien
 addieren sich: Diktatur und Nationalismus ergeben zusammen beispielsweise
 +40% Produktion.
