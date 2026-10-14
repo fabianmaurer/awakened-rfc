@@ -229,7 +229,7 @@ each qualifying building or worked improvement.
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
 | **Slavery** | Bronze Working | Low | +2 commerce from plantations; captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
 | **Serfdom** | Feudalism | Low | +1 food from farms; -1 commerce from villages; workers build improvements 50% faster. |
-| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -20% commerce yield. No trade routes with Capitalists. |
+| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
 Improvement growth includes every upgrade stage: **Cottage → Hamlet → Village →

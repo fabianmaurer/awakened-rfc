@@ -106,11 +106,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
-        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</English>
-        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</French>
-        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -20% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.</German>
-        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</Italian>
-        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -20% commerce. No trade routes with Capitalists.</Spanish>
+        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</English>
+        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</French>
+        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.</German>
+        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</Italian>
+        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CORPORATE_ECONOMY_STRATEGY</Tag>
