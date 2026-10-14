@@ -1599,9 +1599,18 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
 	{
 		UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+		CvString szCivType = GC.getCivilizationInfo(GET_PLAYER(eOldOwner).getCivilizationType()).getType();
+		CvString szOriginPromotion = "PROMOTION_SLAVE_";
+		if (szCivType.length() > 13)
+			szOriginPromotion += szCivType.substr(13); // Strip "CIVILIZATION_".
+		PromotionTypes eOriginPromotion = (PromotionTypes)GC.getInfoTypeForString(szOriginPromotion);
 		int iSlaves = std::max(0, iPopulation - pNewCity->getPopulation());
 		for (int iSlave = 0; eSlave != NO_UNIT && iSlave < iSlaves; ++iSlave)
-			initUnit(eSlave, pNewCity->getX_INLINE(), pNewCity->getY_INLINE(), UNITAI_ATTACK);
+		{
+			CvUnit* pSlave = initUnit(eSlave, pNewCity->getX_INLINE(), pNewCity->getY_INLINE(), UNITAI_ATTACK);
+			if (pSlave != NULL && eOriginPromotion != NO_PROMOTION)
+				pSlave->setHasPromotion(eOriginPromotion, true);
+		}
 	}
 	pNewCity->setHighestPopulation(iHighestPopulation);
 	pNewCity->setName(szName);

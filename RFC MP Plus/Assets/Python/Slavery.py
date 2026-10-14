@@ -30,6 +30,17 @@ class Slavery:
 	def _hasSlavery(self, player):
 		return player.getCivics(self._info("CIVICOPTION_LABOR")) == self._slaveryCivic()
 
+	def _originPromotion(self, iOrigin):
+		if iOrigin < 0 or iOrigin >= gc.getMAX_CIV_PLAYERS(): return -1
+		civ = gc.getPlayer(iOrigin).getCivilizationType()
+		if civ < 0: return -1
+		return self._info("PROMOTION_SLAVE_" + gc.getCivilizationInfo(civ).getType().replace("CIVILIZATION_", ""))
+
+	def _applyOriginPromotion(self, unit, iOrigin):
+		promotion = self._originPromotion(iOrigin)
+		if promotion >= 0:
+			unit.setHasPromotion(promotion, True)
+
 	def _slaveCount(self, city):
 		return city.getFreeSpecialistCount(self._slaveSpecialist())
 
@@ -121,7 +132,8 @@ class Slavery:
 			if player.getGold() < price: return
 			player.changeGold(-price)
 			if bSlavery:
-				player.initUnit(self._info("UNIT_SLAVE"), city.getX(), city.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
+				unit = player.initUnit(self._info("UNIT_SLAVE"), city.getX(), city.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
+				self._applyOriginPromotion(unit, iOldOwner)
 				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BOUGHT_SLAVE", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
 			else:
 				city.changePopulation(1)
