@@ -8153,6 +8153,7 @@ int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
     for (int i = 0; i < pOrigin->getTradeRoutes(); ++i)
         if (pOrigin->getTradeCity(i) == pDestination) { bRouteExists = true; break; }
     if (!bRouteExists) return 0;
+    if (pOrigin->getTradeInfrastructureEfficiency(const_cast<CvCity*>(pDestination)) <= 0) return 0;
 
     // If the supplier loses population/food during this round, both sides
     // apply the same downward scaling. Never exceed its current export cap.
@@ -11380,18 +11381,25 @@ void CvCity::updateTradeRoutes()
 							{
 								const bool bConnected = reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())];
 								const bool bRoadConnected = roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())];
+								const int iEfficiency = tradeInfrastructureEfficiency(this, pLoopCity, bConnected, bRoadConnected);
+								// Food cannot create a connection where infrastructure permits none.
+								if (iEfficiency <= 0) continue;
 								iValue = tradeInfrastructureValue(this, pLoopCity, bConnected, bRoadConnected);
+								iValue = iValue * std::max(0, GET_PLAYER(getOwnerINLINE()).getTradeYieldModifier(YIELD_COMMERCE)) / 100;
 								// Rank routes by their combined return. A food import is worth
 								// one commerce point; an expected export is the same-sized loss.
 								// This is an estimate only: the supplier's shared export cap is
 								// resolved later for every route together.
 								iRouteCommerce = calculateTradeYield(YIELD_COMMERCE, calculateInfrastructureTradeProfit(pLoopCity, bConnected, bRoadConnected));
 								iFoodPressure = getFoodTradePressure(pLoopCity);
-								iFoodDemand = getFoodTradeDemand(pLoopCity, iRouteCommerce) / 100;
+								const CvCity* pSupplier = iFoodPressure < 0 ? pLoopCity : this;
+								// Apply the same infrastructure factor as the actual allocation;
+								// retain hundredths and respect the supplier's individual cap.
+								iFoodDemand = std::min(getFoodTradeDemand(pLoopCity, iRouteCommerce) * iEfficiency / 100, pSupplier->getFoodExportLimit() * 100);
 								if (iFoodPressure < 0)
-									iValue += (__int64)iFoodDemand * 1000000;
+									iValue += (__int64)iFoodDemand * 10000;
 								else if (iFoodPressure > 0)
-									iValue -= (__int64)iFoodDemand * 1000000;
+									iValue -= (__int64)iFoodDemand * 10000;
 
 								for (iJ = 0; iJ < iTradeRoutes; iJ++)
 								{

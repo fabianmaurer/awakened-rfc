@@ -2423,12 +2423,14 @@ void CvGame::updateFoodTrade()
             if (pPartner == NULL || pPartner == pOrigin || pPartner->isDisorder() || pPartner->isPlundered()) continue;
             if (!GET_PLAYER(pOrigin->getOwnerINLINE()).canHaveTradeRoutesWith(pPartner->getOwnerINLINE())) continue;
             if (pOrigin->getTeam() != pPartner->getTeam() && !GET_TEAM(pOrigin->getTeam()).isFreeTrade(pPartner->getTeam())) continue;
+            const int iInfrastructureEfficiency = pOrigin->getTradeInfrastructureEfficiency(pPartner);
+            if (iInfrastructureEfficiency <= 0) continue;
             const int iTotalPressure = pOrigin->getFoodTradePressure(pPartner);
             if (iTotalPressure == 0) continue;
             CvCity* pSupplier = iTotalPressure > 0 ? pOrigin : pPartner;
             CvCity* pRecipient = iTotalPressure > 0 ? pPartner : pOrigin;
             const int iValue = pOrigin->calculateTradeYield(YIELD_COMMERCE, pOrigin->calculateTradeProfit(pPartner));
-            const int iDemand = pOrigin->getFoodTradeDemand(pPartner, iValue);
+            const int iDemand = pOrigin->getFoodTradeDemand(pPartner, iValue) * iInfrastructureEfficiency / 100;
             if (iDemand <= 0) continue;
             unsigned int j;
             for (j = 0; j < requests.size(); ++j)
