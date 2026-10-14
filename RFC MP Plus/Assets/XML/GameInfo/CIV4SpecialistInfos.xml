@@ -383,7 +383,7 @@
 			<Civilopedia>TXT_KEY_CONCEPT_SPECIALISTS_PEDIA</Civilopedia>
 			<Strategy>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Strategy>
 			<Help>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Help>
-			<Texture>Art/Interface/MainScreen/CityScreen/Citizen.dds</Texture>
+			<Texture>Art/Interface/Buttons/Civics/RFCMP/Slavery.dds</Texture>
 			<bVisible>1</bVisible>
 			<GreatPeopleUnitClass>NONE</GreatPeopleUnitClass>
 			<iGreatPeopleRateChange>0</iGreatPeopleRateChange>
@@ -400,7 +400,7 @@
 			<bShiftDown>0</bShiftDown>
 			<bCtrlDown>0</bCtrlDown>
 			<iHotKeyPriority>0</iHotKeyPriority>
-			<Button>Art/Interface/MainScreen/CityScreen/Citizen.dds</Button>
+			<Button>Art/Interface/Buttons/Civics/RFCMP/Slavery.dds</Button>
 		</SpecialistInfo>
 	</SpecialistInfos>
 </Civ4SpecialistInfos>

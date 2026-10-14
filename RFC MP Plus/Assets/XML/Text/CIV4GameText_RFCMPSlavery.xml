@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT><Tag>TXT_KEY_RFCMP_SPECIALIST_SLAVE</Tag><English>Slave</English><French>Slave</French><German>Sklave</German><Italian>Slave</Italian><Spanish>Slave</Spanish></TEXT>
-  <TEXT><Tag>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Tag><English>+3[ICON_PRODUCTION], -1[ICON_FOOD]. Slave units can work in a city for 20 turns.</English><French>+3[ICON_PRODUCTION], -1[ICON_FOOD]. Slave units can work in a city for 20 turns.</French><German>+3[ICON_PRODUCTION], -1[ICON_FOOD]. Sklaveneinheiten k&#246;nnen 20 Runden lang in einer Stadt arbeiten.</German><Italian>+3[ICON_PRODUCTION], -1[ICON_FOOD]. Slave units can work in a city for 20 turns.</Italian><Spanish>+3[ICON_PRODUCTION], -1[ICON_FOOD]. Slave units can work in a city for 20 turns.</Spanish></TEXT>
+  <TEXT><Tag>TXT_KEY_RFCMP_SPECIALIST_SLAVE_HELP</Tag><English>+3[ICON_PRODUCTION], -1[ICON_FOOD].</English><French>+3[ICON_PRODUCTION], -1[ICON_FOOD].</French><German>+3[ICON_PRODUCTION], -1[ICON_FOOD].</German><Italian>+3[ICON_PRODUCTION], -1[ICON_FOOD].</Italian><Spanish>+3[ICON_PRODUCTION], -1[ICON_FOOD].</Spanish></TEXT>
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_SLAVE</Tag><English>Slave</English><French>Slave</French><German>Sklave</German><Italian>Slave</Italian><Spanish>Slave</Spanish></TEXT>
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_ARMED_SLAVE</Tag><English>Armed Slave</English><French>Armed Slave</French><German>Bewaffneter Sklave</German><Italian>Armed Slave</Italian><Spanish>Armed Slave</Spanish></TEXT>
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_SLAVE_SPEARMAN</Tag><English>Slave Spearman</English><French>Slave Spearman</French><German>Sklavenspeertr&#228;ger</German><Italian>Slave Spearman</Italian><Spanish>Slave Spearman</Spanish></TEXT>

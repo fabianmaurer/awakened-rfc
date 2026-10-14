@@ -1868,19 +1868,22 @@ class CvMainInterface:
 			szName = "CityPercentText" + str(i)
 			screen.hide( szName )
 
-		screen.addPanel( "BonusPane0", u"", u"", True, False, xResolution - 244, 94, 57, yResolution - 520, PanelStyles.PANEL_STYLE_CITY_COLUMNL )
+		# Reserve space for visible specialists added beyond the seven stock rows.
+		iExtraSpecialistHeight = 26 * max(0, len([i for i in range(gc.getNumSpecialistInfos()) if gc.getSpecialistInfo(i).isVisible()]) - 7)
+
+		screen.addPanel( "BonusPane0", u"", u"", True, False, xResolution - 244, 94, 57, yResolution - 520 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_CITY_COLUMNL )
 		screen.hide( "BonusPane0" )
-		screen.addScrollPanel( "BonusBack0", u"", xResolution - 242, 94, 157, yResolution - 536, PanelStyles.PANEL_STYLE_EXTERNAL )
+		screen.addScrollPanel( "BonusBack0", u"", xResolution - 242, 94, 157, yResolution - 536 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_EXTERNAL )
 		screen.hide( "BonusBack0" )
 
-		screen.addPanel( "BonusPane1", u"", u"", True, False, xResolution - 187, 94, 68, yResolution - 520, PanelStyles.PANEL_STYLE_CITY_COLUMNC )
+		screen.addPanel( "BonusPane1", u"", u"", True, False, xResolution - 187, 94, 68, yResolution - 520 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_CITY_COLUMNC )
 		screen.hide( "BonusPane1" )
-		screen.addScrollPanel( "BonusBack1", u"", xResolution - 191, 94, 184, yResolution - 536, PanelStyles.PANEL_STYLE_EXTERNAL )
+		screen.addScrollPanel( "BonusBack1", u"", xResolution - 191, 94, 184, yResolution - 536 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_EXTERNAL )
 		screen.hide( "BonusBack1" )
 
-		screen.addPanel( "BonusPane2", u"", u"", True, False, xResolution - 119, 94, 107, yResolution - 520, PanelStyles.PANEL_STYLE_CITY_COLUMNR )
+		screen.addPanel( "BonusPane2", u"", u"", True, False, xResolution - 119, 94, 107, yResolution - 520 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_CITY_COLUMNR )
 		screen.hide( "BonusPane2" )
-		screen.addScrollPanel( "BonusBack2", u"", xResolution - 125, 94, 205, yResolution - 536, PanelStyles.PANEL_STYLE_EXTERNAL )
+		screen.addScrollPanel( "BonusBack2", u"", xResolution - 125, 94, 205, yResolution - 536 - iExtraSpecialistHeight, PanelStyles.PANEL_STYLE_EXTERNAL )
 		screen.hide( "BonusBack2" )
 
 		screen.hide( "TradeRouteTable" )
