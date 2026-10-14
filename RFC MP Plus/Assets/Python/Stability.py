@@ -828,6 +828,10 @@ class Stability:
                         else:
                                 self.setStability(playerType, self.getStability(playerType) + max(0,min(5,(12 - gc.getPlayer(playerType).getNumCities())/2)) )
                         #print("Stability - city acquired", playerType)
+                        # Power of Satrapy is independent of the removed sixth
+                        # civic column and its former conquest-stability bonus.
+                        if (playerType == con.iPersia and bConquest):
+                                self.setStability(playerType, self.getStability(playerType) + 2)
                         if (owner < con.iNumPlayers):
                                 if (city.getX() == tCapitals[owner][0] and city.getY() == tCapitals[owner][1]):
                                         self.setStability(playerType, self.getStability(playerType) + 3)

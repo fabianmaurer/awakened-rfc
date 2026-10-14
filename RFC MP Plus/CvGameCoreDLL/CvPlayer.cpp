@@ -6200,6 +6200,7 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 
 	// RFC multiplayer: major civilizations use the same unit production cost.
 	// Retain the separate cost rules for non-major factions.
+	// Unique powers are applied separately below, outside this tuning switch.
 	switch (getID() < NUM_MAJOR_PLAYERS ? -1 : getID())
 	{
 		case EGYPT:
@@ -6213,13 +6214,6 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 		case CHINA:
 			iProductionNeeded *= 110;
 			iProductionNeeded /= 100;
-			//Rhye - start UP
-			if (GC.getUnitInfo(eUnit).getUnitCombatType() == 3 || GC.getUnitInfo(eUnit).getUnitCombatType() == 5) 
-			{
-				iProductionNeeded *= 73; // 2/3 of 110. Otherwise it would be 67
-				iProductionNeeded /= 100;
-			}
-			//Rhye - end UP
 			break;
 		case BABYLONIA:
 			iProductionNeeded *= 115;
@@ -6353,6 +6347,13 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 
 
 	//Rhye - start (modern units cost more)
+	// Power of the Myriads: 1.5x training speed for melee and gunpowder units.
+	// Use the common cost baseline; the former 110% Chinese cost tuning is gone.
+	if (getID() == CHINA &&
+		(GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") ||
+		 GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_GUN")))
+		iProductionNeeded = iProductionNeeded * 2 / 3;
+
 	if (eUnit == 4) { //Settler
 		if (getCurrentEra() == 1) { //classical
 			iProductionNeeded *= 104;

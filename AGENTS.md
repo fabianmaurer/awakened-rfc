@@ -4,6 +4,10 @@
 
 The user explicitly does not require compatibility with existing saves. Implement gameplay changes for new games; do not add save migrations or preserve old mechanics solely for existing saves.
 
+## Civilization modifiers and unique powers
+
+General civilization-specific growth, production, research and maintenance tuning is removed. Named civilization unique powers must remain active. Apply them separately from bypassed cost-tuning switches: China trains melee/gunpowder units at 1.5x speed, Maya receive their 40% research discount through the Medieval era, and Persia gains +2 stability per conquered city. When changing a broad modifier block, check for embedded unique powers before disabling it. See `docs/UniquePowersAudit.md` for the audit against the original Rhye's and Fall MP source.
+
 ## Civ4 game DLL
 
 Use the original 32-bit VC7.1 toolchain (Microsoft Visual C++ Toolkit 2003, compiler 13.10.3077 / linker 7.10.3077). The Civilization IV DLL uses Python 2.4, Boost.Python 1.32 and the VC7.1 runtime. A modern-MSVC rebuild changes runtime dependencies and previously caused this mod to fail loading, so do not use the CMake/modern-MSVC build for the game DLL.

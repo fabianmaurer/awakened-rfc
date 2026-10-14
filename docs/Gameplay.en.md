@@ -47,6 +47,10 @@ adjustments, China/Japan's research discount, and regional and economic stabilit
 rules. Unique units, buildings, powers, and historical spawn dates also continue
 to distinguish civilizations. Minor-faction tuning remains separate.
 
+Named unique powers apply independently of the shared cost baseline. China's
+melee and gunpowder units train at **1.5x speed**; Maya have **40% lower research
+costs through the Medieval era**; Persia gains **+2 stability per conquered city**.
+
 ## Technology-based growth
 
 All civilizations have a **30% penalty to positive food surplus used for growth**,

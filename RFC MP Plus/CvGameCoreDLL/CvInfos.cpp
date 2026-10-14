@@ -10086,6 +10086,10 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 	
 	// Remove per-civilization research cost tuning. Shared RFCMP pace scaling
 	// above still accounts for handicap, active human count, and timeline.
+	// Power of Astronomy is an explicit unique power, not general cost tuning:
+	// Maya pay 40% less for research through the Medieval era.
+	if (pl == MAYA && GET_PLAYER(pl).getCurrentEra() <= GC.getInfoTypeForString("ERA_MEDIEVAL"))
+		researchPercent = researchPercent * 60 / 100;
 	return researchPercent;
 }
 //Rhye - end

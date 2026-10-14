@@ -50,6 +50,11 @@ sowie wirtschaftliche Stabilitätsregeln. Einzigartige Einheiten, Gebäude,
 Fähigkeiten und historische Gründungszeitpunkte unterscheiden die Zivilisationen
 weiterhin. Sonderregeln für kleinere Fraktionen bleiben separat bestehen.
 
+Einzigartige Fähigkeiten gelten unabhängig von den gemeinsamen Grundkosten.
+China bildet Nahkampf- und Schießpulvereinheiten mit **1,5-facher Geschwindigkeit**
+aus; die Maya haben **40% geringere Forschungskosten bis zum Ende des Mittelalters**;
+Persien erhält **+2 Stabilität je eroberter Stadt**.
+
 ## Technologieabhängiges Wachstum
 
 Alle Zivilisationen haben einen **Wachstumsmalus von 30% auf den positiven
