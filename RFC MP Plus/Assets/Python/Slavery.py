@@ -162,7 +162,7 @@ class Slavery:
 		strength = 0
 		for i in range(plot.getNumUnits()):
 			unit = plot.getUnit(i)
-			if unit.getOwner() == owner and unit.canDefend():
+			if unit.getOwner() == owner and unit.canDefend(plot):
 				strength += unit.baseCombatStr()
 		return strength
 
