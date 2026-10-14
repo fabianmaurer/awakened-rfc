@@ -1590,13 +1590,14 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	pNewCity->setPreviousOwner(eOldOwner);
 	pNewCity->setOriginalOwner(eOriginalOwner);
 	pNewCity->setGameTurnFounded(iGameTurnFounded);
-	pNewCity->setPopulation((bConquest && !bRecapture) ? std::max(1, (iPopulation - 1)) : iPopulation);
+	const bool bEnslaveConquest = bConquest && !bRecapture &&
+		getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
+		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY");
+	pNewCity->setPopulation((bConquest && !bRecapture) ? std::max(1, iPopulation - (bEnslaveConquest ? 2 : 1)) : iPopulation);
 	// Population lost in a conquest becomes slave units for a conqueror who
 	// practices Slavery.  This occurs before cityAcquired so all Python event
 	// handlers observe the complete result.
-	if (bConquest && !bRecapture &&
-		getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
-		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+	if (bEnslaveConquest)
 	{
 		UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
 		CvString szCivType = GC.getCivilizationInfo(GET_PLAYER(eOldOwner).getCivilizationType()).getType();

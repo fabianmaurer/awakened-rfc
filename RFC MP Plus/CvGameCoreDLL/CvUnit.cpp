@@ -1120,6 +1120,13 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 
 	getDefenderCombatValues(*pDefender, pPlot, iAttackerStrength, iAttackerFirepower, iDefenderOdds, iDefenderStrength, iAttackerDamage, iDefenderDamage, &cdDefenderDetails);
 	int iAttackerKillOdds = iDefenderOdds * (100 - withdrawalProbability()) / 100;
+	// Only a healthy attacker defeating a weaker land combatant can capture
+	// slaves. Defender first-strike damage does not disqualify the victory.
+	bool bSlaveCapture = getDamage() == 0 && getDomainType() == DOMAIN_LAND &&
+		pDefender->getDomainType() == DOMAIN_LAND && !pDefender->isAnimal() &&
+		iAttackerStrength > iDefenderStrength &&
+		GET_PLAYER(getOwnerINLINE()).getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
+		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY");
 
 	if (isHuman() || pDefender->isHuman())
 	{
@@ -1147,6 +1154,8 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					break;
 				}
 
+				if (pDefender->getCombatFirstStrikes() == 0)
+					bSlaveCapture = false;
 				changeDamage(iAttackerDamage, pDefender->getOwnerINLINE());
 
 				if (pDefender->getCombatFirstStrikes() > 0 && pDefender->isRanged())
@@ -1223,6 +1232,20 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 			else
 			{
 				flankingStrikeCombat(pPlot, iAttackerStrength, iAttackerFirepower, iAttackerKillOdds, iDefenderDamage, pDefender);
+
+				if (bSlaveCapture && GC.getGameINLINE().getSorenRandNum(100, "Slavery combat capture") < 50)
+				{
+					UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+					if (eSlave != NO_UNIT)
+					{
+						CvUnit* pSlave = GET_PLAYER(getOwnerINLINE()).initUnit(eSlave, getX_INLINE(), getY_INLINE(), UNITAI_ATTACK);
+						CvString szCivType = GC.getCivilizationInfo(GET_PLAYER(pDefender->getOwnerINLINE()).getCivilizationType()).getType();
+						CvString szPromotion = "PROMOTION_SLAVE_";
+						if (szCivType.length() > 13) szPromotion += szCivType.substr(13);
+						PromotionTypes eOrigin = (PromotionTypes)GC.getInfoTypeForString(szPromotion, true);
+						if (pSlave != NULL && eOrigin != NO_PROMOTION) pSlave->setHasPromotion(eOrigin, true);
+					}
+				}
 
 				int iExperience = pDefender->attackXPValue();
 				iExperience = ((iExperience * iDefenderStrength) / iAttackerStrength);

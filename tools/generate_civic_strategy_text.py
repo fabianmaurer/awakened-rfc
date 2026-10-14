@@ -40,8 +40,8 @@ SUMMARIES = {
         '+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.',
         '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt, freie Spezialisten bleiben.'),
     'SLAVERY': (
-        'Sacrifice population to rush production. Plantations give +2 commerce.',
-        'Bevölkerung für Produktion opfern. Plantagen geben +2 Wirtschaftspunkte.'),
+        'Enables slave specialists. Enslave conquered peoples.',
+        'Erm\u00f6glicht Sklavenspezialisten. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
         '+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.',
         '+1 Nahrung durch Bauernh\u00f6fe, -1 Wirtschaftspunkt durch D\u00f6rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),

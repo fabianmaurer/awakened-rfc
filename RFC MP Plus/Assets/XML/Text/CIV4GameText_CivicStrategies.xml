@@ -90,11 +90,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SLAVERY_STRATEGY</Tag>
-        <English>Capture population as slaves; slave units can work in cities for 20 turns.</English>
-        <French>Capture population as slaves; slave units can work in cities for 20 turns.</French>
-        <German>Eroberte Bev&#246;lkerung wird zu Sklaven; Sklaveneinheiten k&#246;nnen 20 Runden in St&#228;dten arbeiten.</German>
-        <Italian>Capture population as slaves; slave units can work in cities for 20 turns.</Italian>
-        <Spanish>Capture population as slaves; slave units can work in cities for 20 turns.</Spanish>
+        <English>Enables slave specialists. Enslave conquered peoples.</English>
+        <French>Enables slave specialists. Enslave conquered peoples.</French>
+        <German>Erm&#246;glicht Sklavenspezialisten. Versklavt eroberte V&#246;lker.</German>
+        <Italian>Enables slave specialists. Enslave conquered peoples.</Italian>
+        <Spanish>Enables slave specialists. Enslave conquered peoples.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>

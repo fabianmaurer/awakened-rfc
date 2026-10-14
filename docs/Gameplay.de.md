@@ -250,6 +250,10 @@ als Möglichkeit für überschüssige Bevölkerung verfügbar.
 
 Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Angebote erhalten nur große Zivilisationen mit einer Stadt auf demselben Kontinent.
 
+Unter Sklaverei kostet eine Eroberung **zwei Bevölkerungspunkte** statt einem und erzeugt eine Sklaveneinheit je verlorenem Bevölkerungspunkt. Städte behalten mindestens Größe eins; Rückeroberungen sind ausgenommen.
+
+Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Sklaven gefangen zu nehmen**, wenn er einen schwächeren Landverteidiger tötet. Tiere sind ausgenommen. Verglichen wird die effektive Kampfstärke zu Kampfbeginn einschließlich Verteidigungsboni. Der Angreifer muss vollständig gesund beginnen und darf nur durch Erstangriffe des Verteidigers Schaden erleiden. Rückzüge und Kollateraltötungen zählen nicht. Der Sklave erscheint auf dem Feld des Angreifers und erhält, soweit vorhanden, die Herkunftsbeförderung der besiegten Zivilisation.
+
 ### Militär
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |

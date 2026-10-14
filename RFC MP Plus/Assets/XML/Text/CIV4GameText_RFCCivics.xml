@@ -651,10 +651,10 @@
 
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_SLAVERY</Tag>
-        <English>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison[NEWLINE][ICON_BULLET]Large conquests create slave-market or refugee events[NEWLINE][ICON_BULLET]Slave units retain a small bonus from their origin</English>
-        <French>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison[NEWLINE][ICON_BULLET]Large conquests create slave-market or refugee events[NEWLINE][ICON_BULLET]Slave units retain a small bonus from their origin</French>
-        <German>[ICON_BULLET]Eroberte Bev&#246;lkerung wird zu Sklaveneinheiten[NEWLINE][ICON_BULLET]Sklaveneinheiten geben 20 Runden lang +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in einer Stadt[NEWLINE][ICON_BULLET]Sklavenaufst&#228;nde h&#228;ngen vom St&#228;rkedefizit der Garnison ab[NEWLINE][ICON_BULLET]Gro&#223;e Eroberungen l&#246;sen Sklavenmarkt- oder Fl&#252;chtlingsereignisse aus[NEWLINE][ICON_BULLET]Sklaveneinheiten behalten einen kleinen Bonus ihrer Herkunft</German>
-        <Italian>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison[NEWLINE][ICON_BULLET]Large conquests create slave-market or refugee events[NEWLINE][ICON_BULLET]Slave units retain a small bonus from their origin</Italian>
-        <Spanish>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison[NEWLINE][ICON_BULLET]Large conquests create slave-market or refugee events[NEWLINE][ICON_BULLET]Slave units retain a small bonus from their origin</Spanish>
+        <English>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</English>
+        <French>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</French>
+        <German>[ICON_BULLET]Erm&#246;glicht Sklavenspezialisten[NEWLINE][ICON_BULLET]Versklavt eroberte V&#246;lker</German>
+        <Italian>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Italian>
+        <Spanish>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Spanish>
     </TEXT>
 </Civ4GameText>

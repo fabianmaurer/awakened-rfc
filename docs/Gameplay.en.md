@@ -237,6 +237,10 @@ idle citizens remain available under Self-sufficiency as a population fallback.
 
 Conquering a large city while using **Slavery** creates a regional slave market. Other Slavery states can buy a slave unit, while other states can buy a captive's freedom: the freed person adds population, former-owner culture, and 20 turns of happiness. A large city conquered without Slavery instead sends refugees: non-Slavery states can accept them for free, while Slavery states can force them into 20 turns of labour for one temporary slave specialist and one temporary unhappiness. Only major civilizations with a city on the same continent receive an offer.
 
+Under Slavery, conquest removes **two population** instead of one and creates one slave unit per population lost. Cities remain at least size one; recaptures are exempt.
+
+A land attacker under Slavery also has a **50% chance to capture one slave** after killing a weaker non-animal land defender. Strength is compared at the start of combat, including defensive bonuses. The attacker must start at full health and take no damage except from defender first strikes. Withdrawals and collateral kills do not qualify. The slave appears on the attacker's tile and receives the defeated civilization's origin promotion where available.
+
 ### Military
 
 | Civic | Required technology | Upkeep | Effects |

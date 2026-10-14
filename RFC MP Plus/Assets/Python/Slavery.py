@@ -21,6 +21,13 @@ class Slavery:
 	def _info(self, name):
 		return gc.getInfoTypeForString(name)
 
+	def _cities(self, player):
+		# Stock BtS exposes firstCity/nextCity, not the newer cities() helper.
+		city, iterator = player.firstCity(False)
+		while city and not city.isNone():
+			yield city
+			city, iterator = player.nextCity(iterator, False)
+
 	def _slaveSpecialist(self):
 		return self._info("SPECIALIST_SLAVE")
 
@@ -51,7 +58,7 @@ class Slavery:
 		return min(200, max(50, (city.getPopulation() + 1) * 10))
 
 	def _continentCity(self, player, area, bLargest):
-		candidates = [city for city in player.cities() if city.plot().getArea() == area]
+		candidates = [city for city in self._cities(player) if city.plot().getArea() == area]
 		if not candidates: return None
 		if bLargest:
 			candidates.sort(key=lambda city: (-city.getPopulation(), city.getID()))
@@ -178,7 +185,7 @@ class Slavery:
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive() or not self._hasSlavery(player):
 			return
-		for city in player.cities():
+		for city in self._cities(player):
 			chance = self.revoltChance(city, iPlayer)
 			if chance > 0 and gc.getGame().getSorenRandNum(100, "Slave revolt") < chance:
 				self._startRevolt(iPlayer, city)
@@ -271,7 +278,7 @@ class Slavery:
 		player = gc.getPlayer(iPlayer)
 		originArea = origin.plot().getArea()
 		candidates = []
-		for city in player.cities():
+		for city in self._cities(player):
 			if city.getID() != origin.getID() and city.plot().getArea() == originArea:
 				chance = self.revoltChance(city, iPlayer)
 				if chance > 0: candidates.append((chance, city))
