@@ -9,6 +9,7 @@ import CvTranslator
 import RFCUtils
 import Consts as con
 import StartingCivics
+import Scenario840AD
 import CityNameManager 
 
 
@@ -558,7 +559,10 @@ class RiseAndFall:
 ### Main methods (Event-Triggered) ###
 #####################################  
 
-        def setup(self):            
+        def setup(self):
+                if Scenario840AD.isScenario():
+                        Scenario840AD.setup(self)
+                        return
 
                 #self.setupBirthTurnModifiers() (causes a crash on civ switch)
 
@@ -816,7 +820,9 @@ class RiseAndFall:
 ##                self.initBirth(iGameTurn, con.tBirth[iAztecs]+self.getBirthTurnModifier(iAztecs), iAztecs)
 ##                self.initBirth(iGameTurn, con.tBirth[iAmerica]+self.getBirthTurnModifier(iAmerica), iAmerica)
                         
-                if (gc.getPlayer(0).isPlayable()):
+                if Scenario840AD.isScenario():
+                        iFirstSpawn = iRussia
+                elif (gc.getPlayer(0).isPlayable()):
                         iFirstSpawn = iGreece
                 elif (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)                          
                         iFirstSpawn = iEthiopia
@@ -2604,6 +2610,8 @@ class RiseAndFall:
 
         def warOnSpawn(self):
                 for iCiv in range(iNumMajorPlayers):
+                        if Scenario840AD.isScenario() and not gc.getPlayer(iCiv).isAlive():
+                                continue
                         if (not gc.getPlayer(0).isPlayable() and con.tIsActiveOnLateStart[iCiv]==0): #late start condition
                                 continue #skip          
                         pCiv = gc.getPlayer(iCiv)
@@ -2613,6 +2621,8 @@ class RiseAndFall:
                                 iMin = 10 #can be set to 100 for skipping human player
                         if (utils.getFakeRandNum(100, 'first roll') >= iMin): #RFCMP
                                 for iLoopCiv in con.lEnemyCivsOnSpawn[iCiv]:
+                                        if Scenario840AD.isScenario() and not gc.getPlayer(iLoopCiv).isAlive():
+                                                continue
                                         if (not gc.getPlayer(0).isPlayable() and con.tIsActiveOnLateStart[iLoopCiv]==0): #late start condition
                                                 continue #skip
                                         iLoopMin = 50

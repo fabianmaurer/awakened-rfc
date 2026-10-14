@@ -125,7 +125,7 @@ die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
    Den Namen beibehalten; der ursprüngliche Mod kann daneben installiert bleiben.
 2. Über das Mod-Menü oder [den Starter](<Launch RFC MP Plus.bat>) laden
    (für Steam eingerichtet).
-3. **3000 v. Chr.**, **800 v. Chr.** oder **600 n. Chr.** wählen. Alle Mitspieler
+3. **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.** wählen. Alle Mitspieler
    benötigen identische Mod-Dateien und DLLs.
 
 Nach Textänderungen beim Start **Shift gedrückt halten**. Nach Änderungen an

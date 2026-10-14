@@ -1766,6 +1766,13 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 		if (getPitboss() && getNumHumans()>=30) //maybe that isn't the case with Pitboss??
 			return false;
 
+		// Authored scenarios can start with a civilization already established
+		// on its birth turn (e.g. Germany in the 840 AD start). Honor their
+		// explicit playable slots before applying the later-join birth gate.
+		if (getWBMapScript() && !getWBMapNoPlayers() &&
+			eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID])
+			return true;
+
 		int minTurn = 0;
 		if (getLeader((PlayerTypes)INDEPENDENT) == (LeaderHeadTypes)5) { //late start (800BC) condition
 			minTurn = 82;

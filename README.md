@@ -125,7 +125,7 @@ culture and espionage, distinct from gold income.
    the original mod can remain alongside it.
 2. Load it from the game's mod menu or use [the launcher](<Launch RFC MP Plus.bat>)
    (configured for Steam).
-3. Choose **3000 BC**, **800 BC** or **600 AD**. All multiplayer peers need identical
+3. Choose **3000 BC**, **800 BC**, **600 AD** or **840 AD**. All multiplayer peers need identical
    mod files and DLLs.
 
 Hold **Shift while launching** after text changes. Start a new game after changes

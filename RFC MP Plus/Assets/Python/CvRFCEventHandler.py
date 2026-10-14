@@ -16,7 +16,8 @@ import CityNameManager
 import UniquePowers     
 import AIWars           
 import Congresses
-import Consts as con 
+import Consts as con
+import Scenario840AD
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 import CvScreenEnums #Mercenaries, Rhye
@@ -295,7 +296,7 @@ class CvRFCEventHandler:
                 'Religion Founded'
                 iReligion, iFounder = argsList
 
-                if (not gc.getPlayer(0).isPlayable() and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87)): #late start condition (RFCMP)
+                if (not gc.getPlayer(0).isPlayable() and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario840AD.isScenario() and gc.getGame().getGameTurn() == Scenario840AD.START_TURN))): #late start condition (RFCMP)
                         return
         
                 self.vic.onReligionFounded(iReligion, iFounder)
@@ -441,7 +442,13 @@ class CvRFCEventHandler:
                 self.sta.onReligionSpread(iReligion, iOwner)             
 
         def onFirstContact(self, argsList):
-            
+                # WorldBuilder can establish contacts while placing cities,
+                # before onGameStart initializes RFC's pickled script data.
+                # Check initialization state rather than a scenario's date.
+                game = gc.getGame()
+                if not game.isFinalInitialized() or not game.getScriptData():
+                        return
+
                 iTeamX,iHasMetTeamY = argsList
                 self.rnf.onFirstContact(iTeamX, iHasMetTeamY)
                 self.pla.onFirstContact(iTeamX, iHasMetTeamY)
@@ -452,7 +459,7 @@ class CvRFCEventHandler:
                 #print ("onTechAcquired", argsList)
                 iPlayer = argsList[2]
                 
-                if (not gc.getPlayer(0).isPlayable() and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87)): #late start condition (RFCMP)
+                if (not gc.getPlayer(0).isPlayable() and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario840AD.isScenario() and gc.getGame().getGameTurn() == Scenario840AD.START_TURN))): #late start condition (RFCMP)
                         return
                 
                 if (gc.getGame().getGameTurn() > con.tBirth[iPlayer]):                    

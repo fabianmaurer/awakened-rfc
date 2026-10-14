@@ -311,7 +311,7 @@ vor der Erzeugung der Start-Einheiten durch Skripte. Nicht verfügbare Staatsfor
 werden durch festgelegte Alternativen ersetzt; zusätzliche Technologien oder
 Anarchie entstehen dadurch nicht.
 
-Die Profile gelten für alle drei Szenarien und überschreiben keine späteren
+Die Profile gelten für alle vier Szenarien und überschreiben keine späteren
 Spielerentscheidungen. Bereits vorhandene Zivilisationen in Spielständen behalten
 ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 [StartingCivics.md](StartingCivics.md).
@@ -526,7 +526,7 @@ englische Ersatztexte.
    [Launch RFC MP Plus.bat](<../Launch RFC MP Plus.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.** oder **600 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
@@ -552,3 +552,21 @@ Voraussetzungen und Kompilierungsablauf stehen in [AGENTS.md](../AGENTS.md) und
 kopiert die neu erzeugte DLL in den Mod-Ordner des Projekts und in den
 installierten Mod. Civ4 vor dem Kompilieren schließen, damit die installierte
 DLL ersetzt werden kann.
+
+### Start 840 n. Chr.
+
+Das vierte Szenario beginnt in Runde 205 (840 n. Chr. im Kalender dieses Mods):
+dem frühesten Zeitpunkt, an dem Spanien, Frankreich, England und Deutschland
+ihre regulären Gründungsdaten erreicht haben. Diese vier Länder sind sofort
+spielbar, ebenso China, Japan, die Wikinger, Arabien und die Khmer. Sie beginnen
+mit bestehenden Städten, Geländeverbesserungen, Straßen, Armeen,
+Starttechnologien und passenden Staatsformen. Spätere Zivilisationen behalten
+ihren regulären Gründungszeitplan.
+
+Die Ausgangslage wurde auf Grundlage der Weltkarte von 600 n. Chr. gestaltet
+und ist kein Ergebnis einer automatisch gespielten Partie. Die Startaufstellung
+wird mit `tools/generate_840_ad_scenario.py` bearbeitet und neu erzeugt.
+Die Initialisierung erfolgt in `Assets/Python/Scenario840AD.py`.
+
+Die Stadtgrößen orientieren sich an der ungefähren urbanen Bedeutung im
+9. Jahrhundert; siehe [Bevölkerungsliste und historische Begründung](840ADPopulation.md).

@@ -294,7 +294,7 @@ scenario initialization or their initial spawn, after starting technologies and
 before scripted starting units. Unavailable civics use explicit fallbacks;
 no extra technologies or anarchy are introduced.
 
-Profiles cover all three scenarios and do not override subsequent player choices.
+Profiles cover all four scenarios and do not override subsequent player choices.
 Existing civilizations in saved games keep their current civics. See
 [StartingCivics.md](StartingCivics.md) for all profiles and fallback rules.
 
@@ -494,7 +494,7 @@ new country-name entries.
 3. Load RFC MP Plus from the game's mod menu, or use
    [Launch RFC MP Plus.bat](<../Launch RFC MP Plus.bat>). The launcher currently
    points to the standard Steam installation path; adjust it for other locations.
-4. Choose an included scenario: **3000 BC**, **800 BC**, or **600 AD**.
+4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, or **840 AD**.
 
 All multiplayer peers need the same mod assets, Python files, XML, and DLL.
 Gameplay code uses synchronized game state and election randomness; multiplayer
@@ -517,3 +517,20 @@ See [AGENTS.md](../AGENTS.md) and [BUILDING.md](<../RFC MP Plus/CvGameCoreDLL/BU
 for prerequisites and the compilation routine. The configured build copies the
 rebuilt DLL into the workspace mod and the installed mod folder. Close Civ4
 before rebuilding so the installed DLL can be replaced.
+
+### 840 AD start
+
+The fourth scenario starts on turn 205 (840 AD on this mod's calendar), the
+earliest date when Spain, France, England and Germany have all reached their
+normal birth dates. These four countries are immediately playable, alongside
+China, Japan, the Vikings, Arabia and the Khmer. They begin with established
+cities, countryside improvements, roads, armies, starting technologies and
+appropriate civics. Later civilizations retain their normal spawn schedule.
+
+This is an authored setup based on the 600 AD Earth map, rather than a saved
+autoplay result. To edit the starting layout, change
+`tools/generate_840_ad_scenario.py` and regenerate the scenario. Initialization
+is handled by `Assets/Python/Scenario840AD.py`.
+
+Starting city sizes follow an approximate ninth-century urban hierarchy; see
+the [population roster and historical rationale](840ADPopulation.md).
