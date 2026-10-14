@@ -539,6 +539,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iBuildingOnlyHealthyCount = 0;
 	m_iFood = 0;
     m_iGrowthFoodRemainder = 0;
+	m_aiSlaveSpecialistExpiryTurns.clear();
 	m_iFoodKept = 0;
 	m_iMaxFoodKeptPercent = 0;
 	m_iOverflowProduction = 0;
@@ -984,6 +985,26 @@ void CvCity::doTurn()
 	setDrafted(false);
 	setAirliftTargeted(false);
 	setCurrAirlift(0);
+
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	CivicTypes eSlavery = (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY");
+	CivicOptionTypes eLabor = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR");
+	if (eSlave != NO_SPECIALIST && eSlavery != NO_CIVIC && GET_PLAYER(getOwnerINLINE()).getCivics(eLabor) != eSlavery)
+	{
+		emancipateSlaveSpecialists();
+	}
+	else if (eSlave != NO_SPECIALIST)
+	{
+		for (std::vector<int>::iterator it = m_aiSlaveSpecialistExpiryTurns.begin(); it != m_aiSlaveSpecialistExpiryTurns.end(); )
+		{
+			if (*it <= GC.getGameINLINE().getGameTurn())
+			{
+				changeFreeSpecialistCount(eSlave, -1);
+				it = m_aiSlaveSpecialistExpiryTurns.erase(it);
+			}
+			else ++it;
+		}
+	}
 
 	AI_doTurn();
 
@@ -10254,6 +10275,22 @@ bool CvCity::isSpecialistValid(SpecialistTypes eIndex, int iExtra) const
 	return (((getSpecialistCount(eIndex) + iExtra) <= getMaxSpecialistCount(eIndex)) || GET_PLAYER(getOwnerINLINE()).isSpecialistValid(eIndex) || (eIndex == GC.getDefineINT("DEFAULT_SPECIALIST")));
 }
 
+void CvCity::addTemporarySlaveSpecialist(int iTurns)
+{
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (eSlave == NO_SPECIALIST || iTurns <= 0) return;
+	changeFreeSpecialistCount(eSlave, 1);
+	m_aiSlaveSpecialistExpiryTurns.push_back(GC.getGameINLINE().getGameTurn() + iTurns);
+}
+
+void CvCity::emancipateSlaveSpecialists()
+{
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (eSlave != NO_SPECIALIST && getFreeSpecialistCount(eSlave) > 0)
+		changeFreeSpecialistCount(eSlave, -getFreeSpecialistCount(eSlave));
+	m_aiSlaveSpecialistExpiryTurns.clear();
+}
+
 
 void CvCity::changeMaxSpecialistCount(SpecialistTypes eIndex, int iChange)
 {
@@ -12865,6 +12902,17 @@ void CvCity::read(FDataStreamBase* pStream)
     }
 
     if (uiFlag & 2) pStream->Read(&m_iGrowthFoodRemainder);
+    if (uiFlag & 4)
+    {
+        int iCount;
+        pStream->Read(&iCount);
+        for (int i = 0; i < iCount; ++i)
+        {
+            int iExpiry;
+            pStream->Read(&iExpiry);
+            m_aiSlaveSpecialistExpiryTurns.push_back(iExpiry);
+        }
+    }
 
 }
 
@@ -12872,7 +12920,7 @@ void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=3;
+	uint uiFlag=7;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -13099,6 +13147,9 @@ void CvCity::write(FDataStreamBase* pStream)
     }
 
     pStream->Write(m_iGrowthFoodRemainder);
+    pStream->Write((int)m_aiSlaveSpecialistExpiryTurns.size());
+    for (unsigned int i = 0; i < m_aiSlaveSpecialistExpiryTurns.size(); ++i)
+        pStream->Write(m_aiSlaveSpecialistExpiryTurns[i]);
 
 }
 

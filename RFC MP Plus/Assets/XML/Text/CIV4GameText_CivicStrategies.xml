@@ -90,11 +90,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SLAVERY_STRATEGY</Tag>
-        <English>Sacrifice population to rush production. Plantations give +2 commerce.</English>
-        <French>Sacrifice population to rush production. Plantations give +2 commerce.</French>
-        <German>Bev&#246;lkerung f&#252;r Produktion opfern. Plantagen geben +2 Wirtschaftspunkte.</German>
-        <Italian>Sacrifice population to rush production. Plantations give +2 commerce.</Italian>
-        <Spanish>Sacrifice population to rush production. Plantations give +2 commerce.</Spanish>
+        <English>Capture population as slaves; slave units can work in cities for 20 turns.</English>
+        <French>Capture population as slaves; slave units can work in cities for 20 turns.</French>
+        <German>Eroberte Bev&#246;lkerung wird zu Sklaven; Sklaveneinheiten k&#246;nnen 20 Runden in St&#228;dten arbeiten.</German>
+        <Italian>Capture population as slaves; slave units can work in cities for 20 turns.</Italian>
+        <Spanish>Capture population as slaves; slave units can work in cities for 20 turns.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>

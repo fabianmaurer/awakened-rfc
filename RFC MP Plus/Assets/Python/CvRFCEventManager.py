@@ -6,6 +6,7 @@ import CvEventManager
 import CvRFCEventHandler
 import RiseAndFall
 import Congresses
+import Slavery
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -59,13 +60,15 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             7620 : ('BribePopupEvent', self.congEventApply7620, self.congEventBegin7620),
             7621 : ('GoldPopupEvent', self.congEventApply7621, self.congEventBegin7621),
             7622 : ('ResurrectionEvent', self.rnfEventApply7622, self.rnfEventBegin7622),
-            7623 : ('AskNoCityPopupEvent', self.congEventApply7623, self.congEventBegin7623)
+            7623 : ('AskNoCityPopupEvent', self.congEventApply7623, self.congEventBegin7623),
+            7624 : ('SlaveRevoltPopupEvent', self.slaveEventApply7624, self.slaveEventBegin7624)
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
         CvRFCEventHandler.CvRFCEventHandler(self)
         self.rnf = RiseAndFall.RiseAndFall()
         self.cong = Congresses.Congresses()
+        self.slave = Slavery.slavery
         
 
     def addEventHandler(self, eventType, eventHandler):
@@ -231,3 +234,9 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
        
     def congEventApply7623(self, playerID, netUserData, popupReturn):
             self.cong.eventApply7623(popupReturn)
+
+    def slaveEventBegin7624(self):
+            pass
+
+    def slaveEventApply7624(self, playerID, netUserData, popupReturn):
+            self.slave.eventApply(popupReturn)

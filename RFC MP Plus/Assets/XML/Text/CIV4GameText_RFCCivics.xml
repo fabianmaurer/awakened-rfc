@@ -648,4 +648,13 @@
         <Italian>%D1: filthy capitalists</Italian>
         <Spanish>%D1: filthy capitalists</Spanish>
     </TEXT>
+
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_SLAVERY</Tag>
+        <English>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison</English>
+        <French>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison</French>
+        <German>[ICON_BULLET]Eroberte Bev&#246;lkerung wird zu Sklaveneinheiten[NEWLINE][ICON_BULLET]Sklaveneinheiten geben 20 Runden lang +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in einer Stadt[NEWLINE][ICON_BULLET]Sklavenaufst&#228;nde h&#228;ngen vom St&#228;rkedefizit der Garnison ab</German>
+        <Italian>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison</Italian>
+        <Spanish>[ICON_BULLET]Captured population becomes slave units[NEWLINE][ICON_BULLET]Slave units can provide +3 [ICON_PRODUCTION], -1 [ICON_FOOD] in a city for 20 turns[NEWLINE][ICON_BULLET]Slave revolts scale with the strength deficit of their garrison</Spanish>
+    </TEXT>
 </Civ4GameText>

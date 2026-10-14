@@ -1994,6 +1994,12 @@ void CyCity::changeFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChan
 		m_pCity->changeFreeSpecialistCount((SpecialistTypes)eIndex, iChange);
 }
 
+void CyCity::emancipateSlaveSpecialists()
+{
+	if (m_pCity)
+		m_pCity->emancipateSlaveSpecialists();
+}
+
 int CyCity::getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getAddedFreeSpecialistCount((SpecialistTypes)eIndex) : -1;

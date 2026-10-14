@@ -1832,6 +1832,16 @@ bool CvUnit::isBetterDefenderThan(const CvUnit* pDefender, const CvUnit* pAttack
 		return true;
 	}
 
+	// Slave units are deliberately selected before regular defenders once both
+	// candidates have passed the normal eligibility checks above.
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if (eCannonFodder != NO_PROMOTION)
+	{
+		bool bOurFodder = isHasPromotion(eCannonFodder);
+		bool bTheirFodder = pDefender->isHasPromotion(eCannonFodder);
+		if (bOurFodder != bTheirFodder) return bOurFodder;
+	}
+
 	if (pAttacker)
 	{
 		if (isTargetOf(*pAttacker) && !pDefender->isTargetOf(*pAttacker))
@@ -5644,6 +5654,14 @@ bool CvUnit::canJoin(const CvPlot* pPlot, SpecialistTypes eSpecialist) const
 		return false;
 	}
 
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (eSpecialist == eSlave)
+	{
+		CivicOptionTypes eLabor = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR");
+		CivicTypes eSlavery = (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY");
+		if (GET_PLAYER(getOwnerINLINE()).getCivics(eLabor) != eSlavery) return false;
+	}
+
 	pCity = pPlot->getPlotCity();
 
 	if (pCity == NULL)
@@ -5683,7 +5701,11 @@ bool CvUnit::join(SpecialistTypes eSpecialist)
 
 	if (pCity != NULL)
 	{
-		pCity->changeFreeSpecialistCount(eSpecialist, 1);
+		SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+		if (eSpecialist == eSlave)
+			pCity->addTemporarySlaveSpecialist(20);
+		else
+			pCity->changeFreeSpecialistCount(eSpecialist, 1);
 	}
 
 	if (plot()->isActiveVisible(false))
@@ -11359,7 +11381,9 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion) const
 	FAssertMsg(ePromotion < GC.getNumPromotionInfos(), "ePromotion is expected to be within maximum bounds (invalid Index)");
 
 	PromotionTypes eMercenary = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY");
-	if (eMercenary != NO_PROMOTION && isHasPromotion(eMercenary))
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if ((eMercenary != NO_PROMOTION && isHasPromotion(eMercenary)) ||
+		(eCannonFodder != NO_PROMOTION && isHasPromotion(eCannonFodder)))
 	{
 		return false;
 	}

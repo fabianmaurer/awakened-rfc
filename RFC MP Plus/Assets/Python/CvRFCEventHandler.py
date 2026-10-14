@@ -24,6 +24,7 @@ import Victory
 import Stability
 import Plague
 import Communications
+import Slavery
         
 gc = CyGlobalContext()        
 #iBetrayalCheaters = 15
@@ -129,6 +130,7 @@ class CvRFCEventHandler:
                 self.sta = Stability.Stability()
                 self.pla = Plague.Plague()
                 self.com = Communications.Communications()
+                self.slave = Slavery.slavery
                 
      
 
@@ -394,6 +396,7 @@ class CvRFCEventHandler:
                         self.rnf.deleteMode(iPlayer)
                         
                 self.pla.checkPlayerTurn(iGameTurn, iPlayer)
+                self.slave.checkPlayerTurn(iPlayer)
 
                 if (gc.getPlayer(iPlayer).isAlive()):
                         self.vic.checkPlayerTurn(iGameTurn, iPlayer)

@@ -783,6 +783,8 @@ public:
 	int getFreeSpecialistCount(SpecialistTypes eIndex) const;					// Exposed to Python
 	void setFreeSpecialistCount(SpecialistTypes eIndex, int iNewValue);			// Exposed to Python
 	void changeFreeSpecialistCount(SpecialistTypes eIndex, int iChange);		// Exposed to Python
+	void addTemporarySlaveSpecialist(int iTurns);
+	void emancipateSlaveSpecialists();
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
 	int getImprovementFreeSpecialists(ImprovementTypes eIndex) const;			// Exposed to Python
@@ -1025,6 +1027,7 @@ protected:
 	int m_iBuildingOnlyHealthyCount;
 	int m_iFood;
     int m_iGrowthFoodRemainder; // 1/10000 food, saved and synchronized
+	std::vector<int> m_aiSlaveSpecialistExpiryTurns;
 	int m_iFoodKept;
 	int m_iMaxFoodKeptPercent;
 	int m_iOverflowProduction;

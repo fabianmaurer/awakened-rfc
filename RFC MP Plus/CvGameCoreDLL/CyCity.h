@@ -427,6 +427,7 @@ public:
 	int getFreeSpecialistCount(int /*SpecialistTypes*/ eIndex);
 	void setFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iNewValue);
 	void changeFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange);
+	void emancipateSlaveSpecialists();
 	int getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex);
 	int getImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex);
 	void changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange);

@@ -1591,6 +1591,18 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	pNewCity->setOriginalOwner(eOriginalOwner);
 	pNewCity->setGameTurnFounded(iGameTurnFounded);
 	pNewCity->setPopulation((bConquest && !bRecapture) ? std::max(1, (iPopulation - 1)) : iPopulation);
+	// Population lost in a conquest becomes slave units for a conqueror who
+	// practices Slavery.  This occurs before cityAcquired so all Python event
+	// handlers observe the complete result.
+	if (bConquest && !bRecapture &&
+		getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
+		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+	{
+		UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+		int iSlaves = std::max(0, iPopulation - pNewCity->getPopulation());
+		for (int iSlave = 0; eSlave != NO_UNIT && iSlave < iSlaves; ++iSlave)
+			initUnit(eSlave, pNewCity->getX_INLINE(), pNewCity->getY_INLINE(), UNITAI_ATTACK);
+	}
 	pNewCity->setHighestPopulation(iHighestPopulation);
 	pNewCity->setName(szName);
 	pNewCity->setNeverLost(false);
@@ -1663,7 +1675,10 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	for (iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
 	{
-		pNewCity->changeFreeSpecialistCount((SpecialistTypes)iI, aeFreeSpecialists[iI]);
+		// Temporary slave labour is tied to the former owner's coercive system;
+		// it never survives a change of hands as an ordinary free specialist.
+		if ((SpecialistTypes)iI != (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"))
+			pNewCity->changeFreeSpecialistCount((SpecialistTypes)iI, aeFreeSpecialists[iI]);
 	}
 
 	for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
@@ -7165,9 +7180,12 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 	int iSupport;
 	int iMercenaryUnits = 0;
 	int iMercenaryMilitaryUnits = 0;
+	int iSlaveUnits = 0;
+	int iSlaveMilitaryUnits = 0;
 	int iLoop;
 	CvUnit* pLoopUnit;
 	const PromotionTypes eMercenary = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY");
+	const PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
 
 	iFreeUnits = GC.getHandicapInfo(getHandicapType()).getFreeUnits();
 
@@ -7196,14 +7214,22 @@ int CvPlayer::calculateUnitCost(int& iFreeUnits, int& iFreeMilitaryUnits, int& i
 				iMercenaryMilitaryUnits++;
 			}
 		}
+		else if (eCannonFodder != NO_PROMOTION && pLoopUnit->isHasPromotion(eCannonFodder))
+		{
+			iSlaveUnits++;
+			if (GC.getUnitInfo(pLoopUnit->getUnitType()).isMilitarySupport()) iSlaveMilitaryUnits++;
+		}
 	}
 
 	// Mercenaries neither consume ordinary free-unit allowances nor benefit
 	// from them. Their regular cost plus a 100% surcharge is charged here.
-	iPaidUnits = std::max(0, getNumUnits() - iMercenaryUnits - iFreeUnits);
-	iPaidMilitaryUnits = std::max(0, getNumMilitaryUnits() - iMercenaryMilitaryUnits - iFreeMilitaryUnits);
+	iPaidUnits = std::max(0, getNumUnits() - iMercenaryUnits - iSlaveUnits - iFreeUnits);
+	iPaidMilitaryUnits = std::max(0, getNumMilitaryUnits() - iMercenaryMilitaryUnits - iSlaveMilitaryUnits - iFreeMilitaryUnits);
 	iMercenaryCost = iMercenaryUnits * getGoldPerUnit() * 2;
 	iMercenaryCost += iMercenaryMilitaryUnits * getGoldPerMilitaryUnit() * 2;
+	// Slave units receive no normal upkeep or free-unit allowance.  Their
+	// rations cost one quarter of the corresponding standard upkeep.
+	iMercenaryCost += (iSlaveUnits * getGoldPerUnit() + iSlaveMilitaryUnits * getGoldPerMilitaryUnit() + 3) / 4;
 
 	iSupport = 0;
 
