@@ -8094,9 +8094,52 @@ int CvCity::getFoodExportLimit() const
 
 int CvCity::getFoodTradeWellbeingScore() const
 {
-    // A signed condition score lets happier and healthier cities attract food.
-    return happyLevel() - unhappyLevel() + goodHealth() - badHealth();
+    // Kept for external callers: happiness has twice the trade-attraction
+    // weight of health. CvGame compares the two components separately.
+    return 2 * (happyLevel() - unhappyLevel()) + goodHealth() - badHealth();
 }
+
+int CvCity::getFoodTradePressure(const CvCity* pPartner) const
+{
+    if (pPartner == NULL) return 0;
+
+    // Compare per-capita attraction without division, preserving deterministic
+    // integer arithmetic for synchronized multiplayer games.
+    const int iOwnPopulation = std::max(1, getPopulation());
+    const int iPartnerPopulation = std::max(1, pPartner->getPopulation());
+    const __int64 iOwnWealth = (__int64)getLocalTradeWealth() * iPartnerPopulation;
+    const __int64 iOtherWealth = (__int64)pPartner->getLocalTradeWealth() * iOwnPopulation;
+    const __int64 iOwnHappiness = (__int64)(happyLevel() - unhappyLevel()) * iPartnerPopulation;
+    const __int64 iOtherHappiness = (__int64)(pPartner->happyLevel() - pPartner->unhappyLevel()) * iOwnPopulation;
+    const __int64 iOwnHealth = (__int64)(goodHealth() - badHealth()) * iPartnerPopulation;
+    const __int64 iOtherHealth = (__int64)(pPartner->goodHealth() - pPartner->badHealth()) * iOwnPopulation;
+    const __int64 iWealthScale = std::max((__int64)1, std::max(iOwnWealth, iOtherWealth));
+    const __int64 iOwnHappinessMagnitude = iOwnHappiness < 0 ? -iOwnHappiness : iOwnHappiness;
+    const __int64 iOtherHappinessMagnitude = iOtherHappiness < 0 ? -iOtherHappiness : iOtherHappiness;
+    const __int64 iHappinessScale = std::max((__int64)1, std::max(iOwnHappinessMagnitude, iOtherHappinessMagnitude));
+    const __int64 iOwnHealthMagnitude = iOwnHealth < 0 ? -iOwnHealth : iOwnHealth;
+    const __int64 iOtherHealthMagnitude = iOtherHealth < 0 ? -iOtherHealth : iOtherHealth;
+    const __int64 iHealthScale = std::max((__int64)1, std::max(iOwnHealthMagnitude, iOtherHealthMagnitude));
+    const int iWealthPressure = (int)(100 * (iOtherWealth - iOwnWealth) / iWealthScale);
+    const int iHappinessPressure = (int)(100 * (iOtherHappiness - iOwnHappiness) / iHappinessScale);
+    const int iHealthPressure = (int)(100 * (iOtherHealth - iOwnHealth) / iHealthScale);
+    int iWellbeingPressure = iHappinessPressure + iHealthPressure / 2;
+    iWellbeingPressure = std::max(-100, std::min(100, iWellbeingPressure)) / 2;
+    return iWealthPressure + iWellbeingPressure;
+}
+
+int CvCity::getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const
+{
+    const int iPressure = getFoodTradePressure(pPartner);
+    if (iPressure == 0) return 0;
+
+    const int iPressurePerFood = std::max(1, GC.getDefineINT("RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD"));
+    const int iAbsolutePressure = iPressure < 0 ? -iPressure : iPressure;
+    const int iBaseFood = (iAbsolutePressure + iPressurePerFood - 1) / iPressurePerFood;
+    const int iRouteBonus = std::max(0, iRouteCommerce - 1);
+    return (iBaseFood + iRouteBonus) * 100;
+}
+
 int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
 {
     CvCity* pPartner = getCity(transfer.partner);
@@ -11295,6 +11338,9 @@ void CvCity::updateTradeRoutes()
 	CvCity* pLoopCity;
 	int iTradeRoutes;
 	int iTradeProfit;
+	int iRouteCommerce;
+	int iFoodDemand;
+	int iFoodPressure;
 	__int64 iValue;
 	int iLoop;
 	int iI, iJ, iK;
@@ -11326,7 +11372,20 @@ void CvCity::updateTradeRoutes()
 						{
 							// Trade contacts can establish routes to previously undiscovered cities.
 							{
-								iValue = tradeInfrastructureValue(this, pLoopCity, reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())]);
+								const bool bConnected = reachable[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())];
+								const bool bRoadConnected = roads[GC.getMapINLINE().plotNum(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE())];
+								iValue = tradeInfrastructureValue(this, pLoopCity, bConnected, bRoadConnected);
+								// Rank routes by their combined return. A food import is worth
+								// one commerce point; an expected export is the same-sized loss.
+								// This is an estimate only: the supplier's shared export cap is
+								// resolved later for every route together.
+								iRouteCommerce = calculateTradeYield(YIELD_COMMERCE, calculateInfrastructureTradeProfit(pLoopCity, bConnected, bRoadConnected));
+								iFoodPressure = getFoodTradePressure(pLoopCity);
+								iFoodDemand = getFoodTradeDemand(pLoopCity, iRouteCommerce) / 100;
+								if (iFoodPressure < 0)
+									iValue += (__int64)iFoodDemand * 1000000;
+								else if (iFoodPressure > 0)
+									iValue -= (__int64)iFoodDemand * 1000000;
 
 								for (iJ = 0; iJ < iTradeRoutes; iJ++)
 								{

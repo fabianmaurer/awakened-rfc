@@ -183,10 +183,11 @@ verwenden synchronisierte Netzwerk-Nachrichten, die Religion den Spiel-Zufallsge
 
 ### Nahrungstransfers
 
-Nahrung flie?t ?ber bestehende Handelsrouten zu der Stadt mit der h?heren kombinierten Anziehungskraft. Verglichen werden lokaler Handelsertrag je Bev?lkerungspunkt nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten, und Wohlbefinden je Bev?lkerungspunkt. Wohlbefinden ist Zufriedenheit minus Unzufriedenheit plus Gesundheit minus Krankheit. Spezialisten-Gold und die Einstellung des Goldreglers bestimmen die Richtung nicht.
+Nahrung fließt über bestehende Handelsrouten zu der Stadt mit der höheren kombinierten Anziehungskraft. Verglichen werden lokaler Handelsertrag je Bevölkerungspunkt nach Modifikatoren, ohne Wirtschaftspunkte aus Handelsrouten, und Wohlbefinden je Bevölkerungspunkt. Wohlbefinden ist Zufriedenheit minus Unzufriedenheit plus die Hälfte der Nettogesundheit (Gesundheit minus Krankheit). Spezialisten-Gold und die Einstellung des Goldreglers bestimmen die Richtung nicht.
 
 - Wohlstandsunterschiede liefern bis zu **100 Druckpunkte**. Wohlbefindensunterschiede liefern bis zu **50 Druckpunkte** und sind damit sp?rbar, aber im Allgemeinen schw?cher. Beide vorzeichenbehafteten Werte werden addiert, bevor Richtung und Menge des Nahrungstransfers feststehen. Eine gesunde und zufriedene neue Stadt kann somit trotz eines kleinen Wohlstandsnachteils Nahrung anziehen; Wohlbefinden allein ?berwindet keinen gro?en Wohlstandsunterschied.
-- Angeforderte Nahrung: `Routenwert ? absoluter Gesamtdruck / 100` bei der standardm??ig verdoppelten Basismenge. Bei gegenseitigen Routen z?hlt die st?rkere Anforderung einmal pro St?dtepar.
+- Angeforderte Nahrung: `aufrunden(absoluter Gesamtdruck / 10) + max(0, Routenwert - 1)`. Jede merkliche Anziehungsdifferenz erzeugt damit eine Grundlieferung; der Routenwert erhöht sie erst ab dem zweiten Punkt. Bei gegenseitigen Routen zählt die stärkere Anforderung einmal pro Städtepaar.
+- Bei der Routenauswahl zählt die erwartete importierte oder exportierte Nahrung mit dem Wert eines Handelspunkts je Nahrung zusätzlich zum gewöhnlichen Routenhandel. Dies reserviert noch keine Nahrung: Die gemeinsame Exportgrenze wird erst nach Auswahl aller Routen angewandt.
 - Die gesamten Exporte einer Stadt sind auf **eine Nahrung je Bev?lkerungspunkt** begrenzt. Es muss kein ?berschuss sein: Lieferst?dte k?nnen langsamer wachsen oder hungern. St?dte der Gr??e eins exportieren nur ihren lokalen ?berschuss nach Verbrauch und Gesundheitskosten.
 - Bei ?berm??iger Nachfrage werden Exporte proportional aufgeteilt. Die Gesamtmenge wird auf ganze Nahrungspunkte abgerundet; verbleibende Punkte erhalten die gr??ten Nachkommareste. Gleichst?nde werden durch eine feste St?dte-/Routenreihenfolge entschieden. Kleine Anforderungen k?nnen leer ausgehen.
 - Alle Zuteilungen entstehen gemeinsam einmal pro Spielrunde vor den Spielerz?gen und werden gespeichert. Sinkende Lieferkapazit?t reduziert Zusagen w?hrend der Runde. Zerst?rte/eroberte St?dte, verlorene Routen, Unruhen, Blockaden, Krieg und Embargos beenden betroffene Transfers sofort. Freie Kapazit?t wird bei der n?chsten Zuteilung neu verteilt.
@@ -195,7 +196,7 @@ Nahrung flie?t ?ber bestehende Handelsrouten zu der Stadt mit der h?heren kombin
 
 Beispiel: Eine Stadt der Gr??e vier kann vier Nahrung exportieren. Fordern die Ziele vier, zwei und zwei, erhalten sie zwei, eins und eins. Verlorene Routen geben dem Lieferanten Nahrung zur?ck und entziehen sie den Empf?ngern.
 
-Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR` und `RFCMP_TRADE_FOOD_AMOUNT_PERCENT` in `Assets/XML/GlobalDefines.xml` steuern Bev?lkerungsgrenze, Routenkapazit?t und Basismenge. Der technologieabh?ngige Wachstumsmalus betrifft positiven ?berschuss nach den Transfers, nicht die Nahrungsproduktion oder Transfermengen.
+Die Einstellungen `RFCMP_FOOD_EXPORT_PER_POPULATION` und `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` in `Assets/XML/GlobalDefines.xml` steuern Bevölkerungsgrenze und Basismenge. Der technologieabhängige Wachstumsmalus betrifft positiven Überschuss nach den Transfers, nicht die Nahrungsproduktion oder Transfermengen.
 
 ## Neue Staatsformen
 

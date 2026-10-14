@@ -613,6 +613,10 @@ public:
     int getLocalTradeWealth() const;
     int getFoodExportLimit() const;
     int getFoodTradeWellbeingScore() const;
+    // Positive means the partner is more attractive; negative means this city is.
+    int getFoodTradePressure(const CvCity* pPartner) const;
+    // Returned in hundredths of food so multiple route directions can be compared.
+    int getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const;
     int getFoodTradeImports() const;
     int getFoodTradeExports() const;
     int getFoodTradeWith(const CvCity* pPartner) const;

@@ -172,10 +172,11 @@ actions use synchronized network messages; religious spread uses game RNG.
 
 ### Food transfers
 
-Food flows along actual trade routes toward the city with the stronger combined attraction. The comparison uses local commerce per population point after modifiers, excluding trade-route commerce, plus wellbeing per population point. Wellbeing is happiness minus unhappiness plus good health minus bad health. Gold from specialists or the tax slider does not determine direction.
+Food flows along actual trade routes toward the city with the stronger combined attraction. The comparison uses local commerce per population point after modifiers, excluding trade-route commerce, plus wellbeing per population point. Wellbeing is happiness minus unhappiness plus half the net health (good health minus bad health). Gold from specialists or the tax slider does not determine direction.
 
-- Wealth inequality contributes up to **100 pressure points**. Wellbeing inequality contributes up to **50 pressure points**, so it is notable but generally weaker. The signed pressures are added before the food-flow direction and amount are chosen. A healthy, happy new city can therefore attract food despite a modest wealth disadvantage; wellbeing cannot overcome a large wealth gap by itself.
-- Requested food is `route commerce ? absolute combined pressure / 100` at the default doubled base amount. For reciprocal routes, use the stronger request once rather than counting the city pair twice.
+- Wealth inequality contributes up to **100 pressure points**. Wellbeing inequality remains capped at **50 pressure points**: happiness differences can supply the full 50, while health differences supply at most 25. The signed pressures are added before the food-flow direction and amount are chosen. A healthy, happy new city can therefore attract food despite a modest wealth disadvantage; wellbeing cannot overcome a large wealth gap by itself.
+- Requested food is `ceil(absolute combined pressure / 10) + max(0, route commerce - 1)`. This gives every meaningful attraction imbalance a base shipment; route commerce increases it only after the first point. For reciprocal routes, use the stronger request once rather than counting the city pair twice.
+- Route selection values the expected food import or export as one commerce per food, alongside the route's ordinary commerce. The estimate does not reserve a supplier's food: the shared export cap is still applied after all routes have been selected.
 - A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or starve. Size-one cities may export only their local surplus after consumption and health costs.
 - When requests exceed capacity, destinations receive proportional shares. Total food is rounded down to whole points, with the remaining whole points assigned to the largest fractional shares; ties use deterministic city/route order. Small requests may yield no food.
 - All allocations are computed together once per game turn before player turns, then saved. A falling supplier cap reduces commitments during the round. Destroyed/captured cities, lost routes, disorder, blockades, war and embargoes invalidate affected transfers immediately. Freed capacity is redistributed at the next allocation, not mid-turn.
@@ -184,7 +185,7 @@ Food flows along actual trade routes toward the city with the stronger combined 
 
 Example: a size-four city can export at most four food. If destinations request four, two and two, they receive two, one and one. Losing the routes restores the supplier's food but removes the recipients' imports.
 
-The `RFCMP_FOOD_EXPORT_PER_POPULATION`, `RFCMP_TRADE_FOOD_COMMERCE_DIVISOR`, and `RFCMP_TRADE_FOOD_AMOUNT_PERCENT` settings in `Assets/XML/GlobalDefines.xml` control the population cap, route capacity, and base transfer amount. The technology-based growth penalty affects positive surplus after these transfers; it does not reduce food production or transferred amounts.
+The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` settings in `Assets/XML/GlobalDefines.xml` control the population cap and base transfer amount. The technology-based growth penalty affects positive surplus after these transfers; it does not reduce food production or transferred amounts.
 
 ## New civics
 

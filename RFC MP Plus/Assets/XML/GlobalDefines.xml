@@ -1702,8 +1702,7 @@
     <Define><DefineName>RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
     <!-- Food is redistributed along actual trade routes, not created. -->
     <Define><DefineName>RFCMP_FOOD_EXPORT_PER_POPULATION</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
-    <Define><DefineName>RFCMP_TRADE_FOOD_COMMERCE_DIVISOR</DefineName><iDefineIntVal>2</iDefineIntVal></Define>
-    <Define><DefineName>RFCMP_TRADE_FOOD_AMOUNT_PERCENT</DefineName><iDefineIntVal>200</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
     <!-- Eligible same-religion monarchies can inherit a collapsed monarchy. -->
     <Define><DefineName>RFCMP_MONARCHY_INHERITANCE_CHANCE</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
     <!-- Growth only: 30% initial penalty, reduced by 0.5 percentage points per known tech. -->

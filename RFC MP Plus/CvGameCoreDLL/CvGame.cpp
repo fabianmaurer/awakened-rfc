@@ -2413,7 +2413,6 @@ void CvGame::updateFoodTrade()
         }
     }
     std::sort(cities.begin(), cities.end(), foodCityOrder);
-    int iFoodDivisor = std::max(1, GC.getDefineINT("RFCMP_TRADE_FOOD_COMMERCE_DIVISOR"));
     for (unsigned int i = 0; i < cities.size(); ++i)
     {
         CvCity* pOrigin = cities[i];
@@ -2424,28 +2423,12 @@ void CvGame::updateFoodTrade()
             if (pPartner == NULL || pPartner == pOrigin || pPartner->isDisorder() || pPartner->isPlundered()) continue;
             if (!GET_PLAYER(pOrigin->getOwnerINLINE()).canHaveTradeRoutesWith(pPartner->getOwnerINLINE())) continue;
             if (pOrigin->getTeam() != pPartner->getTeam() && !GET_TEAM(pOrigin->getTeam()).isFreeTrade(pPartner->getTeam())) continue;
-            // Compare every attraction component per citizen by cross-multiplying.
-            // Wellbeing is deliberately capped at half the strength of wealth.
-            const int iOriginPopulation = std::max(1, pOrigin->getPopulation());
-            const int iPartnerPopulation = std::max(1, pPartner->getPopulation());
-            const __int64 iOwnWealth = (__int64)pOrigin->getLocalTradeWealth() * iPartnerPopulation;
-            const __int64 iOtherWealth = (__int64)pPartner->getLocalTradeWealth() * iOriginPopulation;
-            const __int64 iOwnWellbeing = (__int64)pOrigin->getFoodTradeWellbeingScore() * iPartnerPopulation;
-            const __int64 iOtherWellbeing = (__int64)pPartner->getFoodTradeWellbeingScore() * iOriginPopulation;
-            const __int64 iWealthScale = std::max((__int64)1, std::max(iOwnWealth, iOtherWealth));
-            const __int64 iOwnWellbeingMagnitude = iOwnWellbeing < 0 ? -iOwnWellbeing : iOwnWellbeing;
-            const __int64 iOtherWellbeingMagnitude = iOtherWellbeing < 0 ? -iOtherWellbeing : iOtherWellbeing;
-            const __int64 iWellbeingScale = std::max((__int64)1, std::max(iOwnWellbeingMagnitude, iOtherWellbeingMagnitude));
-            const int iWealthPressure = (int)(100 * (iOtherWealth - iOwnWealth) / iWealthScale);
-            int iWellbeingPressure = (int)(100 * (iOtherWellbeing - iOwnWellbeing) / iWellbeingScale);
-            iWellbeingPressure = std::max(-100, std::min(100, iWellbeingPressure)) / 2;
-            const int iTotalPressure = iWealthPressure + iWellbeingPressure;
+            const int iTotalPressure = pOrigin->getFoodTradePressure(pPartner);
             if (iTotalPressure == 0) continue;
             CvCity* pSupplier = iTotalPressure > 0 ? pOrigin : pPartner;
             CvCity* pRecipient = iTotalPressure > 0 ? pPartner : pOrigin;
             const int iValue = pOrigin->calculateTradeYield(YIELD_COMMERCE, pOrigin->calculateTradeProfit(pPartner));
-            const int iFoodAmountPercent = std::max(0, GC.getDefineINT("RFCMP_TRADE_FOOD_AMOUNT_PERCENT"));
-            const int iDemand = (int)((__int64)iValue * (iTotalPressure < 0 ? -iTotalPressure : iTotalPressure) * iFoodAmountPercent / ((__int64)iFoodDivisor * 100));
+            const int iDemand = pOrigin->getFoodTradeDemand(pPartner, iValue);
             if (iDemand <= 0) continue;
             unsigned int j;
             for (j = 0; j < requests.size(); ++j)
