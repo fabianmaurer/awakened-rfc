@@ -2770,6 +2770,8 @@ void CvPlayer::doTurn()
 
 	verifyCivics();
 
+	// Refresh dynamic civic yields in saves made before the Democracy bonus.
+	updateExtraSpecialistYield();
 	updateTradeRoutes();
 
 	updateWarWearinessPercentAnger();
@@ -7847,6 +7849,13 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 {
 	int iI;
+	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
+	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
+	if (paeNewCivics != NULL && getCivics(eGovernment) == eDemocracy && paeNewCivics[eGovernment] == eDemocracy)
+	{
+		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+			if (iI != eGovernment && paeNewCivics[iI] != getCivics((CivicOptionTypes)iI)) return false;
+	}
 
 	if (isAnarchy())
 	{
@@ -7863,6 +7872,7 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 		// XXX is this necessary?
 		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
 		{
+			if (getCivics(eGovernment) == eDemocracy && GC.getCivicInfo((CivicTypes)iI).getCivicOptionType() != eGovernment) continue;
 			if (canDoCivics((CivicTypes)iI))
 			{
 				if (getCivics((CivicOptionTypes)GC.getCivicInfo((CivicTypes) iI).getCivicOptionType()) != iI)
@@ -7899,6 +7909,15 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 {
 	int iAnarchyLength;
 	int iI;
+	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
+	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
+	// Under Democracy only elections choose the remaining columns. On adoption,
+	// setCivics rolls them after the government changes; never overwrite that roll.
+	std::vector<CivicTypes> selected(paeNewCivics, paeNewCivics + GC.getNumCivicOptionInfos());
+	if (selected[eGovernment] == eDemocracy)
+		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
+			if (iI != eGovernment) selected[iI] = getCivics((CivicOptionTypes)iI);
+	paeNewCivics = &selected[0];
 
 	if (!bForce && !canRevolution(paeNewCivics))
 	{
@@ -7913,6 +7932,7 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
+			if (paeNewCivics[eGovernment] == eDemocracy && iI != eGovernment) continue;
 			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
 		}
 	}
@@ -7920,6 +7940,7 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 	{
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
+			if (paeNewCivics[eGovernment] == eDemocracy && iI != eGovernment) continue;
 			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
 		}
 	}
@@ -8365,7 +8386,10 @@ int CvPlayer::getCivicAnarchyLength(CivicTypes* paeNewCivics) const
 	iAnarchyLength *= GC.getEraInfo(GC.getGameINLINE().getStartEra()).getAnarchyPercent();
 	iAnarchyLength /= 100;
 
-	return range(iAnarchyLength, 1, getMaxAnarchyTurns());
+	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
+	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
+	const int iDemocracyExitTurns = (getCivics(eGovernment) == eDemocracy && paeNewCivics[eGovernment] != eDemocracy) ? 2 : 0;
+	return range(iAnarchyLength, 1, getMaxAnarchyTurns()) + iDemocracyExitTurns;
 }
 
 
@@ -12799,6 +12823,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		}
 
 		// Custom culture/happiness effects must refresh immediately after adoption.
+		updateExtraSpecialistYield();
 		updateCommerce();
 		invalidateYieldRankCache();
 		GC.getGameINLINE().updateSecretaryGeneral();
@@ -12807,6 +12832,20 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 
 		if (GC.getGameINLINE().isFinalInitialized())
 		{
+			const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
+			if (eNewValue == eDemocracy)
+			{
+				for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+				{
+					if (iOption == eIndex) continue;
+					std::vector<CivicTypes> available;
+					for (int iCivic = 0; iCivic < GC.getNumCivicInfos(); ++iCivic)
+						if (GC.getCivicInfo((CivicTypes)iCivic).getCivicOptionType() == iOption && canDoCivics((CivicTypes)iCivic))
+							available.push_back((CivicTypes)iCivic);
+					if (!available.empty())
+						setCivics((CivicOptionTypes)iOption, available[GC.getGameINLINE().getSorenRandNum((int)available.size(), "Democracy founding election")]);
+				}
+			}
 			if (gDLL->isDiplomacy() && (gDLL->getDiplomacyPlayer() == getID()))
 			{
 				gDLL->updateDiplomacyAttitude(true);
@@ -12854,7 +12893,8 @@ int CvPlayer::getSpecialistExtraYield(SpecialistTypes eIndex1, YieldTypes eIndex
 	FAssertMsg(eIndex1 < GC.getNumSpecialistInfos(), "eIndex1 expected to be < GC.getNumSpecialistInfos()");
 	FAssertMsg(eIndex2 >= 0, "eIndex2 expected to be >= 0");
 	FAssertMsg(eIndex2 < NUM_YIELD_TYPES, "eIndex2 expected to be < NUM_YIELD_TYPES");
-	return m_ppaaiSpecialistExtraYield[eIndex1][eIndex2];
+	return m_ppaaiSpecialistExtraYield[eIndex1][eIndex2] +
+		((eIndex2 == YIELD_COMMERCE && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"))) ? 1 : 0);
 }
 
 

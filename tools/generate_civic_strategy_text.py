@@ -19,8 +19,8 @@ SUMMARIES = {
         '+20% production and no war weariness, but -2 happiness in every city.',
         '+20% Produktion und keine Kriegsmüdigkeit, aber -2 Zufriedenheit in jeder Stadt.'),
     'DEMOCRACY': (
-        '+2 happiness in every city. Every ten turns, elections randomly change one other civic column.',
-        '+2 Zufriedenheit in jeder Stadt. Wahlen ändern alle zehn Runden zufällig eine andere Staatsformen-Kategorie.'),
+        '+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.',
+        '+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Bei Einf\xfchrung werden alle anderen Staatsformen zuf\xe4llig gew\xe4hlt; Wahlen \xe4ndern alle zehn Runden eine davon. Andere Kategorien k\xf6nnen bei Beibehaltung der Demokratie nicht manuell gewechselt werden. Ihre Abschaffung verl\xe4ngert Anarchie um zwei Runden. Keine Stabilit\u00e4tsmali durch unvereinbare Staatsformen.'),
     'DESPOTISM': (
         '+1 happiness from palaces and monuments, including unique replacements.',
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),

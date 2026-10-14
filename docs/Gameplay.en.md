@@ -210,7 +210,7 @@ each qualifying building or worked improvement.
 | **Monarchy** | Monarchy | Medium | +25% production for world, team, and national wonders. Enables inheritance events. |
 | **Republic** | Code of Laws | Low | +50% great person birth rate. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
-| **Democracy** | Democracy | High | +2 happiness in every city; elections every ten turns randomly change one other civic column. |
+| **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Adoption randomizes all other civic columns; elections every ten turns change one column. Other columns cannot be changed manually while Democracy is retained. Leaving adds two turns to normal revolution anarchy. |
 
 ### Legitimacy
 
@@ -297,10 +297,18 @@ Existing civilizations in saved games keep their current civics. See
 ## Democratic elections
 
 Elections occur on **global turn multiples of ten**, while Democracy is active.
+Adoption immediately chooses an available civic at random in each other column,
+including the possibility of retaining the existing civic. Other columns cannot
+be changed manually while retaining Democracy; leaving it unlocks them and adds
+**two turns to normal revolution anarchy**. Existing immunity to anarchy applies.
 They select one of the other four columns that has an available alternative,
 then select a different civic that the player can currently adopt. If no column
 has an available alternative, there is no change. Human players receive a
 notification of the result.
+
+Each election also opens a civic-specific announcement with a single **Adopt** button. Its tooltip says only **Adopt [civic]**. The result applies immediately; acknowledging the popup does not change synchronized game state. English and German announcements include a little satire about the winning policy.
+
+Democracy ignores all **negative civic combination stability modifiers**, including Plutocracy with Planned Economy and Theocracy with State Atheism. Positive combination bonuses remain active. Other stability losses still apply.
 
 The game uses its synchronized random generator for both selections. The
 government remains Democracy, and elections have no additional transition

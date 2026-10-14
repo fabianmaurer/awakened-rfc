@@ -10258,6 +10258,9 @@ int CvPlayerAI::AI_wakePlotTargetMissionAIs(CvPlot* pPlot, MissionAITypes eMissi
 
 CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 {
+	if (eCivicOption != GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY")))
+		return getCivics(eCivicOption);
 	CivicTypes eBestCivic;
 	int iValue;
 	int iBestValue;
@@ -10344,6 +10347,16 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iWarmongerPercent = 25000 / std::max(100, (100 + GC.getLeaderHeadInfo(getPersonalityType()).getMaxWarRand())); 
 
 	iValue = (getNumCities() * 6);
+	if (eCivic == GC.getInfoTypeForString("CIVIC_DEMOCRACY"))
+	{
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			int iSpecialists = pLoopCity->getSpecialistPopulation();
+			for (int iSpecialist = 0; iSpecialist < GC.getNumSpecialistInfos(); ++iSpecialist)
+				iSpecialists += pLoopCity->getFreeSpecialistCount((SpecialistTypes)iSpecialist);
+			iValue += iSpecialists * 4;
+		}
+	}
 
 	iValue += (GC.getCivicInfo(eCivic).getAIWeight() * getNumCities());
 

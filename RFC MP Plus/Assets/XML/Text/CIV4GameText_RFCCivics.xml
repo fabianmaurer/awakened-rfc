@@ -609,11 +609,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DEMOCRACY</Tag>
-        <English>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</English>
-        <French>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</French>
-        <German>[ICON_BULLET]Wahlen &#228;ndern alle 10 Runden zuf&#228;llig eine andere Staatsformspalte</German>
-        <Italian>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</Italian>
-        <Spanish>[ICON_BULLET]Elections every 10 turns randomly change one other civic column</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</English>
+        <French>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</French>
+        <German>[ICON_BULLET]+1 [ICON_COMMERCE] je Spezialist[NEWLINE][ICON_BULLET]Bei Einf&#252;hrung werden alle anderen Staatsformen zuf&#228;llig gew&#228;hlt[NEWLINE][ICON_BULLET]Wahlen alle 10 Runden &#228;ndern eine andere Staatsform; manuelle Wechsel sind gesperrt[NEWLINE][ICON_BULLET]Abschaffung der Demokratie verl&#228;ngert Anarchie um 2 Runden[NEWLINE][ICON_BULLET]Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen</German>
+        <Italian>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Spanish>
     </TEXT>
 
     <TEXT>

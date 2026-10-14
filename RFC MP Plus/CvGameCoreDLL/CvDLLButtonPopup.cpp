@@ -2130,6 +2130,14 @@ bool CvDLLButtonPopup::launchCancelDeal(CvPopup* pPopup, CvPopupInfo &info)
 
 bool CvDLLButtonPopup::launchPythonPopup(CvPopup* pPopup, CvPopupInfo &info)
 {
+	if (info.getData3() == 7626)
+	{
+		gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, gDLL->getText("TXT_KEY_RFCMP_ELECTION_TITLE"));
+		gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, info.getText());
+		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, info.getPythonButtonText(0), info.getPythonButtonArt(0).GetCString(), 0, WIDGET_GENERAL, info.getData1(), 7626);
+		gDLL->getInterfaceIFace()->popupLaunch(pPopup, false, POPUPSTATE_IMMEDIATE);
+		return true;
+	}
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, info.getText());
 	for (int i = 0; i < info.getNumPythonButtons(); i++)
 	{

@@ -34,11 +34,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DEMOCRACY_STRATEGY</Tag>
-        <English>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</English>
-        <French>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</French>
-        <German>+2 Zufriedenheit in jeder Stadt. Wahlen &#228;ndern alle zehn Runden zuf&#228;llig eine andere Staatsformen-Kategorie.</German>
-        <Italian>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</Italian>
-        <Spanish>+2 happiness in every city. Every ten turns, elections randomly change one other civic column.</Spanish>
+        <English>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</English>
+        <French>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</French>
+        <German>+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Bei Einf&#252;hrung werden alle anderen Staatsformen zuf&#228;llig gew&#228;hlt; Wahlen &#228;ndern alle zehn Runden eine davon. Andere Kategorien k&#246;nnen bei Beibehaltung der Demokratie nicht manuell gewechselt werden. Ihre Abschaffung verl&#228;ngert Anarchie um zwei Runden. Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen.</German>
+        <Italian>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</Italian>
+        <Spanish>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DESPOTISM_STRATEGY</Tag>

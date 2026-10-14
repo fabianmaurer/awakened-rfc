@@ -222,7 +222,7 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | **Monarchie** | Monarchie | Mittel | +25% Produktion für Welt-, Team- und nationale Wunder. Ermöglicht Erbfolgeereignisse. |
 | **Republik** | Gesetzgebung | Niedrig | +50% Geburtenrate Großer Persönlichkeiten. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
-| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; Wahlen alle zehn Runden ändern zufällig eine andere Staatsformen-Kategorie. |
+| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
 
 ### Legitimation
 
@@ -312,6 +312,12 @@ ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 [StartingCivics.md](StartingCivics.md).
 
 ## Demokratische Wahlen
+
+Jede reguläre Wahl öffnet eine eigene, leicht satirische Bekanntmachung zur gewählten Staatsform mit einem einzigen Bestätigungsbutton. Dessen Tooltip lautet nur **[Staatsform] annehmen**. Das Ergebnis gilt sofort; die Bestätigung verändert keinen synchronisierten Spielzustand.
+
+Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Staatsatheismus. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
+
+Bei Einführung wird in jeder anderen Kategorie sofort eine verfügbare Staatsform zufällig gewählt; die bisherige kann erneut gewählt werden. Solange Demokratie beibehalten wird, sind andere Kategorien nicht manuell wechselbar. Ihre Abschaffung entsperrt sie und verlängert die normale Revolutionsanarchie um **zwei Runden**. Bestehende Anarchieimmunität gilt weiterhin.
 
 Wahlen finden bei aktiver Demokratie auf **globalen Rundenzahlen statt, die
 durch zehn teilbar sind**. Zuerst wird eine der anderen vier Kategorien mit

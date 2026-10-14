@@ -203,6 +203,9 @@ class CvCivicsScreen:
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
 		
 		# Set the previous widget
+		iGovernment = gc.getInfoTypeForString("CIVICOPTION_GOVERNMENT")
+		if iCivicOption != iGovernment and self.m_paeCurrentCivics[iGovernment] == gc.getInfoTypeForString("CIVIC_DEMOCRACY"):
+			return 0
 		iCivicPrev = self.m_paeCurrentCivics[iCivicOption]
 		
 		# Switch the widgets

@@ -384,6 +384,16 @@ class CvRFCEventHandler:
                                 if (pPlayer.isHuman()):
                                         szMessage = CyTranslator().getText("TXT_KEY_RFCMP_DEMOCRACY_ELECTION", (gc.getCivicOptionInfo(iCivicOption).getDescription(), gc.getCivicInfo(iNewCivic).getDescription()))
                                         CyInterface().addMessage(iPlayer, True, con.iDuration, szMessage, "", 0, "", ColorTypes(con.iWhite), -1, -1, True, True)
+                                        # The election already applies in synchronized state. This
+                                        # one-button announcement only acknowledges its result.
+                                        civicInfo = gc.getCivicInfo(iNewCivic)
+                                        popup = CyPopupInfo()
+                                        popup.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON)
+                                        popup.setData1(iNewCivic)
+                                        popup.setData3(7626)
+                                        popup.setText(CyTranslator().getText("TXT_KEY_RFCMP_ELECTION_" + civicInfo.getType().replace("CIVIC_", ""), ()))
+                                        popup.addPythonButton(CyTranslator().getText("TXT_KEY_RFCMP_ELECTION_ADOPT", (civicInfo.getDescription(),)), civicInfo.getButton())
+                                        popup.addPopup(iPlayer)
                 
                 #print ("PLAYER", iPlayer)
                 #if (iPlayer == con.iMongolia):

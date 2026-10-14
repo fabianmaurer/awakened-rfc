@@ -41,6 +41,12 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
+	if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData2 == 7626 &&
+		widgetDataStruct.m_iData1 >= 0 && widgetDataStruct.m_iData1 < GC.getNumCivicInfos())
+	{
+		szBuffer.assign(gDLL->getText("TXT_KEY_RFCMP_ELECTION_ADOPT", GC.getCivicInfo((CivicTypes)widgetDataStruct.m_iData1).getDescription()));
+		return;
+	}
 	switch (widgetDataStruct.m_eWidgetType)
 	{
 	case WIDGET_PLOT_LIST:

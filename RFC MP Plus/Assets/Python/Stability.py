@@ -423,7 +423,7 @@ class Stability:
                         iScore += 1
                 if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY")):
                         iScore += 1
-                if (hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_PLANNED_ECONOMY")):
+                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_PLANNED_ECONOMY")):
                         iScore -= 1
                 if ((hasCivic("CIVIC_REPUBLIC") or hasCivic("CIVIC_DEMOCRACY")) and hasCivic("CIVIC_RULE_OF_LAW")):
                         iScore += 2
@@ -433,7 +433,7 @@ class Stability:
                         iScore += 2
                 if (hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_CORPORATE_ECONOMY")):
                         iScore += 1
-                if (hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_STATE_ATHEISM")):
+                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_STATE_ATHEISM")):
                         iScore -= 3
                 return max(-5, min(5, iScore))
 
