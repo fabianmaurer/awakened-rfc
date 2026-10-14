@@ -2000,6 +2000,18 @@ void CyCity::emancipateSlaveSpecialists()
 		m_pCity->emancipateSlaveSpecialists();
 }
 
+void CyCity::addTemporarySlaveSpecialist(int iTurns)
+{
+	if (m_pCity)
+		m_pCity->addTemporarySlaveSpecialist(iTurns);
+}
+
+void CyCity::addSlaveRefugeeUnhappiness(int iTurns)
+{
+	if (m_pCity)
+		m_pCity->addSlaveRefugeeUnhappiness(iTurns);
+}
+
 int CyCity::getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getAddedFreeSpecialistCount((SpecialistTypes)eIndex) : -1;

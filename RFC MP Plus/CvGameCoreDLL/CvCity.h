@@ -784,6 +784,7 @@ public:
 	void setFreeSpecialistCount(SpecialistTypes eIndex, int iNewValue);			// Exposed to Python
 	void changeFreeSpecialistCount(SpecialistTypes eIndex, int iChange);		// Exposed to Python
 	void addTemporarySlaveSpecialist(int iTurns);
+	void addSlaveRefugeeUnhappiness(int iTurns);
 	void emancipateSlaveSpecialists();
 	int getAddedFreeSpecialistCount(SpecialistTypes eIndex) const;		// Exposed to Python
 
@@ -1028,6 +1029,7 @@ protected:
 	int m_iFood;
     int m_iGrowthFoodRemainder; // 1/10000 food, saved and synchronized
 	std::vector<int> m_aiSlaveSpecialistExpiryTurns;
+	std::vector<int> m_aiSlaveRefugeeUnhappinessExpiryTurns;
 	int m_iFoodKept;
 	int m_iMaxFoodKeptPercent;
 	int m_iOverflowProduction;

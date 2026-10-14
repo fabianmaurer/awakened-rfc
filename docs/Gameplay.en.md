@@ -222,7 +222,7 @@ each qualifying building or worked improvement.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
-| **Slavery** | Bronze Working | Low | +2 commerce from plantations; captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. |
+| **Slavery** | Bronze Working | Low | +2 commerce from plantations; captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. |
 | **Serfdom** | Feudalism | Low | +1 food from farms; -1 commerce from villages; workers build improvements 50% faster. |
 | **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -20% commerce yield. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
@@ -231,6 +231,10 @@ Improvement growth includes every upgrade stage: **Cottage → Hamlet → Villag
 Town**. Self-sufficiency stops upgrades; Market Economy doubles their rate.
 Serfdom's commerce penalty specifically affects the **Village** stage. Normal
 idle citizens remain available under Self-sufficiency as a population fallback.
+
+### Conquest aftermath
+
+Conquering a large city while using **Slavery** creates a regional slave market. Other Slavery states can buy a slave unit, while other states can buy a captive's freedom: the freed person adds population, former-owner culture, and 20 turns of happiness. A large city conquered without Slavery instead sends refugees: non-Slavery states can accept them for free, while Slavery states can force them into 20 turns of labour for one temporary slave specialist and one temporary unhappiness. Only major civilizations with a city on the same continent receive an offer.
 
 ### Military
 
@@ -425,7 +429,6 @@ when executed; no new saved state or task-index changes are introduced.
 
 ## Production rushes
 
-- **Slavery** can sacrifice population to finish any production.
 - **Serfdom** can sacrifice population to finish units, but cannot use this rush
   for buildings or projects.
 - With **Banking**, gold can immediately finish a unit. The completed unit is a

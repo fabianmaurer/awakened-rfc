@@ -234,7 +234,7 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
-| **Sklaverei** | Bronzebearbeitung | Niedrig | +2 Handel durch Plantagen; eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. |
+| **Sklaverei** | Bronzebearbeitung | Niedrig | +2 Handel durch Plantagen; eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. |
 | **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; -1 Handel durch Dörfer; Bautrupps errichten Verbesserungen 50% schneller. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -20% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
@@ -244,6 +244,10 @@ Selbstversorgung verhindert die Aufwertung; Marktwirtschaft verdoppelt ihre
 Geschwindigkeit. Der Handelsmalus der Leibeigenschaft betrifft ausschließlich
 die Stufe **Dorf**. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
 als Möglichkeit für überschüssige Bevölkerung verfügbar.
+
+### Folgen großer Eroberungen
+
+Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Angebote erhalten nur große Zivilisationen mit einer Stadt auf demselben Kontinent.
 
 ### Militär
 
@@ -452,7 +456,6 @@ oder Änderungen bestehender Aufgabenindizes sind nicht erforderlich.
 
 ## Produktionsbeschleunigung
 
-- **Sklaverei** kann Bevölkerung opfern, um jede Produktion abzuschließen.
 - **Leibeigenschaft** kann Bevölkerung für Einheiten opfern, aber nicht für
   Gebäude oder Projekte.
 - Mit **Bankwesen** kann Gold eine Einheit sofort abschließen. Die fertige

@@ -61,7 +61,9 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             7621 : ('GoldPopupEvent', self.congEventApply7621, self.congEventBegin7621),
             7622 : ('ResurrectionEvent', self.rnfEventApply7622, self.rnfEventBegin7622),
             7623 : ('AskNoCityPopupEvent', self.congEventApply7623, self.congEventBegin7623),
-            7624 : ('SlaveRevoltPopupEvent', self.slaveEventApply7624, self.slaveEventBegin7624)
+
+            7624 : ('SlaveRevoltPopupEvent', self.slaveEventApply7624, self.slaveEventBegin7624),
+            7625 : ('CaptureAftermathPopupEvent', self.slaveEventApply7625, self.slaveEventBegin7625)
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
@@ -240,3 +242,9 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
     def slaveEventApply7624(self, playerID, netUserData, popupReturn):
             self.slave.eventApply(popupReturn)
+
+    def slaveEventBegin7625(self):
+            pass
+
+    def slaveEventApply7625(self, playerID, netUserData, popupReturn):
+            self.slave.captureEventApply(playerID, popupReturn)

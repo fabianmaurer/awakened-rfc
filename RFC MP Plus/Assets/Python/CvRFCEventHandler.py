@@ -152,6 +152,7 @@ class CvRFCEventHandler:
                 #'City Acquired'
                 owner,playerType,city,bConquest,bTrade = argsList
                 #CvUtil.pyPrint('City Acquired Event: %s' %(city.getName()))
+                self.slave.onCityAcquired(owner, playerType, city, bConquest, bTrade)
                 self.cnm.renameCities(city, playerType)
                 
                 if (playerType == con.iArabia):

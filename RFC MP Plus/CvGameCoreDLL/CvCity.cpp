@@ -540,6 +540,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iFood = 0;
     m_iGrowthFoodRemainder = 0;
 	m_aiSlaveSpecialistExpiryTurns.clear();
+	m_aiSlaveRefugeeUnhappinessExpiryTurns.clear();
 	m_iFoodKept = 0;
 	m_iMaxFoodKeptPercent = 0;
 	m_iOverflowProduction = 0;
@@ -1004,6 +1005,12 @@ void CvCity::doTurn()
 			}
 			else ++it;
 		}
+	}
+	for (std::vector<int>::iterator it = m_aiSlaveRefugeeUnhappinessExpiryTurns.begin(); it != m_aiSlaveRefugeeUnhappinessExpiryTurns.end(); )
+	{
+		if (*it <= GC.getGameINLINE().getGameTurn())
+			it = m_aiSlaveRefugeeUnhappinessExpiryTurns.erase(it);
+		else ++it;
 	}
 
 	AI_doTurn();
@@ -4615,6 +4622,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, GC.getHandicapInfo(getHandicapType()).getHappyBonus());
 		iUnhappiness += std::max(0, getVassalUnhappiness());
 		iUnhappiness += std::max(0, getEspionageHappinessCounter());
+		iUnhappiness += (int)m_aiSlaveRefugeeUnhappinessExpiryTurns.size();
 	}
 
 	return std::max(0, iUnhappiness);
@@ -10283,12 +10291,20 @@ void CvCity::addTemporarySlaveSpecialist(int iTurns)
 	m_aiSlaveSpecialistExpiryTurns.push_back(GC.getGameINLINE().getGameTurn() + iTurns);
 }
 
+void CvCity::addSlaveRefugeeUnhappiness(int iTurns)
+{
+	if (iTurns <= 0) return;
+	m_aiSlaveRefugeeUnhappinessExpiryTurns.push_back(GC.getGameINLINE().getGameTurn() + iTurns);
+	AI_setAssignWorkDirty(true);
+}
+
 void CvCity::emancipateSlaveSpecialists()
 {
 	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
 	if (eSlave != NO_SPECIALIST && getFreeSpecialistCount(eSlave) > 0)
 		changeFreeSpecialistCount(eSlave, -getFreeSpecialistCount(eSlave));
 	m_aiSlaveSpecialistExpiryTurns.clear();
+	m_aiSlaveRefugeeUnhappinessExpiryTurns.clear();
 }
 
 
@@ -12914,13 +12930,25 @@ void CvCity::read(FDataStreamBase* pStream)
         }
     }
 
+    if (uiFlag & 8)
+    {
+        int iCount;
+        pStream->Read(&iCount);
+        for (int i = 0; i < iCount; ++i)
+        {
+            int iExpiry;
+            pStream->Read(&iExpiry);
+            m_aiSlaveRefugeeUnhappinessExpiryTurns.push_back(iExpiry);
+        }
+    }
+
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=7;
+	uint uiFlag=15;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -13150,6 +13178,9 @@ void CvCity::write(FDataStreamBase* pStream)
     pStream->Write((int)m_aiSlaveSpecialistExpiryTurns.size());
     for (unsigned int i = 0; i < m_aiSlaveSpecialistExpiryTurns.size(); ++i)
         pStream->Write(m_aiSlaveSpecialistExpiryTurns[i]);
+    pStream->Write((int)m_aiSlaveRefugeeUnhappinessExpiryTurns.size());
+    for (unsigned int i = 0; i < m_aiSlaveRefugeeUnhappinessExpiryTurns.size(); ++i)
+        pStream->Write(m_aiSlaveRefugeeUnhappinessExpiryTurns[i]);
 
 }
 

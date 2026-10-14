@@ -3,15 +3,20 @@
 
 from CvPythonExtensions import *
 import Popup
+import Consts as con
 
 gc = CyGlobalContext()
 
 SLAVE_REVOLT_POPUP = 7624
+CAPTURE_AFTERMATH_POPUP = 7625
+CAPTURE_AFTERMATH_MINIMUM_POPULATION = 4
+CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
 
 class Slavery:
 
 	def __init__(self):
 		self.pending = (-1, -1)
+		self.capturePending = {}
 
 	def _info(self, name):
 		return gc.getInfoTypeForString(name)
@@ -27,6 +32,111 @@ class Slavery:
 
 	def _slaveCount(self, city):
 		return city.getFreeSpecialistCount(self._slaveSpecialist())
+
+	def _capturePrice(self, city):
+		return max(30, (city.getPopulation() + 1) * 10)
+
+	def _refugeeCulture(self, city):
+		return min(200, max(50, (city.getPopulation() + 1) * 10))
+
+	def _continentCity(self, player, area, bLargest):
+		candidates = [city for city in player.cities() if city.plot().getArea() == area]
+		if not candidates: return None
+		if bLargest:
+			candidates.sort(key=lambda city: (-city.getPopulation(), city.getID()))
+		else:
+			candidates.sort(key=lambda city: (city.getPopulation(), city.getID()))
+		return candidates[0]
+
+	def onCityAcquired(self, iOldOwner, iNewOwner, city, bConquest, bTrade):
+		# A retained population of four normally means a pre-conquest city of at
+		# least five. Only conquests between major civilizations create this event.
+		if not bConquest or bTrade or city.getPopulation() < CAPTURE_AFTERMATH_MINIMUM_POPULATION: return
+		if iOldOwner < 0 or iOldOwner >= con.iNumMajorPlayers: return
+		if iNewOwner < 0 or iNewOwner >= con.iNumMajorPlayers: return
+		if iOldOwner == iNewOwner: return
+
+		bSlaveMarket = self._hasSlavery(gc.getPlayer(iNewOwner))
+		area = city.plot().getArea()
+		cityName = city.getName()
+		price = self._capturePrice(city)
+		culture = self._refugeeCulture(city)
+		for iPlayer in range(con.iNumMajorPlayers):
+			if iPlayer == iNewOwner: continue
+			player = gc.getPlayer(iPlayer)
+			if not player.isAlive() or player.getNumCities() <= 0: continue
+			target = self._continentCity(player, area, bSlaveMarket and self._hasSlavery(player))
+			if target is None: continue
+			data = (iOldOwner, cityName, bSlaveMarket, target.getID(), price, culture)
+			self._offerCaptureAftermath(iPlayer, data)
+
+	def _offerCaptureAftermath(self, iPlayer, data):
+		iOldOwner, cityName, bSlaveMarket, iCity, price, culture = data
+		player = gc.getPlayer(iPlayer)
+		bSlavery = self._hasSlavery(player)
+		if not player.isHuman():
+			# The AI only spends a meaningful reserve on a slave-market purchase;
+			# accepting refugees is free and always useful in its continental city.
+			bAccept = not bSlaveMarket or player.getGold() >= price * 2
+			self._resolveCaptureAftermath(iPlayer, data, bAccept)
+			return
+
+		self.capturePending[iPlayer] = data
+		popup = Popup.PyPopup(CAPTURE_AFTERMATH_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
+		if bSlaveMarket:
+			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_TITLE", ()))
+			if bSlavery:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_SLAVERY", (cityName, price)))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BUY_SLAVE", (price,)))
+			else:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_FREEDOM", (cityName, price)))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BUY_FREEDOM", (price,)))
+		else:
+			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_TITLE", ()))
+			if bSlavery:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_SLAVERY", (cityName,)))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", ()))
+			else:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_FREE", (cityName,)))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", ()))
+		popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
+		popup.launch(False)
+
+	def captureEventApply(self, iPlayer, popupReturn):
+		if not self.capturePending.has_key(iPlayer): return
+		data = self.capturePending[iPlayer]
+		del self.capturePending[iPlayer]
+		self._resolveCaptureAftermath(iPlayer, data, popupReturn.getButtonClicked() == 0)
+
+	def _resolveCaptureAftermath(self, iPlayer, data, bAccept):
+		if not bAccept: return
+		iOldOwner, cityName, bSlaveMarket, iCity, price, culture = data
+		player = gc.getPlayer(iPlayer)
+		if not player.isAlive(): return
+		city = player.getCity(iCity)
+		if city.getOwner() != iPlayer: return
+		bSlavery = self._hasSlavery(player)
+
+		if bSlaveMarket:
+			if player.getGold() < price: return
+			player.changeGold(-price)
+			if bSlavery:
+				player.initUnit(self._info("UNIT_SLAVE"), city.getX(), city.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BOUGHT_SLAVE", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
+			else:
+				city.changePopulation(1)
+				city.changeCulture(iOldOwner, culture, False)
+				city.changeHappinessTimer(CAPTURE_AFTERMATH_REFUGEE_TURNS)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BOUGHT_FREEDOM", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
+		else:
+			if bSlavery:
+				city.addTemporarySlaveSpecialist(CAPTURE_AFTERMATH_REFUGEE_TURNS)
+				city.addSlaveRefugeeUnhappiness(CAPTURE_AFTERMATH_REFUGEE_TURNS)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVED", (cityName,)), "", 0, "", ColorTypes(7), city.getX(), city.getY(), True, True)
+			else:
+				city.changePopulation(1)
+				city.changeCulture(iOldOwner, culture, False)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPTED", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
 
 	def _garrisonStrength(self, city, owner):
 		plot = city.plot()
