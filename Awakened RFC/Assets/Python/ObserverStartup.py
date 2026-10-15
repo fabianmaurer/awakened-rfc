@@ -21,7 +21,7 @@ def configure_players(description, filename):
     if parser.has_option('Observer', 'Scenario'):
         scenario = parser.get('Observer', 'Scenario')
     expected = {'3000bc': ('start 1 - 3000 bc.civbeyondswordwbsave', 0, 26, 'CIVILIZATION_AMERICA'),
-                '800bc': ('start 2 - 800 bc.civbeyondswordwbsave', 87, 2, 'CIVILIZATION_CHINA'),
+                '800bc': ('start 2 - 800 bc.civbeyondswordwbsave', 87, 26, 'CIVILIZATION_AMERICA'),
                 '840ad': ('start 4 - 840 ad.civbeyondswordwbsave', 205, 2, 'CIVILIZATION_CHINA'),
                 '600ad': ('start 3 - 600 ad.civbeyondswordwbsave', 181, 2, 'CIVILIZATION_CHINA')}
     if scenario not in expected:

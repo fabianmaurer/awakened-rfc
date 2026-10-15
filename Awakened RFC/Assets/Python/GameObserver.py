@@ -210,7 +210,7 @@ class Observer:
             game = self.game
             if game.isGameMultiPlayer() or game.isPitboss():
                 raise ValueError('Observer launcher currently supports single-player only')
-            expected_turn, expected_player = {'3000bc': (0, 26), '800bc': (87, 2),
+            expected_turn, expected_player = {'3000bc': (0, 26), '800bc': (87, 26),
                                                '600ad': (181, 2), '840ad': (205, 2)}[self.scenario]
             if game.getStartYear() != -3000 or game.getGameTurn() != expected_turn:
                 raise ValueError('Observer scenario start turn/year mismatch')
@@ -221,9 +221,9 @@ class Observer:
                     self.gc.getPlayer(0).setPlayable(True)
                 actual_player = game.getActivePlayer()
                 setup_player = actual_player
-                if (self.scenario == '3000bc' and self.autoplay and
-                        actual_player == 0 and expected_player == 26):
-                    # The executable can retain slot zero despite the WB
+                if (self.scenario in ('3000bc', '800bc') and self.autoplay and
+                        actual_player in (0, 2) and expected_player == 26):
+                    # The executable can retain an earlier slot despite the WB
                     # selector restriction. Transfer control before RFC setup;
                     # neither operation creates/deletes cities or units.
                     if self.gc.getPlayer(26).getCivilizationType() != self.gc.getInfoTypeForString('CIVILIZATION_AMERICA'):
@@ -231,7 +231,7 @@ class Observer:
                     # Change the viewpoint first, while America is still AI,
                     # then transfer the human slot without a hotseat prompt.
                     game.setActivePlayer(26, False)
-                    game.switchActivePlayer(0, 26, False)
+                    game.switchActivePlayer(setup_player, 26, False)
                     actual_player = game.getActivePlayer()
                 actual_speed = self.gc.getGameSpeedInfo(game.getGameSpeedType()).getType()
                 actual_handicap = self.gc.getHandicapInfo(game.getHandicapType()).getType()
