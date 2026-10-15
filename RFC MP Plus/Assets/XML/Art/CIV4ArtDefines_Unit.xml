@@ -5935,7 +5935,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Warrior.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,2,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -5959,7 +5959,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Warrior.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,2,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -5983,7 +5983,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_ARMED_SLAVE_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Axeman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/ARMED_SLAVE.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6007,7 +6007,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_ARMED_SLAVE_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Axeman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/ARMED_SLAVE.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6031,7 +6031,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_SWORDSMAN_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Swordsman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,4,5</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_SWORDSMAN.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6055,7 +6055,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_SWORDSMAN_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Swordsman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,4,5</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_SWORDSMAN.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6079,7 +6079,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MACEMAN_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Maceman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,1,2</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MACEMAN.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6103,7 +6103,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MACEMAN_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Maceman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,1,2</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MACEMAN.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6127,7 +6127,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MUSKETMAN_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Musketman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,6,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MUSKETMAN.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6151,7 +6151,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MUSKETMAN_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Musketman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,6,1</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MUSKETMAN.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6175,7 +6175,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_RIFLEMAN_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Rifleman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,4,2</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_RIFLEMAN.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6199,7 +6199,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_RIFLEMAN_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Rifleman.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,4,2</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_RIFLEMAN.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6223,7 +6223,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_INFANTRY_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Infantry.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,8,3</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_INFANTRY.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6247,7 +6247,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_INFANTRY_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Infantry.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,8,3</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_INFANTRY.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6271,7 +6271,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MODERN_INFANTRY_A</Type>
-			<Button>,Art/Interface/Buttons/Units/Marine.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,7</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MODERN_INFANTRY.dds</Button>
 			<fScale>0.4224</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>
@@ -6295,7 +6295,7 @@
 		</UnitArtInfo>
 			<UnitArtInfo>
 			<Type>ART_DEF_UNIT_SLAVE_MODERN_INFANTRY_B</Type>
-			<Button>,Art/Interface/Buttons/Units/Marine.dds,Art/Interface/Buttons/Unit_Resource_Atlas.dds,3,7</Button>
+			<Button>Art/Interface/Buttons/Units/SlaveUnits/SLAVE_MODERN_INFANTRY.dds</Button>
 			<fScale>0.4576</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<bActAsLand>0</bActAsLand>

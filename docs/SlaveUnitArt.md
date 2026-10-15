@@ -26,6 +26,26 @@ detachable magazines and any falling-weapon copy. Rest-pose retargeting fits the
 rig's proportions. Unit combat stats, promotion rules, upkeep and upgrade
 prices are unaffected.
 
+## Unit buttons
+
+All eight tiers use a shared captive-and-shackles portrait from Dawn of
+Civilization's `Art/Units/slave/button_slave.dds`. Armed tiers add hand-drawn
+overlays: bronze axe, sword, flail, musket, rifle, Springfield and automatic
+rifle. The overlays leave the face and rounded border visible. Both model
+variants use the same tier-specific button, exported as 64×64 DXT3 DDS.
+Gold Roman numerals I–VII in the bottom-right corner identify the armed
+upgrade tiers, from bronze weapons to modern slave infantry. The unarmed
+slave has no numeral.
+
+The local source copy is `art/slaves/slave-icon-source.png`; source attribution
+and the DoC license/credits below apply to this portrait too. The weapon
+overlays are drawn in code without image generation.
+
+Run `tools/build_slave_icons.py` with the art Python environment to rebuild
+just the buttons and their XML references. The full model builder also runs
+this step, so rebuilding models preserves the custom icons. See the
+[icon overview](../art/slaves/unit-icons.png).
+
 ## Sources and attribution
 
 - Firaxis: Civilization IV, Warlords and Beyond the Sword unit models and
