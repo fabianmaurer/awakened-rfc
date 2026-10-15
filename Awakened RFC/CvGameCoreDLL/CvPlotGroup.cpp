@@ -2,6 +2,8 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvPlotGroup.h"
+#include "CvGameCoreUtils.h"
+#include "ObserverPerformance.h"
 #include "CvPlot.h"
 #include "CvGlobals.h"
 #include "CvPlayerAI.h"
@@ -112,13 +114,16 @@ void CvPlotGroup::removePlot(CvPlot* pPlot)
 void CvPlotGroup::recalculatePlots()
 {
 	PROFILE_FUNC();
+	const bool bCultureUpdate = observerPerformanceInScope("CvCity::doPlotCulture");
+	OBSERVER_PERFORMANCE(bCultureUpdate ? "culture.plotGroup.recalculate" : "plotGroup.recalculate");
+	observerPerformanceScope.addWork(getLengthPlots());
 
 	CLLNode<XYCoords>* pPlotNode;
 	CvPlot* pPlot;
 	CLinkList<XYCoords> oldPlotGroup;
 	XYCoords xy;
 	PlayerTypes eOwner;
-	int iCount;
+	PlotGroupSearchData search;
 
 	eOwner = getOwnerINLINE();
 
@@ -128,17 +133,83 @@ void CvPlotGroup::recalculatePlots()
 	{
 		pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
-		iCount = 0;
-
-		gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), &iCount);
-		gDLL->getFAStarIFace()->GeneratePath(&GC.getPlotGroupFinder(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), -1, -1, false, eOwner);
-
-		if (iCount == getLengthPlots())
 		{
+			ObserverPerformanceScope checkScope(bCultureUpdate ? "culture.plotGroup.connectivityCheck" : "plotGroup.connectivityCheck");
+			gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), &search);
+			gDLL->getFAStarIFace()->GeneratePath(&GC.getPlotGroupFinder(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), -1, -1, false, eOwner);
+
+			checkScope.addWork(search.count);
+		}
+		gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), NULL);
+
+		if (search.count == getLengthPlots())
+		{
+			observerPerformanceCount(bCultureUpdate ? "count.culture.plotGroup.connected" : "count.plotGroup.connected", getLengthPlots());
 			return;
+		}
+
+		// Retain a valid majority component. Collect membership only after a
+		// split: the usual connected case still does one allocation-free search.
+		// An invalid starting tile or small component uses the original rebuild.
+		if (search.count > getLengthPlots() / 2 &&
+			pPlot->isTradeNetwork(GET_PLAYER(eOwner).getTeam()))
+		{
+			std::vector<unsigned char> reached(GC.getMapINLINE().numPlotsINLINE(), 0);
+			const int iExpectedCount = search.count;
+			search.count = 0;
+			search.reached = &reached;
+			{
+				ObserverPerformanceScope collectScope(bCultureUpdate ? "culture.plotGroup.collectComponent" : "plotGroup.collectComponent");
+				gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), &search);
+				gDLL->getFAStarIFace()->GeneratePath(&GC.getPlotGroupFinder(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), -1, -1, false, eOwner);
+				collectScope.addWork(search.count);
+			}
+			gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), NULL);
+			search.reached = NULL;
+
+			// Verify membership before modifying anything, retaining the fallback
+			// if the finder count and collected bitmap disagree.
+			int iRetained = 0;
+			for (pPlotNode = headPlotsNode(); pPlotNode != NULL; pPlotNode = nextPlotsNode(pPlotNode))
+				if (reached[GC.getMapINLINE().plotNum(pPlotNode->m_data.iX, pPlotNode->m_data.iY)]) ++iRetained;
+			if (search.count == iExpectedCount && iRetained == iExpectedCount)
+			{
+				ObserverPerformanceScope incrementalScope(bCultureUpdate ? "culture.plotGroup.incremental" : "plotGroup.incremental");
+				observerPerformanceCount(bCultureUpdate ? "count.culture.plotGroup.retained" : "count.plotGroup.retained", iRetained);
+				observerPerformanceCount(bCultureUpdate ? "count.culture.plotGroup.detached" : "count.plotGroup.detached", getLengthPlots() - iRetained);
+				pPlotNode = headPlotsNode();
+				while (pPlotNode != NULL)
+				{
+					xy = pPlotNode->m_data;
+					if (!reached[GC.getMapINLINE().plotNum(xy.iX, xy.iY)])
+					{
+						pPlot = GC.getMapINLINE().plotSorenINLINE(xy.iX, xy.iY);
+						oldPlotGroup.insertAtEnd(xy);
+						// Existing removal updates resource contributions and city
+						// access immediately. Retained members keep their group ID.
+						pPlot->setPlotGroup(eOwner, NULL);
+						pPlotNode = deletePlotsNode(pPlotNode);
+						incrementalScope.addWork();
+					}
+					else pPlotNode = nextPlotsNode(pPlotNode);
+				}
+
+				// Preserve original list order for reassignment. These calls may
+				// merge groups and delete this object: use only local state now.
+				while ((pPlotNode = oldPlotGroup.head()) != NULL)
+				{
+					pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+					pPlot->updatePlotGroup(eOwner, true);
+					oldPlotGroup.deleteNode(pPlotNode);
+				}
+				return;
+			}
 		}
 	}
 
+	ObserverPerformanceScope rebuildScope(bCultureUpdate ? "culture.plotGroup.rebuild" : "plotGroup.rebuild");
+	rebuildScope.addWork(getLengthPlots());
+	observerPerformanceCount(bCultureUpdate ? "count.culture.plotGroup.rebuilt" : "count.plotGroup.rebuilt", getLengthPlots());
 	oldPlotGroup.clear();
 
 	pPlotNode = headPlotsNode();

@@ -852,6 +852,7 @@ void CvPlayerAI::AI_doPeace()
 
 void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_updateFoundValues");
 	PROFILE_FUNC();
 
 	CvArea* pLoopArea;
@@ -898,6 +899,7 @@ void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 
 				if (lResult == -1)
 				{
+					observerPerformanceScope.addWork();
 					iValue = AI_foundValue(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
 				}
 				else
@@ -3417,7 +3419,6 @@ bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
 
 int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const
 {
-	OBSERVER_PERFORMANCE("unitAI.plotDanger");
 	PROFILE_FUNC();
 
 	CLLNode<IDInfo>* pUnitNode;
@@ -12312,6 +12313,7 @@ void CvPlayerAI::AI_doReligion()
 
 void CvPlayerAI::AI_doDiplo()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doDiplo");
 	PROFILE_FUNC();
 
 	CLLNode<TradeData>* pNode;

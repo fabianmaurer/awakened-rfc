@@ -2101,7 +2101,7 @@ class RiseAndFall:
                                 iCultureChange = 0 #if 0, no flip; if > 0, flip will occur with the value as variable for utils.CultureManager()
                                 
                                 #case 1: barbarian/independent city
-                                if (iOwner == iBarbarian or iOwner == iIndependent or iOwner == iIndependent2 or iOwner == iCeltia):
+                                if (iOwner == iBarbarian or iOwner == iIndependent or iOwner == iIndependent2 or iOwner == iNative or iOwner == iCeltia):
                                         #utils.debugTextPopup( 'BARB' )
                                         iCultureChange = 100
                                 #case 2: human city #RFCMP
@@ -2111,7 +2111,7 @@ class RiseAndFall:
 ##                                                iNumHumanCities += 1
                                 #case 3: other
                                 #elif (not loopCity.isCapital()):   #utils.debugTextPopup( 'OTHER' )   #exploitable     RFCMP                          
-                                elif (not (loopX == tCapitals[iOwner] and loopY == tCapitals[iOwner]) and not gc.getPlayer(iOwner).getNumCities() <= 1):   #utils.debugTextPopup( 'OTHER' )                                
+                                elif (0 <= iOwner < iNumMajorPlayers and (loopX, loopY) != tCapitals[iOwner] and gc.getPlayer(iOwner).getNumCities() > 1):   #utils.debugTextPopup( 'OTHER' )                                
                                         if (iConvertedCitiesCount < 6): #there won't be more than 5 flips in the area
                                                 #utils.debugTextPopup( 'iConvertedCities OK' )
                                                 iCultureChange = 50

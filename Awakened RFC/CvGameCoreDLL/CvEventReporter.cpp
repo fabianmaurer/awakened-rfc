@@ -1,5 +1,6 @@
 #include "CvGameCoreDLL.h"
 #include "CvEventReporter.h"
+#include "ObserverPerformance.h"
 #include "CvDllPythonEvents.h"
 #include "CvInitCore.h"
 
@@ -91,21 +92,25 @@ void CvEventReporter::gameEnd()
 
 void CvEventReporter::beginGameTurn(int iGameTurn)
 {
+	OBSERVER_PERFORMANCE("pythonCallback.beginGameTurn");
 	m_kPythonEventMgr.reportBeginGameTurn(iGameTurn);
 }
 
 void CvEventReporter::endGameTurn(int iGameTurn)
 {
+	OBSERVER_PERFORMANCE("pythonCallback.endGameTurn");
 	m_kPythonEventMgr.reportEndGameTurn(iGameTurn);
 }
 
 void CvEventReporter::beginPlayerTurn(int iGameTurn, PlayerTypes ePlayer)
 {
+	OBSERVER_PERFORMANCE("pythonCallback.beginPlayerTurn");
 	m_kPythonEventMgr.reportBeginPlayerTurn(iGameTurn, ePlayer);
 }
 
 void CvEventReporter::endPlayerTurn(int iGameTurn, PlayerTypes ePlayer)
 {
+	OBSERVER_PERFORMANCE("pythonCallback.endPlayerTurn");
 	m_kPythonEventMgr.reportEndPlayerTurn(iGameTurn, ePlayer);
 }
 
@@ -198,6 +203,7 @@ void CvEventReporter::cityGrowth(CvCity *pCity, PlayerTypes ePlayer)
 
 void CvEventReporter::cityDoTurn( CvCity *pCity, PlayerTypes ePlayer )
 {
+	OBSERVER_PERFORMANCE("pythonCallback.cityDoTurn");
 	m_kPythonEventMgr.reportCityProduction(pCity, ePlayer);
 }
 

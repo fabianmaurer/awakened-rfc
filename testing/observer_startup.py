@@ -77,7 +77,7 @@ class SetupConfirmation:
         now = time.monotonic()
         if self.ready_since is None:
             self.ready_since = now
-        if now - self.ready_since < 1 or now - self.last_input < 0.5:
+        if now - self.ready_since < 0.25 or now - self.last_input < 0.35:
             return
         windows = []
         dialogs = []
@@ -125,7 +125,7 @@ class SetupConfirmation:
             return  # Windows may refuse focus; never send input to another app.
         if self.focused_since is None:
             self.focused_since = now
-        if now - self.focused_since < 0.5:
+        if now - self.focused_since < 0.2:
             self.log_state('Allowing DirectInput to acquire keyboard focus')
             return
 
@@ -164,7 +164,7 @@ class SetupConfirmation:
         # DirectInput polls between frames; an instantaneous down/up pair can
         # otherwise disappear without the menu ever observing the held key.
         try:
-            time.sleep(0.2)
+            time.sleep(0.1)
         finally:
             # Always release a key we pressed, even if focus changes meanwhile.
             if send(1, ctypes.byref(inputs[1]), ctypes.sizeof(Input)) != 1:

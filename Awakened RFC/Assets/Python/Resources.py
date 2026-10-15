@@ -27,6 +27,7 @@ iWine = con.iWine
 iCotton = con.iCotton
 iDye = con.iDye
 iRice = con.iRice
+iFish = con.iFish
      
 
 class Resources:

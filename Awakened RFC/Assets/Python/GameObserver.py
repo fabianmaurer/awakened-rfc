@@ -116,6 +116,12 @@ class Observer:
                 # Wrap turn-system entry points, not every Python call.
                 # No per-call file writes and no gameplay data collection.
                 seen = set()
+                # Shared RFC utility instances perform the expensive collapse work.
+                # Wrap their class methods once; Python 2.4 binds self normally.
+                import RFCUtils
+                for name in ('pickFragmentation', 'killAndFragmentCiv', 'flipCity', 'cultureManager'):
+                    method = getattr(RFCUtils.RFCUtils, name)
+                    setattr(RFCUtils.RFCUtils, name, self.timed('RFCUtils.' + name, method))
                 for handlers in manager.EventHandlerMap.values():
                     for handler in handlers:
                         owner = getattr(handler, 'im_self', None)
@@ -595,7 +601,8 @@ class Observer:
         if not self.enabled:
             return
         try:
-            self.write({'kind': 'python_exception', 'event': event, 'traceback': traceback.format_exc()})
+            self.write({'kind': 'python_exception', 'event': event, 'turn': self.game.getGameTurn(),
+                        'traceback': traceback.format_exc()})
             self.error_count += 1
         except:
             self.fail('exception_recording')

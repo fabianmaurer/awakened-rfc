@@ -10,6 +10,8 @@ import secrets
 import shutil
 import subprocess
 import time
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from observer_startup import SetupConfirmation
 
@@ -80,6 +82,7 @@ def main():
     start.add_argument('--start', type=int, choices=range(4),
                        help='0: 3000 BC, 1: 800 BC, 2: 600 AD, 3: 840 AD')
     parser.add_argument('--games', '--runs', dest='games', type=int, default=1)
+    parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; setup is serialized (default: 1)')
     parser.add_argument('--turns', type=int)
     parser.add_argument('--seed', type=int, default=1, help='First seed; incremented for each game')
     parser.add_argument('--observe-only', action='store_true', help='Record a human-controlled game; do not enable AI control')
@@ -103,6 +106,10 @@ def main():
     interval = args.checkpoint_interval
     if interval is None:
         interval = config.getint('Observer', 'CheckpointInterval', fallback=25 if mode == 'diagnostics' else 100)
+    if args.jobs < 1:
+        parser.error('--jobs must be positive')
+    if args.jobs > 1 and (mode == 'performance' or not unattended):
+        parser.error('--jobs > 1 requires unattended balance or diagnostics mode')
     if mode == 'performance':
         interval = 0
         if args.observe_only:
@@ -149,9 +156,11 @@ def main():
     batch.mkdir(parents=True)
     print('Batch: ' + str(batch), flush=True)
     results = []
-    for index in range(args.games):
-        if game_running():
-            raise RuntimeError('Another Civ4 process appeared; stopping batch')
+    results_lock = threading.Lock()
+    setup_lock = threading.Lock()
+    stopping = threading.Event()
+
+    def run_one(index, release_setup):
         seed = args.seed + index
         run = batch / ('game-%03d-%s-%s-%dturns-seed-%d' % (index+1, mode, control, turns, seed))
         run.mkdir()
@@ -180,24 +189,32 @@ def main():
         write_activation()
         command = ('"' + str(args.exe.resolve()) + '" mod="Mods\\Awakened RFC" /fxsload="'
                    + str(installed / 'PublicMaps' / scenario) + '"')
+        if args.jobs > 1:
+            # Civ4 otherwise rejects additional instances before observer setup.
+            # Apply to the first child too so the entire batch opts in.
+            command += ' multiple'
         (run / 'launch.json').write_text(json.dumps({'seed': seed, 'mode': mode, 'turns': turns,
                                                    'scenario': args.scenario,
                                                    'autoplay': not args.observe_only, 'version': version,
                                                    'unattended': unattended,
+                                                   'jobs': args.jobs,
                                                    'record_interval': args.record_interval,
                                                    'runtime_fingerprint': runtime_hash, 'command': command}, indent=2))
         process = subprocess.Popen(command, cwd=args.exe.parent, env=env)
-        settings['Observer']['ProcessId'] = str(process.pid)
-        write_activation()
-        startup = SetupConfirmation(process.pid, run) if unattended else None
-        instruction = 'Scenario setup will be confirmed automatically.' if unattended else 'Confirm scenario setup if Civ4 displays it.'
-        print('Game %d/%d, seed %d. %s' % (index+1, args.games, seed, instruction), flush=True)
         started = False
         last_progress = time.monotonic()
         heartbeat = None
         outcome = {'run': run.name, 'seed': seed, 'status': 'interrupted'}
         try:
+            settings['Observer']['ProcessId'] = str(process.pid)
+            write_activation()
+            startup = SetupConfirmation(process.pid, run) if unattended else None
+            instruction = 'Scenario setup will be confirmed automatically.' if unattended else 'Confirm scenario setup if Civ4 displays it.'
+            print('Game %d/%d, seed %d. %s' % (index+1, args.games, seed, instruction), flush=True)
             while process.poll() is None:
+                if stopping.is_set():
+                    outcome.update(status='cancelled')
+                    break
                 complete = read_status(run / 'complete.json')
                 failed = read_status(run / 'failed.json')
                 if complete is not None:
@@ -217,6 +234,7 @@ def main():
                         break
                 if not started and (run / 'started.json').is_file():
                     started = True
+                    release_setup()
                     last_progress = time.monotonic()
                 current = read_status(run / 'heartbeat.json')
                 if current != heartbeat:
@@ -228,23 +246,37 @@ def main():
                     break
                 # Respond promptly between setup screens; retain the normal
                 # polling interval once the simulation is running.
-                time.sleep(0.25 if startup is not None and not started else 1)
+                time.sleep(0.05 if startup is not None and not started else 1)
             else:
-                outcome.update(status='exited', exit_code=process.returncode)
+                complete = read_status(run / 'complete.json')
+                if complete is not None:
+                    outcome.update(status='complete', **complete)
+                else:
+                    outcome.update(status='exited', exit_code=process.returncode)
+                    print('%s: Civ4 exited before completion (code %s / 0x%08X).' %
+                          (run.name, process.returncode, process.returncode & 0xffffffff), flush=True)
         finally:
+            if outcome['status'] != 'complete':
+                stopping.set()
             # Only terminate the child created for this run, never other games.
             # Recorded turns/checkpoints have already been flushed to disk.
             if process.poll() is None:
                 process.terminate()
-                process.wait(timeout=30)
+                try:
+                    process.wait(timeout=30)
+                except subprocess.TimeoutExpired:
+                    process.kill()
+                    process.wait(timeout=10)
             activation.unlink(missing_ok=True)
             try:
                 compress_recording(run)
             except OSError as error:
                 # Preserve the plain recording and original run outcome.
                 print('Could not compress recording; plain JSONL retained: ' + str(error), flush=True)
-            results.append(outcome)
-            (batch / 'batch.json').write_text(json.dumps(results, indent=2), encoding='utf-8')
+            with results_lock:
+                results.append(outcome)
+                results.sort(key=lambda item: item['seed'])
+                (batch / 'batch.json').write_text(json.dumps(results, indent=2), encoding='utf-8')
             if mode == 'performance' and ((run / 'turns.jsonl.gz').exists() or (run / 'turns.jsonl').exists()):
                 from analyze_performance import summarize
                 try:
@@ -254,10 +286,50 @@ def main():
                     print('Could not summarize performance; raw timings retained: ' + str(error), flush=True)
         print(run.name + ': ' + outcome['status'], flush=True)
         if outcome['status'] != 'complete':
-            raise SystemExit('Batch stopped; inspect ' + str(run))
+            raise RuntimeError('Batch stopped; inspect ' + str(run))
+
+    def worker(index):
+        # Hold foreground setup ownership until started.json confirms that
+        # RFC initialization, initial recording and checkpoint have finished.
+        held = False
+        def release_setup():
+            nonlocal held
+            if held:
+                held = False
+                setup_lock.release()
+        try:
+            while not setup_lock.acquire(timeout=0.25):
+                if stopping.is_set():
+                    return
+            held = True
+            if stopping.is_set():
+                return
+            run_one(index, release_setup)
+        except BaseException:
+            stopping.set()
+            raise
+        finally:
+            release_setup()
+
+    print('Concurrency: %d; scenario setup runs one game at a time.' % min(args.jobs, args.games), flush=True)
+    executor = ThreadPoolExecutor(max_workers=min(args.jobs, args.games))
+    try:
+        futures = [executor.submit(worker, index) for index in range(args.games)]
+        for future in as_completed(futures):
+            future.result()
+    except BaseException:
+        stopping.set()
+        raise
+    finally:
+        executor.shutdown(wait=True, cancel_futures=True)
     analyzer = 'analyze_performance.py' if mode == 'performance' else 'analyze_observer.py'
     print('Finished. Analyse with: python testing/' + analyzer + ' "' + str(batch) + '"')
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except RuntimeError as error:
+        raise SystemExit(str(error))
+    except KeyboardInterrupt:
+        raise SystemExit('Batch interrupted; launcher-owned games stopped.')

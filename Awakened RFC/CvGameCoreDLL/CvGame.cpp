@@ -64,13 +64,60 @@ namespace {
     struct ObserverTiming {
         int calls;
         double total, own, maximum;
-        ObserverTiming() : calls(0), total(0), own(0), maximum(0) {}
+        int bins[5];
+        double binSeconds[5];
+        double work;
+        ObserverTiming() : calls(0), total(0), own(0), maximum(0), work(0) {
+            for (int i = 0; i < 5; ++i) { bins[i] = 0; binSeconds[i] = 0; }
+        }
     };
     typedef std::map<std::pair<int, std::string>, ObserverTiming> ObserverTimings;
     ObserverTimings observerTimings;
     ObserverPerformanceScope* observerParent = NULL;
     double observerFrequency = 1;
     std::string observerTimingPath;
+    std::string observerRuntimePath;
+    __int64 observerLastWall = 0;
+    double observerLastProcess = 0, observerLastThread = 0;
+    int observerLastTurn = 0;
+    double observerFileSeconds(const FILETIME& value) {
+        ULARGE_INTEGER ticks;
+        ticks.LowPart = value.dwLowDateTime;
+        ticks.HighPart = value.dwHighDateTime;
+        return double(ticks.QuadPart) / 10000000.0;
+    }
+    bool observerCpuTimes(double& process, double& thread) {
+        FILETIME created, exited, kernel, user;
+        if (!GetProcessTimes(GetCurrentProcess(), &created, &exited, &kernel, &user)) return false;
+        process = observerFileSeconds(kernel) + observerFileSeconds(user);
+        if (!GetThreadTimes(GetCurrentThread(), &created, &exited, &kernel, &user)) return false;
+        thread = observerFileSeconds(kernel) + observerFileSeconds(user);
+        return true;
+    }
+    void observerRuntimeSample() {
+        if (observerRuntimePath.empty()) return;
+        LARGE_INTEGER now;
+        QueryPerformanceCounter(&now);
+        double process, thread;
+        if (!observerCpuTimes(process, thread)) return;
+        FILE* file = fopen(observerRuntimePath.c_str(), "a");
+        if (!file) return;
+        int cities = 0, units = 0, players = 0;
+        for (int i = 0; i < MAX_PLAYERS; ++i) {
+            CvPlayer& player = GET_PLAYER((PlayerTypes)i);
+            if (player.isAlive()) ++players;
+            cities += player.getNumCities();
+            units += player.getNumUnits();
+        }
+        fprintf(file, "%d,%d,%.9f,%.9f,%.9f,%d,%d,%d\n", observerLastTurn,
+            GC.getGameINLINE().getGameTurn(), double(now.QuadPart - observerLastWall) / observerFrequency,
+            process - observerLastProcess, thread - observerLastThread, cities, units, players);
+        fclose(file);
+        observerLastWall = now.QuadPart;
+        observerLastProcess = process;
+        observerLastThread = thread;
+        observerLastTurn = GC.getGameINLINE().getGameTurn();
+    }
 }
 void observerPerformanceStart()
 {
@@ -82,26 +129,54 @@ void observerPerformanceStart()
     observerTimingPath = path;
     FILE* file = fopen(path, "w");
     if (!file) return;
-    fprintf(file, "turn,calculation,calls,inclusive_seconds,exclusive_seconds,max_seconds\n");
+    fprintf(file, "turn,calculation,calls,inclusive_seconds,exclusive_seconds,max_seconds,lt_100us,lt_1ms,lt_10ms,lt_100ms,ge_100ms,work_units,lt_100us_seconds,lt_1ms_seconds,lt_10ms_seconds,lt_100ms_seconds,ge_100ms_seconds\n");
     fclose(file);
     observerTimings.clear();
+    observerRuntimePath = observerTimingPath.substr(0, observerTimingPath.find_last_of("\\/") + 1) + "performance-runtime.csv";
+    file = fopen(observerRuntimePath.c_str(), "w");
+    if (file) {
+        fprintf(file, "start_turn,end_turn,wall_seconds,process_cpu_seconds,main_thread_cpu_seconds,cities,units,alive_players\n");
+        fclose(file);
+    }
+    LARGE_INTEGER now;
+    QueryPerformanceCounter(&now);
+    observerLastWall = now.QuadPart;
+    observerCpuTimes(observerLastProcess, observerLastThread);
+    observerLastTurn = GC.getGameINLINE().getGameTurn();
     g_observerPerformance = true;
 }
 void observerPerformanceFlush()
 {
     if (observerTimingPath.empty() || observerTimings.empty()) return;
+    observerRuntimeSample();
     FILE* file = fopen(observerTimingPath.c_str(), "a");
     if (!file) return;
     for (ObserverTimings::iterator it = observerTimings.begin(); it != observerTimings.end(); ++it) {
         const ObserverTiming& t = it->second;
-        fprintf(file, "%d,%s,%d,%.9f,%.9f,%.9f\n", it->first.first,
-            it->first.second.c_str(), t.calls, t.total, t.own, t.maximum);
+        fprintf(file, "%d,%s,%d,%.9f,%.9f,%.9f,%d,%d,%d,%d,%d,%.0f,%.9f,%.9f,%.9f,%.9f,%.9f\n", it->first.first,
+            it->first.second.c_str(), t.calls, t.total, t.own, t.maximum,
+            t.bins[0], t.bins[1], t.bins[2], t.bins[3], t.bins[4], t.work,
+            t.binSeconds[0], t.binSeconds[1], t.binSeconds[2], t.binSeconds[3], t.binSeconds[4]);
     }
     fclose(file);
     observerTimings.clear();
 }
+void observerPerformanceCount(const char* name, unsigned int work)
+{
+    if (!g_observerPerformance) return;
+    ObserverTiming& t = observerTimings[std::make_pair(GC.getGameINLINE().getGameTurn(), std::string(name))];
+    ++t.calls;
+    t.work += work;
+}
+bool observerPerformanceInScope(const char* name)
+{
+    if (!g_observerPerformance) return false;
+    for (ObserverPerformanceScope* scope = observerParent; scope; scope = scope->m_parent)
+        if (scope->m_name && strcmp(scope->m_name, name) == 0) return true;
+    return false;
+}
 ObserverPerformanceScope::ObserverPerformanceScope(const char* name)
-    : m_name(NULL), m_children(0), m_parent(NULL)
+    : m_name(NULL), m_children(0), m_work(0), m_parent(NULL)
 {
     if (!g_observerPerformance) return;
     m_name = name;
@@ -122,9 +197,13 @@ ObserverPerformanceScope::~ObserverPerformanceScope()
     if (m_parent) m_parent->m_children += elapsed;
     ObserverTiming& t = observerTimings[std::make_pair(m_turn, std::string(m_name))];
     ++t.calls;
+    t.work += m_work;
     t.total += elapsed;
     t.own += std::max(0.0, elapsed - m_children);
     t.maximum = std::max(t.maximum, elapsed);
+    int bin = elapsed < 0.0001 ? 0 : elapsed < 0.001 ? 1 : elapsed < 0.01 ? 2 : elapsed < 0.1 ? 3 : 4;
+    ++t.bins[bin];
+    t.binSeconds[bin] += elapsed;
     if (!g_observerPerformance) observerPerformanceFlush();
 }
 
@@ -2232,6 +2311,7 @@ int CvGame::getTeamClosenessScore(int** aaiDistances, int* aiStartingLocs)
 
 void CvGame::update()
 {
+	OBSERVER_PERFORMANCE("CvGame::update");
 	PROFILE("CvGame::update");
 	//logMsg("update"); //Rhye
 	if (!gDLL->GetWorldBuilderMode() || isInAdvancedStart())
@@ -2368,6 +2448,7 @@ void CvGame::update()
 
 void CvGame::updateScore(bool bForce)
 {
+	OBSERVER_PERFORMANCE("CvGame::updateScore");
 	bool abPlayerScored[MAX_CIV_PLAYERS];
 	bool abTeamScored[MAX_CIV_TEAMS];
 	int iScore;
@@ -2894,6 +2975,7 @@ void CvGame::implementDeal(PlayerTypes eWho, PlayerTypes eOtherWho, CLinkList<Tr
 
 void CvGame::verifyDeals()
 {
+	OBSERVER_PERFORMANCE("CvGame::verifyDeals");
 	CvDeal* pLoopDeal;
 	int iLoop;
 
@@ -6306,6 +6388,7 @@ void CvGame::doTurn()
 
 void CvGame::doDeals()
 {
+	OBSERVER_PERFORMANCE("CvGame::doDeals");
 	CvDeal* pLoopDeal;
 	int iLoop;
 
@@ -6320,6 +6403,7 @@ void CvGame::doDeals()
 
 void CvGame::doGlobalWarming()
 {
+	OBSERVER_PERFORMANCE("CvGame::doGlobalWarming");
 	int iGlobalWarmingDefense = 0;
 	for (int i = 0; i < GC.getMapINLINE().numPlotsINLINE(); ++i)
 	{
@@ -6407,6 +6491,7 @@ void CvGame::doGlobalWarming()
 
 void CvGame::doHolyCity()
 {
+	OBSERVER_PERFORMANCE("CvGame::doHolyCity");
 	PlayerTypes eBestPlayer;
 	TeamTypes eBestTeam;
 	long lResult;
@@ -6528,6 +6613,7 @@ void CvGame::doHolyCity()
 
 void CvGame::doHeadquarters()
 {
+	OBSERVER_PERFORMANCE("CvGame::doHeadquarters");
 	long lResult = 0;
 	gDLL->getPythonIFace()->callFunction(PYGameModule, "doHeadquarters", NULL, &lResult);
 	if (lResult == 1)
@@ -6658,6 +6744,7 @@ void CvGame::doHeadquarters()
 
 void CvGame::doDiploVote()
 {
+	OBSERVER_PERFORMANCE("CvGame::doDiploVote");
 	doVoteResults();
 
 	doVoteSelection();
@@ -6796,6 +6883,7 @@ void CvGame::createBarbarianCities()
 
 void CvGame::createBarbarianUnits()
 {
+	OBSERVER_PERFORMANCE("CvGame::createBarbarianUnits");
 	CvUnit* pLoopUnit;
 	CvArea* pLoopArea;
 	CvPlot* pPlot;

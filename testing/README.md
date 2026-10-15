@@ -42,13 +42,40 @@ Modes are `balance`, `diagnostics`, and `performance`. Starts are zero-based:
 | 2 | 600 AD | China |
 | 3 | 840 AD | China |
 
-`--runs` sets the number of sequential games. `--turns` counts simulated turns
+`--runs` sets the total number of games. `--turns` counts simulated turns
 from the scenario start. Seeds begin at `--seed` (default 1) and increment for
 each run. All existing launcher options remain available, including output and
 checkpoint intervals. Without `--turns`, the local configuration applies,
 falling back to 500. Add the `testing` directory to your shell PATH yourself if
 you want to invoke bare `run-test` from any directory. The wrapper does not pause
 on completion and preserves the launcher's exit code.
+
+### Parallel mechanics and balance runs
+
+```powershell
+.\testing\run-test --mode diagnostics --start 0 --runs 5 --turns 150 --jobs 2
+```
+
+`--jobs` defaults to 1. With 2, at most two launcher-owned games run concurrently.
+Parallel batches pass Civ4's `multiple` option to every child, including the first,
+to allow additional instances past the executable's startup guard.
+Setup is serialized: the next instance launches only after the current setup
+reports that initialization and its initial snapshot/checkpoint have finished.
+This keeps foreground keyboard confirmation exclusive to one setup window.
+Keep the desktop unlocked. Background instances must continue simulating for
+parallelism to improve throughput; actual multi-instance behavior needs local
+validation. Start with two workers.
+
+Parallel execution requires unattended balance or diagnostics mode. Performance
+mode rejects `--jobs` above 1 because competing processes distort measurements.
+Each game has its own token, PID, observer output and checkpoint directory.
+Civ4's ordinary profile, cache and standard logs remain shared; ordinary logs
+may be overwritten or interleaved. Do not change settings while the batch runs.
+Observer autosaves remain suppressed. The launcher initially requires Civ4 to
+be closed, and stops only its own child processes. A failed run cancels pending
+runs and stops active sibling runs, preserving partial recordings. Ctrl+C also
+cleans up the batch's children. Existing unrelated processes are never killed.
+`batch.json` records finished/cancelled active games in seed order.
 
 For three balance games of 500 turns, using seeds 1-3 and snapshots/checkpoint
 saves every 25 turns:
@@ -91,7 +118,9 @@ hook restricts the human selector to the scenario observer, sets Prince/Normal, 
 launcher when the correct scenario has loaded. Other civilizations still spawn
 and play normally. The launcher brings only its own game window forward and
 sends Enter's physical scan code to advance setup, with at most four attempts.
-Confirmations are spaced 0.5 seconds apart, after a one-second initial delay.
+Setup polling runs every 50 ms. Confirmation retries wait at least 350 ms after
+the preceding key release, following a 250 ms initial readiness delay. Keyboard
+focus settles for 200 ms, and Enter is held for 100 ms for DirectInput polling.
 After bringing the game forward it waits for keyboard focus to settle before
 pressing the key. `setup-input.log` records focus waits and each confirmation;
 the launcher prefers an already focused game window, restores minimized game
@@ -206,8 +235,8 @@ Fixed seeds improve comparability but do not prove identical game trajectories
 across mechanic changes or provide constant machine load.
 
 Unit-AI boolean danger queries now stop at the first qualifying threat. Callers
-that need exact threat counts retain the full scan. `unitAI.plotDanger` and
-`unitAI.generatePath` measure these scans and pathfinding separately. Completion
+that need exact threat counts retain the full scan. `unitAI.generatePath`
+measures pathfinding; danger scan time stays in its parent AI scopes. Completion
 elapsed time now uses the same high-resolution timer as turn boundaries.
 `unitAI.AI_*Move` timers additionally distinguish combat, worker, exploration,
 settler, missionary, naval and air roles. These include nested pathfinding and
@@ -224,7 +253,95 @@ skipping cities that cannot beat the nearest disconnected candidate already
 found. Candidate ordering and tie handling are preserved.
 `cityAI.updateRouteToCity` measures this planning routine separately.
 
-### Pathfinding measurements
+### Expanded parallelism assessment
+
+Run `testing/Run Expanded Performance Profile.cmd` for one serial 3000 BC game,
+seed 1, 400 turns, with a 600-second setup timeout and 1800-second stall timeout.
+This launcher is user-operated; preparing it does not start a game.
+
+The expanded DLL records city AI production/build/worker planning, plot culture,
+trade influence, espionage visibility, player maintenance, diplomacy and game
+turn substeps. Native callback scopes attribute Python event time within DLL
+parents. Trade updates separate clearing, scoring/selection and commitment;
+scoring still includes intermediate route assignments and revelation, so it is
+not a pure worker-ready calculation. Search queue visits and scored candidates
+are recorded as `work_units`; settlement-value batches also count native tile
+evaluations without timing each tile. No gameplay order or RNG calls are changed.
+
+`performance-native.csv` adds inclusive call-duration histogram bins (<0.1 ms,
+0.1-1 ms, 1-10 ms, 10-100 ms, >=100 ms). Reports show calls, mean/max call size,
+work units, inclusive/exclusive elapsed shares and exclusive milliseconds per
+turn. Histograms identify where dispatch would need batching; they do not prove
+that calls share unchanged inputs or may safely run concurrently.
+
+`performance-runtime.csv` samples process and main-thread CPU time with Windows
+accounting APIs once per native timing flush, plus cities, units and alive
+players. Explicit start/end turns distinguish these intervals from Python
+EndGameTurn intervals. CPU busy percentage distinguishes computation from time
+off CPU, but off-CPU time does not uniquely identify rendering or waiting.
+Function scopes still measure wall time, not individual function CPU time.
+
+The analyzer reports the full pre-exception window and its last 100 recorded
+turns, excluding the first affected turn onward. It includes p95 turn intervals
+and optimistic 2/4/8-worker ceilings for candidate subsystems. These ceilings
+assume full parallelizability and zero overhead; actual safe batching,
+snapshot/commit overhead, worker scaling and multiplayer determinism require a
+prototype and separate validation. Legacy recordings remain readable, with
+missing CPU/histogram data identified as unavailable.
+
+The very frequent `unitAI.plotDanger` timer is removed; its cost stays inside
+parent unit-AI/path timers. Detailed per-node/path-destination logging remains
+disabled. Additional profiling changes benchmark overhead, so compare future
+implementations using this same instrumentation configuration.
+
+### Plot-culture follow-up
+
+The same `Run Expanded Performance Profile.cmd` includes targeted culture
+diagnostics. The experimental lazy irrigation allocation and duplicate
+working-city-refresh removal were reverted after the comparison showed no
+measurable benefit. Original allocation and refresh behavior is restored;
+diagnostic timers remain active during performance recordings.
+
+Reports distinguish normal city-turn culture from explicit immediate ownership
+updates. Timers under `culture.*` include only work nested inside
+`CvCity::doPlotCulture`; equivalent `plot.*`/`plotGroup.*` timers capture other
+callers. Real owner changes separate old/new sight, working-city assignment,
+irrigation, yields, direct plot-group updates, unit validation and symbols.
+Plot-group recalculation separates connectivity flood fills from rebuilding;
+the counters show how often a check finds the existing group still connected,
+and average group sizes. Checks triggered indirectly by visibility appear under
+the corresponding sight scope as well as the nested group scope.
+
+Culture call-duration bins now record elapsed seconds as well as call counts,
+so the report can quantify how much time the rare slow calls consume. The
+slowest-culture-turn table combines duplicate native flush rows and shows
+ownership, network-check, rebuild and irrigation costs alongside culture totals.
+Inclusive columns overlap. Historical recordings retain counters for avoided
+irrigation allocations and duplicate working-city refreshes. New recordings
+count the restored irrigation allocations without reporting avoided work.
+
+This adds profiling overhead and does not establish a measured speedup. Network
+updates still run immediately. Following the targeted comparison, plot-group
+rebuilding now retains the reached component when its starting tile belongs to
+the trade network and it contains more than half the original group. Only the
+unreachable members are removed and reassigned, in their original list order,
+through the existing resource-accounting methods. A membership/count mismatch,
+invalid starting tile or small component retains the original full rebuild.
+
+Connected groups still use one allocation-free connectivity check. A split
+eligible for retention performs a second search to collect membership, followed
+by incremental removal/reassignment. Timers distinguish `collectComponent`,
+`incremental` and full fallback `rebuild`; counters record retained and detached
+memberships. Compare the inclusive `plotGroup.recalculate` totals across all
+callers, since the full-rebuild child alone no longer represents every split.
+This changes internal group IDs/lifetimes and requires all multiplayer peers to
+use the same DLL. Gameplay resource and connectivity behavior needs validation
+in the user-operated run; no speedup or multiplayer validation is claimed.
+
+Run the same 400-turn seed-1 launcher for the next comparison; no game is started
+by building or analysing recordings.
+
+### Historical path query detail
 
 Detailed path-query collection is disabled: simulations no longer write
 `performance-paths.csv`, count per-node callbacks or build destination batches.

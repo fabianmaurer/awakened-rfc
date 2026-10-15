@@ -184,6 +184,7 @@ void CvCityAI::AI_reset()
 
 void CvCityAI::AI_doTurn()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_doTurn");
 	PROFILE_FUNC();
 
 	int iI;
@@ -633,6 +634,7 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 
 void CvCityAI::AI_chooseProduction()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_chooseProduction");
 	PROFILE_FUNC();
 
 	CvArea* pWaterArea;
@@ -5657,6 +5659,7 @@ int CvCityAI::AI_countBestBuilds(CvArea* pArea)
 // Improved worker AI provided by Blake - thank you!
 void CvCityAI::AI_updateBestBuild()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_updateBestBuild");
 	PROFILE_FUNC();
 	
 	
@@ -6135,6 +6138,7 @@ void CvCityAI::AI_updateBestBuild()
 // Better drafting strategy by Blake - thank you!
 void CvCityAI::AI_doDraft(bool bForce)
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_doDraft");
 	PROFILE_FUNC();
 
 	FAssert(!isHuman());
@@ -6193,6 +6197,7 @@ void CvCityAI::AI_doDraft(bool bForce)
 // Better pop-rushing strategy by Blake - thank you!
 void CvCityAI::AI_doHurry(bool bForce)
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_doHurry");
 	PROFILE_FUNC();
 
 	CvArea* pWaterArea;
@@ -6660,6 +6665,7 @@ void CvCityAI::AI_doHurry(bool bForce)
 // Improved use of emphasize by Blake, to go with his whipping strategy - thank you!
 void CvCityAI::AI_doEmphasize()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_doEmphasize");
 	PROFILE_FUNC();
 
 	FAssert(!isHuman());
@@ -9539,6 +9545,7 @@ int CvCityAI::AI_getCityImportance(bool bEconomy, bool bMilitary)
 
 void CvCityAI::AI_stealPlots()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_stealPlots");
     PROFILE_FUNC();
     CvPlot* pLoopPlot;
     CvCityAI* pWorkingCity;
@@ -10008,6 +10015,7 @@ void CvCityAI::AI_changeWorkersHave(int iChange)
 //This needs to be serialized for human workers.
 void CvCityAI::AI_updateWorkersNeededHere()
 {
+	OBSERVER_PERFORMANCE("CvCityAI::AI_updateWorkersNeededHere");
 	CvPlot* pLoopPlot;
 	
 	short aiYields[NUM_YIELD_TYPES];

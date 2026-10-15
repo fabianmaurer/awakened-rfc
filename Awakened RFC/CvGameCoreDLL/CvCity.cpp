@@ -8559,6 +8559,7 @@ static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& rea
         pending.push_back(iStart);
         for (unsigned int i = 0; i < pending.size(); i++)
         {
+            searchScope.addWork();
             CvPlot* pFrom = kMap.plotByIndexINLINE(pending[i]);
             if (iMode == 0) roads[pending[i]] = true;
             if (iMode == 0 || bAstronomy || plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pFrom->getX_INLINE(), pFrom->getY_INLINE()) <= iWaterRange)
@@ -9769,6 +9770,7 @@ void CvCity::setEspionageVisibility(TeamTypes eIndex, bool bNewValue, bool bUpda
 
 void CvCity::updateEspionageVisibility(bool bUpdatePlotGroups)
 {
+	OBSERVER_PERFORMANCE("CvCity::updateEspionageVisibility");
 	std::vector<EspionageMissionTypes> aMission;
 	for (int iMission = 0; iMission < GC.getNumEspionageMissionInfos(); ++iMission)
 	{
@@ -11476,8 +11478,10 @@ void CvCity::updateTradeRoutes()
 		paiBestValue[iI] = 0;
 	}
 
-	clearTradeRoutes();
+	{ ObserverPerformanceScope scope("trade.clearRoutes"); clearTradeRoutes(); }
 
+	{
+    ObserverPerformanceScope selectionScope("trade.scoreAndSelect");
 	if (!isDisorder() && !isPlundered())
 	{
 		iTradeRoutes = getTradeRoutes();
@@ -11505,6 +11509,7 @@ void CvCity::updateTradeRoutes()
 								// Food cannot create a connection where infrastructure permits none.
 								if (iEfficiency <= 0) continue;
                                 const __int64 iBaseRouteValue = (__int64)getBaseTradeProfit(pLoopCity) * totalTradeModifier(pLoopCity) * iEfficiency;
+                                selectionScope.addWork();
                                 iValue = iBaseRouteValue;
 								iValue = iValue * std::max(0, GET_PLAYER(getOwnerINLINE()).getTradeYieldModifier(YIELD_COMMERCE)) / 100;
 								// Rank routes by their combined return. A food import is worth
@@ -11550,6 +11555,8 @@ void CvCity::updateTradeRoutes()
 		}
 	}
 
+	}
+    ObserverPerformanceScope commitScope("trade.commitRoutes");
 	iTradeProfit = 0;
 
 	for (iI = 0; iI < GC.getDefineINT("MAX_TRADE_ROUTES"); iI++)
@@ -12348,6 +12355,8 @@ void CvCity::doCulture()
 
 void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 {
+	OBSERVER_PERFORMANCE("CvCity::doPlotCulture");
+	ObserverPerformanceScope modeScope(bUpdate ? "culture.immediate" : "culture.normal");
 	CvPlot* pLoopPlot;
 	int iDX, iDY;
 	int iCultureRange;
@@ -12406,6 +12415,7 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 						{
 							if (pLoopPlot->isPotentialCityWorkForArea(area()))
 							{
+								modeScope.addWork();
 								pLoopPlot->changeCulture(ePlayer, (((eCultureLevel - iCultureRange) * iFreeCultureRate) + iCultureRate + 1), (bUpdate || !(pLoopPlot->isOwned())));
 							}
 						}
@@ -12617,6 +12627,7 @@ void CvCity::doProduction(bool bAllowNoProduction)
 
 void CvCity::doDecay()
 {
+	OBSERVER_PERFORMANCE("CvCity::doDecay");
 	int iI;
 
 	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
@@ -12726,6 +12737,7 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
 
 void CvCity::doTradeInfluence()
 {
+	OBSERVER_PERFORMANCE("CvCity::doTradeInfluence");
     if (isDisorder() || isPlundered()) return;
     std::vector<bool> reachable;
     std::vector<bool> roads;
@@ -12820,6 +12832,7 @@ void CvCity::doGreatPeople()
 
 void CvCity::doMeltdown()
 {
+	OBSERVER_PERFORMANCE("CvCity::doMeltdown");
 	CvWString szBuffer;
 	int iI;
 

@@ -2871,6 +2871,7 @@ void CvPlayer::doTurnUnits()
 
 void CvPlayer::verifyCivics()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::verifyCivics");
 	int iI, iJ;
 
 	if (!isAnarchy())
@@ -3009,6 +3010,7 @@ void CvPlayer::updateReligionHappiness()
 
 void CvPlayer::updateExtraSpecialistYield()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::updateExtraSpecialistYield");
 	CvCity* pLoopCity;
 	int iLoop;
 
@@ -14015,6 +14017,7 @@ void CvPlayer::doResearch()
 
 void CvPlayer::doEspionagePoints()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doEspionagePoints");
 	if (getCommerceRate(COMMERCE_ESPIONAGE) > 0)
 	{
 		GET_TEAM(getTeam()).changeEspionagePointsEver(getCommerceRate(COMMERCE_ESPIONAGE));

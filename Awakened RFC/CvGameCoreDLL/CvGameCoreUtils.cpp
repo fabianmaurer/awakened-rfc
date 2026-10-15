@@ -1831,7 +1831,10 @@ int countPlotGroup(FAStarNode* parent, FAStarNode* node, int data, const void* p
 {
 	if (data == ASNL_ADDCLOSED)
 	{
-		(*((int*)pointer))++;
+		PlotGroupSearchData* search = (PlotGroupSearchData*)pointer;
+		++search->count;
+		if (search->reached != NULL)
+			(*search->reached)[GC.getMapINLINE().plotNum(node->m_iX, node->m_iY)] = 1;
 	}
 
 	return 1;
