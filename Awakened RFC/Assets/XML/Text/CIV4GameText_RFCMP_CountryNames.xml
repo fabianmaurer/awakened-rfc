@@ -1,0 +1,4555 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_TRIBAL</Tag>
+    <English>Peoples of the Nile</English>
+    <French>Peoples of the Nile</French>
+    <German>V&#246;lker am Nil</German>
+    <Italian>Peoples of the Nile</Italian>
+    <Spanish>Peoples of the Nile</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_KINGDOM</Tag>
+    <English>Kingdom of Egypt</English>
+    <French>Kingdom of Egypt</French>
+    <German>K&#246;nigreich &#196;gypten</German>
+    <Italian>Kingdom of Egypt</Italian>
+    <Spanish>Kingdom of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_EMPIRE</Tag>
+    <English>Realm of the Two Lands</English>
+    <French>Realm of the Two Lands</French>
+    <German>Reich der beiden L&#228;nder</German>
+    <Italian>Realm of the Two Lands</Italian>
+    <Spanish>Realm of the Two Lands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Egypt</English>
+    <French>Kingdom of Egypt</French>
+    <German>K&#246;nigreich &#196;gypten</German>
+    <Italian>Kingdom of Egypt</Italian>
+    <Spanish>Kingdom of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_REPUBLIC</Tag>
+    <English>Republic of Egypt</English>
+    <French>Republic of Egypt</French>
+    <German>Republik &#196;gypten</German>
+    <Italian>Republic of Egypt</Italian>
+    <Spanish>Republic of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_DEMOCRACY</Tag>
+    <English>Egypt</English>
+    <French>Egypt</French>
+    <German>&#196;gypten</German>
+    <Italian>Egypt</Italian>
+    <Spanish>Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Nile</English>
+    <French>League of the Nile</French>
+    <German>Nilbund</German>
+    <Italian>League of the Nile</Italian>
+    <Spanish>League of the Nile</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_SOCIALIST_REPUBLIC</Tag>
+    <English>Egyptian People's Republic</English>
+    <French>Egyptian People's Republic</French>
+    <German>&#196;gyptische Volksrepublik</German>
+    <Italian>Egyptian People's Republic</Italian>
+    <Spanish>Egyptian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_SOCIALIST_DEMOCRACY</Tag>
+    <English>Egypt</English>
+    <French>Egypt</French>
+    <German>&#196;gypten</German>
+    <Italian>Egypt</Italian>
+    <Spanish>Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_PEOPLES_STATE</Tag>
+    <English>Egyptian People's Republic</English>
+    <French>Egyptian People's Republic</French>
+    <German>&#196;gyptische Volksrepublik</German>
+    <Italian>Egyptian People's Republic</Italian>
+    <Spanish>Egyptian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_DICTATORSHIP</Tag>
+    <English>Egyptian State</English>
+    <French>Egyptian State</French>
+    <German>&#196;gyptischer Staat</German>
+    <Italian>Egyptian State</Italian>
+    <Spanish>Egyptian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_MILITARY</Tag>
+    <English>Mamluk Realm</English>
+    <French>Mamluk Realm</French>
+    <German>Mamlukenreich</German>
+    <Italian>Mamluk Realm</Italian>
+    <Spanish>Mamluk Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_NATIONAL_STATE</Tag>
+    <English>Egyptian State</English>
+    <French>Egyptian State</French>
+    <German>&#196;gyptischer Staat</German>
+    <Italian>Egyptian State</Italian>
+    <Spanish>Egyptian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Egypt</English>
+    <French>Republic of Egypt</French>
+    <German>Republik &#196;gypten</German>
+    <Italian>Republic of Egypt</Italian>
+    <Spanish>Republic of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_THEOCRACY</Tag>
+    <English>Realm of the Pharaohs</English>
+    <French>Realm of the Pharaohs</French>
+    <German>Reich der Pharaonen</German>
+    <Italian>Realm of the Pharaohs</Italian>
+    <Spanish>Realm of the Pharaohs</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_HOLY_KINGDOM</Tag>
+    <English>Realm of the Pharaohs</English>
+    <French>Realm of the Pharaohs</French>
+    <German>Reich der Pharaonen</German>
+    <Italian>Realm of the Pharaohs</Italian>
+    <Spanish>Realm of the Pharaohs</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Egypt</English>
+    <French>Republic of Egypt</French>
+    <German>Republik &#196;gypten</German>
+    <Italian>Republic of Egypt</Italian>
+    <Spanish>Republic of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Egypt</English>
+    <French>Islamic Republic of Egypt</French>
+    <German>Islamische Republik &#196;gypten</German>
+    <Italian>Islamic Republic of Egypt</Italian>
+    <Spanish>Islamic Republic of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_CALIPHATE</Tag>
+    <English>Caliphate of the Nile</English>
+    <French>Caliphate of the Nile</French>
+    <German>Nilkalifat</German>
+    <Italian>Caliphate of the Nile</Italian>
+    <Spanish>Caliphate of the Nile</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_SULTANATE</Tag>
+    <English>Sultanate of Egypt</English>
+    <French>Sultanate of Egypt</French>
+    <German>Sultanat &#196;gypten</German>
+    <Italian>Sultanate of Egypt</Italian>
+    <Spanish>Sultanate of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_SECULAR_REPUBLIC</Tag>
+    <English>Egypt</English>
+    <French>Egypt</French>
+    <German>&#196;gypten</German>
+    <Italian>Egypt</Italian>
+    <Spanish>Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_TRIBAL</Tag>
+    <English>Peoples of Bharat</English>
+    <French>Peoples of Bharat</French>
+    <German>V&#246;lker Bharats</German>
+    <Italian>Peoples of Bharat</Italian>
+    <Spanish>Peoples of Bharat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_KINGDOM</Tag>
+    <English>Kingdom of India</English>
+    <French>Kingdom of India</French>
+    <German>K&#246;nigreich Indien</German>
+    <Italian>Kingdom of India</Italian>
+    <Spanish>Kingdom of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_EMPIRE</Tag>
+    <English>Empire of India</English>
+    <French>Empire of India</French>
+    <German>Kaiserreich Indien</German>
+    <Italian>Empire of India</Italian>
+    <Spanish>Empire of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_CONSTITUTIONAL</Tag>
+    <English>Kingdom of India</English>
+    <French>Kingdom of India</French>
+    <German>K&#246;nigreich Indien</German>
+    <Italian>Kingdom of India</Italian>
+    <Spanish>Kingdom of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_REPUBLIC</Tag>
+    <English>Republic of India</English>
+    <French>Republic of India</French>
+    <German>Republik Indien</German>
+    <Italian>Republic of India</Italian>
+    <Spanish>Republic of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_DEMOCRACY</Tag>
+    <English>Indian Union</English>
+    <French>Indian Union</French>
+    <German>Indische Union</German>
+    <Italian>Indian Union</Italian>
+    <Spanish>Indian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Ganges</English>
+    <French>League of the Ganges</French>
+    <German>Gangesbund</German>
+    <Italian>League of the Ganges</Italian>
+    <Spanish>League of the Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_SOCIALIST_REPUBLIC</Tag>
+    <English>Union of Bharat</English>
+    <French>Union of Bharat</French>
+    <German>Union Bharat</German>
+    <Italian>Union of Bharat</Italian>
+    <Spanish>Union of Bharat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_SOCIALIST_DEMOCRACY</Tag>
+    <English>Indian Union</English>
+    <French>Indian Union</French>
+    <German>Indische Union</German>
+    <Italian>Indian Union</Italian>
+    <Spanish>Indian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_PEOPLES_STATE</Tag>
+    <English>Union of Bharat</English>
+    <French>Union of Bharat</French>
+    <German>Union Bharat</German>
+    <Italian>Union of Bharat</Italian>
+    <Spanish>Union of Bharat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_DICTATORSHIP</Tag>
+    <English>Hindustan</English>
+    <French>Hindustan</French>
+    <German>Hindustan</German>
+    <Italian>Hindustan</Italian>
+    <Spanish>Hindustan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MILITARY</Tag>
+    <English>Realm of Hindustan</English>
+    <French>Realm of Hindustan</French>
+    <German>Reich von Hindustan</German>
+    <Italian>Realm of Hindustan</Italian>
+    <Spanish>Realm of Hindustan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_NATIONAL_STATE</Tag>
+    <English>Hindustan</English>
+    <French>Hindustan</French>
+    <German>Hindustan</German>
+    <Italian>Hindustan</Italian>
+    <Spanish>Hindustan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of India</English>
+    <French>Republic of India</French>
+    <German>Republik Indien</German>
+    <Italian>Republic of India</Italian>
+    <Spanish>Republic of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_THEOCRACY</Tag>
+    <English>Sacred Realm of Bharat</English>
+    <French>Sacred Realm of Bharat</French>
+    <German>Heiliges Reich Bharat</German>
+    <Italian>Sacred Realm of Bharat</Italian>
+    <Spanish>Sacred Realm of Bharat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Bharat</English>
+    <French>Sacred Realm of Bharat</French>
+    <German>Heiliges Reich Bharat</German>
+    <Italian>Sacred Realm of Bharat</Italian>
+    <Spanish>Sacred Realm of Bharat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of India</English>
+    <French>Republic of India</French>
+    <German>Republik Indien</German>
+    <Italian>Republic of India</Italian>
+    <Spanish>Republic of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of India</English>
+    <French>Islamic Republic of India</French>
+    <German>Islamische Republik Indien</German>
+    <Italian>Islamic Republic of India</Italian>
+    <Spanish>Islamic Republic of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_CALIPHATE</Tag>
+    <English>Caliphate of India</English>
+    <French>Caliphate of India</French>
+    <German>Kalifat Indien</German>
+    <Italian>Caliphate of India</Italian>
+    <Spanish>Caliphate of India</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_SULTANATE</Tag>
+    <English>Sultanate of Hindustan</English>
+    <French>Sultanate of Hindustan</French>
+    <German>Sultanat Hindustan</German>
+    <Italian>Sultanate of Hindustan</Italian>
+    <Spanish>Sultanate of Hindustan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_SECULAR_REPUBLIC</Tag>
+    <English>Indian Union</English>
+    <French>Indian Union</French>
+    <German>Indische Union</German>
+    <Italian>Indian Union</Italian>
+    <Spanish>Indian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_TRIBAL</Tag>
+    <English>Huaxia</English>
+    <French>Huaxia</French>
+    <German>Huaxia</German>
+    <Italian>Huaxia</Italian>
+    <Spanish>Huaxia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_KINGDOM</Tag>
+    <English>Middle Kingdom</English>
+    <French>Middle Kingdom</French>
+    <German>Reich der Mitte</German>
+    <Italian>Middle Kingdom</Italian>
+    <Spanish>Middle Kingdom</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_EMPIRE</Tag>
+    <English>Celestial Empire</English>
+    <French>Celestial Empire</French>
+    <German>Reich des Himmels</German>
+    <Italian>Celestial Empire</Italian>
+    <Spanish>Celestial Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_CONSTITUTIONAL</Tag>
+    <English>Middle Kingdom</English>
+    <French>Middle Kingdom</French>
+    <German>Reich der Mitte</German>
+    <Italian>Middle Kingdom</Italian>
+    <Spanish>Middle Kingdom</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_REPUBLIC</Tag>
+    <English>Republic of China</English>
+    <French>Republic of China</French>
+    <German>Republik China</German>
+    <Italian>Republic of China</Italian>
+    <Spanish>Republic of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_DEMOCRACY</Tag>
+    <English>China</English>
+    <French>China</French>
+    <German>China</German>
+    <Italian>China</Italian>
+    <Spanish>China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Silk Road</English>
+    <French>League of the Silk Road</French>
+    <German>Seidenstra&#223;enbund</German>
+    <Italian>League of the Silk Road</Italian>
+    <Spanish>League of the Silk Road</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SOCIALIST_REPUBLIC</Tag>
+    <English>People's Republic of China</English>
+    <French>People's Republic of China</French>
+    <German>Volksrepublik China</German>
+    <Italian>People's Republic of China</Italian>
+    <Spanish>People's Republic of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SOCIALIST_DEMOCRACY</Tag>
+    <English>China</English>
+    <French>China</French>
+    <German>China</German>
+    <Italian>China</Italian>
+    <Spanish>China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_PEOPLES_STATE</Tag>
+    <English>People's Republic of China</English>
+    <French>People's Republic of China</French>
+    <German>Volksrepublik China</German>
+    <Italian>People's Republic of China</Italian>
+    <Spanish>People's Republic of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_DICTATORSHIP</Tag>
+    <English>Chinese State</English>
+    <French>Chinese State</French>
+    <German>Chinesischer Staat</German>
+    <Italian>Chinese State</Italian>
+    <Spanish>Chinese State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_MILITARY</Tag>
+    <English>Celestial Directorate</English>
+    <French>Celestial Directorate</French>
+    <German>Himmlisches Direktorium</German>
+    <Italian>Celestial Directorate</Italian>
+    <Spanish>Celestial Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_NATIONAL_STATE</Tag>
+    <English>Chinese State</English>
+    <French>Chinese State</French>
+    <German>Chinesischer Staat</German>
+    <Italian>Chinese State</Italian>
+    <Spanish>Chinese State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of China</English>
+    <French>Republic of China</French>
+    <German>Republik China</German>
+    <Italian>Republic of China</Italian>
+    <Spanish>Republic of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_THEOCRACY</Tag>
+    <English>Heavenly Kingdom of Great Peace</English>
+    <French>Heavenly Kingdom of Great Peace</French>
+    <German>Himmlisches Reich des Gro&#223;en Friedens</German>
+    <Italian>Heavenly Kingdom of Great Peace</Italian>
+    <Spanish>Heavenly Kingdom of Great Peace</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_HOLY_KINGDOM</Tag>
+    <English>Heavenly Kingdom of Great Peace</English>
+    <French>Heavenly Kingdom of Great Peace</French>
+    <German>Himmlisches Reich des Gro&#223;en Friedens</German>
+    <Italian>Heavenly Kingdom of Great Peace</Italian>
+    <Spanish>Heavenly Kingdom of Great Peace</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_THEOCRATIC_REPUBLIC</Tag>
+    <English>Commonwealth of Great Peace</English>
+    <French>Commonwealth of Great Peace</French>
+    <German>Gemeinwesen des Gro&#223;en Friedens</German>
+    <Italian>Commonwealth of Great Peace</Italian>
+    <Spanish>Commonwealth of Great Peace</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of China</English>
+    <French>Islamic Republic of China</French>
+    <German>Islamische Republik China</German>
+    <Italian>Islamic Republic of China</Italian>
+    <Spanish>Islamic Republic of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_CALIPHATE</Tag>
+    <English>Caliphate of China</English>
+    <French>Caliphate of China</French>
+    <German>Kalifat China</German>
+    <Italian>Caliphate of China</Italian>
+    <Spanish>Caliphate of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SULTANATE</Tag>
+    <English>Sultanate of China</English>
+    <French>Sultanate of China</French>
+    <German>Sultanat China</German>
+    <Italian>Sultanate of China</Italian>
+    <Spanish>Sultanate of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SECULAR_REPUBLIC</Tag>
+    <English>China</English>
+    <French>China</French>
+    <German>China</German>
+    <Italian>China</Italian>
+    <Spanish>China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_TRIBAL</Tag>
+    <English>Peoples of Mesopotamia</English>
+    <French>Peoples of Mesopotamia</French>
+    <German>V&#246;lker Mesopotamiens</German>
+    <Italian>Peoples of Mesopotamia</Italian>
+    <Spanish>Peoples of Mesopotamia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_KINGDOM</Tag>
+    <English>Kingdom of Babylon</English>
+    <French>Kingdom of Babylon</French>
+    <German>K&#246;nigreich Babylon</German>
+    <Italian>Kingdom of Babylon</Italian>
+    <Spanish>Kingdom of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_EMPIRE</Tag>
+    <English>Babylonian Empire</English>
+    <French>Babylonian Empire</French>
+    <German>Babylonisches Reich</German>
+    <Italian>Babylonian Empire</Italian>
+    <Spanish>Babylonian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Babylon</English>
+    <French>Kingdom of Babylon</French>
+    <German>K&#246;nigreich Babylon</German>
+    <Italian>Kingdom of Babylon</Italian>
+    <Spanish>Kingdom of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_REPUBLIC</Tag>
+    <English>Republic of Babylon</English>
+    <French>Republic of Babylon</French>
+    <German>Republik Babylon</German>
+    <Italian>Republic of Babylon</Italian>
+    <Spanish>Republic of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_DEMOCRACY</Tag>
+    <English>Mesopotamian Federation</English>
+    <French>Mesopotamian Federation</French>
+    <German>Mesopotamischer Bund</German>
+    <Italian>Mesopotamian Federation</Italian>
+    <Spanish>Mesopotamian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Two Rivers</English>
+    <French>League of the Two Rivers</French>
+    <German>Zweistrombund</German>
+    <Italian>League of the Two Rivers</Italian>
+    <Spanish>League of the Two Rivers</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_SOCIALIST_REPUBLIC</Tag>
+    <English>Mesopotamian Union</English>
+    <French>Mesopotamian Union</French>
+    <German>Mesopotamische Union</German>
+    <Italian>Mesopotamian Union</Italian>
+    <Spanish>Mesopotamian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_SOCIALIST_DEMOCRACY</Tag>
+    <English>Mesopotamian Federation</English>
+    <French>Mesopotamian Federation</French>
+    <German>Mesopotamischer Bund</German>
+    <Italian>Mesopotamian Federation</Italian>
+    <Spanish>Mesopotamian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_PEOPLES_STATE</Tag>
+    <English>Mesopotamian Union</English>
+    <French>Mesopotamian Union</French>
+    <German>Mesopotamische Union</German>
+    <Italian>Mesopotamian Union</Italian>
+    <Spanish>Mesopotamian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_DICTATORSHIP</Tag>
+    <English>Babylonian State</English>
+    <French>Babylonian State</French>
+    <German>Babylonischer Staat</German>
+    <Italian>Babylonian State</Italian>
+    <Spanish>Babylonian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_MILITARY</Tag>
+    <English>Babylonian Imperium</English>
+    <French>Babylonian Imperium</French>
+    <German>Babylonisches Imperium</German>
+    <Italian>Babylonian Imperium</Italian>
+    <Spanish>Babylonian Imperium</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_NATIONAL_STATE</Tag>
+    <English>Babylonian State</English>
+    <French>Babylonian State</French>
+    <German>Babylonischer Staat</German>
+    <Italian>Babylonian State</Italian>
+    <Spanish>Babylonian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Babylon</English>
+    <French>Republic of Babylon</French>
+    <German>Republik Babylon</German>
+    <Italian>Republic of Babylon</Italian>
+    <Spanish>Republic of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_THEOCRACY</Tag>
+    <English>Sacred Realm of Babylon</English>
+    <French>Sacred Realm of Babylon</French>
+    <German>Heiliges Reich Babylon</German>
+    <Italian>Sacred Realm of Babylon</Italian>
+    <Spanish>Sacred Realm of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Babylon</English>
+    <French>Sacred Realm of Babylon</French>
+    <German>Heiliges Reich Babylon</German>
+    <Italian>Sacred Realm of Babylon</Italian>
+    <Spanish>Sacred Realm of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Babylon</English>
+    <French>Republic of Babylon</French>
+    <German>Republik Babylon</German>
+    <Italian>Republic of Babylon</Italian>
+    <Spanish>Republic of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Babylon</English>
+    <French>Islamic Republic of Babylon</French>
+    <German>Islamische Republik Babylon</German>
+    <Italian>Islamic Republic of Babylon</Italian>
+    <Spanish>Islamic Republic of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_CALIPHATE</Tag>
+    <English>Caliphate of Babylon</English>
+    <French>Caliphate of Babylon</French>
+    <German>Kalifat Babylon</German>
+    <Italian>Caliphate of Babylon</Italian>
+    <Spanish>Caliphate of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_SULTANATE</Tag>
+    <English>Sultanate of Babylon</English>
+    <French>Sultanate of Babylon</French>
+    <German>Sultanat Babylon</German>
+    <Italian>Sultanate of Babylon</Italian>
+    <Spanish>Sultanate of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_SECULAR_REPUBLIC</Tag>
+    <English>Mesopotamian Federation</English>
+    <French>Mesopotamian Federation</French>
+    <German>Mesopotamischer Bund</German>
+    <Italian>Mesopotamian Federation</Italian>
+    <Spanish>Mesopotamian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_TRIBAL</Tag>
+    <English>Achaean Tribes</English>
+    <French>Achaean Tribes</French>
+    <German>Ach&#228;ische St&#228;mme</German>
+    <Italian>Achaean Tribes</Italian>
+    <Spanish>Achaean Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_KINGDOM</Tag>
+    <English>Kingdom of Greece</English>
+    <French>Kingdom of Greece</French>
+    <German>K&#246;nigreich Griechenland</German>
+    <Italian>Kingdom of Greece</Italian>
+    <Spanish>Kingdom of Greece</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_EMPIRE</Tag>
+    <English>Hellenic Empire</English>
+    <French>Hellenic Empire</French>
+    <German>Hellenisches Reich</German>
+    <Italian>Hellenic Empire</Italian>
+    <Spanish>Hellenic Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Greece</English>
+    <French>Kingdom of Greece</French>
+    <German>K&#246;nigreich Griechenland</German>
+    <Italian>Kingdom of Greece</Italian>
+    <Spanish>Kingdom of Greece</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_REPUBLIC</Tag>
+    <English>Hellenic Republic</English>
+    <French>Hellenic Republic</French>
+    <German>Griechische Republik</German>
+    <Italian>Hellenic Republic</Italian>
+    <Spanish>Hellenic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_DEMOCRACY</Tag>
+    <English>Hellas</English>
+    <French>Hellas</French>
+    <German>Hellas</German>
+    <Italian>Hellas</Italian>
+    <Spanish>Hellas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MERCHANT_REPUBLIC</Tag>
+    <English>Delian League</English>
+    <French>Delian League</French>
+    <German>Attischer Seebund</German>
+    <Italian>Delian League</Italian>
+    <Spanish>Delian League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_SOCIALIST_REPUBLIC</Tag>
+    <English>Hellenic Union</English>
+    <French>Hellenic Union</French>
+    <German>Hellenische Union</German>
+    <Italian>Hellenic Union</Italian>
+    <Spanish>Hellenic Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_SOCIALIST_DEMOCRACY</Tag>
+    <English>Hellas</English>
+    <French>Hellas</French>
+    <German>Hellas</German>
+    <Italian>Hellas</Italian>
+    <Spanish>Hellas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_PEOPLES_STATE</Tag>
+    <English>Hellenic Union</English>
+    <French>Hellenic Union</French>
+    <German>Hellenische Union</German>
+    <Italian>Hellenic Union</Italian>
+    <Spanish>Hellenic Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_DICTATORSHIP</Tag>
+    <English>Hellenic State</English>
+    <French>Hellenic State</French>
+    <German>Griechischer Staat</German>
+    <Italian>Hellenic State</Italian>
+    <Spanish>Hellenic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MILITARY</Tag>
+    <English>Hellenic Stratocracy</English>
+    <French>Hellenic Stratocracy</French>
+    <German>Hellenische Stratokratie</German>
+    <Italian>Hellenic Stratocracy</Italian>
+    <Spanish>Hellenic Stratocracy</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_NATIONAL_STATE</Tag>
+    <English>Hellenic State</English>
+    <French>Hellenic State</French>
+    <German>Griechischer Staat</German>
+    <Italian>Hellenic State</Italian>
+    <Spanish>Hellenic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_NATIONAL_REPUBLIC</Tag>
+    <English>Hellenic Republic</English>
+    <French>Hellenic Republic</French>
+    <German>Griechische Republik</German>
+    <Italian>Hellenic Republic</Italian>
+    <Spanish>Hellenic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_THEOCRACY</Tag>
+    <English>Sacred League of Hellas</English>
+    <French>Sacred League of Hellas</French>
+    <German>Heiliger Bund von Hellas</German>
+    <Italian>Sacred League of Hellas</Italian>
+    <Spanish>Sacred League of Hellas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_HOLY_KINGDOM</Tag>
+    <English>Sacred League of Hellas</English>
+    <French>Sacred League of Hellas</French>
+    <German>Heiliger Bund von Hellas</German>
+    <Italian>Sacred League of Hellas</Italian>
+    <Spanish>Sacred League of Hellas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_THEOCRATIC_REPUBLIC</Tag>
+    <English>Hellenic Republic</English>
+    <French>Hellenic Republic</French>
+    <German>Griechische Republik</German>
+    <Italian>Hellenic Republic</Italian>
+    <Spanish>Hellenic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Greece</English>
+    <French>Islamic Republic of Greece</French>
+    <German>Islamische Republik Griechenland</German>
+    <Italian>Islamic Republic of Greece</Italian>
+    <Spanish>Islamic Republic of Greece</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_CALIPHATE</Tag>
+    <English>Caliphate of Greece</English>
+    <French>Caliphate of Greece</French>
+    <German>Kalifat Griechenland</German>
+    <Italian>Caliphate of Greece</Italian>
+    <Spanish>Caliphate of Greece</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_SULTANATE</Tag>
+    <English>Sultanate of Greece</English>
+    <French>Sultanate of Greece</French>
+    <German>Sultanat Griechenland</German>
+    <Italian>Sultanate of Greece</Italian>
+    <Spanish>Sultanate of Greece</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_SECULAR_REPUBLIC</Tag>
+    <English>Hellas</English>
+    <French>Hellas</French>
+    <German>Hellas</German>
+    <Italian>Hellas</Italian>
+    <Spanish>Hellas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_TRIBAL</Tag>
+    <English>Iranian Tribes</English>
+    <French>Iranian Tribes</French>
+    <German>Iranische St&#228;mme</German>
+    <Italian>Iranian Tribes</Italian>
+    <Spanish>Iranian Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_KINGDOM</Tag>
+    <English>Kingdom of Persia</English>
+    <French>Kingdom of Persia</French>
+    <German>K&#246;nigreich Persien</German>
+    <Italian>Kingdom of Persia</Italian>
+    <Spanish>Kingdom of Persia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_EMPIRE</Tag>
+    <English>Empire of the King of Kings</English>
+    <French>Empire of the King of Kings</French>
+    <German>Reich des K&#246;nigs der K&#246;nige</German>
+    <Italian>Empire of the King of Kings</Italian>
+    <Spanish>Empire of the King of Kings</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Persia</English>
+    <French>Kingdom of Persia</French>
+    <German>K&#246;nigreich Persien</German>
+    <Italian>Kingdom of Persia</Italian>
+    <Spanish>Kingdom of Persia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_REPUBLIC</Tag>
+    <English>Republic of Iran</English>
+    <French>Republic of Iran</French>
+    <German>Republik Iran</German>
+    <Italian>Republic of Iran</Italian>
+    <Spanish>Republic of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_DEMOCRACY</Tag>
+    <English>Iran</English>
+    <French>Iran</French>
+    <German>Iran</German>
+    <Italian>Iran</Italian>
+    <Spanish>Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Caravan Cities</English>
+    <French>League of the Caravan Cities</French>
+    <German>Bund der Karawanenst&#228;dte</German>
+    <Italian>League of the Caravan Cities</Italian>
+    <Spanish>League of the Caravan Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SOCIALIST_REPUBLIC</Tag>
+    <English>Persian People's Republic</English>
+    <French>Persian People's Republic</French>
+    <German>Persische Volksrepublik</German>
+    <Italian>Persian People's Republic</Italian>
+    <Spanish>Persian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SOCIALIST_DEMOCRACY</Tag>
+    <English>Iran</English>
+    <French>Iran</French>
+    <German>Iran</German>
+    <Italian>Iran</Italian>
+    <Spanish>Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_PEOPLES_STATE</Tag>
+    <English>Persian People's Republic</English>
+    <French>Persian People's Republic</French>
+    <German>Persische Volksrepublik</German>
+    <Italian>Persian People's Republic</Italian>
+    <Spanish>Persian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_DICTATORSHIP</Tag>
+    <English>Imperial State of Iran</English>
+    <French>Imperial State of Iran</French>
+    <German>Kaiserlicher Staat Iran</German>
+    <Italian>Imperial State of Iran</Italian>
+    <Spanish>Imperial State of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_MILITARY</Tag>
+    <English>Empire of Iran</English>
+    <French>Empire of Iran</French>
+    <German>Kaiserreich Iran</German>
+    <Italian>Empire of Iran</Italian>
+    <Spanish>Empire of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_NATIONAL_STATE</Tag>
+    <English>Imperial State of Iran</English>
+    <French>Imperial State of Iran</French>
+    <German>Kaiserlicher Staat Iran</German>
+    <Italian>Imperial State of Iran</Italian>
+    <Spanish>Imperial State of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Iran</English>
+    <French>Republic of Iran</French>
+    <German>Republik Iran</German>
+    <Italian>Republic of Iran</Italian>
+    <Spanish>Republic of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_THEOCRACY</Tag>
+    <English>Sacred Realm of Iran</English>
+    <French>Sacred Realm of Iran</French>
+    <German>Heiliges Reich Iran</German>
+    <Italian>Sacred Realm of Iran</Italian>
+    <Spanish>Sacred Realm of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Iran</English>
+    <French>Sacred Realm of Iran</French>
+    <German>Heiliges Reich Iran</German>
+    <Italian>Sacred Realm of Iran</Italian>
+    <Spanish>Sacred Realm of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Iran</English>
+    <French>Republic of Iran</French>
+    <German>Republik Iran</German>
+    <Italian>Republic of Iran</Italian>
+    <Spanish>Republic of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Iran</English>
+    <French>Islamic Republic of Iran</French>
+    <German>Islamische Republik Iran</German>
+    <Italian>Islamic Republic of Iran</Italian>
+    <Spanish>Islamic Republic of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_CALIPHATE</Tag>
+    <English>Caliphate of Iran</English>
+    <French>Caliphate of Iran</French>
+    <German>Kalifat Iran</German>
+    <Italian>Caliphate of Iran</Italian>
+    <Spanish>Caliphate of Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SULTANATE</Tag>
+    <English>Sultanate of Persia</English>
+    <French>Sultanate of Persia</French>
+    <German>Sultanat Persien</German>
+    <Italian>Sultanate of Persia</Italian>
+    <Spanish>Sultanate of Persia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SECULAR_REPUBLIC</Tag>
+    <English>Iran</English>
+    <French>Iran</French>
+    <German>Iran</German>
+    <Italian>Iran</Italian>
+    <Spanish>Iran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_TRIBAL</Tag>
+    <English>Punic Cities</English>
+    <French>Punic Cities</French>
+    <German>Punische St&#228;dte</German>
+    <Italian>Punic Cities</Italian>
+    <Spanish>Punic Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_KINGDOM</Tag>
+    <English>Kingdom of Carthage</English>
+    <French>Kingdom of Carthage</French>
+    <German>K&#246;nigreich Karthago</German>
+    <Italian>Kingdom of Carthage</Italian>
+    <Spanish>Kingdom of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_EMPIRE</Tag>
+    <English>Carthaginian Empire</English>
+    <French>Carthaginian Empire</French>
+    <German>Karthagisches Reich</German>
+    <Italian>Carthaginian Empire</Italian>
+    <Spanish>Carthaginian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Carthage</English>
+    <French>Kingdom of Carthage</French>
+    <German>K&#246;nigreich Karthago</German>
+    <Italian>Kingdom of Carthage</Italian>
+    <Spanish>Kingdom of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_REPUBLIC</Tag>
+    <English>Republic of Carthage</English>
+    <French>Republic of Carthage</French>
+    <German>Republik Karthago</German>
+    <Italian>Republic of Carthage</Italian>
+    <Spanish>Republic of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_DEMOCRACY</Tag>
+    <English>Punic Federation</English>
+    <French>Punic Federation</French>
+    <German>Punischer Bund</German>
+    <Italian>Punic Federation</Italian>
+    <Spanish>Punic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_MERCHANT_REPUBLIC</Tag>
+    <English>Carthage</English>
+    <French>Carthage</French>
+    <German>Karthago</German>
+    <Italian>Carthage</Italian>
+    <Spanish>Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_SOCIALIST_REPUBLIC</Tag>
+    <English>Punic Commonwealth</English>
+    <French>Punic Commonwealth</French>
+    <German>Punisches Gemeinwesen</German>
+    <Italian>Punic Commonwealth</Italian>
+    <Spanish>Punic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_SOCIALIST_DEMOCRACY</Tag>
+    <English>Punic Federation</English>
+    <French>Punic Federation</French>
+    <German>Punischer Bund</German>
+    <Italian>Punic Federation</Italian>
+    <Spanish>Punic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_PEOPLES_STATE</Tag>
+    <English>Punic Commonwealth</English>
+    <French>Punic Commonwealth</French>
+    <German>Punisches Gemeinwesen</German>
+    <Italian>Punic Commonwealth</Italian>
+    <Spanish>Punic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_DICTATORSHIP</Tag>
+    <English>Punic State</English>
+    <French>Punic State</French>
+    <German>Punischer Staat</German>
+    <Italian>Punic State</Italian>
+    <Spanish>Punic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_MILITARY</Tag>
+    <English>Punic Hegemony</English>
+    <French>Punic Hegemony</French>
+    <German>Punische Hegemonie</German>
+    <Italian>Punic Hegemony</Italian>
+    <Spanish>Punic Hegemony</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_NATIONAL_STATE</Tag>
+    <English>Punic State</English>
+    <French>Punic State</French>
+    <German>Punischer Staat</German>
+    <Italian>Punic State</Italian>
+    <Spanish>Punic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Carthage</English>
+    <French>Republic of Carthage</French>
+    <German>Republik Karthago</German>
+    <Italian>Republic of Carthage</Italian>
+    <Spanish>Republic of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_THEOCRACY</Tag>
+    <English>Sacred Council of Carthage</English>
+    <French>Sacred Council of Carthage</French>
+    <German>Heiliger Rat von Karthago</German>
+    <Italian>Sacred Council of Carthage</Italian>
+    <Spanish>Sacred Council of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_HOLY_KINGDOM</Tag>
+    <English>Sacred Council of Carthage</English>
+    <French>Sacred Council of Carthage</French>
+    <German>Heiliger Rat von Karthago</German>
+    <Italian>Sacred Council of Carthage</Italian>
+    <Spanish>Sacred Council of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Carthage</English>
+    <French>Republic of Carthage</French>
+    <German>Republik Karthago</German>
+    <Italian>Republic of Carthage</Italian>
+    <Spanish>Republic of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Carthage</English>
+    <French>Islamic Republic of Carthage</French>
+    <German>Islamische Republik Karthago</German>
+    <Italian>Islamic Republic of Carthage</Italian>
+    <Spanish>Islamic Republic of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_CALIPHATE</Tag>
+    <English>Caliphate of Carthage</English>
+    <French>Caliphate of Carthage</French>
+    <German>Kalifat Karthago</German>
+    <Italian>Caliphate of Carthage</Italian>
+    <Spanish>Caliphate of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_SULTANATE</Tag>
+    <English>Sultanate of Carthage</English>
+    <French>Sultanate of Carthage</French>
+    <German>Sultanat Karthago</German>
+    <Italian>Sultanate of Carthage</Italian>
+    <Spanish>Sultanate of Carthage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_SECULAR_REPUBLIC</Tag>
+    <English>Punic Federation</English>
+    <French>Punic Federation</French>
+    <German>Punischer Bund</German>
+    <Italian>Punic Federation</Italian>
+    <Spanish>Punic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_TRIBAL</Tag>
+    <English>Latin Tribes</English>
+    <French>Latin Tribes</French>
+    <German>Latinische St&#228;mme</German>
+    <Italian>Latin Tribes</Italian>
+    <Spanish>Latin Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_KINGDOM</Tag>
+    <English>Kingdom of Rome</English>
+    <French>Kingdom of Rome</French>
+    <German>K&#246;nigreich Rom</German>
+    <Italian>Kingdom of Rome</Italian>
+    <Spanish>Kingdom of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_EMPIRE</Tag>
+    <English>Roman Empire</English>
+    <French>Roman Empire</French>
+    <German>R&#246;misches Reich</German>
+    <Italian>Roman Empire</Italian>
+    <Spanish>Roman Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_CONSTITUTIONAL</Tag>
+    <English>Regno d'Italia</English>
+    <French>Regno d'Italia</French>
+    <German>K&#246;nigreich Italien</German>
+    <Italian>Regno d'Italia</Italian>
+    <Spanish>Regno d'Italia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_REPUBLIC</Tag>
+    <English>Senate and People of Rome</English>
+    <French>Senate and People of Rome</French>
+    <German>Senat und Volk von Rom</German>
+    <Italian>Senate and People of Rome</Italian>
+    <Spanish>Senate and People of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_DEMOCRACY</Tag>
+    <English>Roman Republic</English>
+    <French>Roman Republic</French>
+    <German>R&#246;mische Republik</German>
+    <Italian>Roman Republic</Italian>
+    <Spanish>Roman Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Seven Hills</English>
+    <French>League of the Seven Hills</French>
+    <German>Siebenh&#252;gelbund</German>
+    <Italian>League of the Seven Hills</Italian>
+    <Spanish>League of the Seven Hills</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_SOCIALIST_REPUBLIC</Tag>
+    <English>Roman Commune</English>
+    <French>Roman Commune</French>
+    <German>R&#246;mische Kommune</German>
+    <Italian>Roman Commune</Italian>
+    <Spanish>Roman Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_SOCIALIST_DEMOCRACY</Tag>
+    <English>Roman Republic</English>
+    <French>Roman Republic</French>
+    <German>R&#246;mische Republik</German>
+    <Italian>Roman Republic</Italian>
+    <Spanish>Roman Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_PEOPLES_STATE</Tag>
+    <English>Roman Commune</English>
+    <French>Roman Commune</French>
+    <German>R&#246;mische Kommune</German>
+    <Italian>Roman Commune</Italian>
+    <Spanish>Roman Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_DICTATORSHIP</Tag>
+    <English>Roman State</English>
+    <French>Roman State</French>
+    <German>R&#246;mischer Staat</German>
+    <Italian>Roman State</Italian>
+    <Spanish>Roman State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_MILITARY</Tag>
+    <English>Roman Imperium</English>
+    <French>Roman Imperium</French>
+    <German>R&#246;misches Imperium</German>
+    <Italian>Roman Imperium</Italian>
+    <Spanish>Roman Imperium</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_NATIONAL_STATE</Tag>
+    <English>Roman State</English>
+    <French>Roman State</French>
+    <German>R&#246;mischer Staat</German>
+    <Italian>Roman State</Italian>
+    <Spanish>Roman State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_NATIONAL_REPUBLIC</Tag>
+    <English>Repubblica Italiana</English>
+    <French>Repubblica Italiana</French>
+    <German>Italienische Republik</German>
+    <Italian>Repubblica Italiana</Italian>
+    <Spanish>Repubblica Italiana</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_THEOCRACY</Tag>
+    <English>Sacred Roman Commonwealth</English>
+    <French>Sacred Roman Commonwealth</French>
+    <German>Heiliges R&#246;misches Gemeinwesen</German>
+    <Italian>Sacred Roman Commonwealth</Italian>
+    <Spanish>Sacred Roman Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_HOLY_KINGDOM</Tag>
+    <English>Sacred Roman Commonwealth</English>
+    <French>Sacred Roman Commonwealth</French>
+    <German>Heiliges R&#246;misches Gemeinwesen</German>
+    <Italian>Sacred Roman Commonwealth</Italian>
+    <Spanish>Sacred Roman Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_THEOCRATIC_REPUBLIC</Tag>
+    <English>Senate and People of Rome</English>
+    <French>Senate and People of Rome</French>
+    <German>Senat und Volk von Rom</German>
+    <Italian>Senate and People of Rome</Italian>
+    <Spanish>Senate and People of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Rome</English>
+    <French>Islamic Republic of Rome</French>
+    <German>Islamische Republik Rom</German>
+    <Italian>Islamic Republic of Rome</Italian>
+    <Spanish>Islamic Republic of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_CALIPHATE</Tag>
+    <English>Caliphate of Rome</English>
+    <French>Caliphate of Rome</French>
+    <German>Kalifat Rom</German>
+    <Italian>Caliphate of Rome</Italian>
+    <Spanish>Caliphate of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_SULTANATE</Tag>
+    <English>Sultanate of Rome</English>
+    <French>Sultanate of Rome</French>
+    <German>Sultanat Rom</German>
+    <Italian>Sultanate of Rome</Italian>
+    <Spanish>Sultanate of Rome</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_SECULAR_REPUBLIC</Tag>
+    <English>Roman Republic</English>
+    <French>Roman Republic</French>
+    <German>R&#246;mische Republik</German>
+    <Italian>Roman Republic</Italian>
+    <Spanish>Roman Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_TRIBAL</Tag>
+    <English>Yamato Clans</English>
+    <French>Yamato Clans</French>
+    <German>Yamato-Sippen</German>
+    <Italian>Yamato Clans</Italian>
+    <Spanish>Yamato Clans</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_KINGDOM</Tag>
+    <English>Empire of Japan</English>
+    <French>Empire of Japan</French>
+    <German>Kaiserreich Japan</German>
+    <Italian>Empire of Japan</Italian>
+    <Spanish>Empire of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_EMPIRE</Tag>
+    <English>Empire of Japan</English>
+    <French>Empire of Japan</French>
+    <German>Kaiserreich Japan</German>
+    <Italian>Empire of Japan</Italian>
+    <Spanish>Empire of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_CONSTITUTIONAL</Tag>
+    <English>Empire of Japan</English>
+    <French>Empire of Japan</French>
+    <German>Kaiserreich Japan</German>
+    <Italian>Empire of Japan</Italian>
+    <Spanish>Empire of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_REPUBLIC</Tag>
+    <English>Republic of Japan</English>
+    <French>Republic of Japan</French>
+    <German>Republik Japan</German>
+    <Italian>Republic of Japan</Italian>
+    <Spanish>Republic of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_DEMOCRACY</Tag>
+    <English>Japan</English>
+    <French>Japan</French>
+    <German>Japan</German>
+    <Italian>Japan</Italian>
+    <Spanish>Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Inland Sea</English>
+    <French>League of the Inland Sea</French>
+    <German>Bund der Binnenmeer-St&#228;dte</German>
+    <Italian>League of the Inland Sea</Italian>
+    <Spanish>League of the Inland Sea</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_SOCIALIST_REPUBLIC</Tag>
+    <English>Japanese People's Republic</English>
+    <French>Japanese People's Republic</French>
+    <German>Japanische Volksrepublik</German>
+    <Italian>Japanese People's Republic</Italian>
+    <Spanish>Japanese People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_SOCIALIST_DEMOCRACY</Tag>
+    <English>Japan</English>
+    <French>Japan</French>
+    <German>Japan</German>
+    <Italian>Japan</Italian>
+    <Spanish>Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_PEOPLES_STATE</Tag>
+    <English>Japanese People's Republic</English>
+    <French>Japanese People's Republic</French>
+    <German>Japanische Volksrepublik</German>
+    <Italian>Japanese People's Republic</Italian>
+    <Spanish>Japanese People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_DICTATORSHIP</Tag>
+    <English>Japanese State</English>
+    <French>Japanese State</French>
+    <German>Japanischer Staat</German>
+    <Italian>Japanese State</Italian>
+    <Spanish>Japanese State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_MILITARY</Tag>
+    <English>Japanese Shogunate</English>
+    <French>Japanese Shogunate</French>
+    <German>Japanisches Shogunat</German>
+    <Italian>Japanese Shogunate</Italian>
+    <Spanish>Japanese Shogunate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_NATIONAL_STATE</Tag>
+    <English>Japanese State</English>
+    <French>Japanese State</French>
+    <German>Japanischer Staat</German>
+    <Italian>Japanese State</Italian>
+    <Spanish>Japanese State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Japan</English>
+    <French>Republic of Japan</French>
+    <German>Republik Japan</German>
+    <Italian>Republic of Japan</Italian>
+    <Spanish>Republic of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_THEOCRACY</Tag>
+    <English>Land of the Gods</English>
+    <French>Land of the Gods</French>
+    <German>Land der G&#246;tter</German>
+    <Italian>Land of the Gods</Italian>
+    <Spanish>Land of the Gods</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_HOLY_KINGDOM</Tag>
+    <English>Land of the Gods</English>
+    <French>Land of the Gods</French>
+    <German>Land der G&#246;tter</German>
+    <Italian>Land of the Gods</Italian>
+    <Spanish>Land of the Gods</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Japan</English>
+    <French>Republic of Japan</French>
+    <German>Republik Japan</German>
+    <Italian>Republic of Japan</Italian>
+    <Spanish>Republic of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Japan</English>
+    <French>Islamic Republic of Japan</French>
+    <German>Islamische Republik Japan</German>
+    <Italian>Islamic Republic of Japan</Italian>
+    <Spanish>Islamic Republic of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_CALIPHATE</Tag>
+    <English>Caliphate of Japan</English>
+    <French>Caliphate of Japan</French>
+    <German>Kalifat Japan</German>
+    <Italian>Caliphate of Japan</Italian>
+    <Spanish>Caliphate of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_SULTANATE</Tag>
+    <English>Sultanate of Japan</English>
+    <French>Sultanate of Japan</French>
+    <German>Sultanat Japan</German>
+    <Italian>Sultanate of Japan</Italian>
+    <Spanish>Sultanate of Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_SECULAR_REPUBLIC</Tag>
+    <English>Japan</English>
+    <French>Japan</French>
+    <German>Japan</German>
+    <Italian>Japan</Italian>
+    <Spanish>Japan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_TRIBAL</Tag>
+    <English>Peoples of the Horn</English>
+    <French>Peoples of the Horn</French>
+    <German>V&#246;lker am Horn von Afrika</German>
+    <Italian>Peoples of the Horn</Italian>
+    <Spanish>Peoples of the Horn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_KINGDOM</Tag>
+    <English>Kingdom of Aksum</English>
+    <French>Kingdom of Aksum</French>
+    <German>K&#246;nigreich Aksum</German>
+    <Italian>Kingdom of Aksum</Italian>
+    <Spanish>Kingdom of Aksum</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_EMPIRE</Tag>
+    <English>Ethiopian Empire</English>
+    <French>Ethiopian Empire</French>
+    <German>&#196;thiopisches Kaiserreich</German>
+    <Italian>Ethiopian Empire</Italian>
+    <Spanish>Ethiopian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Aksum</English>
+    <French>Kingdom of Aksum</French>
+    <German>K&#246;nigreich Aksum</German>
+    <Italian>Kingdom of Aksum</Italian>
+    <Spanish>Kingdom of Aksum</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_REPUBLIC</Tag>
+    <English>Republic of Ethiopia</English>
+    <French>Republic of Ethiopia</French>
+    <German>Republik &#196;thiopien</German>
+    <Italian>Republic of Ethiopia</Italian>
+    <Spanish>Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_DEMOCRACY</Tag>
+    <English>Ethiopia</English>
+    <French>Ethiopia</French>
+    <German>&#196;thiopien</German>
+    <Italian>Ethiopia</Italian>
+    <Spanish>Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_MERCHANT_REPUBLIC</Tag>
+    <English>Red Sea League</English>
+    <French>Red Sea League</French>
+    <German>Bund am Roten Meer</German>
+    <Italian>Red Sea League</Italian>
+    <Spanish>Red Sea League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_SOCIALIST_REPUBLIC</Tag>
+    <English>People's Republic of Ethiopia</English>
+    <French>People's Republic of Ethiopia</French>
+    <German>Volksrepublik &#196;thiopien</German>
+    <Italian>People's Republic of Ethiopia</Italian>
+    <Spanish>People's Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_SOCIALIST_DEMOCRACY</Tag>
+    <English>Ethiopia</English>
+    <French>Ethiopia</French>
+    <German>&#196;thiopien</German>
+    <Italian>Ethiopia</Italian>
+    <Spanish>Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_PEOPLES_STATE</Tag>
+    <English>People's Republic of Ethiopia</English>
+    <French>People's Republic of Ethiopia</French>
+    <German>Volksrepublik &#196;thiopien</German>
+    <Italian>People's Republic of Ethiopia</Italian>
+    <Spanish>People's Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_DICTATORSHIP</Tag>
+    <English>Ethiopian State</English>
+    <French>Ethiopian State</French>
+    <German>&#196;thiopischer Staat</German>
+    <Italian>Ethiopian State</Italian>
+    <Spanish>Ethiopian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_MILITARY</Tag>
+    <English>Abyssinian Military Directorate</English>
+    <French>Abyssinian Military Directorate</French>
+    <German>Abessinisches Milit&#228;rdirektorium</German>
+    <Italian>Abyssinian Military Directorate</Italian>
+    <Spanish>Abyssinian Military Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_NATIONAL_STATE</Tag>
+    <English>Ethiopian State</English>
+    <French>Ethiopian State</French>
+    <German>&#196;thiopischer Staat</German>
+    <Italian>Ethiopian State</Italian>
+    <Spanish>Ethiopian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Ethiopia</English>
+    <French>Republic of Ethiopia</French>
+    <German>Republik &#196;thiopien</German>
+    <Italian>Republic of Ethiopia</Italian>
+    <Spanish>Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_THEOCRACY</Tag>
+    <English>Sacred Kingdom of Abyssinia</English>
+    <French>Sacred Kingdom of Abyssinia</French>
+    <German>Heiliges K&#246;nigreich Abessinien</German>
+    <Italian>Sacred Kingdom of Abyssinia</Italian>
+    <Spanish>Sacred Kingdom of Abyssinia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_HOLY_KINGDOM</Tag>
+    <English>Sacred Kingdom of Abyssinia</English>
+    <French>Sacred Kingdom of Abyssinia</French>
+    <German>Heiliges K&#246;nigreich Abessinien</German>
+    <Italian>Sacred Kingdom of Abyssinia</Italian>
+    <Spanish>Sacred Kingdom of Abyssinia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Ethiopia</English>
+    <French>Republic of Ethiopia</French>
+    <German>Republik &#196;thiopien</German>
+    <Italian>Republic of Ethiopia</Italian>
+    <Spanish>Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Ethiopia</English>
+    <French>Islamic Republic of Ethiopia</French>
+    <German>Islamische Republik &#196;thiopien</German>
+    <Italian>Islamic Republic of Ethiopia</Italian>
+    <Spanish>Islamic Republic of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_CALIPHATE</Tag>
+    <English>Caliphate of Ethiopia</English>
+    <French>Caliphate of Ethiopia</French>
+    <German>Kalifat &#196;thiopien</German>
+    <Italian>Caliphate of Ethiopia</Italian>
+    <Spanish>Caliphate of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_SULTANATE</Tag>
+    <English>Sultanate of Ethiopia</English>
+    <French>Sultanate of Ethiopia</French>
+    <German>Sultanat &#196;thiopien</German>
+    <Italian>Sultanate of Ethiopia</Italian>
+    <Spanish>Sultanate of Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_SECULAR_REPUBLIC</Tag>
+    <English>Ethiopia</English>
+    <French>Ethiopia</French>
+    <German>&#196;thiopien</German>
+    <Italian>Ethiopia</Italian>
+    <Spanish>Ethiopia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_TRIBAL</Tag>
+    <English>Maya Peoples</English>
+    <French>Maya Peoples</French>
+    <German>V&#246;lker der Maya</German>
+    <Italian>Maya Peoples</Italian>
+    <Spanish>Maya Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_KINGDOM</Tag>
+    <English>Maya Kingdoms</English>
+    <French>Maya Kingdoms</French>
+    <German>K&#246;nigreiche der Maya</German>
+    <Italian>Maya Kingdoms</Italian>
+    <Spanish>Maya Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_EMPIRE</Tag>
+    <English>Maya Empire</English>
+    <French>Maya Empire</French>
+    <German>Mayareich</German>
+    <Italian>Maya Empire</Italian>
+    <Spanish>Maya Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_CONSTITUTIONAL</Tag>
+    <English>Maya Kingdoms</English>
+    <French>Maya Kingdoms</French>
+    <German>K&#246;nigreiche der Maya</German>
+    <Italian>Maya Kingdoms</Italian>
+    <Spanish>Maya Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_REPUBLIC</Tag>
+    <English>League of Mayapan</English>
+    <French>League of Mayapan</French>
+    <German>Bund von Mayap&#225;n</German>
+    <Italian>League of Mayapan</Italian>
+    <Spanish>League of Mayapan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_DEMOCRACY</Tag>
+    <English>United Maya States</English>
+    <French>United Maya States</French>
+    <German>Vereinigte Maya-Staaten</German>
+    <Italian>United Maya States</Italian>
+    <Spanish>United Maya States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Jade Cities</English>
+    <French>League of the Jade Cities</French>
+    <German>Bund der Jadest&#228;dte</German>
+    <Italian>League of the Jade Cities</Italian>
+    <Spanish>League of the Jade Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_SOCIALIST_REPUBLIC</Tag>
+    <English>Maya Commune</English>
+    <French>Maya Commune</French>
+    <German>Kommune der Maya</German>
+    <Italian>Maya Commune</Italian>
+    <Spanish>Maya Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_SOCIALIST_DEMOCRACY</Tag>
+    <English>United Maya States</English>
+    <French>United Maya States</French>
+    <German>Vereinigte Maya-Staaten</German>
+    <Italian>United Maya States</Italian>
+    <Spanish>United Maya States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_PEOPLES_STATE</Tag>
+    <English>Maya Commune</English>
+    <French>Maya Commune</French>
+    <German>Kommune der Maya</German>
+    <Italian>Maya Commune</Italian>
+    <Spanish>Maya Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_DICTATORSHIP</Tag>
+    <English>Maya State</English>
+    <French>Maya State</French>
+    <German>Staat der Maya</German>
+    <Italian>Maya State</Italian>
+    <Spanish>Maya State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_MILITARY</Tag>
+    <English>Jaguar Realm</English>
+    <French>Jaguar Realm</French>
+    <German>Jaguarreich</German>
+    <Italian>Jaguar Realm</Italian>
+    <Spanish>Jaguar Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_NATIONAL_STATE</Tag>
+    <English>Maya State</English>
+    <French>Maya State</French>
+    <German>Staat der Maya</German>
+    <Italian>Maya State</Italian>
+    <Spanish>Maya State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_NATIONAL_REPUBLIC</Tag>
+    <English>League of Mayapan</English>
+    <French>League of Mayapan</French>
+    <German>Bund von Mayap&#225;n</German>
+    <Italian>League of Mayapan</Italian>
+    <Spanish>League of Mayapan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_THEOCRACY</Tag>
+    <English>Sacred League of the Maya</English>
+    <French>Sacred League of the Maya</French>
+    <German>Heiliger Bund der Maya</German>
+    <Italian>Sacred League of the Maya</Italian>
+    <Spanish>Sacred League of the Maya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_HOLY_KINGDOM</Tag>
+    <English>Sacred League of the Maya</English>
+    <French>Sacred League of the Maya</French>
+    <German>Heiliger Bund der Maya</German>
+    <Italian>Sacred League of the Maya</Italian>
+    <Spanish>Sacred League of the Maya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_THEOCRATIC_REPUBLIC</Tag>
+    <English>League of Mayapan</English>
+    <French>League of Mayapan</French>
+    <German>Bund von Mayap&#225;n</German>
+    <Italian>League of Mayapan</Italian>
+    <Spanish>League of Mayapan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_ISLAMIC_REPUBLIC</Tag>
+    <English>Maya Islamic Republic</English>
+    <French>Maya Islamic Republic</French>
+    <German>Islamische Republik der Maya</German>
+    <Italian>Maya Islamic Republic</Italian>
+    <Spanish>Maya Islamic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_CALIPHATE</Tag>
+    <English>Caliphate of the Maya</English>
+    <French>Caliphate of the Maya</French>
+    <German>Kalifat der Maya</German>
+    <Italian>Caliphate of the Maya</Italian>
+    <Spanish>Caliphate of the Maya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_SULTANATE</Tag>
+    <English>Sultanate of the Maya</English>
+    <French>Sultanate of the Maya</French>
+    <German>Sultanat der Maya</German>
+    <Italian>Sultanate of the Maya</Italian>
+    <Spanish>Sultanate of the Maya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_SECULAR_REPUBLIC</Tag>
+    <English>United Maya States</English>
+    <French>United Maya States</French>
+    <German>Vereinigte Maya-Staaten</German>
+    <Italian>United Maya States</Italian>
+    <Spanish>United Maya States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_TRIBAL</Tag>
+    <English>Norse Clans</English>
+    <French>Norse Clans</French>
+    <German>Nordische Sippen</German>
+    <Italian>Norse Clans</Italian>
+    <Spanish>Norse Clans</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_KINGDOM</Tag>
+    <English>Kingdom of the North</English>
+    <French>Kingdom of the North</French>
+    <German>K&#246;nigreich des Nordens</German>
+    <Italian>Kingdom of the North</Italian>
+    <Spanish>Kingdom of the North</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_EMPIRE</Tag>
+    <English>North Sea Empire</English>
+    <French>North Sea Empire</French>
+    <German>Nordseereich</German>
+    <Italian>North Sea Empire</Italian>
+    <Spanish>North Sea Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_CONSTITUTIONAL</Tag>
+    <English>Nordic Union</English>
+    <French>Nordic Union</French>
+    <German>Nordische Union</German>
+    <Italian>Nordic Union</Italian>
+    <Spanish>Nordic Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_REPUBLIC</Tag>
+    <English>Nordic Commonwealth</English>
+    <French>Nordic Commonwealth</French>
+    <German>Nordisches Gemeinwesen</German>
+    <Italian>Nordic Commonwealth</Italian>
+    <Spanish>Nordic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_DEMOCRACY</Tag>
+    <English>Scandinavian Union</English>
+    <French>Scandinavian Union</French>
+    <German>Skandinavische Union</German>
+    <Italian>Scandinavian Union</Italian>
+    <Spanish>Scandinavian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_MERCHANT_REPUBLIC</Tag>
+    <English>Baltic League</English>
+    <French>Baltic League</French>
+    <German>Ostseebund</German>
+    <Italian>Baltic League</Italian>
+    <Spanish>Baltic League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_SOCIALIST_REPUBLIC</Tag>
+    <English>Nordic People's Union</English>
+    <French>Nordic People's Union</French>
+    <German>Nordische Volksunion</German>
+    <Italian>Nordic People's Union</Italian>
+    <Spanish>Nordic People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_SOCIALIST_DEMOCRACY</Tag>
+    <English>Scandinavian Union</English>
+    <French>Scandinavian Union</French>
+    <German>Skandinavische Union</German>
+    <Italian>Scandinavian Union</Italian>
+    <Spanish>Scandinavian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_PEOPLES_STATE</Tag>
+    <English>Nordic People's Union</English>
+    <French>Nordic People's Union</French>
+    <German>Nordische Volksunion</German>
+    <Italian>Nordic People's Union</Italian>
+    <Spanish>Nordic People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_DICTATORSHIP</Tag>
+    <English>Scandinavian State</English>
+    <French>Scandinavian State</French>
+    <German>Skandinavischer Staat</German>
+    <Italian>Scandinavian State</Italian>
+    <Spanish>Scandinavian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_MILITARY</Tag>
+    <English>Realm of the North</English>
+    <French>Realm of the North</French>
+    <German>Nordreich</German>
+    <Italian>Realm of the North</Italian>
+    <Spanish>Realm of the North</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_NATIONAL_STATE</Tag>
+    <English>Scandinavian State</English>
+    <French>Scandinavian State</French>
+    <German>Skandinavischer Staat</German>
+    <Italian>Scandinavian State</Italian>
+    <Spanish>Scandinavian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_NATIONAL_REPUBLIC</Tag>
+    <English>Nordic Commonwealth</English>
+    <French>Nordic Commonwealth</French>
+    <German>Nordisches Gemeinwesen</German>
+    <Italian>Nordic Commonwealth</Italian>
+    <Spanish>Nordic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_THEOCRACY</Tag>
+    <English>Sacred Realm of the North</English>
+    <French>Sacred Realm of the North</French>
+    <German>Heiliges Nordreich</German>
+    <Italian>Sacred Realm of the North</Italian>
+    <Spanish>Sacred Realm of the North</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of the North</English>
+    <French>Sacred Realm of the North</French>
+    <German>Heiliges Nordreich</German>
+    <Italian>Sacred Realm of the North</Italian>
+    <Spanish>Sacred Realm of the North</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_THEOCRATIC_REPUBLIC</Tag>
+    <English>Nordic Commonwealth</English>
+    <French>Nordic Commonwealth</French>
+    <German>Nordisches Gemeinwesen</German>
+    <Italian>Nordic Commonwealth</Italian>
+    <Spanish>Nordic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Scandinavia</English>
+    <French>Islamic Republic of Scandinavia</French>
+    <German>Islamische Republik Skandinavien</German>
+    <Italian>Islamic Republic of Scandinavia</Italian>
+    <Spanish>Islamic Republic of Scandinavia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_CALIPHATE</Tag>
+    <English>Caliphate of Scandinavia</English>
+    <French>Caliphate of Scandinavia</French>
+    <German>Kalifat Skandinavien</German>
+    <Italian>Caliphate of Scandinavia</Italian>
+    <Spanish>Caliphate of Scandinavia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_SULTANATE</Tag>
+    <English>Sultanate of Scandinavia</English>
+    <French>Sultanate of Scandinavia</French>
+    <German>Sultanat Skandinavien</German>
+    <Italian>Sultanate of Scandinavia</Italian>
+    <Spanish>Sultanate of Scandinavia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_SECULAR_REPUBLIC</Tag>
+    <English>Scandinavian Union</English>
+    <French>Scandinavian Union</French>
+    <German>Skandinavische Union</German>
+    <Italian>Scandinavian Union</Italian>
+    <Spanish>Scandinavian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_TRIBAL</Tag>
+    <English>Bedouin Tribes</English>
+    <French>Bedouin Tribes</French>
+    <German>Beduinenst&#228;mme</German>
+    <Italian>Bedouin Tribes</Italian>
+    <Spanish>Bedouin Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_KINGDOM</Tag>
+    <English>Kingdom of Arabia</English>
+    <French>Kingdom of Arabia</French>
+    <German>K&#246;nigreich Arabien</German>
+    <Italian>Kingdom of Arabia</Italian>
+    <Spanish>Kingdom of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_EMPIRE</Tag>
+    <English>Arabian Empire</English>
+    <French>Arabian Empire</French>
+    <German>Arabisches Reich</German>
+    <Italian>Arabian Empire</Italian>
+    <Spanish>Arabian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Arabia</English>
+    <French>Kingdom of Arabia</French>
+    <German>K&#246;nigreich Arabien</German>
+    <Italian>Kingdom of Arabia</Italian>
+    <Spanish>Kingdom of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_REPUBLIC</Tag>
+    <English>Arab Republic</English>
+    <French>Arab Republic</French>
+    <German>Arabische Republik</German>
+    <Italian>Arab Republic</Italian>
+    <Spanish>Arab Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_DEMOCRACY</Tag>
+    <English>Arabian Federation</English>
+    <French>Arabian Federation</French>
+    <German>Arabischer Bund</German>
+    <Italian>Arabian Federation</Italian>
+    <Spanish>Arabian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Incense Road</English>
+    <French>League of the Incense Road</French>
+    <German>Weihrauchbund</German>
+    <Italian>League of the Incense Road</Italian>
+    <Spanish>League of the Incense Road</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_SOCIALIST_REPUBLIC</Tag>
+    <English>Arab People's Republic</English>
+    <French>Arab People's Republic</French>
+    <German>Arabische Volksrepublik</German>
+    <Italian>Arab People's Republic</Italian>
+    <Spanish>Arab People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_SOCIALIST_DEMOCRACY</Tag>
+    <English>Arabian Federation</English>
+    <French>Arabian Federation</French>
+    <German>Arabischer Bund</German>
+    <Italian>Arabian Federation</Italian>
+    <Spanish>Arabian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_PEOPLES_STATE</Tag>
+    <English>Arab People's Republic</English>
+    <French>Arab People's Republic</French>
+    <German>Arabische Volksrepublik</German>
+    <Italian>Arab People's Republic</Italian>
+    <Spanish>Arab People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_DICTATORSHIP</Tag>
+    <English>Arab Union</English>
+    <French>Arab Union</French>
+    <German>Arabische Union</German>
+    <Italian>Arab Union</Italian>
+    <Spanish>Arab Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_MILITARY</Tag>
+    <English>Arab Revolutionary Republic</English>
+    <French>Arab Revolutionary Republic</French>
+    <German>Arabische Revolutionsrepublik</German>
+    <Italian>Arab Revolutionary Republic</Italian>
+    <Spanish>Arab Revolutionary Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_NATIONAL_STATE</Tag>
+    <English>Arab Union</English>
+    <French>Arab Union</French>
+    <German>Arabische Union</German>
+    <Italian>Arab Union</Italian>
+    <Spanish>Arab Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_NATIONAL_REPUBLIC</Tag>
+    <English>Arab Republic</English>
+    <French>Arab Republic</French>
+    <German>Arabische Republik</German>
+    <Italian>Arab Republic</Italian>
+    <Spanish>Arab Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_THEOCRACY</Tag>
+    <English>Sacred Realm of Arabia</English>
+    <French>Sacred Realm of Arabia</French>
+    <German>Heiliges Reich Arabien</German>
+    <Italian>Sacred Realm of Arabia</Italian>
+    <Spanish>Sacred Realm of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Arabia</English>
+    <French>Sacred Realm of Arabia</French>
+    <German>Heiliges Reich Arabien</German>
+    <Italian>Sacred Realm of Arabia</Italian>
+    <Spanish>Sacred Realm of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_THEOCRATIC_REPUBLIC</Tag>
+    <English>Arab Republic</English>
+    <French>Arab Republic</French>
+    <German>Arabische Republik</German>
+    <Italian>Arab Republic</Italian>
+    <Spanish>Arab Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Arabia</English>
+    <French>Islamic Republic of Arabia</French>
+    <German>Islamische Republik Arabien</German>
+    <Italian>Islamic Republic of Arabia</Italian>
+    <Spanish>Islamic Republic of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_CALIPHATE</Tag>
+    <English>Arab Caliphate</English>
+    <French>Arab Caliphate</French>
+    <German>Arabisches Kalifat</German>
+    <Italian>Arab Caliphate</Italian>
+    <Spanish>Arab Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_SULTANATE</Tag>
+    <English>Sultanate of Arabia</English>
+    <French>Sultanate of Arabia</French>
+    <German>Sultanat Arabien</German>
+    <Italian>Sultanate of Arabia</Italian>
+    <Spanish>Sultanate of Arabia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_SECULAR_REPUBLIC</Tag>
+    <English>Arabian Federation</English>
+    <French>Arabian Federation</French>
+    <German>Arabischer Bund</German>
+    <Italian>Arabian Federation</Italian>
+    <Spanish>Arabian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_TRIBAL</Tag>
+    <English>Khmer Peoples</English>
+    <French>Khmer Peoples</French>
+    <German>V&#246;lker der Khmer</German>
+    <Italian>Khmer Peoples</Italian>
+    <Spanish>Khmer Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_KINGDOM</Tag>
+    <English>Kingdom of Cambodia</English>
+    <French>Kingdom of Cambodia</French>
+    <German>K&#246;nigreich Kambodscha</German>
+    <Italian>Kingdom of Cambodia</Italian>
+    <Spanish>Kingdom of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_EMPIRE</Tag>
+    <English>Khmer Empire</English>
+    <French>Khmer Empire</French>
+    <German>Khmerreich</German>
+    <Italian>Khmer Empire</Italian>
+    <Spanish>Khmer Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Cambodia</English>
+    <French>Kingdom of Cambodia</French>
+    <German>K&#246;nigreich Kambodscha</German>
+    <Italian>Kingdom of Cambodia</Italian>
+    <Spanish>Kingdom of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_REPUBLIC</Tag>
+    <English>Khmer Republic</English>
+    <French>Khmer Republic</French>
+    <German>Republik der Khmer</German>
+    <Italian>Khmer Republic</Italian>
+    <Spanish>Khmer Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_DEMOCRACY</Tag>
+    <English>Cambodia</English>
+    <French>Cambodia</French>
+    <German>Kambodscha</German>
+    <Italian>Cambodia</Italian>
+    <Spanish>Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Mekong</English>
+    <French>League of the Mekong</French>
+    <German>Mekongbund</German>
+    <Italian>League of the Mekong</Italian>
+    <Spanish>League of the Mekong</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_SOCIALIST_REPUBLIC</Tag>
+    <English>People's Republic of Kampuchea</English>
+    <French>People's Republic of Kampuchea</French>
+    <German>Volksrepublik Kampuchea</German>
+    <Italian>People's Republic of Kampuchea</Italian>
+    <Spanish>People's Republic of Kampuchea</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_SOCIALIST_DEMOCRACY</Tag>
+    <English>Cambodia</English>
+    <French>Cambodia</French>
+    <German>Kambodscha</German>
+    <Italian>Cambodia</Italian>
+    <Spanish>Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_PEOPLES_STATE</Tag>
+    <English>People's Republic of Kampuchea</English>
+    <French>People's Republic of Kampuchea</French>
+    <German>Volksrepublik Kampuchea</German>
+    <Italian>People's Republic of Kampuchea</Italian>
+    <Spanish>People's Republic of Kampuchea</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_DICTATORSHIP</Tag>
+    <English>State of Cambodia</English>
+    <French>State of Cambodia</French>
+    <German>Staat Kambodscha</German>
+    <Italian>State of Cambodia</Italian>
+    <Spanish>State of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_MILITARY</Tag>
+    <English>Khmer Military Directorate</English>
+    <French>Khmer Military Directorate</French>
+    <German>Milit&#228;rdirektorium der Khmer</German>
+    <Italian>Khmer Military Directorate</Italian>
+    <Spanish>Khmer Military Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_NATIONAL_STATE</Tag>
+    <English>State of Cambodia</English>
+    <French>State of Cambodia</French>
+    <German>Staat Kambodscha</German>
+    <Italian>State of Cambodia</Italian>
+    <Spanish>State of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_NATIONAL_REPUBLIC</Tag>
+    <English>Khmer Republic</English>
+    <French>Khmer Republic</French>
+    <German>Republik der Khmer</German>
+    <Italian>Khmer Republic</Italian>
+    <Spanish>Khmer Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_THEOCRACY</Tag>
+    <English>Sacred Kingdom of Angkor</English>
+    <French>Sacred Kingdom of Angkor</French>
+    <German>Heiliges K&#246;nigreich Angkor</German>
+    <Italian>Sacred Kingdom of Angkor</Italian>
+    <Spanish>Sacred Kingdom of Angkor</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_HOLY_KINGDOM</Tag>
+    <English>Sacred Kingdom of Angkor</English>
+    <French>Sacred Kingdom of Angkor</French>
+    <German>Heiliges K&#246;nigreich Angkor</German>
+    <Italian>Sacred Kingdom of Angkor</Italian>
+    <Spanish>Sacred Kingdom of Angkor</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_THEOCRATIC_REPUBLIC</Tag>
+    <English>Khmer Republic</English>
+    <French>Khmer Republic</French>
+    <German>Republik der Khmer</German>
+    <Italian>Khmer Republic</Italian>
+    <Spanish>Khmer Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Cambodia</English>
+    <French>Islamic Republic of Cambodia</French>
+    <German>Islamische Republik Kambodscha</German>
+    <Italian>Islamic Republic of Cambodia</Italian>
+    <Spanish>Islamic Republic of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_CALIPHATE</Tag>
+    <English>Caliphate of Cambodia</English>
+    <French>Caliphate of Cambodia</French>
+    <German>Kalifat Kambodscha</German>
+    <Italian>Caliphate of Cambodia</Italian>
+    <Spanish>Caliphate of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_SULTANATE</Tag>
+    <English>Sultanate of Cambodia</English>
+    <French>Sultanate of Cambodia</French>
+    <German>Sultanat Kambodscha</German>
+    <Italian>Sultanate of Cambodia</Italian>
+    <Spanish>Sultanate of Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_SECULAR_REPUBLIC</Tag>
+    <English>Cambodia</English>
+    <French>Cambodia</French>
+    <German>Kambodscha</German>
+    <Italian>Cambodia</Italian>
+    <Spanish>Cambodia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_TRIBAL</Tag>
+    <English>Iberian Peoples</English>
+    <French>Iberian Peoples</French>
+    <German>Iberische V&#246;lker</German>
+    <Italian>Iberian Peoples</Italian>
+    <Spanish>Iberian Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_KINGDOM</Tag>
+    <English>Kingdom of Spain</English>
+    <French>Kingdom of Spain</French>
+    <German>K&#246;nigreich Spanien</German>
+    <Italian>Kingdom of Spain</Italian>
+    <Spanish>Kingdom of Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_EMPIRE</Tag>
+    <English>Spanish Empire</English>
+    <French>Spanish Empire</French>
+    <German>Spanisches Weltreich</German>
+    <Italian>Spanish Empire</Italian>
+    <Spanish>Spanish Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Spain</English>
+    <French>Kingdom of Spain</French>
+    <German>K&#246;nigreich Spanien</German>
+    <Italian>Kingdom of Spain</Italian>
+    <Spanish>Kingdom of Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_REPUBLIC</Tag>
+    <English>Spanish Republic</English>
+    <French>Spanish Republic</French>
+    <German>Spanische Republik</German>
+    <Italian>Spanish Republic</Italian>
+    <Spanish>Spanish Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_DEMOCRACY</Tag>
+    <English>Spain</English>
+    <French>Spain</French>
+    <German>Spanien</German>
+    <Italian>Spain</Italian>
+    <Spanish>Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Iberian Ports</English>
+    <French>League of the Iberian Ports</French>
+    <German>Iberischer Hafenbund</German>
+    <Italian>League of the Iberian Ports</Italian>
+    <Spanish>League of the Iberian Ports</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_SOCIALIST_REPUBLIC</Tag>
+    <English>Iberian Commune</English>
+    <French>Iberian Commune</French>
+    <German>Iberische Kommune</German>
+    <Italian>Iberian Commune</Italian>
+    <Spanish>Iberian Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_SOCIALIST_DEMOCRACY</Tag>
+    <English>Spain</English>
+    <French>Spain</French>
+    <German>Spanien</German>
+    <Italian>Spain</Italian>
+    <Spanish>Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_PEOPLES_STATE</Tag>
+    <English>Iberian Commune</English>
+    <French>Iberian Commune</French>
+    <German>Iberische Kommune</German>
+    <Italian>Iberian Commune</Italian>
+    <Spanish>Iberian Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_DICTATORSHIP</Tag>
+    <English>Spanish State</English>
+    <French>Spanish State</French>
+    <German>Spanischer Staat</German>
+    <Italian>Spanish State</Italian>
+    <Spanish>Spanish State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_MILITARY</Tag>
+    <English>Spanish Military Junta</English>
+    <French>Spanish Military Junta</French>
+    <German>Spanische Milit&#228;rjunta</German>
+    <Italian>Spanish Military Junta</Italian>
+    <Spanish>Spanish Military Junta</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_NATIONAL_STATE</Tag>
+    <English>Spanish State</English>
+    <French>Spanish State</French>
+    <German>Spanischer Staat</German>
+    <Italian>Spanish State</Italian>
+    <Spanish>Spanish State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_NATIONAL_REPUBLIC</Tag>
+    <English>Spanish Republic</English>
+    <French>Spanish Republic</French>
+    <German>Spanische Republik</German>
+    <Italian>Spanish Republic</Italian>
+    <Spanish>Spanish Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_THEOCRACY</Tag>
+    <English>Sacred Crown of Iberia</English>
+    <French>Sacred Crown of Iberia</French>
+    <German>Heilige Krone Iberiens</German>
+    <Italian>Sacred Crown of Iberia</Italian>
+    <Spanish>Sacred Crown of Iberia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_HOLY_KINGDOM</Tag>
+    <English>Sacred Crown of Iberia</English>
+    <French>Sacred Crown of Iberia</French>
+    <German>Heilige Krone Iberiens</German>
+    <Italian>Sacred Crown of Iberia</Italian>
+    <Spanish>Sacred Crown of Iberia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_THEOCRATIC_REPUBLIC</Tag>
+    <English>Spanish Republic</English>
+    <French>Spanish Republic</French>
+    <German>Spanische Republik</German>
+    <Italian>Spanish Republic</Italian>
+    <Spanish>Spanish Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Spain</English>
+    <French>Islamic Republic of Spain</French>
+    <German>Islamische Republik Spanien</German>
+    <Italian>Islamic Republic of Spain</Italian>
+    <Spanish>Islamic Republic of Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CALIPHATE</Tag>
+    <English>Caliphate of Spain</English>
+    <French>Caliphate of Spain</French>
+    <German>Kalifat Spanien</German>
+    <Italian>Caliphate of Spain</Italian>
+    <Spanish>Caliphate of Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_SULTANATE</Tag>
+    <English>Sultanate of Spain</English>
+    <French>Sultanate of Spain</French>
+    <German>Sultanat Spanien</German>
+    <Italian>Sultanate of Spain</Italian>
+    <Spanish>Sultanate of Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_SECULAR_REPUBLIC</Tag>
+    <English>Spain</English>
+    <French>Spain</French>
+    <German>Spanien</German>
+    <Italian>Spain</Italian>
+    <Spanish>Spain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_TRIBAL</Tag>
+    <English>Frankish Tribes</English>
+    <French>Frankish Tribes</French>
+    <German>Fr&#228;nkische St&#228;mme</German>
+    <Italian>Frankish Tribes</Italian>
+    <Spanish>Frankish Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_KINGDOM</Tag>
+    <English>Kingdom of France</English>
+    <French>Kingdom of France</French>
+    <German>K&#246;nigreich Frankreich</German>
+    <Italian>Kingdom of France</Italian>
+    <Spanish>Kingdom of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_EMPIRE</Tag>
+    <English>French Empire</English>
+    <French>French Empire</French>
+    <German>Franz&#246;sisches Kaiserreich</German>
+    <Italian>French Empire</Italian>
+    <Spanish>French Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_CONSTITUTIONAL</Tag>
+    <English>Kingdom of France</English>
+    <French>Kingdom of France</French>
+    <German>K&#246;nigreich Frankreich</German>
+    <Italian>Kingdom of France</Italian>
+    <Spanish>Kingdom of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_REPUBLIC</Tag>
+    <English>French Republic</English>
+    <French>French Republic</French>
+    <German>Franz&#246;sische Republik</German>
+    <Italian>French Republic</Italian>
+    <Spanish>French Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_DEMOCRACY</Tag>
+    <English>France</English>
+    <French>France</French>
+    <German>Frankreich</German>
+    <Italian>France</Italian>
+    <Spanish>France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Free Cities</English>
+    <French>League of the Free Cities</French>
+    <German>Bund der Freien St&#228;dte</German>
+    <Italian>League of the Free Cities</Italian>
+    <Spanish>League of the Free Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_SOCIALIST_REPUBLIC</Tag>
+    <English>French Commune</English>
+    <French>French Commune</French>
+    <German>Franz&#246;sische Kommune</German>
+    <Italian>French Commune</Italian>
+    <Spanish>French Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_SOCIALIST_DEMOCRACY</Tag>
+    <English>French Commune</English>
+    <French>French Commune</French>
+    <German>Franz&#246;sische Kommune</German>
+    <Italian>French Commune</Italian>
+    <Spanish>French Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_PEOPLES_STATE</Tag>
+    <English>French Commune</English>
+    <French>French Commune</French>
+    <German>Franz&#246;sische Kommune</German>
+    <Italian>French Commune</Italian>
+    <Spanish>French Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_DICTATORSHIP</Tag>
+    <English>French State</English>
+    <French>French State</French>
+    <German>Franz&#246;sischer Staat</German>
+    <Italian>French State</Italian>
+    <Spanish>French State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_MILITARY</Tag>
+    <English>French Consulate</English>
+    <French>French Consulate</French>
+    <German>Franz&#246;sisches Konsulat</German>
+    <Italian>French Consulate</Italian>
+    <Spanish>French Consulate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_NATIONAL_STATE</Tag>
+    <English>French State</English>
+    <French>French State</French>
+    <German>Franz&#246;sischer Staat</German>
+    <Italian>French State</Italian>
+    <Spanish>French State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_NATIONAL_REPUBLIC</Tag>
+    <English>French Republic</English>
+    <French>French Republic</French>
+    <German>Franz&#246;sische Republik</German>
+    <Italian>French Republic</Italian>
+    <Spanish>French Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_THEOCRACY</Tag>
+    <English>Sacred Crown of France</English>
+    <French>Sacred Crown of France</French>
+    <German>Heilige Krone Frankreichs</German>
+    <Italian>Sacred Crown of France</Italian>
+    <Spanish>Sacred Crown of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_HOLY_KINGDOM</Tag>
+    <English>Sacred Crown of France</English>
+    <French>Sacred Crown of France</French>
+    <German>Heilige Krone Frankreichs</German>
+    <Italian>Sacred Crown of France</Italian>
+    <Spanish>Sacred Crown of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_THEOCRATIC_REPUBLIC</Tag>
+    <English>French Republic</English>
+    <French>French Republic</French>
+    <German>Franz&#246;sische Republik</German>
+    <Italian>French Republic</Italian>
+    <Spanish>French Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of France</English>
+    <French>Islamic Republic of France</French>
+    <German>Islamische Republik Frankreich</German>
+    <Italian>Islamic Republic of France</Italian>
+    <Spanish>Islamic Republic of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_CALIPHATE</Tag>
+    <English>Caliphate of France</English>
+    <French>Caliphate of France</French>
+    <German>Kalifat Frankreich</German>
+    <Italian>Caliphate of France</Italian>
+    <Spanish>Caliphate of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_SULTANATE</Tag>
+    <English>Sultanate of France</English>
+    <French>Sultanate of France</French>
+    <German>Sultanat Frankreich</German>
+    <Italian>Sultanate of France</Italian>
+    <Spanish>Sultanate of France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_SECULAR_REPUBLIC</Tag>
+    <English>France</English>
+    <French>France</French>
+    <German>Frankreich</German>
+    <Italian>France</Italian>
+    <Spanish>France</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_TRIBAL</Tag>
+    <English>Briton Peoples</English>
+    <French>Briton Peoples</French>
+    <German>V&#246;lker Britanniens</German>
+    <Italian>Briton Peoples</Italian>
+    <Spanish>Briton Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_KINGDOM</Tag>
+    <English>Kingdom of England</English>
+    <French>Kingdom of England</French>
+    <German>K&#246;nigreich England</German>
+    <Italian>Kingdom of England</Italian>
+    <Spanish>Kingdom of England</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_EMPIRE</Tag>
+    <English>British Empire</English>
+    <French>British Empire</French>
+    <German>Britisches Weltreich</German>
+    <Italian>British Empire</Italian>
+    <Spanish>British Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_CONSTITUTIONAL</Tag>
+    <English>United Kingdom</English>
+    <French>United Kingdom</French>
+    <German>Vereinigtes K&#246;nigreich</German>
+    <Italian>United Kingdom</Italian>
+    <Spanish>United Kingdom</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_REPUBLIC</Tag>
+    <English>Commonwealth of England</English>
+    <French>Commonwealth of England</French>
+    <German>Commonwealth von England</German>
+    <Italian>Commonwealth of England</Italian>
+    <Spanish>Commonwealth of England</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_DEMOCRACY</Tag>
+    <English>British Commonwealth</English>
+    <French>British Commonwealth</French>
+    <German>Britisches Commonwealth</German>
+    <Italian>British Commonwealth</Italian>
+    <Spanish>British Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Cinque Ports</English>
+    <French>League of the Cinque Ports</French>
+    <German>Bund der Cinque Ports</German>
+    <Italian>League of the Cinque Ports</Italian>
+    <Spanish>League of the Cinque Ports</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_SOCIALIST_REPUBLIC</Tag>
+    <English>Union of Britain</English>
+    <French>Union of Britain</French>
+    <German>Britische Union</German>
+    <Italian>Union of Britain</Italian>
+    <Spanish>Union of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_SOCIALIST_DEMOCRACY</Tag>
+    <English>British Commonwealth</English>
+    <French>British Commonwealth</French>
+    <German>Britisches Commonwealth</German>
+    <Italian>British Commonwealth</Italian>
+    <Spanish>British Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_PEOPLES_STATE</Tag>
+    <English>Union of Britain</English>
+    <French>Union of Britain</French>
+    <German>Britische Union</German>
+    <Italian>Union of Britain</Italian>
+    <Spanish>Union of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_DICTATORSHIP</Tag>
+    <English>British Protectorate</English>
+    <French>British Protectorate</French>
+    <German>Britisches Protektorat</German>
+    <Italian>British Protectorate</Italian>
+    <Spanish>British Protectorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_MILITARY</Tag>
+    <English>English Protectorate</English>
+    <French>English Protectorate</French>
+    <German>Englisches Protektorat</German>
+    <Italian>English Protectorate</Italian>
+    <Spanish>English Protectorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_NATIONAL_STATE</Tag>
+    <English>British Protectorate</English>
+    <French>British Protectorate</French>
+    <German>Britisches Protektorat</German>
+    <Italian>British Protectorate</Italian>
+    <Spanish>British Protectorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_NATIONAL_REPUBLIC</Tag>
+    <English>Commonwealth of England</English>
+    <French>Commonwealth of England</French>
+    <German>Commonwealth von England</German>
+    <Italian>Commonwealth of England</Italian>
+    <Spanish>Commonwealth of England</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_THEOCRACY</Tag>
+    <English>Sacred Crown of Britain</English>
+    <French>Sacred Crown of Britain</French>
+    <German>Heilige Krone Britanniens</German>
+    <Italian>Sacred Crown of Britain</Italian>
+    <Spanish>Sacred Crown of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_HOLY_KINGDOM</Tag>
+    <English>Sacred Crown of Britain</English>
+    <French>Sacred Crown of Britain</French>
+    <German>Heilige Krone Britanniens</German>
+    <Italian>Sacred Crown of Britain</Italian>
+    <Spanish>Sacred Crown of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_THEOCRATIC_REPUBLIC</Tag>
+    <English>Commonwealth of England</English>
+    <French>Commonwealth of England</French>
+    <German>Commonwealth von England</German>
+    <Italian>Commonwealth of England</Italian>
+    <Spanish>Commonwealth of England</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Britain</English>
+    <French>Islamic Republic of Britain</French>
+    <German>Islamische Republik Gro&#223;britannien</German>
+    <Italian>Islamic Republic of Britain</Italian>
+    <Spanish>Islamic Republic of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_CALIPHATE</Tag>
+    <English>Caliphate of Britain</English>
+    <French>Caliphate of Britain</French>
+    <German>Kalifat Gro&#223;britannien</German>
+    <Italian>Caliphate of Britain</Italian>
+    <Spanish>Caliphate of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_SULTANATE</Tag>
+    <English>Sultanate of Britain</English>
+    <French>Sultanate of Britain</French>
+    <German>Sultanat Gro&#223;britannien</German>
+    <Italian>Sultanate of Britain</Italian>
+    <Spanish>Sultanate of Britain</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_SECULAR_REPUBLIC</Tag>
+    <English>British Commonwealth</English>
+    <French>British Commonwealth</French>
+    <German>Britisches Commonwealth</German>
+    <Italian>British Commonwealth</Italian>
+    <Spanish>British Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_TRIBAL</Tag>
+    <English>Germanic Tribes</English>
+    <French>Germanic Tribes</French>
+    <German>Germanische St&#228;mme</German>
+    <Italian>Germanic Tribes</Italian>
+    <Spanish>Germanic Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_KINGDOM</Tag>
+    <English>Kingdom of the Germans</English>
+    <French>Kingdom of the Germans</French>
+    <German>K&#246;nigreich der Deutschen</German>
+    <Italian>Kingdom of the Germans</Italian>
+    <Spanish>Kingdom of the Germans</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_EMPIRE</Tag>
+    <English>German Empire</English>
+    <French>German Empire</French>
+    <German>Deutsches Kaiserreich</German>
+    <Italian>German Empire</Italian>
+    <Spanish>German Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_CONSTITUTIONAL</Tag>
+    <English>German Reich</English>
+    <French>German Reich</French>
+    <German>Deutsches Reich</German>
+    <Italian>German Reich</Italian>
+    <Spanish>German Reich</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_REPUBLIC</Tag>
+    <English>German Republic</English>
+    <French>German Republic</French>
+    <German>Deutsche Republik</German>
+    <Italian>German Republic</Italian>
+    <Spanish>German Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_DEMOCRACY</Tag>
+    <English>Federal Republic of Germany</English>
+    <French>Federal Republic of Germany</French>
+    <German>Bundesrepublik Deutschland</German>
+    <Italian>Federal Republic of Germany</Italian>
+    <Spanish>Federal Republic of Germany</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_MERCHANT_REPUBLIC</Tag>
+    <English>Hanseatic League</English>
+    <French>Hanseatic League</French>
+    <German>Hansebund</German>
+    <Italian>Hanseatic League</Italian>
+    <Spanish>Hanseatic League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_SOCIALIST_REPUBLIC</Tag>
+    <English>German Democratic Republic</English>
+    <French>German Democratic Republic</French>
+    <German>Deutsche Demokratische Republik</German>
+    <Italian>German Democratic Republic</Italian>
+    <Spanish>German Democratic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_SOCIALIST_DEMOCRACY</Tag>
+    <English>German Republic</English>
+    <French>German Republic</French>
+    <German>Deutsche Republik</German>
+    <Italian>German Republic</Italian>
+    <Spanish>German Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_PEOPLES_STATE</Tag>
+    <English>German Democratic Republic</English>
+    <French>German Democratic Republic</French>
+    <German>Deutsche Demokratische Republik</German>
+    <Italian>German Democratic Republic</Italian>
+    <Spanish>German Democratic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_DICTATORSHIP</Tag>
+    <English>German Reich</English>
+    <French>German Reich</French>
+    <German>Deutsches Reich</German>
+    <Italian>German Reich</Italian>
+    <Spanish>German Reich</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_MILITARY</Tag>
+    <English>German Reich</English>
+    <French>German Reich</French>
+    <German>Deutsches Reich</German>
+    <Italian>German Reich</Italian>
+    <Spanish>German Reich</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_NATIONAL_STATE</Tag>
+    <English>German Reich</English>
+    <French>German Reich</French>
+    <German>Deutsches Reich</German>
+    <Italian>German Reich</Italian>
+    <Spanish>German Reich</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_NATIONAL_REPUBLIC</Tag>
+    <English>German Republic</English>
+    <French>German Republic</French>
+    <German>Deutsche Republik</German>
+    <Italian>German Republic</Italian>
+    <Spanish>German Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_THEOCRACY</Tag>
+    <English>Sacred German Empire</English>
+    <French>Sacred German Empire</French>
+    <German>Heiliges Deutsches Reich</German>
+    <Italian>Sacred German Empire</Italian>
+    <Spanish>Sacred German Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_HOLY_KINGDOM</Tag>
+    <English>Sacred German Empire</English>
+    <French>Sacred German Empire</French>
+    <German>Heiliges Deutsches Reich</German>
+    <Italian>Sacred German Empire</Italian>
+    <Spanish>Sacred German Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_THEOCRATIC_REPUBLIC</Tag>
+    <English>German Republic</English>
+    <French>German Republic</French>
+    <German>Deutsche Republik</German>
+    <Italian>German Republic</Italian>
+    <Spanish>German Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Germany</English>
+    <French>Islamic Republic of Germany</French>
+    <German>Islamische Republik Deutschland</German>
+    <Italian>Islamic Republic of Germany</Italian>
+    <Spanish>Islamic Republic of Germany</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_CALIPHATE</Tag>
+    <English>Caliphate of Germany</English>
+    <French>Caliphate of Germany</French>
+    <German>Kalifat Deutschland</German>
+    <Italian>Caliphate of Germany</Italian>
+    <Spanish>Caliphate of Germany</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_SULTANATE</Tag>
+    <English>Sultanate of Germany</English>
+    <French>Sultanate of Germany</French>
+    <German>Sultanat Deutschland</German>
+    <Italian>Sultanate of Germany</Italian>
+    <Spanish>Sultanate of Germany</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_SECULAR_REPUBLIC</Tag>
+    <English>Federal Republic of Germany</English>
+    <French>Federal Republic of Germany</French>
+    <German>Bundesrepublik Deutschland</German>
+    <Italian>Federal Republic of Germany</Italian>
+    <Spanish>Federal Republic of Germany</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_TRIBAL</Tag>
+    <English>Slavic Tribes</English>
+    <French>Slavic Tribes</French>
+    <German>Slawische St&#228;mme</German>
+    <Italian>Slavic Tribes</Italian>
+    <Spanish>Slavic Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_KINGDOM</Tag>
+    <English>Tsardom of Russia</English>
+    <French>Tsardom of Russia</French>
+    <German>Russisches Zarenreich</German>
+    <Italian>Tsardom of Russia</Italian>
+    <Spanish>Tsardom of Russia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_EMPIRE</Tag>
+    <English>Russian Empire</English>
+    <French>Russian Empire</French>
+    <German>Russisches Kaiserreich</German>
+    <Italian>Russian Empire</Italian>
+    <Spanish>Russian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_CONSTITUTIONAL</Tag>
+    <English>Tsardom of Russia</English>
+    <French>Tsardom of Russia</French>
+    <German>Russisches Zarenreich</German>
+    <Italian>Tsardom of Russia</Italian>
+    <Spanish>Tsardom of Russia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_REPUBLIC</Tag>
+    <English>Russian Republic</English>
+    <French>Russian Republic</French>
+    <German>Russische Republik</German>
+    <Italian>Russian Republic</Italian>
+    <Spanish>Russian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_DEMOCRACY</Tag>
+    <English>Russian Federation</English>
+    <French>Russian Federation</French>
+    <German>Russische F&#246;deration</German>
+    <Italian>Russian Federation</Italian>
+    <Spanish>Russian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_MERCHANT_REPUBLIC</Tag>
+    <English>Novgorod Republic</English>
+    <French>Novgorod Republic</French>
+    <German>Republik Nowgorod</German>
+    <Italian>Novgorod Republic</Italian>
+    <Spanish>Novgorod Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_SOCIALIST_REPUBLIC</Tag>
+    <English>Russian Soviet Republic</English>
+    <French>Russian Soviet Republic</French>
+    <German>Russische Sowjetrepublik</German>
+    <Italian>Russian Soviet Republic</Italian>
+    <Spanish>Russian Soviet Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_SOCIALIST_DEMOCRACY</Tag>
+    <English>Russian Union</English>
+    <French>Russian Union</French>
+    <German>Russische Union</German>
+    <Italian>Russian Union</Italian>
+    <Spanish>Russian Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_PEOPLES_STATE</Tag>
+    <English>Russian Soviet Republic</English>
+    <French>Russian Soviet Republic</French>
+    <German>Russische Sowjetrepublik</German>
+    <Italian>Russian Soviet Republic</Italian>
+    <Spanish>Russian Soviet Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_DICTATORSHIP</Tag>
+    <English>Russian State</English>
+    <French>Russian State</French>
+    <German>Russischer Staat</German>
+    <Italian>Russian State</Italian>
+    <Spanish>Russian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_MILITARY</Tag>
+    <English>Russian Supreme Directorate</English>
+    <French>Russian Supreme Directorate</French>
+    <German>Oberstes Direktorium Russlands</German>
+    <Italian>Russian Supreme Directorate</Italian>
+    <Spanish>Russian Supreme Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_NATIONAL_STATE</Tag>
+    <English>Russian State</English>
+    <French>Russian State</French>
+    <German>Russischer Staat</German>
+    <Italian>Russian State</Italian>
+    <Spanish>Russian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_NATIONAL_REPUBLIC</Tag>
+    <English>Russian Republic</English>
+    <French>Russian Republic</French>
+    <German>Russische Republik</German>
+    <Italian>Russian Republic</Italian>
+    <Spanish>Russian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_THEOCRACY</Tag>
+    <English>Sacred Realm of Rus</English>
+    <French>Sacred Realm of Rus</French>
+    <German>Heiliges Reich der Rus</German>
+    <Italian>Sacred Realm of Rus</Italian>
+    <Spanish>Sacred Realm of Rus</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Rus</English>
+    <French>Sacred Realm of Rus</French>
+    <German>Heiliges Reich der Rus</German>
+    <Italian>Sacred Realm of Rus</Italian>
+    <Spanish>Sacred Realm of Rus</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_THEOCRATIC_REPUBLIC</Tag>
+    <English>Russian Republic</English>
+    <French>Russian Republic</French>
+    <German>Russische Republik</German>
+    <Italian>Russian Republic</Italian>
+    <Spanish>Russian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Russia</English>
+    <French>Islamic Republic of Russia</French>
+    <German>Islamische Republik Russland</German>
+    <Italian>Islamic Republic of Russia</Italian>
+    <Spanish>Islamic Republic of Russia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_CALIPHATE</Tag>
+    <English>Caliphate of Russia</English>
+    <French>Caliphate of Russia</French>
+    <German>Kalifat Russland</German>
+    <Italian>Caliphate of Russia</Italian>
+    <Spanish>Caliphate of Russia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_SULTANATE</Tag>
+    <English>Sultanate of Russia</English>
+    <French>Sultanate of Russia</French>
+    <German>Sultanat Russland</German>
+    <Italian>Sultanate of Russia</Italian>
+    <Spanish>Sultanate of Russia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_SECULAR_REPUBLIC</Tag>
+    <English>Russian Federation</English>
+    <French>Russian Federation</French>
+    <German>Russische F&#246;deration</German>
+    <Italian>Russian Federation</Italian>
+    <Spanish>Russian Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_TRIBAL</Tag>
+    <English>Batavian Tribes</English>
+    <French>Batavian Tribes</French>
+    <German>Batavische St&#228;mme</German>
+    <Italian>Batavian Tribes</Italian>
+    <Spanish>Batavian Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_KINGDOM</Tag>
+    <English>Kingdom of the Netherlands</English>
+    <French>Kingdom of the Netherlands</French>
+    <German>K&#246;nigreich der Niederlande</German>
+    <Italian>Kingdom of the Netherlands</Italian>
+    <Spanish>Kingdom of the Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_EMPIRE</Tag>
+    <English>Dutch Empire</English>
+    <French>Dutch Empire</French>
+    <German>Niederl&#228;ndisches Reich</German>
+    <Italian>Dutch Empire</Italian>
+    <Spanish>Dutch Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_CONSTITUTIONAL</Tag>
+    <English>Kingdom of the Netherlands</English>
+    <French>Kingdom of the Netherlands</French>
+    <German>K&#246;nigreich der Niederlande</German>
+    <Italian>Kingdom of the Netherlands</Italian>
+    <Spanish>Kingdom of the Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_REPUBLIC</Tag>
+    <English>Batavian Republic</English>
+    <French>Batavian Republic</French>
+    <German>Batavische Republik</German>
+    <Italian>Batavian Republic</Italian>
+    <Spanish>Batavian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_DEMOCRACY</Tag>
+    <English>Netherlands</English>
+    <French>Netherlands</French>
+    <German>Niederlande</German>
+    <Italian>Netherlands</Italian>
+    <Spanish>Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_MERCHANT_REPUBLIC</Tag>
+    <English>United Provinces</English>
+    <French>United Provinces</French>
+    <German>Vereinigte Provinzen</German>
+    <Italian>United Provinces</Italian>
+    <Spanish>United Provinces</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_SOCIALIST_REPUBLIC</Tag>
+    <English>Dutch People's Republic</English>
+    <French>Dutch People's Republic</French>
+    <German>Niederl&#228;ndische Volksrepublik</German>
+    <Italian>Dutch People's Republic</Italian>
+    <Spanish>Dutch People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_SOCIALIST_DEMOCRACY</Tag>
+    <English>Netherlands</English>
+    <French>Netherlands</French>
+    <German>Niederlande</German>
+    <Italian>Netherlands</Italian>
+    <Spanish>Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_PEOPLES_STATE</Tag>
+    <English>Dutch People's Republic</English>
+    <French>Dutch People's Republic</French>
+    <German>Niederl&#228;ndische Volksrepublik</German>
+    <Italian>Dutch People's Republic</Italian>
+    <Spanish>Dutch People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_DICTATORSHIP</Tag>
+    <English>Dutch State</English>
+    <French>Dutch State</French>
+    <German>Niederl&#228;ndischer Staat</German>
+    <Italian>Dutch State</Italian>
+    <Spanish>Dutch State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_MILITARY</Tag>
+    <English>Batavian Protectorate</English>
+    <French>Batavian Protectorate</French>
+    <German>Batavisches Protektorat</German>
+    <Italian>Batavian Protectorate</Italian>
+    <Spanish>Batavian Protectorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_NATIONAL_STATE</Tag>
+    <English>Dutch State</English>
+    <French>Dutch State</French>
+    <German>Niederl&#228;ndischer Staat</German>
+    <Italian>Dutch State</Italian>
+    <Spanish>Dutch State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_NATIONAL_REPUBLIC</Tag>
+    <English>Batavian Republic</English>
+    <French>Batavian Republic</French>
+    <German>Batavische Republik</German>
+    <Italian>Batavian Republic</Italian>
+    <Spanish>Batavian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_THEOCRACY</Tag>
+    <English>Sacred Union of the Low Countries</English>
+    <French>Sacred Union of the Low Countries</French>
+    <German>Heiliger Bund der Niederlande</German>
+    <Italian>Sacred Union of the Low Countries</Italian>
+    <Spanish>Sacred Union of the Low Countries</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_HOLY_KINGDOM</Tag>
+    <English>Sacred Union of the Low Countries</English>
+    <French>Sacred Union of the Low Countries</French>
+    <German>Heiliger Bund der Niederlande</German>
+    <Italian>Sacred Union of the Low Countries</Italian>
+    <Spanish>Sacred Union of the Low Countries</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_THEOCRATIC_REPUBLIC</Tag>
+    <English>Batavian Republic</English>
+    <French>Batavian Republic</French>
+    <German>Batavische Republik</German>
+    <Italian>Batavian Republic</Italian>
+    <Spanish>Batavian Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of the Netherlands</English>
+    <French>Islamic Republic of the Netherlands</French>
+    <German>Islamische Republik der Niederlande</German>
+    <Italian>Islamic Republic of the Netherlands</Italian>
+    <Spanish>Islamic Republic of the Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_CALIPHATE</Tag>
+    <English>Caliphate of the Netherlands</English>
+    <French>Caliphate of the Netherlands</French>
+    <German>Kalifat der Niederlande</German>
+    <Italian>Caliphate of the Netherlands</Italian>
+    <Spanish>Caliphate of the Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_SULTANATE</Tag>
+    <English>Sultanate of the Netherlands</English>
+    <French>Sultanate of the Netherlands</French>
+    <German>Sultanat der Niederlande</German>
+    <Italian>Sultanate of the Netherlands</Italian>
+    <Spanish>Sultanate of the Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_SECULAR_REPUBLIC</Tag>
+    <English>Netherlands</English>
+    <French>Netherlands</French>
+    <German>Niederlande</German>
+    <Italian>Netherlands</Italian>
+    <Spanish>Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_TRIBAL</Tag>
+    <English>Mande Peoples</English>
+    <French>Mande Peoples</French>
+    <German>Mande-V&#246;lker</German>
+    <Italian>Mande Peoples</Italian>
+    <Spanish>Mande Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_KINGDOM</Tag>
+    <English>Kingdom of Mali</English>
+    <French>Kingdom of Mali</French>
+    <German>K&#246;nigreich Mali</German>
+    <Italian>Kingdom of Mali</Italian>
+    <Spanish>Kingdom of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_EMPIRE</Tag>
+    <English>Mali Empire</English>
+    <French>Mali Empire</French>
+    <German>Malireich</German>
+    <Italian>Mali Empire</Italian>
+    <Spanish>Mali Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Mali</English>
+    <French>Kingdom of Mali</French>
+    <German>K&#246;nigreich Mali</German>
+    <Italian>Kingdom of Mali</Italian>
+    <Spanish>Kingdom of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_REPUBLIC</Tag>
+    <English>Republic of Mali</English>
+    <French>Republic of Mali</French>
+    <German>Republik Mali</German>
+    <Italian>Republic of Mali</Italian>
+    <Spanish>Republic of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_DEMOCRACY</Tag>
+    <English>Mali Federation</English>
+    <French>Mali Federation</French>
+    <German>Mali-F&#246;deration</German>
+    <Italian>Mali Federation</Italian>
+    <Spanish>Mali Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Niger</English>
+    <French>League of the Niger</French>
+    <German>Nigerbund</German>
+    <Italian>League of the Niger</Italian>
+    <Spanish>League of the Niger</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_SOCIALIST_REPUBLIC</Tag>
+    <English>Malian People's Union</English>
+    <French>Malian People's Union</French>
+    <German>Malische Volksunion</German>
+    <Italian>Malian People's Union</Italian>
+    <Spanish>Malian People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_SOCIALIST_DEMOCRACY</Tag>
+    <English>Mali Federation</English>
+    <French>Mali Federation</French>
+    <German>Mali-F&#246;deration</German>
+    <Italian>Mali Federation</Italian>
+    <Spanish>Mali Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_PEOPLES_STATE</Tag>
+    <English>Malian People's Union</English>
+    <French>Malian People's Union</French>
+    <German>Malische Volksunion</German>
+    <Italian>Malian People's Union</Italian>
+    <Spanish>Malian People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_DICTATORSHIP</Tag>
+    <English>Malian State</English>
+    <French>Malian State</French>
+    <German>Malischer Staat</German>
+    <Italian>Malian State</Italian>
+    <Spanish>Malian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_MILITARY</Tag>
+    <English>Military Empire of the Sahel</English>
+    <French>Military Empire of the Sahel</French>
+    <German>Milit&#228;rreich am Sahel</German>
+    <Italian>Military Empire of the Sahel</Italian>
+    <Spanish>Military Empire of the Sahel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_NATIONAL_STATE</Tag>
+    <English>Malian State</English>
+    <French>Malian State</French>
+    <German>Malischer Staat</German>
+    <Italian>Malian State</Italian>
+    <Spanish>Malian State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Mali</English>
+    <French>Republic of Mali</French>
+    <German>Republik Mali</German>
+    <Italian>Republic of Mali</Italian>
+    <Spanish>Republic of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_THEOCRACY</Tag>
+    <English>Sacred Realm of Mali</English>
+    <French>Sacred Realm of Mali</French>
+    <German>Heiliges Reich Mali</German>
+    <Italian>Sacred Realm of Mali</Italian>
+    <Spanish>Sacred Realm of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Mali</English>
+    <French>Sacred Realm of Mali</French>
+    <German>Heiliges Reich Mali</German>
+    <Italian>Sacred Realm of Mali</Italian>
+    <Spanish>Sacred Realm of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Mali</English>
+    <French>Republic of Mali</French>
+    <German>Republik Mali</German>
+    <Italian>Republic of Mali</Italian>
+    <Spanish>Republic of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Mali</English>
+    <French>Islamic Republic of Mali</French>
+    <German>Islamische Republik Mali</German>
+    <Italian>Islamic Republic of Mali</Italian>
+    <Spanish>Islamic Republic of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_CALIPHATE</Tag>
+    <English>Caliphate of Mali</English>
+    <French>Caliphate of Mali</French>
+    <German>Kalifat Mali</German>
+    <Italian>Caliphate of Mali</Italian>
+    <Spanish>Caliphate of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_SULTANATE</Tag>
+    <English>Sultanate of Mali</English>
+    <French>Sultanate of Mali</French>
+    <German>Sultanat Mali</German>
+    <Italian>Sultanate of Mali</Italian>
+    <Spanish>Sultanate of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_SECULAR_REPUBLIC</Tag>
+    <English>Mali Federation</English>
+    <French>Mali Federation</French>
+    <German>Mali-F&#246;deration</German>
+    <Italian>Mali Federation</Italian>
+    <Spanish>Mali Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_TRIBAL</Tag>
+    <English>Lusitanian Tribes</English>
+    <French>Lusitanian Tribes</French>
+    <German>Lusitanische St&#228;mme</German>
+    <Italian>Lusitanian Tribes</Italian>
+    <Spanish>Lusitanian Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_KINGDOM</Tag>
+    <English>Kingdom of Portugal</English>
+    <French>Kingdom of Portugal</French>
+    <German>K&#246;nigreich Portugal</German>
+    <Italian>Kingdom of Portugal</Italian>
+    <Spanish>Kingdom of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_EMPIRE</Tag>
+    <English>Portuguese Empire</English>
+    <French>Portuguese Empire</French>
+    <German>Portugiesisches Weltreich</German>
+    <Italian>Portuguese Empire</Italian>
+    <Spanish>Portuguese Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Portugal</English>
+    <French>Kingdom of Portugal</French>
+    <German>K&#246;nigreich Portugal</German>
+    <Italian>Kingdom of Portugal</Italian>
+    <Spanish>Kingdom of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_REPUBLIC</Tag>
+    <English>Portuguese Republic</English>
+    <French>Portuguese Republic</French>
+    <German>Portugiesische Republik</German>
+    <Italian>Portuguese Republic</Italian>
+    <Spanish>Portuguese Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_DEMOCRACY</Tag>
+    <English>Portugal</English>
+    <French>Portugal</French>
+    <German>Portugal</German>
+    <Italian>Portugal</Italian>
+    <Spanish>Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_MERCHANT_REPUBLIC</Tag>
+    <English>Lusitanian Maritime League</English>
+    <French>Lusitanian Maritime League</French>
+    <German>Lusitanischer Seebund</German>
+    <Italian>Lusitanian Maritime League</Italian>
+    <Spanish>Lusitanian Maritime League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_SOCIALIST_REPUBLIC</Tag>
+    <English>Lusitanian Commune</English>
+    <French>Lusitanian Commune</French>
+    <German>Lusitanische Kommune</German>
+    <Italian>Lusitanian Commune</Italian>
+    <Spanish>Lusitanian Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_SOCIALIST_DEMOCRACY</Tag>
+    <English>Portugal</English>
+    <French>Portugal</French>
+    <German>Portugal</German>
+    <Italian>Portugal</Italian>
+    <Spanish>Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_PEOPLES_STATE</Tag>
+    <English>Lusitanian Commune</English>
+    <French>Lusitanian Commune</French>
+    <German>Lusitanische Kommune</German>
+    <Italian>Lusitanian Commune</Italian>
+    <Spanish>Lusitanian Commune</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_DICTATORSHIP</Tag>
+    <English>Estado Novo</English>
+    <French>Estado Novo</French>
+    <German>Estado Novo</German>
+    <Italian>Estado Novo</Italian>
+    <Spanish>Estado Novo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_MILITARY</Tag>
+    <English>Lusitanian Directorate</English>
+    <French>Lusitanian Directorate</French>
+    <German>Lusitanisches Direktorium</German>
+    <Italian>Lusitanian Directorate</Italian>
+    <Spanish>Lusitanian Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_NATIONAL_STATE</Tag>
+    <English>Estado Novo</English>
+    <French>Estado Novo</French>
+    <German>Estado Novo</German>
+    <Italian>Estado Novo</Italian>
+    <Spanish>Estado Novo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_NATIONAL_REPUBLIC</Tag>
+    <English>Portuguese Republic</English>
+    <French>Portuguese Republic</French>
+    <German>Portugiesische Republik</German>
+    <Italian>Portuguese Republic</Italian>
+    <Spanish>Portuguese Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_THEOCRACY</Tag>
+    <English>Sacred Crown of Portugal</English>
+    <French>Sacred Crown of Portugal</French>
+    <German>Heilige Krone Portugals</German>
+    <Italian>Sacred Crown of Portugal</Italian>
+    <Spanish>Sacred Crown of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_HOLY_KINGDOM</Tag>
+    <English>Sacred Crown of Portugal</English>
+    <French>Sacred Crown of Portugal</French>
+    <German>Heilige Krone Portugals</German>
+    <Italian>Sacred Crown of Portugal</Italian>
+    <Spanish>Sacred Crown of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_THEOCRATIC_REPUBLIC</Tag>
+    <English>Portuguese Republic</English>
+    <French>Portuguese Republic</French>
+    <German>Portugiesische Republik</German>
+    <Italian>Portuguese Republic</Italian>
+    <Spanish>Portuguese Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Portugal</English>
+    <French>Islamic Republic of Portugal</French>
+    <German>Islamische Republik Portugal</German>
+    <Italian>Islamic Republic of Portugal</Italian>
+    <Spanish>Islamic Republic of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_CALIPHATE</Tag>
+    <English>Caliphate of Portugal</English>
+    <French>Caliphate of Portugal</French>
+    <German>Kalifat Portugal</German>
+    <Italian>Caliphate of Portugal</Italian>
+    <Spanish>Caliphate of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_SULTANATE</Tag>
+    <English>Sultanate of Portugal</English>
+    <French>Sultanate of Portugal</French>
+    <German>Sultanat Portugal</German>
+    <Italian>Sultanate of Portugal</Italian>
+    <Spanish>Sultanate of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_SECULAR_REPUBLIC</Tag>
+    <English>Portugal</English>
+    <French>Portugal</French>
+    <German>Portugal</German>
+    <Italian>Portugal</Italian>
+    <Spanish>Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_TRIBAL</Tag>
+    <English>Andean Peoples</English>
+    <French>Andean Peoples</French>
+    <German>Andenv&#246;lker</German>
+    <Italian>Andean Peoples</Italian>
+    <Spanish>Andean Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_KINGDOM</Tag>
+    <English>Kingdom of Cusco</English>
+    <French>Kingdom of Cusco</French>
+    <German>K&#246;nigreich Cusco</German>
+    <Italian>Kingdom of Cusco</Italian>
+    <Spanish>Kingdom of Cusco</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_EMPIRE</Tag>
+    <English>Land of the Four Quarters</English>
+    <French>Land of the Four Quarters</French>
+    <German>Land der vier Weltgegenden</German>
+    <Italian>Land of the Four Quarters</Italian>
+    <Spanish>Land of the Four Quarters</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Cusco</English>
+    <French>Kingdom of Cusco</French>
+    <German>K&#246;nigreich Cusco</German>
+    <Italian>Kingdom of Cusco</Italian>
+    <Spanish>Kingdom of Cusco</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_REPUBLIC</Tag>
+    <English>Andean Republic</English>
+    <French>Andean Republic</French>
+    <German>Andenrepublik</German>
+    <Italian>Andean Republic</Italian>
+    <Spanish>Andean Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_DEMOCRACY</Tag>
+    <English>Andean Federation</English>
+    <French>Andean Federation</French>
+    <German>Andenbund</German>
+    <Italian>Andean Federation</Italian>
+    <Spanish>Andean Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Andean Cities</English>
+    <French>League of the Andean Cities</French>
+    <German>Bund der Andenst&#228;dte</German>
+    <Italian>League of the Andean Cities</Italian>
+    <Spanish>League of the Andean Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_SOCIALIST_REPUBLIC</Tag>
+    <English>Andean People's Union</English>
+    <French>Andean People's Union</French>
+    <German>Andinische Volksunion</German>
+    <Italian>Andean People's Union</Italian>
+    <Spanish>Andean People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_SOCIALIST_DEMOCRACY</Tag>
+    <English>Andean Federation</English>
+    <French>Andean Federation</French>
+    <German>Andenbund</German>
+    <Italian>Andean Federation</Italian>
+    <Spanish>Andean Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_PEOPLES_STATE</Tag>
+    <English>Andean People's Union</English>
+    <French>Andean People's Union</French>
+    <German>Andinische Volksunion</German>
+    <Italian>Andean People's Union</Italian>
+    <Spanish>Andean People's Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_DICTATORSHIP</Tag>
+    <English>Andean State</English>
+    <French>Andean State</French>
+    <German>Andenstaat</German>
+    <Italian>Andean State</Italian>
+    <Spanish>Andean State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_MILITARY</Tag>
+    <English>Realm of the Condor</English>
+    <French>Realm of the Condor</French>
+    <German>Reich des Kondors</German>
+    <Italian>Realm of the Condor</Italian>
+    <Spanish>Realm of the Condor</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_NATIONAL_STATE</Tag>
+    <English>Andean State</English>
+    <French>Andean State</French>
+    <German>Andenstaat</German>
+    <Italian>Andean State</Italian>
+    <Spanish>Andean State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_NATIONAL_REPUBLIC</Tag>
+    <English>Andean Republic</English>
+    <French>Andean Republic</French>
+    <German>Andenrepublik</German>
+    <Italian>Andean Republic</Italian>
+    <Spanish>Andean Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_THEOCRACY</Tag>
+    <English>Realm of the Sun</English>
+    <French>Realm of the Sun</French>
+    <German>Reich der Sonne</German>
+    <Italian>Realm of the Sun</Italian>
+    <Spanish>Realm of the Sun</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_HOLY_KINGDOM</Tag>
+    <English>Realm of the Sun</English>
+    <French>Realm of the Sun</French>
+    <German>Reich der Sonne</German>
+    <Italian>Realm of the Sun</Italian>
+    <Spanish>Realm of the Sun</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_THEOCRATIC_REPUBLIC</Tag>
+    <English>Andean Republic</English>
+    <French>Andean Republic</French>
+    <German>Andenrepublik</German>
+    <Italian>Andean Republic</Italian>
+    <Spanish>Andean Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_ISLAMIC_REPUBLIC</Tag>
+    <English>Andean Islamic Republic</English>
+    <French>Andean Islamic Republic</French>
+    <German>Islamische Andenrepublik</German>
+    <Italian>Andean Islamic Republic</Italian>
+    <Spanish>Andean Islamic Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_CALIPHATE</Tag>
+    <English>Caliphate of the Andes</English>
+    <French>Caliphate of the Andes</French>
+    <German>Andenkalifat</German>
+    <Italian>Caliphate of the Andes</Italian>
+    <Spanish>Caliphate of the Andes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_SULTANATE</Tag>
+    <English>Sultanate of the Andes</English>
+    <French>Sultanate of the Andes</French>
+    <German>Andensultanat</German>
+    <Italian>Sultanate of the Andes</Italian>
+    <Spanish>Sultanate of the Andes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_SECULAR_REPUBLIC</Tag>
+    <English>Andean Federation</English>
+    <French>Andean Federation</French>
+    <German>Andenbund</German>
+    <Italian>Andean Federation</Italian>
+    <Spanish>Andean Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_TRIBAL</Tag>
+    <English>Mongol Clans</English>
+    <French>Mongol Clans</French>
+    <German>Mongolische Sippen</German>
+    <Italian>Mongol Clans</Italian>
+    <Spanish>Mongol Clans</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_KINGDOM</Tag>
+    <English>Mongol Khanate</English>
+    <French>Mongol Khanate</French>
+    <German>Mongolisches Khanat</German>
+    <Italian>Mongol Khanate</Italian>
+    <Spanish>Mongol Khanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_EMPIRE</Tag>
+    <English>Mongol Empire</English>
+    <French>Mongol Empire</French>
+    <German>Mongolisches Weltreich</German>
+    <Italian>Mongol Empire</Italian>
+    <Spanish>Mongol Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_CONSTITUTIONAL</Tag>
+    <English>Mongol Khanate</English>
+    <French>Mongol Khanate</French>
+    <German>Mongolisches Khanat</German>
+    <Italian>Mongol Khanate</Italian>
+    <Spanish>Mongol Khanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_REPUBLIC</Tag>
+    <English>Republic of Mongolia</English>
+    <French>Republic of Mongolia</French>
+    <German>Republik Mongolei</German>
+    <Italian>Republic of Mongolia</Italian>
+    <Spanish>Republic of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_DEMOCRACY</Tag>
+    <English>Mongolia</English>
+    <French>Mongolia</French>
+    <German>Mongolei</German>
+    <Italian>Mongolia</Italian>
+    <Spanish>Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_MERCHANT_REPUBLIC</Tag>
+    <English>Steppe Caravan League</English>
+    <French>Steppe Caravan League</French>
+    <German>Karawanenbund der Steppe</German>
+    <Italian>Steppe Caravan League</Italian>
+    <Spanish>Steppe Caravan League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_SOCIALIST_REPUBLIC</Tag>
+    <English>Mongolian People's Republic</English>
+    <French>Mongolian People's Republic</French>
+    <German>Mongolische Volksrepublik</German>
+    <Italian>Mongolian People's Republic</Italian>
+    <Spanish>Mongolian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_SOCIALIST_DEMOCRACY</Tag>
+    <English>Mongolia</English>
+    <French>Mongolia</French>
+    <German>Mongolei</German>
+    <Italian>Mongolia</Italian>
+    <Spanish>Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_PEOPLES_STATE</Tag>
+    <English>Mongolian People's Republic</English>
+    <French>Mongolian People's Republic</French>
+    <German>Mongolische Volksrepublik</German>
+    <Italian>Mongolian People's Republic</Italian>
+    <Spanish>Mongolian People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_DICTATORSHIP</Tag>
+    <English>Mongol State</English>
+    <French>Mongol State</French>
+    <German>Mongolischer Staat</German>
+    <Italian>Mongol State</Italian>
+    <Spanish>Mongol State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_MILITARY</Tag>
+    <English>Great Mongol Horde</English>
+    <French>Great Mongol Horde</French>
+    <German>Gro&#223;e Mongolenhorde</German>
+    <Italian>Great Mongol Horde</Italian>
+    <Spanish>Great Mongol Horde</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_NATIONAL_STATE</Tag>
+    <English>Mongol State</English>
+    <French>Mongol State</French>
+    <German>Mongolischer Staat</German>
+    <Italian>Mongol State</Italian>
+    <Spanish>Mongol State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Mongolia</English>
+    <French>Republic of Mongolia</French>
+    <German>Republik Mongolei</German>
+    <Italian>Republic of Mongolia</Italian>
+    <Spanish>Republic of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_THEOCRACY</Tag>
+    <English>Sacred Realm of the Steppe</English>
+    <French>Sacred Realm of the Steppe</French>
+    <German>Heiliges Steppenreich</German>
+    <Italian>Sacred Realm of the Steppe</Italian>
+    <Spanish>Sacred Realm of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of the Steppe</English>
+    <French>Sacred Realm of the Steppe</French>
+    <German>Heiliges Steppenreich</German>
+    <Italian>Sacred Realm of the Steppe</Italian>
+    <Spanish>Sacred Realm of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Mongolia</English>
+    <French>Republic of Mongolia</French>
+    <German>Republik Mongolei</German>
+    <Italian>Republic of Mongolia</Italian>
+    <Spanish>Republic of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Mongolia</English>
+    <French>Islamic Republic of Mongolia</French>
+    <German>Islamische Republik Mongolei</German>
+    <Italian>Islamic Republic of Mongolia</Italian>
+    <Spanish>Islamic Republic of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_CALIPHATE</Tag>
+    <English>Caliphate of Mongolia</English>
+    <French>Caliphate of Mongolia</French>
+    <German>Kalifat Mongolei</German>
+    <Italian>Caliphate of Mongolia</Italian>
+    <Spanish>Caliphate of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_SULTANATE</Tag>
+    <English>Sultanate of Mongolia</English>
+    <French>Sultanate of Mongolia</French>
+    <German>Sultanat Mongolei</German>
+    <Italian>Sultanate of Mongolia</Italian>
+    <Spanish>Sultanate of Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_SECULAR_REPUBLIC</Tag>
+    <English>Mongolia</English>
+    <French>Mongolia</French>
+    <German>Mongolei</German>
+    <Italian>Mongolia</Italian>
+    <Spanish>Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_TRIBAL</Tag>
+    <English>Mexica Peoples</English>
+    <French>Mexica Peoples</French>
+    <German>V&#246;lker der Mexica</German>
+    <Italian>Mexica Peoples</Italian>
+    <Spanish>Mexica Peoples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_KINGDOM</Tag>
+    <English>Kingdom of Tenochtitlan</English>
+    <French>Kingdom of Tenochtitlan</French>
+    <German>K&#246;nigreich Tenochtitl&#225;n</German>
+    <Italian>Kingdom of Tenochtitlan</Italian>
+    <Spanish>Kingdom of Tenochtitlan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_EMPIRE</Tag>
+    <English>Aztec Triple Alliance</English>
+    <French>Aztec Triple Alliance</French>
+    <German>Aztekischer Dreibund</German>
+    <Italian>Aztec Triple Alliance</Italian>
+    <Spanish>Aztec Triple Alliance</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Tenochtitlan</English>
+    <French>Kingdom of Tenochtitlan</French>
+    <German>K&#246;nigreich Tenochtitl&#225;n</German>
+    <Italian>Kingdom of Tenochtitlan</Italian>
+    <Spanish>Kingdom of Tenochtitlan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_REPUBLIC</Tag>
+    <English>Mexican Republic</English>
+    <French>Mexican Republic</French>
+    <German>Mexikanische Republik</German>
+    <Italian>Mexican Republic</Italian>
+    <Spanish>Mexican Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_DEMOCRACY</Tag>
+    <English>United Mexican States</English>
+    <French>United Mexican States</French>
+    <German>Vereinigte Mexikanische Staaten</German>
+    <Italian>United Mexican States</Italian>
+    <Spanish>United Mexican States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Lake Cities</English>
+    <French>League of the Lake Cities</French>
+    <German>Bund der Seenst&#228;dte</German>
+    <Italian>League of the Lake Cities</Italian>
+    <Spanish>League of the Lake Cities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_SOCIALIST_REPUBLIC</Tag>
+    <English>Mexican People's Republic</English>
+    <French>Mexican People's Republic</French>
+    <German>Mexikanische Volksrepublik</German>
+    <Italian>Mexican People's Republic</Italian>
+    <Spanish>Mexican People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_SOCIALIST_DEMOCRACY</Tag>
+    <English>United Mexican States</English>
+    <French>United Mexican States</French>
+    <German>Vereinigte Mexikanische Staaten</German>
+    <Italian>United Mexican States</Italian>
+    <Spanish>United Mexican States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_PEOPLES_STATE</Tag>
+    <English>Mexican People's Republic</English>
+    <French>Mexican People's Republic</French>
+    <German>Mexikanische Volksrepublik</German>
+    <Italian>Mexican People's Republic</Italian>
+    <Spanish>Mexican People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_DICTATORSHIP</Tag>
+    <English>Mexican State</English>
+    <French>Mexican State</French>
+    <German>Mexikanischer Staat</German>
+    <Italian>Mexican State</Italian>
+    <Spanish>Mexican State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_MILITARY</Tag>
+    <English>Eagle Imperium</English>
+    <French>Eagle Imperium</French>
+    <German>Adlerimperium</German>
+    <Italian>Eagle Imperium</Italian>
+    <Spanish>Eagle Imperium</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_NATIONAL_STATE</Tag>
+    <English>Mexican State</English>
+    <French>Mexican State</French>
+    <German>Mexikanischer Staat</German>
+    <Italian>Mexican State</Italian>
+    <Spanish>Mexican State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_NATIONAL_REPUBLIC</Tag>
+    <English>Mexican Republic</English>
+    <French>Mexican Republic</French>
+    <German>Mexikanische Republik</German>
+    <Italian>Mexican Republic</Italian>
+    <Spanish>Mexican Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_THEOCRACY</Tag>
+    <English>Sacred Realm of Anahuac</English>
+    <French>Sacred Realm of Anahuac</French>
+    <German>Heiliges Reich An&#225;huac</German>
+    <Italian>Sacred Realm of Anahuac</Italian>
+    <Spanish>Sacred Realm of Anahuac</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Anahuac</English>
+    <French>Sacred Realm of Anahuac</French>
+    <German>Heiliges Reich An&#225;huac</German>
+    <Italian>Sacred Realm of Anahuac</Italian>
+    <Spanish>Sacred Realm of Anahuac</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_THEOCRATIC_REPUBLIC</Tag>
+    <English>Mexican Republic</English>
+    <French>Mexican Republic</French>
+    <German>Mexikanische Republik</German>
+    <Italian>Mexican Republic</Italian>
+    <Spanish>Mexican Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Mexico</English>
+    <French>Islamic Republic of Mexico</French>
+    <German>Islamische Republik Mexiko</German>
+    <Italian>Islamic Republic of Mexico</Italian>
+    <Spanish>Islamic Republic of Mexico</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_CALIPHATE</Tag>
+    <English>Caliphate of Mexico</English>
+    <French>Caliphate of Mexico</French>
+    <German>Kalifat Mexiko</German>
+    <Italian>Caliphate of Mexico</Italian>
+    <Spanish>Caliphate of Mexico</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_SULTANATE</Tag>
+    <English>Sultanate of Mexico</English>
+    <French>Sultanate of Mexico</French>
+    <German>Sultanat Mexiko</German>
+    <Italian>Sultanate of Mexico</Italian>
+    <Spanish>Sultanate of Mexico</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_SECULAR_REPUBLIC</Tag>
+    <English>United Mexican States</English>
+    <French>United Mexican States</French>
+    <German>Vereinigte Mexikanische Staaten</German>
+    <Italian>United Mexican States</Italian>
+    <Spanish>United Mexican States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_TRIBAL</Tag>
+    <English>Turkic Tribes</English>
+    <French>Turkic Tribes</French>
+    <German>Turkst&#228;mme</German>
+    <Italian>Turkic Tribes</Italian>
+    <Spanish>Turkic Tribes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_KINGDOM</Tag>
+    <English>Ottoman State</English>
+    <French>Ottoman State</French>
+    <German>Osmanischer Staat</German>
+    <Italian>Ottoman State</Italian>
+    <Spanish>Ottoman State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_EMPIRE</Tag>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanisches Reich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_CONSTITUTIONAL</Tag>
+    <English>Ottoman State</English>
+    <French>Ottoman State</French>
+    <German>Osmanischer Staat</German>
+    <Italian>Ottoman State</Italian>
+    <Spanish>Ottoman State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_REPUBLIC</Tag>
+    <English>Republic of Turkey</English>
+    <French>Republic of Turkey</French>
+    <German>Republik T&#252;rkei</German>
+    <Italian>Republic of Turkey</Italian>
+    <Spanish>Republic of Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_DEMOCRACY</Tag>
+    <English>Turkey</English>
+    <French>Turkey</French>
+    <German>T&#252;rkei</German>
+    <Italian>Turkey</Italian>
+    <Spanish>Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_MERCHANT_REPUBLIC</Tag>
+    <English>Anatolian Maritime League</English>
+    <French>Anatolian Maritime League</French>
+    <German>Anatolischer Seebund</German>
+    <Italian>Anatolian Maritime League</Italian>
+    <Spanish>Anatolian Maritime League</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_SOCIALIST_REPUBLIC</Tag>
+    <English>Turkish People's Republic</English>
+    <French>Turkish People's Republic</French>
+    <German>T&#252;rkische Volksrepublik</German>
+    <Italian>Turkish People's Republic</Italian>
+    <Spanish>Turkish People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_SOCIALIST_DEMOCRACY</Tag>
+    <English>Turkey</English>
+    <French>Turkey</French>
+    <German>T&#252;rkei</German>
+    <Italian>Turkey</Italian>
+    <Spanish>Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_PEOPLES_STATE</Tag>
+    <English>Turkish People's Republic</English>
+    <French>Turkish People's Republic</French>
+    <German>T&#252;rkische Volksrepublik</German>
+    <Italian>Turkish People's Republic</Italian>
+    <Spanish>Turkish People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_DICTATORSHIP</Tag>
+    <English>Turkish State</English>
+    <French>Turkish State</French>
+    <German>T&#252;rkischer Staat</German>
+    <Italian>Turkish State</Italian>
+    <Spanish>Turkish State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_MILITARY</Tag>
+    <English>Anatolian Military Directorate</English>
+    <French>Anatolian Military Directorate</French>
+    <German>Anatolisches Milit&#228;rdirektorium</German>
+    <Italian>Anatolian Military Directorate</Italian>
+    <Spanish>Anatolian Military Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_NATIONAL_STATE</Tag>
+    <English>Turkish State</English>
+    <French>Turkish State</French>
+    <German>T&#252;rkischer Staat</German>
+    <Italian>Turkish State</Italian>
+    <Spanish>Turkish State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Turkey</English>
+    <French>Republic of Turkey</French>
+    <German>Republik T&#252;rkei</German>
+    <Italian>Republic of Turkey</Italian>
+    <Spanish>Republic of Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_THEOCRACY</Tag>
+    <English>Sacred Realm of Anatolia</English>
+    <French>Sacred Realm of Anatolia</French>
+    <German>Heiliges Reich Anatolien</German>
+    <Italian>Sacred Realm of Anatolia</Italian>
+    <Spanish>Sacred Realm of Anatolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of Anatolia</English>
+    <French>Sacred Realm of Anatolia</French>
+    <German>Heiliges Reich Anatolien</German>
+    <Italian>Sacred Realm of Anatolia</Italian>
+    <Spanish>Sacred Realm of Anatolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Turkey</English>
+    <French>Republic of Turkey</French>
+    <German>Republik T&#252;rkei</German>
+    <Italian>Republic of Turkey</Italian>
+    <Spanish>Republic of Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Turkey</English>
+    <French>Islamic Republic of Turkey</French>
+    <German>Islamische Republik T&#252;rkei</German>
+    <Italian>Islamic Republic of Turkey</Italian>
+    <Spanish>Islamic Republic of Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_CALIPHATE</Tag>
+    <English>Ottoman Caliphate</English>
+    <French>Ottoman Caliphate</French>
+    <German>Osmanisches Kalifat</German>
+    <Italian>Ottoman Caliphate</Italian>
+    <Spanish>Ottoman Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_SULTANATE</Tag>
+    <English>Ottoman Sultanate</English>
+    <French>Ottoman Sultanate</French>
+    <German>Osmanisches Sultanat</German>
+    <Italian>Ottoman Sultanate</Italian>
+    <Spanish>Ottoman Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_SECULAR_REPUBLIC</Tag>
+    <English>Turkey</English>
+    <French>Turkey</French>
+    <German>T&#252;rkei</German>
+    <Italian>Turkey</Italian>
+    <Spanish>Turkey</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_TRIBAL</Tag>
+    <English>American Settlements</English>
+    <French>American Settlements</French>
+    <German>Amerikanische Siedlungen</German>
+    <Italian>American Settlements</Italian>
+    <Spanish>American Settlements</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_KINGDOM</Tag>
+    <English>Kingdom of America</English>
+    <French>Kingdom of America</French>
+    <German>K&#246;nigreich Amerika</German>
+    <Italian>Kingdom of America</Italian>
+    <Spanish>Kingdom of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_EMPIRE</Tag>
+    <English>American Empire</English>
+    <French>American Empire</French>
+    <German>Amerikanisches Reich</German>
+    <Italian>American Empire</Italian>
+    <Spanish>American Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_CONSTITUTIONAL</Tag>
+    <English>Kingdom of America</English>
+    <French>Kingdom of America</French>
+    <German>K&#246;nigreich Amerika</German>
+    <Italian>Kingdom of America</Italian>
+    <Spanish>Kingdom of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_REPUBLIC</Tag>
+    <English>United States of America</English>
+    <French>United States of America</French>
+    <German>Vereinigte Staaten von Amerika</German>
+    <Italian>United States of America</Italian>
+    <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_DEMOCRACY</Tag>
+    <English>United States of America</English>
+    <French>United States of America</French>
+    <German>Vereinigte Staaten von Amerika</German>
+    <Italian>United States of America</Italian>
+    <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_MERCHANT_REPUBLIC</Tag>
+    <English>Atlantic Commonwealth</English>
+    <French>Atlantic Commonwealth</French>
+    <German>Atlantisches Commonwealth</German>
+    <Italian>Atlantic Commonwealth</Italian>
+    <Spanish>Atlantic Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_SOCIALIST_REPUBLIC</Tag>
+    <English>United American Communes</English>
+    <French>United American Communes</French>
+    <German>Vereinigte Amerikanische Kommunen</German>
+    <Italian>United American Communes</Italian>
+    <Spanish>United American Communes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_SOCIALIST_DEMOCRACY</Tag>
+    <English>United States of America</English>
+    <French>United States of America</French>
+    <German>Vereinigte Staaten von Amerika</German>
+    <Italian>United States of America</Italian>
+    <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_PEOPLES_STATE</Tag>
+    <English>United American Communes</English>
+    <French>United American Communes</French>
+    <German>Vereinigte Amerikanische Kommunen</German>
+    <Italian>United American Communes</Italian>
+    <Spanish>United American Communes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_DICTATORSHIP</Tag>
+    <English>American Union</English>
+    <French>American Union</French>
+    <German>Amerikanische Union</German>
+    <Italian>American Union</Italian>
+    <Spanish>American Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_MILITARY</Tag>
+    <English>Continental Protectorate</English>
+    <French>Continental Protectorate</French>
+    <German>Kontinentales Protektorat</German>
+    <Italian>Continental Protectorate</Italian>
+    <Spanish>Continental Protectorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_NATIONAL_STATE</Tag>
+    <English>American Union</English>
+    <French>American Union</French>
+    <German>Amerikanische Union</German>
+    <Italian>American Union</Italian>
+    <Spanish>American Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_NATIONAL_REPUBLIC</Tag>
+    <English>United States of America</English>
+    <French>United States of America</French>
+    <German>Vereinigte Staaten von Amerika</German>
+    <Italian>United States of America</Italian>
+    <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_THEOCRACY</Tag>
+    <English>State of Deseret</English>
+    <French>State of Deseret</French>
+    <German>Staat Deseret</German>
+    <Italian>State of Deseret</Italian>
+    <Spanish>State of Deseret</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_HOLY_KINGDOM</Tag>
+    <English>Kingdom of Providence</English>
+    <French>Kingdom of Providence</French>
+    <German>K&#246;nigreich der Vorsehung</German>
+    <Italian>Kingdom of Providence</Italian>
+    <Spanish>Kingdom of Providence</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_THEOCRATIC_REPUBLIC</Tag>
+    <English>Puritan Commonwealth</English>
+    <French>Puritan Commonwealth</French>
+    <German>Puritanisches Gemeinwesen</German>
+    <Italian>Puritan Commonwealth</Italian>
+    <Spanish>Puritan Commonwealth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of America</English>
+    <French>Islamic Republic of America</French>
+    <German>Islamische Republik Amerika</German>
+    <Italian>Islamic Republic of America</Italian>
+    <Spanish>Islamic Republic of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_CALIPHATE</Tag>
+    <English>Caliphate of the New World</English>
+    <French>Caliphate of the New World</French>
+    <German>Kalifat der Neuen Welt</German>
+    <Italian>Caliphate of the New World</Italian>
+    <Spanish>Caliphate of the New World</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_SULTANATE</Tag>
+    <English>Sultanate of America</English>
+    <French>Sultanate of America</French>
+    <German>Sultanat Amerika</German>
+    <Italian>Sultanate of America</Italian>
+    <Spanish>Sultanate of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_SECULAR_REPUBLIC</Tag>
+    <English>United States of America</English>
+    <French>United States of America</French>
+    <German>Vereinigte Staaten von Amerika</German>
+    <Italian>United States of America</Italian>
+    <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_HOLY_ROMAN</Tag>
+    <English>Holy Roman Empire</English>
+    <French>Holy Roman Empire</French>
+    <German>Heiliges R&#246;misches Reich</German>
+    <Italian>Holy Roman Empire</Italian>
+    <Spanish>Holy Roman Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_PAPAL_STATES</Tag>
+    <English>Papal States</English>
+    <French>Papal States</French>
+    <German>Kirchenstaat</German>
+    <Italian>Papal States</Italian>
+    <Spanish>Papal States</Spanish>
+  </TEXT>
+</Civ4GameText>

@@ -33,13 +33,13 @@ Sacred Realm of Bharat | Heiliges Reich Bharat
 CHI
 Huaxia | Huaxia
 Middle Kingdom | Reich der Mitte
-Chinese Empire | Chinesisches Kaiserreich
+Celestial Empire | Reich des Himmels
 Republic of China | Republik China
 China | China
 League of the Silk Road | Seidenstraßenbund
 People's Republic of China | Volksrepublik China
 Chinese State | Chinesischer Staat
-Celestial Empire | Reich des Himmels
+Heavenly Kingdom of Great Peace | Himmlisches Reich des Großen Friedens
 BAB
 Peoples of Mesopotamia | Völker Mesopotamiens
 Kingdom of Babylon | Königreich Babylon
@@ -233,7 +233,7 @@ Sacred Crown of Portugal | Heilige Krone Portugals
 INC
 Andean Peoples | Andenvölker
 Kingdom of Cusco | Königreich Cusco
-Tawantinsuyu | Tawantinsuyu
+Land of the Four Quarters | Land der vier Weltgegenden
 Andean Republic | Andenrepublik
 Andean Federation | Andenbund
 League of the Andean Cities | Bund der Andenstädte
@@ -271,7 +271,7 @@ Turkish People's Republic | Türkische Volksrepublik
 Turkish State | Türkischer Staat
 Sacred Realm of Anatolia | Heiliges Reich Anatolien
 AME
-Peoples of the New World | Völker der Neuen Welt
+American Settlements | Amerikanische Siedlungen
 Kingdom of America | Königreich Amerika
 American Empire | Amerikanisches Reich
 United States of America | Vereinigte Staaten von Amerika
@@ -279,7 +279,7 @@ United States of America | Vereinigte Staaten von Amerika
 Atlantic Commonwealth | Atlantisches Commonwealth
 United American Communes | Vereinigte Amerikanische Kommunen
 American Union | Amerikanische Union
-Sacred Commonwealth of America | Heiliges Amerikanisches Commonwealth
+State of Deseret | Staat Deseret
 """
 
 
@@ -319,18 +319,60 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    # Literary and historical identities, selected by existing civic families.
+    # America represents a settler-founded nation, not an indigenous tribal group.
+    # Religious names are historical inspirations, not denominational checks.
+    ('AME', 'HOLY_KINGDOM'): ('Kingdom of Providence', 'Königreich der Vorsehung'),
+    ('AME', 'THEOCRATIC_REPUBLIC'): ('Puritan Commonwealth', 'Puritanisches Gemeinwesen'),
+    ('CHI', 'THEOCRATIC_REPUBLIC'): ('Commonwealth of Great Peace', 'Gemeinwesen des Großen Friedens'),
+    ('INC', 'EMPIRE'): ('Land of the Four Quarters', 'Land der vier Weltgegenden'),
+    ('INC', 'THEOCRACY'): ('Realm of the Sun', 'Reich der Sonne'),
+    ('INC', 'HOLY_KINGDOM'): ('Realm of the Sun', 'Reich der Sonne'),
+    ('ROM', 'CONSTITUTIONAL'): ("Regno d'Italia", 'Königreich Italien'),
+    ('ROM', 'NATIONAL_REPUBLIC'): ('Repubblica Italiana', 'Italienische Republik'),
+    ('EGY', 'EMPIRE'): ('Realm of the Two Lands', 'Reich der beiden Länder'),
+    ('PER', 'EMPIRE'): ('Empire of the King of Kings', 'Reich des Königs der Könige'),
+    ('JAP', 'THEOCRACY'): ('Land of the Gods', 'Land der Götter'),
+    ('JAP', 'HOLY_KINGDOM'): ('Land of the Gods', 'Land der Götter'),
+    ('GRE', 'MERCHANT_REPUBLIC'): ('Delian League', 'Attischer Seebund'),
     ('GER', 'HOLY_ROMAN'): ('Holy Roman Empire', 'Heiliges Römisches Reich'),
     ('ROM', 'PAPAL_STATES'): ('Papal States', 'Kirchenstaat'),
     ('ENG', 'CONSTITUTIONAL'): ('United Kingdom', 'Vereinigtes Königreich'),
+    # Military identities mix historical inspiration with alternate-history titles.
+    # These replace the generic dictatorship aliases only for the MILITARY family.
+    ('EGY', 'MILITARY'): ('Mamluk Realm', 'Mamlukenreich'),
+    ('IND', 'MILITARY'): ('Realm of Hindustan', 'Reich von Hindustan'),
+    ('CHI', 'MILITARY'): ('Celestial Directorate', 'Himmlisches Direktorium'),
+    ('BAB', 'MILITARY'): ('Babylonian Imperium', 'Babylonisches Imperium'),
+    ('GRE', 'MILITARY'): ('Hellenic Stratocracy', 'Hellenische Stratokratie'),
+    ('PER', 'MILITARY'): ('Empire of Iran', 'Kaiserreich Iran'),
+    ('CAR', 'MILITARY'): ('Punic Hegemony', 'Punische Hegemonie'),
+    ('ROM', 'MILITARY'): ('Roman Imperium', 'Römisches Imperium'),
+    ('JAP', 'MILITARY'): ('Japanese Shogunate', 'Japanisches Shogunat'),
+    ('ETH', 'MILITARY'): ('Abyssinian Military Directorate', 'Abessinisches Militärdirektorium'),
+    ('MAY', 'MILITARY'): ('Jaguar Realm', 'Jaguarreich'),
+    ('VIK', 'MILITARY'): ('Realm of the North', 'Nordreich'),
+    ('ARA', 'MILITARY'): ('Arab Revolutionary Republic', 'Arabische Revolutionsrepublik'),
+    ('KHM', 'MILITARY'): ('Khmer Military Directorate', 'Militärdirektorium der Khmer'),
+    ('SPA', 'MILITARY'): ('Spanish Military Junta', 'Spanische Militärjunta'),
+    ('FRA', 'MILITARY'): ('French Consulate', 'Französisches Konsulat'),
     ('ENG', 'MILITARY'): ('English Protectorate', 'Englisches Protektorat'),
+    ('GER', 'MILITARY'): ('German Reich', 'Deutsches Reich'),
+    ('RUS', 'MILITARY'): ('Russian Supreme Directorate', 'Oberstes Direktorium Russlands'),
+    ('NED', 'MILITARY'): ('Batavian Protectorate', 'Batavisches Protektorat'),
+    ('MAL', 'MILITARY'): ('Military Empire of the Sahel', 'Militärreich am Sahel'),
+    ('POR', 'MILITARY'): ('Lusitanian Directorate', 'Lusitanisches Direktorium'),
+    ('INC', 'MILITARY'): ('Realm of the Condor', 'Reich des Kondors'),
+    ('MON', 'MILITARY'): ('Great Mongol Horde', 'Große Mongolenhorde'),
+    ('AZT', 'MILITARY'): ('Eagle Imperium', 'Adlerimperium'),
+    ('TUR', 'MILITARY'): ('Anatolian Military Directorate', 'Anatolisches Militärdirektorium'),
+    ('AME', 'MILITARY'): ('Continental Protectorate', 'Kontinentales Protektorat'),
     ('FRA', 'SOCIALIST_DEMOCRACY'): ('French Commune', 'Französische Kommune'),
     ('GER', 'CONSTITUTIONAL'): ('German Reich', 'Deutsches Reich'),
     ('GER', 'SOCIALIST_DEMOCRACY'): ('German Republic', 'Deutsche Republik'),
     ('RUS', 'PEOPLES_STATE'): ('Russian Soviet Republic', 'Russische Sowjetrepublik'),
     ('RUS', 'SOCIALIST_DEMOCRACY'): ('Russian Union', 'Russische Union'),
     ('VIK', 'CONSTITUTIONAL'): ('Nordic Union', 'Nordische Union'),
-    ('JAP', 'MILITARY'): ('Japanese Shogunate', 'Japanisches Shogunat'),
-    ('CHI', 'MILITARY'): ('Chinese Directorate', 'Chinesisches Direktorium'),
     ('IND', 'SULTANATE'): ('Sultanate of Hindustan', 'Sultanat Hindustan'),
     ('EGY', 'CALIPHATE'): ('Caliphate of the Nile', 'Nilkalifat'),
     ('ARA', 'CALIPHATE'): ('Arab Caliphate', 'Arabisches Kalifat'),

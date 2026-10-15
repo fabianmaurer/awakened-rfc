@@ -35,7 +35,7 @@ def inspect(folder):
 
 if __name__ == '__main__':
     for label, folder in (
-        ('Workspace', ROOT/'RFC MP Plus/Assets/XML/Text'),
+        ('Workspace', ROOT/'Awakened RFC/Assets/XML/Text'),
         ('Original RFC MP', MODS/"Rhye's and Fall MP/Assets/XML/Text"),
     ):
         print('\n' + label)

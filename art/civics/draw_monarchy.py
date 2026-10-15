@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 ART = Path(__file__).resolve().parent
-DEST = ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP/Monarchy.dds"
+DEST = ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP/Monarchy.dds"
 
 
 def render():
@@ -89,7 +89,7 @@ def render():
     for x in (25, 31, 37):
         d.point((x, 43), fill=shine)
     # Original Civ4 buttons have rounded alpha corners, without a gold frame.
-    with Image.open(ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
+    with Image.open(ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
         im.putalpha(atlas.convert("RGBA").crop((0, 0, 64, 64)).getchannel("A"))
     return im
 

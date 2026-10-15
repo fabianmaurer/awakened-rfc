@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_CULTURAL_UPRISING</Tag>
+    <English>A cultural uprising in %s1_City has driven out %d2_Population population and raised %d3_Rebels barbarian rebel units nearby!</English>
+    <French>A cultural uprising in %s1_City has driven out %d2_Population population and raised %d3_Rebels barbarian rebel units nearby!</French>
+    <German>Ein Kulturaufstand in %s1_City hat %d2_Population Bev&#246;lkerungspunkte vertrieben. In der Umgebung sind %d3_Rebels barbarische Rebelleneinheiten erschienen!</German>
+    <Italian>A cultural uprising in %s1_City has driven out %d2_Population population and raised %d3_Rebels barbarian rebel units nearby!</Italian>
+    <Spanish>A cultural uprising in %s1_City has driven out %d2_Population population and raised %d3_Rebels barbarian rebel units nearby!</Spanish>
+  </TEXT>
+</Civ4GameText>

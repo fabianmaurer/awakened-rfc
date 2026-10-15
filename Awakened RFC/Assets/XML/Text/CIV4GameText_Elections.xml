@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_TITLE</Tag>
+    <English>Election result</English>
+    <French>Election result</French>
+    <German>Wahlergebnis</German>
+    <Italian>Election result</Italian>
+    <Spanish>Election result</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_ADOPT</Tag>
+    <English>Adopt %s1_civic</English>
+    <French>Adopt %s1_civic</French>
+    <German>%s1_civic annehmen</German>
+    <Italian>Adopt %s1_civic</Italian>
+    <Spanish>Adopt %s1_civic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_ANCESTOR_CULT</Tag>
+    <English>The electorate has sought guidance from its ancestors. Their silence has been interpreted as unanimous approval.</English>
+    <French>The electorate has sought guidance from its ancestors. Their silence has been interpreted as unanimous approval.</French>
+    <German>Die W&#228;hler haben ihre Ahnen um Rat gefragt. Deren Schweigen wurde als einstimmige Zustimmung gewertet.</German>
+    <Italian>The electorate has sought guidance from its ancestors. Their silence has been interpreted as unanimous approval.</Italian>
+    <Spanish>The electorate has sought guidance from its ancestors. Their silence has been interpreted as unanimous approval.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_CONSCRIPTION</Tag>
+    <English>The voters demand a larger army. Recruitment officials are delighted to explain that the voters themselves constitute the larger army.</English>
+    <French>The voters demand a larger army. Recruitment officials are delighted to explain that the voters themselves constitute the larger army.</French>
+    <German>Die W&#228;hler verlangen ein gr&#246;&#223;eres Heer. Die Rekrutierungsbeamten erkl&#228;ren erfreut, dass die W&#228;hler selbst dieses gr&#246;&#223;ere Heer bilden.</German>
+    <Italian>The voters demand a larger army. Recruitment officials are delighted to explain that the voters themselves constitute the larger army.</Italian>
+    <Spanish>The voters demand a larger army. Recruitment officials are delighted to explain that the voters themselves constitute the larger army.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_CORPORATE_ECONOMY</Tag>
+    <English>The electorate has chosen enterprise and competition. Several companies immediately offered to sponsor the announcement.</English>
+    <French>The electorate has chosen enterprise and competition. Several companies immediately offered to sponsor the announcement.</French>
+    <German>Die W&#228;hler haben Unternehmergeist und Wettbewerb gew&#228;hlt. Mehrere Firmen haben sofort angeboten, die Bekanntmachung zu sponsern.</German>
+    <Italian>The electorate has chosen enterprise and competition. Several companies immediately offered to sponsor the announcement.</Italian>
+    <Spanish>The electorate has chosen enterprise and competition. Several companies immediately offered to sponsor the announcement.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_DESPOTISM</Tag>
+    <English>The electorate has entrusted its freedom to one exceptionally trustworthy individual. Further elections may confirm this assessment.</English>
+    <French>The electorate has entrusted its freedom to one exceptionally trustworthy individual. Further elections may confirm this assessment.</French>
+    <German>Die W&#228;hler haben ihre Freiheit einem au&#223;ergew&#246;hnlich vertrauensw&#252;rdigen Einzelnen anvertraut. Weitere Wahlen werden dies wom&#246;glich best&#228;tigen.</German>
+    <Italian>The electorate has entrusted its freedom to one exceptionally trustworthy individual. Further elections may confirm this assessment.</Italian>
+    <Spanish>The electorate has entrusted its freedom to one exceptionally trustworthy individual. Further elections may confirm this assessment.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_GOD_STATE</Tag>
+    <English>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</English>
+    <French>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</French>
+    <German>Die W&#228;hler haben eine heilige Mission f&#252;r die Nation gew&#228;hlt. Der Unterschied zwischen Kabinettssitzung und Gottesdienst wird zunehmend zeremoniell.</German>
+    <Italian>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</Italian>
+    <Spanish>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_KNIGHTHOOD</Tag>
+    <English>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</English>
+    <French>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</French>
+    <German>Die W&#228;hler verlangen Ritter, Ehre und pr&#228;chtige Pferde. Die Staatskasse fragt, ob gew&#246;hnliche Pferde auch gen&#252;gen w&#252;rden.</German>
+    <Italian>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</Italian>
+    <Spanish>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_MILITIA</Tag>
+    <English>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</English>
+    <French>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</French>
+    <German>Das Volk will seine H&#228;user pers&#246;nlich verteidigen. Die Ausbildung beginnt nach der Ernte; jeder bringe etwas Spitzes mit.</German>
+    <Italian>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</Italian>
+    <Spanish>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_NATIONALISM</Tag>
+    <English>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</English>
+    <French>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</French>
+    <German>Die Nation hat entschieden, die Nation an erste Stelle zu setzen. Andere Nationen d&#252;rfen diese Entscheidung aus respektvollem Abstand bewundern.</German>
+    <Italian>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</Italian>
+    <Spanish>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_PLANNED_ECONOMY</Tag>
+    <English>The people have approved the Five-Year Plan. Production targets are ambitious; the supply of celebratory posters is already exceeding expectations.</English>
+    <French>The people have approved the Five-Year Plan. Production targets are ambitious; the supply of celebratory posters is already exceeding expectations.</French>
+    <German>Das Volk hat den F&#252;nfjahresplan gebilligt. Die Produktionsziele sind ehrgeizig; bei Jubelplakaten wird der Plan bereits &#252;bererf&#252;llt.</German>
+    <Italian>The people have approved the Five-Year Plan. Production targets are ambitious; the supply of celebratory posters is already exceeding expectations.</Italian>
+    <Spanish>The people have approved the Five-Year Plan. Production targets are ambitious; the supply of celebratory posters is already exceeding expectations.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_PLUTOCRACY</Tag>
+    <English>Every citizen had a voice. Some citizens also had a printing press, three banks, and the candidates&#8217; home addresses.</English>
+    <French>Every citizen had a voice. Some citizens also had a printing press, three banks, and the candidates&#8217; home addresses.</French>
+    <German>Jeder B&#252;rger hatte eine Stimme. Einige besa&#223;en au&#223;erdem eine Druckerei, drei Banken und die Privatadressen der Kandidaten.</German>
+    <Italian>Every citizen had a voice. Some citizens also had a printing press, three banks, and the candidates&#8217; home addresses.</Italian>
+    <Spanish>Every citizen had a voice. Some citizens also had a printing press, three banks, and the candidates&#8217; home addresses.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_PROFESSIONAL_ARMY</Tag>
+    <English>National defense will be entrusted to trained professionals. The public is relieved; the payroll department is less enthusiastic.</English>
+    <French>National defense will be entrusted to trained professionals. The public is relieved; the payroll department is less enthusiastic.</French>
+    <German>Die Landesverteidigung wird ausgebildeten Profis anvertraut. Die Bev&#246;lkerung ist erleichtert; die Besoldungsstelle zeigt weniger Begeisterung.</German>
+    <Italian>National defense will be entrusted to trained professionals. The public is relieved; the payroll department is less enthusiastic.</Italian>
+    <Spanish>National defense will be entrusted to trained professionals. The public is relieved; the payroll department is less enthusiastic.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_RULE_OF_LAW</Tag>
+    <English>The people demand equal treatment before the law. A committee will now determine precisely how many forms this requires.</English>
+    <French>The people demand equal treatment before the law. A committee will now determine precisely how many forms this requires.</French>
+    <German>Das Volk verlangt Gleichheit vor dem Gesetz. Ein Ausschuss wird nun ermitteln, wie viele Formulare daf&#252;r erforderlich sind.</German>
+    <Italian>The people demand equal treatment before the law. A committee will now determine precisely how many forms this requires.</Italian>
+    <Spanish>The people demand equal treatment before the law. A committee will now determine precisely how many forms this requires.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_SELF_SUFFICIENCY</Tag>
+    <English>The voters have rejected economic complexity. Everyone will grow their own dinner; the economists have been issued hoes.</English>
+    <French>The voters have rejected economic complexity. Everyone will grow their own dinner; the economists have been issued hoes.</French>
+    <German>Die W&#228;hler haben wirtschaftliche Komplexit&#228;t abgelehnt. Jeder baut sein eigenes Abendessen an; die &#214;konomen haben Hacken erhalten.</German>
+    <Italian>The voters have rejected economic complexity. Everyone will grow their own dinner; the economists have been issued hoes.</Italian>
+    <Spanish>The voters have rejected economic complexity. Everyone will grow their own dinner; the economists have been issued hoes.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_SERFDOM</Tag>
+    <English>The countryside has voted for stability. To prevent unnecessary movement, the winning party has attached the voters to the countryside.</English>
+    <French>The countryside has voted for stability. To prevent unnecessary movement, the winning party has attached the voters to the countryside.</French>
+    <German>Das Land hat f&#252;r Best&#228;ndigkeit gestimmt. Um unn&#246;tige Bewegung zu verhindern, hat die Siegerpartei die W&#228;hler an das Land gebunden.</German>
+    <Italian>The countryside has voted for stability. To prevent unnecessary movement, the winning party has attached the voters to the countryside.</Italian>
+    <Spanish>The countryside has voted for stability. To prevent unnecessary movement, the winning party has attached the voters to the countryside.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_SLAVERY</Tag>
+    <English>The electorate has voted for cheaper labor. The people expected to provide it were conspicuously absent from the electoral register.</English>
+    <French>The electorate has voted for cheaper labor. The people expected to provide it were conspicuously absent from the electoral register.</French>
+    <German>Die W&#228;hler haben sich f&#252;r billigere Arbeitskr&#228;fte entschieden. Die daf&#252;r vorgesehenen Menschen fehlten auff&#228;llig im W&#228;hlerverzeichnis.</German>
+    <Italian>The electorate has voted for cheaper labor. The people expected to provide it were conspicuously absent from the electoral register.</Italian>
+    <Spanish>The electorate has voted for cheaper labor. The people expected to provide it were conspicuously absent from the electoral register.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_STATE_ATHEISM</Tag>
+    <English>The people have voted to separate religion from public life. The government intends to accomplish this with considerable enthusiasm.</English>
+    <French>The people have voted to separate religion from public life. The government intends to accomplish this with considerable enthusiasm.</French>
+    <German>Das Volk will Religion vom &#246;ffentlichen Leben trennen. Die Regierung beabsichtigt, dies mit betr&#228;chtlichem Eifer umzusetzen.</German>
+    <Italian>The people have voted to separate religion from public life. The government intends to accomplish this with considerable enthusiasm.</Italian>
+    <Spanish>The people have voted to separate religion from public life. The government intends to accomplish this with considerable enthusiasm.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_STATE_RELIGION</Tag>
+    <English>The nation has elected an official faith. The government assures everyone that this will simplify matters considerably.</English>
+    <French>The nation has elected an official faith. The government assures everyone that this will simplify matters considerably.</French>
+    <German>Die Nation hat einen amtlichen Glauben gew&#228;hlt. Die Regierung versichert, dass dies alles erheblich vereinfachen wird.</German>
+    <Italian>The nation has elected an official faith. The government assures everyone that this will simplify matters considerably.</Italian>
+    <Spanish>The nation has elected an official faith. The government assures everyone that this will simplify matters considerably.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_THEOCRATIC_LEGITIMACY</Tag>
+    <English>The election results have been certified by the highest authority. Requests for a recount should be submitted through prayer.</English>
+    <French>The election results have been certified by the highest authority. Requests for a recount should be submitted through prayer.</French>
+    <German>Das Wahlergebnis wurde von h&#246;chster Stelle best&#228;tigt. Antr&#228;ge auf Neuausz&#228;hlung sind als Gebet einzureichen.</German>
+    <Italian>The election results have been certified by the highest authority. Requests for a recount should be submitted through prayer.</Italian>
+    <Spanish>The election results have been certified by the highest authority. Requests for a recount should be submitted through prayer.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_TOLERANCE</Tag>
+    <English>The electorate has agreed that everyone may worship as they please. Agreement on anything else remains entirely optional.</English>
+    <French>The electorate has agreed that everyone may worship as they please. Agreement on anything else remains entirely optional.</French>
+    <German>Die W&#228;hler sind sich einig, dass jeder glauben darf, was er m&#246;chte. Einigkeit in allen anderen Fragen bleibt freiwillig.</German>
+    <Italian>The electorate has agreed that everyone may worship as they please. Agreement on anything else remains entirely optional.</Italian>
+    <Spanish>The electorate has agreed that everyone may worship as they please. Agreement on anything else remains entirely optional.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_WARRIOR_SOCIETY</Tag>
+    <English>The voters demand a return to traditional values: courage, strength, and settling policy disagreements with a club.</English>
+    <French>The voters demand a return to traditional values: courage, strength, and settling policy disagreements with a club.</French>
+    <German>Die W&#228;hler verlangen traditionelle Werte: Mut, St&#228;rke und die Kl&#228;rung politischer Meinungsverschiedenheiten mit einer Keule.</German>
+    <Italian>The voters demand a return to traditional values: courage, strength, and settling policy disagreements with a club.</Italian>
+    <Spanish>The voters demand a return to traditional values: courage, strength, and settling policy disagreements with a club.</Spanish>
+  </TEXT>
+</Civ4GameText>

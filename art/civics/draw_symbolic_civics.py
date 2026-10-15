@@ -8,11 +8,20 @@ import math
 from pathlib import Path
 
 from PIL import Image, ImageDraw
-from draw_government import background
+
+
+def background(base, glow):
+    im = Image.new('RGBA', (64, 64))
+    for y in range(64):
+        for x in range(64):
+            light = max(0, 1 - math.sqrt(((x-29)/39.0)**2 + ((y-26)/44.0)**2))
+            grain = (x*17 + y*31 + x*y*7) % 7 - 3
+            im.putpixel((x,y), tuple(max(0,int(b+g*light)+grain) for b,g in zip(base,glow))+(255,))
+    return im
 
 ROOT = Path(__file__).resolve().parents[2]
 ART = Path(__file__).resolve().parent
-DEST = ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP"
+DEST = ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP"
 GOLD = (206, 158, 65)
 LIGHT = (251, 223, 140)
 IRON = (147, 160, 161)
@@ -403,9 +412,25 @@ DRAWINGS = {
 
 
 def main():
-    with Image.open(ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
+    from draw_legitimacy import main as draw_legitimacy
+    from draw_labor import main as draw_labor
+    from draw_military import main as draw_military
+    from draw_religion import main as draw_religion
+    draw_legitimacy()
+    draw_labor()
+    draw_military()
+    draw_religion()
+    with Image.open(ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
         alpha = atlas.convert("RGBA").crop((0, 0, 64, 64)).getchannel("A")
     for name, drawing in DRAWINGS.items():
+        if name in ('Despotism', 'Theocratic_Legitimacy', 'Plutocracy', 'Nationalism', 'Rule_Of_Law'):
+            continue
+        if name in ('Self_Sufficiency', 'Slavery', 'Serfdom', 'Planned_Economy', 'Corporate_Economy'):
+            continue
+        if name in ('Warrior_Society', 'Militia', 'Knighthood', 'Professional_Army', 'Conscription'):
+            continue
+        if name in ('Ancestor_Cult', 'State_Religion', 'God_State', 'Tolerance', 'State_Atheism'):
+            continue
         icon = drawing()
         icon.putalpha(alpha)
         icon.save(ART / (name.lower().replace("_", "-") + "-pixel.png"))
@@ -436,7 +461,7 @@ def main():
         cd.multiline_text((col * 128 + 64, row * 140 + 112), label, fill="white", anchor="ma", align="center")
     sheet.save(ART / "symbolic-civics-preview.png")
     compact.save(ART / "preview.png")
-    print("Created remaining 20 symbolic 64px DXT3 icons and refreshed both full previews.")
+    print("Refreshed Legitimacy, Labor, Military, Religion and both full previews.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_FINANCE_MERCENARY_COST</Tag>
+    <English>Special-unit upkeep: %d1[ICON_GOLD]</English>
+    <French>Special-unit upkeep: %d1[ICON_GOLD]</French>
+    <German>Sonderunterhalt: %d1[ICON_GOLD]</German>
+    <Italian>Special-unit upkeep: %d1[ICON_GOLD]</Italian>
+    <Spanish>Special-unit upkeep: %d1[ICON_GOLD]</Spanish>
+  </TEXT>
+</Civ4GameText>

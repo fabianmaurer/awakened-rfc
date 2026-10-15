@@ -1,64 +1,73 @@
-# RFC MP Plus
+# Awakened Rhye's and Fall of Civilization
 
 [English](README.md) | **Deutsch**
 
-Eine auf Mehrspielerpartien ausgerichtete Überarbeitung von **Rhye's and Fall
-Multiplayer** für **Civilization IV: Beyond the Sword**. Sie bietet fünf
-Staatsformen-Kategorien, Stabilität durch passende Staatsformen-Kombinationen,
-Vorwarnungen vor der Entstehung neuer Zivilisationen und dynamische Ländernamen.
+**Awakened RFC** · [GitHub](https://github.com/fabianmaurer/awakened-rfc)
 
-Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
-historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
-Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
+Eine Mehrspieler-Überarbeitung von **Rhye's and Fall Multiplayer** für
+**Civilization IV: Beyond the Sword**: eine Zivilisation durch die Geschichte
+führen, mit einheitlicherer Wirtschaft, neuen Staatsformen und Handel, der
+Kultur und Religion prägt. RFC-Weltkarten, historische Gründungen, einzigartige
+Fähigkeiten und Siegziele bleiben erhalten.
 
-## Spieländerungen im Überblick
+## Was ändert sich?
 
-- **25 Staatsformen in fünf Kategorien:** Regierung, Legitimation, Arbeit,
-  Militär und Religion ersetzen die bisherigen sechs Kategorien. Der Bildschirm
-  nutzt die verfügbare Breite und enthält neue Illustrationen.
-- **Demokratische Wahlen:** Alle zehn Runden wird eine andere Kategorie auf eine
-  zufällig ausgewählte verfügbare Staatsform umgestellt.
-- **Start-Staatsformen:** Jede Zivilisation erhält ein Profil passend zu ihrer
-  Zeit, soweit die Starttechnologien des Szenarios oder der Gründung es erlauben.
-- **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
-  Boni; Theokratie mit Staatsatheismus erhält einen Malus. Die Summe ist begrenzt.
-- **Vorwarnungen vor Gebietswechseln:** Feld-Tooltips zeigen zukünftige
-  Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten drei
-  Runden vor dem Wechsel Unruhen.
-- **Dynamische Ländernamen:** Deutsche und englische Namen reagieren auf
-  Staatsformen, Religion, Reichsgröße sowie Vasallen- und Kolonialverhältnisse.
-- **Einheitliche Produktionskosten:** Die individuellen Produktionskosten-
-  Multiplikatoren der spielbaren Zivilisationen für Einheiten und Gebäude entfallen.
-- **Einheitlichere Forschung:** Die individuelle Forschungskosten-Tabelle
-  entfällt. Gemeinsame Anpassungen für Szenarien, Zeitverlauf und menschliche
-  beziehungsweise KI-Spieler bleiben erhalten.
-- **Keine Inflation:** Die Inflationsrate bleibt bei null.
+- **25 neue Staatsformen in fünf Kategorien**, mit neuen Illustrationen und
+  historisch passenden Startprofilen. Demokratie hält alle zehn Runden Wahlen ab,
+  die eine andere Kategorie zufällig ändern.
+- **Stabilität durch passende Staatsformen**, insgesamt begrenzt auf −5 bis +5.
+  Der Malus für veraltete Staatsformen entfällt.
+- **Einheitlichere Wirtschaft:** Individuelle Anpassungen für Wachstum,
+  Produktion, Forschung und Unterhalt entfallen; die Inflation bleibt bei null.
+  Gemeinsame Regeln für Zivilisationsgruppen bleiben bestehen.
+- **Technologieabhängiges Wachstum:** Ein gemeinsamer Malus von 30% auf den
+  positiven Wachstumsüberschuss sinkt je bekannter Technologie um 0,5 Prozentpunkte
+  und entfällt ab 60 Technologien. Nahrungsproduktion und Verbrauch bleiben gleich.
+- **Landerschließung:** Bauernhöfe auf Schwemmland ab Landwirtschaft;
+  Bautrupps können Sumpf ab Maschinenbau zu Grasland trockenlegen.
+- **Handel ohne Straßen oder Grenzabkommen:** 50% Effektivität bis Entfernung 5,
+  danach linear sinkend auf null bei 15. Straßen ermöglichen 100% ohne Entfernungslimit; Wasserwege
+  benötigen Segeln und sind bis Astronomie auf zwölf Felder begrenzt.
+  Wasserhandel wird halbiert, wenn nicht beide Städte einen Hafen besitzen.
+  Häfen sind auch eine Landkachel hinter der Meeresküste baubar und verbessern
+  bearbeitete Wasserfelder.
+  Routen verbreiten Kultur und Religion in
+  beide Richtungen und ersetzen die bisherige passive Religionsverbreitung.
+  Missionare bleiben erhalten. Kulturelle Homogenität und heilige Städte hemmen
+  Religionen durch Handel; Staatsatheismus verhindert religiöse Verbreitung.
+- **Nahrungshandel versorgt wohlhabende Städte:** Routen verlagern Nahrung
+  aus ärmeren Städten, begrenzt auf eine Nahrung je Bevölkerungspunkt des Lieferanten.
+  Embargos und Blockaden können importabhängige Städte in Hungersnot bringen.
+- **Militärzugang** ersetzt Offene Grenzen und bleibt gegenseitig.
+  **Handelsembargos** sind ab Währung im Außenberater möglich.
+- **Vorwarnungen vor Gründungen:** Feld-Tooltips zeigen zukünftige Wechselgebiete;
+  betroffene Städte erhalten drei Runden vor dem ersten Gebietswechsel Unruhen.
+- **Kulturaufstände ersetzen direktes Überlaufen** regulärer Städte:
+  25% Bevölkerungsverlust, weniger aufständische Kultur und zwei Barbareneinheiten
+  je verlorenem Bevölkerungspunkt. Barbarische und unabhängige Städte können
+  weiterhin kulturell überlaufen. Kulturelle Revolten benötigen mehr als 50%
+  fremde Kultur einer einzelnen Zivilisation auf dem Stadtfeld.
+- **Dynamische deutsche und englische Ländernamen**, inspiriert von historischen
+  Staaten und plausiblen alternativen Entwicklungen.
+- **Eroberte Städte umsiedeln:** Bei mehr als 25% eigener Team-Stadtkultur lässt
+  sich die Stadt im Eroberungsdialog auflösen und durch einen Siedler ersetzen.
 
-### Umfang der Vereinheitlichung
+## Produktionskonvertierungen
 
-Spielbare Zivilisationen verwenden gemeinsame Grundberechnungen für
-**Stadtwachstum, Schwellen für Große Persönlichkeiten und Große Generäle,
-Kulturzuwachs, Einheitenunterhalt, Städteunterhalt, Staatsformen-Unterhalt und
-Gesundheit**. Malis individuelle Anpassung der Wirtschaftsstabilität und der
-individuelle Rabatt der Türkei auf die Aufstandswahrscheinlichkeit entfallen.
+| Konvertierung | Verfügbar ab | Effektivität |
+| --- | --- | ---: |
+| Warenverkauf | Spielbeginn | 25% in Gold |
+| Wohlstand | Währung; ersetzt Warenverkauf | 50% in Gold |
+| Forschung | Alphabet | 25% in Forschung |
+| Kultur | Musik | 50% in Kultur |
 
-Gemeinsame Gruppenmodifikatoren bleiben erhalten, darunter Szenario-Anpassungen
-für frühe Zivilisationen, der Forschungsrabatt für China/Japan und regionale
-sowie wirtschaftliche Stabilitätsregeln. Einzigartige Einheiten, Gebäude,
-Fähigkeiten und historische Gründungszeitpunkte unterscheiden die Zivilisationen
-weiterhin. Sonderregeln für kleinere Fraktionen bleiben separat bestehen.
+## Staatsformen
 
-## Neue Staatsformen
+Eine Staatsform pro Kategorie. **Handel** bezeichnet die Wirtschaftspunkte,
+die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
 
-In jeder Kategorie ist eine Staatsform aktiv. Boni verschiedener Kategorien
-addieren sich: Diktatur und Nationalismus ergeben zusammen beispielsweise
-+40% Produktion.
-
-**Handel** bezeichnet die Wirtschaftspunkte, die über die Regler auf Gold,
-Forschung, Kultur und Spionage verteilt werden. Gold- und Handelswegeinnahmen
-sind davon zu unterscheiden. Prozentboni verändern die Erträge, nicht die
-Prozentpunkte der Reglereinstellungen. Feste Gebäude- und Verbesserungsboni
-gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
+<details>
+<summary>Alle 25 Staatsformen: Technologien, Unterhalt und Boni</summary>
 
 ### Regierung
 
@@ -88,27 +97,17 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Bevölkerung kann für Produktion geopfert werden; +2 Handel durch Plantagen. |
 | **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; -1 Handel durch Dörfer; Bautrupps errichten Verbesserungen 50% schneller. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkstätten, Wassermühlen und Windmühlen; +1 Nahrung durch Bauernhöfe; -20% Handel. |
-| **Marktwirtschaft** | Kapitalgesellschaft | Mittel | +1 freier Spezialist in jeder Stadt; Hüttenverbesserungen wachsen doppelt so schnell. |
-
-Das Wachstum umfasst sämtliche Ausbaustufen: **Hütte → Weiler → Dorf → Gemeinde**.
-Selbstversorgung verhindert die Aufwertung; Marktwirtschaft verdoppelt ihre
-Geschwindigkeit. Der Handelsmalus der Leibeigenschaft betrifft ausschließlich
-die Stufe **Dorf**. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
-als Möglichkeit für überschüssige Bevölkerung verfügbar.
+| **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; Hüttenverbesserungen wachsen doppelt so schnell. |
 
 ### Militär
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
-| **Kriegergesellschaft** | Keine | Keiner | Einheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
+| **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
 | **Rittertum** | Maschinenbau | Mittel | +25% Produktion für berittene Einheiten; +10% Stadtangriff. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. |
-
-Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
-Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
-Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 
 ### Religion
 
@@ -120,165 +119,26 @@ Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 | **Toleranz** | Liberalismus | Mittel | Entfernt Unzufriedenheit durch fremde Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung; religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
-Staatsatheismus deaktiviert die Staatsreligion; die anderen vier religiösen
-Staatsformen erlauben eine Staatsreligion.
+</details>
 
-Unter Staatsatheismus bleiben religiöse Gebäude im Besitz und zählen weiterhin
-für Wunderlimits. Ihre Effekte sind jedoch deaktiviert, einschließlich
-Zufriedenheit, Produktion, Handel, Kultur trotz Veraltung, Schreineinnahmen,
-freien Spezialisten und Punkten für Große Persönlichkeiten. Beim Verlassen der
-Staatsform werden die Effekte wiederhergestellt. Als religiös gelten Gebäude
-mit Religionszugehörigkeit oder Religionsvoraussetzung.
+## Spielen
 
-Staatsatheismus verhindert natürliche Ausbreitung sowie Ausbreitung durch
-Missionare, Ereignisse und Skripte. Bestehende Religionen bleiben erhalten,
-auch bei einem Besitzerwechsel der Stadt. Die Gründung oder Verlegung einer
-heiligen Stadt bleibt als eigenständige Aktion möglich.
+1. **`Awakened RFC`** in den **`Mods`**-Ordner von Beyond the Sword kopieren.
+   Den Namen beibehalten; der ursprüngliche Mod kann daneben installiert bleiben.
+2. Über das Mod-Menü oder [den Starter](<Launch Awakened RFC.bat>) laden
+   (für Steam eingerichtet).
+3. **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.** wählen. Alle Mitspieler
+   benötigen identische Mod-Dateien und DLLs.
 
-## Start-Staatsformen
+Nach Textänderungen beim Start **Shift gedrückt halten**. Nach Änderungen an
+XML-Staatsformenboni ein neues Spiel beginnen. Die Validierung der Überarbeitung
+im Mehrspielerbetrieb steht noch aus.
 
-Jede spielbare Zivilisation einschließlich Byzanz im Szenario 600 n. Chr. hat ein
-Profil für alle fünf Kategorien. Es gilt für menschliche und KI-Spieler beim
-Szenariostart oder der ersten Gründung, nach Zuweisung der Starttechnologien und
-vor der Erzeugung der Start-Einheiten durch Skripte. Nicht verfügbare Staatsformen
-werden durch festgelegte Alternativen ersetzt; zusätzliche Technologien oder
-Anarchie entstehen dadurch nicht.
+## Details und Entwicklung
 
-Die Profile gelten für alle drei Szenarien und überschreiben keine späteren
-Spielerentscheidungen. Bereits vorhandene Zivilisationen in Spielständen behalten
-ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
-[StartingCivics.md](docs/StartingCivics.md).
+[Ausführliche Spielregeln](docs/Gameplay.de.md) · [Start-Staatsformen](docs/StartingCivics.md) ·
+[Staatsformen-Stabilität](docs/CivicStability.md) · [Implementierung](docs/CivicEffects.md) ·
+[Ländernamen](docs/CountryNames.csv) · [Namensregeln](docs/CountryNaming.md)
 
-## Demokratische Wahlen
-
-Wahlen finden bei aktiver Demokratie auf **globalen Rundenzahlen statt, die
-durch zehn teilbar sind**. Zuerst wird eine der anderen vier Kategorien mit
-verfügbarer Alternative ausgewählt, dann eine andere Staatsform, die der Spieler
-aktuell annehmen kann. Gibt es keine verfügbare Alternative, erfolgt kein
-Wechsel. Menschliche Spieler erhalten eine Benachrichtigung.
-
-Beide Auswahlen verwenden den synchronisierten Zufallsgenerator des Spiels.
-Die Regierung bleibt Demokratie; Wahlen verursachen keinen zusätzlichen
-Stabilitätsmalus für den Übergang.
-
-## Stabilität durch Staatsformen
-
-Die folgenden Kombinationen tragen zur Basisstabilität bei:
-
-| Kombination | Stabilität |
-| --- | ---: |
-| Stammessystem + Despotismus | +1 |
-| Monarchie + Theokratie | +1 |
-| Plutokratie + Planwirtschaft | -1 |
-| Republik oder Demokratie + Rechtsstaat | +2 |
-| Monarchie + Rittertum | +2 |
-| Theokratie + Staatsreligion oder Gottesstaat | +2 |
-| Plutokratie + Marktwirtschaft | +1 |
-| Theokratie + Staatsatheismus | -3 |
-
-Passende Beiträge werden addiert und insgesamt auf **-5 bis +5** begrenzt.
-Andere Kombinationen tragen null bei. Der Modifikator wird alle drei Runden
-für die Basisstabilität neu berechnet; er summiert sich nicht als dauerhafter
-Gewinn oder Verlust pro Runde. Tatsächliche Zufriedenheit und wirtschaftliche
-Leistung beeinflussen die Stabilität weiterhin über die allgemeinen Systeme.
-
-Die Überarbeitung entfernt:
-
-- Feste Stabilitätswerte einzelner Staatsformen.
-- Automatische regierungsspezifische Stabilitätsrettung und Schwellenboni.
-- Den Malus für „veraltete Staatsformen“ und die bisherige Übergangsinstabilität der Demokratie.
-- Die besondere Wirtschaftskrise der Marktwirtschaft und ihre Übertragung durch offene Grenzen.
-- Die acht Runden dauernde Krise nach dem Verlassen der Planwirtschaft.
-- Zusätzliche religiöse Stadtstrafen speziell unter Staatsreligion und Gottesstaat.
-- Die separate Fremdkultur-Stabilitätsschwelle des Nationalismus.
-- Den zusätzlichen Stabilitätsbonus für Gefängnisbau unter Diktatur.
-- Boni der entfernten Expansionskategorie für Vasallen, entfernte Städte,
-  Eroberungen und Handel/Wirtschaft.
-
-Hintergründe und Verhalten in Spielständen stehen in
-[CivicStability.md](docs/CivicStability.md); technische Details in
-[CivicEffects.md](docs/CivicEffects.md).
-
-## Neue Zivilisationen und Gebietswechsel
-
-### Feld-Tooltips
-
-Beim Überfahren eines Feldes erscheinen die **Grundnamen** zukünftiger
-Zivilisationen, deren Kerngebiet das Feld einschließt. Jeder Name steht in
-einer eigenen Zeile in der Farbe der Zivilisation. Die eigene Zivilisation und
-aktuell lebende Zivilisationen werden ausgeschlossen. Angezeigt wird etwa
-**Deutschland** statt eines frühen dynamischen Namens wie „Germanische Völker“.
-
-Der Tooltip verwendet feste Kerngebietsrechtecke und eine Grenze anhand der
-Gründungsrunde. Er berechnet nicht jede Skriptausnahme oder angepasste
-Verzögerung neu und dient daher als Planungshilfe.
-
-### Unruhen vor dem Gebietswechsel
-
-**Drei Runden vor einem geplanten ersten Gebietswechsel** erhalten Städte im
-Kerngebiet und auf Ausnahmefeldern der neuen Zivilisation drei Runden Unruhen
-über den Besatzungszähler. Eine bereits länger andauernde Besatzung bleibt
-erhalten. Der Zeitplan berücksichtigt die Verzögerungen der Gründungslogik.
-
-Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen
-dynamischen Namen der Zivilisation, etwa **„Die [Völker] erheben sich!“**.
-Diese Vorwarnung begleitet das bestehende Gebietswechsel-System und führt
-keine eigene Regel für den Wechsel stationierter Einheiten ein.
-
-## Dynamische Ländernamen
-
-Ländernamen reagieren auf Regierung, Legitimation, Wirtschaft, Staatsreligion
-und Reichsgröße. Bestehende Vasallen- und Kolonialnamen haben Vorrang. Namen
-werden nach Staatsformen- und Religionswechseln sowie einmal pro Spielerzug
-aktualisiert.
-
-Der Katalog enthält **569 Einträge mit 330 unterschiedlichen deutsch-englischen
-Namenspaaren**. Die Namen verwenden passende historische Bezeichnungen und
-plausible alternative Entwicklungen. Ein Name muss nicht jede aktive Staatsform
-abbilden.
-
-Beispiele sind das **Heilige Römische Reich**, die **Hanse**, die **Batavische
-Republik**, die **Republik Nowgorod** und **Tawantinsuyu**. Unterschiedliche
-Staatsformen-Kombinationen können bewusst denselben natürlichen Ländernamen
-verwenden.
-
-Der Katalog steht in [CountryNames.csv](docs/CountryNames.csv), die Auswahlregeln
-in [CountryNaming.md](docs/CountryNaming.md). Die neuen Ländernamen sind auf
-Deutsch und Englisch vorhanden; Französisch, Italienisch und Spanisch verwenden
-englische Ersatztexte.
-
-## Installation und Mehrspieler
-
-1. Den Ordner **`RFC MP Plus`** in das **`Mods`**-Verzeichnis von Beyond the Sword kopieren.
-2. Den Ordnernamen beibehalten: Die enthaltenen Szenarien verweisen darauf. Der
-   ursprüngliche RFC-MP-Mod kann parallel installiert bleiben.
-3. RFC MP Plus über das Mod-Menü des Spiels oder
-   [Launch RFC MP Plus.bat](<Launch RFC MP Plus.bat>) starten. Der Starter
-   verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
-   muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.** oder **600 n. Chr.**.
-
-Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
-DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
-die Überarbeitung muss noch im Mehrspielerbetrieb validiert werden.
-
-Nach Textänderungen beim Start **Shift gedrückt halten**, um den Textcache neu
-aufzubauen.
-
-Nach Änderungen an XML-Staatsformen-Modifikatoren ein neues Spiel beginnen,
-da alte Spielstände gespeicherte Spieler- und Stadtboni behalten können.
-Die neuen Stabilitätskombinationen greifen in bestehenden Spielständen bei der
-nächsten Neuberechnung der Basisstabilität. Entfernte Krisenzähler bleiben
-lesbar, verursachen aber keine Strafen mehr; frühere Stabilitätsänderungen
-werden nicht rückwirkend korrigiert.
-
-## Spiel-DLL kompilieren
-
-Für die Kompatibilität mit Civ4 den ursprünglichen **32-Bit-VC7.1-Werkzeugsatz**,
-Python 2.4 und Boost.Python 1.32 verwenden.
-
-Voraussetzungen und Kompilierungsablauf stehen in [AGENTS.md](AGENTS.md) und
-[BUILDING.md](<RFC MP Plus/CvGameCoreDLL/BUILDING.md>). Der konfigurierte Build
-kopiert die neu erzeugte DLL in den Mod-Ordner des Projekts und in den
-installierten Mod. Civ4 vor dem Kompilieren schließen, damit die installierte
-DLL ersetzt werden kann.
+Die DLL benötigt den ursprünglichen **32-Bit-VC7.1-Werkzeugsatz**. Siehe
+[Kompilierungsanleitung](<Awakened RFC/CvGameCoreDLL/BUILDING.md>) und [AGENTS.md](AGENTS.md).

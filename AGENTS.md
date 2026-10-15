@@ -1,4 +1,22 @@
-# RFC MP Plus build notes
+# Awakened RFC build notes
+
+## Mod identity
+
+The full title is **Awakened Rhye's and Fall of Civilization**. The mod folder
+and matching configuration file are `Awakened RFC` and `Awakened RFC.ini`.
+Scenario `ModPath` values and launch arguments must use `Mods\Awakened RFC`.
+The repository is `git@github.com:fabianmaurer/awakened-rfc.git`. The local
+workspace root is still `C:\Code\rfc-mp-plus`; do not confuse that existing
+checkout path with the renamed mod directory. Internal `RFCMP` XML keys,
+defines and asset subdirectories remain valid identifiers.
+
+## Save compatibility
+
+The user explicitly does not require compatibility with existing saves. Implement gameplay changes for new games; do not add save migrations or preserve old mechanics solely for existing saves.
+
+## Civilization modifiers and unique powers
+
+General civilization-specific growth, production, research and maintenance tuning is removed. Named civilization unique powers must remain active. Apply them separately from bypassed cost-tuning switches: China trains melee/gunpowder units at 1.5x speed, Maya receive their 40% research discount through the Medieval era, and Persia gains +2 stability per conquered city. When changing a broad modifier block, check for embedded unique powers before disabling it. See `docs/UniquePowersAudit.md` for the audit against the original Rhye's and Fall MP source.
 
 ## Civ4 game DLL
 
@@ -6,7 +24,7 @@ Use the original 32-bit VC7.1 toolchain (Microsoft Visual C++ Toolkit 2003, comp
 
 ### Local prerequisites
 
-The local build expects the following prerequisites under `RFC MP Plus/CvGameCoreDLL`. These downloaded/vendor toolchain files are machine-local and excluded from Git; provision them separately when setting up a fresh checkout:
+The local build expects the following prerequisites under `Awakened RFC/CvGameCoreDLL`. These downloaded/vendor toolchain files are machine-local and excluded from Git; provision them separately when setting up a fresh checkout:
 
 - `legacy-toolchain/Microsoft Visual C++ Toolkit 2003`: VC7.1 compiler, linker and standard headers.
 - `legacy-toolchain/lib`: legacy CRT libraries (`libc.lib`, `libcd.lib`, `libcmt.lib`, `libcmtd.lib`, `msvcrt.lib`, `msvcrtd.lib`, `oldnames.lib`, `oldnamesd.lib`).
@@ -19,7 +37,7 @@ These paths are machine-specific and are recorded in the local `Makefile.setting
 
 ### Build
 
-Open PowerShell in `RFC MP Plus/CvGameCoreDLL`, then run:
+Open PowerShell in `Awakened RFC/CvGameCoreDLL`, then run:
 
 ```powershell
 $vc = 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64'
@@ -28,7 +46,7 @@ $env:Path = "$vc;$env:Path"
 & $msbuild 'CvGameCoreDLL.vcxproj' /p:Configuration=Release /p:Platform=Win32 /verbosity:minimal /m:1
 ```
 
-This invokes `nmake` for source/dependency preparation and `bin\jom build` for the actual VC7.1 compile/link. `Makefile` is configured with `YOURMOD=..`, so a successful build creates `Release\CvGameCoreDLL.dll` and copies it to `Assets\CvGameCoreDLL.dll` in this mod tree. `CIV4_MOD_INSTALL_PATH` in `Makefile.settings` points to the installed RFC MP Plus folder; after each successful build, the Makefile compares the built DLL to the installed one and copies it only when the contents differ. Keep Civ4 closed during builds so the installed DLL can be replaced. Check the MSBuild exit code and `legacy-toolchain\legacy-build.log` if output was redirected.
+This invokes `nmake` for source/dependency preparation and `bin\jom build` for the actual VC7.1 compile/link. `Makefile` is configured with `YOURMOD=..`, so a successful build creates `Release\CvGameCoreDLL.dll` and copies it to `Assets\CvGameCoreDLL.dll` in this mod tree. `CIV4_MOD_INSTALL_PATH` in `Makefile.settings` points to the installed Awakened RFC folder; after each successful build, the Makefile compares the built DLL to the installed one and copies it only when the contents differ. Keep Civ4 closed during builds so the installed DLL can be replaced. Check the MSBuild exit code and `legacy-toolchain\legacy-build.log` if output was redirected.
 
 ### Runtime and multiplayer checks
 
@@ -48,6 +66,6 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 
 ## Related files
 
-- `RFC MP Plus/CvGameCoreDLL/Makefile.settings`: local paths and link additions.
-- `RFC MP Plus/CvGameCoreDLL/Makefile`: legacy SDK build rules and compatibility adjustments.
-- `RFC MP Plus/CvGameCoreDLL/BUILDING.md`: overview and rationale.
+- `Awakened RFC/CvGameCoreDLL/Makefile.settings`: local paths and link additions.
+- `Awakened RFC/CvGameCoreDLL/Makefile`: legacy SDK build rules and compatibility adjustments.
+- `Awakened RFC/CvGameCoreDLL/BUILDING.md`: overview and rationale.

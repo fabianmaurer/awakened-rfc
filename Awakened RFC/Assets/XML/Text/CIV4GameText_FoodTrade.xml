@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_FOOD_TRADE_TOTAL</Tag>
+        <English>Food trade: +%d1_Imports[ICON_FOOD] imported, -%d2_Exports[ICON_FOOD] exported per turn</English>
+        <French>Food trade: +%d1_Imports[ICON_FOOD] imported, -%d2_Exports[ICON_FOOD] exported per turn</French>
+        <German>Nahrungshandel: +%d1_Imports[ICON_FOOD] importiert, -%d2_Exports[ICON_FOOD] exportiert pro Runde</German>
+        <Italian>Food trade: +%d1_Imports[ICON_FOOD] imported, -%d2_Exports[ICON_FOOD] exported per turn</Italian>
+        <Spanish>Food trade: +%d1_Imports[ICON_FOOD] imported, -%d2_Exports[ICON_FOOD] exported per turn</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_FOOD_TRADE_ROUTE</Tag>
+        <English>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</English>
+        <French>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</French>
+        <German>Nahrungsaustausch mit dieser Stadt: %D1_Food[ICON_FOOD] pro Runde</German>
+        <Italian>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</Italian>
+        <Spanish>Food exchange with this city: %D1_Food[ICON_FOOD] per turn</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_TECH_GROWTH</Tag>
+        <English>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</English>
+        <French>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</French>
+        <German>Wachstumsmalus: %s1_Penalty%%; Wachstum pro Runde: %s2_Growth[ICON_FOOD]</German>
+        <Italian>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</Italian>
+        <Spanish>Growth penalty: %s1_Penalty%%; growth per turn: %s2_Growth[ICON_FOOD]</Spanish>
+    </TEXT>
+</Civ4GameText>
