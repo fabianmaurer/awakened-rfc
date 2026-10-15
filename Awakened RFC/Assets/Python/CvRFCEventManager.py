@@ -67,10 +67,14 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
+        import GameObserver
+        self.observer = GameObserver.Observer()
+        self.observer.install_before(self)
         CvRFCEventHandler.CvRFCEventHandler(self)
         self.rnf = RiseAndFall.RiseAndFall()
         self.cong = Congresses.Congresses()
         self.slave = Slavery.slavery
+        self.observer.install_after(self)
         
 
     def addEventHandler(self, eventType, eventHandler):
@@ -121,7 +125,13 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         if self.EventHandlerMap.has_key(eventType):
             for eventHandler in self.EventHandlerMap[eventType]:
                 # the last 6 arguments are for internal use by handleEvent
-                eventHandler(argsList[:len(argsList) - 6])
+                try:
+                    eventHandler(argsList[:len(argsList) - 6])
+                except:
+                    self.observer.exception(eventType)
+                    raise
+            if self.observer.enabled:
+                self.observer.event(eventType, argsList[:len(argsList) - 6])
 
     def _handleConsumableEvent(self, eventType, argsList):
         """Handles events that can be consumed by the handlers, such as

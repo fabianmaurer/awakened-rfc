@@ -1257,7 +1257,7 @@ int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder)
 		{
 			if (!(pSelectionGroup->canFight()) && !(pSelectionGroup->alwaysInvisible()))
 			{
-				if (GET_PLAYER(pSelectionGroup->getHeadOwner()).AI_getPlotDanger(pToPlot) > 0)
+				if (GET_PLAYER(pSelectionGroup->getHeadOwner()).AI_isPlotDanger(pToPlot) > 0)
 				{
 					return FALSE;
 				}
@@ -1552,7 +1552,7 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 			{
 				if (!(pSelectionGroup->canFight()) && !(pSelectionGroup->alwaysInvisible()))
 				{
-					if (GET_PLAYER(pSelectionGroup->getHeadOwner()).AI_getPlotDanger(pFromPlot) > 0)
+					if (GET_PLAYER(pSelectionGroup->getHeadOwner()).AI_isPlotDanger(pFromPlot) > 0)
 					{
 						return FALSE;
 					}

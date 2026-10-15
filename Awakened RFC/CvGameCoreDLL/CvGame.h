@@ -238,6 +238,8 @@ public:
 	int getInitWonders() const;																		// Exposed to Python
 	DllExport void initScoreCalculation();
 
+	bool isObserverAutoPlay() const { return m_bObserverAutoPlay; }
+	void setObserverAutoPlay(bool enabled);
 	int getAIAutoPlay();																				// Exposed to Python
 	DllExport void setAIAutoPlay(int iNewValue);																// Exposed to Python
 	void setAIAutoPlayCatapult(int iNewValue); //Rhye
@@ -582,6 +584,8 @@ protected:
 	int m_iInitTech;
 	int m_iInitWonders;
 	int m_iAIAutoPlay;
+	bool m_bObserverAutoPlay; // Process-local test control; deliberately not serialized.
+	bool m_bObserverNoAutosaves;
 	int m_iCircumnavigated; //Rhye
 
 	unsigned int m_uiInitialTime;

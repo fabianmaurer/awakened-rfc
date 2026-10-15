@@ -1572,6 +1572,36 @@ int CyCity::totalTradeModifier()
 	return m_pCity ? m_pCity->totalTradeModifier() : -1;
 }
 
+int CyCity::getLocalFoodYield()
+{
+	return m_pCity ? m_pCity->getLocalFoodYield() : 0;
+}
+
+int CyCity::getFoodTradeImports()
+{
+	return m_pCity ? m_pCity->getFoodTradeImports() : 0;
+}
+
+int CyCity::getFoodTradeExports()
+{
+	return m_pCity ? m_pCity->getFoodTradeExports() : 0;
+}
+
+int CyCity::getFoodExportLimit()
+{
+	return m_pCity ? m_pCity->getFoodExportLimit() : 0;
+}
+
+int CyCity::getTradeInfrastructureEfficiency(CyCity* city)
+{
+	return m_pCity && city && city->getCity() ? m_pCity->getTradeInfrastructureEfficiency(city->getCity()) : 0;
+}
+
+int CyCity::getFoodTradeWith(CyCity* city)
+{
+	return m_pCity && city && city->getCity() ? m_pCity->getFoodTradeWith(city->getCity()) : 0;
+}
+
 int CyCity::calculateTradeProfit(CyCity* pCity)
 {
 	return m_pCity ? m_pCity->calculateTradeProfit(pCity->getCity()) : -1;

@@ -2857,6 +2857,7 @@ void CvUnit::attackForDamage(CvUnit *pDefender, int attackerDamageChange, int de
 
 void CvUnit::move(CvPlot* pPlot, bool bShow)
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) bShow = false;
 	FAssert(canMoveOrAttackInto(pPlot) || isMadeAttack());
 
 	CvPlot* pOldPlot = plot();
@@ -13005,6 +13006,7 @@ bool CvUnit::verifyStackValid()
 //check if quick combat
 bool CvUnit::isCombatVisible(const CvUnit* pDefender) const
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) return false;
 	bool bVisible = false;
 
 	if (!m_pUnitInfo->isQuickCombat())
@@ -13034,6 +13036,7 @@ bool CvUnit::isCombatVisible(const CvUnit* pDefender) const
 // used by the executable for the red glow and plot indicators
 bool CvUnit::shouldShowEnemyGlow(TeamTypes eForTeam) const
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) return false;
 	if (isDelayedDeath())
 	{
 		return false;

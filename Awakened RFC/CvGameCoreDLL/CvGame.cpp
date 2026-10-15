@@ -24,6 +24,109 @@
 #include <set>
 #include "CvEventReporter.h"
 #include "CvMessageControl.h"
+#include "ObserverPerformance.h"
+#include <map>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include "CvSelectionGroup.h"
+#include "CvUnit.h"
+
+// Bind early benchmark seeding to the same private config/token/PID as Python.
+// Ordinary and multiplayer initialization never consume this override.
+static bool observerPerformanceSeed(unsigned int& seed, std::string& marker)
+{
+    const char* config = getenv("AWAKENED_RFC_OBSERVER_CONFIG");
+    const char* token = getenv("AWAKENED_RFC_OBSERVER_TOKEN");
+    if (!config || !token || !*token) return false;
+    char value[256];
+    GetPrivateProfileStringA("Observer", "Token", "", value, sizeof(value), config);
+    if (strcmp(value, token) != 0) return false;
+    if (GetPrivateProfileIntA("Observer", "ProcessId", 0, config) != GetCurrentProcessId()) return false;
+    GetPrivateProfileStringA("Observer", "Mode", "", value, sizeof(value), config);
+    if (strcmp(value, "performance") != 0) return false;
+    GetPrivateProfileStringA("Observer", "Seed", "", value, sizeof(value), config);
+    if (!*value || value[0] == '-') return false;
+    char* end;
+    errno = 0;
+    unsigned long parsed = strtoul(value, &end, 10);
+    if (*end || errno == ERANGE) return false;
+    seed = (unsigned int)parsed;
+    marker = config;
+    std::string::size_type slash = marker.find_last_of("\\/");
+    if (slash == std::string::npos) return false;
+    marker = marker.substr(0, slash + 1) + "seed-initialized.ini";
+    return true;
+}
+
+bool g_observerPerformance = false;
+namespace {
+    struct ObserverTiming {
+        int calls;
+        double total, own, maximum;
+        ObserverTiming() : calls(0), total(0), own(0), maximum(0) {}
+    };
+    typedef std::map<std::pair<int, std::string>, ObserverTiming> ObserverTimings;
+    ObserverTimings observerTimings;
+    ObserverPerformanceScope* observerParent = NULL;
+    double observerFrequency = 1;
+    std::string observerTimingPath;
+}
+void observerPerformanceStart()
+{
+    const char* path = getenv("AWAKENED_RFC_PERFORMANCE_OUTPUT");
+    if (!path || !*path) return;
+    LARGE_INTEGER frequency;
+    if (!QueryPerformanceFrequency(&frequency)) return;
+    observerFrequency = double(frequency.QuadPart);
+    observerTimingPath = path;
+    FILE* file = fopen(path, "w");
+    if (!file) return;
+    fprintf(file, "turn,calculation,calls,inclusive_seconds,exclusive_seconds,max_seconds\n");
+    fclose(file);
+    observerTimings.clear();
+    g_observerPerformance = true;
+}
+void observerPerformanceFlush()
+{
+    if (observerTimingPath.empty() || observerTimings.empty()) return;
+    FILE* file = fopen(observerTimingPath.c_str(), "a");
+    if (!file) return;
+    for (ObserverTimings::iterator it = observerTimings.begin(); it != observerTimings.end(); ++it) {
+        const ObserverTiming& t = it->second;
+        fprintf(file, "%d,%s,%d,%.9f,%.9f,%.9f\n", it->first.first,
+            it->first.second.c_str(), t.calls, t.total, t.own, t.maximum);
+    }
+    fclose(file);
+    observerTimings.clear();
+}
+ObserverPerformanceScope::ObserverPerformanceScope(const char* name)
+    : m_name(NULL), m_children(0), m_parent(NULL)
+{
+    if (!g_observerPerformance) return;
+    m_name = name;
+    m_turn = GC.getGameINLINE().getGameTurn();
+    m_parent = observerParent;
+    observerParent = this;
+    LARGE_INTEGER counter;
+    QueryPerformanceCounter(&counter);
+    m_start = counter.QuadPart;
+}
+ObserverPerformanceScope::~ObserverPerformanceScope()
+{
+    if (!m_name) return;
+    LARGE_INTEGER counter;
+    QueryPerformanceCounter(&counter);
+    double elapsed = double(counter.QuadPart - m_start) / observerFrequency;
+    observerParent = m_parent;
+    if (m_parent) m_parent->m_children += elapsed;
+    ObserverTiming& t = observerTimings[std::make_pair(m_turn, std::string(m_name))];
+    ++t.calls;
+    t.total += elapsed;
+    t.own += std::max(0.0, elapsed - m_children);
+    t.maximum = std::max(t.maximum, elapsed);
+    if (!g_observerPerformance) observerPerformanceFlush();
+}
 
 // interface uses
 #include "CvDLLInterfaceIFaceBase.h"
@@ -111,8 +214,28 @@ void CvGame::init(HandicapTypes eHandicap)
 	m_voteSelections.init();
 	m_votesTriggered.init();
 
+	unsigned int benchmarkSeed = 0;
+	std::string seedMarker;
+	bool benchmarkSeeded = false;
+	if (GC.getInitCore().getType() == GAME_SP_NEW || GC.getInitCore().getType() == GAME_SP_SCENARIO)
+		benchmarkSeeded = observerPerformanceSeed(benchmarkSeed, seedMarker);
+	if (benchmarkSeeded)
+	{
+		GC.getInitCore().setMapRandSeed(benchmarkSeed);
+		GC.getInitCore().setSyncRandSeed(benchmarkSeed);
+	}
 	m_mapRand.init(GC.getInitCore().getMapRandSeed() % 73637381);
 	m_sorenRand.init(GC.getInitCore().getSyncRandSeed() % 52319761);
+	if (benchmarkSeeded)
+	{
+		FILE* marker = fopen(seedMarker.c_str(), "w");
+		if (marker)
+		{
+			fprintf(marker, "[Seed]\nValue=%u\nProcessId=%lu\nStage=CvGame.init\nMapSeed=%u\nSyncSeed=%u\n",
+				benchmarkSeed, GetCurrentProcessId(), benchmarkSeed % 73637381, benchmarkSeed % 52319761);
+			fclose(marker);
+		}
+	}
 
 	//--------------------------------
 	// Init non-saved data
@@ -359,7 +482,7 @@ void CvGame::regenerateMap()
 
 	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 
-	gDLL->getEngineIFace()->AutoSave(true);
+	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
 
 	if (NO_PLAYER != getActivePlayer())
 	{
@@ -448,6 +571,8 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iInitTech = 0;
 	m_iInitWonders = 0;
 	m_iAIAutoPlay = 0;
+	m_bObserverAutoPlay = false;
+	m_bObserverNoAutosaves = false;
 	m_iCircumnavigated = -1; //Rhye
 
 	m_uiInitialTime = 0;
@@ -2121,7 +2246,7 @@ void CvGame::update()
 
 		if (getTurnSlice() == 0)
 		{
-			gDLL->getEngineIFace()->AutoSave(true);
+			if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
 		}
 
 		if (getNumGameTurnActive() == 0)
@@ -2146,7 +2271,7 @@ void CvGame::update()
 
 		testAlive();
 
-		if ((getAIAutoPlay() == 0) && !(gDLL->GetAutorun()) && GAMESTATE_EXTENDED != getGameState())
+		if (!isObserverAutoPlay() && (getAIAutoPlay() == 0) && !(gDLL->GetAutorun()) && GAMESTATE_EXTENDED != getGameState())
 		{
 			if (countHumanPlayersAlive() == 0)
 			{
@@ -2398,6 +2523,7 @@ bool foodCityOrder(const CvCity* a, const CvCity* b)
 
 void CvGame::updateFoodTrade()
 {
+	OBSERVER_PERFORMANCE("CvGame::updateFoodTrade");
     // One synchronized snapshot for all players, before anyone's city growth.
     // Only actual selected routes count; reciprocal routes form one food link.
     std::vector<CvCity*> cities;
@@ -2425,6 +2551,8 @@ void CvGame::updateFoodTrade()
             if (pOrigin->getTeam() != pPartner->getTeam() && !GET_TEAM(pOrigin->getTeam()).isFreeTrade(pPartner->getTeam())) continue;
             const int iInfrastructureEfficiency = pOrigin->getTradeInfrastructureEfficiency(pPartner);
             if (iInfrastructureEfficiency <= 0) continue;
+            // Infrastructure validity is fixed for shipments allocated here.
+            // Food queries recheck route membership and diplomacy, not terrain.
             const int iTotalPressure = pOrigin->getFoodTradePressure(pPartner);
             if (iTotalPressure == 0) continue;
             CvCity* pSupplier = iTotalPressure > 0 ? pOrigin : pPartner;
@@ -2496,6 +2624,7 @@ void CvGame::updateFoodTrade()
 
 void CvGame::updateTradeRoutes()
 {
+	OBSERVER_PERFORMANCE("CvGame::updateTradeRoutes");
 	int iI;
 
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
@@ -4146,6 +4275,31 @@ int CvGame::getAIAutoPlay()
 }
 
 
+void CvGame::setObserverAutoPlay(bool enabled)
+{
+	// Preserve every civilization and its units. Never enable in multiplayer.
+	if (isGameMultiPlayer() || m_bObserverAutoPlay == enabled) return;
+	m_bObserverAutoPlay = enabled;
+	// Keep suppression through the final turn after observer AI is disabled.
+	// Transient session state: reset for new games, never serialized in saves.
+	if (enabled) m_bObserverNoAutosaves = true;
+	if (enabled) observerPerformanceStart();
+	else {
+		observerPerformanceFlush();
+		g_observerPerformance = false;
+	}
+	// AI simulations render only a progress screen; no spectator reveal or
+	// forced world-graphics refresh is needed.
+	gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(MinimapSection_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(UnitInfo_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(CityInfo_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(GlobeLayer_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
+}
+
 void CvGame::setAIAutoPlay(int iNewValue)
 {
 	int iOldValue;
@@ -5089,7 +5243,7 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 				addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, GET_TEAM(getWinner()).getLeaderID(), szBuffer, -1, -1, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
 			}
 
-			if ((getAIAutoPlay() > 0) || gDLL->GetAutorun())
+			if (isObserverAutoPlay() || (getAIAutoPlay() > 0) || gDLL->GetAutorun())
 			{
 				setGameState(GAMESTATE_EXTENDED);
 			}
@@ -6009,6 +6163,8 @@ void CvGame::addGreatPersonBornName(const CvWString& szName)
 
 void CvGame::doTurn()
 {
+	observerPerformanceFlush();
+	OBSERVER_PERFORMANCE("game.doTurn");
 	PROFILE_BEGIN("CvGame::doTurn()");
 	//logMsg("doTurn"); //Rhye
 	int aiShuffle[MAX_PLAYERS];
@@ -6019,6 +6175,9 @@ void CvGame::doTurn()
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 		turnPlayed[iI] = 0;
 	//Rhye - end
+
+	// Keep observer UI bounded: clear old combat/resource notification icons.
+	if (isObserverAutoPlay()) gDLL->getInterfaceIFace()->clearEventMessages();
 
 	// END OF TURN
 	CvEventReporter::getInstance().beginGameTurn( getGameTurn() );
@@ -6141,7 +6300,7 @@ void CvGame::doTurn()
 
 	stopProfilingDLL();
 
-	gDLL->getEngineIFace()->AutoSave();
+	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave();
 }
 
 
@@ -6965,6 +7124,7 @@ void CvGame::updateWar()
 
 void CvGame::updateMoves()
 {
+	OBSERVER_PERFORMANCE("CvGame::updateMoves");
 	CvSelectionGroup* pLoopSelectionGroup;
 	int aiShuffle[MAX_PLAYERS];
 	int iLoop;
@@ -7487,7 +7647,7 @@ void CvGame::testVictory()
 			{
 				if (!bEndScore)
 				{
-					if ((getAIAutoPlay() > 0) || gDLL->GetAutorun())
+					if (isObserverAutoPlay() || (getAIAutoPlay() > 0) || gDLL->GetAutorun())
 					{
 						setGameState(GAMESTATE_EXTENDED);
 					}
@@ -9096,6 +9256,7 @@ int CvGame::getCultureThreshold(CultureLevelTypes eLevel) const
 
 void CvGame::doUpdateCacheOnTurn()
 {
+	OBSERVER_PERFORMANCE("CvGame::doUpdateCacheOnTurn");
 	int	iI;
 	
 	// reset shrine count

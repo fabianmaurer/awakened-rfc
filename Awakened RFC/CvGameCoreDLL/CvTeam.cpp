@@ -1,6 +1,7 @@
 // team.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvDefines.h"
 #include "CvGameCoreUtils.h"
@@ -863,6 +864,7 @@ void CvTeam::processBuilding(BuildingTypes eBuilding, int iChange)
 
 void CvTeam::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvTeam::doTurn");
 	PROFILE("CvTeam::doTurn()")
 
 	int iCount;

@@ -131,6 +131,9 @@ void CyGamePythonInterface()
 
 		.def("getAIAutoPlay", &CyGame::getAIAutoPlay)
 		.def("setAIAutoPlay", &CyGame::setAIAutoPlay)
+		.def("setObserverAutoPlay", &CyGame::setObserverAutoPlay)
+		.def("saveObserverCheckpoint", &CyGame::saveObserverCheckpoint)
+		.def("isObserverAutoPlay", &CyGame::isObserverAutoPlay)
 
 		.def("isScoreDirty", &CyGame::isScoreDirty, "bool ()")
 		.def("setScoreDirty", &CyGame::setScoreDirty)

@@ -9,6 +9,7 @@
 
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvMap.h"
 #include "CvCity.h"
 #include "CvPlotGroup.h"
@@ -320,6 +321,7 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 // XXX generalize these funcs? (macro?)
 void CvMap::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvMap::doTurn");
 	PROFILE("CvMap::doTurn()")
 
 	int iI;

@@ -1,6 +1,8 @@
 // city.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CityAssignmentTradeCache.h"
+#include "ObserverPerformance.h"
 #include "CvGlobals.h"
 #include "CvCity.h"
 #include "CvArea.h"
@@ -986,6 +988,7 @@ void CvCity::kill(bool bUpdatePlotGroups)
 
 void CvCity::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvCity::doTurn");
 	PROFILE("CvCity::doTurn()");
 
 	CvPlot* pLoopPlot;
@@ -8123,20 +8126,27 @@ int CvCity::getFoodTradeWellbeingScore() const
     return 2 * (happyLevel() - unhappyLevel()) + goodHealth() - badHealth();
 }
 
-int CvCity::getFoodTradePressure(const CvCity* pPartner) const
+// Reused only within one route-selection pass: no stale cross-turn state.
+struct FoodTradeAttraction
 {
-    if (pPartner == NULL) return 0;
+    int population, wealth, happiness, health;
+    FoodTradeAttraction(const CvCity* city)
+        : population(std::max(1, city->getPopulation())),
+          wealth(city->getLocalTradeWealth()),
+          happiness(city->happyLevel() - city->unhappyLevel()),
+          health(city->goodHealth() - city->badHealth()) {}
+};
 
+static int foodTradePressure(const FoodTradeAttraction& own, const FoodTradeAttraction& other)
+{
     // Compare per-capita attraction without division, preserving deterministic
     // integer arithmetic for synchronized multiplayer games.
-    const int iOwnPopulation = std::max(1, getPopulation());
-    const int iPartnerPopulation = std::max(1, pPartner->getPopulation());
-    const __int64 iOwnWealth = (__int64)getLocalTradeWealth() * iPartnerPopulation;
-    const __int64 iOtherWealth = (__int64)pPartner->getLocalTradeWealth() * iOwnPopulation;
-    const __int64 iOwnHappiness = (__int64)(happyLevel() - unhappyLevel()) * iPartnerPopulation;
-    const __int64 iOtherHappiness = (__int64)(pPartner->happyLevel() - pPartner->unhappyLevel()) * iOwnPopulation;
-    const __int64 iOwnHealth = (__int64)(goodHealth() - badHealth()) * iPartnerPopulation;
-    const __int64 iOtherHealth = (__int64)(pPartner->goodHealth() - pPartner->badHealth()) * iOwnPopulation;
+    const __int64 iOwnWealth = (__int64)own.wealth * other.population;
+    const __int64 iOtherWealth = (__int64)other.wealth * own.population;
+    const __int64 iOwnHappiness = (__int64)own.happiness * other.population;
+    const __int64 iOtherHappiness = (__int64)other.happiness * own.population;
+    const __int64 iOwnHealth = (__int64)own.health * other.population;
+    const __int64 iOtherHealth = (__int64)other.health * own.population;
     const __int64 iWealthScale = std::max((__int64)1, std::max(iOwnWealth, iOtherWealth));
     const __int64 iOwnHappinessMagnitude = iOwnHappiness < 0 ? -iOwnHappiness : iOwnHappiness;
     const __int64 iOtherHappinessMagnitude = iOtherHappiness < 0 ? -iOtherHappiness : iOtherHappiness;
@@ -8152,9 +8162,14 @@ int CvCity::getFoodTradePressure(const CvCity* pPartner) const
     return iWealthPressure + iWellbeingPressure;
 }
 
-int CvCity::getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const
+int CvCity::getFoodTradePressure(const CvCity* pPartner) const
 {
-    const int iPressure = getFoodTradePressure(pPartner);
+    if (pPartner == NULL) return 0;
+    return foodTradePressure(FoodTradeAttraction(this), FoodTradeAttraction(pPartner));
+}
+
+static int foodTradeDemandFromPressure(int iPressure, int iRouteCommerce)
+{
     if (iPressure == 0) return 0;
 
     const int iPressurePerFood = std::max(1, GC.getDefineINT("RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD"));
@@ -8162,6 +8177,11 @@ int CvCity::getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const
     const int iBaseFood = (iAbsolutePressure + iPressurePerFood - 1) / iPressurePerFood;
     const int iRouteBonus = std::max(0, iRouteCommerce - 1);
     return (iBaseFood + iRouteBonus) * 100;
+}
+
+int CvCity::getFoodTradeDemand(const CvCity* pPartner, int iRouteCommerce) const
+{
+    return foodTradeDemandFromPressure(getFoodTradePressure(pPartner), iRouteCommerce);
 }
 
 int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
@@ -8180,7 +8200,11 @@ int CvCity::foodTradeAmount(const FoodTradeTransfer& transfer) const
     for (int i = 0; i < pOrigin->getTradeRoutes(); ++i)
         if (pOrigin->getTradeCity(i) == pDestination) { bRouteExists = true; break; }
     if (!bRouteExists) return 0;
-    if (pOrigin->getTradeInfrastructureEfficiency(const_cast<CvCity*>(pDestination)) <= 0) return 0;
+    // updateFoodTrade validated infrastructure when allocating this shipment.
+    // Keep that result for the allocation round instead of flood-filling the
+    // map on every food/yield/AI query. Mid-round road changes take effect at
+    // the next allocation if the selected route still exists. City validity,
+    // diplomacy, disorder and route membership above remain live until booked.
 
     // If the supplier loses population/food during this round, both sides
     // apply the same downward scaling. Never exceed its current export cap.
@@ -8507,11 +8531,14 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 }
 
 // Trade infrastructure ignores military access, but respects war and terrain.
-// This local flood fill is calculated once per route selection, without a UI cache.
+// Route selection builds a local flood fill. Citizen assignment may reuse
+// infrastructure results within a single assignment call, without a UI cache.
 static bool cityHasHarbor(const CvCity* pCity);
 
-static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& reachable, std::vector<bool>& roads)
+static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& reachable, std::vector<bool>& roads, int iTarget = -1)
 {
+    OBSERVER_PERFORMANCE("trade.infrastructureBuild");
+    ObserverPerformanceScope searchScope(iTarget >= 0 ? "trade.infrastructureTargetSearch" : "trade.infrastructureFullSearch");
     CvMap& kMap = GC.getMapINLINE();
     CvTeam& kTeam = GET_TEAM(pCity->getTeam());
     bool bSailing = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_SAILING"));
@@ -8536,6 +8563,11 @@ static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& rea
             if (iMode == 0) roads[pending[i]] = true;
             if (iMode == 0 || bAstronomy || plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pFrom->getX_INLINE(), pFrom->getY_INLINE()) <= iWaterRange)
                 reachable[pending[i]] = true;
+            // Single-route callers only consume the target's two flags.
+            // A road connection already gives the final result, so no water
+            // search is needed. In water mode the range check above remains
+            // authoritative even when we can physically reach the target.
+            if (pending[i] == iTarget) return;
             for (int j = 0; j < NUM_DIRECTION_TYPES; j++)
             {
                 CvPlot* pTo = plotDirection(pFrom->getX_INLINE(), pFrom->getY_INLINE(), (DirectionTypes)j);
@@ -8608,20 +8640,41 @@ static __int64 tradeInfrastructureValue(const CvCity* pCity, CvCity* pPartner, b
     return (__int64)pCity->getBaseTradeProfit(pPartner) * pCity->totalTradeModifier(pPartner) * iEfficiency;
 }
 
+CityAssignmentTradeCache* CityAssignmentTradeCache::s_active = NULL;
+CityAssignmentTradeCache::CityAssignmentTradeCache() : m_previous(s_active)
+{
+    s_active = this;
+}
+CityAssignmentTradeCache::~CityAssignmentTradeCache()
+{
+    s_active = m_previous;
+}
+
 int CvCity::getTradeInfrastructureEfficiency(CvCity* pCity) const
 {
+    CityAssignmentTradeCache* cache = CityAssignmentTradeCache::s_active;
+    const CityAssignmentTradeCache::Route key(this, pCity);
+    if (cache != NULL)
+    {
+        CityAssignmentTradeCache::Efficiencies::const_iterator found = cache->m_efficiencies.find(key);
+        if (found != cache->m_efficiencies.end()) return found->second;
+    }
     std::vector<bool> reachable;
     std::vector<bool> roads;
-    buildTradeInfrastructure(this, reachable, roads);
-    bool bConnected = reachable[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())];
-    return tradeInfrastructureEfficiency(this, pCity, bConnected, roads[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())]);
+    const int iTarget = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+    buildTradeInfrastructure(this, reachable, roads, iTarget);
+    bool bConnected = reachable[iTarget];
+    const int efficiency = tradeInfrastructureEfficiency(this, pCity, bConnected, roads[iTarget]);
+    if (cache != NULL) cache->m_efficiencies[key] = efficiency;
+    return efficiency;
 }
 int CvCity::calculateTradeProfit(CvCity* pCity) const
 {
     std::vector<bool> reachable;
     std::vector<bool> roads;
-    buildTradeInfrastructure(this, reachable, roads);
-    return calculateInfrastructureTradeProfit(pCity, reachable[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())], roads[GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE())]);
+    const int iTarget = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+    buildTradeInfrastructure(this, reachable, roads, iTarget);
+    return calculateInfrastructureTradeProfit(pCity, reachable[iTarget], roads[iTarget]);
 }
 
 int CvCity::calculateInfrastructureTradeProfit(CvCity* pCity, bool bConnected, bool bRoadConnected) const
@@ -9646,7 +9699,7 @@ void CvCity::setTradeRoute(PlayerTypes eIndex, bool bNewValue)
 
 bool CvCity::isRevealed(TeamTypes eIndex, bool bDebug) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || (GC.getGameINLINE().isObserverAutoPlay() && eIndex == GC.getGameINLINE().getActiveTeam())))
 	{
 		return true;
 	}
@@ -11401,6 +11454,7 @@ void CvCity::clearTradeRoutes()
 // XXX eventually, this needs to be done when roads are built/destroyed...
 void CvCity::updateTradeRoutes()
 {
+	OBSERVER_PERFORMANCE("CvCity::updateTradeRoutes");
     std::vector<bool> reachable;
     std::vector<bool> roads;
     buildTradeInfrastructure(this, reachable, roads);
@@ -11428,6 +11482,9 @@ void CvCity::updateTradeRoutes()
 	{
 		iTradeRoutes = getTradeRoutes();
 
+        const FoodTradeAttraction ownAttraction(this);
+        const int iOwnExportLimit = getFoodExportLimit();
+
 		FAssert(iTradeRoutes <= GC.getDefineINT("MAX_TRADE_ROUTES"));
 
 		for (iI = 0; iI < MAX_PLAYERS; iI++)
@@ -11447,18 +11504,20 @@ void CvCity::updateTradeRoutes()
 								const int iEfficiency = tradeInfrastructureEfficiency(this, pLoopCity, bConnected, bRoadConnected);
 								// Food cannot create a connection where infrastructure permits none.
 								if (iEfficiency <= 0) continue;
-								iValue = tradeInfrastructureValue(this, pLoopCity, bConnected, bRoadConnected);
+                                const __int64 iBaseRouteValue = (__int64)getBaseTradeProfit(pLoopCity) * totalTradeModifier(pLoopCity) * iEfficiency;
+                                iValue = iBaseRouteValue;
 								iValue = iValue * std::max(0, GET_PLAYER(getOwnerINLINE()).getTradeYieldModifier(YIELD_COMMERCE)) / 100;
 								// Rank routes by their combined return. A food import is worth
 								// one commerce point; an expected export is the same-sized loss.
 								// This is an estimate only: the supplier's shared export cap is
 								// resolved later for every route together.
-								iRouteCommerce = calculateTradeYield(YIELD_COMMERCE, calculateInfrastructureTradeProfit(pLoopCity, bConnected, bRoadConnected));
-								iFoodPressure = getFoodTradePressure(pLoopCity);
-								const CvCity* pSupplier = iFoodPressure < 0 ? pLoopCity : this;
+                                const int iProfit = iBaseRouteValue <= 0 ? 0 : std::max(1, (int)(iBaseRouteValue / 1000000));
+                                iRouteCommerce = calculateTradeYield(YIELD_COMMERCE, iProfit);
+                                iFoodPressure = foodTradePressure(ownAttraction, FoodTradeAttraction(pLoopCity));
+                                const int iExportLimit = iFoodPressure < 0 ? pLoopCity->getFoodExportLimit() : iOwnExportLimit;
 								// Apply the same infrastructure factor as the actual allocation;
 								// retain hundredths and respect the supplier's individual cap.
-								iFoodDemand = std::min(getFoodTradeDemand(pLoopCity, iRouteCommerce) * iEfficiency / 100, pSupplier->getFoodExportLimit() * 100);
+                                iFoodDemand = std::min(foodTradeDemandFromPressure(iFoodPressure, iRouteCommerce) * iEfficiency / 100, iExportLimit * 100);
 								if (iFoodPressure < 0)
 									iValue += (__int64)iFoodDemand * 10000;
 								else if (iFoodPressure > 0)
@@ -12149,6 +12208,7 @@ const std::vector< std::pair<float, float> >& CvCity::getWallOverridePoints() co
 
 void CvCity::doGrowth()
 {
+	OBSERVER_PERFORMANCE("CvCity::doGrowth");
     lockFoodTrade();
 	int iDiff;
 
@@ -12212,6 +12272,7 @@ void CvCity::doGrowth()
 
 void CvCity::doCulture()
 {
+	OBSERVER_PERFORMANCE("CvCity::doCulture");
 	//Rhye - start
 //Speed: Modified by Kael 04/19/2007
 //	CyCity* pyCity = new CyCity(this);
@@ -12497,6 +12558,7 @@ bool CvCity::doCheckProduction()
 
 void CvCity::doProduction(bool bAllowNoProduction)
 {
+	OBSERVER_PERFORMANCE("CvCity::doProduction");
 	//Rhye - start
 //Speed: Modified by Kael 04/19/2007
 //	CyCity* pyCity = new CyCity(this);
@@ -12682,12 +12744,14 @@ void CvCity::doTradeInfluence()
 
 void CvCity::doReligion()
 {
+	OBSERVER_PERFORMANCE("CvCity::doReligion");
     // Passive religion spread is handled exclusively by doTradeInfluence().
     // Missionaries and historical founding mechanics use their existing paths.
 }
 
 void CvCity::doGreatPeople()
 {
+	OBSERVER_PERFORMANCE("CvCity::doGreatPeople");
 	//Rhye - start
 //Speed: Modified by Kael 04/19/2007
 //	CyCity* pyCity = new CyCity(this);

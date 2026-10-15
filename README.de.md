@@ -151,3 +151,10 @@ Ohne `--version` heißt die Datei `Awakened-RFC.zip`. Enthalten sind nur
 Spieldateien, Szenarien, Mod-Konfiguration und Installationshinweise;
 Quellenangaben bleiben erhalten. Die vorhandene DLL wird übernommen und
 nicht neu kompiliert.
+
+### KI-Beobachtungsläufe
+
+`python testing/run_observer.py --mode balance --games 10 --turns 500` startet
+aufgezeichnete KI-Partien ab 3000 v. Chr. Für detaillierte Mechanikdaten
+`--mode diagnostics` verwenden. Bei normalen Spielstarts bleibt die
+Aufzeichnung ausgeschaltet. [Einrichtung, Berichte und Grenzen](testing/README.md).

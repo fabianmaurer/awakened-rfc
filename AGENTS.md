@@ -55,6 +55,34 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 - All multiplayer peers need the same mod files and DLL. Tooltip/UI-only changes should not alter synchronized game state, but still require in-game load validation; gameplay changes require multiplayer validation.
 - Do not add/run tests unless the user asks. The game itself is the authoritative load/runtime check.
 
+## Optional AI observer
+
+When investigating performance, flag small mechanic changes that could bring
+substantial speed gains with negligible gameplay impact. Explain the gameplay
+tradeoff and distinguish measured gains from estimates for the user's review.
+
+See `testing/README.md`. `testing/run_observer.py` activates recordings only in
+its own child process with a token and PID; ordinary launches stay disabled.
+Modes are `balance`, `diagnostics` and `performance`. Balance/diagnostics use
+3000 BC; performance also supports the 600 AD scenario (turn 181, China).
+Use the dedicated `setObserverAutoPlay` control, never `setAIAutoPlay` for
+testing an existing civilization: the latter deletes its cities and units.
+The observer control is transient, excluded from saves, and refused in
+multiplayer. Recordings and `testing/observer.local.ini` are ignored local files.
+Implementing the tooling does not authorize starting gameplay test runs;
+the existing instruction against running unrequested tests still applies.
+
+### User-operated testing workflow
+
+When the user requests a particular test, prepare a standalone script file
+with the requested modes, seeds, settings and run counts. Give the user the
+script path and a brief description; do not execute it, launch Civ4, wait
+for its completion or poll its status. The user runs the script locally.
+Any progress monitoring belongs inside that script/launcher and does not
+require an agent session. Analyze recordings only when the user explicitly
+asks afterward. A request to prepare a test run authorizes script creation,
+not execution. This applies to single runs and batches.
+
 ## Text XML localization
 
 - Every `<TEXT>` entry in every loaded text XML must contain all five language elements: `<English>`, `<French>`, `<German>`, `<Italian>`, and `<Spanish>`. Civ IV uses numeric language indexes (English 0, French 1, German 2, Italian 3, Spanish 4) and derives its available language count from the least complete text entry. One entry missing a language can therefore make menu labels disappear for that language across the entire mod, even when the XML parses successfully.

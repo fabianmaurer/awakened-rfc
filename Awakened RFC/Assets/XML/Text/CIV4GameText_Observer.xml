@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_RUN_PROGRESS</Tag>
+        <English>Simulated run: %d1/%d2</English>
+        <French>Simulation : %d1/%d2</French>
+        <German>Simulationslauf: %d1/%d2</German>
+        <Italian>Simulazione: %d1/%d2</Italian>
+        <Spanish>Simulaci&#243;n: %d1/%d2</Spanish>
+    </TEXT>
+</Civ4GameText>

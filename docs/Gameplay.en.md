@@ -189,6 +189,12 @@ Food flows along actual trade routes toward the city with the stronger combined 
 
 Example: a size-four city can export at most four food. If destinations request four, two and two, they receive two, one and one. Routes lost before booking cancel both sides. Routes lost after booking stop future shipments once the current shipment has been accounted for at both ends.
 
+Infrastructure connectivity is evaluated when shipments are allocated. A road
+destroyed later in the turn affects the next allocation; an existing shipment
+can still be booked if its selected trade route remains present. Diplomacy,
+embargoes, city disruption and the supplier's export cap are still checked
+before booking.
+
 The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` settings in `Assets/XML/GlobalDefines.xml` control the population cap and base transfer amount. The technology-based growth penalty affects positive surplus after these transfers; it does not reduce food production or transferred amounts.
 
 ## New civics

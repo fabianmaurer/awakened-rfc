@@ -4,6 +4,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "CyGame.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvGameAI.h"
 #include "CyGlobalContext.h"
 #include "CyPlayer.h"
@@ -533,6 +534,25 @@ int CyGame::getInitTech() const
 int CyGame::getInitWonders() const
 {
 	return (NULL != m_pGame ? m_pGame->getInitWonders() : 0);
+}
+
+void CyGame::saveObserverCheckpoint(std::string path)
+{
+	if (m_pGame && !m_pGame->isGameMultiPlayer())
+	{
+		CvString filename(path.c_str());
+		gDLL->getEngineIFace()->SaveGame(filename, SAVEGAME_NORMAL);
+	}
+}
+
+void CyGame::setObserverAutoPlay(bool enabled)
+{
+	if (m_pGame) m_pGame->setObserverAutoPlay(enabled);
+}
+
+bool CyGame::isObserverAutoPlay() const
+{
+	return m_pGame && m_pGame->isObserverAutoPlay();
 }
 
 int CyGame::getAIAutoPlay() const

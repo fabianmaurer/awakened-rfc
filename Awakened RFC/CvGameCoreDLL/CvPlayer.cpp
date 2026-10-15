@@ -1,6 +1,7 @@
 // player.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvGlobals.h"
 #include "CvArea.h"
 #include "CvGameAI.h"
@@ -2302,7 +2303,7 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 bool CvPlayer::isHuman() const
 {
 	//return m_bHuman; //Rhye - restored
-	return GC.getInitCore().getHuman(getID());
+	return !GC.getGameINLINE().isObserverAutoPlay() && GC.getInitCore().getHuman(getID());
 }
 
 void CvPlayer::updateHuman()
@@ -2701,6 +2702,7 @@ const TCHAR* CvPlayer::getUnitButton(UnitTypes eUnit) const
 
 void CvPlayer::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doTurn");
 	PROFILE_FUNC();
 	//GC.getGameINLINE().logMsg("player doTurn", getID()); //Rhye
 
@@ -2798,6 +2800,7 @@ void CvPlayer::doTurn()
 
 void CvPlayer::doTurnUnits()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doTurnUnits");
 	PROFILE_FUNC();
 
 	CvSelectionGroup* pLoopSelectionGroup;
@@ -3100,6 +3103,7 @@ void CvPlayer::updateCitySight(bool bIncrement, bool bUpdatePlotGroups)
 
 void CvPlayer::updateTradeRoutes()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::updateTradeRoutes");
 	CLLNode<int>* pCityNode;
 	CvCity* pLoopCity;
 	CvCity* pListCity;
@@ -13895,6 +13899,7 @@ void CvPlayer::setSmtpHost(const char* szHost)
 
 void CvPlayer::doGold()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doGold");
 	bool bStrike;
 	int iGoldChange;
 	int iDisbandUnit;
@@ -13956,6 +13961,7 @@ void CvPlayer::doGold()
 
 void CvPlayer::doResearch()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doResearch");
 	bool bForceResearchChoice;
 	int iOverflowResearch;
 
@@ -16710,6 +16716,8 @@ int CvPlayer::getAdvancedStartVisibilityCost(bool bAdd, CvPlot* pPlot) const
 
 void CvPlayer::doWarnings()
 {
+	// Rapid observer turns outpace real-time alert icon expiry. UI only.
+	if (GC.getGameINLINE().isObserverAutoPlay()) return;
 	CvCity* pNearestCity;
 	CvPlot* pLoopPlot;
 	CvUnit* pLoopUnit;
@@ -19976,6 +19984,7 @@ int CvPlayer::getEventCost(EventTypes eEvent, PlayerTypes eOtherPlayer, bool bRa
 
 void CvPlayer::doEvents()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doEvents");
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_EVENTS))
 	{
 		return;

@@ -1,6 +1,7 @@
 // playerAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvRandom.h"
 #include "CvGlobals.h"
@@ -297,6 +298,7 @@ int CvPlayerAI::AI_getFlavorValue(FlavorTypes eFlavor) const
 
 void CvPlayerAI::AI_doTurnPre()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnPre");
 	PROFILE_FUNC();
 
 	FAssertMsg(getPersonalityType() != NO_LEADER, "getPersonalityType() is not expected to be equal with NO_LEADER");
@@ -342,6 +344,7 @@ void CvPlayerAI::AI_doTurnPre()
 
 void CvPlayerAI::AI_doTurnPost()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnPost");
 	PROFILE_FUNC();
 
 	if (isHuman())
@@ -373,6 +376,7 @@ void CvPlayerAI::AI_doTurnPost()
 
 void CvPlayerAI::AI_doTurnUnitsPre()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPre");
 	PROFILE_FUNC();
 
 	AI_updateFoundValues();
@@ -401,6 +405,7 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 
 void CvPlayerAI::AI_doTurnUnitsPost()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPost");
 	PROFILE_FUNC();
 
 	CvUnit* pLoopUnit;
@@ -491,7 +496,7 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 							{
 								if ((iExp == 0) || (iExp < (iCityExp + 1) / 2))
 								{
-									if ((calculateUnitCost() > 0) && (AI_getPlotDanger( pLoopUnit->plot(), 2, false) == 0))
+									if ((calculateUnitCost() > 0) && (AI_isPlotDanger( pLoopUnit->plot(), 2, false) == 0))
 									{
 										if ((pLoopUnit->getDomainType() != DOMAIN_LAND) || pLoopUnit->plot()->plotCount(PUF_isMilitaryHappiness, -1, -1, getID()) > 1)
 										{
@@ -1048,6 +1053,7 @@ int CvPlayerAI::AI_movementPriority(CvSelectionGroup* pGroup) const
 
 void CvPlayerAI::AI_unitUpdate()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_unitUpdate");
 	PROFILE_FUNC();
 
 	CLLNode<int>* pCurrUnitNode;
@@ -1163,6 +1169,7 @@ void CvPlayerAI::AI_makeAssignWorkDirty()
 
 void CvPlayerAI::AI_assignWorkingPlots()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_assignWorkingPlots");
 	CvCity* pLoopCity;
 	int iLoop;
 
@@ -3400,6 +3407,17 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 
 int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
 {
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, false);
+}
+
+bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
+{
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true) > 0;
+}
+
+int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const
+{
+	OBSERVER_PERFORMANCE("unitAI.plotDanger");
 	PROFILE_FUNC();
 
 	CLLNode<IDInfo>* pUnitNode;
@@ -3442,6 +3460,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
 				        }
 				    }
 
+				    if (bAnyDanger && iBorderDanger > 0 && !isHuman() && !pPlot->isCity()) return 1;
 
 					pUnitNode = pLoopPlot->headUnitNode();
 
@@ -3460,6 +3479,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
 								    {
                                         if (!bTestMoves)
                                         {
+                                            if (bAnyDanger) return 1;
                                             iCount++;
                                         }
                                         else
@@ -3468,6 +3488,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
                                             iDangerRange += ((pLoopPlot->isValidRoute(pLoopUnit)) ? 1 : 0);
                                             if (iDangerRange >= iDistance)
 											{
+												if (bAnyDanger) return 1;
 												iCount++;
 											}
 										}
