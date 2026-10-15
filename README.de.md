@@ -142,3 +142,12 @@ im Mehrspielerbetrieb steht noch aus.
 
 Die DLL benötigt den ursprünglichen **32-Bit-VC7.1-Werkzeugsatz**. Siehe
 [Kompilierungsanleitung](<Awakened RFC/CvGameCoreDLL/BUILDING.md>) und [AGENTS.md](AGENTS.md).
+
+### Spielbare Version verpacken
+
+Mit Python ab Version 3.9: `python tools/package_release.py --version v0.1.0`.
+Das erstellt `dist/Awakened-RFC-v0.1.0.zip` zum Anhängen an ein GitHub-Release.
+Ohne `--version` heißt die Datei `Awakened-RFC.zip`. Enthalten sind nur
+Spieldateien, Szenarien, Mod-Konfiguration und Installationshinweise;
+Quellenangaben bleiben erhalten. Die vorhandene DLL wird übernommen und
+nicht neu kompiliert.

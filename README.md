@@ -141,3 +141,11 @@ to civic XML modifiers. Multiplayer runtime validation of the overhaul is pendin
 
 DLL builds require the original **32-bit VC7.1** toolchain. See
 [build instructions](<Awakened RFC/CvGameCoreDLL/BUILDING.md>) and [AGENTS.md](AGENTS.md).
+
+### Package a playable release
+
+Run `python tools/package_release.py --version v0.1.0` with Python 3.9 or newer.
+This creates `dist/Awakened-RFC-v0.1.0.zip`, ready to attach to a GitHub release.
+Omit `--version` for `Awakened-RFC.zip`. Only runtime assets, scenarios, mod
+configuration and installation instructions are included; credits are retained.
+The script packages the existing compiled DLL without rebuilding it.

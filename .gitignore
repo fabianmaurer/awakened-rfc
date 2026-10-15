@@ -40,3 +40,6 @@
 
 # Visual Studio state
 .vs/
+
+# Playable release archives
+/dist/
