@@ -561,13 +561,17 @@ for skipped weapon tiers. Existing free-upgrade unique powers still apply.
 | --- | --- | ---: | ---: |
 | Bronze weapons | Bronze Working | 3 | 15 |
 | Swordsman | Iron Working | 4 | 25 |
-| Maceman | Machinery | 6 | 40 |
+| Maceman | Machinery | 5 | 40 |
 | Musketeer | Gunpowder | 7 | 60 |
 | Rifleman | Rifling | 10 | 80 |
 | Infantry | Assembly Line | 14 | 100 |
 | Modern infantry | Robotics | 20 | 130 |
 
 All tiers remain melee-class slave units with cannon fodder and quarter upkeep;
-firearm tiers use their corresponding infantry models. The final tier uses
-modern infantry art rather than a mechanized vehicle. Revolts and garrison
+firearm tiers retain their matching firing animations. The final tier remains
+a foot soldier rather than a mechanized vehicle. Revolts and garrison
 suppression calculations use the strongest tier the owner has unlocked.
+
+All slave tiers share the unarmed slave's distinctive body, with era-specific
+weapons and animations, mixed figure variants and irregular formations. See [slave unit art](SlaveUnitArt.md)
+for the tier roster, source credits and a static preview.

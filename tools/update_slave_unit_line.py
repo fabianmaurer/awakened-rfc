@@ -36,7 +36,7 @@ def main():
         if unit_type == 'UNIT_ARMED_SLAVE' or unit_type.startswith('UNIT_SLAVE'):
             b = re.sub(r'<iCityDefense>[^<]+</iCityDefense>', '<iCityDefense>0</iCityDefense>', b)
         early_strengths = {'UNIT_ARMED_SLAVE': 3, 'UNIT_SLAVE_SWORDSMAN': 4,
-                           'UNIT_SLAVE_MACEMAN': 6}
+                           'UNIT_SLAVE_MACEMAN': 5}
         if unit_type in early_strengths:
             for field in ('iCombat', 'iPower'):
                 b = re.sub('<' + field + r'>[^<]+</' + field + '>',
@@ -89,6 +89,11 @@ def main():
         'Sklavenspeertr&#228;ger', 'Sklavenschwertk&#228;mpfer')
     for path, contents in ((unit_path, units), (classes_path, classes), (text_path, text)):
         path.write_text(contents, encoding='utf-8')
+    # Preserve custom visuals when regenerating the gameplay unit definitions.
+    art_path = ROOT / 'Art/CIV4ArtDefines_Unit.xml'
+    if 'ART_DEF_UNIT_SLAVE_A' in art_path.read_text(encoding='utf-8'):
+        from build_slave_art import apply_unit_visuals
+        apply_unit_visuals()
     print('Updated slave sword tier and added rifle, infantry and modern infantry tiers.')
 
 

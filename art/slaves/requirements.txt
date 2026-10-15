@@ -1,0 +1,4 @@
+PyFFI==2.2.3
+setuptools>=65
+Pillow>=10
+numpy>=2

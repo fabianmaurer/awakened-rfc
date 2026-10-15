@@ -1,0 +1,3 @@
+Slave unit art: modified Firaxis Civilization IV / Warlords / Beyond the Sword models, plus the Armed Pioneer from Dawn of Civilization.
+RFC MP Plus rebinds the unarmed slave body to each weapon rig and adds material variants and irregular formations.
+See the accompanying Dawn of Civilization license and contributor credits.

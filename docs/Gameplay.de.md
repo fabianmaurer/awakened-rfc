@@ -599,14 +599,20 @@ gelten weiterhin.
 | --- | --- | ---: | ---: |
 | Bronzewaffen | Bronzebearbeitung | 3 | 15 |
 | Schwertkämpfer | Eisenverarbeitung | 4 | 25 |
-| Streitkolbenträger | Maschinen | 6 | 40 |
+| Streitkolbenträger | Maschinen | 5 | 40 |
 | Musketier | Schießpulver | 7 | 60 |
 | Schütze | Drall | 10 | 80 |
 | Infanterie | Fließband | 14 | 100 |
 | Moderne Infanterie | Robotik | 20 | 130 |
 
 Alle Stufen bleiben Nahkampf-Sklaveneinheiten mit Kanonenfutter und einem Viertel
-des Unterhalts. Die Schusswaffenstufen verwenden passende Infanteriemodelle;
-die letzte Stufe erhält ein modernes Infanteriemodell statt eines Fahrzeugs.
+des Unterhalts. Die Schusswaffenstufen behalten passende Schussanimationen;
+die letzte Stufe bleibt ein Fußsoldat statt eines Fahrzeugs.
 Aufstände und die Berechnung der nötigen Garnisonsstärke berücksichtigen
 die modernste durch den Besitzer freigeschaltete Stufe.
+
+Alle Sklavenstufen verwenden das markante Körpermodell des unbewaffneten
+Sklaven, mit passenden Waffen und Animationen je Epoche, gemischten
+Figurenvarianten und unregelmäßigen Formationen.
+Die [Dokumentation zur Einheitengrafik](SlaveUnitArt.md) enthält die Modelle
+aller Waffenstufen, Quellenangaben und eine statische Vorschau.

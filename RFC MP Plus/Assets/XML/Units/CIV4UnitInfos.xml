@@ -24017,17 +24017,15 @@
 			<iAsset>1</iAsset>
 			<iPower>1</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_WARRIOR</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -24208,17 +24206,15 @@
 			<iAsset>1</iAsset>
 			<iPower>3</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_AXEMAN</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_ARMED_SLAVE_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_ARMED_SLAVE_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -24399,17 +24395,15 @@
 			<iAsset>1</iAsset>
 			<iPower>4</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_SWORDSMAN</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_SWORDSMAN_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_SWORDSMAN_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -24548,7 +24542,7 @@
 			</FeatureImpassables>
 			<TerrainPassableTechs />
 			<FeaturePassableTechs />
-			<iCombat>6</iCombat>
+			<iCombat>5</iCombat>
 			<iCombatLimit>100</iCombatLimit>
 			<iAirCombat>0</iAirCombat>
 			<iAirCombatLimit>0</iAirCombatLimit>
@@ -24588,19 +24582,17 @@
 			<iCultureGarrison>3</iCultureGarrison>
 			<iExtraCost>0</iExtraCost>
 			<iAsset>1</iAsset>
-			<iPower>6</iPower>
+			<iPower>5</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_MACEMAN</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MACEMAN_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MACEMAN_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -24781,17 +24773,15 @@
 			<iAsset>1</iAsset>
 			<iPower>7</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_MUSKETMAN</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MUSKETMAN_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MUSKETMAN_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -24972,17 +24962,15 @@
 			<iAsset>1</iAsset>
 			<iPower>10</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_RIFLEMAN</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_RIFLEMAN_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_RIFLEMAN_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -25163,17 +25151,15 @@
 			<iAsset>1</iAsset>
 			<iPower>14</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_INFANTRY</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_INFANTRY_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_INFANTRY_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
@@ -25349,17 +25335,15 @@
 			<iAsset>1</iAsset>
 			<iPower>20</iPower>
 			<UnitMeshGroups>
-				<iGroupSize>3</iGroupSize>
-				<fMaxSpeed>1.75</fMaxSpeed>
-				<fPadTime>1</fPadTime>
-				<iMeleeWaveSize>3</iMeleeWaveSize>
-				<iRangedWaveSize>0</iRangedWaveSize>
-				<UnitMeshGroup>
-					<iRequired>8</iRequired>
-					<EarlyArtDefineTag>ART_DEF_UNIT_MARINE</EarlyArtDefineTag>
-				</UnitMeshGroup>
-			</UnitMeshGroups>
-			<FormationType>FORMATION_TYPE_DEFAULT</FormationType>
+                <iGroupSize>5</iGroupSize>
+                <fMaxSpeed>1.75</fMaxSpeed>
+                <fPadTime>1</fPadTime>
+                <iMeleeWaveSize>5</iMeleeWaveSize>
+                <iRangedWaveSize>0</iRangedWaveSize>
+                <UnitMeshGroup><iRequired>3</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MODERN_INFANTRY_A</EarlyArtDefineTag></UnitMeshGroup>
+                <UnitMeshGroup><iRequired>2</iRequired><EarlyArtDefineTag>ART_DEF_UNIT_SLAVE_MODERN_INFANTRY_B</EarlyArtDefineTag></UnitMeshGroup>
+            </UnitMeshGroups>
+			<FormationType>FORMATION_TYPE_SLAVE_IRREGULAR</FormationType>
 			<HotKey />
 			<bAltDown>0</bAltDown>
 			<bShiftDown>0</bShiftDown>
