@@ -4,7 +4,7 @@ from CvPythonExtensions import CyGlobalContext
 # Columns: Government, Legitimacy, Labor, Military, Religion.
 # These are preferences; unavailable choices use the fallbacks below.
 PROFILES = {
-    "CIVILIZATION_EGYPT": ("MONARCHY", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
+    "CIVILIZATION_EGYPT": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
     "CIVILIZATION_INDIA": ("MONARCHY", "DESPOTISM", "SERFDOM", "MILITIA", "STATE_RELIGION"),
     "CIVILIZATION_CHINA": ("MONARCHY", "DESPOTISM", "SERFDOM", "MILITIA", "ANCESTOR_CULT"),
     "CIVILIZATION_BABYLONIA": ("MONARCHY", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),

@@ -11,7 +11,7 @@ FAMILIES = (
 
 CATALOG = """
 EGY
-Peoples of the Nile | Völker am Nil
+Clans of the Pharaoh | Sippen des Pharaos
 Kingdom of Egypt | Königreich Ägypten
 Egyptian Empire | Ägyptisches Reich
 Republic of Egypt | Republik Ägypten

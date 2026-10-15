@@ -7821,7 +7821,7 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 	}
 	//Rhye - start UP
 	if (getID() == EGYPT)
-		if ((eCivic == 1) || (eCivic == 11))
+		if (eCivic == (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
 			return true;
 	//Rhye - end UP
 

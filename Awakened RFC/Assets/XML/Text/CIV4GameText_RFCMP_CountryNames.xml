@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_TRIBAL</Tag>
-    <English>Peoples of the Nile</English>
-    <French>Peoples of the Nile</French>
-    <German>V&#246;lker am Nil</German>
-    <Italian>Peoples of the Nile</Italian>
-    <Spanish>Peoples of the Nile</Spanish>
+    <English>Clans of the Pharaoh</English>
+    <French>Clans of the Pharaoh</French>
+    <German>Sippen des Pharaos</German>
+    <Italian>Clans of the Pharaoh</Italian>
+    <Spanish>Clans of the Pharaoh</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_KINGDOM</Tag>

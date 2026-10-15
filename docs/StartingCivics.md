@@ -14,7 +14,7 @@ when its preferred later institutions are listed below.
 
 | Civilization | Government | Legitimacy | Labor | Military | Religion |
 | --- | --- | --- | --- | --- | --- |
-| Egypt | Monarchy | Despotism | Slavery | Militia | State Religion |
+| Egypt | Tribal System | Despotism | Slavery | Militia | State Religion |
 | India | Monarchy | Despotism | Serfdom | Militia | State Religion |
 | China | Monarchy | Despotism | Serfdom | Militia | Ancestor Cult |
 | Babylonia | Monarchy | Despotism | Slavery | Militia | State Religion |

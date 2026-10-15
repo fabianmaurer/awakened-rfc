@@ -16,7 +16,8 @@ Other unique-power hooks remain present and reachable:
 
 | Civilizations | Hooks checked |
 | --- | --- |
-| Egypt, India | Early civic access in `CvPlayer::canDoCivics`; no revolution anarchy in `updateMaxAnarchyTurns`. The new civic IDs still map Egypt's access to Monarchy and Slavery. |
+| Egypt | Early Slavery access in `CvPlayer::canDoCivics`, resolved by civic type. Monarchy requires its normal technology; Egypt starts with Tribal System. |
+| India | No revolution anarchy in `updateMaxAnarchyTurns`. |
 | Babylon, Greece | No conquest resistance in `CvPlayer::acquireCity`; early +150% great person rate in `CvCity::getGreatPeopleRate`. The generic great person threshold tuning is separate. |
 | Carthage, Mali | Extra commerce on sea/land plots respectively in `CvPlot::calculateYield`. Removed maintenance/research penalties were balance offsets to these powers. |
 | Rome, Inca | Roman road movement in `CvPlot::movementCost`; mountain yields in `calculateNatureYield`. |

@@ -22,11 +22,11 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_EGY2</Tag>
-		<English>Hereditary Rule and Slavery are enabled at start</English>
-		<French>Le droit héréditaire et l'esclavage sont disponibles au départ</French>
-		<German>Aktivierung von Erbrecht und Sklaverei beim Spielstart</German>
-		<Italian>All'avvio sono abilitati governo ereditario e schiavitù</Italian>
-		<Spanish>Gobierno hereditario y Esclavitud est&#225;n activados al principio</Spanish>
+		<English>Slavery is available from the start, without its technology prerequisite</English>
+		<French>L'esclavage est disponible d&#232;s le d&#233;part, sans technologie requise</French>
+		<German>Sklaverei ist von Beginn an ohne Technologievoraussetzung verf&#252;gbar</German>
+		<Italian>La schiavit&#249; &#232; disponibile dall'inizio, senza il requisito tecnologico</Italian>
+		<Spanish>La esclavitud est&#225; disponible desde el principio, sin requisito tecnol&#243;gico</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_IND</Tag>
