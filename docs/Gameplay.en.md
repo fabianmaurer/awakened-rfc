@@ -1,4 +1,4 @@
-# RFC MP Plus — Gameplay guide
+# Awakened RFC — Gameplay guide
 
 **English** | [Deutsch](../README.de.md)
 
@@ -488,11 +488,11 @@ new country-name entries.
 
 ## Installation and multiplayer
 
-1. Copy the **`RFC MP Plus`** folder into Beyond the Sword's **`Mods`** directory.
+1. Copy the **`Awakened RFC`** folder into Beyond the Sword's **`Mods`** directory.
 2. Keep that folder name: the included scenario files reference it. The original
    RFC MP mod can remain installed alongside this fork.
-3. Load RFC MP Plus from the game's mod menu, or use
-   [Launch RFC MP Plus.bat](<../Launch RFC MP Plus.bat>). The launcher currently
+3. Load Awakened RFC from the game's mod menu, or use
+   [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>). The launcher currently
    points to the standard Steam installation path; adjust it for other locations.
 4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, or **840 AD**.
 
@@ -513,7 +513,7 @@ changes are not retroactively rewritten.
 Use the original **32-bit VC7.1 toolchain**, Python 2.4, and Boost.Python 1.32
 for compatibility with Civ4's runtime.
 
-See [AGENTS.md](../AGENTS.md) and [BUILDING.md](<../RFC MP Plus/CvGameCoreDLL/BUILDING.md>)
+See [AGENTS.md](../AGENTS.md) and [BUILDING.md](<../Awakened RFC/CvGameCoreDLL/BUILDING.md>)
 for prerequisites and the compilation routine. The configured build copies the
 rebuilt DLL into the workspace mod and the installed mod folder. Close Civ4
 before rebuilding so the installed DLL can be replaced.

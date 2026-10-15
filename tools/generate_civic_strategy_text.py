@@ -4,7 +4,7 @@ import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ROOT / 'RFC MP Plus/Assets'
+ASSETS = ROOT / 'Awakened RFC/Assets'
 SUMMARIES = {
     'TRIBAL_SYSTEM': (
         '+20% unit production, -20% research, +100% distance and city-count maintenance.',

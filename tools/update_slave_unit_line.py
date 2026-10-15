@@ -2,7 +2,7 @@
 from pathlib import Path
 import re
 
-ROOT = Path(__file__).resolve().parents[1] / 'RFC MP Plus/Assets/XML'
+ROOT = Path(__file__).resolve().parents[1] / 'Awakened RFC/Assets/XML'
 NEW_TIERS = (
     ('SLAVE_RIFLEMAN', 'TECH_RIFLING', 10, 'RIFLEMAN',
      'Slave Rifleman', 'Sklavensch&#252;tze'),

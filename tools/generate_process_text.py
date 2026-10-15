@@ -23,7 +23,7 @@ def main():
             lines.append('    <'+lang+'>'+escape(german if lang=='German' else english)+'</'+lang+'>')
         lines.append('  </TEXT>')
     lines.append('</Civ4GameText>')
-    path=Path(__file__).resolve().parents[1]/'RFC MP Plus/Assets/XML/Text/CIV4GameText_ProductionConversions.xml'
+    path=Path(__file__).resolve().parents[1]/'Awakened RFC/Assets/XML/Text/CIV4GameText_ProductionConversions.xml'
     path.write_bytes(('\n'.join(lines)+'\n').encode('ascii','xmlcharrefreplace'))
 
 if __name__=='__main__': main()

@@ -55,7 +55,7 @@ this step, so rebuilding models preserves the custom icons. See the
   contributor credits and MIT license are retained in
   [credits](../art/slaves/Dawn-of-Civilization-Credits.txt) and
   [license](../art/slaves/Dawn-of-Civilization-LICENSE.md).
-- RFC MP Plus modifications: custom material variants, removal of the unarmed
+- Awakened RFC modifications: custom material variants, removal of the unarmed
   unit's club, body retargeting and irregular formations.
 
 ## Rebuild and preview

@@ -4,7 +4,7 @@ from collections import deque
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-MAPS = ROOT / 'RFC MP Plus/PublicMaps'
+MAPS = ROOT / 'Awakened RFC/PublicMaps'
 ACTIVE = (2, 8, 11, 12, 13, 14, 15, 16, 17)
 # Preserve the normal later-spawn treasuries as well as funding existing states.
 GOLD = {2: 300, 8: 250, 11: 150, 12: 350, 13: 200, 14: 200,

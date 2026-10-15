@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'art/slaves/icon-proposals'))
 from preview_icons import draw_axe, SOURCE
 
-DEST = ROOT / 'RFC MP Plus/Assets/Art/Interface/Buttons/Units/SlaveUnits'
+DEST = ROOT / 'Awakened RFC/Assets/Art/Interface/Buttons/Units/SlaveUnits'
 ART = ROOT / 'art/slaves'
 S = 4
 TIERS = ('SLAVE', 'ARMED_SLAVE', 'SLAVE_SWORDSMAN', 'SLAVE_MACEMAN',
@@ -180,7 +180,7 @@ def main():
         sheet.paste(icon,(x+68,y+173),icon)
         draw.text((x+8,y+213),LABELS[i],fill=(231,224,207))
     sheet.save(ART/'unit-icons.png')
-    path=ROOT/'RFC MP Plus/Assets/XML/Art/CIV4ArtDefines_Unit.xml'
+    path=ROOT/'Awakened RFC/Assets/XML/Art/CIV4ArtDefines_Unit.xml'
     text=path.read_text(encoding='utf-8')
     def patch(match):
         block=match.group()

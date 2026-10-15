@@ -1685,7 +1685,7 @@
 		<iDefineIntVal>2</iDefineIntVal>
 	</Define>
 
-    <!-- RFC MP Plus: trade is available without infrastructure; a real road/sea
+    <!-- Awakened RFC: trade is available without infrastructure; a real road/sea
          connection doubles efficiency. Influence is per route and direction. -->
     <Define><DefineName>RFCMP_BASE_TRADE_PERCENT</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_FULL_EFFICIENCY_DISTANCE</DefineName><iDefineIntVal>5</iDefineIntVal></Define>

@@ -6,7 +6,7 @@ BeginGame
 	GameTurn=87 		
 	StartYear=-3000 		
 	Description=TXT_KEY_RHYES_WB_DESC
-	ModPath=Mods\RFC MP Plus
+	ModPath=Mods\Awakened RFC
 EndGame
 BeginTeam                 
 EndTeam

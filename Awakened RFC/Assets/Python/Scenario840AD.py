@@ -1,4 +1,4 @@
-# RFC MP Plus early medieval start. Civ4 Python 2.4 compatible.
+# Awakened RFC early medieval start. Civ4 Python 2.4 compatible.
 from CvPythonExtensions import CyGlobalContext
 import Consts as con
 import StartingCivics

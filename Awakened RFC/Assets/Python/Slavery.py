@@ -1,5 +1,5 @@
 # -*- coding: latin-1 -*-
-"""Synchronized slavery, uprising and slave-war rules for RFC MP Plus."""
+"""Synchronized slavery, uprising and slave-war rules for Awakened RFC."""
 
 from CvPythonExtensions import *
 import Popup

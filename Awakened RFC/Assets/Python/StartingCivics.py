@@ -1,4 +1,4 @@
-# RFC MP Plus starting institutions. Compatible with Civ4's Python 2.4.
+# Awakened RFC starting institutions. Compatible with Civ4's Python 2.4.
 from CvPythonExtensions import CyGlobalContext
 
 # Columns: Government, Legitimacy, Labor, Military, Religion.

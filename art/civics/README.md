@@ -92,7 +92,7 @@ so a complete rebuild retains their current artwork. This writes the native-size
 Both contact sheets show the actual compressed game assets. Copy changed DDS
 files to the installed mod after rebuilding the artwork.
 
-Game assets are in `RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP`:
+Game assets are in `Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP`:
 64 x 64 pixels, DXT3 DDS, with the original atlas's rounded corner alpha mask.
 The civic XML uses direct DDS paths for both the civic screen and Civilopedia.
 `preview.png` shows the final icons by civic column at an enlarged pixel scale.

@@ -9,7 +9,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
-OUTPUT=ROOT/'RFC MP Plus/Assets/XML/Text/CIV4GameText_TradePolicy.xml'
+OUTPUT=ROOT/'Awakened RFC/Assets/XML/Text/CIV4GameText_TradePolicy.xml'
 LANGS=('English','French','German','Italian','Spanish')
 ENTRIES={
  'TXT_KEY_TRADE_OPEN_BORDERS_STRING':('Military access','Militärzugang'),

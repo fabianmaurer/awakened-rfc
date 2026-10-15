@@ -9,14 +9,14 @@ from reuse_government import portrait
 
 ROOT=Path(__file__).resolve().parents[2]
 ART=Path(__file__).resolve().parent
-DEST=ROOT/'RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP'
+DEST=ROOT/'Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP'
 ICONS=[('Warrior_Society','Warrior Society'),('Militia','Militia'),
        ('Knighthood','Knighthood'),('Professional_Army','Professional Army'),
        ('Conscription','Conscription')]
 
 
 def main():
-    with Image.open(ROOT/'RFC MP Plus/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds') as atlas:
+    with Image.open(ROOT/'Awakened RFC/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds') as atlas:
         alpha=atlas.convert('RGBA').crop((0,0,64,64)).getchannel('A')
     preview=Image.new('RGB',(960,225),(23,26,32))
     d=ImageDraw.Draw(preview)

@@ -79,7 +79,7 @@ def main():
             lines.append('    <' + lang + '>' + value + '</' + lang + '>')
         lines.append('  </TEXT>')
     lines.append('</Civ4GameText>')
-    target = Path(__file__).resolve().parents[1] / 'RFC MP Plus/Assets/XML/Text/CIV4GameText_Elections.xml'
+    target = Path(__file__).resolve().parents[1] / 'Awakened RFC/Assets/XML/Text/CIV4GameText_Elections.xml'
     target.write_text('\n'.join(lines) + '\n', encoding='utf-8')
 
 

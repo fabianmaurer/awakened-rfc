@@ -15,5 +15,5 @@ for key, english, german in entries:
     for lang in ('English', 'French', 'German', 'Italian', 'Spanish'):
         ET.SubElement(text, lang).text = german if lang == 'German' else english
 ET.indent(root, space='    ')
-target = Path(__file__).resolve().parents[1] / 'RFC MP Plus/Assets/XML/Text/CIV4GameText_LandReclamation.xml'
+target = Path(__file__).resolve().parents[1] / 'Awakened RFC/Assets/XML/Text/CIV4GameText_LandReclamation.xml'
 target.write_bytes(b'<?xml version="1.0" encoding="UTF-8"?>\n' + ET.tostring(root, encoding='ascii', xml_declaration=False) + b'\n')

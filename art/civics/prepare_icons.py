@@ -19,9 +19,9 @@ def main():
     root = Path(__file__).resolve().parents[2]
     metadata = json.loads((root / "art/civics/generation.json").read_text())
     sources = json.loads(Path(sys.argv[1]).read_text())
-    destination = root / "RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP"
+    destination = root / "Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP"
     destination.mkdir(parents=True, exist_ok=True)
-    with Image.open(root / "RFC MP Plus/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
+    with Image.open(root / "Awakened RFC/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
         corner_mask = atlas.convert("RGBA").crop((0, 0, 64, 64)).getchannel("A")
     preview = Image.new("RGB", (640, 700), (22, 27, 38))
     draw = ImageDraw.Draw(preview)
@@ -41,7 +41,7 @@ def main():
         draw.multiline_text((x + 32, y + 102), label, fill="white", anchor="ma", align="center")
     preview.save(root / "art/civics/preview.png")
 
-    path = root / "RFC MP Plus/Assets/XML/GameInfo/CIV4CivicInfos.xml"
+    path = root / "Awakened RFC/Assets/XML/GameInfo/CIV4CivicInfos.xml"
     xml = path.read_text(encoding="utf-8")
     for entry in metadata["icons"]:
         pattern = r"(<Type>" + re.escape(entry["type"]) + r"</Type>.*?<Button>)[^<]*(</Button>)"

@@ -16,7 +16,7 @@ def main():
             lines.append('    <'+language+'>'+escape(de if language=='German' else en)+'</'+language+'>')
         lines.append('  </TEXT>')
     lines.append('</Civ4GameText>')
-    target=Path(__file__).resolve().parents[1]/'RFC MP Plus/Assets/XML/Text/CIV4GameText_CityRelocation.xml'
+    target=Path(__file__).resolve().parents[1]/'Awakened RFC/Assets/XML/Text/CIV4GameText_CityRelocation.xml'
     target.write_bytes(('\n'.join(lines)+'\n').encode('ascii','xmlcharrefreplace'))
 
 if __name__=='__main__': main()

@@ -7,22 +7,22 @@
 /civ4-menu-language-cache-refresh.png
 
 # RFC rollback snapshots and local game-install copies
-/RFC MP Plus/_rollback-backup/
+/Awakened RFC/_rollback-backup/
 
 # Generated Civ4 DLL build output
-/RFC MP Plus/CvGameCoreDLL/build-modern/
-/RFC MP Plus/CvGameCoreDLL/temp_files/
-/RFC MP Plus/CvGameCoreDLL/Release/
-/RFC MP Plus/CvGameCoreDLL/Debug/
-/RFC MP Plus/CvGameCoreDLL/Assert/
-/RFC MP Plus/CvGameCoreDLL/Profile/
-/RFC MP Plus/CvGameCoreDLL/Final_Release/
-/RFC MP Plus/CvGameCoreDLL/dependencies/
-/RFC MP Plus/CvGameCoreDLL/legacy-toolchain-downloads/
-/RFC MP Plus/CvGameCoreDLL/legacy-toolchain/
-/RFC MP Plus/CvGameCoreDLL/Boost-1.32.0/
-/RFC MP Plus/CvGameCoreDLL/Python24/
-/RFC MP Plus/CvGameCoreDLL/legacy-toolchain/legacy-build.log
+/Awakened RFC/CvGameCoreDLL/build-modern/
+/Awakened RFC/CvGameCoreDLL/temp_files/
+/Awakened RFC/CvGameCoreDLL/Release/
+/Awakened RFC/CvGameCoreDLL/Debug/
+/Awakened RFC/CvGameCoreDLL/Assert/
+/Awakened RFC/CvGameCoreDLL/Profile/
+/Awakened RFC/CvGameCoreDLL/Final_Release/
+/Awakened RFC/CvGameCoreDLL/dependencies/
+/Awakened RFC/CvGameCoreDLL/legacy-toolchain-downloads/
+/Awakened RFC/CvGameCoreDLL/legacy-toolchain/
+/Awakened RFC/CvGameCoreDLL/Boost-1.32.0/
+/Awakened RFC/CvGameCoreDLL/Python24/
+/Awakened RFC/CvGameCoreDLL/legacy-toolchain/legacy-build.log
 *.obj
 *.pch
 *.pdb
@@ -33,7 +33,7 @@
 *.opensdf
 
 # Per-machine compiler and install paths
-/RFC MP Plus/CvGameCoreDLL/Makefile.settings
+/Awakened RFC/CvGameCoreDLL/Makefile.settings
 
 # Per-workspace editor settings
 /.vscode/

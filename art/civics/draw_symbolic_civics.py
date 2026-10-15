@@ -21,7 +21,7 @@ def background(base, glow):
 
 ROOT = Path(__file__).resolve().parents[2]
 ART = Path(__file__).resolve().parent
-DEST = ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/Civics/RFCMP"
+DEST = ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/Civics/RFCMP"
 GOLD = (206, 158, 65)
 LIGHT = (251, 223, 140)
 IRON = (147, 160, 161)
@@ -420,7 +420,7 @@ def main():
     draw_labor()
     draw_military()
     draw_religion()
-    with Image.open(ROOT / "RFC MP Plus/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
+    with Image.open(ROOT / "Awakened RFC/Assets/Art/Interface/Buttons/civics_civilizations_religions_atlas.dds") as atlas:
         alpha = atlas.convert("RGBA").crop((0, 0, 64, 64)).getchannel("A")
     for name, drawing in DRAWINGS.items():
         if name in ('Despotism', 'Theocratic_Legitimacy', 'Plutocracy', 'Nationalism', 'Rule_Of_Law'):

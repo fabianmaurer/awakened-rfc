@@ -91,7 +91,7 @@ def main():
         xml.append('  </TEXT>')
         rows.append((code, form, english, german))
     xml.append('</Civ4GameText>')
-    path = ROOT / 'RFC MP Plus/Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml'
+    path = ROOT / 'Awakened RFC/Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml'
     path.write_bytes(('\n'.join(xml) + '\n').encode('ascii', 'xmlcharrefreplace'))
     document = io.StringIO(newline='')
     writer = csv.writer(document)

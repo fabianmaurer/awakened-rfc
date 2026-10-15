@@ -16,7 +16,7 @@ if not hasattr(time, 'clock'):
 N = None  # Imported only for the full NIF build, not XML-only regeneration.
 
 ROOT = Path(__file__).resolve().parents[1]
-MOD = ROOT / 'RFC MP Plus'
+MOD = ROOT / 'Awakened RFC'
 GAME = Path("C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization IV Beyond the Sword")
 BTS = GAME / 'Beyond the Sword'
 DOC = BTS / 'Mods/RFC Dawn of Civilization'
@@ -319,7 +319,7 @@ def main():
     apply_unit_visuals()
     shutil.copyfile(DOC / 'LICENSE.md', ART / 'Dawn-of-Civilization-LICENSE.md')
     shutil.copyfile(DOC / 'Credits.txt', ART / 'Dawn-of-Civilization-Credits.txt')
-    (ART / 'NOTICE.txt').write_text('Slave unit art: modified Firaxis Civilization IV / Warlords / Beyond the Sword models, plus the Armed Pioneer from Dawn of Civilization.\nRFC MP Plus rebinds the unarmed slave body to each weapon rig and adds material variants and irregular formations.\nSee the accompanying Dawn of Civilization license and contributor credits.\n', encoding='utf-8')
+    (ART / 'NOTICE.txt').write_text('Slave unit art: modified Firaxis Civilization IV / Warlords / Beyond the Sword models, plus the Armed Pioneer from Dawn of Civilization.\nAwakened RFC rebinds the unarmed slave body to each weapon rig and adds material variants and irregular formations.\nSee the accompanying Dawn of Civilization license and contributor credits.\n', encoding='utf-8')
     print('Updated unit art, mesh groups and', len(additions), 'irregular formation definitions.')
     # Reapply the slave-specific buttons after cloning regular unit templates.
     from build_slave_icons import main as build_icons

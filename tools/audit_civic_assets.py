@@ -4,7 +4,7 @@ import re
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ROOT / 'RFC MP Plus/Assets'
+ASSETS = ROOT / 'Awakened RFC/Assets'
 LANGUAGES = {'English', 'French', 'German', 'Italian', 'Spanish'}
 
 def local(tag):
@@ -41,7 +41,7 @@ def audit():
                 errors.append(f'{civic["Type"].text}: missing {field} key {key.text}')
 
     for file in ('CvCity.cpp', 'CvPlayer.cpp', 'CvUnit.cpp', 'CvGameTextMgr.cpp'):
-        code = (ROOT / 'RFC MP Plus/CvGameCoreDLL' / file).read_bytes().decode('latin1')
+        code = (ROOT / 'Awakened RFC/CvGameCoreDLL' / file).read_bytes().decode('latin1')
         references = set(re.findall(r'getInfoTypeForString\("(CIVIC_[A-Z_]+)"\)', code))
         for unknown in references - names:
             errors.append(f'{file}: unknown civic {unknown}')

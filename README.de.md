@@ -1,6 +1,8 @@
-# RFC MP Plus
+# Awakened Rhye's and Fall of Civilization
 
 [English](README.md) | **Deutsch**
+
+**Awakened RFC** · [GitHub](https://github.com/fabianmaurer/awakened-rfc)
 
 Eine Mehrspieler-Überarbeitung von **Rhye's and Fall Multiplayer** für
 **Civilization IV: Beyond the Sword**: eine Zivilisation durch die Geschichte
@@ -121,9 +123,9 @@ die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
 
 ## Spielen
 
-1. **`RFC MP Plus`** in den **`Mods`**-Ordner von Beyond the Sword kopieren.
+1. **`Awakened RFC`** in den **`Mods`**-Ordner von Beyond the Sword kopieren.
    Den Namen beibehalten; der ursprüngliche Mod kann daneben installiert bleiben.
-2. Über das Mod-Menü oder [den Starter](<Launch RFC MP Plus.bat>) laden
+2. Über das Mod-Menü oder [den Starter](<Launch Awakened RFC.bat>) laden
    (für Steam eingerichtet).
 3. **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.** wählen. Alle Mitspieler
    benötigen identische Mod-Dateien und DLLs.
@@ -139,4 +141,4 @@ im Mehrspielerbetrieb steht noch aus.
 [Ländernamen](docs/CountryNames.csv) · [Namensregeln](docs/CountryNaming.md)
 
 Die DLL benötigt den ursprünglichen **32-Bit-VC7.1-Werkzeugsatz**. Siehe
-[Kompilierungsanleitung](<RFC MP Plus/CvGameCoreDLL/BUILDING.md>) und [AGENTS.md](AGENTS.md).
+[Kompilierungsanleitung](<Awakened RFC/CvGameCoreDLL/BUILDING.md>) und [AGENTS.md](AGENTS.md).
