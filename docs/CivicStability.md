@@ -13,7 +13,7 @@ werden addiert und insgesamt auf **−5 bis +5** begrenzt.
 | Monarchie + Rittertum | +2 | Dynastische Herrschaft und die militärische Ordnung des Rittertums passen zusammen. |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 | Religiöse Legitimation und die staatliche Religionsordnung stimmen überein. |
 | Plutokratie + Marktwirtschaft | +1 | Politischer Einfluss durch Vermögen und privatwirtschaftliche Organisation passen zusammen. |
-| Theokratie + Staatsatheismus | −3 | Religiöse Herrschaftslegitimation widerspricht der offiziellen Ablehnung religiöser Institutionen. |
+| Theokratie + Toleranz | −3 | Ein religiöser Herrschaftsanspruch steht in Spannung zur Gleichstellung fremder Glaubensrichtungen. |
 
 Alle anderen Kombinationen sind in diesem Modell neutral. Die Werte sind
 Spielbalance-Entscheidungen und keine Aussage, dass eine Wirtschafts- oder

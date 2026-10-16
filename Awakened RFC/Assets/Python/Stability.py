@@ -433,7 +433,7 @@ class Stability:
                         iScore += 2
                 if (hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_CORPORATE_ECONOMY")):
                         iScore += 1
-                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_STATE_ATHEISM")):
+                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_TOLERANCE")):
                         iScore -= 3
                 return max(-5, min(5, iScore))
 

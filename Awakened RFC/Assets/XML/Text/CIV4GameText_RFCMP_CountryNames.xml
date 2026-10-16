@@ -4546,19 +4546,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_ATHEOCRACY</Tag>
-    <English>Bharat of the Sacred Reason</English>
-    <French>Bharat of the Sacred Reason</French>
-    <German>Bharat der heiligen Vernunft</German>
-    <Italian>Bharat of the Sacred Reason</Italian>
-    <Spanish>Bharat of the Sacred Reason</Spanish>
+    <English>Bharat of the Eternal Law</English>
+    <French>Bharat of the Eternal Law</French>
+    <German>Bharat des ewigen Gesetzes</German>
+    <Italian>Bharat of the Eternal Law</Italian>
+    <Spanish>Bharat of the Eternal Law</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_ATHEOCRACY</Tag>
-    <English>Mandate of Reason</English>
-    <French>Mandate of Reason</French>
-    <German>Mandat der Vernunft</German>
-    <Italian>Mandate of Reason</Italian>
-    <Spanish>Mandate of Reason</Spanish>
+    <English>Realm of the Earthly Mandate</English>
+    <French>Realm of the Earthly Mandate</French>
+    <German>Reich des irdischen Mandats</German>
+    <Italian>Realm of the Earthly Mandate</Italian>
+    <Spanish>Realm of the Earthly Mandate</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_ATHEOCRACY</Tag>
@@ -4570,11 +4570,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_ATHEOCRACY</Tag>
-    <English>Sacred League of Reason</English>
-    <French>Sacred League of Reason</French>
-    <German>Heiliger Bund der Vernunft</German>
-    <Italian>Sacred League of Reason</Italian>
-    <Spanish>Sacred League of Reason</Spanish>
+    <English>Hellenic League of the Logos</English>
+    <French>Hellenic League of the Logos</French>
+    <German>Hellenischer Bund des Logos</German>
+    <Italian>Hellenic League of the Logos</Italian>
+    <Spanish>Hellenic League of the Logos</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_ATHEOCRACY</Tag>
@@ -4586,11 +4586,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CAR_ATHEOCRACY</Tag>
-    <English>Carthaginian Creed of Reason</English>
-    <French>Carthaginian Creed of Reason</French>
-    <German>Karthagisches Vernunftdogma</German>
-    <Italian>Carthaginian Creed of Reason</Italian>
-    <Spanish>Carthaginian Creed of Reason</Spanish>
+    <English>Carthaginian Empire of Dogma</English>
+    <French>Carthaginian Empire of Dogma</French>
+    <German>Karthagisches Dogmenreich</German>
+    <Italian>Carthaginian Empire of Dogma</Italian>
+    <Spanish>Carthaginian Empire of Dogma</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_ATHEOCRACY</Tag>
@@ -4610,11 +4610,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ETH_ATHEOCRACY</Tag>
-    <English>Ethiopian Covenant of Reason</English>
-    <French>Ethiopian Covenant of Reason</French>
-    <German>&#196;thiopischer Vernunftbund</German>
-    <Italian>Ethiopian Covenant of Reason</Italian>
-    <Spanish>Ethiopian Covenant of Reason</Spanish>
+    <English>Ethiopian Patriarchate of Humanity</English>
+    <French>Ethiopian Patriarchate of Humanity</French>
+    <German>&#196;thiopisches Patriarchat der Menschheit</German>
+    <Italian>Ethiopian Patriarchate of Humanity</Italian>
+    <Spanish>Ethiopian Patriarchate of Humanity</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_ATHEOCRACY</Tag>
@@ -4626,35 +4626,35 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_ATHEOCRACY</Tag>
-    <English>Northern Covenant of Reason</English>
-    <French>Northern Covenant of Reason</French>
-    <German>Nordischer Vernunftbund</German>
-    <Italian>Northern Covenant of Reason</Italian>
-    <Spanish>Northern Covenant of Reason</Spanish>
+    <English>Northern League of the Godless</English>
+    <French>Northern League of the Godless</French>
+    <German>Nordbund der G&#246;tterlosen</German>
+    <Italian>Northern League of the Godless</Italian>
+    <Spanish>Northern League of the Godless</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_ATHEOCRACY</Tag>
-    <English>Caliphate of Reason</English>
-    <French>Caliphate of Reason</French>
-    <German>Kalifat der Vernunft</German>
-    <Italian>Caliphate of Reason</Italian>
-    <Spanish>Caliphate of Reason</Spanish>
+    <English>Caliphate of Human Truth</English>
+    <French>Caliphate of Human Truth</French>
+    <German>Kalifat der menschlichen Wahrheit</German>
+    <Italian>Caliphate of Human Truth</Italian>
+    <Spanish>Caliphate of Human Truth</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_KHM_ATHEOCRACY</Tag>
-    <English>Temple State of Reason</English>
-    <French>Temple State of Reason</French>
-    <German>Tempelstaat der Vernunft</German>
-    <Italian>Temple State of Reason</Italian>
-    <Spanish>Temple State of Reason</Spanish>
+    <English>Angkor of the Empty Temples</English>
+    <French>Angkor of the Empty Temples</French>
+    <German>Angkor der leeren Tempel</German>
+    <Italian>Angkor of the Empty Temples</Italian>
+    <Spanish>Angkor of the Empty Temples</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_ATHEOCRACY</Tag>
-    <English>Iberian Inquisition of Reason</English>
-    <French>Iberian Inquisition of Reason</French>
-    <German>Iberische Inquisition der Vernunft</German>
-    <Italian>Iberian Inquisition of Reason</Italian>
-    <Spanish>Iberian Inquisition of Reason</Spanish>
+    <English>Iberian Inquisition of the Godless</English>
+    <French>Iberian Inquisition of the Godless</French>
+    <German>Iberische Inquisition der Gottlosen</German>
+    <Italian>Iberian Inquisition of the Godless</Italian>
+    <Spanish>Iberian Inquisition of the Godless</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_ATHEOCRACY</Tag>
@@ -4666,11 +4666,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ENG_ATHEOCRACY</Tag>
-    <English>English Covenant of Reason</English>
-    <French>English Covenant of Reason</French>
-    <German>Englischer Vernunftbund</German>
-    <Italian>English Covenant of Reason</Italian>
-    <Spanish>English Covenant of Reason</Spanish>
+    <English>English Protectorate of Pure Doctrine</English>
+    <French>English Protectorate of Pure Doctrine</French>
+    <German>Englisches Protektorat der reinen Lehre</German>
+    <Italian>English Protectorate of Pure Doctrine</Italian>
+    <Spanish>English Protectorate of Pure Doctrine</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_ATHEOCRACY</Tag>
@@ -4682,43 +4682,43 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_ATHEOCRACY</Tag>
-    <English>Russian Synod of Reason</English>
-    <French>Russian Synod of Reason</French>
-    <German>Russischer Vernunftsynod</German>
-    <Italian>Russian Synod of Reason</Italian>
-    <Spanish>Russian Synod of Reason</Spanish>
+    <English>Russian Synod of the Godless</English>
+    <French>Russian Synod of the Godless</French>
+    <German>Russische Synode der Gottlosen</German>
+    <Italian>Russian Synod of the Godless</Italian>
+    <Spanish>Russian Synod of the Godless</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_NED_ATHEOCRACY</Tag>
-    <English>Netherlandish Creed of Reason</English>
-    <French>Netherlandish Creed of Reason</French>
-    <German>Niederl&#228;ndisches Vernunftdogma</German>
-    <Italian>Netherlandish Creed of Reason</Italian>
-    <Spanish>Netherlandish Creed of Reason</Spanish>
+    <English>Netherlandish Consistory of Truth</English>
+    <French>Netherlandish Consistory of Truth</French>
+    <German>Niederl&#228;ndisches Konsistorium der Wahrheit</German>
+    <Italian>Netherlandish Consistory of Truth</Italian>
+    <Spanish>Netherlandish Consistory of Truth</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAL_ATHEOCRACY</Tag>
-    <English>Malian Order of Reason</English>
-    <French>Malian Order of Reason</French>
-    <German>Malischer Vernunftorden</German>
-    <Italian>Malian Order of Reason</Italian>
-    <Spanish>Malian Order of Reason</Spanish>
+    <English>Malian Covenant of the Infallible Word</English>
+    <French>Malian Covenant of the Infallible Word</French>
+    <German>Malischer Bund des unfehlbaren Wortes</German>
+    <Italian>Malian Covenant of the Infallible Word</Italian>
+    <Spanish>Malian Covenant of the Infallible Word</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_POR_ATHEOCRACY</Tag>
-    <English>Portuguese Mission of Reason</English>
-    <French>Portuguese Mission of Reason</French>
-    <German>Portugiesische Mission der Vernunft</German>
-    <Italian>Portuguese Mission of Reason</Italian>
-    <Spanish>Portuguese Mission of Reason</Spanish>
+    <English>Portuguese Mission of Enlightenment</English>
+    <French>Portuguese Mission of Enlightenment</French>
+    <German>Portugiesische Mission der Aufkl&#228;rung</German>
+    <Italian>Portuguese Mission of Enlightenment</Italian>
+    <Spanish>Portuguese Mission of Enlightenment</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_ATHEOCRACY</Tag>
-    <English>Andean Order of the Godless Sun</English>
-    <French>Andean Order of the Godless Sun</French>
-    <German>Andenorden der gottlosen Sonne</German>
-    <Italian>Andean Order of the Godless Sun</Italian>
-    <Spanish>Andean Order of the Godless Sun</Spanish>
+    <English>Andean Realm of the Dethroned Sun</English>
+    <French>Andean Realm of the Dethroned Sun</French>
+    <German>Andenreich der entthronten Sonne</German>
+    <Italian>Andean Realm of the Dethroned Sun</Italian>
+    <Spanish>Andean Realm of the Dethroned Sun</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MON_ATHEOCRACY</Tag>
@@ -4738,19 +4738,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_ATHEOCRACY</Tag>
-    <English>Sublime Order of Reason</English>
-    <French>Sublime Order of Reason</French>
-    <German>Hoher Orden der Vernunft</German>
-    <Italian>Sublime Order of Reason</Italian>
-    <Spanish>Sublime Order of Reason</Spanish>
+    <English>Sublime Porte of Earthly Truth</English>
+    <French>Sublime Porte of Earthly Truth</French>
+    <German>Hohe Pforte der weltlichen Wahrheit</German>
+    <Italian>Sublime Porte of Earthly Truth</Italian>
+    <Spanish>Sublime Porte of Earthly Truth</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AME_ATHEOCRACY</Tag>
-    <English>American Church of Reason</English>
-    <French>American Church of Reason</French>
-    <German>Amerikanische Kirche der Vernunft</German>
-    <Italian>American Church of Reason</Italian>
-    <Spanish>American Church of Reason</Spanish>
+    <English>American Church of Humanity</English>
+    <French>American Church of Humanity</French>
+    <German>Amerikanische Kirche der Menschheit</German>
+    <Italian>American Church of Humanity</Italian>
+    <Spanish>American Church of Humanity</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_ZHOU</Tag>

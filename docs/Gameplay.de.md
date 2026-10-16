@@ -21,7 +21,7 @@ Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 - **Start-Staatsformen:** Jede Zivilisation erhält ein Profil passend zu ihrer
   Zeit, soweit die Starttechnologien des Szenarios oder der Gründung es erlauben.
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
-  Boni; Theokratie mit Staatsatheismus erhält einen Malus. Die Summe ist begrenzt.
+  Boni; Theokratie mit Toleranz erhält einen Malus. Die Summe ist begrenzt.
 - **Vorwarnungen vor Gebietswechseln:** Feld-Tooltips zeigen zukünftige
   Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten drei
   Runden vor dem Wechsel Unruhen.
@@ -342,7 +342,7 @@ ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 
 Jede reguläre Wahl öffnet eine eigene, leicht satirische Bekanntmachung zur gewählten Staatsform mit einem einzigen Bestätigungsbutton. Dessen Tooltip lautet nur **[Staatsform] annehmen**. Das Ergebnis gilt sofort; die Bestätigung verändert keinen synchronisierten Spielzustand.
 
-Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Staatsatheismus. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
+Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Toleranz. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
 
 Bei Einführung wird in jeder anderen Kategorie sofort eine verfügbare Staatsform zufällig gewählt; die bisherige kann erneut gewählt werden. Solange Demokratie beibehalten wird, sind andere Kategorien nicht manuell wechselbar. Ihre Abschaffung entsperrt sie und verlängert die normale Revolutionsanarchie um **zwei Runden**. Bestehende Anarchieimmunität gilt weiterhin.
 
@@ -380,7 +380,7 @@ Die folgenden Kombinationen tragen zur Basisstabilität bei:
 | Monarchie + Rittertum | +2 |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 |
 | Plutokratie + Marktwirtschaft | +1 |
-| Theokratie + Staatsatheismus | -3 |
+| Theokratie + Toleranz | -3 |
 
 Theokratie mit Staatsatheismus gibt Landeinheiten +15% Kampfstärke gegen Länder
 mit beliebiger Staatsreligion und weiterhin gegen Barbaren. Gegen religionslose
@@ -388,8 +388,7 @@ Länder gilt dieser Bonus nicht. Religionsgebäude verursachen je -2 Zufriedenhe
 auch wenn Staatsatheismus ihre positiven Effekte unterdrückt; technisch veraltete
 Gebäude zählen weiterhin nicht. Der Zufriedenheitsbonus für Gebäude der eigenen
 Staatsreligion entfällt. Die Kombination erhält eigene Ländernamen wie
-„Pontifikat der Vernunft“ und „Heiliges Reich der Vernunft“. Der oben aufgeführte
-Stabilitätsmalus bleibt bestehen (außer unter Demokratie).
+„Pontifikat der Vernunft“ und „Heiliges Reich der Vernunft“. Diese Kombination verursacht keinen eigenen Stabilitätsmalus.
 
 Passende Beiträge werden addiert und insgesamt auf **-5 bis +5** begrenzt.
 Andere Kombinationen tragen null bei. Der Modifikator wird alle drei Runden

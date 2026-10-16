@@ -21,7 +21,7 @@ victory goals, and other inherited systems form the underlying game.
 - **Starting civics:** every civilization receives a starting profile suited to
   its period, using civics available with its scenario or spawn technologies.
 - **Civic-combination stability:** compatible institutions receive small bonuses;
-  Theocracy with State Atheism incurs a small penalty. The total is bounded.
+  Theocracy with Tolerance incurs a small penalty. The total is bounded.
 - **Spawn warnings:** tile tooltips identify pending civilizations whose core
   flip areas include that tile. Cities receive unrest three turns before a flip.
 - **Dynamic country names:** English and German names respond to civic choices,
@@ -338,7 +338,7 @@ notification of the result.
 
 Each election also opens a civic-specific announcement with a single **Adopt** button. Its tooltip says only **Adopt [civic]**. The result applies immediately; acknowledging the popup does not change synchronized game state. English and German announcements include a little satire about the winning policy.
 
-Democracy ignores all **negative civic combination stability modifiers**, including Plutocracy with Planned Economy and Theocracy with State Atheism. Positive combination bonuses remain active. Other stability losses still apply.
+Democracy ignores all **negative civic combination stability modifiers**, including Plutocracy with Planned Economy and Theocracy with Tolerance. Positive combination bonuses remain active. Other stability losses still apply.
 
 The game uses its synchronized random generator for both selections. The
 government remains Democracy, and elections have no additional transition
@@ -367,7 +367,7 @@ The following combinations contribute to base stability:
 | Monarchy + Knighthood | +2 |
 | Theocracy in Legitimacy + State Religion or Holy State in Religion | +2 |
 | Plutocracy + Market Economy | +1 |
-| Theocracy in Legitimacy + State Atheism | -3 |
+| Theocracy in Legitimacy + Tolerance | -3 |
 
 Theocracy with State Atheism gives land units +15% combat strength against
 countries of any state religion, and still against barbarians. The bonus does
@@ -375,8 +375,7 @@ not apply against countries without a state religion. Religious buildings each
 cause -2 happiness even while State Atheism suppresses their positive effects;
 technologically obsolete buildings still do not count. There is no happiness
 bonus for buildings of your own state religion. The combination selects bespoke
-names such as **Pontificate of Reason** and **Holy Empire of Reason**. The
-stability penalty above still applies (except under Democracy).
+names such as **Pontificate of Reason** and **Holy Empire of Reason**. This combination causes no inherent stability penalty.
 
 Matching contributions add together, with an overall limit of **-5 to +5**.
 Other combinations contribute zero. This is a base-stability modifier recalculated
