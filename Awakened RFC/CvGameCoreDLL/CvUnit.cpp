@@ -7932,10 +7932,6 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		iExtraModifier -= 20;
 	}
 	const CvPlot* pCombatPlot = (pPlot != NULL ? pPlot : plot());
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MILITIA")) && pCombatPlot->getOwnerINLINE() != getOwnerINLINE())
-	{
-		iExtraModifier -= 10;
-	}
 	iModifier += iExtraModifier;
 	if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent = iExtraModifier;
 	

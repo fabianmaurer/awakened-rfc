@@ -1,5 +1,17 @@
 # Awakened RFC build notes
 
+## Lean working workflow
+
+- Keep work proportional to the request. Implement the agreed change and necessary integration; defer unrelated cleanup, redesign and tooling.
+- Reuse context and findings already established in the conversation. Do not repeat repository discovery or reread entire documents without a concrete reason.
+- Batch independent inspections. Read bounded snippets; parse minified XML to inspect selected entries instead of printing whole lines or files.
+- Use existing build, audit, generation and synchronization tools. Create new helpers only when needed for the implementation or ongoing maintenance, not merely to wrap a few edits.
+- Research only unresolved facts that affect the requested decision. Stop once there is sufficient evidence; do not turn routine implementation into a separate research project.
+- Choose static checks that cover the changed behavior and file types; do not run every available audit routinely. Run each applicable check once after the relevant edits. Repeat only after a failure, a further relevant edit or a specific unresolved concern. The no-unrequested-tests rule below still applies.
+- Update an existing relevant document briefly when needed. Avoid duplicate reports, lengthy implementation narratives and transcripts of routine verification.
+- Give short progress updates about meaningful findings or blockers. Finish with the outcome, validation and any actual limitation; omit routine command inventories.
+- Preserve the legacy toolchain, localization, unique-power and user-operated gameplay requirements below. Efficiency must not bypass these safeguards.
+
 ## Mod identity
 
 The full title is **Awakened Rhye's and Fall of Civilization**. The mod folder
@@ -37,6 +49,11 @@ These paths are machine-specific and are recorded in the local `Makefile.setting
 
 ### Build
 
+Rebuild the DLL only when C++ sources, headers or build inputs change, or when
+explicitly requested. Python, XML, map and documentation edits alone do not
+require a DLL build. Use the existing local prerequisites and settings; revisit
+toolchain setup only if something is missing, a build fails, or setup changes.
+
 Open PowerShell in `Awakened RFC/CvGameCoreDLL`, then run:
 
 ```powershell
@@ -51,14 +68,16 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 ### Runtime and multiplayer checks
 
 - The DLL must be x86 and link against the VC7.1-era runtime (`MSVCR71.dll`, `msvcp71.dll`), Python 2.4 and `boost_python-vc71-mt-1_32.dll`.
-- Before distributing, inspect dependencies with a PE dependency viewer or `dumpbin /dependents`; do not ship a DLL that unexpectedly imports the modern VC runtime.
-- All multiplayer peers need the same mod files and DLL. Tooltip/UI-only changes should not alter synchronized game state, but still require in-game load validation; gameplay changes require multiplayer validation.
+- Inspect DLL architecture and dependencies when changing the toolchain/link settings or preparing a release; do not repeat the inspection for ordinary builds using unchanged, already-verified settings. Do not ship a DLL that unexpectedly imports the modern VC runtime.
+- All multiplayer peers need the same mod files and DLL. In-game checks are user-operated: validate affected UI/loading when requested, and validate gameplay changes in multiplayer before claiming multiplayer readiness. Unrequested runtime validation is not a prerequisite for completing an implementation; state that it remains unverified where relevant.
+- For routine installed-mod synchronization, copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
 - Do not add/run tests unless the user asks. The game itself is the authoritative load/runtime check.
 
 ## Optional AI observer
 
-When investigating performance, flag small mechanic changes that could bring
-substantial speed gains with negligible gameplay impact. Explain the gameplay
+When investigating performance, flag small mechanic changes only when the
+investigation reveals a concrete opportunity relevant to the measured bottleneck.
+Do not perform a separate mechanics audit routinely. Explain any gameplay
 tradeoff and distinguish measured gains from estimates for the user's review.
 
 See `testing/README.md`. `testing/run_observer.py` activates recordings only in
@@ -89,8 +108,8 @@ not execution. This applies to single runs and batches.
 - For a new key, provide real translations where available. If a translation is not ready, copy the English wording into the other language elements; never omit an element.
 - Dynamic font symbols passed through `gDLL->getText` use Civ4's `%F` placeholders (for example `%D1_Change%F2_HappyOrUn` for a signed amount and happiness/unhappiness symbol). Do not use printf's `%c`; follow the matching original game text entry. Fixed symbols can use `[ICON_HAPPY]`, `[ICON_UNHAPPY]`, etc.
 - Preserve the encoding declared in each XML file when reading it. Original RFC text includes ISO-8859-1 files with literal accented characters; reading these as UTF-8 with replacement destroys the characters permanently. New/converted XML should declare UTF-8 and preferably use numeric character references (for example `&#228;` for ä). Never save lossy `?`, U+FFFD, or mojibake in translated words. `tools/inspect_text_encoding.py` reports suspicious German text; restore damaged original entries from the original mod by key and language rather than guessing lost accents.
-- After changing or adding text XML, launch Civ IV while holding Shift to clear/rebuild the text cache before checking the affected language. Confirm the text files load and check the menu in a non-English language; a successful XML load alone does not catch an incomplete language set.
-- Audit all loaded text XML entries for the five required language elements before finishing a text change. Do not check only the file edited: any incomplete entry can reduce the global language count.
+- When the user performs an in-game localization check, hold Shift during launch to clear/rebuild the text cache, then check the affected text/language. Check non-English menus when investigating language availability or menu-label problems. Do not launch Civ IV or require a menu check for every text edit; these checks do not block completion of ordinary text changes.
+- For localized edits, check changed or added `<TEXT>` entries for all five required language elements and correct encoding, and confirm the edited XML files parse. If a generator rewrites whole files, check all entries in those generated files. Do not audit unrelated localization files routinely. Reserve a full localization audit for broad localization changes, suspected global language/menu problems, or an explicit user request.
 
 ## Related files
 

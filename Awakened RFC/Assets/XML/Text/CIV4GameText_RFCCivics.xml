@@ -358,20 +358,20 @@
         <Spanish>Warrior Society</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_MILITIA</Tag>
-        <English>Militia</English>
-        <French>Militia</French>
-        <German>Miliz</German>
-        <Italian>Militia</Italian>
-        <Spanish>Militia</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE</Tag>
+        <English>Naval Warfare</English>
+        <French>Guerre navale</French>
+        <German>Seekriegsf&#252;hrung</German>
+        <Italian>Guerra navale</Italian>
+        <Spanish>Guerra naval</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD</Tag>
-        <English>Knighthood</English>
-        <French>Knighthood</French>
-        <German>Rittertum</German>
-        <Italian>Knighthood</Italian>
-        <Spanish>Knighthood</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES</Tag>
+        <English>Feudal Retinues</English>
+        <French>Osts f&#233;odaux</French>
+        <German>Feudale Aufgebote</German>
+        <Italian>Seguiti feudali</Italian>
+        <Spanish>Mesnadas feudales</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY</Tag>
@@ -528,20 +528,20 @@
         <Spanish>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MILITIA</Tag>
-        <English>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</English>
-        <French>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</French>
-        <German>[ICON_BULLET]+30% Stadtverteidigung[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] au&#223;erhalb des eigenen Gebiets</German>
-        <Italian>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Italian>
-        <Spanish>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NAVAL_WARFARE</Tag>
+        <English>[ICON_BULLET]+50% production of military ships, including transports[NEWLINE][ICON_BULLET]+2 experience for newly trained military ships</English>
+        <French>[ICON_BULLET]+50% &#224; la production de navires militaires, transports compris[NEWLINE][ICON_BULLET]+2 points d&#8217;exp&#233;rience pour les nouveaux navires militaires</French>
+        <German>[ICON_BULLET]+50% Produktion f&#252;r Milit&#228;rschiffe einschlie&#223;lich Transportschiffen[NEWLINE][ICON_BULLET]+2 Erfahrung f&#252;r neu gebaute Milit&#228;rschiffe</German>
+        <Italian>[ICON_BULLET]+50% alla produzione di navi militari, inclusi i trasporti[NEWLINE][ICON_BULLET]+2 esperienza per le nuove navi militari</Italian>
+        <Spanish>[ICON_BULLET]+50% a la producci&#243;n de barcos militares, incluidos los transportes[NEWLINE][ICON_BULLET]+2 de experiencia para los nuevos barcos militares</Spanish>
     </TEXT>
-        <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_KNIGHTHOOD</Tag>
-        <English>[ICON_BULLET]+6 experience for newly trained mounted units and Samurai</English>
-        <French>[ICON_BULLET]+6 points d'exp&#233;rience pour les unit&#233;s mont&#233;es et les samoura&#239;s nouvellement form&#233;s</French>
-        <German>[ICON_BULLET]+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten und Samurai</German>
-        <Italian>[ICON_BULLET]+6 esperienza per le nuove unit&#224; a cavallo e i Samurai</Italian>
-        <Spanish>[ICON_BULLET]+6 de experiencia para las nuevas unidades montadas y los samur&#225;is</Spanish>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES</Tag>
+        <English>[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units</English>
+        <French>[ICON_BULLET]+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e par cette ville, unit&#233;s de si&#232;ge comprises</French>
+        <German>[ICON_BULLET]+5% Produktion milit&#228;rischer Landeinheiten je von dieser Stadt bewirtschaftetem Bauernhof, einschlie&#223;lich Belagerungseinheiten</German>
+        <Italian>[ICON_BULLET]+5% alla produzione di unit&#224; militari terrestri per fattoria lavorata da questa citt&#224;, incluse le unit&#224; d&#8217;assedio</Italian>
+        <Spanish>[ICON_BULLET]+5% a la producci&#243;n de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_ANCESTOR_CULT</Tag>
@@ -744,5 +744,29 @@
         <German>%D1_Amount [ICON_HAPPY] durch den Herrscherkult</German>
         <Italian>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Italian>
         <Spanish>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_PEDIA</Tag>
+        <English>Naval Warfare organizes shipyards, crews and transport fleets for war at sea and overseas expeditions. A maritime power can devote more resources to replacing ships and training crews, while another military institution may better serve a continental army.</English>
+        <French>La guerre navale organise les chantiers, les &#233;quipages et les flottes de transport pour le combat en mer et les exp&#233;ditions outre-mer. Une puissance maritime peut renforcer sa flotte et former ses &#233;quipages, tandis qu&#8217;une autre institution militaire peut mieux servir une arm&#233;e continentale.</French>
+        <German>Seekriegsf&#252;hrung organisiert Werften, Besatzungen und Transportflotten f&#252;r den Krieg auf See und &#252;berseeische Feldz&#252;ge. Eine Seemacht kann mehr Mittel in neue Schiffe und ausgebildete Besatzungen investieren, w&#228;hrend eine andere Milit&#228;rordnung einem Landheer besser dienen kann.</German>
+        <Italian>La guerra navale organizza cantieri, equipaggi e flotte da trasporto per i combattimenti in mare e le spedizioni oltremare. Una potenza marittima pu&#242; investire nelle navi e nell&#8217;addestramento degli equipaggi, mentre un&#8217;altra istituzione militare pu&#242; servire meglio un esercito continentale.</Italian>
+        <Spanish>La guerra naval organiza astilleros, tripulaciones y flotas de transporte para combatir en el mar y realizar expediciones ultramarinas. Una potencia mar&#237;tima puede invertir en barcos y tripulaciones, mientras que otra instituci&#243;n militar puede servir mejor a un ej&#233;rcito continental.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_PEDIA</Tag>
+        <English>Feudal Retinues mobilize military service and provisions through agricultural estates. Worked farms support the producing city&#8217;s land forces, making a productive rural base an alternative to the superior training of a Professional Army.</English>
+        <French>Les osts f&#233;odaux mobilisent le service militaire et les provisions des domaines agricoles. Les fermes exploit&#233;es soutiennent les forces terrestres de leur ville : une base rurale productive offre ainsi une alternative &#224; l&#8217;entra&#238;nement sup&#233;rieur d&#8217;une arm&#233;e professionnelle.</French>
+        <German>Feudale Aufgebote mobilisieren Kriegsdienste und Versorgung durch landwirtschaftliche G&#252;ter. Bewirtschaftete Bauernh&#246;fe unterst&#252;tzen die Landstreitkr&#228;fte ihrer Stadt. Eine leistungsf&#228;hige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.</German>
+        <Italian>I seguiti feudali mobilitano il servizio militare e le provviste delle propriet&#224; agricole. Le fattorie lavorate sostengono le forze terrestri della propria citt&#224;: una base rurale produttiva offre un&#8217;alternativa al migliore addestramento di un esercito professionale.</Italian>
+        <Spanish>Las mesnadas feudales movilizan el servicio militar y los suministros de las propiedades agr&#237;colas. Las granjas trabajadas sostienen las fuerzas terrestres de su ciudad: una base rural productiva ofrece una alternativa al mejor adiestramiento de un ej&#233;rcito profesional.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_PRODUCTION_MILITARY_CIVIC</Tag>
+        <English>+%d1_Modifier% [ICON_PRODUCTION] from %s2_Civic</English>
+        <French>+%d1_Modifier% [ICON_PRODUCTION] gr&#226;ce &#224; %s2_Civic</French>
+        <German>+%d1_Modifier% [ICON_PRODUCTION] durch %s2_Civic</German>
+        <Italian>+%d1_Modifier% [ICON_PRODUCTION] da %s2_Civic</Italian>
+        <Spanish>+%d1_Modifier% [ICON_PRODUCTION] por %s2_Civic</Spanish>
     </TEXT>
 </Civ4GameText>

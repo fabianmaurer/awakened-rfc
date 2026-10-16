@@ -427,7 +427,7 @@ class Stability:
                         iScore -= 1
                 if ((hasCivic("CIVIC_REPUBLIC") or hasCivic("CIVIC_DEMOCRACY")) and hasCivic("CIVIC_RULE_OF_LAW")):
                         iScore += 2
-                if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_KNIGHTHOOD")):
+                if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_FEUDAL_RETINUES")):
                         iScore += 2
                 if (hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and (hasCivic("CIVIC_STATE_RELIGION") or hasCivic("CIVIC_GOD_STATE"))):
                         iScore += 2
@@ -1055,9 +1055,9 @@ class Stability:
                                                                         CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
                                                                                                             CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
                                                                 if (iGameTurn < con.i1400AD):
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False)
+                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
                                                                 else:
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False)
+                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
                                                         else: #another human
                                                                 CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
                                                                                         CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
@@ -1066,7 +1066,7 @@ class Stability:
                                                 else:
                                                         if (gc.getPlayer(iPlayer).getNumCities() > 1):
                                                                 CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True)
+                                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True, reason='stability_civil_war')
                                                                 utils.setStartingStabilityParameters(iPlayer)
                                                                 self.setGNPold(iPlayer, 0)
                                                                 self.setGNPnew(iPlayer, 0)

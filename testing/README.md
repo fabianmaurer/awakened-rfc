@@ -425,20 +425,57 @@ logging and are reported separately from gameplay exceptions.
 
 ```powershell
 python testing/analyze_observer.py testing/runs/<batch-directory>
+python testing/analyze_observer.py testing/runs/<new-batch> --compare testing/runs/<baseline-batch>
 ```
 
 This streams records into `report.md` and `summary.json`, including:
 
-- Final survival/population and peak population dominance across repeated games.
+- Final survival/population (both all-game and survivor-only medians) and population
+  shares at exact common 50-turn elapsed boundaries and the run end.
 - Survival, population, technology count and power 0/10/25/50 turns after first
   establishment (first owned city, not necessarily the historical spawn turn).
-- Civic usage and first era-entry dates, with ranges and sample counts.
-- Recorded mechanic errors, observations needing investigation and exceptions.
+- Labor civic starting spells, switch destinations and completed durations,
+  separated from ongoing right-censored spells and deaths.
+- Slave employment conditional on active Slavery, with assigned and free slaves
+  separated. Snapshot counts are not extrapolated to city-turn exposure.
+- Food by city size (1-3, 4-7, 8+): local production, imports, exports, consumption,
+  surplus, storage fill, deficit samples and observed net population changes.
+  Normal samples exclude disorder, anarchy, occupation and food-based production.
+  Population losses alone do not establish famine.
+- Semantic collapse events for barbarian losses, halved city count, lost homeland
+  and stability civil war, distinguishing inheritance from full/partial fragmentation.
+- Sparse labor evaluations copied from existing DLL calculations, including raw
+  and current-civic-adjusted scores. These can originate in planning as well as
+  revolution selection; they do not certify an actual switch. No civic scoring is
+  re-run for reporting. Evaluations are sampled when current/best civic changes
+  and at 25-turn boundaries when an evaluation occurs; sample frequency is biased
+  towards changes and must not be interpreted as preference prevalence.
+- A compact run-integrity table and grouped diagnostics with one traceback per
+  error signature, affected seeds and first error turn.
 
-Only complete recordings contribute to pooled balance tables. Different build
+Raw civic exposure, era dates and full findings remain in `summary.json`; the
+main report omits raw civic-frequency lists, the fixed 40-percent dominance column
+and repeated per-game tracebacks. Same-age 50-turn survival remains in an appendix;
+all establishment checkpoints remain in the JSON.
+
+With `--compare`, `comparison.md` pairs unique matching seeds with identical
+settings, scenario, mode, recording interval and final turn. It reports paired
+population/city/technology deltas at exact common boundaries, paired medians and
+population-delta ranges. Each build pair remains separate. Missing/ambiguous
+pairs and affected recordings are excluded, not converted to zero. In particular,
+the previous 20-game batch has only nine games without recorded errors, so a
+clean comparison cannot contain all twenty seeds. Error-free selection itself
+may correlate with gameplay and is not a causal guarantee.
+
+Only complete recordings without recording-integrity issues contribute to pooled
+balance tables. Games with gameplay errors have their own explicitly qualified
+tables and are excluded from matched comparisons. Duplicate seeds within a
+cohort are excluded from pooled statistics. Different build
 fingerprints, modes, AI-control settings, effective game settings and final
 turns are separated into cohorts. Runs are not automatically independent:
-avoid counting repeated seeds as additional independent evidence. Era-entry
+avoid counting repeated seeds as additional independent evidence. Older recordings
+remain readable; missing context, assigned/free slave splits and semantic collapse
+events are reported as unavailable rather than inferred. Era-entry
 dates include civilization spawns with advanced starting technologies.
 
 Keep settings constant within an experiment and compare matching seeds across

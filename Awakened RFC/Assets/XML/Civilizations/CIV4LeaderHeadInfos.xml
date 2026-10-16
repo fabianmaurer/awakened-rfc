@@ -10038,7 +10038,7 @@
 			<!-- Rhye - end -->
 			<iVassalPowerModifier>0</iVassalPowerModifier>
 			<iFreedomAppreciation>10</iFreedomAppreciation>
-			<FavoriteCivic>CIVIC_KNIGHTHOOD</FavoriteCivic>
+			<FavoriteCivic>CIVIC_NAVAL_WARFARE</FavoriteCivic>
 			<FavoriteReligion>NONE</FavoriteReligion>
 			<!-- Rhye -->
 			<Traits/>
@@ -15491,7 +15491,7 @@
 			<!-- Rhye - end -->
 			<iVassalPowerModifier>-20</iVassalPowerModifier>
 			<iFreedomAppreciation>10</iFreedomAppreciation>
-			<FavoriteCivic>CIVIC_KNIGHTHOOD</FavoriteCivic>
+			<FavoriteCivic>CIVIC_FEUDAL_RETINUES</FavoriteCivic>
 			<FavoriteReligion>RELIGION_ISLAM</FavoriteReligion>
 			<!-- Rhye -->
 			<Traits/>
@@ -21505,7 +21505,7 @@
 			<!-- Rhye - end -->
 			<iVassalPowerModifier>0</iVassalPowerModifier>
 			<iFreedomAppreciation>10</iFreedomAppreciation>
-			<FavoriteCivic>CIVIC_MILITIA</FavoriteCivic>
+			<FavoriteCivic>CIVIC_PROFESSIONAL_ARMY</FavoriteCivic>
 			<FavoriteReligion>RELIGION_CHRISTIANITY</FavoriteReligion>
 			<!-- Rhye -->
 			<Traits/>
@@ -25350,7 +25350,7 @@
 			<!-- Rhye - end -->
 			<iVassalPowerModifier>0</iVassalPowerModifier>
 			<iFreedomAppreciation>10</iFreedomAppreciation>
-			<FavoriteCivic>CIVIC_MILITIA</FavoriteCivic>
+			<FavoriteCivic>CIVIC_FEUDAL_RETINUES</FavoriteCivic>
 			<FavoriteReligion>RELIGION_BUDDHISM</FavoriteReligion>
 			<!-- Rhye -->
 			<Traits/>

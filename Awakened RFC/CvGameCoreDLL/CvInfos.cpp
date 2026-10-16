@@ -5366,9 +5366,6 @@ std::wstring CvCivicInfo::getCivilizationDescription(int iCivilization) const
 		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
 			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP");
 	}
-	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_JAPAN") &&
-		strcmp(getType(), "CIVIC_KNIGHTHOOD") == 0)
-		return gDLL->getText("TXT_KEY_RFCMP_CIVIC_BUSHIDO");
 	return getDescription();
 }
 
@@ -5387,9 +5384,6 @@ std::string CvCivicInfo::getCivilizationButton(int iCivilization) const
 		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
 			return "Art/Interface/Buttons/civics/RFCMP/Divine_Kingship.dds";
 	}
-	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_JAPAN") &&
-		strcmp(getType(), "CIVIC_KNIGHTHOOD") == 0)
-		return "Art/Interface/Buttons/civics/RFCMP/Bushido.dds";
 	return getButton();
 }
 

@@ -2562,9 +2562,10 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 
 	if (eUnit != NO_UNIT)
 	{
-		if ((GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") ||
-			eUnit == GC.getInfoTypeForString("UNIT_JAPAN_SAMURAI")) &&
-			GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))) iExperience += 6;
+		if (GC.getUnitInfo(eUnit).getDomainType() == DOMAIN_SEA &&
+			GC.getUnitInfo(eUnit).isMilitaryProduction() && GC.getUnitInfo(eUnit).getCombat() > 0 &&
+			GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE")))
+			iExperience += 2;
 		if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iExperience += getUnitCombatFreeExperience((UnitCombatTypes)(GC.getUnitInfo(eUnit).getUnitCombatType()));
@@ -3289,11 +3290,47 @@ int CvCity::getProductionModifier() const
 }
 
 
+int CvCity::countWorkedFarms() const
+{
+	const ImprovementTypes eFarm = (ImprovementTypes)GC.getInfoTypeForString("IMPROVEMENT_FARM");
+	int iFarms = 0;
+	// The city center is not a citizen assignment. Shared plots count only
+	// for the city actually working them; idle/pillaged farms do not count.
+	for (int iPlot = 0; iPlot < NUM_CITY_PLOTS; ++iPlot)
+	{
+		const CvPlot* pPlot = getCityIndexPlot(iPlot);
+		if (iPlot != CITY_HOME_PLOT && pPlot != NULL && isWorkingPlot(iPlot) &&
+			pPlot->getWorkingCity() == this && pPlot->getImprovementType() == eFarm)
+			++iFarms;
+	}
+	return iFarms;
+}
+
+
+int CvCity::getMilitaryCivicProductionModifier(UnitTypes eUnit, CivicTypes eCivic) const
+{
+	if (eUnit == NO_UNIT)
+		return 0;
+	const CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+	// bMilitaryProduction is also set for workboats and some civilian units.
+	// Combat strength includes armed transports but excludes those civilians.
+	if (!kUnit.isMilitaryProduction() || kUnit.getCombat() <= 0)
+		return 0;
+	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE") && kUnit.getDomainType() == DOMAIN_SEA)
+		return 50;
+	if (eCivic == GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES") && kUnit.getDomainType() == DOMAIN_LAND)
+		return 5 * countWorkedFarms();
+	return 0;
+}
+
+
 int CvCity::getProductionModifier(UnitTypes eUnit) const
 {
 	int iI;
 
 	int iMultiplier = GET_PLAYER(getOwnerINLINE()).getProductionModifier(eUnit);
+	const CivicOptionTypes eMilitary = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_MILITARY");
+	iMultiplier += getMilitaryCivicProductionModifier(eUnit, GET_PLAYER(getOwnerINLINE()).getCivics(eMilitary));
 
 	iMultiplier += getDomainProductionModifier((DomainTypes)(GC.getUnitInfo(eUnit).getDomainType()));
 
@@ -7518,10 +7555,6 @@ int CvCity::getNaturalDefense() const
 int CvCity::getTotalDefense(bool bIgnoreBuilding) const
 {
 	int iDefense = std::max(((bIgnoreBuilding) ? 0 : getBuildingDefense()), getNaturalDefense()) + GET_PLAYER(getOwnerINLINE()).getCityDefenseModifier();
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MILITIA")))
-	{
-		iDefense += 30;
-	}
 	return iDefense;
 }
 

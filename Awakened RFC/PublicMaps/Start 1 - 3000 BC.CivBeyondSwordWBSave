@@ -20288,7 +20288,7 @@ BeginPlot
 	x=54,y=39
 	isWOfRiver
 	RiverNSDirection=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot
@@ -21025,13 +21025,14 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=56,y=38
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=56,y=39
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot
@@ -21390,7 +21391,8 @@ EndPlot
 BeginPlot
 	x=57,y=38
 	TerrainType=TERRAIN_PLAINS
-	PlotType=0
+	PlotType=1
+	BonusType=BONUS_IRON
 EndPlot
 BeginPlot
 	x=57,y=39
@@ -21762,7 +21764,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=58,y=39
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22115,12 +22117,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=59,y=36
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=59,y=37
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22495,12 +22498,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=60,y=36
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=60,y=37
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22867,7 +22871,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=61,y=36
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -23274,7 +23278,7 @@ EndPlot
 BeginPlot
 	x=62,y=42
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot

@@ -642,6 +642,113 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 }
 
 
+int CvCityAI::AI_slaveryEmploymentValue(CivicTypes eCivic)
+{
+	// Estimate profitable replacements, without changing assignments, civics,
+	// trade routes or game RNG. This deliberately values existing employment,
+	// not speculative future population or future imports.
+	const CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
+	const SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	const SpecialistTypes eCitizen = (SpecialistTypes)GC.getDefineINT("DEFAULT_SPECIALIST");
+	const CivicTypes eCurrent = kPlayer.getCivics((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType());
+	const bool bRepublic = kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
+	const bool bAvoidGrowth = AI_avoidGrowth();
+	const int iModifier = getBaseYieldRateModifier(YIELD_FOOD);
+	const int iHealth = goodHealth() - badHealth(false, 0);
+	const int iCandidateHealth = iHealth + GC.getCivicInfo(eCivic).getExtraHealth() - GC.getCivicInfo(eCurrent).getExtraHealth();
+	int iBaseFood = getBaseYieldRate(YIELD_FOOD);
+	int iConsumption = foodConsumption(false) + std::min(0, iHealth) - std::min(0, iCandidateHealth);
+	std::vector<int> jobs; // plot index, or -(specialist index + 1)
+	bool used[NUM_CITY_PLOTS];
+	int i;
+	for (i = 0; i < NUM_CITY_PLOTS; ++i)
+	{
+		used[i] = isWorkingPlot(i);
+		if (used[i] && i != CITY_HOME_PLOT)
+			jobs.push_back(i);
+	}
+	for (i = 0; i < GC.getNumSpecialistInfos(); ++i)
+		if (i != eSlave)
+			for (int n = 0; n < getSpecialistCount((SpecialistTypes)i); ++n)
+				jobs.push_back(-i - 1);
+
+	// Reconstruct alternatives to existing slaves as well: otherwise a city
+	// would value adopting Slavery, then forget its benefit once jobs changed.
+	for (int n = 0; n < getSpecialistCount(eSlave); ++n)
+	{
+		int iBest = -eCitizen - 1;
+		int iBestValue = AI_specialistValue(eCitizen, bAvoidGrowth, false);
+		for (i = 0; i < NUM_CITY_PLOTS; ++i)
+		{
+			CvPlot* pPlot = getCityIndexPlot(i);
+			if (i != CITY_HOME_PLOT && !used[i] && pPlot != NULL && canWork(pPlot))
+			{
+				const int iValue = AI_plotValue(pPlot, bAvoidGrowth, false);
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					iBest = i;
+				}
+			}
+		}
+		jobs.push_back(iBest);
+		if (iBest >= 0) used[iBest] = true;
+		iBaseFood += (iBest >= 0 ? getCityIndexPlot(iBest)->getYield(YIELD_FOOD) :
+			kPlayer.specialistYield(eCitizen, YIELD_FOOD)) - kPlayer.specialistYield(eSlave, YIELD_FOOD);
+		if (bRepublic && iBest < 0) --iConsumption;
+	}
+
+	CitizenEvaluationCache conditions(this);
+	conditions.foodReady = true;
+	conditions.health = iCandidateHealth;
+	conditions.happiness = isNoUnhappiness() ? std::max(3, iCandidateHealth + 5) : happyLevel() - unhappyLevel(0);
+	conditions.extraFree = extraFreeSpecialists();
+	int iSurplus = iBaseFood * iModifier / 100 + getFoodTradeImports() - getFoodTradeExports() - iConsumption;
+	// Preserve some growth in growing cities. Already hungry cities receive
+	// no speculative Slavery bonus merely because it unlocks unlimited jobs.
+	const int iReserve = bAvoidGrowth ? 0 : 2;
+	int iTotalValue = 0;
+	while (!jobs.empty())
+	{
+		int iBest = -1;
+		int iBestValue = 0;
+		int iBestFood = 0;
+		int iBestBaseFood = iBaseFood;
+		for (i = 0; i < (int)jobs.size(); ++i)
+		{
+			const int iJob = jobs[i];
+			const SpecialistTypes eOld = iJob < 0 ? (SpecialistTypes)(-iJob - 1) : NO_SPECIALIST;
+			const int iOldFood = iJob >= 0 ? getCityIndexPlot(iJob)->getYield(YIELD_FOOD) : kPlayer.specialistYield(eOld, YIELD_FOOD);
+			const int iNewBaseFood = iBaseFood - iOldFood + kPlayer.specialistYield(eSlave, YIELD_FOOD);
+			const int iFoodCost = iBaseFood * iModifier / 100 - iNewBaseFood * iModifier / 100 + (bRepublic && iJob < 0 ? 1 : 0);
+			if (iSurplus - iFoodCost < iReserve) continue;
+			conditions.foodPerTurn = iSurplus;
+			const int iOldValue = iJob >= 0 ? AI_plotValue(getCityIndexPlot(iJob), bAvoidGrowth, true) : AI_specialistValue(eOld, bAvoidGrowth, true);
+			// Evaluate the replacement after releasing the old job's food.
+			conditions.foodPerTurn = iSurplus + (iBaseFood - iOldFood) * iModifier / 100 - iBaseFood * iModifier / 100 - (bRepublic && iJob < 0 ? 1 : 0);
+			const int iValue = AI_specialistValue(eSlave, bAvoidGrowth, false) - iOldValue;
+			if (iValue > iBestValue)
+			{
+				iBest = i;
+				iBestValue = iValue;
+				iBestFood = iFoodCost;
+				iBestBaseFood = iNewBaseFood;
+			}
+		}
+		if (iBest < 0) break;
+		iTotalValue += iBestValue;
+		iSurplus -= iBestFood;
+		iBaseFood = iBestBaseFood;
+		jobs.erase(jobs.begin() + iBest);
+		// Each changed hypothetical assignment invalidates the job counts.
+		conditions.goodJobsReady[0] = conditions.goodJobsReady[1] = false;
+	}
+	// Citizen scores use 100 * (15 per production); civic recurring-yield
+	// bonuses elsewhere use roughly 4-6 points per production.
+	return iTotalValue / 250;
+}
+
+
 void CvCityAI::AI_chooseProduction()
 {
 	OBSERVER_PERFORMANCE("CvCityAI::AI_chooseProduction");
@@ -7552,10 +7659,28 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 
 	for (iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
 	{
-		iFoodCount += (GC.getSpecialistInfo((SpecialistTypes)iI).getYieldChange(YIELD_FOOD) * getFreeSpecialistCount((SpecialistTypes)iI));
+		iFoodCount += (GET_PLAYER(getOwnerINLINE()).specialistYield((SpecialistTypes)iI, YIELD_FOOD) * getFreeSpecialistCount((SpecialistTypes)iI));
 	}
 
-	if (iFoodCount < foodConsumption(false, iExtra))
+	// Retain non-plot food (buildings, corporations, settled specialists),
+	// then apply local modifiers before adding current shipments. Imports
+	// cannot be multiplied and exports are not available for local growth.
+	int iWorkedFood = 0;
+	for (iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+		if (isWorkingPlot(iI) && getCityIndexPlot(iI) != NULL)
+			iWorkedFood += getCityIndexPlot(iI)->getYield(YIELD_FOOD);
+	int iAssignedFood = 0;
+	for (iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
+		iAssignedFood += GET_PLAYER(getOwnerINLINE()).specialistYield((SpecialistTypes)iI, YIELD_FOOD) *
+			(getSpecialistCount((SpecialistTypes)iI) + getFreeSpecialistCount((SpecialistTypes)iI));
+	iFoodCount += getBaseYieldRate(YIELD_FOOD) - iWorkedFood - iAssignedFood;
+	iFoodCount = iFoodCount * getBaseYieldRateModifier(YIELD_FOOD) / 100;
+	iFoodCount += getFoodTradeImports() - getFoodTradeExports();
+
+	// The estimate assigns citizens to plots, so Republic's discount for
+	// currently assigned specialists must not subsidize these hypothetical jobs.
+	int iConsumption = std::max(0, (getPopulation() + iExtra) * GC.getFOOD_CONSUMPTION_PER_POPULATION() - healthRate(false, iExtra));
+	if (iFoodCount < iConsumption)
 	{
 		return false;
 	}
@@ -7678,7 +7803,15 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 		int iAdjustedFoodDifference = (getYieldRate(YIELD_FOOD) + std::min(0, iHealthLevel)) - ((iPopulation + std::min(0, iHappinessLevel) - ((bRemove) ? 1 : 0)) * iConsumtionPerPop);
 		
 		// if we not human, allow us to starve to half full if avoiding growth
-		if (!bIgnoreStarvation)
+		if (!bIgnoreStarvation && aiYields[YIELD_FOOD] < 0)
+		{
+			// Also reject jobs that CREATE a deficit from a positive surplus.
+			// Use the same without/with-job states for addition and removal.
+			const int iBefore = iFoodPerTurn;
+			const int iAfter = iBefore + aiYields[YIELD_FOOD];
+			iValue -= 2048 * (std::max(0, -iAfter) - std::max(0, -iBefore));
+		}
+		if (!bIgnoreStarvation && aiYields[YIELD_FOOD] > 0)
 		{
 			int iStarvingAllowance = 0;
 			if (bAvoidGrowth && !isHuman())
@@ -7935,7 +8068,11 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 	
 	int iProductionValue = 0;
 	int iCommerceValue = 0;
-	int iFoodValue = std::min(iFoodGrowthValue, iMaxFoodValue * aiYields[YIELD_FOOD]);
+	// Cap the magnitude of a marginal food value, rather than charging the
+	// maximum growth price for every negative-food job even in surplus.
+	int iFoodValue = aiYields[YIELD_FOOD] < 0 ?
+		std::max(std::min(0, iFoodGrowthValue), iMaxFoodValue * aiYields[YIELD_FOOD]) :
+		std::min(iFoodGrowthValue, iMaxFoodValue * aiYields[YIELD_FOOD]);
 	// if food is production, the count it
 	int adjustedYIELD_PRODUCTION = (((bFoodIsProduction) ? aiYields[YIELD_FOOD] : 0) + aiYields[YIELD_PRODUCTION]);
 			
@@ -8164,6 +8301,25 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 			// undervalue it even more!
 			iYieldValue /= 16;
 	iValue += iYieldValue;
+
+	// A worked farm also changes the production modifier of the entire
+	// city under Feudal Retinues. The ordinary yield score above only sees
+	// the plot's own hammers. Value this additional effect while training
+	// land forces, with the same with/without-job rounding for removal.
+	const UnitTypes eTrainingUnit = getProductionUnit();
+	if (eCurrentImprovement == GC.getInfoTypeForString("IMPROVEMENT_FARM") &&
+		GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES")) &&
+		eTrainingUnit != NO_UNIT && GC.getUnitInfo(eTrainingUnit).getDomainType() == DOMAIN_LAND &&
+		GC.getUnitInfo(eTrainingUnit).isMilitaryProduction() && GC.getUnitInfo(eTrainingUnit).getCombat() > 0)
+	{
+		const int iProduction = std::max(0, getBaseYieldRate(YIELD_PRODUCTION) +
+			(bRemove ? -pPlot->getYield(YIELD_PRODUCTION) : pPlot->getYield(YIELD_PRODUCTION)));
+		const int iModifier = getBaseYieldRateModifier(YIELD_PRODUCTION) + getProductionModifier(eTrainingUnit);
+		const int iExtraHammers = (iProduction * (iModifier + (bRemove ? 0 : 5))) / 100 -
+			(iProduction * (iModifier - (bRemove ? 5 : 0))) / 100;
+		// AI_plotValue uses hundredths of the base production score (15).
+		iValue += iExtraHammers * 1500;
+	}
 
 	if (eCurrentImprovement != NO_IMPROVEMENT)
 	{

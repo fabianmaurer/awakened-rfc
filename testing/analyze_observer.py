@@ -4,7 +4,6 @@ from collections import Counter, defaultdict
 import gzip
 import json
 from pathlib import Path
-import statistics
 
 
 def records(path, issues):
@@ -96,6 +95,20 @@ def analyze(path):
             for finding in record['checks']:
                 findings.append(dict(finding, turn=record['turn'], year=record['year']))
     complete = path.with_name('complete.json')
+    if not metadata:
+        issues.append('Missing metadata')
+    if last_turn is None:
+        issues.append('Missing state snapshots')
+    if complete.exists():
+        try:
+            completion = json.loads(complete.read_text(encoding='utf-8'))
+            if completion.get('turns') != turns:
+                issues.append('Completion turn count does not match the last recorded elapsed turn')
+            observed_errors = sum(f.get('severity') == 'error' or f.get('kind') == 'python_exception' for f in findings)
+            if completion.get('errors', observed_errors) != observed_errors:
+                issues.append('Completion error count does not match recorded findings')
+        except (ValueError, OSError):
+            issues.append('Invalid completion marker')
     return {'run': path.parent.name, 'metadata': metadata, 'completed': complete.exists(),
             'turns': turns, 'snapshots': snapshots, 'last_turn': last_turn, 'final': list(final.values()),
             'established_players': list(established), 'spawn_checkpoints': checkpoints, 'era_entries': eras,
@@ -103,89 +116,35 @@ def analyze(path):
             'peak_population_share': dict(maximum_share), 'findings': findings, 'recording_issues': issues}
 
 
+def load_runs(folder):
+    from observer_reporting import enrich
+    paths = sorted(folder.rglob('turns.jsonl.gz'))
+    compressed = {p.parent for p in paths}
+    paths += sorted(p for p in folder.rglob('turns.jsonl') if p.parent not in compressed)
+    return [enrich(analyze(p), records(p, [])) for p in paths]
+
+
 def main():
+    from observer_reporting import render_report, compare_runs
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('folder', type=Path, help='Run directory or batch directory')
+    parser.add_argument('--compare', type=Path, help='Baseline batch for a matched-seed comparison')
     args = parser.parse_args()
-    paths = sorted(args.folder.rglob('turns.jsonl.gz'))
-    compressed_folders = {p.parent for p in paths}
-    paths += sorted(p for p in args.folder.rglob('turns.jsonl') if p.parent not in compressed_folders)
-    if not paths:
+    runs = load_runs(args.folder)
+    if not runs:
         parser.error('No turns.jsonl or turns.jsonl.gz recordings found')
-    runs = [analyze(p) for p in paths]
-    groups = defaultdict(list)
-    for run in runs:
-        m = run['metadata']
-        # Do not pool different modes, builds, settings or recording lengths.
-        key = json.dumps([m.get('runtime_fingerprint'), m.get('mode'), m.get('autoplay'),
-                          m.get('settings'), m.get('record_interval', 1), run['last_turn']], sort_keys=True)
-        groups[key].append(run)
-    lines = ['# Awakened RFC observer report', '',
-             f'{len(runs)} recordings; {sum(r["completed"] for r in runs)} completed.', '',
-             'AI-only outcomes describe the current AI. Civic popularity is not evidence of causal strength.',
-             'Incomplete games are listed individually and excluded from pooled balance statistics.', '']
-    for n, group in enumerate(groups.values(), 1):
-        meta = group[0]['metadata']
-        complete = [r for r in group if r['completed']]
-        lines += [f'## Cohort {n}', '',
-                  f'Mode: {meta.get("mode")}; final turn: {group[0]["last_turn"]}; complete games: {len(complete)}.', '',
-                  '| Civilization | Games established | Survived to run end | Median final population | Reached 40% population share* |',
-                  '| --- | ---: | ---: | ---: | ---: |']
-        civs = defaultdict(list)
-        for run in complete:
-            for player in run['final']:
-                if player['id'] in run['established_players']:
-                    civs[player['civilization']].append((run, player))
-        for civ, entries in sorted(civs.items()):
-            survived = sum(p['alive'] and p['cities'] > 0 for _, p in entries)
-            median = statistics.median(p['population'] for _, p in entries)
-            dominant = sum(r['peak_population_share'].get(civ, 0) >= .4 for r, _ in entries)
-            lines.append(f'| {civ} | {len(entries)} | {survived} | {median:g} | {dominant} |')
-        lines += ['', '*Measured at recorded snapshots while at least six major civilizations have cities; short-lived peaks between snapshots can be missed.', '',
-                  '### Survival 50 turns after establishment', '',
-                  '| Civilization | Observations | Survived | Median population |', '| --- | ---: | ---: | ---: |']
-        births = defaultdict(list)
-        for run in complete:
-            for point in run['spawn_checkpoints']:
-                if point['age'] == 50:
-                    births[point['civilization']].append(point)
-        for civ, points in sorted(births.items()):
-            lines.append(f'| {civ} | {len(points)} | {sum(p["alive"] and p["cities"] > 0 for p in points)} | {statistics.median(p["population"] for p in points):g} |')
-        lines += ['', '### Observed civic usage', '']
-        counts = Counter()
-        for run in complete:
-            counts.update({int(k): v for k, v in run['civic_player_turns'].items()})
-        names = meta.get('infos', {}).get('civic', [])
-        for civic, count in counts.most_common():
-            name = names[civic] if 0 <= civic < len(names) else str(civic)
-            lines.append(f'- {name}: {count} established, living civilization-turns.')
-        lines += ['', '### First era entries across completed games', '']
-        era_years = defaultdict(list)
-        for run in complete:
-            first = {}
-            for point in run['era_entries']:
-                first[point['era']] = min(first.get(point['era'], point['year']), point['year'])
-            for era, year in first.items():
-                era_years[era].append(year)
-        era_names = meta.get('infos', {}).get('era', [])
-        for era, years in sorted(era_years.items()):
-            label = era_names[era] if 0 <= era < len(era_names) else str(era)
-            lines.append(f'- {label}: median year {statistics.median(years):g}, range {min(years)} to {max(years)} ({len(years)} games).')
-        lines.append('')
-    lines += ['## Run diagnostics', '']
-    for run in runs:
-        errors = [f for f in run['findings'] if f.get('severity') == 'error' or f.get('kind') == 'python_exception']
-        investigations = [f for f in run['findings'] if f.get('severity') == 'investigate']
-        lines += [f'### {run["run"]}', '',
-                  f'{run["turns"]} turns; {run["snapshots"]} turn snapshots; {len(errors)} error observations; {len(investigations)} observations to investigate.', '']
-        for issue in run['recording_issues']:
-            lines.append('- ' + issue)
-        for finding in run['findings'][:20]:
-            lines.append('- `' + json.dumps(finding, ensure_ascii=True) + '`')
-        lines.append('')
+    report = render_report(runs)
+    comparison = None
+    if args.compare:
+        baseline = load_runs(args.compare)
+        if not baseline:
+            parser.error('No baseline recordings found')
+        comparison = compare_runs(runs, baseline)
     output = args.folder / 'report.md'
-    output.write_text('\n'.join(lines), encoding='utf-8')
+    output.write_text(report, encoding='utf-8')
     (args.folder / 'summary.json').write_text(json.dumps(runs, indent=2, ensure_ascii=True), encoding='utf-8')
+    if comparison is not None:
+        (args.folder / 'comparison.md').write_text(comparison, encoding='utf-8')
     print('Wrote ' + str(output))
 
 

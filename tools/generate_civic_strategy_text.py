@@ -1,5 +1,6 @@
 """Generate current civic unlock summaries and wire their Strategy keys."""
 from pathlib import Path
+from military_civic_text import ENTRIES
 import re
 import xml.etree.ElementTree as ET
 
@@ -54,12 +55,10 @@ SUMMARIES = {
     'WARRIOR_SOCIETY': (
         'Melee units start with +2 experience; siege units have -20% combat strength.',
         'Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke.'),
-    'MILITIA': (
-        '+30% city defense, but -10% combat strength outside your own territory.',
-        '+30% Stadtverteidigung, aber -10% Kampfstärke außerhalb des eigenen Gebiets.'),
-    'KNIGHTHOOD': (
-        '+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.',
-        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten und Samurai; +2 Zufriedenheit durch Burgen. Hei\xdft f\xfcr Japan Bushido.'),
+    'NAVAL_WARFARE': (ENTRIES['TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY']['English'],
+        ENTRIES['TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY']['German']),
+    'FEUDAL_RETINUES': (ENTRIES['TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY']['English'],
+        ENTRIES['TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY']['German']),
     'PROFESSIONAL_ARMY': (
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),
@@ -102,7 +101,8 @@ def main():
         entry = ET.SubElement(root, 'TEXT')
         ET.SubElement(entry, 'Tag').text = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
         for language in ('English', 'French', 'German', 'Italian', 'Spanish'):
-            ET.SubElement(entry, language).text = german if language == 'German' else english
+            key = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
+            ET.SubElement(entry, language).text = ENTRIES.get(key, {}).get(language, german if language == 'German' else english)
     ET.indent(root, space='    ')
     output = ASSETS / 'XML/Text/CIV4GameText_CivicStrategies.xml'
     output.write_bytes(b'<?xml version="1.0" encoding="UTF-8"?>\n' +

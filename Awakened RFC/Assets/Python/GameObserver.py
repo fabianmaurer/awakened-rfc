@@ -4,8 +4,40 @@ import os
 import time
 import traceback
 
-SCHEMA = 1
+SCHEMA = 2
 CURRENT = None
+
+
+def record_mechanic(event, player, details):
+    """Optional semantic event; a recording failure must not affect gameplay."""
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        item = {'event': event, 'player': player, 'turn': observer.game.getGameTurn(),
+                'year': observer.game.getGameTurnYear()}
+        item.update(details)
+        observer.events.append(item)
+    except:
+        observer.fail('mechanic_recording')
+
+
+def record_labor_evaluation(player, current, best, flat_scores):
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        turn = observer.game.getGameTurn()
+        previous = observer.labor_evaluations.get(player)
+        marker = (current, best)
+        if previous and previous[1] == marker and (turn % 25 != 0 or previous[0] == turn):
+            return
+        observer.labor_evaluations[player] = (turn, marker)
+        scores = [list(flat_scores[i:i+3]) for i in range(0, len(flat_scores), 3)]
+        record_mechanic('labor_evaluation', player, {'current': current, 'best': best,
+                        'scores': scores, 'context': 'AI_bestCivic; not a committed revolution'})
+    except:
+        observer.fail('labor_evaluation_recording')
 
 
 def json_text(value):
@@ -52,6 +84,7 @@ class Observer:
         self.error_count = 0
         self.last_snapshot = 0
         self.civic_exposure = {}
+        self.labor_evaluations = {}
         self.checkpoints_seen = set()
         self.camera_pending = False
         self.camera_elapsed = 0.0
@@ -395,7 +428,7 @@ class Observer:
             player = gc.getPlayer(i)
             if player.getCivilizationType() < 0:
                 continue
-            state = {'alive': player.isAlive(), 'state_religion': player.getStateReligion(),
+            state = {'alive': player.isAlive(), 'cities': player.getNumCities(), 'state_religion': player.getStateReligion(),
                      'civics': [player.getCivics(c) for c in range(gc.getNumCivicOptionInfos())],
                      'era': player.getCurrentEra()}
             old = self.previous.get(i)
@@ -403,10 +436,11 @@ class Observer:
                 for field in ('alive', 'civics', 'state_religion', 'era'):
                     if old[field] != state[field]:
                         self.events.append({'event': field + '_changed', 'player': i, 'turn': turn, 'year': year,
-                                            'before': old[field], 'after': state[field]})
+                                            'before': old[field], 'after': state[field], 'civics': state['civics']})
             if state['alive'] and player.getNumCities() and i not in self.births:
                 self.births[i] = turn
-                self.events.append({'event': 'first_established', 'player': i, 'turn': turn, 'year': year})
+                self.events.append({'event': 'first_established', 'player': i, 'turn': turn, 'year': year,
+                                    'civics': state['civics']})
             if i < Consts.iNumPlayers and i in self.births:
                 age = turn - self.births[i]
                 marker = (i, age)
@@ -428,6 +462,9 @@ class Observer:
     def city_data(self, city, diagnostic):
         data = {'id': city.getID(), 'name': city.getName(), 'x': city.getX(), 'y': city.getY(),
                 'population': city.getPopulation(), 'food': city.getFood(),
+                'food_consumption': city.foodConsumption(False, 0), 'growth_threshold': city.growthThreshold(),
+                'disorder': city.isDisorder(), 'anarchy': self.gc.getPlayer(city.getOwner()).isAnarchy(),
+                'occupation': city.getOccupationTimer(), 'food_production': city.isFoodProduction(),
                 'food_surplus': city.foodDifference(False), 'local_food': city.getLocalFoodYield(),
                 'food_imports': city.getFoodTradeImports(), 'food_exports': city.getFoodTradeExports(),
                 'production': city.getYieldRate(1), 'commerce': city.getYieldRate(2),
@@ -436,6 +473,8 @@ class Observer:
         slave = self.gc.getInfoTypeForString('SPECIALIST_SLAVE')
         if slave >= 0:
             data['slaves'] = city.getSpecialistCount(slave) + city.getFreeSpecialistCount(slave)
+            data['assigned_slaves'] = city.getSpecialistCount(slave)
+            data['free_slaves'] = city.getFreeSpecialistCount(slave)
         if diagnostic:
             import Slavery
             data.update({'growth_threshold': city.growthThreshold(), 'food_export_cap': city.getFoodExportLimit(),

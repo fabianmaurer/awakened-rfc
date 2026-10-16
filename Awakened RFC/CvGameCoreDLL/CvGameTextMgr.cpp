@@ -11512,6 +11512,18 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			}
 		}
 
+		// The same calculation used by production, including worked farms.
+		const CivicOptionTypes eMilitary = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_MILITARY");
+		const CivicTypes eMilitaryCivic = GET_PLAYER(city.getOwnerINLINE()).getCivics(eMilitary);
+		const int iCivicMod = city.getMilitaryCivicProductionModifier(eUnit, eMilitaryCivic);
+		if (iCivicMod != 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_PRODUCTION_MILITARY_CIVIC", iCivicMod,
+				GC.getCivicInfo(eMilitaryCivic).getCivilizationDescription(GET_PLAYER(city.getOwnerINLINE()).getCivilizationType()).c_str()));
+			szBuffer.append(NEWLINE);
+			iBaseModifier += iCivicMod;
+		}
+
 		// Bonus
 		for (int i = 0; i < GC.getNumBonusInfos(); i++)
 		{

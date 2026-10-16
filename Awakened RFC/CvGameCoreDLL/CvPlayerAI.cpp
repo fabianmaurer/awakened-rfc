@@ -10295,6 +10295,10 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 	int iValue;
 	int iBestValue;
 	int iI;
+	// Observe existing evaluations only. Never re-score a civic for logging.
+	const bool bRecordLabor = GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
+		eCivicOption == GC.getInfoTypeForString("CIVICOPTION_LABOR") && getNumCities() > 0;
+	std::vector<int> laborScores;
 
 	iBestValue = MIN_INT;
 	eBestCivic = NO_CIVIC;
@@ -10306,6 +10310,11 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			if (canDoCivics((CivicTypes)iI))
 			{
 				iValue = AI_civicValue((CivicTypes)iI);
+				if (bRecordLabor)
+				{
+					laborScores.push_back(iI);
+					laborScores.push_back(iValue);
+				}
 
 				if (isCivic((CivicTypes)iI))
 				{
@@ -10321,6 +10330,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 					}
 				}
 
+				if (bRecordLabor) laborScores.push_back(iValue);
 				if (iValue > iBestValue)
 				{
 					iBestValue = iValue;
@@ -10330,6 +10340,15 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 		}
 	}
 
+	if (bRecordLabor && !laborScores.empty())
+	{
+		CyArgsList args;
+		args.add((int)getID());
+		args.add((int)getCivics(eCivicOption));
+		args.add((int)eBestCivic);
+		args.add(&laborScores[0], (int)laborScores.size());
+		gDLL->getPythonIFace()->callFunction("GameObserver", "record_labor_evaluation", args.makeFunctionArgs());
+	}
 	return eBestCivic;
 }
 
@@ -10419,8 +10438,35 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 			iValue += 4 * iProduction + 4;
 		}
 	}
-	if (eCivic == GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))
-		iValue += getNumCities() * (bWarPlan ? 18 : 12);
+	if (eCivic == GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES"))
+	{
+		// Value present, worked farms against each city's actual productive
+		// capacity. Do not count every farm in the empire or forecast new ones.
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			const int iModifier = 5 * pLoopCity->countWorkedFarms();
+			iValue += (iModifier * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent) /
+				(bWarPlan ? 1500 : 2500);
+		}
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE"))
+	{
+		const int iCoastalCities = countNumCoastalCities();
+		const int iNavalUnits = AI_getNumAIUnits(UNITAI_ATTACK_SEA) + AI_getNumAIUnits(UNITAI_RESERVE_SEA) +
+			AI_getNumAIUnits(UNITAI_ESCORT_SEA) + AI_getNumAIUnits(UNITAI_ASSAULT_SEA);
+		const int iNavalShare = std::min(100, 25 + (10 * iNavalUnits) / std::max(1, iCoastalCities));
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (!pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+				continue;
+			const AreaAITypes eAreaAI = pLoopCity->area()->getAreaAIType(getTeam());
+			const bool bAssault = eAreaAI == AREAAI_ASSAULT || eAreaAI == AREAAI_ASSAULT_MASSING;
+			const int iShare = bAssault ? 100 : iNavalShare;
+			iValue += (50 * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent * iShare) /
+				(bWarPlan ? 150000 : 250000);
+			iValue += (2 * (bWarPlan ? 8 : 5) * iWarmongerPercent * iShare) / 10000;
+		}
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") &&
 		(getStateReligion() != NO_RELIGION || isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))))
 		iValue += getNumCities() * (bWarPlan ? 8 : 3);
@@ -10766,7 +10812,15 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		iTempValue = 0; 
 		if (kCivic.isSpecialistValid(iI)) 
 		{ 
-			iTempValue += ((getNumCities() *  (bCultureVictory3 ? 10 : 1)) + 6);
+			if (iI == GC.getInfoTypeForString("SPECIALIST_SLAVE"))
+			{
+				// Count profitable, food-supported job replacements, including
+				// existing slaves when deciding whether to retain this civic.
+				for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+					iValue += pLoopCity->AI_slaveryEmploymentValue(eCivic);
+			}
+			else
+				iTempValue += ((getNumCities() *  (bCultureVictory3 ? 10 : 1)) + 6);
 		} 
 		iValue += (iTempValue / 2); 
 	} 

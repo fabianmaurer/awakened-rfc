@@ -1128,9 +1128,19 @@ class RiseAndFall:
                                                                 if (city.getOwner() == iBarbarian):
                                                                         if (city.getOriginalOwner() == iCiv):
                                                                                 iLostCities = iLostCities + 1                                                
-                                        if (iLostCities*2 > iNumCities and iNumCities > 0): #if more than one third is captured, the civ collapses
+                                        iStability = utils.getStability(iCiv)
+                                        if (iNumCities > 0 and iLostCities*2 > iNumCities):
+                                                import GameObserver
+                                                GameObserver.record_mechanic('collapse_check', iCiv,
+                                                        {'reason': 'barbarian_city_losses', 'cities': iNumCities,
+                                                         'barbarian_original_cities': iLostCities, 'stability': iStability,
+                                                         'threshold_met': bool(iLostCities >= 2 and iStability < -20)})
+                                        # An old lost outpost must not destroy a viable state.
+                                        # Require several losses and existing instability as well
+                                        # as the original barbarian-held-city threshold.
+                                        if (iNumCities > 0 and iLostCities >= 2 and iLostCities*2 > iNumCities and iStability < -20):
                                                 print ("COLLAPSE BY BARBS", gc.getPlayer(iCiv).getCivilizationAdjective(0))
-                                                utils.pickFragmentation(iCiv, iIndependent, iIndependent2, iBarbarian, False)
+                                                utils.pickFragmentation(iCiv, iIndependent, iIndependent2, iBarbarian, False, reason='barbarian_city_losses')
 
         def collapseGeneric(self, iGameTurn):
                 #lNumCitiesNew = con.l0Array
@@ -1142,7 +1152,20 @@ class RiseAndFall:
                                 if (pCiv.isAlive()):
                                         if (iGameTurn >= con.tBirth[iCiv] + 25):
                                                 lNumCitiesNew[iCiv] = pCiv.getNumCities()
-                                                if (lNumCitiesNew[iCiv]*2 <= self.getNumCities(iCiv)): #if number of cities is less than half than some turns ago, the civ collapses
+                                                iPreviousCities = self.getNumCities(iCiv)
+                                                iLostCities = iPreviousCities - lNumCitiesNew[iCiv]
+                                                iStability = utils.getStability(iCiv)
+                                                if (lNumCitiesNew[iCiv] > 0 and lNumCitiesNew[iCiv]*2 <= iPreviousCities):
+                                                        import GameObserver
+                                                        GameObserver.record_mechanic('collapse_check', iCiv,
+                                                                {'reason': 'city_count_halved', 'cities': lNumCitiesNew[iCiv],
+                                                                 'reference_cities': iPreviousCities, 'lost_cities': iLostCities,
+                                                                 'stability': iStability,
+                                                                 'threshold_met': bool(iLostCities >= 2 and iStability < -20)})
+                                                # Losing one of two cities is a setback, not the
+                                                # automatic end of an otherwise viable country.
+                                                # Counts are compared across the 18-turn checks.
+                                                if (lNumCitiesNew[iCiv] > 0 and iLostCities >= 2 and lNumCitiesNew[iCiv]*2 <= iPreviousCities and iStability < -20):
                                                         print ("COLLAPSE GENERIC", pCiv.getCivilizationAdjective(0), lNumCitiesNew[iCiv]*2, "<=", self.getNumCities(iCiv))
                                                         if (gc.getPlayer(iCiv).isHuman() == 0):
                                                                 bVassal = False
@@ -1151,7 +1174,7 @@ class RiseAndFall:
                                                                                 bVassal = True
                                                                                 break
                                                                 if (not bVassal):
-                                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False)
+                                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False, reason='city_count_halved')
                                                 else:
                                                         self.setNumCities(iCiv, lNumCitiesNew[iCiv])
 
@@ -1160,7 +1183,7 @@ class RiseAndFall:
                 for iCiv in range(iNumPlayers):
                         pCiv = gc.getPlayer(iCiv)
                         teamCiv = gc.getTeam(pCiv.getTeam())
-                        if (pCiv.isHuman() == 0 and pCiv.isAlive()):
+                        if (pCiv.isHuman() == 0 and pCiv.isAlive() and pCiv.getNumCities() > 0):
                                 if (iGameTurn >= con.tBirth[iCiv] + 25):
                                         bSafe = False
                                         for x in range(tCoreAreasTL[iCiv][0], tCoreAreasBR[iCiv][0]+1):
@@ -1196,7 +1219,7 @@ class RiseAndFall:
                                                                 break
                                                 if (not bVassal):
                                                         print ("COLLAPSE: MOTHERLAND", gc.getPlayer(iCiv).getCivilizationAdjective(0))
-                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False)
+                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False, reason='homeland_lost')
                                                 return
                         
 
@@ -1503,8 +1526,9 @@ class RiseAndFall:
                                         #print ("INDEPENDENCE: ", cityList[k].getName()) #may cause a c++ exception                                       
                                         iOwner = cityList[k].getOwner()
                                         teamOwner = gc.getTeam(gc.getPlayer(iOwner).getTeam())
-                                        bOwnerVassal = teamOwner.isAVassal()
-                                        bOwnerHumanVassal = teamOwner.isVassal(iHuman)
+                                        # The old single-human vassal checks belonged to the
+                                        # disabled diplomacy block below. City restoration
+                                        # does not need a human player or team lookup.
 
                                         if (iOwner not in ownersList): #assignment of techs must be done before the creation of garrisons
                                                 for t in range(gc.getNumTechInfos()):
@@ -2820,6 +2844,11 @@ class RiseAndFall:
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 3)
                         utils.makeUnit(con.iArcher, iCiv, tPlot, 3)
                         utils.makeUnit(con.iRomePraetorian, iCiv, tPlot, 4)
+                        # Give AI Rome an assault reserve as well as its settlers.
+                        # These are a one-time starting force, not cost modifiers.
+                        if (not pRome.isHuman()):
+                                for i in range(2):
+                                        pRome.initUnit(con.iRomePraetorian, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
                         tSeaPlot = self.findSeaPlots(tPlot, 1, iCiv)
                         if (tSeaPlot):                                
                                 utils.makeUnit(con.iWorkBoat, iCiv, tSeaPlot, 1)
