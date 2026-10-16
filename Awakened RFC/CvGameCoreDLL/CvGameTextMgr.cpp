@@ -6881,7 +6881,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 		//Rhye - start (embassy)
-		if (eBuilding >= NUM_BUILDINGS_PLAGUE) {
+		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS) {
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_EMBASSY_ABILITY"));
 		}

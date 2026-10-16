@@ -1776,12 +1776,12 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 			CvWString::size_type iSeparator = szMapName.find_last_of(L"\\/");
 			const wchar* szFileName = szMapName.GetCString() +
 				(iSeparator == CvWString::npos ? 0 : iSeparator + 1);
-			if (wcsicmp(szFileName, L"Start 5 - 1453 AD.CivBeyondSwordWBSave") == 0)
+			if (wcsicmp(szFileName, L"Start 4 - 1453 AD.CivBeyondSwordWBSave") == 0)
 				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
 		}
 
 		// Authored scenarios can start with a civilization already established
-		// on its birth turn (e.g. Germany in the 840 AD start). Honor their
+		// on its birth turn. Honor their
 		// explicit playable slots before applying the later-join birth gate.
 		if (getWBMapScript() && !getWBMapNoPlayers() &&
 			eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID])

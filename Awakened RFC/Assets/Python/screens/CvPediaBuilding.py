@@ -276,7 +276,7 @@ class CvPediaBuilding:
 		szSpecialText = CyGameTextMgr().getBuildingHelp(self.iBuilding, True, False, False, None)[1:]
 		
 		#Rhye - start
-		if (self.iBuilding >= con.iNumBuildingsPlague):
+		if (self.iBuilding >= con.iNumBuildingsPlague and self.iBuilding < con.iNumBuildingsEmbassy):
                         szSpecialText = localText.getText("TXT_KEY_BUILDING_EMBASSY_EP", ())
                         szSpecialText += "\n"
                         szSpecialText += localText.getText("TXT_KEY_BUILDING_EMBASSY_ABILITY", ())

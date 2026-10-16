@@ -4697,7 +4697,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 //	}
 	
 	//Rhye - start (embassy)
-	if (eBuilding >= NUM_BUILDINGS_PLAGUE)
+	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS)
 	{
 		int iOtherCiv = (int)eBuilding - NUM_BUILDINGS_PLAGUE;
 		iValue += 5; //from 3 to 7 (max=35) //change to 4 in vanilla and warlords as there is no espionage points there

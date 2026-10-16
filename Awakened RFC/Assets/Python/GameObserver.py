@@ -75,7 +75,7 @@ class Observer:
             self.scenario = '3000bc'
             if parser.has_option('Observer', 'Scenario'):
                 self.scenario = get('Scenario')
-            if self.scenario not in ('3000bc', '800bc', '600ad', '840ad'):
+            if self.scenario not in ('3000bc', '800bc', '600ad'):
                 raise ValueError('Unsupported observer scenario/mode')
             if self.mode == 'off':
                 return
@@ -217,7 +217,7 @@ class Observer:
             if game.isGameMultiPlayer() or game.isPitboss():
                 raise ValueError('Observer launcher currently supports single-player only')
             expected_turn, expected_player = {'3000bc': (0, 26), '800bc': (87, 26),
-                                               '600ad': (181, 2), '840ad': (205, 2)}[self.scenario]
+                                               '600ad': (181, 2)}[self.scenario]
             if game.getStartYear() != -3000 or game.getGameTurn() != expected_turn:
                 raise ValueError('Observer scenario start turn/year mismatch')
             if self.unattended:
@@ -260,7 +260,7 @@ class Observer:
             self.map_script = self.gc.getMap().getMapScriptName()
             self.loaded_scenario = getattr(CvWBInterface, 'lastFileRead', None)
             expected = {'3000bc': 'start 1 - 3000 bc', '800bc': 'start 2 - 800 bc',
-                        '600ad': 'start 3 - 600 ad', '840ad': 'start 4 - 840 ad'}[self.scenario]
+                        '600ad': 'start 3 - 600 ad'}[self.scenario]
             if self.loaded_scenario:
                 filename = str(self.loaded_scenario).replace('\\', '/').split('/')[-1].lower()
                 if not filename.startswith(expected):

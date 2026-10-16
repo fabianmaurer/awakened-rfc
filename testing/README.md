@@ -40,7 +40,6 @@ Modes are `balance`, `diagnostics`, and `performance`. Starts are zero-based:
 | 0 | 3000 BC | America |
 | 1 | 800 BC | America |
 | 2 | 600 AD | China |
-| 3 | 840 AD | China |
 
 `--runs` sets the total number of games. `--turns` counts simulated turns
 from the scenario start. Seeds begin at `--seed` (default 1) and increment for

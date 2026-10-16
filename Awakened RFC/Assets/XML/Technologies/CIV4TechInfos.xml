@@ -4327,7 +4327,7 @@
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
 			<iGridX>20</iGridX>
-			<iGridY>8</iGridY>
+			<iGridY>11</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -6840,6 +6840,28 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <TechInfo>
 			<Type>TECH_ENVIRONMENTAL_PROGRESS</Type>
 			<Description>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS</Description>
@@ -6881,7 +6903,7 @@
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
 			<iGridX>21</iGridX>
-			<iGridY>1</iGridY>
+			<iGridY>7</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -6912,12 +6934,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_ECOLOGY</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_ECOLOGY</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Ecology.dds,Art/Interface/Buttons/TechTree_Atlas.dds,3,3</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_MEDICAL_PROGRESS</Type>
@@ -6960,7 +6982,7 @@
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
 			<iGridX>21</iGridX>
-			<iGridY>5</iGridY>
+			<iGridY>13</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -6991,12 +7013,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_MEDICINE</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_GENETICS</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Medicine.dds,Art/Interface/Buttons/TechTree_Atlas.dds,4,5</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_MILITARY_RESEARCH</Type>
@@ -7039,7 +7061,7 @@
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
 			<iGridX>21</iGridX>
-			<iGridY>9</iGridY>
+			<iGridY>11</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7070,12 +7092,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_COMPUTERS</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_COMPUTERS</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Military Tradition.dds,Art/Interface/Buttons/TechTree_Atlas.dds,7,5</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_DIGITAL_ADMINISTRATION</Type>
@@ -7118,7 +7140,7 @@
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
 			<iGridX>22</iGridX>
-			<iGridY>3</iGridY>
+			<iGridY>8</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7149,12 +7171,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
+			<OrPreReqs><PrereqTech>TECH_FIBER_OPTICS</PrereqTech></OrPreReqs>
 			<AndPreReqs><PrereqTech>TECH_COMPUTERS</PrereqTech></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Computers.dds,Art/Interface/Buttons/TechTree_Atlas.dds,7,2</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_MACHINE_LEARNING</Type>
@@ -7196,8 +7218,8 @@
 			<bIrrigation>0</bIrrigation>
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
-			<iGridX>22</iGridX>
-			<iGridY>7</iGridY>
+			<iGridX>23</iGridX>
+			<iGridY>8</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7228,12 +7250,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_COMPUTERS</PrereqTech><PrereqTech>TECH_FIBER_OPTICS</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_DIGITAL_ADMINISTRATION</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/FiberOptics.dds,Art/Interface/Buttons/TechTree_Atlas.dds,8,8</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_AI_SERVICES</Type>
@@ -7275,8 +7297,8 @@
 			<bIrrigation>0</bIrrigation>
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
-			<iGridX>23</iGridX>
-			<iGridY>3</iGridY>
+			<iGridX>24</iGridX>
+			<iGridY>8</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7307,12 +7329,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_DIGITAL_ADMINISTRATION</PrereqTech><PrereqTech>TECH_MACHINE_LEARNING</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_MACHINE_LEARNING</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Medicine.dds,Art/Interface/Buttons/TechTree_Atlas.dds,4,5</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_NETWORKED_PRODUCTION</Type>
@@ -7354,8 +7376,8 @@
 			<bIrrigation>0</bIrrigation>
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
-			<iGridX>23</iGridX>
-			<iGridY>9</iGridY>
+			<iGridX>24</iGridX>
+			<iGridY>12</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7386,12 +7408,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_MACHINE_LEARNING</PrereqTech><PrereqTech>TECH_ROBOTICS</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_MACHINE_LEARNING</PrereqTech></OrPreReqs>
+			<AndPreReqs><PrereqTech>TECH_ROBOTICS</PrereqTech></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Robotics.dds,Art/Interface/Buttons/TechTree_Atlas.dds,4,7</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_GENERAL_AI</Type>
@@ -7433,8 +7455,8 @@
 			<bIrrigation>0</bIrrigation>
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
-			<iGridX>24</iGridX>
-			<iGridY>6</iGridY>
+			<iGridX>25</iGridX>
+			<iGridY>8</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7465,12 +7487,12 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_AI_SERVICES</PrereqTech><PrereqTech>TECH_NETWORKED_PRODUCTION</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_AI_SERVICES</PrereqTech></OrPreReqs>
+			<AndPreReqs><PrereqTech>TECH_NETWORKED_PRODUCTION</PrereqTech></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Computers.dds,Art/Interface/Buttons/TechTree_Atlas.dds,7,2</Button>
 		</TechInfo>
 <TechInfo>
 			<Type>TECH_FULL_AUTOMATION</Type>
@@ -7512,8 +7534,8 @@
 			<bIrrigation>0</bIrrigation>
 			<bIgnoreIrrigation>0</bIgnoreIrrigation>
 			<bWaterWork>0</bWaterWork>
-			<iGridX>25</iGridX>
-			<iGridY>6</iGridY>
+			<iGridX>26</iGridX>
+			<iGridY>8</iGridY>
 			<DomainExtraMoves/>
 			<CommerceFlexible/>
 			<TerrainTrades/>
@@ -7544,12 +7566,170 @@
 					<iFlavor>1</iFlavor>
 				</Flavor>
 			</Flavors>
-			<OrPreReqs></OrPreReqs>
-			<AndPreReqs><PrereqTech>TECH_GENERAL_AI</PrereqTech><PrereqTech>TECH_FUSION</PrereqTech></AndPreReqs>
+			<OrPreReqs><PrereqTech>TECH_GENERAL_AI</PrereqTech></OrPreReqs>
+			<AndPreReqs><PrereqTech>TECH_FUSION</PrereqTech></AndPreReqs>
 			<Quote></Quote>
 			<Sound>AS2D_TECH_FUTURE</Sound>
 			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
-			<Button>,Art/Interface/Buttons/TechTree/Future Tech.dds,Art/Interface/Buttons/TechTree_Atlas.dds,2,4</Button>
+			<Button>,Art/Interface/Buttons/TechTree/Fusion.dds,Art/Interface/Buttons/TechTree_Atlas.dds,1,4</Button>
+		</TechInfo>
+<TechInfo>
+			<Type>TECH_AUTONOMOUS_SYSTEMS</Type>
+			<Description>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS</Description>
+			<Civilopedia>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS_PEDIA</Civilopedia>
+			<Help>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS_HELP</Help>
+			<Strategy>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS_PEDIA</Strategy>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<iAIWeight>0</iAIWeight>
+			<iAITradeModifier>0</iAITradeModifier>
+			<iCost>65000</iCost>
+			<iAdvancedStartCost>-1</iAdvancedStartCost>
+			<iAdvancedStartCostIncrease>0</iAdvancedStartCostIncrease>
+			<Era>ERA_FUTURE</Era>
+			<FirstFreeUnitClass>NONE</FirstFreeUnitClass>
+			<iFeatureProductionModifier>0</iFeatureProductionModifier>
+			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
+			<iTradeRoutes>0</iTradeRoutes>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iFirstFreeTechs>0</iFirstFreeTechs>
+			<iAsset>32</iAsset>
+			<iPower>0</iPower>
+			<bRepeat>0</bRepeat>
+			<bTrade>0</bTrade>
+			<bDisable>0</bDisable>
+			<bGoodyTech>0</bGoodyTech>
+			<bExtraWaterSeeFrom>0</bExtraWaterSeeFrom>
+			<bMapCentering>0</bMapCentering>
+			<bMapVisible>0</bMapVisible>
+			<bMapTrading>0</bMapTrading>
+			<bTechTrading>0</bTechTrading>
+			<bGoldTrading>0</bGoldTrading>
+			<bOpenBordersTrading>0</bOpenBordersTrading>
+			<bDefensivePactTrading>0</bDefensivePactTrading>
+			<bPermanentAllianceTrading>0</bPermanentAllianceTrading>
+			<bVassalTrading>0</bVassalTrading>
+			<bBridgeBuilding>0</bBridgeBuilding>
+			<bIrrigation>0</bIrrigation>
+			<bIgnoreIrrigation>0</bIgnoreIrrigation>
+			<bWaterWork>0</bWaterWork>
+			<iGridX>25</iGridX>
+			<iGridY>12</iGridY>
+			<DomainExtraMoves/>
+			<CommerceFlexible/>
+			<TerrainTrades/>
+			<bRiverTrade>0</bRiverTrade>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+			</Flavors>
+			<OrPreReqs><PrereqTech>TECH_NETWORKED_PRODUCTION</PrereqTech></OrPreReqs>
+			<AndPreReqs></AndPreReqs>
+			<Quote></Quote>
+			<Sound>AS2D_TECH_FUTURE</Sound>
+			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
+			<Button>,Art/Interface/Buttons/TechTree/Robotics.dds,Art/Interface/Buttons/TechTree_Atlas.dds,4,7</Button>
+		</TechInfo>
+<TechInfo>
+			<Type>TECH_AUTONOMOUS_WARFARE</Type>
+			<Description>TXT_KEY_TECH_AUTONOMOUS_WARFARE</Description>
+			<Civilopedia>TXT_KEY_TECH_AUTONOMOUS_WARFARE_PEDIA</Civilopedia>
+			<Help>TXT_KEY_TECH_AUTONOMOUS_WARFARE_HELP</Help>
+			<Strategy>TXT_KEY_TECH_AUTONOMOUS_WARFARE_PEDIA</Strategy>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<iAIWeight>0</iAIWeight>
+			<iAITradeModifier>0</iAITradeModifier>
+			<iCost>110000</iCost>
+			<iAdvancedStartCost>-1</iAdvancedStartCost>
+			<iAdvancedStartCostIncrease>0</iAdvancedStartCostIncrease>
+			<Era>ERA_FUTURE</Era>
+			<FirstFreeUnitClass>NONE</FirstFreeUnitClass>
+			<iFeatureProductionModifier>0</iFeatureProductionModifier>
+			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
+			<iTradeRoutes>0</iTradeRoutes>
+			<iHealth>0</iHealth>
+			<iHappiness>0</iHappiness>
+			<iFirstFreeTechs>0</iFirstFreeTechs>
+			<iAsset>32</iAsset>
+			<iPower>0</iPower>
+			<bRepeat>0</bRepeat>
+			<bTrade>0</bTrade>
+			<bDisable>0</bDisable>
+			<bGoodyTech>0</bGoodyTech>
+			<bExtraWaterSeeFrom>0</bExtraWaterSeeFrom>
+			<bMapCentering>0</bMapCentering>
+			<bMapVisible>0</bMapVisible>
+			<bMapTrading>0</bMapTrading>
+			<bTechTrading>0</bTechTrading>
+			<bGoldTrading>0</bGoldTrading>
+			<bOpenBordersTrading>0</bOpenBordersTrading>
+			<bDefensivePactTrading>0</bDefensivePactTrading>
+			<bPermanentAllianceTrading>0</bPermanentAllianceTrading>
+			<bVassalTrading>0</bVassalTrading>
+			<bBridgeBuilding>0</bBridgeBuilding>
+			<bIrrigation>0</bIrrigation>
+			<bIgnoreIrrigation>0</bIgnoreIrrigation>
+			<bWaterWork>0</bWaterWork>
+			<iGridX>26</iGridX>
+			<iGridY>12</iGridY>
+			<DomainExtraMoves/>
+			<CommerceFlexible/>
+			<TerrainTrades/>
+			<bRiverTrade>0</bRiverTrade>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>1</iFlavor>
+				</Flavor>
+			</Flavors>
+			<OrPreReqs><PrereqTech>TECH_AUTONOMOUS_SYSTEMS</PrereqTech></OrPreReqs>
+			<AndPreReqs><PrereqTech>TECH_GENERAL_AI</PrereqTech></AndPreReqs>
+			<Quote></Quote>
+			<Sound>AS2D_TECH_FUTURE</Sound>
+			<SoundMP>AS2D_TECH_MP_FUTURE</SoundMP>
+			<Button>,Art/Interface/Buttons/TechTree/Composites.dds,Art/Interface/Buttons/TechTree_Atlas.dds,6,2</Button>
 		</TechInfo>
 </TechInfos>
 </Civ4TechInfos>

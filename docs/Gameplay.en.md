@@ -506,7 +506,7 @@ new country-name entries.
 3. Load Awakened RFC from the game's mod menu, or use
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>). The launcher currently
    points to the standard Steam installation path; adjust it for other locations.
-4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, **840 AD**, or **1453 AD**.
+4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, or **1453 AD**.
 
 All multiplayer peers need the same mod assets, Python files, XML, and DLL.
 Gameplay code uses synchronized game state and election randomness; multiplayer
@@ -530,23 +530,6 @@ for prerequisites and the compilation routine. The configured build copies the
 rebuilt DLL into the workspace mod and the installed mod folder. Close Civ4
 before rebuilding so the installed DLL can be replaced.
 
-### 840 AD start
-
-The fourth scenario starts on turn 205 (840 AD on this mod's calendar), the
-earliest date when Spain, France, England and Germany have all reached their
-normal birth dates. These four countries are immediately playable, alongside
-China, Japan, the Vikings, Arabia and the Khmer. They begin with established
-cities, countryside improvements, roads, armies, starting technologies and
-appropriate civics. Later civilizations retain their normal spawn schedule.
-
-This is an authored setup based on the 600 AD Earth map, rather than a saved
-autoplay result. To edit the starting layout, change
-`tools/generate_840_ad_scenario.py` and regenerate the scenario. Initialization
-is handled by `Assets/Python/Scenario840AD.py`.
-
-Starting city sizes follow an approximate ninth-century urban hierarchy; see
-the [population roster and historical rationale](840ADPopulation.md).
-
 ### Modern era and future research
 
 Global warming and air units, including missiles and nuclear weapons, are
@@ -558,7 +541,7 @@ See [rules, costs and implementation details](ModernEra.md).
 
 ### 1453 AD start
 
-The fifth scenario begins immediately after the Ottoman capture of Constantinople,
+The 1453 scenario begins immediately after the Ottoman capture of Constantinople,
 with 96 cities and all 25 established major civilization slots selectable.
 Period names and profiles represent the Mamluks, Ming, Muscovy, Italian states,
 the Ottomans and their contemporaries. America keeps its usual future spawn.

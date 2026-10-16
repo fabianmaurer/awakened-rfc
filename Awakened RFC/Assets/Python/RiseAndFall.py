@@ -9,7 +9,6 @@ import CvTranslator
 import RFCUtils
 import Consts as con
 import StartingCivics
-import Scenario840AD
 import Scenario1453AD
 import CityNameManager 
 
@@ -564,9 +563,6 @@ class RiseAndFall:
                 if Scenario1453AD.isScenario():
                         Scenario1453AD.setup(self)
                         return
-                if Scenario840AD.isScenario():
-                        Scenario840AD.setup(self)
-                        return
 
                 #self.setupBirthTurnModifiers() (causes a crash on civ switch)
 
@@ -826,8 +822,6 @@ class RiseAndFall:
                         
                 if Scenario1453AD.isScenario():
                         iFirstSpawn = iAmerica
-                elif Scenario840AD.isScenario():
-                        iFirstSpawn = iRussia
                 elif (gc.getGame().getStartTurn() == 0):
                         iFirstSpawn = iGreece
                 elif (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)                          
@@ -2603,8 +2597,6 @@ class RiseAndFall:
                 if Scenario1453AD.isScenario():
                         return # Diplomacy is authored in the 1453 map.
                 for iCiv in range(iNumMajorPlayers):
-                        if Scenario840AD.isScenario() and not gc.getPlayer(iCiv).isAlive():
-                                continue
                         if (gc.getGame().getStartTurn() != 0 and con.tIsActiveOnLateStart[iCiv]==0): #late start condition
                                 continue #skip          
                         pCiv = gc.getPlayer(iCiv)
@@ -2614,8 +2606,6 @@ class RiseAndFall:
                                 iMin = 10 #can be set to 100 for skipping human player
                         if (utils.getFakeRandNum(100, 'first roll') >= iMin): #RFCMP
                                 for iLoopCiv in con.lEnemyCivsOnSpawn[iCiv]:
-                                        if Scenario840AD.isScenario() and not gc.getPlayer(iLoopCiv).isAlive():
-                                                continue
                                         if (gc.getGame().getStartTurn() != 0 and con.tIsActiveOnLateStart[iLoopCiv]==0): #late start condition
                                                 continue #skip
                                         iLoopMin = 50

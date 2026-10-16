@@ -34,7 +34,7 @@ production rules.
 | Field | Prerequisite | Base cost | Per completion |
 | --- | --- | ---: | --- |
 | Environmental Quality | Ecology | 6,000 | +1 happiness in every city |
-| Medical Progress | Medicine | 6,500 | +1 health in every city |
+| Medical Progress | Genetics | 6,500 | +1 health in every city |
 | Military Research | Computers | 8,000 | +1 percentage point combat strength for land/naval units |
 
 The original combined Future Tech is disabled. Each field's cost increases by
@@ -54,26 +54,50 @@ AI research valuation now recognizes the happiness and military benefits and
 does not apply the old tenfold repeat-tech penalty. The ordinary cost comparison
 still allows long-term research to compete with repeated improvements.
 
-## Expensive automation branch
+## AI and automation branch
+
+The three repeatable fields share column 21. Everything to their right belongs
+to the AI/automation branch. Digital Administration now also requires Fiber
+Optics, and Machine Learning follows Digital Administration. No repeatable
+technology must be completed to enter this branch. The original tree height is
+retained.
 
 | Technology | Prerequisites | Base cost | Building unlocked |
 | --- | --- | ---: | --- |
-| Digital Administration | Computers | 16,000 | Administration centre: -20% city maintenance |
-| Machine Learning | Computers, Fiber Optics | 24,000 | ML laboratory: +25% research |
-| AI-Assisted Services | Digital Administration, Machine Learning | 36,000 | Services centre: +15% gold, +2 health, +1 happiness |
+| Digital Administration | Computers, Fiber Optics | 16,000 | Administration centre: -20% city maintenance |
+| Machine Learning | Digital Administration | 24,000 | ML laboratory: +25% research |
+| AI-Assisted Services | Machine Learning | 36,000 | Services centre: +15% gold, +2 health, +1 happiness |
 | Networked Production | Machine Learning, Robotics | 50,000 | Networked factory: +25% production |
 | General AI | AI-Assisted Services, Networked Production | 80,000 | General AI research centre: +40% research |
 | Full Automation | General AI, Fusion | 140,000 | Automated complex: +50% production, +25% gold |
+| Autonomous Systems | Networked Production | 65,000 | Autonomous Combat Vehicle |
+| Autonomous Warfare | Autonomous Systems, General AI | 110,000 | Autonomous Battle Tank |
 
 Buildings cost 400, 500, 650, 850, 1,100 and 1,800 production respectively. Each
-city can construct one of each. They reuse existing laboratory art and introduce
+city can construct one of each. They reuse suitable existing building art and introduce
 no welfare spending levels, demographic model or new victory condition.
 
-These six technologies and the three repeat fields cannot be traded. The
-six expensive technologies are also excluded from the old worldwide tech-owner
+These eight technologies and the three repeat fields cannot be traded. The
+eight AI/automation technologies are also excluded from the old worldwide tech-owner
 discount, so other countries discovering them does not erase the intended
 investment. Espionage retains its normal rules. The costs and effect sizes are
 initial design values, not measured balance results.
+
+The Autonomous Combat Vehicle has strength 42, 2 movement and a production cost
+of 320. Mechanized Infantry can upgrade to it. The Autonomous Battle Tank has
+strength 54, 2 movement and a production cost of 420; Modern Armor can upgrade
+to it. The tank retains the Oil and Aluminum requirements, Blitz and armored
+combat role of Modern Armor; the combat vehicle retains Mechanized Infantry's
+March promotion, terrain restrictions and gunpowder combat role. Both are normal
+player-controlled land units, cannot be drafted and provide no military
+happiness. They reuse the existing vehicle models. No aircraft are reintroduced.
+
+Research descriptions explain their subject rather than repeating cost warnings.
+Civilopedia entries link the unlocked buildings and units. The technology
+advisor shows their native clickable icons for the selected civilization.
+Embassy-only rules in city construction, AI valuation, communication events and
+building help are restricted to the actual embassy ID range; appended buildings
+are ordinary buildings.
 
 ## Assets and validation
 

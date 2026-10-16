@@ -26,7 +26,7 @@ Requires Civilization IV: Beyond the Sword, patched to 3.19.
    .../Sid Meier's Civilization IV Beyond the Sword/Beyond the Sword/Mods/
 2. Keep the folder named "Awakened RFC". Do not nest it inside another folder.
 3. Start Beyond the Sword and choose Advanced > Load a Mod > Awakened RFC.
-4. Choose one of the included scenarios: 3000 BC, 800 BC, 600 AD or 840 AD.
+4. Choose one of the included scenarios: 3000 BC, 800 BC, 600 AD or 1453 AD.
 
 When updating, replace the previous Awakened RFC folder rather than merging
 files. Hold Shift while launching to refresh the game's cache. Changes are

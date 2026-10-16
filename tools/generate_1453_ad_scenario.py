@@ -6,11 +6,10 @@ from pathlib import Path
 from collections import deque
 import re
 import xml.etree.ElementTree as ET
-from generate_840_ad_scenario import set_field, unit
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
-TARGET = MOD / 'PublicMaps/Start 5 - 1453 AD.CivBeyondSwordWBSave'
+TARGET = MOD / 'PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave'
 START_TURN = 271
 ACTIVE = tuple(i for i in range(26) if i != 3)
 CHRISTIAN = 'RELIGION_CHRISTIANITY'
@@ -333,10 +332,23 @@ def text_entries():
         ('\n'.join(lines) + '\n').encode('ascii', 'xmlcharrefreplace'))
 
 
+def set_field(block, key, value):
+    line = '\t\t' + key + '=' + str(value)
+    pattern = r'^\s*' + re.escape(key) + r'=[^\n]*'
+    if re.search(pattern, block, re.M):
+        return re.sub(pattern, lambda _: line, block, count=1, flags=re.M)
+    return block.rstrip() + '\n' + line + '\n'
+
+
+def unit(owner, kind, ai=None):
+    result = '\tBeginUnit\n\t\tUnitType=' + kind + ', UnitOwner=' + str(owner) + '\n'
+    if ai:
+        result += '\t\tUnitAIType=' + ai + '\n'
+    return result + '\tEndUnit\n'
+
+
 def main():
-    text = (MOD / 'PublicMaps/Start 4 - 840 AD.CivBeyondSwordWBSave').read_text(encoding='utf-8')
-    text = text.replace('GameTurn=205', 'GameTurn=' + str(START_TURN))
-    text = text.replace('TXT_KEY_RFCMP_SCENARIO_840_AD', 'TXT_KEY_RFCMP_SCENARIO_1453_AD')
+    text = (ROOT / 'tools/scenario_templates/1453_ad_base.CivBeyondSwordWBSave').read_text(encoding='utf-8')
     cities = records()
     for owner, _, name, _ in cities:
         if name not in CITY_RELIGIONS and owner not in RELIGIONS and name not in NO_GAME_RELIGION_CITIES:

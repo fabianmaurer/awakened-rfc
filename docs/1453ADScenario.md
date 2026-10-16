@@ -1,6 +1,6 @@
 # 1453 AD: after the fall of Constantinople
 
-Open `PublicMaps/Start 5 - 1453 AD.CivBeyondSwordWBSave` through the scenario
+Open `PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave` through the scenario
 menu. The map belongs to `Mods\Awakened RFC` and uses the legacy game DLL.
 The authored position is immediately after the Ottoman capture of
 Constantinople, rather than the later conquest of the Mamluks or all Anatolia.
@@ -139,8 +139,10 @@ to preserve spacing from Rome on the compressed map. Surabaya represents an
 urban center in eastern Java rather than a claim to be Majapahit's capital.
 
 `tools/generate_1453_ad_scenario.py` authors the map, five-language scenario and
-leader text, and `Scenario1453Data.py`. It reuses Earth terrain from the 840 map
-but replaces every city and unit, diplomacy, technology packages and visibility.
+leader text, and `Scenario1453Data.py`. It reads the internal Earth-map template
+`tools/scenario_templates/1453_ad_base.CivBeyondSwordWBSave` and replaces every
+city and unit, diplomacy, technology packages and visibility. The template is
+kept outside the mod and is not a playable scenario.
 It checks generated XML type references while producing the assets.
 
 Old World countries receive medieval technologies, with Gunpowder and Optics

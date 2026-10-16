@@ -21,8 +21,7 @@ DEFAULT_EXE = Path("C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Ci
 SCENARIO = 'Start 1 - 3000 BC.CivBeyondSwordWBSave'
 SCENARIOS = {'3000bc': SCENARIO,
              '800bc': 'Start 2 - 800 BC.CivBeyondSwordWBSave',
-             '600ad': 'Start 3 - 600 AD.CivBeyondSwordWBSave',
-             '840ad': 'Start 4 - 840 AD.CivBeyondSwordWBSave'}
+             '600ad': 'Start 3 - 600 AD.CivBeyondSwordWBSave'}
 
 
 def fingerprint(mod):
@@ -79,8 +78,8 @@ def main():
     parser.add_argument('--mode', choices=('balance', 'diagnostics', 'performance'))
     start = parser.add_mutually_exclusive_group()
     start.add_argument('--scenario', choices=tuple(SCENARIOS))
-    start.add_argument('--start', type=int, choices=range(4),
-                       help='0: 3000 BC, 1: 800 BC, 2: 600 AD, 3: 840 AD')
+    start.add_argument('--start', type=int, choices=range(3),
+                       help='0: 3000 BC, 1: 800 BC, 2: 600 AD')
     parser.add_argument('--games', '--runs', dest='games', type=int, default=1)
     parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; setup is serialized (default: 1)')
     parser.add_argument('--turns', type=int)

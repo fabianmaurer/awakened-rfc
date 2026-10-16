@@ -178,7 +178,7 @@ class Communications:
 
         def onBuildingBuilt(self, iPlayer, iBuilding, city):
 
-                if (iBuilding >= iNumBuildingsPlague):
+                if (iBuilding >= iNumBuildingsPlague and iBuilding < con.iNumBuildingsEmbassy):
                         iEmbassy = iBuilding - iNumBuildingsPlague
                         if (gc.getPlayer(iEmbassy).isAlive() and gc.getPlayer(iEmbassy).getNumCities() > 0):
                                 availableCity = -1

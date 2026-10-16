@@ -534,7 +534,7 @@ englische Ersatztexte.
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.**, **840 n. Chr.** oder **1453 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **1453 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
@@ -561,24 +561,6 @@ kopiert die neu erzeugte DLL in den Mod-Ordner des Projekts und in den
 installierten Mod. Civ4 vor dem Kompilieren schließen, damit die installierte
 DLL ersetzt werden kann.
 
-### Start 840 n. Chr.
-
-Das vierte Szenario beginnt in Runde 205 (840 n. Chr. im Kalender dieses Mods):
-dem frühesten Zeitpunkt, an dem Spanien, Frankreich, England und Deutschland
-ihre regulären Gründungsdaten erreicht haben. Diese vier Länder sind sofort
-spielbar, ebenso China, Japan, die Wikinger, Arabien und die Khmer. Sie beginnen
-mit bestehenden Städten, Geländeverbesserungen, Straßen, Armeen,
-Starttechnologien und passenden Staatsformen. Spätere Zivilisationen behalten
-ihren regulären Gründungszeitplan.
-
-Die Ausgangslage wurde auf Grundlage der Weltkarte von 600 n. Chr. gestaltet
-und ist kein Ergebnis einer automatisch gespielten Partie. Die Startaufstellung
-wird mit `tools/generate_840_ad_scenario.py` bearbeitet und neu erzeugt.
-Die Initialisierung erfolgt in `Assets/Python/Scenario840AD.py`.
-
-Die Stadtgrößen orientieren sich an der ungefähren urbanen Bedeutung im
-9. Jahrhundert; siehe [Bevölkerungsliste und historische Begründung](840ADPopulation.md).
-
 ### Moderne und Zukunftsforschung
 
 Globale Erwärmung und Lufteinheiten einschließlich Raketen und Atomwaffen sind
@@ -590,7 +572,7 @@ Siehe [Regeln, Kosten und technische Umsetzung](ModernEra.md).
 
 ### Start 1453 n. Chr.
 
-Das fünfte Szenario beginnt unmittelbar nach der osmanischen Eroberung
+Das Szenario von 1453 beginnt unmittelbar nach der osmanischen Eroberung
 Konstantinopels. Es umfasst 96 Städte und 25 bestehende, sofort spielbare
 Hauptzivilisationen. Namen und Startprofile bilden unter anderem das
 Mamlukensultanat, Ming-China, Moskau, die italienischen Staaten und das

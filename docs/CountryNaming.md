@@ -42,7 +42,7 @@ Regno d'Italia, Commonwealth of England, Batavian Republic, Novgorod Republic,
 North Sea Empire, Tawantinsuyu, and the United Kingdom. Invented alternatives include the Nile
 League, League of the Jade Cities, Andean Federation, and Union of Bharat.
 Before 962, Germany's ordinary or Christian religious monarchy uses East Francia
-(Ostfränkisches Reich), including the 840 AD start. From 962 onward the usual
+(Ostfränkisches Reich). From 962 onward the usual
 civic and religious names apply. Constitutional and alternate religious titles
 remain available before that date.
 The period rules and the audit of the starting scenarios are recorded in

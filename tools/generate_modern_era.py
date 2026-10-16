@@ -13,17 +13,37 @@ AIR_TECHS = {'TECH_FLIGHT', 'TECH_ADVANCED_FLIGHT', 'TECH_STEALTH'}
 RETIRED_UNITS = {'UNIT_CARRIER', 'UNIT_GUNSHIP', 'UNIT_SAM_INFANTRY', 'UNIT_MOBILE_SAM', 'UNIT_ICBM'}
 RETIRED_BUILDINGS = {'BUILDING_AIRPORT', 'BUILDING_BOMB_SHELTER'}
 RETIRED_PROMOTIONS = {'PROMOTION_RANGE1', 'PROMOTION_RANGE2', 'PROMOTION_INTERCEPTION1', 'PROMOTION_INTERCEPTION2', 'PROMOTION_ACE'}
+# Keep the existing tree compact; place new branches in nearby free slots.
+TECH_GRID_Y = {'TECH_MEDICINE': 11, 'TECH_SUPERCONDUCTORS': 13,
+               'TECH_ROBOTICS': 11, 'TECH_FUSION': 11}
 TECHS = [
     # suffix, English, German, base cost, prerequisites, x, y, repeat, health, happy
-    ('ENVIRONMENTAL_PROGRESS', 'Environmental Quality', 'Umwelt- und Lebensqualität', 6000, ['ECOLOGY'], 21, 1, 1, 0, 1),
-    ('MEDICAL_PROGRESS', 'Medical Progress', 'Medizinischer Fortschritt', 6500, ['MEDICINE'], 21, 5, 1, 1, 0),
-    ('MILITARY_RESEARCH', 'Military Research', 'Militärische Forschung', 8000, ['COMPUTERS'], 21, 9, 1, 0, 0),
-    ('DIGITAL_ADMINISTRATION', 'Digital Administration', 'Digitale Verwaltung', 16000, ['COMPUTERS'], 22, 3, 0, 0, 0),
-    ('MACHINE_LEARNING', 'Machine Learning', 'Maschinelles Lernen', 24000, ['COMPUTERS', 'FIBER_OPTICS'], 22, 7, 0, 0, 0),
-    ('AI_SERVICES', 'AI-Assisted Services', 'KI-gestützte Dienstleistungen', 36000, ['DIGITAL_ADMINISTRATION', 'MACHINE_LEARNING'], 23, 3, 0, 0, 0),
-    ('NETWORKED_PRODUCTION', 'Networked Production', 'Vernetzte Produktion', 50000, ['MACHINE_LEARNING', 'ROBOTICS'], 23, 9, 0, 0, 0),
-    ('GENERAL_AI', 'General Artificial Intelligence', 'Allgemeine künstliche Intelligenz', 80000, ['AI_SERVICES', 'NETWORKED_PRODUCTION'], 24, 6, 0, 0, 0),
-    ('FULL_AUTOMATION', 'Full Automation', 'Vollständige Automatisierung', 140000, ['GENERAL_AI', 'FUSION'], 25, 6, 0, 0, 0),
+    ('ENVIRONMENTAL_PROGRESS', 'Environmental Quality', 'Umwelt- und Lebensqualität', 6000, ['ECOLOGY'], 21, 7, 1, 0, 1),
+    ('MEDICAL_PROGRESS', 'Medical Progress', 'Medizinischer Fortschritt', 6500, ['GENETICS'], 21, 13, 1, 1, 0),
+    ('MILITARY_RESEARCH', 'Military Research', 'Militärische Forschung', 8000, ['COMPUTERS'], 21, 11, 1, 0, 0),
+    ('DIGITAL_ADMINISTRATION', 'Digital Administration', 'Digitale Verwaltung', 16000, ['FIBER_OPTICS', 'COMPUTERS'], 22, 8, 0, 0, 0),
+    ('MACHINE_LEARNING', 'Machine Learning', 'Maschinelles Lernen', 24000, ['DIGITAL_ADMINISTRATION'], 23, 8, 0, 0, 0),
+    ('AI_SERVICES', 'AI-Assisted Services', 'KI-gestützte Dienstleistungen', 36000, ['MACHINE_LEARNING'], 24, 8, 0, 0, 0),
+    ('NETWORKED_PRODUCTION', 'Networked Production', 'Vernetzte Produktion', 50000, ['MACHINE_LEARNING', 'ROBOTICS'], 24, 12, 0, 0, 0),
+    ('GENERAL_AI', 'General Artificial Intelligence', 'Allgemeine künstliche Intelligenz', 80000, ['AI_SERVICES', 'NETWORKED_PRODUCTION'], 25, 8, 0, 0, 0),
+    ('FULL_AUTOMATION', 'Full Automation', 'Vollständige Automatisierung', 140000, ['GENERAL_AI', 'FUSION'], 26, 8, 0, 0, 0),
+    ('AUTONOMOUS_SYSTEMS', 'Autonomous Systems', 'Autonome Systeme', 65000, ['NETWORKED_PRODUCTION'], 25, 12, 0, 0, 0),
+    ('AUTONOMOUS_WARFARE', 'Autonomous Warfare', 'Autonome Gefechtsführung', 110000, ['AUTONOMOUS_SYSTEMS', 'GENERAL_AI'], 26, 12, 0, 0, 0),
+]
+TECH_DESCRIPTIONS = {
+    'DIGITAL_ADMINISTRATION': ('Connected public records and automated procedures reduce administrative overhead.', 'Vernetzte Register und automatisierte Abläufe verringern den Verwaltungsaufwand.'),
+    'MACHINE_LEARNING': ('Learning algorithms identify patterns in scientific data and improve research methods.', 'Lernende Algorithmen erkennen Muster in wissenschaftlichen Daten und verbessern Forschungsmethoden.'),
+    'AI_SERVICES': ('AI supports medical diagnosis, public services and commercial planning.', 'KI unterstützt medizinische Diagnosen, öffentliche Dienstleistungen und die Wirtschaftsplanung.'),
+    'NETWORKED_PRODUCTION': ('Connected robots coordinate manufacturing and respond to changing demand.', 'Vernetzte Roboter koordinieren die Fertigung und passen sie an wechselnden Bedarf an.'),
+    'GENERAL_AI': ('General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.', 'Allgemeine lernfähige Systeme übertragen Wissen zwischen Fachgebieten und beschleunigen wissenschaftliche Entdeckungen.'),
+    'FULL_AUTOMATION': ('Integrated AI manages production chains from raw materials to finished goods.', 'Integrierte KI steuert Produktionsketten vom Rohstoff bis zum fertigen Erzeugnis.'),
+    'AUTONOMOUS_SYSTEMS': ('Machine perception and robotic control enable unmanned ground combat vehicles.', 'Maschinelle Wahrnehmung und Robotersteuerung ermöglichen unbemannte Bodenkampffahrzeuge.'),
+    'AUTONOMOUS_WARFARE': ('Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.', 'Anpassungsfähige taktische Systeme koordinieren schwer gepanzerte autonome Kampffahrzeuge.'),
+}
+UNITS = [
+    # suffix, English, German, template, technology, strength, production
+    ('AUTONOMOUS_COMBAT_VEHICLE', 'Autonomous Combat Vehicle', 'Autonomes Kampffahrzeug', 'MECHANIZED_INFANTRY', 'AUTONOMOUS_SYSTEMS', 42, 320),
+    ('AUTONOMOUS_TANK', 'Autonomous Battle Tank', 'Autonomer Kampfpanzer', 'MODERN_ARMOR', 'AUTONOMOUS_WARFARE', 54, 420),
 ]
 BUILDINGS = [
     # suffix, English, German, tech, cost, gold%, science%, production%, maintenance%, health, happiness
@@ -34,6 +54,15 @@ BUILDINGS = [
     ('GENERAL_AI', 'General AI Research Centre', 'Forschungszentrum für allgemeine KI', 'GENERAL_AI', 1100, 0, 40, 0, 0, 0, 0),
     ('FULL_AUTOMATION', 'Automated Production Complex', 'Vollautomatisierter Produktionskomplex', 'FULL_AUTOMATION', 1800, 25, 0, 50, 0, 0, 0),
 ]
+BUILDING_ART = {'DIGITAL_ADMINISTRATION': 'COURTHOUSE', 'MACHINE_LEARNING': 'LABORATORY',
+                'AI_SERVICES': 'HOSPITAL', 'NETWORKED_PRODUCTION': 'FACTORY',
+                'GENERAL_AI': 'LABORATORY', 'FULL_AUTOMATION': 'INDUSTRIAL_PARK'}
+TECH_BUTTONS = {'ENVIRONMENTAL_PROGRESS': 'ECOLOGY', 'MEDICAL_PROGRESS': 'MEDICINE',
+                'MILITARY_RESEARCH': 'MILITARY_SCIENCE', 'DIGITAL_ADMINISTRATION': 'COMPUTERS',
+                'MACHINE_LEARNING': 'FIBER_OPTICS', 'AI_SERVICES': 'MEDICINE',
+                'NETWORKED_PRODUCTION': 'ROBOTICS', 'GENERAL_AI': 'COMPUTERS',
+                'FULL_AUTOMATION': 'FUSION', 'AUTONOMOUS_SYSTEMS': 'ROBOTICS',
+                'AUTONOMOUS_WARFARE': 'COMPOSITES'}
 
 
 def field(block, tag, value):
@@ -72,6 +101,7 @@ def main():
     path = 'Technologies/CIV4TechInfos.xml'
     text = read(path)
     template = next(b for b in records(text, 'TechInfo') if typename(b) == 'TECH_FUTURE_TECH')
+    buttons = {typename(b): re.search(r'<Button>(.*?)</Button>', b, re.S).group(1) for b in records(text, 'TechInfo')}
     for old in records(text, 'TechInfo'):
         name = typename(old)
         if name in {'TECH_' + t[0] for t in TECHS}:
@@ -81,6 +111,8 @@ def main():
             text = text.replace(old, new)
         else:
             new = old.replace('TECH_ADVANCED_FLIGHT', 'TECH_COMPUTERS').replace('TECH_FLIGHT', 'TECH_COMBUSTION').replace('TECH_STEALTH', 'TECH_COMPOSITES')
+            if name in TECH_GRID_Y:
+                new = field(new, 'iGridY', str(TECH_GRID_Y[name]))
             text = text.replace(old, new)
     additions = []
     for suffix, en, de, cost, prereqs, x, y, repeat, health, happy in TECHS:
@@ -91,22 +123,36 @@ def main():
                   'bRepeat': repeat, 'bTrade': 0, 'iHealth': health, 'iHappiness': happy,
                   'iGridX': x, 'iGridY': y, 'Era': 'ERA_MODERN' if repeat else 'ERA_FUTURE',
                   'iAIWeight': 0, 'iAsset': 32, 'iPower': 0, 'iAdvancedStartCost': -1,
-                  'OrPreReqs': '', 'AndPreReqs': ''.join('<PrereqTech>TECH_' + p + '</PrereqTech>' for p in prereqs),
-                  'Quote': '', 'Sound': 'AS2D_TECH_FUTURE', 'SoundMP': 'AS2D_TECH_MP_FUTURE'}
+                  'OrPreReqs': '<PrereqTech>TECH_' + prereqs[0] + '</PrereqTech>',
+                  'AndPreReqs': ''.join('<PrereqTech>TECH_' + p + '</PrereqTech>' for p in prereqs[1:]),
+                  'Quote': '', 'Sound': 'AS2D_TECH_FUTURE', 'SoundMP': 'AS2D_TECH_MP_FUTURE',
+                  'Button': buttons['TECH_' + TECH_BUTTONS[suffix]]}
         for tag, value in values.items():
             block = field(block, tag, str(value))
         additions.append(block)
         add('TXT_KEY_TECH_' + suffix, en, de)
         if repeat:
-            effect_en = '+1 happiness in every city.' if happy else ('+1 health in every city.' if health else '+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15.')
-            effect_de = '+1 Zufriedenheit in jeder Stadt.' if happy else ('+1 Gesundheit in jeder Stadt.' if health else '+1 Prozentpunkt Kampfstärke für Land- und Marineeinheiten, höchstens +15 %. Die Forschung endet bei Stufe 15.')
-            help_en = effect_en + ' Each completion increases this field\'s cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.'
-            help_de = effect_de + ' Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unverändert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.'
+            # Health and happiness already appear with native font symbols.
+            # Only the custom military effect needs an additional help line.
+            help_en = 'Repeatable; each completion increases this field\'s cost by 35%.'
+            help_de = 'Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.'
+            if not (health or happy):
+                help_en = '+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. ' + help_en
+                help_de = '+1 Prozentpunkt Kampfstärke für Land- und Marineeinheiten, höchstens +15 %. Die Forschung endet bei Stufe 15. ' + help_de
         else:
-            help_en = 'Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.'
-            help_de = 'Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgebäude frei; Dauerforschung bleibt eine Alternative.'
+            help_en, help_de = TECH_DESCRIPTIONS[suffix]
         add('TXT_KEY_TECH_' + suffix + '_HELP', help_en, help_de)
-        add('TXT_KEY_TECH_' + suffix + '_PEDIA', help_en, help_de)
+        pedia_en, pedia_de = help_en, help_de
+        if not repeat:
+            for building, name_en, name_de, tech, *_ in BUILDINGS:
+                if tech == suffix:
+                    pedia_en += '[PARAGRAPH:1]Unlocks [LINK=BUILDING_%s]%s' % (building, name_en) + r'[\LINK].'
+                    pedia_de += '[PARAGRAPH:1]Ermöglicht [LINK=BUILDING_%s]%s' % (building, name_de) + r'[\LINK].'
+            for unit, name_en, name_de, base, tech, *_ in UNITS:
+                if tech == suffix:
+                    pedia_en += '[PARAGRAPH:1]Unlocks [LINK=UNIT_%s]%s' % (unit, name_en) + r'[\LINK].'
+                    pedia_de += '[PARAGRAPH:1]Ermöglicht [LINK=UNIT_%s]%s' % (unit, name_de) + r'[\LINK].'
+        add('TXT_KEY_TECH_' + suffix + '_PEDIA', pedia_en, pedia_de)
     text = append_records(text, 'TechInfos', additions)
     write(path, text)
 
@@ -126,6 +172,7 @@ def main():
         values = {'Type': 'BUILDING_' + suffix, 'BuildingClass': 'BUILDINGCLASS_' + suffix,
                   'Description': 'TXT_KEY_BUILDING_' + suffix, 'Civilopedia': 'TXT_KEY_BUILDING_' + suffix + '_PEDIA',
                   'Strategy': 'TXT_KEY_BUILDING_' + suffix + '_PEDIA', 'PrereqTech': 'TECH_' + tech,
+                  'ArtDefineTag': 'ART_DEF_BUILDING_' + BUILDING_ART[suffix],
                   'iCost': cost, 'iHealth': health, 'iHappiness': happy, 'iMaintenanceModifier': maintenance,
                   'iSpaceProductionModifier': 0, 'SpecialistCounts': '', 'BuildingClassNeededs': '',
                   'CommerceModifiers': '<iCommerce>%d</iCommerce><iCommerce>%d</iCommerce><iCommerce>0</iCommerce><iCommerce>0</iCommerce>' % (gold, science),
@@ -134,7 +181,17 @@ def main():
             block = field(block, tag, str(value))
         additions.append(block)
         add('TXT_KEY_BUILDING_' + suffix, en, de)
-        add('TXT_KEY_BUILDING_' + suffix + '_PEDIA', 'A specialized modernization enabled by advanced AI and automation research.', 'Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.')
+        en_effects, de_effects = [], []
+        for value, english, german in ((gold, 'gold', 'Gold'), (science, 'research', 'Forschung'), (production, 'production', 'Produktion'), (maintenance, 'city maintenance', 'städtische Unterhaltskosten')):
+            if value:
+                en_effects.append('%+d%% %s' % (value, english))
+                de_effects.append('%+d %% %s' % (value, german))
+        for value, english, german in ((health, 'health', 'Gesundheit'), (happy, 'happiness', 'Zufriedenheit')):
+            if value:
+                en_effects.append('%+d %s' % (value, english))
+                de_effects.append('%+d %s' % (value, german))
+        context_en, context_de = TECH_DESCRIPTIONS[suffix]
+        add('TXT_KEY_BUILDING_' + suffix + '_PEDIA', context_en + ' Effects in this city: ' + ', '.join(en_effects) + '.', context_de + ' Wirkung in dieser Stadt: ' + ', '.join(de_effects) + '.')
     write(path, append_records(text, 'BuildingInfos', additions))
     path = 'Buildings/CIV4BuildingClassInfos.xml'
     text = read(path)
@@ -178,7 +235,41 @@ def main():
                 block = field(block, 'UnitClassUpgrades', '<UnitClassUpgrade><UnitClassUpgradeType>UNITCLASS_TANK</UnitClassUpgradeType><bUnitClassUpgrade>1</bUnitClassUpgrade></UnitClassUpgrade>')
             block = block.replace('TECH_STEALTH', 'TECH_COMPOSITES')
         text = text.replace(old, block)
+    # Append the autonomous units, retaining all original unit IDs and art.
+    for old in records(text, 'UnitInfo'):
+        if typename(old) in {'UNIT_' + u[0] for u in UNITS}:
+            text = text.replace(old, '')
+    additions = []
+    for suffix, en, de, base, tech, strength, cost in UNITS:
+        block = next(b for b in records(text, 'UnitInfo') if typename(b) == 'UNIT_' + base)
+        values = {'Type': 'UNIT_' + suffix, 'Class': 'UNITCLASS_' + suffix,
+                  'Description': 'TXT_KEY_UNIT_' + suffix, 'Civilopedia': 'TXT_KEY_UNIT_' + suffix + '_PEDIA',
+                  'Strategy': 'TXT_KEY_UNIT_' + suffix + '_PEDIA', 'PrereqTech': 'TECH_' + tech,
+                  'TechTypes': '', 'iCombat': strength, 'iPower': strength, 'iCost': cost,
+                  'iConscription': 0, 'bMilitaryHappiness': 0, 'bMechanized': 1,
+                  'UnitClassUpgrades': '', 'iAdvancedStartCost': -1}
+        for tag, value in values.items():
+            block = field(block, tag, str(value))
+        additions.append(block)
+        add('TXT_KEY_UNIT_' + suffix, en, de)
+        add('TXT_KEY_UNIT_' + suffix + '_PEDIA',
+            'An unmanned ground combat vehicle with %d strength and 2 movement. Costs %d production. Cannot be drafted and provides no military happiness.' % (strength, cost),
+            'Ein unbemanntes Bodenkampffahrzeug mit Stärke %d und 2 Bewegungspunkten. Kostet %d Produktion. Kann nicht rekrutiert werden und erzeugt keine militärische Zufriedenheit.' % (strength, cost))
+    text = append_records(text, 'UnitInfos', additions)
+    for base, successor in (('MECHANIZED_INFANTRY', 'AUTONOMOUS_COMBAT_VEHICLE'), ('MODERN_ARMOR', 'AUTONOMOUS_TANK')):
+        old = next(b for b in records(text, 'UnitInfo') if typename(b) == 'UNIT_' + base)
+        upgrades = '<UnitClassUpgrade><UnitClassUpgradeType>UNITCLASS_%s</UnitClassUpgradeType><bUnitClassUpgrade>1</bUnitClassUpgrade></UnitClassUpgrade>' % successor
+        text = text.replace(old, field(old, 'UnitClassUpgrades', upgrades))
     write(path, text)
+    path = 'Units/CIV4UnitClassInfos.xml'
+    text = read(path)
+    additions = []
+    for suffix, *_ in UNITS:
+        for old in records(text, 'UnitClassInfo'):
+            if typename(old) == 'UNITCLASS_' + suffix:
+                text = text.replace(old, '')
+        additions.append('<UnitClassInfo><Type>UNITCLASS_%s</Type><Description>TXT_KEY_UNIT_%s</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iInstanceCostModifier>0</iInstanceCostModifier><DefaultUnit>UNIT_%s</DefaultUnit></UnitClassInfo>' % (suffix, suffix, suffix))
+    write(path, append_records(text, 'UnitClassInfos', additions))
     path = 'Units/CIV4PromotionInfos.xml'
     text = read(path)
     for old in records(text, 'PromotionInfo'):
@@ -213,7 +304,7 @@ def main():
             'RETIRED_UNITS = %r\nRETIRED_PROMOTIONS = %r\n' %
             (tuple(sorted(RETIRED_UNITS)), tuple(sorted(RETIRED_PROMOTIONS))))
     (ROOT / 'Awakened RFC/Assets/Python/ModernEraData.py').write_text(data, encoding='ascii')
-    print('Generated 9 technologies, 6 buildings; retired %d units.' % len(RETIRED_UNITS))
+    print('Generated %d technologies, %d buildings, %d autonomous units; retired %d units.' % (len(TECHS), len(BUILDINGS), len(UNITS), len(RETIRED_UNITS)))
 
 
 if __name__ == '__main__':

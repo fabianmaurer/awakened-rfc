@@ -13,8 +13,7 @@ def descriptions(description, filename):
             "start 1 - 3000 bc.civbeyondswordwbsave",
             "start 2 - 800 bc.civbeyondswordwbsave",
             "start 3 - 600 ad.civbeyondswordwbsave",
-            "start 4 - 840 ad.civbeyondswordwbsave",
-            "start 5 - 1453 ad.civbeyondswordwbsave"):
+            "start 4 - 1453 ad.civbeyondswordwbsave"):
         return names
     cityCounts = {}
     for plot in description.plotDesc or []:
@@ -34,5 +33,5 @@ def descriptions(description, filename):
             religion = gc.getInfoTypeForString(player.stateReligion)
         names[iPlayer] = gc.getCountryNamePreview(
             iPlayer, civics, religion, cityCounts.get(iPlayer, 0),
-            {0: -3000, 87: -800, 181: 600, 205: 840, 271: 1453}[description.gameDesc.gameTurn])
+            {0: -3000, 87: -800, 181: 600, 271: 1453}[description.gameDesc.gameTurn])
     return names

@@ -3,7 +3,6 @@
 
 import math #Rhye
 import Consts as con
-import Scenario840AD
 import Scenario1453AD
 import CvUtil
 from CvPythonExtensions import *
@@ -140,8 +139,6 @@ class CvDawnOfMan:
 		#RFCMP
 		if Scenario1453AD.isScenario():
                         year = "1453 " + CyTranslator().getText("TXT_KEY_AD", ())
-                elif Scenario840AD.isScenario():
-                        year = "840 " + CyTranslator().getText("TXT_KEY_AD", ())
                 elif (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and CyGame().getActiveTeam() <= con.iArabia):  #late start condition
                         year = "600 " + CyTranslator().getText("TXT_KEY_AD", ())
                 elif (gc.getGame().getStartTurn() != 0 and CyGame().getActiveTeam() <= con.iJapan):  #late start condition

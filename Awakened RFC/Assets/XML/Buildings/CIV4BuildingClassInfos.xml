@@ -1893,6 +1893,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <BuildingClassInfo><Type>BUILDINGCLASS_DIGITAL_ADMINISTRATION</Type><Description>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_DIGITAL_ADMINISTRATION</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>
 <BuildingClassInfo><Type>BUILDINGCLASS_MACHINE_LEARNING</Type><Description>TXT_KEY_BUILDING_MACHINE_LEARNING</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_MACHINE_LEARNING</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>
 <BuildingClassInfo><Type>BUILDINGCLASS_AI_SERVICES</Type><Description>TXT_KEY_BUILDING_AI_SERVICES</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_AI_SERVICES</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>

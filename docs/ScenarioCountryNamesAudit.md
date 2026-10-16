@@ -24,29 +24,13 @@ status; alternate governments retain their own identities.
 | 600 AD | Japan | Reich von Yamato |
 | 600 AD | Vikings | Skandinavische Königreiche |
 | 600 AD | Arabia | Arabische Königreiche |
-| 840 AD | China | Reich der Mitte |
-| 840 AD | Japan | Kaiserreich Japan |
-| 840 AD | Vikings | Skandinavische Königreiche |
-| 840 AD | Arabia | Arabisches Kalifat |
-| 840 AD | Khmer | Khmerreich |
-| 840 AD | Spain | Christliche Reiche Iberiens |
-| 840 AD | France | Westfränkisches Reich |
-| 840 AD | England | Angelsächsische Königreiche |
-| 840 AD | Germany | Ostfränkisches Reich |
-
-The map aggregates several historical polities in one civilization slot. In 840,
-Spain owns Santiago, Madrid and Barcelona, and England owns London and York.
-Calling those entire slots Asturias or Wessex would imply borders the scenario
-does not represent. Collective regional names are deliberate abstractions.
-No cities, technologies or civics were changed by this naming audit.
 
 ## Period rules
 
 Ordinary monarchies retain appropriate alternate religious and constitutional
 names. France uses a Frankish identity before 800, West Francia until 987, then
-its existing civic names. East Francia ends at 962. Both 840 Frankish names
-anticipate the formal partition of 843, as the scenario already separates them.
-England uses Anglo-Saxon Kingdoms before 927. Spain uses Iberian Kingdoms
+its existing civic names. East Francia ends at 962. England uses Anglo-Saxon
+Kingdoms before 927. Spain uses Iberian Kingdoms
 (Christian Kingdoms of Iberia with Christianity) from 718 until 1479.
 
 The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430,
@@ -69,7 +53,7 @@ Kingdom of Persia and Kingdom of Babylon are retained rather than assigning
 dynasties which the simulation does not track. Minor Byzantium already has a
 separate civilization identity and is outside the 27 major naming slots.
 
-The new fifth scenario's complete 1453 roster, starting names and regional
+The 1453 scenario's complete roster, starting names and regional
 abstractions are documented in [1453ADScenario.md](1453ADScenario.md). Late-medieval
 period names additionally cover the Mamluks, Delhi, Timurids, Hafsids, Ming,
 Ashikaga, Muscovy, Abyssinia, the Burgundian/Habsburg Low Countries, northern Yuan,
