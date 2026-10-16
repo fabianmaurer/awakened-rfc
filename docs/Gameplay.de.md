@@ -147,6 +147,14 @@ Routenbesitzers aufgedeckt.
 - **Militärzugang** ersetzt die Bezeichnung Offene Grenzen und regelt die
   Einreise von Einheiten, einschließlich ziviler Einheiten, unabhängig vom Handel.
   Das Abkommen bleibt gegenseitig; einseitige Abkommen sind noch nicht umgesetzt.
+  Die KI schlägt es nur vor, wenn der Zugang einen bekannten Weg eröffnet oder
+  mindestens drei Felder einspart: eine Landverbindung von ihrer Hauptstadt zu
+  einer weiteren eigenen Stadt oder einer Stadt eines aktuellen/geplanten
+  Kriegsgegners, oder einen Weg zum bestehenden Auftrag einer Einheitengruppe
+  nahe der Grenze des Partners (auch zivile Einheiten und Schiffe). Dies ist
+  eine geografische Schätzung, keine vollständige Bewegungssimulation.
+  Handelseinnahmen geben dem Abkommen keinen Wert; die üblichen diplomatischen
+  Ablehnungsgründe gelten weiterhin.
 - Jede Route verbreitet **Kultur und Religionen in beide Richtungen**, auch
   beim Inlandshandel. Die Bevölkerung der jeweils empfangenden Stadt schwächt
   den Einfluss. Kultur pro Route und Richtung: `abgerundet(5 × Routenwert / Bevölkerung) / 10`:

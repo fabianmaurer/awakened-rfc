@@ -13287,7 +13287,8 @@ void CvPlayerAI::AI_doDiplo()
 											{
 												setTradeItem(&item, TRADE_OPEN_BORDERS);
 
-												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true))
+												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
+													GET_TEAM(getTeam()).AI_hasMilitaryAccessInterest(GET_PLAYER((PlayerTypes)iI).getTeam()))
 												{
 													ourList.clear();
 													theirList.clear();

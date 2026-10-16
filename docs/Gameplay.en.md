@@ -137,6 +137,12 @@ selected, the partner city's tile becomes revealed to the route owner's team.
 - **Military access** replaces the name Open Borders. It governs unit entry,
   including civilian units, independently of trade. The agreement remains
   reciprocal; one-sided agreements are not implemented yet.
+  The AI proposes it only when access opens a known route or saves at least
+  three tiles: a land connection from its capital to another friendly city or
+  a current/planned enemy city, or a route to an existing unit-group mission
+  near the partner's border (including civilian and naval missions). This is
+  a geographic estimate, not a full unit movement simulation. Trade income
+  gives the treaty no value; normal diplomatic refusal rules still apply.
 - Every route exchanges **culture and religions in both directions**, including
   domestic routes. Each receiving city's population weakens the influence.
   Culture per route and direction is `floor(5 × route commerce / receiving population) / 10`:
