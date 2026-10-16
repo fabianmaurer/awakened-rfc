@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -15,15 +15,15 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_BAB2</Tag>
 		<English>No resistance in conquered cities</English>
-		<French>Pas de résistance dans les villes conquises</French>
-		<German>Kein Widerstand in eroberten Städten</German>
+		<French>Pas de r&#233;sistance dans les villes conquises</French>
+		<German>Kein Widerstand in eroberten St&#228;dten</German>
 		<Italian>Nessuna resistenza nelle citt&#224; conquistate</Italian>
 		<Spanish>Las ciudades conquistadas no ofrecen resistencia</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_CAR</Tag>
 		<English>The Power of Bargaining:</English>
-		<French>Le Pouvoir des Négociation:</French>
+		<French>Le Pouvoir des N&#233;gociation:</French>
 		<German>Die Macht des Verhandelns:</German>
 		<Italian>Il potere della contrattazione:</Italian>
 		<Spanish>El poder del estipular:</Spanish>
@@ -32,7 +32,7 @@
 		<Tag>TXT_KEY_UP_CAR2</Tag>
 		<English>+1 trade in every sea plot</English>
 		<French>+1 commerce sur toutes les cases de mer</French>
-		<German>+1 Handel auf jedem Meer-Geländefeld</German>
+		<German>+1 Handel auf jedem Meer-Gel&#228;ndefeld</German>
 		<Italian>+1 commercio in ogni casella di mare</Italian>
 		<Spanish>+1 intercambio en cada casilla de mar</Spanish>
 	</TEXT>
@@ -48,7 +48,7 @@
 		<Tag>TXT_KEY_UP_VIK2</Tag>
 		<English>5X Gold obtained from pillaging</English>
 		<French>5X Or obtenu par le pillage</French>
-		<German>5x Gold durch Plünderung</German>
+		<German>5x Gold durch Pl&#252;nderung</German>
 		<Italian>5X oro ottenuto dai saccheggi</Italian>
 		<Spanish>Se obtiene oro x5 del pillaje</Spanish>
 	</TEXT>
@@ -63,8 +63,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_TUR2</Tag>
 		<English>The majority of foreign culture in Turkish cities is converted to Turkish culture</English>
-		<French>La plus grande partie de la culture étrangère dans les villes turques est convertie à la culture turque</French>
-		<German>Umwandlung eines Großteils fremder Kultureinflüsse in türkischen Städten zu türkischer Kultur</German>
+		<French>La plus grande partie de la culture &#233;trang&#232;re dans les villes turques est convertie &#224; la culture turque</French>
+		<German>Umwandlung eines Gro&#223;teils fremder Kultureinfl&#252;sse in t&#252;rkischen St&#228;dten zu t&#252;rkischer Kultur</German>
 		<Italian>La maggioranza di cultura straniera nelle citt&#224; turche &#232; convertita in cultura turca</Italian>
 		<Spanish>La mayor parte de la cultura extranjera en ciudades turcas se convierte a cultura turca</Spanish>
 	</TEXT>

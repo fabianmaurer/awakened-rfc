@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -7,8 +7,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_ETH</Tag>
 		<English>The Power of Sovereignty:</English>
-		<French>Le Pouvoir de la Souveraineté :</French>
-		<German>Die Macht der Souveränität:</German>
+		<French>Le Pouvoir de la Souverainet&#233; :</French>
+		<German>Die Macht der Souver&#228;nit&#228;t:</German>
 		<Italian>Il potere della sovranit&#224;:</Italian>
 		<Spanish>El poder de la soberan&#237;a:</Spanish>
 	</TEXT>
@@ -31,7 +31,7 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_MAY2</Tag>
 		<English>-40% research cost until the end of the Middle Ages</English>
-		<French>-40% sur les coûts de recherche jusqu'à la fin du Moyen Age</French>
+		<French>-40% sur les co&#251;ts de recherche jusqu'&#224; la fin du Moyen Age</French>
 		<German>-40% Forschungskosten bis zum Ende des Mittelalters</German>
 		<Italian>-40% ai costi di ricerca fino alla fine del Medioevo</Italian>
 		<Spanish>-40% al coste de investigaci&#243;n hasta el final de la Edad Media</Spanish>
@@ -47,8 +47,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_KHM2</Tag>
 		<English>All land units can move through jungles</English>
-		<French>Toutes les unités terrestres peuvent se déplacer à travers la jungle</French>
-		<German>Fortbewegung auf Dschungel-Gelände für alle Landeinheiten</German>
+		<French>Toutes les unit&#233;s terrestres peuvent se d&#233;placer &#224; travers la jungle</French>
+		<German>Fortbewegung auf Dschungel-Gel&#228;nde f&#252;r alle Landeinheiten</German>
 		<Italian>Tutte le unit&#224; di terra si possono muovere attraverso la giungla</Italian>
 		<Spanish>Todas las unidades terrestres se pueden mover a trav&#233;s de las junglas</Spanish>
 	</TEXT>
@@ -63,8 +63,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_HOL2</Tag>
 		<English>All sea units can enter rival territory</English>
-		<French>Toutes les unités en mer peuvent entrer sur un territoire ennemi</French>
-		<German>Zugang zu feindlichem Territorium für alle Marineeinheiten</German>
+		<French>Toutes les unit&#233;s en mer peuvent entrer sur un territoire ennemi</French>
+		<German>Zugang zu feindlichem Territorium f&#252;r alle Marineeinheiten</German>
 		<Italian>Tutte le unit&#224; marittime possono entrare in territorio nemico</Italian>
 		<Spanish>Todas las unidades mar&#237;timas pueden entrar en territorio enemigo</Spanish>
 	</TEXT>
@@ -79,9 +79,9 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_POR2</Tag>
 		<English>All sea units have broader visibility range</English>
-		<French>Toutes les unités en mer ont un champ de vision élargi</French>
-		<German>Höhere Sichtweite für alle Marineeinheiten</German>
-		<Italian>Tutte le unit&#224; marine hanno un raggio visivo più ampio</Italian>
+		<French>Toutes les unit&#233;s en mer ont un champ de vision &#233;largi</French>
+		<German>H&#246;here Sichtweite f&#252;r alle Marineeinheiten</German>
+		<Italian>Tutte le unit&#224; marine hanno un raggio visivo pi&#249; ampio</Italian>
 		<Spanish>Todas las unidades mar&#237;timas tienen un alcance de visibilidad superior</Spanish>
 	</TEXT>
 </Civ4GameText>

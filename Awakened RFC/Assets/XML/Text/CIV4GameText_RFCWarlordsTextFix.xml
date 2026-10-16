@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- Copyright Firaxis Games 2005 -->
@@ -58,7 +58,7 @@
 		<Tag>TXT_KEY_LEADER_AUGUSTUS</Tag>
 		<English>Augustus Caesar</English>
 		<French>
-			<Text>César Auguste</Text>
+			<Text>C&#233;sar Auguste</Text>
 			<Gender>Male</Gender>
 			<Plural>0</Plural>
 		</French>
@@ -106,7 +106,7 @@
 		<Tag>TXT_KEY_LEADER_RAMESSES</Tag>
 		<English>Ramesses II</English>
 		<French>
-			<Text>Ramsès II</Text>
+			<Text>Rams&#232;s II</Text>
 			<Gender>Male</Gender>
 			<Plural>0</Plural>
 		</French>
@@ -202,7 +202,7 @@
 		<Tag>TXT_KEY_CIV_KOREA_SHORT_DESC</Tag>
 		<English>Korea</English>
 		<French>
-			<Text>Corée</Text>
+			<Text>Cor&#233;e</Text>
 			<Gender>Female</Gender>
 			<Plural>0</Plural>
 		</French>
