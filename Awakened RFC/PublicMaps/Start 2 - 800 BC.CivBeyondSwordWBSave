@@ -73,6 +73,7 @@ EndTeam
 BeginTeam                 
 EndTeam
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_0
 	LeaderType=LEADER_RAMESSES
 	CivType=CIVILIZATION_EGYPT                 
 	Team=0                 
@@ -80,6 +81,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_1
 	LeaderType=LEADER_ASOKA
 	CivType=CIVILIZATION_INDIA                 
 	Team=1                 
@@ -87,6 +89,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_2
 	LeaderType=LEADER_QIN_SHI_HUANG
 	CivType=CIVILIZATION_CHINA                 
 	Team=2                 
@@ -94,6 +97,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_3
 	LeaderType=LEADER_HAMMURABI
 	CivType=CIVILIZATION_BABYLONIA                 
 	Team=3                 
@@ -101,6 +105,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_4
 	LeaderType=LEADER_PERICLES
 	CivType=CIVILIZATION_GREECE                 
 	Team=4                 
@@ -108,6 +113,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_5
 	LeaderType=LEADER_CYRUS
 	CivType=CIVILIZATION_PERSIA                 
 	Team=5                 
@@ -115,6 +121,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_6
 	LeaderType=LEADER_HANNIBAL
 	CivType=CIVILIZATION_CARTHAGE                 
 	Team=6                 
@@ -122,6 +129,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_7
 	LeaderType=LEADER_AUGUSTUS
 	CivType=CIVILIZATION_ROME                 
 	Team=7                 
@@ -129,6 +137,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_8
 	LeaderType=LEADER_TOKUGAWA
 	CivType=CIVILIZATION_JAPAN                 
 	Team=8                 

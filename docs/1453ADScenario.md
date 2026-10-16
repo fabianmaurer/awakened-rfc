@@ -152,6 +152,9 @@ trebuchets representing bombards; Steel-era cannon are not granted prematurely.
 Cities have garrisons, useful buildings, nearby improvements and local roads;
 capitals have workers and small field forces. Maritime countries receive ships
 on adjacent water, with caravels only where Optics is present.
+Japan's capital receives two Samurai instead of the generic knight field force.
+The city-garrison promotion on Japanese military land units comes from Japan's
+unique power, including on mounted units; it is not a WorldBuilder assignment.
 
 Inherited tribal villages inside the initial city culture radii are removed.
 WorldBuilder applies city culture before city creation is complete; claiming a

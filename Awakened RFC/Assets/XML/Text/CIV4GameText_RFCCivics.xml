@@ -537,11 +537,11 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_KNIGHTHOOD</Tag>
-        <English>[ICON_BULLET]+6 experience for newly trained mounted units</English>
-        <French>[ICON_BULLET]+6 experience for newly trained mounted units</French>
-        <German>[ICON_BULLET]+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten</German>
-        <Italian>[ICON_BULLET]+6 experience for newly trained mounted units</Italian>
-        <Spanish>[ICON_BULLET]+6 experience for newly trained mounted units</Spanish>
+        <English>[ICON_BULLET]+6 experience for newly trained mounted units and Samurai</English>
+        <French>[ICON_BULLET]+6 points d'exp&#233;rience pour les unit&#233;s mont&#233;es et les samoura&#239;s nouvellement form&#233;s</French>
+        <German>[ICON_BULLET]+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten und Samurai</German>
+        <Italian>[ICON_BULLET]+6 esperienza per le nuove unit&#224; a cavallo e i Samurai</Italian>
+        <Spanish>[ICON_BULLET]+6 de experiencia para las nuevas unidades montadas y los samur&#225;is</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_ANCESTOR_CULT</Tag>
@@ -672,5 +672,77 @@
         <German>%D1: Eure religi&#246;se Toleranz wird gesch&#228;tzt.</German>
         <Italian>%D1: Your religious tolerance is appreciated.</Italian>
         <Spanish>%D1: Your religious tolerance is appreciated.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_BUSHIDO</Tag>
+        <English>Bushido</English>
+        <French>Bushido</French>
+        <German>Bushido</German>
+        <Italian>Bushido</Italian>
+        <Spanish>Bushido</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_PHARAONISM</Tag>
+        <English>Pharaonic Kingship</English>
+        <French>Royaut&#233; pharaonique</French>
+        <German>Pharaonentum</German>
+        <Italian>Monarchia faraonica</Italian>
+        <Spanish>Monarqu&#237;a fara&#243;nica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP</Tag>
+        <English>Divine Kingship</English>
+        <French>Royaut&#233; divine</French>
+        <German>Gottk&#246;nigtum</German>
+        <Italian>Regalit&#224; divina</Italian>
+        <Spanish>Realeza divina</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_LEADER_PHARAOH</Tag>
+        <English>Pharaoh %s1_Name</English>
+        <French>Pharaon %s1_Name</French>
+        <German>Pharao %s1_Name</German>
+        <Italian>Faraone %s1_Name</Italian>
+        <Spanish>Fara&#243;n %s1_Name</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_PHARAONISM</Tag>
+        <English>[ICON_BULLET]+1 [ICON_PRODUCTION] from farms[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] per slave specialist</English>
+        <French>[ICON_BULLET]+1 [ICON_PRODUCTION] pour les fermes[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] par sp&#233;cialiste esclave</French>
+        <German>[ICON_BULLET]+1 [ICON_PRODUCTION] durch Bauernh&#246;fe[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] je Sklavenspezialist</German>
+        <Italian>[ICON_BULLET]+1 [ICON_PRODUCTION] dalle fattorie[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] per specialista schiavo</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_PRODUCTION] de las granjas[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] por especialista esclavo</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_PHARAONISM_PEDIA</Tag>
+        <English>Pharaonic Kingship organizes agricultural resources and slave labor around the ruler's authority. Farms and slave specialists each produce one additional production. Civic upkeep is medium. The civic is available in every era, without a research penalty, increased city maintenance or a unit production bonus.</English>
+        <French>La royaut&#233; pharaonique organise les ressources agricoles et le travail des esclaves autour du souverain. Les fermes et les sp&#233;cialistes esclaves produisent chacun un point de production suppl&#233;mentaire. Entretien moyen. Disponible &#224; toutes les &#233;poques, sans malus de recherche, hausse de l'entretien des villes ou bonus de production d'unit&#233;s.</French>
+        <German>Das Pharaonentum b&#252;ndelt landwirtschaftliche Ressourcen und Sklavenarbeit unter der Autorit&#228;t des Herrschers. Bauernh&#246;fe und Sklavenspezialisten erzeugen jeweils einen zus&#228;tzlichen Produktionspunkt. Der Staatsform-Unterhalt ist mittel. Die Staatsform ist in jeder Epoche verf&#252;gbar, ohne Forschungsabzug, erh&#246;hten St&#228;dteunterhalt oder Einheitenproduktionsbonus.</German>
+        <Italian>La monarchia faraonica organizza le risorse agricole e il lavoro degli schiavi sotto l'autorit&#224; del sovrano. Fattorie e specialisti schiavi producono un punto produzione aggiuntivo. Mantenimento medio. Disponibile in ogni epoca, senza penalit&#224; alla ricerca, maggiori costi cittadini o bonus alla produzione di unit&#224;.</Italian>
+        <Spanish>La monarqu&#237;a fara&#243;nica organiza los recursos agr&#237;colas y el trabajo esclavo bajo la autoridad del soberano. Las granjas y los especialistas esclavos producen un punto de producci&#243;n adicional. Mantenimiento medio. Disponible en todas las eras, sin penalizaci&#243;n a la investigaci&#243;n, mayor mantenimiento urbano ni bonificaci&#243;n a la producci&#243;n de unidades.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP</Tag>
+        <English>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</English>
+        <French>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</French>
+        <German>[ICON_BULLET]In St&#228;dten mit &#228;gyptischem Obelisk gibt jeder zugewiesene Priester +1 [ICON_HAPPY] (maximal +2 je Stadt)[NEWLINE][ICON_BULLET]Obelisken behalten ihre zwei Priesterpl&#228;tze und bleiben unter dieser Staatsform nach Kalender baubar</German>
+        <Italian>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</Italian>
+        <Spanish>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_DIVINE_KINGSHIP_PEDIA</Tag>
+        <English>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</English>
+        <French>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</French>
+        <German>Das Gottk&#246;nigtum versteht den Herrscher als Verk&#246;rperung g&#246;ttlicher Autorit&#228;t. In St&#228;dten mit &#228;gyptischem Obelisk erzeugt jeder zugewiesene Priester einen Zufriedenheitspunkt, bis zu zwei je Stadt. Freie und angesiedelte Priester z&#228;hlen nicht. Unter Gottk&#246;nigtum behalten Obelisken nach Kalender ihre zwei Priesterpl&#228;tze und bleiben baubar. Beim Staatsformwechsel entf&#228;llt dieser Schutz; andere Quellen f&#252;r Priesterpl&#228;tze bleiben wirksam. Eine Staatsreligion ist nicht erforderlich. Dieser Effekt ersetzt die Zufriedenheit durch Pal&#228;ste und Monumente des Despotismus.</German>
+        <Italian>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Italian>
+        <Spanish>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_HAPPY_RULER_CULT</Tag>
+        <English>%D1_Amount [ICON_HAPPY] from the cult of the ruler</English>
+        <French>%D1_Amount [ICON_HAPPY] from the cult of the ruler</French>
+        <German>%D1_Amount [ICON_HAPPY] durch den Herrscherkult</German>
+        <Italian>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Italian>
+        <Spanish>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Spanish>
     </TEXT>
 </Civ4GameText>

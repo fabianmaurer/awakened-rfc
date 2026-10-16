@@ -5357,7 +5357,54 @@ CvCivicInfo::~CvCivicInfo()
 	}
 }
 
-int CvCivicInfo::getCivicOptionType() const										
+std::wstring CvCivicInfo::getCivilizationDescription(int iCivilization) const
+{
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+	{
+		if (strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0)
+			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_PHARAONISM");
+		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
+			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP");
+	}
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_JAPAN") &&
+		strcmp(getType(), "CIVIC_KNIGHTHOOD") == 0)
+		return gDLL->getText("TXT_KEY_RFCMP_CIVIC_BUSHIDO");
+	return getDescription();
+}
+
+bool CvCivicInfo::isPharaonicVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0;
+}
+
+std::string CvCivicInfo::getCivilizationButton(int iCivilization) const
+{
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+	{
+		if (strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0)
+			return "Art/Interface/Buttons/civics/RFCMP/Pharaonic_Kingship.dds";
+		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
+			return "Art/Interface/Buttons/civics/RFCMP/Divine_Kingship.dds";
+	}
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_JAPAN") &&
+		strcmp(getType(), "CIVIC_KNIGHTHOOD") == 0)
+		return "Art/Interface/Buttons/civics/RFCMP/Bushido.dds";
+	return getButton();
+}
+
+int CvCivicInfo::getCivilizationUpkeep(int iCivilization) const
+{
+	return isPharaonicVariant(iCivilization) ? GC.getInfoTypeForString("UPKEEP_MEDIUM") : getUpkeep();
+}
+
+bool CvCivicInfo::isDivineKingshipVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		strcmp(getType(), "CIVIC_DESPOTISM") == 0;
+}
+
+int CvCivicInfo::getCivicOptionType() const
 {
 	return m_iCivicOptionType;
 }

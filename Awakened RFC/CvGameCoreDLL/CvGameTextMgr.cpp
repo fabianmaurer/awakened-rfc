@@ -4546,6 +4546,8 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 {
 	PROFILE_FUNC();
 
+	const bool bDivineKingship = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isDivineKingshipVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
 	CvWString szFirstBuffer;
 	bool bFound;
 	bool bFirst;
@@ -4563,7 +4565,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (!bSkipName)
 	{
-		szHelpText.append(GC.getCivicInfo(eCivic).getDescription());
+		PlayerTypes eActive = GC.getGameINLINE().getActivePlayer();
+		szHelpText.append(GC.getCivicInfo(eCivic).getCivilizationDescription(
+			eActive == NO_PLAYER ? NO_CIVILIZATION : GET_PLAYER(eActive).getCivilizationType()).c_str());
 	}
 
 	if (!bCivilopediaText)
@@ -4644,7 +4648,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	}
 
 	//	Distance Maintenance Modifer...
-	if (GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() != 0)
+	if (!bPharaonic && GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() != 0)
 	{
 		if (GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() <= -100)
 		{
@@ -4659,7 +4663,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	}
 
 	//	Num Cities Maintenance Modifer...
-	if (GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() != 0)
+	if (!bPharaonic && GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() != 0)
 	{
 		if (GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() <= -100)
 		{
@@ -5001,7 +5005,8 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	setYieldChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_FROM_TRADE_ROUTES").GetCString(), GC.getCivicInfo(eCivic).getTradeYieldModifierArray(), true);
 
 	//	Commerce Modifier
-	setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES").GetCString(), GC.getCivicInfo(eCivic).getCommerceModifierArray(), true);
+	if (!bPharaonic)
+		setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES").GetCString(), GC.getCivicInfo(eCivic).getCommerceModifierArray(), true);
 
 	//	Capital Commerce Modifiers
 	setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL").GetCString(), GC.getCivicInfo(eCivic).getCapitalCommerceModifierArray(), true);
@@ -5043,7 +5048,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	Building Happiness
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
 	{
-		if (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) != 0)
+		if (!bDivineKingship && GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) != 0)
 		{
 			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
 			{
@@ -5118,7 +5123,17 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_MILITARY_SUPPORT_COSTS", (GC.getCivicInfo(eCivic).getGoldPerMilitaryUnit() > 0), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
 	}
 
-	if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
+	if (bPharaonic)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_CIVIC_EFFECT_PHARAONISM"));
+	}
+	else if (bDivineKingship)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP"));
+	}
+	else if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
 	{
 		szHelpText.append(CvWString::format(L"%s%s", NEWLINE, GC.getCivicInfo(eCivic).getHelp()).c_str());
 	}
@@ -9022,7 +9037,15 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
-		iHappy = (city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness());
+		const int iRulerCultHappy = std::min(city.getDivineKingshipHappiness(), std::max(0, city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness()));
+		iHappy = iRulerCultHappy;
+		if (iHappy > 0)
+		{
+			iTotalHappy += iHappy;
+			szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_HAPPY_RULER_CULT", iHappy));
+			szBuffer.append(NEWLINE);
+		}
+		iHappy = city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness() - iRulerCultHappy;
 		if (iHappy > 0)
 		{
 			iTotalHappy += iHappy;
@@ -11984,6 +12007,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	{
 		if (NO_CIVIC != owner.getCivics((CivicOptionTypes)i))
 		{
+			if (!GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).isPharaonicVariant(owner.getCivilizationType()))
 			iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getCommerceModifier(eCommerceType);
 		}
 	}
@@ -14099,7 +14123,7 @@ void CvGameTextMgr::getTradeScreenIcons(std::vector< std::pair<CvString, CvWidge
 		widgetData.m_iData1 = eCivic;
 		widgetData.m_iData2 = -1;
 		widgetData.m_bOption = false;
-		aIconInfos.push_back(std::make_pair(GC.getCivicInfo(eCivic).getButton(), widgetData));
+		aIconInfos.push_back(std::make_pair(CvString(GC.getCivicInfo(eCivic).getCivilizationButton(GET_PLAYER(ePlayer).getCivilizationType()).c_str()), widgetData));
 	}
 
 }

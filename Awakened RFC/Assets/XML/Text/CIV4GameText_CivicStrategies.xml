@@ -8,7 +8,7 @@
         <Italian>+20% unit production, -20% research, +100% distance and city-count maintenance.</Italian>
         <Spanish>+20% unit production, -20% research, +100% distance and city-count maintenance.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
         <English>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</English>
         <French>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</French>
@@ -16,7 +16,7 @@
         <Italian>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Italian>
         <Spanish>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>
         <English>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</English>
         <French>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</French>
@@ -48,7 +48,7 @@
         <Italian>+1 happiness from palaces and monuments, including unique replacements.</Italian>
         <Spanish>+1 happiness from palaces and monuments, including unique replacements.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_THEOCRATIC_LEGITIMACY_STRATEGY</Tag>
         <English>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</English>
         <French>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</French>
@@ -136,13 +136,13 @@
         <Italian>+30% city defense, but -10% combat strength outside your own territory.</Italian>
         <Spanish>+30% city defense, but -10% combat strength outside your own territory.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD_STRATEGY</Tag>
-        <English>+6 experience for newly trained mounted units.</English>
-        <French>+6 experience for newly trained mounted units.</French>
-        <German>+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten.</German>
-        <Italian>+6 experience for newly trained mounted units.</Italian>
-        <Spanish>+6 experience for newly trained mounted units.</Spanish>
+        <English>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</English>
+        <French>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</French>
+        <German>+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten und Samurai. Hei&#223;t f&#252;r Japan Bushido.</German>
+        <Italian>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</Italian>
+        <Spanish>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>
@@ -152,7 +152,7 @@
         <Italian>Units start with +5 experience.</Italian>
         <Spanish>Units start with +5 experience.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CONSCRIPTION_STRATEGY</Tag>
         <English>+25% unit production. Food surplus contributes to land military unit production.</English>
         <French>+25% unit production. Food surplus contributes to land military unit production.</French>
@@ -184,7 +184,7 @@
         <Italian>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Italian>
         <Spanish>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>
         <English>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</English>
         <French>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</French>
@@ -192,7 +192,7 @@
         <Italian>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Italian>
         <Spanish>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Spanish>
     </TEXT>
-        <TEXT>
+    <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_STATE_ATHEISM_STRATEGY</Tag>
         <English>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</English>
         <French>+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.</French>

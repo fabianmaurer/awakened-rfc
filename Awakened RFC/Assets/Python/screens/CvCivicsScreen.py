@@ -6,6 +6,7 @@ import ScreenInput
 import CvScreenEnums
 import string
 import CvScreensInterface
+import CivicNames
 
 # globals
 gc = CyGlobalContext()
@@ -172,8 +173,8 @@ class CvCivicsScreen:
 			for j in range(gc.getNumCivicInfos()):
 				if (gc.getCivicInfo(j).getCivicOptionType() == i):										
 					fY += 2 * self.TEXT_MARGIN
-					screen.addCheckBoxGFC(self.getCivicsButtonName(j), gc.getCivicInfo(j).getButton(), ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), fX + self.BUTTON_SIZE/2, fY, self.BUTTON_SIZE, self.BUTTON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_LABEL)
-					screen.setText(self.getCivicsTextName(j), "", gc.getCivicInfo(j).getDescription(), CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+					screen.addCheckBoxGFC(self.getCivicsButtonName(j), CivicNames.button(j, self.iActivePlayer), ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), fX + self.BUTTON_SIZE/2, fY, self.BUTTON_SIZE, self.BUTTON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_LABEL)
+					screen.setText(self.getCivicsTextName(j), "", CivicNames.description(j, self.iActivePlayer), CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 			self.drawCivicOptionButtons(i)
 					
@@ -255,8 +256,8 @@ class CvCivicsScreen:
 		szHelpText = u""
 
 		# Upkeep string
-		if ((gc.getCivicInfo(iCivic).getUpkeep() != -1) and not activePlayer.isNoCivicUpkeep(iCivicOption)):
-			szHelpText = gc.getUpkeepInfo(gc.getCivicInfo(iCivic).getUpkeep()).getDescription()
+		if ((CivicNames.upkeep(iCivic, self.iActivePlayer) != -1) and not activePlayer.isNoCivicUpkeep(iCivicOption)):
+			szHelpText = gc.getUpkeepInfo(CivicNames.upkeep(iCivic, self.iActivePlayer)).getDescription()
 		else:
 			szHelpText = localText.getText("TXT_KEY_CIVICS_SCREEN_NO_UPKEEP", ())
 
@@ -264,11 +265,11 @@ class CvCivicsScreen:
 
 		fX = self.HEADINGS_SPACING  + (self.HEADINGS_WIDTH + self.HEADINGS_SPACING) * iCivicOption
 
-		screen.setLabel(self.HELP_HEADER_NAME + str(iCivicOption), "Background",  u"<font=3>" + gc.getCivicInfo(self.m_paeDisplayCivics[iCivicOption]).getDescription().upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HELP_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+		screen.setLabel(self.HELP_HEADER_NAME + str(iCivicOption), "Background",  u"<font=3>" + CivicNames.description(self.m_paeDisplayCivics[iCivicOption], self.iActivePlayer).upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, fX + self.HEADINGS_WIDTH/2, self.HELP_TOP + self.TEXT_MARGIN, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 		fY = self.HELP_TOP - self.BIG_BUTTON_SIZE
 		szHelpImageID = self.HELP_IMAGE_NAME + str(iCivicOption)		
-		screen.setImageButton(szHelpImageID, gc.getCivicInfo(iCivic).getButton(), fX + self.HEADINGS_WIDTH/2 - self.BIG_BUTTON_SIZE/2, fY, self.BIG_BUTTON_SIZE, self.BIG_BUTTON_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iCivic, 1)
+		screen.setImageButton(szHelpImageID, CivicNames.button(iCivic, self.iActivePlayer), fX + self.HEADINGS_WIDTH/2 - self.BIG_BUTTON_SIZE/2, fY, self.BIG_BUTTON_SIZE, self.BIG_BUTTON_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iCivic, 1)
 
 		fY = self.HELP_TOP + 3 * self.TEXT_MARGIN
 		szHelpAreaID = self.HELP_AREA_NAME + str(iCivicOption)		

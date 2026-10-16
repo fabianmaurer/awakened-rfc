@@ -481,6 +481,16 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 	}
 	
 	iValue = AI_yieldValue(aiYields, aiCommerceYields, bAvoidGrowth, bRemove);
+	if (eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") &&
+		GET_PLAYER(getOwnerINLINE()).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")) &&
+		getNumBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK")) > 0)
+	{
+		const int iPriests = getSpecialistCount(eSpecialist);
+		if (bRemove ? (iPriests > 0 && iPriests <= 2) : iPriests < 2)
+			iValue += happyLevel() - unhappyLevel(0) <= (bRemove ? 0 : 1) ? 24 : 4;
+	}
+
 
 	iGreatPeopleRate = GC.getSpecialistInfo(eSpecialist).getGreatPeopleRateChange();
 

@@ -16,7 +16,7 @@ Other unique-power hooks remain present and reachable:
 
 | Civilizations | Hooks checked |
 | --- | --- |
-| Egypt | Early Slavery access in `CvPlayer::canDoCivics`, resolved by civic type. Monarchy requires its normal technology; Egypt starts with Tribal System in 3000 BC. The 800 BC scenario grants Monarchy technology and starts Egypt with Monarchy. |
+| Egypt | Starts with Pharaonic Kingship, Divine Kingship and Slavery in 3000 BC. Early Slavery access in `CvPlayer::canDoCivics` is resolved by civic type. Pharaonic Kingship replaces Tribal System's effects for Egypt with +1 production from farms and slave specialists and medium upkeep. Divine Kingship replaces palace/monument happiness with +1 happiness per assigned priest in cities with an Egyptian Obelisk (cap +2), preserving its two priest slots and construction after Calendar while active. Egypt also starts with Pharaonic Kingship, Divine Kingship and Slavery in 800 BC, with the Pharaoh title and Pharaonic Egypt country name. Its existing Monarchy technology remains available for later government changes. |
 | India | No revolution anarchy in `updateMaxAnarchyTurns`. |
 | Babylon, Greece | No conquest resistance in `CvPlayer::acquireCity`; early +150% great person rate in `CvCity::getGreatPeopleRate`. The generic great person threshold tuning is separate. |
 | Carthage, Mali | Extra commerce on sea/land plots respectively in `CvPlot::calculateYield`. Removed maintenance/research penalties were balance offsets to these powers. |

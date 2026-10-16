@@ -730,6 +730,10 @@ class RiseAndFall:
 
         def setEarlyLeaders(self):
                 for i in range(iNumActivePlayers):
+                        # Keep the localized, authored 800 BC ruler names.
+                        # setLeader also resets LeaderName to the leaderhead.
+                        if gc.getGame().getStartTurn() == 87 and i <= iJapan:
+                                continue
                         if (tEarlyLeaders[i] != tLeaders[i][0]):
                                 if (not gc.getPlayer(i).isHuman()):
                                         gc.getPlayer(i).setLeader(tEarlyLeaders[i])
@@ -3563,6 +3567,7 @@ class RiseAndFall:
                 teamEgypt.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 #teamEgypt.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 iCiv = iIndia
+                teamIndia.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iMining, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iMysticism, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iPolytheism, True, iCiv, False, False)
@@ -3575,6 +3580,7 @@ class RiseAndFall:
                 teamIndia.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 #teamIndia.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 iCiv = iChina
+                teamChina.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamChina.setHasTech(con.iMining, True, iCiv, False, False)
                 #teamChina.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 teamChina.setHasTech(con.iMysticism, True, iCiv, False, False)
@@ -3605,6 +3611,7 @@ class RiseAndFall:
                 teamBabylonia.setHasTech(con.iMasonry, True, iCiv, False, False)
                 teamBabylonia.setHasTech(con.iAgriculture, True, iCiv, False, False)
                 iCiv = iGreece
+                teamGreece.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iMining, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iMetalCasting, True, iCiv, False, False)
@@ -3640,6 +3647,7 @@ class RiseAndFall:
                 teamPersia.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iHorsebackRiding, True, iCiv, False, False)
                 iCiv = iCarthage
+                teamCarthage.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iMining, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iMetalCasting, True, iCiv, False, False)
@@ -3649,7 +3657,6 @@ class RiseAndFall:
                 teamCarthage.setHasTech(con.iMasonry, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iFishing, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iSailing, True, iCiv, False, False)
-                #teamCarthage.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iPottery, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iWriting, True, iCiv, False, False)

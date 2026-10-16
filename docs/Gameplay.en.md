@@ -220,6 +220,19 @@ each qualifying building or worked improvement.
 
 ### Government
 
+For Egypt, Tribal System is called **Pharaonic Kingship** and Despotism is
+called **Divine Kingship**, in every era. Pharaonic Kingship grants +1 production
+from farms and per slave specialist, with medium civic upkeep. It replaces the
+unit production bonus, research penalty and city-maintenance penalties of Tribal
+System. Under Divine Kingship, each assigned priest in a city with an Egyptian
+Obelisk grants +1 happiness, capped at +2 per city. This replaces the happiness
+from palaces and monuments. Obelisks retain their two priest slots and remain
+buildable after Calendar while the civic is active. No state religion is required. Independent
+Egypt under Pharaonic Kingship is **Pharaonic Egypt**, with the leader titled
+**Pharaoh**. Theocracy or God State instead produces a **Temple State of Egypt**:
+political rule is subordinate to religion, whereas Divine Kingship presents the
+ruler as embodying divine authority.
+
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
@@ -267,7 +280,7 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | --- | --- | --- | --- |
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
-| **Knighthood** | Engineering | High | Newly trained mounted units start with +6 experience. |
+| **Knighthood** | Engineering | High | Newly trained mounted units and Samurai start with +6 experience. Called **Bushidō** for Japan. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
 | **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 

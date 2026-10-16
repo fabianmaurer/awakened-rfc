@@ -437,7 +437,9 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 							
 	def placeCivics(self):
 
-		tList = self.getSortedList( gc.getNumCivicInfos(), gc.getCivicInfo )
+		import CivicNames
+		tList = [(CivicNames.description(i), i) for i in range(gc.getNumCivicInfos())]
+		tList.sort()
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, gc.getCivicInfo)
 
 		
@@ -558,7 +560,11 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
                                 if iRow >= iNumRows:
                                         iNumRows += 1
                                         screen.appendTableRow(self.SUBLIST_ID)
-                                screen.setTableText(self.SUBLIST_ID, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", buttonType(item[1]).getButton(), widgeyType, item[1], 1, CvUtil.FONT_LEFT_JUSTIFY)
+                                icon = buttonType(item[1]).getButton()
+                                if widgeyType == WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC:
+                                    import CivicNames
+                                    icon = CivicNames.button(item[1])
+                                screen.setTableText(self.SUBLIST_ID, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", icon, widgeyType, item[1], 1, CvUtil.FONT_LEFT_JUSTIFY)
                                 iCounter += 1
                         #Rhye - end
 

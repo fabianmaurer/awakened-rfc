@@ -22,11 +22,11 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_EGY2</Tag>
-		<English>Slavery is available from the start, without its technology prerequisite</English>
-		<French>L'esclavage est disponible d&#232;s le d&#233;part, sans technologie requise</French>
-		<German>Sklaverei ist von Beginn an ohne Technologievoraussetzung verf&#252;gbar</German>
-		<Italian>La schiavit&#249; &#232; disponibile dall'inizio, senza il requisito tecnologico</Italian>
-		<Spanish>La esclavitud est&#225; disponible desde el principio, sin requisito tecnol&#243;gico</Spanish>
+		<English>Starts with special civics</English>
+		<French>Commence avec des institutions particuli&#232;res</French>
+		<German>Beginnt mit besonderen Staatsformen</German>
+		<Italian>Inizia con forme di governo speciali</Italian>
+		<Spanish>Comienza con sistemas de gobierno especiales</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_IND</Tag>

@@ -10,6 +10,15 @@ catalogue, not a reconstruction of each state's dates, borders, or dynasty.
 Existing vassal and colonial names retain priority. The new names are stored as
 translation keys, using the existing RFC name setter and save format.
 
+Egypt's Tribal System variant is Pharaonic Kingship, and its Despotism variant
+is Divine Kingship, without date or religion gates. Independent Egypt using
+Pharaonic Kingship is named **Pharaonic Egypt / Pharaonenreich**. Theocracy or
+God State instead selects **Temple State of Egypt / Tempelstaat Ägypten**, even
+before a state religion is adopted. Other Egyptian government forms retain their
+existing country-name rules. The displayed leader under Pharaonic Kingship is
+**Pharaoh [personal name]**; this title is computed for display and not saved as
+a replacement personal name.
+
 Rules are evaluated in this order:
 
 | Condition | Name family |

@@ -409,6 +409,7 @@ public:
 	void updateReligionHappiness();
 
 	int getExtraHappiness() const;																				// Exposed to Python
+	int getDivineKingshipHappiness() const;
 	void changeExtraHappiness(int iChange);													// Exposed to Python
 
 	int getExtraHealth() const;																				// Exposed to Python

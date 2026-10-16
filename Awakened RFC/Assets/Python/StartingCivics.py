@@ -35,6 +35,19 @@ PROFILES = {
 }
 
 DEFAULTS = ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT")
+# The nine civilizations present in the 800 BC start. Later births retain
+# their usual profiles; these choices are shared with the selection preview.
+PROFILES_800BC = {
+    "CIVILIZATION_EGYPT": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
+    "CIVILIZATION_INDIA": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
+    "CIVILIZATION_CHINA": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "MILITIA", "ANCESTOR_CULT"),
+    "CIVILIZATION_BABYLONIA": ("MONARCHY", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
+    "CIVILIZATION_GREECE": ("MONARCHY", "DESPOTISM", "SLAVERY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
+    "CIVILIZATION_PERSIA": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
+    "CIVILIZATION_CARTHAGE": ("MONARCHY", "DESPOTISM", "SLAVERY", "MILITIA", "STATE_RELIGION"),
+    "CIVILIZATION_ROME": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
+    "CIVILIZATION_JAPAN": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
+}
 FALLBACKS = (
     ("MONARCHY", "TRIBAL_SYSTEM"),
     ("DESPOTISM",),
@@ -46,9 +59,8 @@ FALLBACKS = (
 
 def getProfile(civType, startTurn):
     profile = PROFILES.get(civType, DEFAULTS)
-    # The early-game UP balance applies to 3000 BC, not established Egypt.
-    if civType == "CIVILIZATION_EGYPT" and startTurn == 87:
-        return ("MONARCHY",) + profile[1:]
+    if startTurn == 87:
+        return PROFILES_800BC.get(civType, profile)
     if startTurn == 271:
         # Institutions of the authored 1453 polities, rather than their ancient
         # or medieval original births. These still require the scenario techs.

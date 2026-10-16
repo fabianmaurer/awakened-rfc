@@ -1,6 +1,7 @@
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
+import CivicNames
 import CvUtil
 import ScreenInput
 import CvScreenEnums
@@ -586,7 +587,7 @@ class CvTechChooser:
 			for j in range( gc.getNumCivicInfos() ):
 				if (gc.getCivicInfo(j).getTechPrereq() == i):
 					szCivicReveal = "CivicRevealButton" + str( ( i * 1000 ) + j )
-					screen.addDDSGFCAt( szCivicReveal, szTechRecord, gc.getCivicInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_CIVIC_REVEAL, i, j, False )
+					screen.addDDSGFCAt( szCivicReveal, szTechRecord, CivicNames.button(j), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_CIVIC_REVEAL, i, j, False )
 					fX += X_INCREMENT
 
 			j = 0

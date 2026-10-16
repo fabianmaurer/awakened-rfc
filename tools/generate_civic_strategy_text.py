@@ -58,8 +58,8 @@ SUMMARIES = {
         '+30% city defense, but -10% combat strength outside your own territory.',
         '+30% Stadtverteidigung, aber -10% Kampfstärke außerhalb des eigenen Gebiets.'),
     'KNIGHTHOOD': (
-        '+6 experience for newly trained mounted units.',
-        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten.'),
+        '+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.',
+        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten und Samurai. Hei\xdft f\xfcr Japan Bushido.'),
     'PROFESSIONAL_ARMY': (
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),

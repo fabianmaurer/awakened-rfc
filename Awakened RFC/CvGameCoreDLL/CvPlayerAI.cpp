@@ -10392,6 +10392,32 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	if (eCivic == GC.getInfoTypeForString("CIVIC_REPUBLIC"))
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 			iValue += std::max(0, pLoopCity->getSpecialistPopulation() - pLoopCity->getSpecialistCount((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"))) * 6;
+	if (kCivic.isDivineKingshipVariant(getCivilizationType()))
+	{
+		const BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
+		const SpecialistTypes ePriest = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (pLoopCity->getNumBuilding(eObelisk) > 0)
+				iValue += 6 * std::min(2, pLoopCity->getSpecialistCount(ePriest)) + 3;
+		}
+	}
+	if (kCivic.isPharaonicVariant(getCivilizationType()))
+	{
+		const int iFarm = GC.getInfoTypeForString("IMPROVEMENT_FARM");
+		const SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			int iProduction = pLoopCity->getSpecialistCount(eSlave) + pLoopCity->getFreeSpecialistCount(eSlave);
+			for (int iPlot = 0; iPlot < NUM_CITY_PLOTS; ++iPlot)
+			{
+				CvPlot* pPlot = pLoopCity->getCityIndexPlot(iPlot);
+				if (pPlot != NULL && pLoopCity->isWorkingPlot(iPlot) && pPlot->getImprovementType() == iFarm)
+					++iProduction;
+			}
+			iValue += 4 * iProduction + 4;
+		}
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))
 		iValue += getNumCities() * (bWarPlan ? 18 : 12);
 	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") && getStateReligion() != NO_RELIGION)
@@ -10434,11 +10460,11 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iCurrentNumCitiesModifier = getNumCitiesMaintenanceModifier();
 	if (eCurrentCivic != NO_CIVIC)
 	{
-		iCurrentDistanceModifier -= GC.getCivicInfo(eCurrentCivic).getDistanceMaintenanceModifier();
-		iCurrentNumCitiesModifier -= GC.getCivicInfo(eCurrentCivic).getNumCitiesMaintenanceModifier();
+		iCurrentDistanceModifier -= (GC.getCivicInfo(eCurrentCivic).isPharaonicVariant(getCivilizationType()) ? 0 : GC.getCivicInfo(eCurrentCivic).getDistanceMaintenanceModifier());
+		iCurrentNumCitiesModifier -= (GC.getCivicInfo(eCurrentCivic).isPharaonicVariant(getCivilizationType()) ? 0 : GC.getCivicInfo(eCurrentCivic).getNumCitiesMaintenanceModifier());
 	}
-	iCandidateDistanceModifier = iCurrentDistanceModifier + kCivic.getDistanceMaintenanceModifier();
-	iCandidateNumCitiesModifier = iCurrentNumCitiesModifier + kCivic.getNumCitiesMaintenanceModifier();
+	iCandidateDistanceModifier = iCurrentDistanceModifier + (kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getDistanceMaintenanceModifier());
+	iCandidateNumCitiesModifier = iCurrentNumCitiesModifier + (kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getNumCitiesMaintenanceModifier());
 	iMaintenanceTimes100 = 0;
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
@@ -10651,7 +10677,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		iTempValue = 0;
 
-		iTempValue += ((kCivic.getCommerceModifier(iI) * getNumCities()) / 3);
+		iTempValue += (((kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getCommerceModifier(iI)) * getNumCities()) / 3);
 		iTempValue += (kCivic.getCapitalCommerceModifier(iI) / 2);
 		if (iI == COMMERCE_ESPIONAGE)
 		{
@@ -10677,7 +10703,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		if (kCivic.getBuildingHappinessChanges(iI) != 0)
+		if (!kCivic.isDivineKingshipVariant(getCivilizationType()) && kCivic.getBuildingHappinessChanges(iI) != 0)
 		{
 			iValue += (kCivic.getBuildingHappinessChanges(iI) * getBuildingClassCount((BuildingClassTypes)iI) * 3);
 		}

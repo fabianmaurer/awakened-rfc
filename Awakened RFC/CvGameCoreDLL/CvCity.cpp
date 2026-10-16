@@ -2561,7 +2561,8 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
 
 	if (eUnit != NO_UNIT)
 	{
-		if (GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") &&
+		if ((GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") ||
+			eUnit == GC.getInfoTypeForString("UNIT_JAPAN_SAMURAI")) &&
 			GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))) iExperience += 6;
 		if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
 		{
@@ -3301,7 +3302,8 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 	}
 
 	// Unit production bonuses also apply to workers, settlers and missionaries.
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM"))) iMultiplier += 20;
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")) &&
+		GET_PLAYER(getOwnerINLINE()).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_EGYPT")) iMultiplier += 20;
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))) iMultiplier += 25;
 
 
@@ -6811,9 +6813,21 @@ void CvCity::updateReligionHappiness()
 }
 
 
+int CvCity::getDivineKingshipHappiness() const
+{
+	const CvPlayer& player = GET_PLAYER(getOwnerINLINE());
+	if (player.getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_EGYPT") ||
+		!player.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+		return 0;
+	if (getNumBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK")) == 0)
+		return 0;
+	return std::min(2, getSpecialistCount((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST")));
+}
+
 int CvCity::getExtraHappiness() const
 {
 	int iHappiness = m_iExtraHappiness;
+	iHappiness += getDivineKingshipHappiness();
 	CvPlayer& kPlayer = GET_PLAYER(getOwnerINLINE());
 	iHappiness += std::min(3, royalCapitalBuildings(kPlayer.getCapitalCity(), true));
 
@@ -10426,7 +10440,18 @@ int CvCity::getMaxSpecialistCount(SpecialistTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumSpecialistInfos(), "eIndex expected to be < GC.getNumSpecialistInfos()");
-	return m_paiMaxSpecialistCount[eIndex];
+	int iCount = m_paiMaxSpecialistCount[eIndex];
+	const CvPlayer& player = GET_PLAYER(getOwnerINLINE());
+	if (eIndex == GC.getInfoTypeForString("SPECIALIST_PRIEST") &&
+		player.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		player.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+	{
+		BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
+		// Restore only obsolete priest slots, not other building effects.
+		if (GET_TEAM(getTeam()).isObsoleteBuilding(eObelisk))
+			iCount += getNumBuilding(eObelisk) * GC.getBuildingInfo(eObelisk).getSpecialistCount(eIndex);
+	}
+	return iCount;
 }
 
 

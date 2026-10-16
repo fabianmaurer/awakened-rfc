@@ -2326,6 +2326,16 @@ bool CvPlayer::isBarbarian() const
 
 const wchar* CvPlayer::getName(uint uiForm) const
 {
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")))
+	{
+		const bool bUseLeader = GC.getInitCore().getLeaderName(getID(), uiForm).empty() ||
+			(GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive() && GC.getGameINLINE().getGameState() == GAMESTATE_ON);
+		const wchar* szPersonalName = bUseLeader ? GC.getLeaderHeadInfo(getLeaderType()).getDescription(uiForm) :
+			GC.getInitCore().getLeaderName(getID(), uiForm).GetCString();
+		m_szPharaohName = gDLL->getText("TXT_KEY_RFCMP_LEADER_PHARAOH", szPersonalName);
+		return m_szPharaohName;
+	}
 	//Rhye (jdog) -  start ---------------------
 	if (GC.getInitCore().getLeaderName(getID(), uiForm).empty() || (GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive() && GC.getGameINLINE().getGameState() == GAMESTATE_ON))
 	{
@@ -2369,6 +2379,13 @@ void CvPlayer::setName(std::wstring szNewValue)
 
 const wchar* CvPlayer::getNameKey() const
 {
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")))
+	{
+		// A localized literal is valid here, just like a custom player name.
+		m_szPharaohNameKey = getName();
+		return m_szPharaohNameKey;
+	}
 	//Rhye (jdog) -  start ---------------------
 	if (GC.getInitCore().getLeaderNameKey(getID()).empty() || (GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive()))
 	{
@@ -5713,7 +5730,10 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		}
 	}
 
-	if (currentTeam.isObsoleteBuilding(eBuilding))
+	if (currentTeam.isObsoleteBuilding(eBuilding) &&
+		!(getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		  eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+		  isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"))))
 	{
 		return false;
 	}
@@ -12705,6 +12725,7 @@ CivicTypes CvPlayer::getCivics(CivicOptionTypes eIndex) const
 int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 {
 	int iUpkeep;
+	const int iCivicUpkeep = eCivic == NO_CIVIC ? NO_UPKEEP : GC.getCivicInfo(eCivic).getCivilizationUpkeep(getCivilizationType());
 
 	if (eCivic == NO_CIVIC)
 	{
@@ -12716,7 +12737,7 @@ int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 		return 0;
 	}
 
-	if (GC.getCivicInfo(eCivic).getUpkeep() == NO_UPKEEP)
+	if (iCivicUpkeep == NO_UPKEEP)
 	{
 		return 0;
 	}
@@ -12731,8 +12752,8 @@ int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 
 	iUpkeep = 0;
 
-	iUpkeep += ((std::max(0, (getTotalPopulation() + GC.getDefineINT("UPKEEP_POPULATION_OFFSET") - GC.getCivicInfo(eCivic).getCivicOptionType())) * GC.getUpkeepInfo((UpkeepTypes)(GC.getCivicInfo(eCivic).getUpkeep())).getPopulationPercent()) / 100);
-	iUpkeep += ((std::max(0, (getNumCities() + GC.getDefineINT("UPKEEP_CITY_OFFSET") + GC.getCivicInfo(eCivic).getCivicOptionType() - (GC.getNumCivicOptionInfos() / 2))) * GC.getUpkeepInfo((UpkeepTypes)(GC.getCivicInfo(eCivic).getUpkeep())).getCityPercent()) / 100);
+	iUpkeep += ((std::max(0, (getTotalPopulation() + GC.getDefineINT("UPKEEP_POPULATION_OFFSET") - GC.getCivicInfo(eCivic).getCivicOptionType())) * GC.getUpkeepInfo((UpkeepTypes)(iCivicUpkeep)).getPopulationPercent()) / 100);
+	iUpkeep += ((std::max(0, (getNumCities() + GC.getDefineINT("UPKEEP_CITY_OFFSET") + GC.getCivicInfo(eCivic).getCivicOptionType() - (GC.getNumCivicOptionInfos() / 2))) * GC.getUpkeepInfo((UpkeepTypes)(iCivicUpkeep)).getCityPercent()) / 100);
 
 	iUpkeep *= std::max(0, (getUpkeepModifier() + 100));
 	iUpkeep /= 100;
@@ -12840,6 +12861,18 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		}
 
 		// Custom culture/happiness effects must refresh immediately after adoption.
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			eOldCivic == GC.getInfoTypeForString("CIVIC_DESPOTISM"))
+		{
+			int iLoop;
+			SpecialistTypes ePriest = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				if (!isSpecialistValid(ePriest))
+					pCity->setForceSpecialistCount(ePriest, std::min(pCity->getForceSpecialistCount(ePriest), pCity->getMaxSpecialistCount(ePriest)));
+				pCity->AI_assignWorkingPlots();
+			}
+		}
 		updateExtraSpecialistYield();
 		updateCommerce();
 		invalidateYieldRankCache();
@@ -16802,13 +16835,20 @@ void CvPlayer::verifyGoldCommercePercent()
 void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 {
 	int iI, iJ;
+	const bool bPharaonic = GC.getCivicInfo(eCivic).isPharaonicVariant(getCivilizationType());
+	const bool bDivineKingship = GC.getCivicInfo(eCivic).isDivineKingshipVariant(getCivilizationType());
+	if (bPharaonic)
+	{
+		changeImprovementYieldChange((ImprovementTypes)GC.getInfoTypeForString("IMPROVEMENT_FARM"), YIELD_PRODUCTION, iChange);
+		changeSpecialistExtraYield((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"), YIELD_PRODUCTION, iChange);
+	}
 
 	changeGreatPeopleRateModifier(GC.getCivicInfo(eCivic).getGreatPeopleRateModifier() * iChange);
 	changeGreatGeneralRateModifier(GC.getCivicInfo(eCivic).getGreatGeneralRateModifier() * iChange);
 	changeDomesticGreatGeneralRateModifier(GC.getCivicInfo(eCivic).getDomesticGreatGeneralRateModifier() * iChange);
 	changeStateReligionGreatPeopleRateModifier(GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier() * iChange);
-	changeDistanceMaintenanceModifier(GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() * iChange);
-	changeNumCitiesMaintenanceModifier(GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() * iChange);
+	changeDistanceMaintenanceModifier((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier()) * iChange);
+	changeNumCitiesMaintenanceModifier((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier()) * iChange);
 	changeCorporationMaintenanceModifier(GC.getCivicInfo(eCivic).getCorporationMaintenanceModifier() * iChange);
 	changeExtraHealth(GC.getCivicInfo(eCivic).getExtraHealth() * iChange);
 	changeFreeExperience(GC.getCivicInfo(eCivic).getFreeExperience() * iChange);
@@ -16852,7 +16892,7 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
-		changeCommerceRateModifier(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getCommerceModifier(iI) * iChange));
+		changeCommerceRateModifier(((CommerceTypes)iI), ((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getCommerceModifier(iI)) * iChange));
 		changeCapitalCommerceRateModifier(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getCapitalCommerceModifier(iI) * iChange));
 		changeSpecialistExtraCommerce(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getSpecialistExtraCommerce(iI) * iChange));
 	}
@@ -16862,7 +16902,8 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 		BuildingTypes eOurBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
 		if (NO_BUILDING != eOurBuilding)
 		{
-			changeExtraBuildingHappiness(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) * iChange));
+			if (!bDivineKingship)
+				changeExtraBuildingHappiness(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) * iChange));
 			changeExtraBuildingHealth(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHealthChanges(iI) * iChange));
 		}
 	}
@@ -23223,6 +23264,12 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		szForm = L"NORSE_KINGDOMS";
 	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
 		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+	else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= -1046 && iYear < -256)
+		szForm = L"ZHOU";
+	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear >= -1500 && iYear < -600)
+		szForm = L"VEDIC_KINGDOMS";
+	else if (iPlayer == ROME && bTribal && !bTheocracy && iYear < -753)
+		szForm = L"LATIN_COMMUNITIES";
 	else if (iPlayer == INDIA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1900)
 		szForm = L"INDUS";
 	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear < -322)
@@ -23280,6 +23327,16 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	if (iPlayer == ROME && iYear >= 476 && iYear < 1861 &&
 		(wcscmp(szForm, L"REPUBLIC") == 0 || wcscmp(szForm, L"MERCHANT_REPUBLIC") == 0))
 		szForm = iYear >= 1400 && iYear < 1797 ? L"VENICE" : L"ITALIAN_STATES";
+
+	// Egyptian civic variants are available in every era and with any religion.
+	// A ruler embodying divinity differs from a state subordinate to religion.
+	if (iPlayer == EGYPT)
+	{
+		if (bGodState || hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"))
+			szForm = L"TEMPLE_STATE";
+		else if (bTribal)
+			szForm = L"PHARAONIC";
+	}
 
 	CvWString szNameKey = civDynamicNames[iPlayer][0];
 	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);

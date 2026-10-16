@@ -319,6 +319,11 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    ('CHI', 'ZHOU'): ('Zhou Kingdom', 'Zhou-Reich'),
+    ('IND', 'VEDIC_KINGDOMS'): ('Kuru and Panchala', 'Kuru und Panchala'),
+    ('ROM', 'LATIN_COMMUNITIES'): ('Latin Communities', 'Latinische Stammesgemeinden'),
+    ('EGY', 'PHARAONIC'): ('Pharaonic Egypt', 'Pharaonenreich'),
+    ('EGY', 'TEMPLE_STATE'): ('Temple State of Egypt', 'Tempelstaat Ägypten'),
     ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),
     ('EGY', 'MAMLUK'): ('Mamluk Sultanate', 'Mamlukensultanat'),
     ('IND', 'DELHI'): ('Delhi Sultanate', 'Sultanat von Delhi'),

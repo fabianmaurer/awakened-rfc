@@ -1174,6 +1174,9 @@ protected:
 
 	//Rhye (jdog) -  start ---------------------
 	CvWString m_szName;
+	// Presentation-only caches; no persistent or synchronized title state.
+	mutable CvWString m_szPharaohName;
+	mutable CvWString m_szPharaohNameKey;
 	CvWString m_szCivDesc;
 	CvWString m_szCivDescKey;
 	CvWString m_szCivShort;

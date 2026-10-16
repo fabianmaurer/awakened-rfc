@@ -229,6 +229,20 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 
 ### Regierung
 
+Für Ägypten heißt das Stammessystem in jeder Epoche **Pharaonentum** und
+Despotismus **Gottkönigtum**. Pharaonentum gibt +1 Produktion durch Bauernhöfe
+und je Sklavenspezialist bei mittlerem Staatsform-Unterhalt. Es ersetzt die
+Einheitenproduktion, den Forschungsabzug und die erhöhten Unterhaltskosten des
+Stammessystems. Unter Gottkönigtum gibt jeder zugewiesene Priester in einer Stadt
+mit ägyptischem Obelisken +1 Zufriedenheit, höchstens +2 pro Stadt. Dies ersetzt
+die Zufriedenheit durch Palast und Monument. Obelisken behalten ihre zwei
+Priesterplätze und bleiben auch nach Kalender baubar, solange die Staatsform
+aktiv ist. Eine Staatsreligion ist nicht erforderlich. Das unabhängige Land
+heißt unter Pharaonentum **Pharaonenreich**, sein Anführer trägt den Titel
+**Pharao**. Theokratie oder Gottesstaat wählen stattdessen **Tempelstaat Ägypten**:
+Hier ordnet sich die politische Herrschaft der Religion unter, während das
+Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität versteht.
+
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
@@ -277,7 +291,7 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten starten mit +6 Erfahrung. |
+| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. Heißt für Japan **Bushidō**. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 

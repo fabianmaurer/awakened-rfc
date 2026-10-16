@@ -4537,6 +4537,46 @@
     <Spanish>United States of America</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ZHOU</Tag>
+    <English>Zhou Kingdom</English>
+    <French>Zhou Kingdom</French>
+    <German>Zhou-Reich</German>
+    <Italian>Zhou Kingdom</Italian>
+    <Spanish>Zhou Kingdom</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_VEDIC_KINGDOMS</Tag>
+    <English>Kuru and Panchala</English>
+    <French>Kuru and Panchala</French>
+    <German>Kuru und Panchala</German>
+    <Italian>Kuru and Panchala</Italian>
+    <Spanish>Kuru and Panchala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_LATIN_COMMUNITIES</Tag>
+    <English>Latin Communities</English>
+    <French>Latin Communities</French>
+    <German>Latinische Stammesgemeinden</German>
+    <Italian>Latin Communities</Italian>
+    <Spanish>Latin Communities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_PHARAONIC</Tag>
+    <English>Pharaonic Egypt</English>
+    <French>Pharaonic Egypt</French>
+    <German>Pharaonenreich</German>
+    <Italian>Pharaonic Egypt</Italian>
+    <Spanish>Pharaonic Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_TEMPLE_STATE</Tag>
+    <English>Temple State of Egypt</English>
+    <French>Temple State of Egypt</French>
+    <German>Tempelstaat &#196;gypten</German>
+    <Italian>Temple State of Egypt</Italian>
+    <Spanish>Temple State of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_ETH_ABYSSINIA</Tag>
     <English>Abyssinian Empire</English>
     <French>Abyssinian Empire</French>

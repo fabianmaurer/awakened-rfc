@@ -474,6 +474,8 @@ def main():
             block += unit(owner, 'UNIT_WORKER', 'UNITAI_WORKER') * (3 if owner in ACTIVE else 1)
             if owner in ACTIVE:
                 army = 'UNIT_SPEARMAN' if owner in (10, 22, 24) else 'UNIT_KNIGHT'
+                if owner == 8:
+                    army = 'UNIT_JAPAN_SAMURAI'
                 block += unit(owner, army) * 2
         if owner == 25 and capitals[owner] == pos:
             # Bombards are represented by trebuchets; Steel-era cannon are not
