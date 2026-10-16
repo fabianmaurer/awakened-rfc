@@ -4537,6 +4537,438 @@
     <Spanish>United States of America</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_EGY_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Granaries</English>
+    <French>Realm of the Royal Granaries</French>
+    <German>Reich der k&#246;niglichen Speicher</German>
+    <Italian>Realm of the Royal Granaries</Italian>
+    <Spanish>Realm of the Royal Granaries</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_ROYAL_PLANNED</Tag>
+    <English>Maharajas' Economic Union</English>
+    <French>Maharajas' Economic Union</French>
+    <German>Wirtschaftsunion der Maharadschas</German>
+    <Italian>Maharajas' Economic Union</Italian>
+    <Spanish>Maharajas' Economic Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ROYAL_PLANNED</Tag>
+    <English>Imperial Economic Union of China</English>
+    <French>Imperial Economic Union of China</French>
+    <German>Kaiserliche Wirtschaftsunion China</German>
+    <Italian>Imperial Economic Union of China</Italian>
+    <Spanish>Imperial Economic Union of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_ROYAL_PLANNED</Tag>
+    <English>Palace State of Babylon</English>
+    <French>Palace State of Babylon</French>
+    <German>Palaststaat Babylon</German>
+    <Italian>Palace State of Babylon</Italian>
+    <Spanish>Palace State of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_ROYAL_PLANNED</Tag>
+    <English>Hellenic Crown Collective</English>
+    <French>Hellenic Crown Collective</French>
+    <German>Hellenisches Kronkollektiv</German>
+    <Italian>Hellenic Crown Collective</Italian>
+    <Spanish>Hellenic Crown Collective</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Satrapies</English>
+    <French>Realm of the Royal Satrapies</French>
+    <German>Reich der k&#246;niglichen Satrapien</German>
+    <Italian>Realm of the Royal Satrapies</Italian>
+    <Spanish>Realm of the Royal Satrapies</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_ROYAL_PLANNED</Tag>
+    <English>Punic Crown Monopoly</English>
+    <French>Punic Crown Monopoly</French>
+    <German>Punisches Kronmonopol</German>
+    <Italian>Punic Crown Monopoly</Italian>
+    <Spanish>Punic Crown Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ROYAL_PLANNED</Tag>
+    <English>Imperium of the State Estates</English>
+    <French>Imperium of the State Estates</French>
+    <German>Imperium der Staatsg&#252;ter</German>
+    <Italian>Imperium of the State Estates</Italian>
+    <Spanish>Imperium of the State Estates</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ROYAL_PLANNED</Tag>
+    <English>Japanese Imperial Provisioning State</English>
+    <French>Japanese Imperial Provisioning State</French>
+    <German>Kaiserlicher Versorgungsstaat Japan</German>
+    <Italian>Japanese Imperial Provisioning State</Italian>
+    <Spanish>Japanese Imperial Provisioning State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ROYAL_PLANNED</Tag>
+    <English>Imperial Domains of Abyssinia</English>
+    <French>Imperial Domains of Abyssinia</French>
+    <German>Kaiserliche Dom&#228;nen Abessiniens</German>
+    <Italian>Imperial Domains of Abyssinia</Italian>
+    <Spanish>Imperial Domains of Abyssinia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Maize Stores</English>
+    <French>Realm of the Royal Maize Stores</French>
+    <German>Reich der k&#246;niglichen Maiskammern</German>
+    <Italian>Realm of the Royal Maize Stores</Italian>
+    <Spanish>Realm of the Royal Maize Stores</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_ROYAL_PLANNED</Tag>
+    <English>Nordic Crown of Common Provision</English>
+    <French>Nordic Crown of Common Provision</French>
+    <German>Nordisches Versorgungsk&#246;nigtum</German>
+    <Italian>Nordic Crown of Common Provision</Italian>
+    <Spanish>Nordic Crown of Common Provision</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ROYAL_PLANNED</Tag>
+    <English>Royal Oasis Union</English>
+    <French>Royal Oasis Union</French>
+    <German>K&#246;niglicher Oasenverbund</German>
+    <Italian>Royal Oasis Union</Italian>
+    <Spanish>Royal Oasis Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Waterworks</English>
+    <French>Realm of the Royal Waterworks</French>
+    <German>Reich der k&#246;niglichen Wasserwerke</German>
+    <Italian>Realm of the Royal Waterworks</Italian>
+    <Spanish>Realm of the Royal Waterworks</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_ROYAL_PLANNED</Tag>
+    <English>Iberian Crown Estates Union</English>
+    <French>Iberian Crown Estates Union</French>
+    <German>Iberische Krong&#252;terunion</German>
+    <Italian>Iberian Crown Estates Union</Italian>
+    <Spanish>Iberian Crown Estates Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_ROYAL_PLANNED</Tag>
+    <English>French Manufactory Monarchy</English>
+    <French>French Manufactory Monarchy</French>
+    <German>Franz&#246;sische Manufakturmonarchie</German>
+    <Italian>French Manufactory Monarchy</Italian>
+    <Spanish>French Manufactory Monarchy</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ROYAL_PLANNED</Tag>
+    <English>British Crown Monopoly</English>
+    <French>British Crown Monopoly</French>
+    <German>Britisches Kronmonopol</German>
+    <Italian>British Crown Monopoly</Italian>
+    <Spanish>British Crown Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_ROYAL_PLANNED</Tag>
+    <English>German Chamber Empire</English>
+    <French>German Chamber Empire</French>
+    <German>Deutsches Kammerreich</German>
+    <Italian>German Chamber Empire</Italian>
+    <Spanish>German Chamber Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_ROYAL_PLANNED</Tag>
+    <English>Tsardom of the State Combines</English>
+    <French>Tsardom of the State Combines</French>
+    <German>Zarenreich der Staatskombinate</German>
+    <Italian>Tsardom of the State Combines</Italian>
+    <Spanish>Tsardom of the State Combines</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_ROYAL_PLANNED</Tag>
+    <English>Royal Polder Union</English>
+    <French>Royal Polder Union</French>
+    <German>K&#246;nigliche Polderunion</German>
+    <Italian>Royal Polder Union</Italian>
+    <Spanish>Royal Polder Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_ROYAL_PLANNED</Tag>
+    <English>Empire of the Malian Gold Treasury</English>
+    <French>Empire of the Malian Gold Treasury</French>
+    <German>Goldkammerreich Mali</German>
+    <Italian>Empire of the Malian Gold Treasury</Italian>
+    <Spanish>Empire of the Malian Gold Treasury</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_ROYAL_PLANNED</Tag>
+    <English>Royal Overseas Company of Portugal</English>
+    <French>Royal Overseas Company of Portugal</French>
+    <German>K&#246;nigliche &#220;berseekompanie Portugal</German>
+    <Italian>Royal Overseas Company of Portugal</Italian>
+    <Spanish>Royal Overseas Company of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_ROYAL_PLANNED</Tag>
+    <English>Land of the Four Quarters</English>
+    <French>Land of the Four Quarters</French>
+    <German>Land der vier Weltgegenden</German>
+    <Italian>Land of the Four Quarters</Italian>
+    <Spanish>Land of the Four Quarters</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_ROYAL_PLANNED</Tag>
+    <English>Khanate of the Common Pastures</English>
+    <French>Khanate of the Common Pastures</French>
+    <German>Khanat der gemeinsamen Weiden</German>
+    <Italian>Khanate of the Common Pastures</Italian>
+    <Spanish>Khanate of the Common Pastures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Tribute</English>
+    <French>Realm of the Royal Tribute</French>
+    <German>Reich der k&#246;niglichen Tribute</German>
+    <Italian>Realm of the Royal Tribute</Italian>
+    <Spanish>Realm of the Royal Tribute</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_ROYAL_PLANNED</Tag>
+    <English>Sublime Porte of the State Manufactories</English>
+    <French>Sublime Porte of the State Manufactories</French>
+    <German>Hohe Pforte der Staatsmanufakturen</German>
+    <Italian>Sublime Porte of the State Manufactories</Italian>
+    <Spanish>Sublime Porte of the State Manufactories</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_ROYAL_PLANNED</Tag>
+    <English>United Crown Industries of America</English>
+    <French>United Crown Industries of America</French>
+    <German>Vereinigte Kronwerke Amerikas</German>
+    <Italian>United Crown Industries of America</Italian>
+    <Spanish>United Crown Industries of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_PLUTOCRATIC_PLANNED</Tag>
+    <English>Nile Granary Directorate</English>
+    <French>Nile Granary Directorate</French>
+    <German>Speicherdirektorium am Nil</German>
+    <Italian>Nile Granary Directorate</Italian>
+    <Spanish>Nile Granary Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_PLUTOCRATIC_PLANNED</Tag>
+    <English>Indian Guild Dominion</English>
+    <French>Indian Guild Dominion</French>
+    <German>Indische Gildenherrschaft</German>
+    <Italian>Indian Guild Dominion</Italian>
+    <Spanish>Indian Guild Dominion</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_PLUTOCRATIC_PLANNED</Tag>
+    <English>Silken Mandate of the Merchant Houses</English>
+    <French>Silken Mandate of the Merchant Houses</French>
+    <German>Seidenmandat der Handelsh&#228;user</German>
+    <Italian>Silken Mandate of the Merchant Houses</Italian>
+    <Spanish>Silken Mandate of the Merchant Houses</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_PLUTOCRATIC_PLANNED</Tag>
+    <English>Babylonian Canal Company</English>
+    <French>Babylonian Canal Company</French>
+    <German>Babylonische Kanalgesellschaft</German>
+    <Italian>Babylonian Canal Company</Italian>
+    <Spanish>Babylonian Canal Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_PLUTOCRATIC_PLANNED</Tag>
+    <English>Aegean Shipowners' Cartel</English>
+    <French>Aegean Shipowners' Cartel</French>
+    <German>&#196;g&#228;isches Reederkartell</German>
+    <Italian>Aegean Shipowners' Cartel</Italian>
+    <Spanish>Aegean Shipowners' Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_PLUTOCRATIC_PLANNED</Tag>
+    <English>Iranian Caravan Monopoly</English>
+    <French>Iranian Caravan Monopoly</French>
+    <German>Iranisches Karawanenmonopol</German>
+    <Italian>Iranian Caravan Monopoly</Italian>
+    <Spanish>Iranian Caravan Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_PLUTOCRATIC_PLANNED</Tag>
+    <English>Directorate of the Seven Houses</English>
+    <French>Directorate of the Seven Houses</French>
+    <German>Direktorium der Sieben H&#228;user</German>
+    <Italian>Directorate of the Seven Houses</Italian>
+    <Spanish>Directorate of the Seven Houses</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_PLUTOCRATIC_PLANNED</Tag>
+    <English>Roman Patrician Directorate</English>
+    <French>Roman Patrician Directorate</French>
+    <German>R&#246;misches Patrizierdirektorium</German>
+    <Italian>Roman Patrician Directorate</Italian>
+    <Spanish>Roman Patrician Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_PLUTOCRATIC_PLANNED</Tag>
+    <English>Japanese Industrial Conclave</English>
+    <French>Japanese Industrial Conclave</French>
+    <German>Japanischer Industriekonvent</German>
+    <Italian>Japanese Industrial Conclave</Italian>
+    <Spanish>Japanese Industrial Conclave</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_PLUTOCRATIC_PLANNED</Tag>
+    <English>Abyssinian Coffee and Salt Monopoly</English>
+    <French>Abyssinian Coffee and Salt Monopoly</French>
+    <German>Abessinisches Kaffee- und Salzmonopol</German>
+    <Italian>Abyssinian Coffee and Salt Monopoly</Italian>
+    <Spanish>Abyssinian Coffee and Salt Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_PLUTOCRATIC_PLANNED</Tag>
+    <English>Maya Jade and Cacao Cartel</English>
+    <French>Maya Jade and Cacao Cartel</French>
+    <German>Jade- und Kakaokartell der Maya</German>
+    <Italian>Maya Jade and Cacao Cartel</Italian>
+    <Spanish>Maya Jade and Cacao Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_PLUTOCRATIC_PLANNED</Tag>
+    <English>Nordic Shipyard Cartel</English>
+    <French>Nordic Shipyard Cartel</French>
+    <German>Nordisches Werftenkartell</German>
+    <Italian>Nordic Shipyard Cartel</Italian>
+    <Spanish>Nordic Shipyard Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_PLUTOCRATIC_PLANNED</Tag>
+    <English>Arabian Oasis Monopoly</English>
+    <French>Arabian Oasis Monopoly</French>
+    <German>Arabisches Oasenmonopol</German>
+    <Italian>Arabian Oasis Monopoly</Italian>
+    <Spanish>Arabian Oasis Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_PLUTOCRATIC_PLANNED</Tag>
+    <English>Angkor Rice Directorate</English>
+    <French>Angkor Rice Directorate</French>
+    <German>Reisdirektorium Angkor</German>
+    <Italian>Angkor Rice Directorate</Italian>
+    <Spanish>Angkor Rice Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_PLUTOCRATIC_PLANNED</Tag>
+    <English>Iberian Silver Syndicate</English>
+    <French>Iberian Silver Syndicate</French>
+    <German>Iberisches Silbersyndikat</German>
+    <Italian>Iberian Silver Syndicate</Italian>
+    <Spanish>Iberian Silver Syndicate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_PLUTOCRATIC_PLANNED</Tag>
+    <English>French Industrial Directorate</English>
+    <French>French Industrial Directorate</French>
+    <German>Franz&#246;sisches Industriedirektorium</German>
+    <Italian>French Industrial Directorate</Italian>
+    <Spanish>French Industrial Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_PLUTOCRATIC_PLANNED</Tag>
+    <English>British United Company</English>
+    <French>British United Company</French>
+    <German>Britische Einheitskompanie</German>
+    <Italian>British United Company</Italian>
+    <Spanish>British United Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_PLUTOCRATIC_PLANNED</Tag>
+    <English>German Cartel Union</English>
+    <French>German Cartel Union</French>
+    <German>Deutscher Kartellbund</German>
+    <Italian>German Cartel Union</Italian>
+    <Spanish>German Cartel Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_PLUTOCRATIC_PLANNED</Tag>
+    <English>Russian Combine Directorate</English>
+    <French>Russian Combine Directorate</French>
+    <German>Russisches Kombinatsdirektorium</German>
+    <Italian>Russian Combine Directorate</Italian>
+    <Spanish>Russian Combine Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_PLUTOCRATIC_PLANNED</Tag>
+    <English>United Netherlandish Company</English>
+    <French>United Netherlandish Company</French>
+    <German>Vereinigte Niederl&#228;ndische Kompanie</German>
+    <Italian>United Netherlandish Company</Italian>
+    <Spanish>United Netherlandish Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_PLUTOCRATIC_PLANNED</Tag>
+    <English>Malian Gold and Salt Cartel</English>
+    <French>Malian Gold and Salt Cartel</French>
+    <German>Gold- und Salzkartell Mali</German>
+    <Italian>Malian Gold and Salt Cartel</Italian>
+    <Spanish>Malian Gold and Salt Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_PLUTOCRATIC_PLANNED</Tag>
+    <English>Portuguese Spice Monopoly</English>
+    <French>Portuguese Spice Monopoly</French>
+    <German>Portugiesisches Gew&#252;rzmonopol</German>
+    <Italian>Portuguese Spice Monopoly</Italian>
+    <Spanish>Portuguese Spice Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_PLUTOCRATIC_PLANNED</Tag>
+    <English>Andean Storehouse Cartel</English>
+    <French>Andean Storehouse Cartel</French>
+    <German>Andines Speicherkartell</German>
+    <Italian>Andean Storehouse Cartel</Italian>
+    <Spanish>Andean Storehouse Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_PLUTOCRATIC_PLANNED</Tag>
+    <English>Steppe Cartel of the Caravan Lords</English>
+    <French>Steppe Cartel of the Caravan Lords</French>
+    <German>Steppenkartell der Karawanenherren</German>
+    <Italian>Steppe Cartel of the Caravan Lords</Italian>
+    <Spanish>Steppe Cartel of the Caravan Lords</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_PLUTOCRATIC_PLANNED</Tag>
+    <English>Aztec Tribute Cartel</English>
+    <French>Aztec Tribute Cartel</French>
+    <German>Aztekisches Tributkartell</German>
+    <Italian>Aztec Tribute Cartel</Italian>
+    <Spanish>Aztec Tribute Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_PLUTOCRATIC_PLANNED</Tag>
+    <English>High Chamber of Anatolian Commerce</English>
+    <French>High Chamber of Anatolian Commerce</French>
+    <German>Hohe Handelskammer Anatoliens</German>
+    <Italian>High Chamber of Anatolian Commerce</Italian>
+    <Spanish>High Chamber of Anatolian Commerce</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_PLUTOCRATIC_PLANNED</Tag>
+    <English>American Corporate Collective</English>
+    <French>American Corporate Collective</French>
+    <German>Amerikanisches Konzernkollektiv</German>
+    <Italian>American Corporate Collective</Italian>
+    <Spanish>American Corporate Collective</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_EGY_ATHEOCRACY</Tag>
     <English>Order of the Godless Sun</English>
     <French>Order of the Godless Sun</French>

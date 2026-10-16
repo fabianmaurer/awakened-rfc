@@ -566,6 +566,60 @@ AME,ISLAMIC_REPUBLIC,Islamic Republic of America,Islamische Republik Amerika
 AME,CALIPHATE,Caliphate of the New World,Kalifat der Neuen Welt
 AME,SULTANATE,Sultanate of America,Sultanat Amerika
 AME,SECULAR_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
+EGY,ROYAL_PLANNED,Realm of the Royal Granaries,Reich der königlichen Speicher
+IND,ROYAL_PLANNED,Maharajas' Economic Union,Wirtschaftsunion der Maharadschas
+CHI,ROYAL_PLANNED,Imperial Economic Union of China,Kaiserliche Wirtschaftsunion China
+BAB,ROYAL_PLANNED,Palace State of Babylon,Palaststaat Babylon
+GRE,ROYAL_PLANNED,Hellenic Crown Collective,Hellenisches Kronkollektiv
+PER,ROYAL_PLANNED,Realm of the Royal Satrapies,Reich der königlichen Satrapien
+CAR,ROYAL_PLANNED,Punic Crown Monopoly,Punisches Kronmonopol
+ROM,ROYAL_PLANNED,Imperium of the State Estates,Imperium der Staatsgüter
+JAP,ROYAL_PLANNED,Japanese Imperial Provisioning State,Kaiserlicher Versorgungsstaat Japan
+ETH,ROYAL_PLANNED,Imperial Domains of Abyssinia,Kaiserliche Domänen Abessiniens
+MAY,ROYAL_PLANNED,Realm of the Royal Maize Stores,Reich der königlichen Maiskammern
+VIK,ROYAL_PLANNED,Nordic Crown of Common Provision,Nordisches Versorgungskönigtum
+ARA,ROYAL_PLANNED,Royal Oasis Union,Königlicher Oasenverbund
+KHM,ROYAL_PLANNED,Realm of the Royal Waterworks,Reich der königlichen Wasserwerke
+SPA,ROYAL_PLANNED,Iberian Crown Estates Union,Iberische Krongüterunion
+FRA,ROYAL_PLANNED,French Manufactory Monarchy,Französische Manufakturmonarchie
+ENG,ROYAL_PLANNED,British Crown Monopoly,Britisches Kronmonopol
+GER,ROYAL_PLANNED,German Chamber Empire,Deutsches Kammerreich
+RUS,ROYAL_PLANNED,Tsardom of the State Combines,Zarenreich der Staatskombinate
+NED,ROYAL_PLANNED,Royal Polder Union,Königliche Polderunion
+MAL,ROYAL_PLANNED,Empire of the Malian Gold Treasury,Goldkammerreich Mali
+POR,ROYAL_PLANNED,Royal Overseas Company of Portugal,Königliche Überseekompanie Portugal
+INC,ROYAL_PLANNED,Land of the Four Quarters,Land der vier Weltgegenden
+MON,ROYAL_PLANNED,Khanate of the Common Pastures,Khanat der gemeinsamen Weiden
+AZT,ROYAL_PLANNED,Realm of the Royal Tribute,Reich der königlichen Tribute
+TUR,ROYAL_PLANNED,Sublime Porte of the State Manufactories,Hohe Pforte der Staatsmanufakturen
+AME,ROYAL_PLANNED,United Crown Industries of America,Vereinigte Kronwerke Amerikas
+EGY,PLUTOCRATIC_PLANNED,Nile Granary Directorate,Speicherdirektorium am Nil
+IND,PLUTOCRATIC_PLANNED,Indian Guild Dominion,Indische Gildenherrschaft
+CHI,PLUTOCRATIC_PLANNED,Silken Mandate of the Merchant Houses,Seidenmandat der Handelshäuser
+BAB,PLUTOCRATIC_PLANNED,Babylonian Canal Company,Babylonische Kanalgesellschaft
+GRE,PLUTOCRATIC_PLANNED,Aegean Shipowners' Cartel,Ägäisches Reederkartell
+PER,PLUTOCRATIC_PLANNED,Iranian Caravan Monopoly,Iranisches Karawanenmonopol
+CAR,PLUTOCRATIC_PLANNED,Directorate of the Seven Houses,Direktorium der Sieben Häuser
+ROM,PLUTOCRATIC_PLANNED,Roman Patrician Directorate,Römisches Patrizierdirektorium
+JAP,PLUTOCRATIC_PLANNED,Japanese Industrial Conclave,Japanischer Industriekonvent
+ETH,PLUTOCRATIC_PLANNED,Abyssinian Coffee and Salt Monopoly,Abessinisches Kaffee- und Salzmonopol
+MAY,PLUTOCRATIC_PLANNED,Maya Jade and Cacao Cartel,Jade- und Kakaokartell der Maya
+VIK,PLUTOCRATIC_PLANNED,Nordic Shipyard Cartel,Nordisches Werftenkartell
+ARA,PLUTOCRATIC_PLANNED,Arabian Oasis Monopoly,Arabisches Oasenmonopol
+KHM,PLUTOCRATIC_PLANNED,Angkor Rice Directorate,Reisdirektorium Angkor
+SPA,PLUTOCRATIC_PLANNED,Iberian Silver Syndicate,Iberisches Silbersyndikat
+FRA,PLUTOCRATIC_PLANNED,French Industrial Directorate,Französisches Industriedirektorium
+ENG,PLUTOCRATIC_PLANNED,British United Company,Britische Einheitskompanie
+GER,PLUTOCRATIC_PLANNED,German Cartel Union,Deutscher Kartellbund
+RUS,PLUTOCRATIC_PLANNED,Russian Combine Directorate,Russisches Kombinatsdirektorium
+NED,PLUTOCRATIC_PLANNED,United Netherlandish Company,Vereinigte Niederländische Kompanie
+MAL,PLUTOCRATIC_PLANNED,Malian Gold and Salt Cartel,Gold- und Salzkartell Mali
+POR,PLUTOCRATIC_PLANNED,Portuguese Spice Monopoly,Portugiesisches Gewürzmonopol
+INC,PLUTOCRATIC_PLANNED,Andean Storehouse Cartel,Andines Speicherkartell
+MON,PLUTOCRATIC_PLANNED,Steppe Cartel of the Caravan Lords,Steppenkartell der Karawanenherren
+AZT,PLUTOCRATIC_PLANNED,Aztec Tribute Cartel,Aztekisches Tributkartell
+TUR,PLUTOCRATIC_PLANNED,High Chamber of Anatolian Commerce,Hohe Handelskammer Anatoliens
+AME,PLUTOCRATIC_PLANNED,American Corporate Collective,Amerikanisches Konzernkollektiv
 EGY,ATHEOCRACY,Order of the Godless Sun,Orden der gottlosen Sonne
 IND,ATHEOCRACY,Bharat of the Eternal Law,Bharat des ewigen Gesetzes
 CHI,ATHEOCRACY,Realm of the Earthly Mandate,Reich des irdischen Mandats

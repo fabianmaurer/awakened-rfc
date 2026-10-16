@@ -37,7 +37,10 @@ Rules are evaluated in this order:
 | State religion and Holy State or Theocratic Legitimacy | Holy Kingdom, Theocracy, or Theocratic Republic according to government; Islamic rulers use Caliphate or Islamic Republic |
 | Monarchy, Islam, and State Religion | Sultanate |
 | Monarchy and Rule of Law | Constitutional Kingdom |
+| Monarchy with Planned Economy and Plutocracy | Plutocratic Planned State |
+| Other monarchies with Planned Economy | Royal Planned Economy |
 | Other monarchies | Kingdom up to six cities; Empire above six cities |
+| Planned Economy with Plutocracy, under Republic, Democracy or Dictatorship | Plutocratic Planned State |
 | Planned Economy with Democracy | Democratic Socialist Republic |
 | Planned Economy with Republic | Socialist Republic |
 | Planned Economy with Dictatorship | People's State |
@@ -105,6 +108,42 @@ Other evocative titles include Egypt's **Realm of the Two Lands**, Persia's
 Greece's merchant **Delian League**. Some names are literary adaptations of
 historical titles; their civic mappings are roleplaying choices.
 
+### Crown economies and plutocratic planning
+
+Two additional families cover Planned Economy: **ROYAL_PLANNED** for Monarchy,
+and **PLUTOCRATIC_PLANNED** for Plutocracy under Monarchy, Republic, Democracy
+or Dictatorship. Each has 27 authored English/German entries. Plutocracy takes
+priority when both combinations apply. Tribal governments retain tribal names;
+religious governments, sultanates, constitutional monarchies, and the existing
+period-specific historical overrides retain their priority. Egypt's Temple State
+and the atheist theocracy also retain priority. Vassal/colonial rules are unchanged.
+Scenario previews and live names use the same classifier.
+
+The crown family describes a monarch directing a common economy, with names
+such as **Imperial Economic Union of China / Kaiserliche Wirtschaftsunion
+China**, **French Manufactory Monarchy / Französische Manufakturmonarchie**,
+**Royal Polder Union / Königliche Polderunion**, and **United Crown Industries
+of America / Vereinigte Kronwerke Amerikas**. Names evoke particular economic
+institutions rather than repeating a common crown-union template. The Inca
+retain **Land of the Four Quarters** rather than receiving a new economic label.
+
+The plutocratic family imagines wealthy houses jointly controlling the plan:
+**Directorate of the Seven Houses / Direktorium der Sieben Häuser** for Carthage,
+**German Cartel Union / Deutscher Kartellbund**, **United Netherlandish Company /
+Vereinigte Niederländische Kompanie**, and **American Corporate Collective /
+Amerikanisches Konzernkollektiv**. Other examples include **Babylonian Canal
+Company / Babylonische Kanalgesellschaft** and **Portuguese Spice Monopoly /
+Portugiesisches Gewürzmonopol**. These are fictional alternate-history identities, not
+claims that the named historical societies used the game's Planned Economy.
+They avoid compulsory republican titles so they can also name monarchies.
+
+Naming does not alter stability. Monarchy + Planned Economy remains neutral;
+Plutocracy + Planned Economy retains its small -1 contribution, waived under
+Democracy along with other negative civic-combination contributions. A ruling
+elite can direct a plan, but its private wealth interests can still conflict with
+central allocation. The names acknowledge a possible institutional arrangement
+without granting it an automatic stability bonus.
+
 ### Military regimes
 
 Every civilization has an individually authored `MILITARY` title rather than
@@ -139,7 +178,7 @@ in play. `ScenarioCountryNames.py` supplies the preview descriptions through
 Country short names and nationality adjectives use the original RFC text.
 Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 601 entries representing 388 distinct English/German
+`CountryNames.csv` lists 692 entries representing 476 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.

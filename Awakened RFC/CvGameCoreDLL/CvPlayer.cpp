@@ -23222,12 +23222,16 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 			szForm = L"SULTANATE";
 		else if (bRuleOfLaw)
 			szForm = L"CONSTITUTIONAL";
+		else if (bPlanned)
+			szForm = bPlutocracy ? L"PLUTOCRATIC_PLANNED" : L"ROYAL_PLANNED";
 		else
 			szForm = iNumCities > 6 ? L"EMPIRE" : L"KINGDOM";
 	}
 	else if (bPlanned)
 	{
-		if (bDemocracy)
+		if (bPlutocracy)
+			szForm = L"PLUTOCRATIC_PLANNED";
+		else if (bDemocracy)
 			szForm = L"SOCIALIST_DEMOCRACY";
 		else if (bRepublic)
 			szForm = L"SOCIALIST_REPUBLIC";
