@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_SCENARIO_1453_AD</Tag>
+    <English>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</English>
+    <French>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</French>
+    <German>1453 n. Chr.: Nach dem Fall Konstantinopels. Alle bestehenden gro&#223;en Zivilisationen sind spielbar. Regionale Staaten werden durch die RFC-Zivilisationen abgebildet; Amerika erscheint nach dem gewohnten Zeitplan.</German>
+    <Italian>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</Italian>
+    <Spanish>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_0</Tag>
+    <English>Inal</English>
+    <French>Inal</French>
+    <German>Inal</German>
+    <Italian>Inal</Italian>
+    <Spanish>Inal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_1</Tag>
+    <English>Bahlul Lodi</English>
+    <French>Bahlul Lodi</French>
+    <German>Bahlul Lodi</German>
+    <Italian>Bahlul Lodi</Italian>
+    <Spanish>Bahlul Lodi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_2</Tag>
+    <English>Jingtai</English>
+    <French>Jingtai</French>
+    <German>Jingtai</German>
+    <Italian>Jingtai</Italian>
+    <Spanish>Jingtai</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_4</Tag>
+    <English>Palaiologan Despots</English>
+    <French>Palaiologan Despots</French>
+    <German>Despoten der Palaiologen</German>
+    <Italian>Palaiologan Despots</Italian>
+    <Spanish>Palaiologan Despots</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_5</Tag>
+    <English>Timurid Princes</English>
+    <French>Timurid Princes</French>
+    <German>Timuridische F&#252;rsten</German>
+    <Italian>Timurid Princes</Italian>
+    <Spanish>Timurid Princes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_6</Tag>
+    <English>Abu Amr Uthman</English>
+    <French>Abu Amr Uthman</French>
+    <German>Abu Amr Uthman</German>
+    <Italian>Abu Amr Uthman</Italian>
+    <Spanish>Abu Amr Uthman</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_7</Tag>
+    <English>Italian City Councils</English>
+    <French>Italian City Councils</French>
+    <German>Italienische Stadtr&#228;te</German>
+    <Italian>Italian City Councils</Italian>
+    <Spanish>Italian City Councils</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_8</Tag>
+    <English>Ashikaga Yoshimasa</English>
+    <French>Ashikaga Yoshimasa</French>
+    <German>Ashikaga Yoshimasa</German>
+    <Italian>Ashikaga Yoshimasa</Italian>
+    <Spanish>Ashikaga Yoshimasa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_9</Tag>
+    <English>Zara Yaqob</English>
+    <French>Zara Yaqob</French>
+    <German>Zara Yaqob</German>
+    <Italian>Zara Yaqob</Italian>
+    <Spanish>Zara Yaqob</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_10</Tag>
+    <English>Maya Dynasties</English>
+    <French>Maya Dynasties</French>
+    <German>Maya-Dynastien</German>
+    <Italian>Maya Dynasties</Italian>
+    <Spanish>Maya Dynasties</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_11</Tag>
+    <English>Scandinavian Crowns</English>
+    <French>Scandinavian Crowns</French>
+    <German>Skandinavische K&#246;nigsh&#228;user</German>
+    <Italian>Scandinavian Crowns</Italian>
+    <Spanish>Scandinavian Crowns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_12</Tag>
+    <English>Sharifs of Mecca</English>
+    <French>Sharifs of Mecca</French>
+    <German>Scharifen von Mekka</German>
+    <Italian>Sharifs of Mecca</Italian>
+    <Spanish>Sharifs of Mecca</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_13</Tag>
+    <English>Ponhea Yat</English>
+    <French>Ponhea Yat</French>
+    <German>Ponhea Yat</German>
+    <Italian>Ponhea Yat</Italian>
+    <Spanish>Ponhea Yat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_14</Tag>
+    <English>Iberian Crowns</English>
+    <French>Iberian Crowns</French>
+    <German>Iberische K&#246;nigsh&#228;user</German>
+    <Italian>Iberian Crowns</Italian>
+    <Spanish>Iberian Crowns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_15</Tag>
+    <English>Charles VII</English>
+    <French>Charles VII</French>
+    <German>Karl VII.</German>
+    <Italian>Charles VII</Italian>
+    <Spanish>Charles VII</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_16</Tag>
+    <English>Henry VI</English>
+    <French>Henry VI</French>
+    <German>Heinrich VI.</German>
+    <Italian>Henry VI</Italian>
+    <Spanish>Henry VI</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_17</Tag>
+    <English>Frederick III</English>
+    <French>Frederick III</French>
+    <German>Friedrich III.</German>
+    <Italian>Frederick III</Italian>
+    <Spanish>Frederick III</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_18</Tag>
+    <English>Vasily II</English>
+    <French>Vasily II</French>
+    <German>Wassili II.</German>
+    <Italian>Vasily II</Italian>
+    <Spanish>Vasily II</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_19</Tag>
+    <English>Philip the Good</English>
+    <French>Philip the Good</French>
+    <German>Philipp der Gute</German>
+    <Italian>Philip the Good</Italian>
+    <Spanish>Philip the Good</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_20</Tag>
+    <English>Mansa of Mali</English>
+    <French>Mansa of Mali</French>
+    <German>Mansa von Mali</German>
+    <Italian>Mansa of Mali</Italian>
+    <Spanish>Mansa of Mali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_21</Tag>
+    <English>Afonso V</English>
+    <French>Afonso V</French>
+    <German>Alfons V.</German>
+    <Italian>Afonso V</Italian>
+    <Spanish>Afonso V</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_22</Tag>
+    <English>Pachacuti</English>
+    <French>Pachacuti</French>
+    <German>Pachacuti</German>
+    <Italian>Pachacuti</Italian>
+    <Spanish>Pachacuti</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_23</Tag>
+    <English>Mongol Taishis</English>
+    <French>Mongol Taishis</French>
+    <German>Mongolische Taischi</German>
+    <Italian>Mongol Taishis</Italian>
+    <Spanish>Mongol Taishis</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_24</Tag>
+    <English>Moctezuma I</English>
+    <French>Moctezuma I</French>
+    <German>Moctezuma I.</German>
+    <Italian>Moctezuma I</Italian>
+    <Spanish>Moctezuma I</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_25</Tag>
+    <English>Mehmed II</English>
+    <French>Mehmed II</French>
+    <German>Mehmed II.</German>
+    <Italian>Mehmed II</Italian>
+    <Spanish>Mehmed II</Spanish>
+  </TEXT>
+</Civ4GameText>

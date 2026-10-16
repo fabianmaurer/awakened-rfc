@@ -222,7 +222,7 @@ class CvPediaTech(CvPediaScreen.CvPediaScreen):
 #			eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(j)
 		for eLoopUnit in range(gc.getNumUnitInfos()):
 			if (eLoopUnit != -1):
-				if (isTechRequiredForUnit(self.iTech, eLoopUnit)):
+				if (gc.getUnitInfo(eLoopUnit).getProductionCost() >= 0 and isTechRequiredForUnit(self.iTech, eLoopUnit)):
         				screen.attachImageButton( panelName, "", gc.getUnitInfo(eLoopUnit).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, eLoopUnit, 1, False )
 
 	# Place buildings...
@@ -239,7 +239,7 @@ class CvPediaTech(CvPediaScreen.CvPediaScreen):
 #			eLoopBuilding = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationBuildings(j)
 		for eLoopBuilding in range(gc.getNumBuildingInfos()):
 			if (eLoopBuilding != -1):
-				if (isTechRequiredForBuilding(self.iTech, eLoopBuilding)):
+				if (gc.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0 and isTechRequiredForBuilding(self.iTech, eLoopBuilding)):
         				screen.attachImageButton( panelName, "", gc.getBuildingInfo(eLoopBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, eLoopBuilding, 1, False )
 						
 		for eLoopProject in range(gc.getNumProjectInfos()):

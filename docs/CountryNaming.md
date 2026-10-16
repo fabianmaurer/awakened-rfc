@@ -41,6 +41,13 @@ Celestial Empire, Heavenly Kingdom of Great Peace, Land of the Four Quarters,
 Regno d'Italia, Commonwealth of England, Batavian Republic, Novgorod Republic,
 North Sea Empire, Tawantinsuyu, and the United Kingdom. Invented alternatives include the Nile
 League, League of the Jade Cities, Andean Federation, and Union of Bharat.
+Before 962, Germany's ordinary or Christian religious monarchy uses East Francia
+(Ostfränkisches Reich), including the 840 AD start. From 962 onward the usual
+civic and religious names apply. Constitutional and alternate religious titles
+remain available before that date.
+The period rules and the audit of the starting scenarios are recorded in
+`docs/ScenarioCountryNamesAudit.md`. They change names only, preserve vassal
+priority, and retain alternate civic and religious outcomes.
 Germany uses the Holy Roman Empire for a Christian religious monarchy. Rome
 uses the Papal States for a Christian religious government which is not a
 Republic or Democracy. Other state religions use the ordinary country entries.
@@ -103,11 +110,17 @@ Französisches Konsulat, Japanisches Shogunat, and Batavisches Protektorat retai
 their different institutional character.
 
 Civic changes and conversions refresh names through the original event hooks.
-Names also refresh once per player turn, including in existing saves. Existing
-pre-spawn names, country short names, and nationality adjectives use the original
-RFC text. Name selection does not depend on UI language or random numbers.
+Names also refresh once per player turn, including in existing saves. The five
+authored scenario selection screens preview country names using the same DLL
+classifier, with the intended profiles from `StartingCivics.PROFILES`, authored
+state religions, and authored city counts. These are starting-profile previews;
+technology restrictions and subsequent gameplay may produce a different name
+in play. `ScenarioCountryNames.py` supplies the preview descriptions through
+`CvWBInterface.getPlayerDesc`, without modifying scenario files or player state.
+Country short names and nationality adjectives use the original RFC text.
+Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 569 entries representing 358 distinct English/German
+`CountryNames.csv` lists 601 entries representing 388 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.

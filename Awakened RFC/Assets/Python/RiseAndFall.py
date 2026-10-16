@@ -10,6 +10,7 @@ import RFCUtils
 import Consts as con
 import StartingCivics
 import Scenario840AD
+import Scenario1453AD
 import CityNameManager 
 
 
@@ -560,13 +561,16 @@ class RiseAndFall:
 #####################################  
 
         def setup(self):
+                if Scenario1453AD.isScenario():
+                        Scenario1453AD.setup(self)
+                        return
                 if Scenario840AD.isScenario():
                         Scenario840AD.setup(self)
                         return
 
                 #self.setupBirthTurnModifiers() (causes a crash on civ switch)
 
-                if (not gc.getPlayer(0).isPlayable()): #late start condition
+                if (gc.getGame().getStartTurn() != 0): #late start condition
                         self.clear600ADChina()
 
                 #self.assign4000BCtechs()
@@ -614,7 +618,7 @@ class RiseAndFall:
                         utils.setGoal(iMaya, 0, 0)
                         utils.setGoal(iMaya, 1, 0)
                         utils.setGoal(iMaya, 2, 0)
-                elif (not gc.getPlayer(0).isPlayable()): #late start condition (800BC)
+                elif (gc.getGame().getStartTurn() != 0): #late start condition (800BC)
                         self.assign800BCTechs()
                         pEgypt.changeGold(50)
                         pIndia.changeGold(50)
@@ -641,7 +645,7 @@ class RiseAndFall:
                 for iCiv in range(gc.getMAX_PLAYERS()):
                         StartingCivics.apply(iCiv)
 
-                if (gc.getPlayer(0).isPlayable()): #late start condition 
+                if (gc.getGame().getStartTurn() == 0): #late start condition 
                         self.create4000BCstartingUnits()
                 elif (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
                         self.create600ADstartingUnits()
@@ -820,9 +824,11 @@ class RiseAndFall:
 ##                self.initBirth(iGameTurn, con.tBirth[iAztecs]+self.getBirthTurnModifier(iAztecs), iAztecs)
 ##                self.initBirth(iGameTurn, con.tBirth[iAmerica]+self.getBirthTurnModifier(iAmerica), iAmerica)
                         
-                if Scenario840AD.isScenario():
+                if Scenario1453AD.isScenario():
+                        iFirstSpawn = iAmerica
+                elif Scenario840AD.isScenario():
                         iFirstSpawn = iRussia
-                elif (gc.getPlayer(0).isPlayable()):
+                elif (gc.getGame().getStartTurn() == 0):
                         iFirstSpawn = iGreece
                 elif (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)                          
                         iFirstSpawn = iEthiopia
@@ -834,7 +840,7 @@ class RiseAndFall:
                                 self.initBirth(iGameTurn, con.tBirth[iLoopCiv], iLoopCiv)
 
                 if (iGameTurn == 87):
-                        if (not gc.getPlayer(0).isPlayable()):  #late start condition (RFCMP) 800BC
+                        if (gc.getGame().getStartTurn() != 0):  #late start condition (RFCMP) 800BC
                                 print ("late start")
                                 iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iPersia, tCoreAreasTL[iPersia], tCoreAreasBR[iPersia])
                                 self.convertSurroundingPlotCulture(iPersia, tCoreAreasTL[iPersia], tCoreAreasBR[iPersia])
@@ -1488,7 +1494,7 @@ class RiseAndFall:
                                 if (gc.getPlayer(iOwner).isHuman()):
                                         bHuman = True
 
-                        for t in range(con.iNumTechs):
+                        for t in range(gc.getNumTechInfos()):
                                 if (teamBarbarian.isHasTech(t) or teamIndependent.isHasTech(t) or teamIndependent2.isHasTech(t)): #remove indep in vanilla
                                         teamDeadCiv.setHasTech(t, True, iDeadCiv, False, False)
 
@@ -1503,7 +1509,7 @@ class RiseAndFall:
                                         bOwnerHumanVassal = teamOwner.isVassal(iHuman)
 
                                         if (iOwner not in ownersList): #assignment of techs must be done before the creation of garrisons
-                                                for t in range(con.iNumTechs):
+                                                for t in range(gc.getNumTechInfos()):
                                                         if (teamOwner.isHasTech(t)): 
                                                                 teamDeadCiv.setHasTech(t, True, iDeadCiv, False, False)
 
@@ -2594,10 +2600,12 @@ class RiseAndFall:
 
 
         def warOnSpawn(self):
+                if Scenario1453AD.isScenario():
+                        return # Diplomacy is authored in the 1453 map.
                 for iCiv in range(iNumMajorPlayers):
                         if Scenario840AD.isScenario() and not gc.getPlayer(iCiv).isAlive():
                                 continue
-                        if (not gc.getPlayer(0).isPlayable() and con.tIsActiveOnLateStart[iCiv]==0): #late start condition
+                        if (gc.getGame().getStartTurn() != 0 and con.tIsActiveOnLateStart[iCiv]==0): #late start condition
                                 continue #skip          
                         pCiv = gc.getPlayer(iCiv)
                         teamCiv = gc.getTeam(pCiv.getTeam())
@@ -2608,7 +2616,7 @@ class RiseAndFall:
                                 for iLoopCiv in con.lEnemyCivsOnSpawn[iCiv]:
                                         if Scenario840AD.isScenario() and not gc.getPlayer(iLoopCiv).isAlive():
                                                 continue
-                                        if (not gc.getPlayer(0).isPlayable() and con.tIsActiveOnLateStart[iLoopCiv]==0): #late start condition
+                                        if (gc.getGame().getStartTurn() != 0 and con.tIsActiveOnLateStart[iLoopCiv]==0): #late start condition
                                                 continue #skip
                                         iLoopMin = 50
                                         if (iLoopCiv >= iNumMajorPlayers):
@@ -3547,6 +3555,7 @@ class RiseAndFall:
         def assign800BCTechs( self ): #RFCMP
             
                 iCiv = iEgypt
+                teamEgypt.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamEgypt.setHasTech(con.iMining, True, iCiv, False, False)
                 teamEgypt.setHasTech(con.iMysticism, True, iCiv, False, False)
                 teamEgypt.setHasTech(con.iPolytheism, True, iCiv, False, False)

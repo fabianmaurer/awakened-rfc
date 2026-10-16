@@ -44,6 +44,31 @@ FALLBACKS = (
 )
 
 
+def getProfile(civType, startTurn):
+    profile = PROFILES.get(civType, DEFAULTS)
+    # The early-game UP balance applies to 3000 BC, not established Egypt.
+    if civType == "CIVILIZATION_EGYPT" and startTurn == 87:
+        return ("MONARCHY",) + profile[1:]
+    if startTurn == 271:
+        # Institutions of the authored 1453 polities, rather than their ancient
+        # or medieval original births. These still require the scenario techs.
+        monarchies = ("CIVILIZATION_EGYPT", "CIVILIZATION_INDIA", "CIVILIZATION_GREECE",
+                      "CIVILIZATION_PERSIA", "CIVILIZATION_CARTHAGE", "CIVILIZATION_ARABIA",
+                      "CIVILIZATION_NETHERLANDS", "CIVILIZATION_MALI", "CIVILIZATION_OTTOMAN",
+                      "CIVILIZATION_PORTUGAL")
+        if civType in monarchies:
+            return ("MONARCHY", "DESPOTISM", "SERFDOM", "KNIGHTHOOD", "STATE_RELIGION")
+        if civType == "CIVILIZATION_ROME":
+            return ("REPUBLIC", "PLUTOCRACY", "SERFDOM", "MILITIA", "STATE_RELIGION")
+        if civType == "CIVILIZATION_GERMANY":
+            return ("MONARCHY", "THEOCRATIC_LEGITIMACY", "SERFDOM", "KNIGHTHOOD", "STATE_RELIGION")
+        if civType == "CIVILIZATION_JAPAN":
+            return ("MONARCHY", "DESPOTISM", "SERFDOM", "KNIGHTHOOD", "STATE_RELIGION")
+        if civType in ("CIVILIZATION_MAYA", "CIVILIZATION_INCA", "CIVILIZATION_AZTEC"):
+            return ("MONARCHY", "DESPOTISM", "SLAVERY", "WARRIOR_SOCIETY", "ANCESTOR_CULT")
+    return profile
+
+
 def apply(iPlayer):
     # Resolve infos here, never during module import before XML is available.
     gc = CyGlobalContext()
@@ -51,7 +76,8 @@ def apply(iPlayer):
     civType = player.getCivilizationType()
     if civType < 0:
         return
-    profile = PROFILES.get(gc.getCivilizationInfo(civType).getType(), DEFAULTS)
+    profile = getProfile(gc.getCivilizationInfo(civType).getType(),
+                         gc.getGame().getStartTurn())
     for iColumn in range(len(profile)):
         for name in (profile[iColumn],) + FALLBACKS[iColumn]:
             civic = gc.getInfoTypeForString("CIVIC_" + name)

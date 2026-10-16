@@ -11,7 +11,7 @@ FAMILIES = (
 
 CATALOG = """
 EGY
-Clans of the Pharaoh | Sippen des Pharaos
+Peoples of the Nile Valley | Völker des Niltals
 Kingdom of Egypt | Königreich Ägypten
 Egyptian Empire | Ägyptisches Reich
 Republic of Egypt | Republik Ägypten
@@ -84,7 +84,7 @@ ROM
 Latin Tribes | Latinische Stämme
 Kingdom of Rome | Königreich Rom
 Roman Empire | Römisches Reich
-Senate and People of Rome | Senat und Volk von Rom
+SPQR | SPQR
 Roman Republic | Römische Republik
 League of the Seven Hills | Siebenhügelbund
 Roman Commune | Römische Kommune
@@ -319,6 +319,38 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),
+    ('EGY', 'MAMLUK'): ('Mamluk Sultanate', 'Mamlukensultanat'),
+    ('IND', 'DELHI'): ('Delhi Sultanate', 'Sultanat von Delhi'),
+    ('PER', 'TIMURID'): ('Timurid Principalities', 'Timuridenreiche'),
+    ('CAR', 'HAFSID'): ('Hafsid Sultanate', 'Hafsiden-Sultanat'),
+    ('ARA', 'MECCA'): ('Sharifate of Mecca', 'Scharifat von Mekka'),
+    ('CHI', 'MING'): ('Ming Empire', 'Ming-Reich'),
+    ('JAP', 'ASHIKAGA'): ('Ashikaga Shogunate', 'Ashikaga-Shogunat'),
+    ('GRE', 'DESPOTATE'): ('Greek Despotate', 'Griechisches Despotat'),
+    ('RUS', 'MUSCOVY'): ('Grand Principality of Moscow', 'Großfürstentum Moskau'),
+    ('NED', 'BURGUNDIAN'): ('Burgundian Netherlands', 'Burgundische Niederlande'),
+    ('NED', 'HABSBURG'): ('Habsburg Netherlands', 'Habsburgische Niederlande'),
+    ('MON', 'NORTHERN_YUAN'): ('Northern Yuan', 'Nördliche Yuan'),
+    ('AZT', 'TRIPLE_ALLIANCE'): ('Aztec Triple Alliance', 'Aztekischer Dreibund'),
+    ('ROM', 'ITALIAN_STATES'): ('Italian City-States', 'Italienische Stadtstaaten'),
+    # Period identities shared by scenario previews and live country naming.
+    ('FRA', 'FRANKISH_REALM'): ('Frankish Realm', 'Reich der Franken'),
+    ('FRA', 'WEST_FRANCIA'): ('West Francia', 'Westfränkisches Reich'),
+    ('KHM', 'CHENLA'): ('Chenla', 'Reich von Chenla'),
+    ('KHM', 'ANGKOR'): ('Khmer Empire', 'Khmerreich'),
+    ('SPA', 'CHRISTIAN_IBERIA'): ('Christian Kingdoms of Iberia', 'Christliche Reiche Iberiens'),
+    ('SPA', 'IBERIAN_KINGDOMS'): ('Iberian Kingdoms', 'Iberische Königreiche'),
+    ('ENG', 'ANGLO_SAXON'): ('Anglo-Saxon Kingdoms', 'Angelsächsische Königreiche'),
+    ('VIK', 'NORSE_KINGDOMS'): ('Scandinavian Kingdoms', 'Skandinavische Königreiche'),
+    ('JAP', 'EARLY_JAPAN'): ('Peoples of the Japanese Islands', 'Völker der japanischen Inseln'),
+    ('JAP', 'YAMATO'): ('Yamato Realm', 'Reich von Yamato'),
+    ('IND', 'INDUS'): ('Indus Valley Cultures', 'Induskulturen'),
+    ('IND', 'INDIAN_KINGDOMS'): ('Indian Kingdoms', 'Indische Königreiche'),
+    ('CHI', 'EARLY_CHINA'): ('Early Chinese Cultures', 'Frühe chinesische Kulturen'),
+    ('BAB', 'EARLY_MESOPOTAMIA'): ('Mesopotamian City-States', 'Stadtstaaten Mesopotamiens'),
+    ('GRE', 'POLEIS'): ('Greek City-States', 'Griechische Stadtstaaten'),
+    ('ARA', 'EARLY_ARABIA'): ('Arabian Kingdoms', 'Arabische Königreiche'),
     # Literary and historical identities, selected by existing civic families.
     # America represents a settler-founded nation, not an indigenous tribal group.
     # Religious names are historical inspirations, not denominational checks.
@@ -335,6 +367,7 @@ SPECIAL_NAMES = {
     ('JAP', 'THEOCRACY'): ('Land of the Gods', 'Land der Götter'),
     ('JAP', 'HOLY_KINGDOM'): ('Land of the Gods', 'Land der Götter'),
     ('GRE', 'MERCHANT_REPUBLIC'): ('Delian League', 'Attischer Seebund'),
+    ('GER', 'EAST_FRANCIA'): ('East Francia', 'Ostfränkisches Reich'),
     ('GER', 'HOLY_ROMAN'): ('Holy Roman Empire', 'Heiliges Römisches Reich'),
     ('ROM', 'PAPAL_STATES'): ('Papal States', 'Kirchenstaat'),
     ('ENG', 'CONSTITUTIONAL'): ('United Kingdom', 'Vereinigtes Königreich'),

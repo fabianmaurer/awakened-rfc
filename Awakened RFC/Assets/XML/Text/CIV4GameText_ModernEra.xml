@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS</Tag>
+<English>Environmental Quality</English>
+<French>Environmental Quality</French>
+<German>Umwelt- und Lebensqualit&#228;t</German>
+<Italian>Environmental Quality</Italian>
+<Spanish>Environmental Quality</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS_HELP</Tag>
+<English>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Zufriedenheit in jeder Stadt. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS_PEDIA</Tag>
+<English>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Zufriedenheit in jeder Stadt. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 happiness in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS</Tag>
+<English>Medical Progress</English>
+<French>Medical Progress</French>
+<German>Medizinischer Fortschritt</German>
+<Italian>Medical Progress</Italian>
+<Spanish>Medical Progress</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS_HELP</Tag>
+<English>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Gesundheit in jeder Stadt. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS_PEDIA</Tag>
+<English>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Gesundheit in jeder Stadt. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 health in every city. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH</Tag>
+<English>Military Research</English>
+<French>Military Research</French>
+<German>Milit&#228;rische Forschung</German>
+<Italian>Military Research</Italian>
+<Spanish>Military Research</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH_HELP</Tag>
+<English>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Prozentpunkt Kampfst&#228;rke f&#252;r Land- und Marineeinheiten, h&#246;chstens +15 %. Die Forschung endet bei Stufe 15. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH_PEDIA</Tag>
+<English>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</English>
+<French>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</French>
+<German>+1 Prozentpunkt Kampfst&#228;rke f&#252;r Land- und Marineeinheiten, h&#246;chstens +15 %. Die Forschung endet bei Stufe 15. Jeder Abschluss verteuert diese Richtung um 35 %; andere Richtungen bleiben unver&#228;ndert. Kosten werden aufgerundet; technische Obergrenze: 2.000.000 Forschung.</German>
+<Italian>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Italian>
+<Spanish>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Each completion increases this field's cost by 35%; other fields are unaffected. Costs are rounded up; engine safety limit: 2,000,000 research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION</Tag>
+<English>Digital Administration</English>
+<French>Digital Administration</French>
+<German>Digitale Verwaltung</German>
+<Italian>Digital Administration</Italian>
+<Spanish>Digital Administration</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING</Tag>
+<English>Machine Learning</English>
+<French>Machine Learning</French>
+<German>Maschinelles Lernen</German>
+<Italian>Machine Learning</Italian>
+<Spanish>Machine Learning</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES</Tag>
+<English>AI-Assisted Services</English>
+<French>AI-Assisted Services</French>
+<German>KI-gest&#252;tzte Dienstleistungen</German>
+<Italian>AI-Assisted Services</Italian>
+<Spanish>AI-Assisted Services</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION</Tag>
+<English>Networked Production</English>
+<French>Networked Production</French>
+<German>Vernetzte Produktion</German>
+<Italian>Networked Production</Italian>
+<Spanish>Networked Production</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI</Tag>
+<English>General Artificial Intelligence</English>
+<French>General Artificial Intelligence</French>
+<German>Allgemeine k&#252;nstliche Intelligenz</German>
+<Italian>General Artificial Intelligence</Italian>
+<Spanish>General Artificial Intelligence</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION</Tag>
+<English>Full Automation</English>
+<French>Full Automation</French>
+<German>Vollst&#228;ndige Automatisierung</German>
+<Italian>Full Automation</Italian>
+<Spanish>Full Automation</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION_HELP</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION_PEDIA</Tag>
+<English>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</English>
+<French>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</French>
+<German>Sehr teure Langzeitforschung. Schaltet ein spezialisiertes Stadtgeb&#228;ude frei; Dauerforschung bleibt eine Alternative.</German>
+<Italian>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Italian>
+<Spanish>Expensive long-term research. Unlocks a specialized city building; repeatable research remains an alternative.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION</Tag>
+<English>Digital Administration Centre</English>
+<French>Digital Administration Centre</French>
+<German>Digitales Verwaltungszentrum</German>
+<Italian>Digital Administration Centre</Italian>
+<Spanish>Digital Administration Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_MACHINE_LEARNING</Tag>
+<English>Machine Learning Laboratory</English>
+<French>Machine Learning Laboratory</French>
+<German>Labor f&#252;r maschinelles Lernen</German>
+<Italian>Machine Learning Laboratory</Italian>
+<Spanish>Machine Learning Laboratory</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_MACHINE_LEARNING_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_AI_SERVICES</Tag>
+<English>AI Services Centre</English>
+<French>AI Services Centre</French>
+<German>KI-Dienstleistungszentrum</German>
+<Italian>AI Services Centre</Italian>
+<Spanish>AI Services Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_AI_SERVICES_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_NETWORKED_PRODUCTION</Tag>
+<English>Networked Factory</English>
+<French>Networked Factory</French>
+<German>Vernetzte Fabrik</German>
+<Italian>Networked Factory</Italian>
+<Spanish>Networked Factory</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_NETWORKED_PRODUCTION_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_GENERAL_AI</Tag>
+<English>General AI Research Centre</English>
+<French>General AI Research Centre</French>
+<German>Forschungszentrum f&#252;r allgemeine KI</German>
+<Italian>General AI Research Centre</Italian>
+<Spanish>General AI Research Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_GENERAL_AI_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_FULL_AUTOMATION</Tag>
+<English>Automated Production Complex</English>
+<French>Automated Production Complex</French>
+<German>Vollautomatisierter Produktionskomplex</German>
+<Italian>Automated Production Complex</Italian>
+<Spanish>Automated Production Complex</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_FULL_AUTOMATION_PEDIA</Tag>
+<English>A specialized modernization enabled by advanced AI and automation research.</English>
+<French>A specialized modernization enabled by advanced AI and automation research.</French>
+<German>Eine spezialisierte Modernisierung durch fortgeschrittene KI- und Automatisierungsforschung.</German>
+<Italian>A specialized modernization enabled by advanced AI and automation research.</Italian>
+<Spanish>A specialized modernization enabled by advanced AI and automation research.</Spanish>
+</TEXT>
+</Civ4GameText>

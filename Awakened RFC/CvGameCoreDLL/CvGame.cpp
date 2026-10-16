@@ -3808,6 +3808,10 @@ void CvGame::incrementGameTurn()
 
 int CvGame::getTurnYear(int iGameTurn)
 {
+	// The 1453 start uses the 1450 turn slot, followed by the normal 1455 turn.
+	// This keeps all later RFC birth/deadline turns on the original calendar.
+	if (getStartTurn() == 271 && getStartYear() == -3000 && iGameTurn == 271)
+		return 1453;
 	// moved the body of this method to Game Core Utils so we have access for other games than the current one (replay screen in HOF)
 	return getTurnYearForGame(iGameTurn, getStartYear(), getCalendar(), getGameSpeedType());
 }
@@ -6285,7 +6289,6 @@ void CvGame::doTurn()
 
 	createBarbarianUnits();
 
-	doGlobalWarming();
 
 	//Rhye - comment this to stop religion founding
 	doHolyCity();
@@ -6397,94 +6400,6 @@ void CvGame::doDeals()
 	for(pLoopDeal = firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = nextDeal(&iLoop))
 	{
 		pLoopDeal->doTurn();
-	}
-}
-
-
-void CvGame::doGlobalWarming()
-{
-	OBSERVER_PERFORMANCE("CvGame::doGlobalWarming");
-	int iGlobalWarmingDefense = 0;
-	for (int i = 0; i < GC.getMapINLINE().numPlotsINLINE(); ++i)
-	{
-		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(i);
-
-		if (!pPlot->isWater())
-		{
-			if (pPlot->getFeatureType() != NO_FEATURE)
-			{
-				if (GC.getFeatureInfo(pPlot->getFeatureType()).getGrowthProbability() > 0) // hack, but we don't want to add new XML field in the patch just for this
-				{
-					++iGlobalWarmingDefense;
-				}
-			}
-		}
-	}
-	iGlobalWarmingDefense = iGlobalWarmingDefense * GC.getDefineINT("GLOBAL_WARMING_FOREST") / std::max(1, GC.getMapINLINE().getLandPlots());
-
-	int iUnhealthWeight = GC.getDefineINT("GLOBAL_WARMING_UNHEALTH_WEIGHT");
-	int iGlobalWarmingValue = 0;
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
-	{
-		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes) iPlayer);
-		if (kPlayer.isAlive())
-		{
-			int iLoop;
-			for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity != NULL; pCity = kPlayer.nextCity(&iLoop))
-			{
-				iGlobalWarmingValue -= pCity->getBuildingBadHealth() * iUnhealthWeight;
-			}
-		}
-	}
-	iGlobalWarmingValue /= GC.getMapINLINE().numPlotsINLINE();
-
-	iGlobalWarmingValue += getNukesExploded() * GC.getDefineINT("GLOBAL_WARMING_NUKE_WEIGHT") / 100;
-
-	TerrainTypes eWarmingTerrain = ((TerrainTypes)(GC.getDefineINT("GLOBAL_WARMING_TERRAIN")));
-
-	for (int iI = 0; iI < iGlobalWarmingValue; iI++)
-	{
-		if (getSorenRandNum(100, "Global Warming") + iGlobalWarmingDefense < GC.getDefineINT("GLOBAL_WARMING_PROB"))
-		{
-			CvPlot* pPlot = GC.getMapINLINE().syncRandPlot(RANDPLOT_LAND | RANDPLOT_NOT_CITY);
-
-			if (pPlot != NULL)
-			{
-				bool bChanged = false;
-
-				if (pPlot->getFeatureType() != NO_FEATURE)
-				{
-					if (pPlot->getFeatureType() != GC.getDefineINT("NUKE_FEATURE"))
-					{
-						pPlot->setFeatureType(NO_FEATURE);
-						bChanged = true;
-					}
-				}
-				else if (pPlot->getTerrainType() != eWarmingTerrain)
-				{
-					if (pPlot->calculateTotalBestNatureYield(NO_TEAM) > 1)
-					{
-						pPlot->setTerrainType(eWarmingTerrain);
-						bChanged = true;
-					}
-				}
-
-				if (bChanged)
-				{
-					pPlot->setImprovementType(NO_IMPROVEMENT);
-
-					CvCity* pCity = GC.getMapINLINE().findCity(pPlot->getX_INLINE(), pPlot->getY_INLINE());
-					if (pCity != NULL)
-					{
-						if (pPlot->isVisible(pCity->getTeam(), false))
-						{
-							CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_GLOBAL_WARMING_NEAR_CITY", pCity->getNameKey());
-							gDLL->getInterfaceIFace()->addMessage(pCity->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_GLOBALWARMING", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE(), true, true);
-						}
-					}
-				}
-			}
-		}
 	}
 }
 

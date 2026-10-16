@@ -145,9 +145,11 @@ def getPlayerData():
 		
 def getPlayerDesc():
 	"after reading a save file, return player description data (wide strings) as a tuple"
+	import ScenarioCountryNames
+	countryNames = ScenarioCountryNames.descriptions(WBDesc, lastFileRead)
 	t=()
 	for i in range(gc.getMAX_CIV_PLAYERS()):
-		t=t+(WBDesc.playersDesc[i].szCivDesc,)
+		t=t+(countryNames.get(i, WBDesc.playersDesc[i].szCivDesc),)
 		t=t+(WBDesc.playersDesc[i].szCivShortDesc,)
 		t=t+(WBDesc.playersDesc[i].szLeaderName,)
 		t=t+(WBDesc.playersDesc[i].szCivAdjective,)

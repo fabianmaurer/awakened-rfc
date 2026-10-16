@@ -12,6 +12,18 @@ player can adopt it under the game's technology and unique-power rules after
 starting technologies are assigned by the scenario or spawn code. Thus an ancient civilization may start with the basic civics even
 when its preferred later institutions are listed below.
 
+Egypt keeps Tribal System in the 3000 BC start. In the 800 BC scenario
+(start turn 87), its preferred government is Monarchy and its scenario technology
+package includes Monarchy. The selection-screen preview uses the same profile
+override. Egypt's unique power still grants early Slavery only.
+
+The 1453 start (turn 271) uses late-medieval scenario profiles through the same
+`getProfile` accessor as the selection preview. The Mamluk, Delhi, Hafsid,
+Timurid, Meccan, Burgundian and Ottoman slots use monarchies with ordinary
+legitimacy; Italy uses a merchant republic, Germany a Christian religious
+monarchy, and the American states indigenous religious institutions. The map
+provides the technologies needed for these profiles. See `1453ADScenario.md`.
+
 | Civilization | Government | Legitimacy | Labor | Military | Religion |
 | --- | --- | --- | --- | --- | --- |
 | Egypt | Tribal System | Despotism | Slavery | Militia | State Religion |

@@ -10068,7 +10068,7 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 		}
 	}
 
-	if (!GET_PLAYER((PlayerTypes)EGYPT).isPlayable()) { //late start condition - apparently it goes too fast from 600AD
+	if (GC.getGameINLINE().getStartTurn() != 0) { //late start condition - apparently it goes too fast from 600AD
 		researchPercent *= 108;
 		researchPercent /= 100;
 	}

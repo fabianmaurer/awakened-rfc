@@ -231,7 +231,7 @@ class Barbs:
                 #American natives
                 if (iGameTurn >= con.i600AD and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iNativeAmericaDogSoldier, 2 + iHandicap, iGameTurn, 20, 0, utils.outerInvasion, 1)
-                        if (gc.getPlayer(0).isPlayable()):  #late start condition
+                        if (gc.getGame().getStartTurn() == 0):  #late start condition
                                 self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 3, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
                         else:  #late start condition
                                 self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 1, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
@@ -271,7 +271,7 @@ class Barbs:
                 #self.foundCity(lCarthage, "Qart-Hadasht", iGameTurn, 2, -1, -1)
                 self.foundCity(iBarbarian, lGordion, "Gordion", iGameTurn, 1, con.iChariot, 1)
                 #self.foundCity(lPalermo, "Ziz", iGameTurn, 2, con.iArcher, 1)
-                if (gc.getPlayer(con.iEgypt).isPlayable()):  #late start 800BC condition (RFCMP)
+                if (gc.getGame().getStartTurn() == 0):  #late start 800BC condition (RFCMP)
                         self.foundCity(iCeltia, lMilan, "Melpum", iGameTurn, 2, con.iArcher, 2)
                 #self.foundCity(iBarbarian, lAugsburg, "Damasia", iGameTurn, 1, -1, -1)
                 #self.foundCity(lRusadir, "Rusadir", iGameTurn, 2, -1, -1)

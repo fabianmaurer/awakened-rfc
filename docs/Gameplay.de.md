@@ -271,7 +271,7 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
 | **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten starten mit +6 Erfahrung. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
-| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe und Flugzeuge nutzen diese Nahrungsumwandlung nicht. |
+| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
 Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
@@ -526,7 +526,7 @@ englische Ersatztexte.
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.**, **840 n. Chr.** oder **1453 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
@@ -570,6 +570,24 @@ Die Initialisierung erfolgt in `Assets/Python/Scenario840AD.py`.
 
 Die Stadtgrößen orientieren sich an der ungefähren urbanen Bedeutung im
 9. Jahrhundert; siehe [Bevölkerungsliste und historische Begründung](840ADPopulation.md).
+
+### Moderne und Zukunftsforschung
+
+Globale Erwärmung und Lufteinheiten einschließlich Raketen und Atomwaffen sind
+entfernt. Drei getrennte Dauerforschungen verbessern Zufriedenheit, Gesundheit
+oder Kampfstärke; ihre Kosten steigen je Abschluss um 35 %. Militärische
+Forschung endet bei +15 %. Ein sehr teurer KI- und Automatisierungsbaum eröffnet
+sechs neue Stadtgebäude. Ein Sozialstaatssystem ist noch nicht umgesetzt.
+Siehe [Regeln, Kosten und technische Umsetzung](ModernEra.md).
+
+### Start 1453 n. Chr.
+
+Das fünfte Szenario beginnt unmittelbar nach der osmanischen Eroberung
+Konstantinopels. Es umfasst 96 Städte und 25 bestehende, sofort spielbare
+Hauptzivilisationen. Namen und Startprofile bilden unter anderem das
+Mamlukensultanat, Ming-China, Moskau, die italienischen Staaten und das
+Osmanische Sultanat ab. Amerika behält seinen späteren Gründungszeitpunkt.
+Siehe [Staatenliste, Kartenabstraktionen und Einrichtung](1453ADScenario.md).
 
 ### Verbuchung der Nahrungstransfers
 

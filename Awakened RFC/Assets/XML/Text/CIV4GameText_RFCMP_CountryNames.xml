@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_TRIBAL</Tag>
-    <English>Clans of the Pharaoh</English>
-    <French>Clans of the Pharaoh</French>
-    <German>Sippen des Pharaos</German>
-    <Italian>Clans of the Pharaoh</Italian>
-    <Spanish>Clans of the Pharaoh</Spanish>
+    <English>Peoples of the Nile Valley</English>
+    <French>Peoples of the Nile Valley</French>
+    <German>V&#246;lker des Niltals</German>
+    <Italian>Peoples of the Nile Valley</Italian>
+    <Spanish>Peoples of the Nile Valley</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_KINGDOM</Tag>
@@ -1210,11 +1210,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_REPUBLIC</Tag>
-    <English>Senate and People of Rome</English>
-    <French>Senate and People of Rome</French>
-    <German>Senat und Volk von Rom</German>
-    <Italian>Senate and People of Rome</Italian>
-    <Spanish>Senate and People of Rome</Spanish>
+    <English>SPQR</English>
+    <French>SPQR</French>
+    <German>SPQR</German>
+    <Italian>SPQR</Italian>
+    <Spanish>SPQR</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_DEMOCRACY</Tag>
@@ -1306,11 +1306,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_THEOCRATIC_REPUBLIC</Tag>
-    <English>Senate and People of Rome</English>
-    <French>Senate and People of Rome</French>
-    <German>Senat und Volk von Rom</German>
-    <Italian>Senate and People of Rome</Italian>
-    <Spanish>Senate and People of Rome</Spanish>
+    <English>SPQR</English>
+    <French>SPQR</French>
+    <German>SPQR</German>
+    <Italian>SPQR</Italian>
+    <Spanish>SPQR</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_ISLAMIC_REPUBLIC</Tag>
@@ -4535,6 +4535,262 @@
     <German>Vereinigte Staaten von Amerika</German>
     <Italian>United States of America</Italian>
     <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ABYSSINIA</Tag>
+    <English>Abyssinian Empire</English>
+    <French>Abyssinian Empire</French>
+    <German>Kaiserreich Abessinien</German>
+    <Italian>Abyssinian Empire</Italian>
+    <Spanish>Abyssinian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_MAMLUK</Tag>
+    <English>Mamluk Sultanate</English>
+    <French>Mamluk Sultanate</French>
+    <German>Mamlukensultanat</German>
+    <Italian>Mamluk Sultanate</Italian>
+    <Spanish>Mamluk Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_DELHI</Tag>
+    <English>Delhi Sultanate</English>
+    <French>Delhi Sultanate</French>
+    <German>Sultanat von Delhi</German>
+    <Italian>Delhi Sultanate</Italian>
+    <Spanish>Delhi Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_TIMURID</Tag>
+    <English>Timurid Principalities</English>
+    <French>Timurid Principalities</French>
+    <German>Timuridenreiche</German>
+    <Italian>Timurid Principalities</Italian>
+    <Spanish>Timurid Principalities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_HAFSID</Tag>
+    <English>Hafsid Sultanate</English>
+    <French>Hafsid Sultanate</French>
+    <German>Hafsiden-Sultanat</German>
+    <Italian>Hafsid Sultanate</Italian>
+    <Spanish>Hafsid Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_MECCA</Tag>
+    <English>Sharifate of Mecca</English>
+    <French>Sharifate of Mecca</French>
+    <German>Scharifat von Mekka</German>
+    <Italian>Sharifate of Mecca</Italian>
+    <Spanish>Sharifate of Mecca</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_MING</Tag>
+    <English>Ming Empire</English>
+    <French>Ming Empire</French>
+    <German>Ming-Reich</German>
+    <Italian>Ming Empire</Italian>
+    <Spanish>Ming Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ASHIKAGA</Tag>
+    <English>Ashikaga Shogunate</English>
+    <French>Ashikaga Shogunate</French>
+    <German>Ashikaga-Shogunat</German>
+    <Italian>Ashikaga Shogunate</Italian>
+    <Spanish>Ashikaga Shogunate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_DESPOTATE</Tag>
+    <English>Greek Despotate</English>
+    <French>Greek Despotate</French>
+    <German>Griechisches Despotat</German>
+    <Italian>Greek Despotate</Italian>
+    <Spanish>Greek Despotate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_MUSCOVY</Tag>
+    <English>Grand Principality of Moscow</English>
+    <French>Grand Principality of Moscow</French>
+    <German>Gro&#223;f&#252;rstentum Moskau</German>
+    <Italian>Grand Principality of Moscow</Italian>
+    <Spanish>Grand Principality of Moscow</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_BURGUNDIAN</Tag>
+    <English>Burgundian Netherlands</English>
+    <French>Burgundian Netherlands</French>
+    <German>Burgundische Niederlande</German>
+    <Italian>Burgundian Netherlands</Italian>
+    <Spanish>Burgundian Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_HABSBURG</Tag>
+    <English>Habsburg Netherlands</English>
+    <French>Habsburg Netherlands</French>
+    <German>Habsburgische Niederlande</German>
+    <Italian>Habsburg Netherlands</Italian>
+    <Spanish>Habsburg Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_NORTHERN_YUAN</Tag>
+    <English>Northern Yuan</English>
+    <French>Northern Yuan</French>
+    <German>N&#246;rdliche Yuan</German>
+    <Italian>Northern Yuan</Italian>
+    <Spanish>Northern Yuan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_TRIPLE_ALLIANCE</Tag>
+    <English>Aztec Triple Alliance</English>
+    <French>Aztec Triple Alliance</French>
+    <German>Aztekischer Dreibund</German>
+    <Italian>Aztec Triple Alliance</Italian>
+    <Spanish>Aztec Triple Alliance</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ITALIAN_STATES</Tag>
+    <English>Italian City-States</English>
+    <French>Italian City-States</French>
+    <German>Italienische Stadtstaaten</German>
+    <Italian>Italian City-States</Italian>
+    <Spanish>Italian City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_FRANKISH_REALM</Tag>
+    <English>Frankish Realm</English>
+    <French>Frankish Realm</French>
+    <German>Reich der Franken</German>
+    <Italian>Frankish Realm</Italian>
+    <Spanish>Frankish Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_WEST_FRANCIA</Tag>
+    <English>West Francia</English>
+    <French>West Francia</French>
+    <German>Westfr&#228;nkisches Reich</German>
+    <Italian>West Francia</Italian>
+    <Spanish>West Francia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_CHENLA</Tag>
+    <English>Chenla</English>
+    <French>Chenla</French>
+    <German>Reich von Chenla</German>
+    <Italian>Chenla</Italian>
+    <Spanish>Chenla</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ANGKOR</Tag>
+    <English>Khmer Empire</English>
+    <French>Khmer Empire</French>
+    <German>Khmerreich</German>
+    <Italian>Khmer Empire</Italian>
+    <Spanish>Khmer Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CHRISTIAN_IBERIA</Tag>
+    <English>Christian Kingdoms of Iberia</English>
+    <French>Christian Kingdoms of Iberia</French>
+    <German>Christliche Reiche Iberiens</German>
+    <Italian>Christian Kingdoms of Iberia</Italian>
+    <Spanish>Christian Kingdoms of Iberia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_IBERIAN_KINGDOMS</Tag>
+    <English>Iberian Kingdoms</English>
+    <French>Iberian Kingdoms</French>
+    <German>Iberische K&#246;nigreiche</German>
+    <Italian>Iberian Kingdoms</Italian>
+    <Spanish>Iberian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ANGLO_SAXON</Tag>
+    <English>Anglo-Saxon Kingdoms</English>
+    <French>Anglo-Saxon Kingdoms</French>
+    <German>Angels&#228;chsische K&#246;nigreiche</German>
+    <Italian>Anglo-Saxon Kingdoms</Italian>
+    <Spanish>Anglo-Saxon Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_NORSE_KINGDOMS</Tag>
+    <English>Scandinavian Kingdoms</English>
+    <French>Scandinavian Kingdoms</French>
+    <German>Skandinavische K&#246;nigreiche</German>
+    <Italian>Scandinavian Kingdoms</Italian>
+    <Spanish>Scandinavian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_EARLY_JAPAN</Tag>
+    <English>Peoples of the Japanese Islands</English>
+    <French>Peoples of the Japanese Islands</French>
+    <German>V&#246;lker der japanischen Inseln</German>
+    <Italian>Peoples of the Japanese Islands</Italian>
+    <Spanish>Peoples of the Japanese Islands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_YAMATO</Tag>
+    <English>Yamato Realm</English>
+    <French>Yamato Realm</French>
+    <German>Reich von Yamato</German>
+    <Italian>Yamato Realm</Italian>
+    <Spanish>Yamato Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_INDUS</Tag>
+    <English>Indus Valley Cultures</English>
+    <French>Indus Valley Cultures</French>
+    <German>Induskulturen</German>
+    <Italian>Indus Valley Cultures</Italian>
+    <Spanish>Indus Valley Cultures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_INDIAN_KINGDOMS</Tag>
+    <English>Indian Kingdoms</English>
+    <French>Indian Kingdoms</French>
+    <German>Indische K&#246;nigreiche</German>
+    <Italian>Indian Kingdoms</Italian>
+    <Spanish>Indian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_EARLY_CHINA</Tag>
+    <English>Early Chinese Cultures</English>
+    <French>Early Chinese Cultures</French>
+    <German>Fr&#252;he chinesische Kulturen</German>
+    <Italian>Early Chinese Cultures</Italian>
+    <Spanish>Early Chinese Cultures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_EARLY_MESOPOTAMIA</Tag>
+    <English>Mesopotamian City-States</English>
+    <French>Mesopotamian City-States</French>
+    <German>Stadtstaaten Mesopotamiens</German>
+    <Italian>Mesopotamian City-States</Italian>
+    <Spanish>Mesopotamian City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_POLEIS</Tag>
+    <English>Greek City-States</English>
+    <French>Greek City-States</French>
+    <German>Griechische Stadtstaaten</German>
+    <Italian>Greek City-States</Italian>
+    <Spanish>Greek City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_EARLY_ARABIA</Tag>
+    <English>Arabian Kingdoms</English>
+    <French>Arabian Kingdoms</French>
+    <German>Arabische K&#246;nigreiche</German>
+    <Italian>Arabian Kingdoms</Italian>
+    <Spanish>Arabian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_EAST_FRANCIA</Tag>
+    <English>East Francia</English>
+    <French>East Francia</French>
+    <German>Ostfr&#228;nkisches Reich</German>
+    <Italian>East Francia</Italian>
+    <Spanish>East Francia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_HOLY_ROMAN</Tag>

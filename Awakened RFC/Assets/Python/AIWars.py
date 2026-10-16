@@ -1924,10 +1924,11 @@ class AIWars:
 
         def setup(self):
                 iTurn = iStartTurn
-                if (not gc.getPlayer(0).isPlayable()):  #late start condition
+                if (gc.getGame().getStartTurn() != 0):  #late start condition
                         iTurn = con.i350BC #(RFCMP)
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
                                 iTurn = con.i900AD
+                iTurn = max(iTurn, gc.getGame().getStartTurn())
                 self.setNextTurnAIWar(iTurn + utils.getFakeRandNum(iMaxIntervalEarly-iMinIntervalEarly, 'random turn'))
 
 

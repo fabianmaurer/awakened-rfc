@@ -5555,6 +5555,12 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	const CvUnitInfo& kModernUnit = GC.getUnitInfo(eUnit);
+	if (kModernUnit.getDomainType() == DOMAIN_AIR || kModernUnit.getNukeRange() >= 0 ||
+		strcmp(kModernUnit.getType(), "UNIT_CARRIER") == 0 || strcmp(kModernUnit.getType(), "UNIT_GUNSHIP") == 0 ||
+		strcmp(kModernUnit.getType(), "UNIT_SAM_INFANTRY") == 0 || strcmp(kModernUnit.getType(), "UNIT_MOBILE_SAM") == 0)
+		return false;
+
 	PROFILE_FUNC();
 
 	UnitClassTypes eUnitClass;
@@ -7577,6 +7583,9 @@ bool CvPlayer::canEverResearch(TechTypes eTech) const
 
 bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 {
+	if (eTech == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && GET_TEAM(getTeam()).getTechCount(eTech) >= 15)
+		return false;
+
 	bool bFoundPossible;
 	bool bFoundValid;
 	int iI;
@@ -23101,6 +23110,181 @@ bool CvPlayer::hasSpaceshipArrived() const
 
 	return false;
 }
+// Shared by live country naming and scenario selection previews.
+static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
+{
+	const int iCivic = GC.getInfoTypeForString(szType);
+	return iCivic >= 0 && std::find(civics.begin(), civics.end(), iCivic) != civics.end();
+}
+
+CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear)
+{
+	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS)
+		return L"";
+	const bool bTribal = hasCountryCivic(civics, "CIVIC_TRIBAL_SYSTEM");
+	const bool bMonarchy = hasCountryCivic(civics, "CIVIC_MONARCHY");
+	const bool bRepublic = hasCountryCivic(civics, "CIVIC_REPUBLIC");
+	const bool bDemocracy = hasCountryCivic(civics, "CIVIC_DEMOCRACY");
+	const bool bDictatorship = hasCountryCivic(civics, "CIVIC_DICTATORSHIP");
+	const bool bNationalism = hasCountryCivic(civics, "CIVIC_NATIONALISM");
+	const bool bPlutocracy = hasCountryCivic(civics, "CIVIC_PLUTOCRACY");
+	const bool bRuleOfLaw = hasCountryCivic(civics, "CIVIC_RULE_OF_LAW");
+	const bool bPlanned = hasCountryCivic(civics, "CIVIC_PLANNED_ECONOMY");
+	const bool bAtheism = hasCountryCivic(civics, "CIVIC_STATE_ATHEISM");
+	const bool bGodState = hasCountryCivic(civics, "CIVIC_GOD_STATE");
+	const bool bTheocracy = iReligion != NO_RELIGION &&
+		(bGodState || hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"));
+	const bool bIslam = iReligion != NO_RELIGION &&
+		iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+	const bool bMilitary = hasCountryCivic(civics, "CIVIC_PROFESSIONAL_ARMY") ||
+		hasCountryCivic(civics, "CIVIC_CONSCRIPTION");
+
+	// Use stable text keys on every peer; selection never uses language or RNG.
+	const wchar* szForm = L"REPUBLIC";
+	if (bTribal && !bTheocracy)
+		szForm = L"TRIBAL";
+	else if (bTheocracy)
+	{
+		if (bMonarchy)
+			szForm = bIslam ? L"CALIPHATE" : L"HOLY_KINGDOM";
+		else if (bRepublic || bDemocracy)
+			szForm = bIslam ? L"ISLAMIC_REPUBLIC" : L"THEOCRATIC_REPUBLIC";
+		else
+			szForm = L"THEOCRACY";
+	}
+	else if (bMonarchy)
+	{
+		if (bIslam && hasCountryCivic(civics, "CIVIC_STATE_RELIGION"))
+			szForm = L"SULTANATE";
+		else if (bRuleOfLaw)
+			szForm = L"CONSTITUTIONAL";
+		else
+			szForm = iNumCities > 6 ? L"EMPIRE" : L"KINGDOM";
+	}
+	else if (bPlanned)
+	{
+		if (bDemocracy)
+			szForm = L"SOCIALIST_DEMOCRACY";
+		else if (bRepublic)
+			szForm = L"SOCIALIST_REPUBLIC";
+		else
+			szForm = L"PEOPLES_STATE";
+	}
+	else if (bDictatorship)
+	{
+		if (bNationalism)
+			szForm = L"NATIONAL_STATE";
+		else if (bMilitary)
+			szForm = L"MILITARY";
+		else
+			szForm = L"DICTATORSHIP";
+	}
+	else if (bRepublic || bDemocracy)
+	{
+		if (bAtheism)
+			szForm = L"SECULAR_REPUBLIC";
+		else if (bIslam && hasCountryCivic(civics, "CIVIC_STATE_RELIGION"))
+			szForm = L"ISLAMIC_REPUBLIC";
+		else if (bPlutocracy)
+			szForm = L"MERCHANT_REPUBLIC";
+		else if (bNationalism)
+			szForm = L"NATIONAL_REPUBLIC";
+		else
+			szForm = bDemocracy ? L"DEMOCRACY" : L"REPUBLIC";
+	}
+
+	// Historical church-state titles require the corresponding religion.
+	if (bTheocracy && iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+	{
+		if (iPlayer == GERMANY && bMonarchy)
+			szForm = L"HOLY_ROMAN";
+		else if (iPlayer == ROME && !bRepublic && !bDemocracy)
+			szForm = L"PAPAL_STATES";
+	}
+
+	// Period names describe the polities represented by the scenario slots.
+	// Keep republican, constitutional, Islamic and alternate religious outcomes.
+	const bool bOrdinaryMonarchy = bMonarchy && !bTheocracy && !bIslam && !bRuleOfLaw;
+	const bool bChristianMonarchy = bMonarchy && !bIslam && !bRuleOfLaw &&
+		(!bTheocracy || iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
+	if (iPlayer == GERMANY && bChristianMonarchy && iYear < 962)
+		szForm = L"EAST_FRANCIA";
+	else if (iPlayer == FRANCE && bChristianMonarchy && iYear < 987)
+		szForm = iYear < 800 ? L"FRANKISH_REALM" : L"WEST_FRANCIA";
+	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
+		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
+	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
+		szForm = iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
+			L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS";
+	else if (iPlayer == ENGLAND && bChristianMonarchy && iYear < 927)
+		szForm = L"ANGLO_SAXON";
+	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)
+		szForm = L"NORSE_KINGDOMS";
+	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
+		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+	else if (iPlayer == INDIA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1900)
+		szForm = L"INDUS";
+	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear < -322)
+		szForm = L"INDIAN_KINGDOMS";
+	else if (iPlayer == CHINA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1600)
+		szForm = L"EARLY_CHINA";
+	else if (iPlayer == BABYLONIA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1900)
+		szForm = L"EARLY_MESOPOTAMIA";
+	else if (iPlayer == GREECE && iYear < -323 &&
+		((bOrdinaryMonarchy && iNumCities <= 6) || wcscmp(szForm, L"REPUBLIC") == 0))
+		szForm = L"POLEIS";
+	else if (iPlayer == ARABIA && bOrdinaryMonarchy && iReligion == NO_RELIGION && iYear < 622)
+		szForm = L"EARLY_ARABIA";
+
+	// Late-medieval identities. These names do not grant institutions or techs.
+	if (bMonarchy && !bRuleOfLaw)
+	{
+		if (iPlayer == EGYPT && bIslam && !bTheocracy && iYear >= 1250 && iYear < 1517)
+			szForm = L"MAMLUK";
+		else if (iPlayer == INDIA && bIslam && !bTheocracy && iYear >= 1206 && iYear < 1526)
+			szForm = L"DELHI";
+		else if (iPlayer == PERSIA && bIslam && !bTheocracy && iYear >= 1370 && iYear < 1507)
+			szForm = L"TIMURID";
+		else if (iPlayer == CARTHAGE && bIslam && !bTheocracy && iYear >= 1229 && iYear < 1574)
+			szForm = L"HAFSID";
+		else if (iPlayer == ARABIA && bIslam && !bTheocracy && iYear >= 1201 && iYear < 1916)
+			szForm = L"MECCA";
+		else if (iPlayer == TURKEY && bIslam && iYear < 1517)
+			szForm = L"SULTANATE";
+		else if (iPlayer == MALI && bIslam && !bTheocracy && iYear >= 1235 && iYear < 1600)
+			szForm = L"EMPIRE";
+		else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= 1368 && iYear < 1644)
+			szForm = L"MING";
+		else if (iPlayer == JAPAN && bOrdinaryMonarchy && iYear >= 1336 && iYear < 1573)
+			szForm = L"ASHIKAGA";
+		else if (iPlayer == GREECE && bChristianMonarchy && iNumCities <= 2 && iYear >= 1204 && iYear < 1832)
+			szForm = L"DESPOTATE";
+		else if (iPlayer == RUSSIA && bChristianMonarchy && iYear >= 1283 && iYear < 1547)
+			szForm = L"MUSCOVY";
+		else if (iPlayer == ETHIOPIA && bChristianMonarchy && iYear >= 1270 && iYear < 1974)
+			szForm = L"ABYSSINIA";
+		else if (iPlayer == NETHERLANDS && bChristianMonarchy && iYear >= 1384 && iYear < 1581)
+			szForm = iYear < 1482 ? L"BURGUNDIAN" : L"HABSBURG";
+		else if (iPlayer == VIKING && bChristianMonarchy && iYear >= 1000 && iYear < 1523)
+			szForm = L"NORSE_KINGDOMS";
+		else if (iPlayer == MONGOLIA && bOrdinaryMonarchy && iYear >= 1368 && iYear < 1635)
+			szForm = L"NORTHERN_YUAN";
+		else if (iPlayer == AZTEC && bOrdinaryMonarchy && iYear >= 1428 && iYear < 1521)
+			szForm = L"TRIPLE_ALLIANCE";
+		else if (iPlayer == INCA && bOrdinaryMonarchy && iYear >= 1438 && iYear < 1533)
+			szForm = L"EMPIRE";
+	}
+	if (iPlayer == ROME && iYear >= 476 && iYear < 1861 &&
+		(wcscmp(szForm, L"REPUBLIC") == 0 || wcscmp(szForm, L"MERCHANT_REPUBLIC") == 0))
+		szForm = L"ITALIAN_STATES";
+
+	CvWString szNameKey = civDynamicNames[iPlayer][0];
+	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
+	szNameKey += L"_";
+	szNameKey += szForm;
+	return szNameKey;
+}
+
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
@@ -23180,91 +23364,10 @@ void CvPlayer::processCivNames()
 			return;
 		}
 		else { // Independent countries: classify the five new civic columns.
-			const bool bTribal = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM"));
-			const bool bMonarchy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY"));
-			const bool bRepublic = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
-			const bool bDemocracy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"));
-			const bool bDictatorship = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DICTATORSHIP"));
-			const bool bNationalism = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_NATIONALISM"));
-			const bool bPlutocracy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PLUTOCRACY"));
-			const bool bRuleOfLaw = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_RULE_OF_LAW"));
-			const bool bPlanned = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PLANNED_ECONOMY"));
-			const bool bAtheism = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
-			const bool bGodState = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"));
-			const bool bTheocracy = getStateReligion() != NO_RELIGION &&
-				(bGodState || isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")));
-			const bool bIslam = getStateReligion() != NO_RELIGION &&
-				getStateReligion() == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
-			const bool bMilitary = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PROFESSIONAL_ARMY")) ||
-				isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"));
-
-			// Use stable text keys on every peer; selection never uses language or RNG.
-			const wchar* szForm = L"REPUBLIC";
-			if (bTribal && !bTheocracy)
-				szForm = L"TRIBAL";
-			else if (bTheocracy)
-			{
-				if (bMonarchy)
-					szForm = bIslam ? L"CALIPHATE" : L"HOLY_KINGDOM";
-				else if (bRepublic || bDemocracy)
-					szForm = bIslam ? L"ISLAMIC_REPUBLIC" : L"THEOCRATIC_REPUBLIC";
-				else
-					szForm = L"THEOCRACY";
-			}
-			else if (bMonarchy)
-			{
-				if (bIslam && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")))
-					szForm = L"SULTANATE";
-				else if (bRuleOfLaw)
-					szForm = L"CONSTITUTIONAL";
-				else
-					szForm = getNumCities() > 6 ? L"EMPIRE" : L"KINGDOM";
-			}
-			else if (bPlanned)
-			{
-				if (bDemocracy)
-					szForm = L"SOCIALIST_DEMOCRACY";
-				else if (bRepublic)
-					szForm = L"SOCIALIST_REPUBLIC";
-				else
-					szForm = L"PEOPLES_STATE";
-			}
-			else if (bDictatorship)
-			{
-				if (bNationalism)
-					szForm = L"NATIONAL_STATE";
-				else if (bMilitary)
-					szForm = L"MILITARY";
-				else
-					szForm = L"DICTATORSHIP";
-			}
-			else if (bRepublic || bDemocracy)
-			{
-				if (bAtheism)
-					szForm = L"SECULAR_REPUBLIC";
-				else if (bIslam && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")))
-					szForm = L"ISLAMIC_REPUBLIC";
-				else if (bPlutocracy)
-					szForm = L"MERCHANT_REPUBLIC";
-				else if (bNationalism)
-					szForm = L"NATIONAL_REPUBLIC";
-				else
-					szForm = bDemocracy ? L"DEMOCRACY" : L"REPUBLIC";
-			}
-
-			// Historical church-state titles require the corresponding religion.
-			if (bTheocracy && getStateReligion() == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
-			{
-				if (getID() == GERMANY && bMonarchy)
-					szForm = L"HOLY_ROMAN";
-				else if (getID() == ROME && !bRepublic && !bDemocracy)
-					szForm = L"PAPAL_STATES";
-			}
-
-			CvWString szNameKey = civDynamicNames[getID()][0];
-			szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
-			szNameKey += L"_";
-			szNameKey += szForm;
+			std::vector<int> civics;
+			for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+				civics.push_back(getCivics((CivicOptionTypes)iOption));
+			const CvWString szNameKey = getIndependentCountryNameKey(getID(), civics, getStateReligion(), getNumCities(), GC.getGameINLINE().getGameTurnYear());
 			// Refresh cached names after translation edits or a language change.
 			if (m_szCivDescKey != szNameKey || m_szCivDesc != gDLL->getText(szNameKey))
 				setCivDescription(szNameKey);

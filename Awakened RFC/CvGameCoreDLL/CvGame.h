@@ -668,7 +668,6 @@ protected:
 
 	void doTurn();
 	void doDeals();
-	void doGlobalWarming();
 	void doHolyCity();
 	void doHeadquarters();
 	void doDiploVote();

@@ -1,5 +1,5 @@
 ﻿Civilization,Naming rule,English,German
-EGY,TRIBAL,Clans of the Pharaoh,Sippen des Pharaos
+EGY,TRIBAL,Peoples of the Nile Valley,Völker des Niltals
 EGY,KINGDOM,Kingdom of Egypt,Königreich Ägypten
 EGY,EMPIRE,Realm of the Two Lands,Reich der beiden Länder
 EGY,CONSTITUTIONAL,Kingdom of Egypt,Königreich Ägypten
@@ -150,7 +150,7 @@ ROM,TRIBAL,Latin Tribes,Latinische Stämme
 ROM,KINGDOM,Kingdom of Rome,Königreich Rom
 ROM,EMPIRE,Roman Empire,Römisches Reich
 ROM,CONSTITUTIONAL,Regno d'Italia,Königreich Italien
-ROM,REPUBLIC,Senate and People of Rome,Senat und Volk von Rom
+ROM,REPUBLIC,SPQR,SPQR
 ROM,DEMOCRACY,Roman Republic,Römische Republik
 ROM,MERCHANT_REPUBLIC,League of the Seven Hills,Siebenhügelbund
 ROM,SOCIALIST_REPUBLIC,Roman Commune,Römische Kommune
@@ -162,7 +162,7 @@ ROM,NATIONAL_STATE,Roman State,Römischer Staat
 ROM,NATIONAL_REPUBLIC,Repubblica Italiana,Italienische Republik
 ROM,THEOCRACY,Sacred Roman Commonwealth,Heiliges Römisches Gemeinwesen
 ROM,HOLY_KINGDOM,Sacred Roman Commonwealth,Heiliges Römisches Gemeinwesen
-ROM,THEOCRATIC_REPUBLIC,Senate and People of Rome,Senat und Volk von Rom
+ROM,THEOCRATIC_REPUBLIC,SPQR,SPQR
 ROM,ISLAMIC_REPUBLIC,Islamic Republic of Rome,Islamische Republik Rom
 ROM,CALIPHATE,Caliphate of Rome,Kalifat Rom
 ROM,SULTANATE,Sultanate of Rome,Sultanat Rom
@@ -566,5 +566,37 @@ AME,ISLAMIC_REPUBLIC,Islamic Republic of America,Islamische Republik Amerika
 AME,CALIPHATE,Caliphate of the New World,Kalifat der Neuen Welt
 AME,SULTANATE,Sultanate of America,Sultanat Amerika
 AME,SECULAR_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
+ETH,ABYSSINIA,Abyssinian Empire,Kaiserreich Abessinien
+EGY,MAMLUK,Mamluk Sultanate,Mamlukensultanat
+IND,DELHI,Delhi Sultanate,Sultanat von Delhi
+PER,TIMURID,Timurid Principalities,Timuridenreiche
+CAR,HAFSID,Hafsid Sultanate,Hafsiden-Sultanat
+ARA,MECCA,Sharifate of Mecca,Scharifat von Mekka
+CHI,MING,Ming Empire,Ming-Reich
+JAP,ASHIKAGA,Ashikaga Shogunate,Ashikaga-Shogunat
+GRE,DESPOTATE,Greek Despotate,Griechisches Despotat
+RUS,MUSCOVY,Grand Principality of Moscow,Großfürstentum Moskau
+NED,BURGUNDIAN,Burgundian Netherlands,Burgundische Niederlande
+NED,HABSBURG,Habsburg Netherlands,Habsburgische Niederlande
+MON,NORTHERN_YUAN,Northern Yuan,Nördliche Yuan
+AZT,TRIPLE_ALLIANCE,Aztec Triple Alliance,Aztekischer Dreibund
+ROM,ITALIAN_STATES,Italian City-States,Italienische Stadtstaaten
+FRA,FRANKISH_REALM,Frankish Realm,Reich der Franken
+FRA,WEST_FRANCIA,West Francia,Westfränkisches Reich
+KHM,CHENLA,Chenla,Reich von Chenla
+KHM,ANGKOR,Khmer Empire,Khmerreich
+SPA,CHRISTIAN_IBERIA,Christian Kingdoms of Iberia,Christliche Reiche Iberiens
+SPA,IBERIAN_KINGDOMS,Iberian Kingdoms,Iberische Königreiche
+ENG,ANGLO_SAXON,Anglo-Saxon Kingdoms,Angelsächsische Königreiche
+VIK,NORSE_KINGDOMS,Scandinavian Kingdoms,Skandinavische Königreiche
+JAP,EARLY_JAPAN,Peoples of the Japanese Islands,Völker der japanischen Inseln
+JAP,YAMATO,Yamato Realm,Reich von Yamato
+IND,INDUS,Indus Valley Cultures,Induskulturen
+IND,INDIAN_KINGDOMS,Indian Kingdoms,Indische Königreiche
+CHI,EARLY_CHINA,Early Chinese Cultures,Frühe chinesische Kulturen
+BAB,EARLY_MESOPOTAMIA,Mesopotamian City-States,Stadtstaaten Mesopotamiens
+GRE,POLEIS,Greek City-States,Griechische Stadtstaaten
+ARA,EARLY_ARABIA,Arabian Kingdoms,Arabische Königreiche
+GER,EAST_FRANCIA,East Francia,Ostfränkisches Reich
 GER,HOLY_ROMAN,Holy Roman Empire,Heiliges Römisches Reich
 ROM,PAPAL_STATES,Papal States,Kirchenstaat

@@ -273,7 +273,7 @@ class Stability:
                                 self.setParameter(iPlayer, iParDiplomacyE, True, self.getStability(iPlayer) - iTempNormalizationThreshold)
 
 
-                if (((iGameTurn > con.i600BC and gc.getPlayer(0).isPlayable()) or (iGameTurn > 181+20 and not gc.getPlayer(0).isPlayable())) and iGameTurn % 20 == 15): #late start condition
+                if (((iGameTurn > con.i600BC and gc.getGame().getStartTurn() == 0) or (iGameTurn > 181+20 and gc.getGame().getStartTurn() != 0)) and iGameTurn % 20 == 15): #late start condition
                 #if (iGameTurn > 0): #debug
                         self.continentsNormalization(iGameTurn)
                         self.normalization(iGameTurn)

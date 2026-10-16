@@ -7912,6 +7912,10 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	int iExtraModifier;
 
 	iExtraModifier = getExtraCombatPercent();
+	const TechTypes eMilitaryResearch = (TechTypes)GC.getInfoTypeForString("TECH_MILITARY_RESEARCH");
+	if (eMilitaryResearch != NO_TECH && (getDomainType() == DOMAIN_LAND || getDomainType() == DOMAIN_SEA))
+		iExtraModifier += std::min(15, GET_TEAM(getTeam()).getTechCount(eMilitaryResearch));
+
 
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{

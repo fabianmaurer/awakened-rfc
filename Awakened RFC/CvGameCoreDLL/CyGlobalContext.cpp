@@ -5,6 +5,8 @@
 
 #include "CvGameCoreDLL.h"
 #include "CyGlobalContext.h"
+#include "CvRhyes.h"
+#include "CvDLLPythonIFaceBase.h"
 #include "CyGame.h"
 #include "CyPlayer.h"
 #include "CyMap.h"
@@ -632,4 +634,19 @@ CvGameSpeedInfo* CyGlobalContext::getGameSpeedInfo(int i) const
 CvTurnTimerInfo* CyGlobalContext::getTurnTimerInfo(int i) const
 {
 	return &(GC.getTurnTimerInfo((TurnTimerTypes) i));
+}
+
+std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear)
+{
+	int* pCivics = NULL;
+	const int iCount = gDLL->getPythonIFace()->putSeqInArray(civics.ptr(), &pCivics);
+	std::vector<int> choices;
+	if (iCount > 0)
+		choices.assign(pCivics, pCivics + iCount);
+	delete [] pCivics;
+	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear);
+	if (szKey.empty())
+		return L"";
+	const CvWString szName = gDLL->getText(szKey);
+	return szName.substr(0, szName.find(L':'));
 }

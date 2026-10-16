@@ -2671,7 +2671,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}
 	}
 
-	if (bAstronomy) {
+	if (bAstronomy && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
 		for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
 			if (GET_TEAM((TeamTypes)iI).isHasTech(eTech))
@@ -2713,6 +2713,14 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	//Rhye - end
 
 
+
+	// Each repeatable field has its own exponential cost. Use integer math
+	// and a bounded cost so research-rate and UI arithmetic cannot overflow.
+	if (GC.getTechInfo(eTech).isRepeat())
+	{
+		for (int iLevel = 0; iLevel < getTechCount(eTech) && iCost < 2000000; ++iLevel)
+			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * 135 + 99) / 100));
+	}
 
 	return std::max(1, iCost);
 }
@@ -5141,6 +5149,14 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		}
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
+		// A capped military field must stop consuming research after level 15.
+		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)
+		{
+			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+				if (GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())
+					GET_PLAYER((PlayerTypes)iPlayer).popResearch(eIndex);
+		}
+
 
 		// Research, trading and scenario grants all upgrade the team's conversion.
 		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_CURRENCY"))

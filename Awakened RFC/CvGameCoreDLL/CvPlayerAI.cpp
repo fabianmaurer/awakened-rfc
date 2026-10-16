@@ -3697,7 +3697,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 		if (iGameTurn == startingTurn[getID()] || iGameTurn == startingTurn[getID()] + 1 || iGameTurn == startingTurn[getID()] + 2)
 			return false;
 		if ((GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4 && iGameTurn <= 181+2) || 
-			(!GET_PLAYER((PlayerTypes)EGYPT).isPlayable() && iGameTurn <= 87+2)) //late start condition //RFCMP
+			(GC.getGameINLINE().getStartTurn() != 0 && iGameTurn <= 87+2)) //late start condition //RFCMP
 				return false;
 		//Rhye - end
 		int iNetCommerce = 1 + getCommerceRate(COMMERCE_GOLD) + getCommerceRate(COMMERCE_RESEARCH) + std::max(0, getGoldPerTurn());
@@ -5146,7 +5146,10 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 
 								if (GC.getTechInfo((TechTypes)iI).isRepeat())
 								{
-									iValue /= 10;
+									iValue += GC.getTechInfo((TechTypes)iI).getHappiness() * (200 + 20 * getNumCities());
+									if (iI == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH"))
+										iValue += (GET_TEAM(getTeam()).getAtWarCount(true) > 0 ? 1000 : 400);
+									iValue /= 2;
 								}
 
 								if (bIgnoreCost)

@@ -358,7 +358,7 @@ class RFCUtils:
 
         #RiseAndFall
         def updateMinorTechs( self, iMinorCiv, iMajorCiv):                
-                for t in range(con.iNumTechs):
+                for t in range(gc.getNumTechInfos()):
                         if (gc.getTeam(gc.getPlayer(iMajorCiv).getTeam()).isHasTech(t)):
                                     gc.getTeam(gc.getPlayer(iMinorCiv).getTeam()).setHasTech(t, True, iMinorCiv, False, False)
 

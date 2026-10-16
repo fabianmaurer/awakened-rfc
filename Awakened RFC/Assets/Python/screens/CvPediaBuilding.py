@@ -357,7 +357,7 @@ class CvPediaBuilding:
                         listSorted.pop(1) #dun
                 #Rhye - end
 		#listSorted.sort() #Rhye
-		return listSorted
+		return [entry for entry in listSorted if gc.getBuildingInfo(entry[1]).getProductionCost() >= 0]
 		
 													
 	# Will handle the input for this screen...

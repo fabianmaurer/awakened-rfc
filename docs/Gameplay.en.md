@@ -263,7 +263,7 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
 | **Knighthood** | Engineering | High | Newly trained mounted units start with +6 experience. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
-| **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships and aircraft do not use this food conversion. |
+| **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 
 Tribal System and Conscription's production bonuses include workers, settlers,
 and missionaries. Conscription's food conversion is limited to military land units;
@@ -500,7 +500,7 @@ new country-name entries.
 3. Load Awakened RFC from the game's mod menu, or use
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>). The launcher currently
    points to the standard Steam installation path; adjust it for other locations.
-4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, or **840 AD**.
+4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, **840 AD**, or **1453 AD**.
 
 All multiplayer peers need the same mod assets, Python files, XML, and DLL.
 Gameplay code uses synchronized game state and election randomness; multiplayer
@@ -540,6 +540,23 @@ is handled by `Assets/Python/Scenario840AD.py`.
 
 Starting city sizes follow an approximate ninth-century urban hierarchy; see
 the [population roster and historical rationale](840ADPopulation.md).
+
+### Modern era and future research
+
+Global warming and air units, including missiles and nuclear weapons, are
+removed. Three separate repeatable research fields improve happiness, health
+or combat strength; each field's costs increase by 35% per completion. Military
+Research ends at +15%. A very expensive AI/automation branch unlocks six new
+city buildings. Welfare-state policies are not implemented yet.
+See [rules, costs and implementation details](ModernEra.md).
+
+### 1453 AD start
+
+The fifth scenario begins immediately after the Ottoman capture of Constantinople,
+with 96 cities and all 25 established major civilization slots selectable.
+Period names and profiles represent the Mamluks, Ming, Muscovy, Italian states,
+the Ottomans and their contemporaries. America keeps its usual future spawn.
+See the [roster, map abstractions and setup notes](1453ADScenario.md).
 
 ### Food-transfer accounting
 

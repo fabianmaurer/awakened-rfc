@@ -200,7 +200,7 @@ class CvTechChooser:
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
 				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(j)
-				if (eLoopUnit != -1):
+				if (eLoopUnit != -1 and gc.getUnitInfo(eLoopUnit).getProductionCost() >= 0):
 					if (gc.getUnitInfo(eLoopUnit).getPrereqAndTech() == i):
 						szUnitButton = "Unit" + str(j)
 						screen.addDDSGFCAt( szUnitButton, szTechRecord, gc.getPlayer(gc.getGame().getActivePlayer()).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, eLoopUnit, 1, True )
@@ -214,7 +214,7 @@ class CvTechChooser:
 				bTechFound = 0
 				eLoopBuilding = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationBuildings(j)
 
-				if (eLoopBuilding != -1):
+				if (eLoopBuilding != -1 and gc.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0):
                                         #Rhye - start
 					#if (gc.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == i):
 					#	szBuildingButton = "Building" + str(j)
@@ -234,7 +234,7 @@ class CvTechChooser:
 			for j in range(gc.getNumBuildingClassInfos()):
 				eLoopBuilding = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationBuildings(j)
 
-				if (eLoopBuilding != -1):
+				if (eLoopBuilding != -1 and gc.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0):
 					if (gc.getBuildingInfo(eLoopBuilding).getObsoleteTech() == i):
 						# Add obsolete picture here...
 						szObsoleteButton = "Obsolete" + str(j)
@@ -297,7 +297,7 @@ class CvTechChooser:
 				szFreeUnitButton = "FreeUnit" + str(i)
 
 				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(gc.getTechInfo(i).getFirstFreeUnitClass())
-				if (eLoopUnit != -1):
+				if (eLoopUnit != -1 and gc.getUnitInfo(eLoopUnit).getProductionCost() >= 0):
 					if (gc.getUnitInfo(eLoopUnit).getEspionagePoints() == 0 or not gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE)):				
 						screen.addDDSGFCAt( szFreeUnitButton, szTechRecord, gc.getPlayer(gc.getGame().getActivePlayer()).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_FREE_UNIT, eLoopUnit, i, False )
 						fX += X_INCREMENT
