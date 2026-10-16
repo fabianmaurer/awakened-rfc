@@ -386,7 +386,7 @@ RUS,DEMOCRACY,Russian Federation,Russische Föderation
 RUS,MERCHANT_REPUBLIC,Novgorod Republic,Republik Nowgorod
 RUS,SOCIALIST_REPUBLIC,Russian Soviet Republic,Russische Sowjetrepublik
 RUS,SOCIALIST_DEMOCRACY,Russian Union,Russische Union
-RUS,PEOPLES_STATE,Russian Soviet Republic,Russische Sowjetrepublik
+RUS,PEOPLES_STATE,Union of Soviet Socialist Republics,Union der Sozialistischen Sowjetrepubliken
 RUS,DICTATORSHIP,Russian State,Russischer Staat
 RUS,MILITARY,Russian Supreme Directorate,Oberstes Direktorium Russlands
 RUS,NATIONAL_STATE,Russian State,Russischer Staat
@@ -647,6 +647,23 @@ MON,ATHEOCRACY,Khanate of the Godless Sky,Khanat des gottlosen Himmels
 AZT,ATHEOCRACY,Order of the Godless Eagle,Orden des gottlosen Adlers
 TUR,ATHEOCRACY,Sublime Porte of Earthly Truth,Hohe Pforte der weltlichen Wahrheit
 AME,ATHEOCRACY,American Church of Humanity,Amerikanische Kirche der Menschheit
+CHI,QIN,Qin Empire,Qin-Reich
+CHI,HAN,Han Empire,Han-Reich
+CHI,TANG,Tang Empire,Tang-Reich
+CHI,SONG,Song Empire,Song-Reich
+CHI,YUAN,Yuan Empire,Yuan-Reich
+CHI,QING,Qing Empire,Qing-Reich
+IND,MAURYA,Maurya Empire,Maurya-Reich
+IND,GUPTA,Gupta Empire,Gupta-Reich
+IND,MUGHAL,Mughal Empire,Mogulreich
+PER,ACHAEMENID,Achaemenid Empire,Achämenidenreich
+PER,PARTHIAN,Parthian Empire,Partherreich
+PER,SASANIAN,Sasanian Empire,Sassanidenreich
+PER,SAFAVID,Safavid Empire,Safawidenreich
+GRE,MACEDONIAN,Macedonian Empire,Makedonisches Weltreich
+ARA,UMAYYAD,Umayyad Caliphate,Umayyadenkalifat
+ARA,ABBASID,Abbasid Caliphate,Abbasidenkalifat
+FRA,CAROLINGIAN,Carolingian Empire,Karolingerreich
 CHI,ZHOU,Zhou Kingdom,Zhou-Reich
 IND,VEDIC_KINGDOMS,Kuru and Panchala,Kuru und Panchala
 ROM,LATIN_COMMUNITIES,Latin Communities,Latinische Stammesgemeinden
@@ -688,6 +705,7 @@ CHI,EARLY_CHINA,Early Chinese Cultures,Frühe chinesische Kulturen
 BAB,EARLY_MESOPOTAMIA,Mesopotamian City-States,Stadtstaaten Mesopotamiens
 GRE,POLEIS,Greek City-States,Griechische Stadtstaaten
 ARA,EARLY_ARABIA,Arabian Kingdoms,Arabische Königreiche
+GER,GREATER_GERMAN,Greater German Reich,Großdeutsches Reich
 GER,EAST_FRANCIA,East Francia,Ostfränkisches Reich
 GER,HOLY_ROMAN,Holy Roman Empire,Heiliges Römisches Reich
 ROM,PAPAL_STATES,Papal States,Kirchenstaat

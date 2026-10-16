@@ -23181,7 +23181,7 @@ static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
 	return iCivic >= 0 && std::find(civics.begin(), civics.end(), iCivic) != civics.end();
 }
 
-CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear)
+CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
 {
 	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS)
 		return L"";
@@ -23278,7 +23278,8 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	if (iPlayer == GERMANY && bChristianMonarchy && iYear < 962)
 		szForm = L"EAST_FRANCIA";
 	else if (iPlayer == FRANCE && bChristianMonarchy && iYear < 987)
-		szForm = iYear < 800 ? L"FRANKISH_REALM" : L"WEST_FRANCIA";
+		szForm = iYear < 800 ? L"FRANKISH_REALM" :
+			(iYear < 843 ? L"CAROLINGIAN" : L"WEST_FRANCIA");
 	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
 		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
 	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
@@ -23351,9 +23352,67 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		else if (iPlayer == INCA && bOrdinaryMonarchy && iYear >= 1438 && iYear < 1533)
 			szForm = L"EMPIRE";
 	}
+	// Fill major imperial identities without changing alternate governments.
+	// These are naming windows, not scripted dynasties or territorial changes.
+	if (bOrdinaryMonarchy)
+	{
+		if (iPlayer == CHINA)
+		{
+			if (iYear >= -221 && iYear < -206)
+				szForm = L"QIN";
+			else if (iYear >= -206 && iYear < 220)
+				szForm = L"HAN";
+			else if (iYear >= 618 && iYear < 907)
+				szForm = L"TANG";
+			else if (iYear >= 1271 && iYear < 1368)
+				szForm = L"YUAN";
+			else if (iYear >= 960 && iYear < 1271)
+				szForm = L"SONG";
+			else if (iYear >= 1644 && iYear < 1912)
+				szForm = L"QING";
+		}
+		else if (iPlayer == INDIA)
+		{
+			if (iYear >= -321 && iYear < -185)
+				szForm = L"MAURYA";
+			else if (iYear >= 320 && iYear < 550)
+				szForm = L"GUPTA";
+		}
+		else if (iPlayer == PERSIA)
+		{
+			if (iYear >= -550 && iYear < -330)
+				szForm = L"ACHAEMENID";
+			else if (iYear >= -247 && iYear < 224)
+				szForm = L"PARTHIAN";
+			else if (iYear >= 224 && iYear < 651)
+				szForm = L"SASANIAN";
+		}
+		else if (iPlayer == GREECE && iNumCities > 6 && iYear >= -336 && iYear < -323)
+			szForm = L"MACEDONIAN";
+	}
+	if (bMonarchy && !bRuleOfLaw && bIslam)
+	{
+		if (iPlayer == INDIA && iYear >= 1526 && iYear < 1858)
+			szForm = L"MUGHAL";
+		else if (iPlayer == PERSIA && iYear >= 1507 && iYear < 1722)
+			szForm = L"SAFAVID";
+		else if (iPlayer == ARABIA && wcscmp(szForm, L"CALIPHATE") == 0)
+		{
+			if (iYear >= 661 && iYear < 750)
+				szForm = L"UMAYYAD";
+			else if (iYear >= 750 && iYear < 1258)
+				szForm = L"ABBASID";
+		}
+	}
 	if (iPlayer == ROME && iYear >= 476 && iYear < 1861 &&
 		(wcscmp(szForm, L"REPUBLIC") == 0 || wcscmp(szForm, L"MERCHANT_REPUBLIC") == 0))
 		szForm = iYear >= 1400 && iYear < 1797 ? L"VENICE" : L"ITALIAN_STATES";
+
+	// Territorial expansion changes only the ordinary nationalist dictatorship.
+	// Keep religious and planned-economy identities at their existing priority.
+	if (iPlayer == GERMANY && bDictatorship && bNationalism && iLandPlots >= 100 &&
+		wcscmp(szForm, L"NATIONAL_STATE") == 0)
+		szForm = L"GREATER_GERMAN";
 
 	// Egyptian civic variants are available in every era and with any religion.
 	// A ruler embodying divinity differs from a state subordinate to religion.
@@ -23458,7 +23517,7 @@ void CvPlayer::processCivNames()
 			std::vector<int> civics;
 			for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
 				civics.push_back(getCivics((CivicOptionTypes)iOption));
-			const CvWString szNameKey = getIndependentCountryNameKey(getID(), civics, getStateReligion(), getNumCities(), GC.getGameINLINE().getGameTurnYear());
+			const CvWString szNameKey = getIndependentCountryNameKey(getID(), civics, getStateReligion(), getNumCities(), GC.getGameINLINE().getGameTurnYear(), getTotalLand());
 			// Refresh cached names after translation edits or a language change.
 			if (m_szCivDescKey != szNameKey || m_szCivDesc != gDLL->getText(szNameKey))
 				setCivDescription(szNameKey);

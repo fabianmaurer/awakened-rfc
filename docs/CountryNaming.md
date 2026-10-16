@@ -178,7 +178,7 @@ in play. `ScenarioCountryNames.py` supplies the preview descriptions through
 Country short names and nationality adjectives use the original RFC text.
 Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 692 entries representing 476 distinct English/German
+`CountryNames.csv` lists 710 entries representing 495 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.
@@ -188,6 +188,24 @@ To maintain the translations, edit `tools/country_name_catalog.py` and run
 using numeric Unicode entities for compatibility with Civ4's XML reader.
 
 Historical references used for selected identities:
+
+The major-empire coverage, additional period windows, and their references are
+listed in [HistoricalEmpireNames.md](HistoricalEmpireNames.md). Russia's
+**PEOPLES_STATE** title is **Union of Soviet Socialist Republics / Union der
+Sozialistischen Sowjetrepubliken** (USSR / UdSSR). This applies to Dictatorship
+with Planned Economy under the ordinary classifier, without a date or size gate.
+Religious naming and Plutocracy + Planned Economy keep their higher priority.
+Republic + Planned Economy retains **Russian Soviet Republic**.
+
+Germany's ordinary **NATIONAL_STATE** name becomes **Greater German Reich /
+Großdeutsches Reich** under Dictatorship + Nationalism with at least **100 owned
+land plots** (`CvPlayer::getTotalLand`). Overseas land counts; water and vassal
+territory do not. Below 100 plots it remains **German Reich / Deutsches Reich**.
+The rule has no date, Vienna or city-count condition. Religious and planned
+economy names, and vassal/colonial names, retain priority. The ordinary turn
+refresh changes the name again after territory is lost or civics change.
+Scenario previews pass zero land plots because WB descriptions do not contain
+resolved cultural borders; they show the base name until the live map is built.
 
 - [The Hanseatic League, European Hansemuseum](https://www.hansemuseum.eu/en/)
 - [Batavian Republic, Dutch National Archives](https://www.nationaalarchief.nl/beleven/onderwijs/bronnenbox/bataafse-revolutie-1795)

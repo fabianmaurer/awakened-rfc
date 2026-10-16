@@ -636,7 +636,7 @@ CvTurnTimerInfo* CyGlobalContext::getTurnTimerInfo(int i) const
 	return &(GC.getTurnTimerInfo((TurnTimerTypes) i));
 }
 
-std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear)
+std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
 {
 	int* pCivics = NULL;
 	const int iCount = gDLL->getPythonIFace()->putSeqInArray(civics.ptr(), &pCivics);
@@ -644,7 +644,7 @@ std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::
 	if (iCount > 0)
 		choices.assign(pCivics, pCivics + iCount);
 	delete [] pCivics;
-	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear);
+	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear, iLandPlots);
 	if (szKey.empty())
 		return L"";
 	const CvWString szName = gDLL->getText(szKey);

@@ -3098,11 +3098,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_PEOPLES_STATE</Tag>
-    <English>Russian Soviet Republic</English>
-    <French>Russian Soviet Republic</French>
-    <German>Russische Sowjetrepublik</German>
-    <Italian>Russian Soviet Republic</Italian>
-    <Spanish>Russian Soviet Republic</Spanish>
+    <English>Union of Soviet Socialist Republics</English>
+    <French>Union of Soviet Socialist Republics</French>
+    <German>Union der Sozialistischen Sowjetrepubliken</German>
+    <Italian>Union of Soviet Socialist Republics</Italian>
+    <Spanish>Union of Soviet Socialist Republics</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_DICTATORSHIP</Tag>
@@ -5185,6 +5185,142 @@
     <Spanish>American Church of Humanity</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_CHI_QIN</Tag>
+    <English>Qin Empire</English>
+    <French>Qin Empire</French>
+    <German>Qin-Reich</German>
+    <Italian>Qin Empire</Italian>
+    <Spanish>Qin Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_HAN</Tag>
+    <English>Han Empire</English>
+    <French>Han Empire</French>
+    <German>Han-Reich</German>
+    <Italian>Han Empire</Italian>
+    <Spanish>Han Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_TANG</Tag>
+    <English>Tang Empire</English>
+    <French>Tang Empire</French>
+    <German>Tang-Reich</German>
+    <Italian>Tang Empire</Italian>
+    <Spanish>Tang Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SONG</Tag>
+    <English>Song Empire</English>
+    <French>Song Empire</French>
+    <German>Song-Reich</German>
+    <Italian>Song Empire</Italian>
+    <Spanish>Song Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_YUAN</Tag>
+    <English>Yuan Empire</English>
+    <French>Yuan Empire</French>
+    <German>Yuan-Reich</German>
+    <Italian>Yuan Empire</Italian>
+    <Spanish>Yuan Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_QING</Tag>
+    <English>Qing Empire</English>
+    <French>Qing Empire</French>
+    <German>Qing-Reich</German>
+    <Italian>Qing Empire</Italian>
+    <Spanish>Qing Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MAURYA</Tag>
+    <English>Maurya Empire</English>
+    <French>Maurya Empire</French>
+    <German>Maurya-Reich</German>
+    <Italian>Maurya Empire</Italian>
+    <Spanish>Maurya Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_GUPTA</Tag>
+    <English>Gupta Empire</English>
+    <French>Gupta Empire</French>
+    <German>Gupta-Reich</German>
+    <Italian>Gupta Empire</Italian>
+    <Spanish>Gupta Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MUGHAL</Tag>
+    <English>Mughal Empire</English>
+    <French>Mughal Empire</French>
+    <German>Mogulreich</German>
+    <Italian>Mughal Empire</Italian>
+    <Spanish>Mughal Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ACHAEMENID</Tag>
+    <English>Achaemenid Empire</English>
+    <French>Achaemenid Empire</French>
+    <German>Ach&#228;menidenreich</German>
+    <Italian>Achaemenid Empire</Italian>
+    <Spanish>Achaemenid Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_PARTHIAN</Tag>
+    <English>Parthian Empire</English>
+    <French>Parthian Empire</French>
+    <German>Partherreich</German>
+    <Italian>Parthian Empire</Italian>
+    <Spanish>Parthian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SASANIAN</Tag>
+    <English>Sasanian Empire</English>
+    <French>Sasanian Empire</French>
+    <German>Sassanidenreich</German>
+    <Italian>Sasanian Empire</Italian>
+    <Spanish>Sasanian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SAFAVID</Tag>
+    <English>Safavid Empire</English>
+    <French>Safavid Empire</French>
+    <German>Safawidenreich</German>
+    <Italian>Safavid Empire</Italian>
+    <Spanish>Safavid Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MACEDONIAN</Tag>
+    <English>Macedonian Empire</English>
+    <French>Macedonian Empire</French>
+    <German>Makedonisches Weltreich</German>
+    <Italian>Macedonian Empire</Italian>
+    <Spanish>Macedonian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_UMAYYAD</Tag>
+    <English>Umayyad Caliphate</English>
+    <French>Umayyad Caliphate</French>
+    <German>Umayyadenkalifat</German>
+    <Italian>Umayyad Caliphate</Italian>
+    <Spanish>Umayyad Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ABBASID</Tag>
+    <English>Abbasid Caliphate</English>
+    <French>Abbasid Caliphate</French>
+    <German>Abbasidenkalifat</German>
+    <Italian>Abbasid Caliphate</Italian>
+    <Spanish>Abbasid Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_CAROLINGIAN</Tag>
+    <English>Carolingian Empire</English>
+    <French>Carolingian Empire</French>
+    <German>Karolingerreich</German>
+    <Italian>Carolingian Empire</Italian>
+    <Spanish>Carolingian Empire</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_CHI_ZHOU</Tag>
     <English>Zhou Kingdom</English>
     <French>Zhou Kingdom</French>
@@ -5511,6 +5647,14 @@
     <German>Arabische K&#246;nigreiche</German>
     <Italian>Arabian Kingdoms</Italian>
     <Spanish>Arabian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_GREATER_GERMAN</Tag>
+    <English>Greater German Reich</English>
+    <French>Greater German Reich</French>
+    <German>Gro&#223;deutsches Reich</German>
+    <Italian>Greater German Reich</Italian>
+    <Spanish>Greater German Reich</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_EAST_FRANCIA</Tag>

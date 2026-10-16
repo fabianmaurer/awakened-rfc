@@ -28,7 +28,8 @@ status; alternate governments retain their own identities.
 ## Period rules
 
 Ordinary monarchies retain appropriate alternate religious and constitutional
-names. France uses a Frankish identity before 800, West Francia until 987, then
+names. France uses a Frankish identity before 800, the Carolingian Empire from
+800 until 843, West Francia until 987, then
 its existing civic names. East Francia ends at 962. England uses Anglo-Saxon
 Kingdoms before 927. Spain uses Iberian Kingdoms
 (Christian Kingdoms of Iberia with Christianity) from 718 until 1479.
@@ -50,7 +51,8 @@ claims that every real society changed identity simultaneously.
 SPQR remains the user's chosen Roman republican name. The scenario's early
 spawn dates and alternate civic outcomes are preserved. Generic Middle Kingdom,
 Kingdom of Persia and Kingdom of Babylon are retained rather than assigning
-dynasties which the simulation does not track. Minor Byzantium already has a
+dynasties outside the dated windows in [HistoricalEmpireNames.md](HistoricalEmpireNames.md).
+Minor Byzantium already has a
 separate civilization identity and is outside the 27 major naming slots.
 
 The 1453 scenario's complete roster, starting names and regional

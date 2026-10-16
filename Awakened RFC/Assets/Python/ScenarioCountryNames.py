@@ -31,7 +31,10 @@ def descriptions(description, filename):
         religion = -1
         if player.stateReligion:
             religion = gc.getInfoTypeForString(player.stateReligion)
+        # WB files do not store resolved cultural borders. Preview the base
+        # name until the live map supplies the actual owned land count.
         names[iPlayer] = gc.getCountryNamePreview(
             iPlayer, civics, religion, cityCounts.get(iPlayer, 0),
-            {0: -3000, 87: -800, 181: 600, 271: 1453}[description.gameDesc.gameTurn])
+            {0: -3000, 87: -800, 181: 600, 271: 1453}[description.gameDesc.gameTurn],
+            0)
     return names
