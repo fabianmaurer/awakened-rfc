@@ -4210,27 +4210,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_KINGDOM</Tag>
-    <English>Ottoman State</English>
-    <French>Ottoman State</French>
-    <German>Osmanischer Staat</German>
-    <Italian>Ottoman State</Italian>
-    <Spanish>Ottoman State</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_EMPIRE</Tag>
     <English>Ottoman Empire</English>
     <French>Ottoman Empire</French>
-    <German>Osmanisches Reich</German>
+    <German>Osmanenreich</German>
     <Italian>Ottoman Empire</Italian>
     <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_CONSTITUTIONAL</Tag>
-    <English>Ottoman State</English>
-    <French>Ottoman State</French>
-    <German>Osmanischer Staat</German>
-    <Italian>Ottoman State</Italian>
-    <Spanish>Ottoman State</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_REPUBLIC</Tag>
@@ -4354,11 +4354,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_SULTANATE</Tag>
-    <English>Ottoman Sultanate</English>
-    <French>Ottoman Sultanate</French>
-    <German>Osmanisches Sultanat</German>
-    <Italian>Ottoman Sultanate</Italian>
-    <Spanish>Ottoman Sultanate</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_SECULAR_REPUBLIC</Tag>
@@ -4562,11 +4562,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_TIMURID</Tag>
-    <English>Timurid Principalities</English>
-    <French>Timurid Principalities</French>
-    <German>Timuridenreiche</German>
-    <Italian>Timurid Principalities</Italian>
-    <Spanish>Timurid Principalities</Spanish>
+    <English>Timurid Empire</English>
+    <French>Timurid Empire</French>
+    <German>Timuridenreich</German>
+    <Italian>Timurid Empire</Italian>
+    <Spanish>Timurid Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CAR_HAFSID</Tag>
@@ -4607,6 +4607,14 @@
     <German>Griechisches Despotat</German>
     <Italian>Greek Despotate</Italian>
     <Spanish>Greek Despotate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MOREA</Tag>
+    <English>Despotate of the Morea</English>
+    <French>Despotate of the Morea</French>
+    <German>Despotat Morea</German>
+    <Italian>Despotate of the Morea</Italian>
+    <Spanish>Despotate of the Morea</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_MUSCOVY</Tag>
@@ -4655,6 +4663,38 @@
     <German>Italienische Stadtstaaten</German>
     <Italian>Italian City-States</Italian>
     <Spanish>Italian City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_VENICE</Tag>
+    <English>Republic of Venice</English>
+    <French>Republic of Venice</French>
+    <German>Republik Venedig</German>
+    <Italian>Republic of Venice</Italian>
+    <Spanish>Republic of Venice</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CASTILE_ARAGON</Tag>
+    <English>Castile and Aragon</English>
+    <French>Castile and Aragon</French>
+    <German>Kastilien und Aragon</German>
+    <Italian>Castile and Aragon</Italian>
+    <Spanish>Castile and Aragon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_KALMAR</Tag>
+    <English>Kalmar Union</English>
+    <French>Kalmar Union</French>
+    <German>Kalmarer Union</German>
+    <Italian>Kalmar Union</Italian>
+    <Spanish>Kalmar Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_MANI_TAYASAL</Tag>
+    <English>Mani and Tayasal</English>
+    <French>Mani and Tayasal</French>
+    <German>Mani und Tayasal</German>
+    <Italian>Mani and Tayasal</Italian>
+    <Spanish>Mani and Tayasal</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_FRANKISH_REALM</Tag>

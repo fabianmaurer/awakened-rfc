@@ -262,8 +262,8 @@ Mexican State | Mexikanischer Staat
 Sacred Realm of Anahuac | Heiliges Reich Anáhuac
 TUR
 Turkic Tribes | Turkstämme
-Ottoman State | Osmanischer Staat
-Ottoman Empire | Osmanisches Reich
+Ottoman Empire | Osmanenreich
+Ottoman Empire | Osmanenreich
 Republic of Turkey | Republik Türkei
 Turkey | Türkei
 Anatolian Maritime League | Anatolischer Seebund
@@ -322,18 +322,23 @@ SPECIAL_NAMES = {
     ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),
     ('EGY', 'MAMLUK'): ('Mamluk Sultanate', 'Mamlukensultanat'),
     ('IND', 'DELHI'): ('Delhi Sultanate', 'Sultanat von Delhi'),
-    ('PER', 'TIMURID'): ('Timurid Principalities', 'Timuridenreiche'),
+    ('PER', 'TIMURID'): ('Timurid Empire', 'Timuridenreich'),
     ('CAR', 'HAFSID'): ('Hafsid Sultanate', 'Hafsiden-Sultanat'),
     ('ARA', 'MECCA'): ('Sharifate of Mecca', 'Scharifat von Mekka'),
     ('CHI', 'MING'): ('Ming Empire', 'Ming-Reich'),
     ('JAP', 'ASHIKAGA'): ('Ashikaga Shogunate', 'Ashikaga-Shogunat'),
     ('GRE', 'DESPOTATE'): ('Greek Despotate', 'Griechisches Despotat'),
+    ('GRE', 'MOREA'): ('Despotate of the Morea', 'Despotat Morea'),
     ('RUS', 'MUSCOVY'): ('Grand Principality of Moscow', 'Großfürstentum Moskau'),
     ('NED', 'BURGUNDIAN'): ('Burgundian Netherlands', 'Burgundische Niederlande'),
     ('NED', 'HABSBURG'): ('Habsburg Netherlands', 'Habsburgische Niederlande'),
     ('MON', 'NORTHERN_YUAN'): ('Northern Yuan', 'Nördliche Yuan'),
     ('AZT', 'TRIPLE_ALLIANCE'): ('Aztec Triple Alliance', 'Aztekischer Dreibund'),
     ('ROM', 'ITALIAN_STATES'): ('Italian City-States', 'Italienische Stadtstaaten'),
+    ('ROM', 'VENICE'): ('Republic of Venice', 'Republik Venedig'),
+    ('SPA', 'CASTILE_ARAGON'): ('Castile and Aragon', 'Kastilien und Aragon'),
+    ('VIK', 'KALMAR'): ('Kalmar Union', 'Kalmarer Union'),
+    ('MAY', 'MANI_TAYASAL'): ('Mani and Tayasal', 'Mani und Tayasal'),
     # Period identities shared by scenario previews and live country naming.
     ('FRA', 'FRANKISH_REALM'): ('Frankish Realm', 'Reich der Franken'),
     ('FRA', 'WEST_FRANCIA'): ('West Francia', 'Westfränkisches Reich'),
@@ -410,7 +415,7 @@ SPECIAL_NAMES = {
     ('EGY', 'CALIPHATE'): ('Caliphate of the Nile', 'Nilkalifat'),
     ('ARA', 'CALIPHATE'): ('Arab Caliphate', 'Arabisches Kalifat'),
     ('TUR', 'CALIPHATE'): ('Ottoman Caliphate', 'Osmanisches Kalifat'),
-    ('TUR', 'SULTANATE'): ('Ottoman Sultanate', 'Osmanisches Sultanat'),
+    ('TUR', 'SULTANATE'): ('Ottoman Empire', 'Osmanenreich'),
     ('PER', 'ISLAMIC_REPUBLIC'): ('Islamic Republic of Iran', 'Islamische Republik Iran'),
     ('PER', 'SULTANATE'): ('Sultanate of Persia', 'Sultanat Persien'),
     ('PER', 'CALIPHATE'): ('Caliphate of Iran', 'Kalifat Iran'),

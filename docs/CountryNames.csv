@@ -525,9 +525,9 @@ AZT,CALIPHATE,Caliphate of Mexico,Kalifat Mexiko
 AZT,SULTANATE,Sultanate of Mexico,Sultanat Mexiko
 AZT,SECULAR_REPUBLIC,United Mexican States,Vereinigte Mexikanische Staaten
 TUR,TRIBAL,Turkic Tribes,Turkstämme
-TUR,KINGDOM,Ottoman State,Osmanischer Staat
-TUR,EMPIRE,Ottoman Empire,Osmanisches Reich
-TUR,CONSTITUTIONAL,Ottoman State,Osmanischer Staat
+TUR,KINGDOM,Ottoman Empire,Osmanenreich
+TUR,EMPIRE,Ottoman Empire,Osmanenreich
+TUR,CONSTITUTIONAL,Ottoman Empire,Osmanenreich
 TUR,REPUBLIC,Republic of Turkey,Republik Türkei
 TUR,DEMOCRACY,Turkey,Türkei
 TUR,MERCHANT_REPUBLIC,Anatolian Maritime League,Anatolischer Seebund
@@ -543,7 +543,7 @@ TUR,HOLY_KINGDOM,Sacred Realm of Anatolia,Heiliges Reich Anatolien
 TUR,THEOCRATIC_REPUBLIC,Republic of Turkey,Republik Türkei
 TUR,ISLAMIC_REPUBLIC,Islamic Republic of Turkey,Islamische Republik Türkei
 TUR,CALIPHATE,Ottoman Caliphate,Osmanisches Kalifat
-TUR,SULTANATE,Ottoman Sultanate,Osmanisches Sultanat
+TUR,SULTANATE,Ottoman Empire,Osmanenreich
 TUR,SECULAR_REPUBLIC,Turkey,Türkei
 AME,TRIBAL,American Settlements,Amerikanische Siedlungen
 AME,KINGDOM,Kingdom of America,Königreich Amerika
@@ -569,18 +569,23 @@ AME,SECULAR_REPUBLIC,United States of America,Vereinigte Staaten von Amerika
 ETH,ABYSSINIA,Abyssinian Empire,Kaiserreich Abessinien
 EGY,MAMLUK,Mamluk Sultanate,Mamlukensultanat
 IND,DELHI,Delhi Sultanate,Sultanat von Delhi
-PER,TIMURID,Timurid Principalities,Timuridenreiche
+PER,TIMURID,Timurid Empire,Timuridenreich
 CAR,HAFSID,Hafsid Sultanate,Hafsiden-Sultanat
 ARA,MECCA,Sharifate of Mecca,Scharifat von Mekka
 CHI,MING,Ming Empire,Ming-Reich
 JAP,ASHIKAGA,Ashikaga Shogunate,Ashikaga-Shogunat
 GRE,DESPOTATE,Greek Despotate,Griechisches Despotat
+GRE,MOREA,Despotate of the Morea,Despotat Morea
 RUS,MUSCOVY,Grand Principality of Moscow,Großfürstentum Moskau
 NED,BURGUNDIAN,Burgundian Netherlands,Burgundische Niederlande
 NED,HABSBURG,Habsburg Netherlands,Habsburgische Niederlande
 MON,NORTHERN_YUAN,Northern Yuan,Nördliche Yuan
 AZT,TRIPLE_ALLIANCE,Aztec Triple Alliance,Aztekischer Dreibund
 ROM,ITALIAN_STATES,Italian City-States,Italienische Stadtstaaten
+ROM,VENICE,Republic of Venice,Republik Venedig
+SPA,CASTILE_ARAGON,Castile and Aragon,Kastilien und Aragon
+VIK,KALMAR,Kalmar Union,Kalmarer Union
+MAY,MANI_TAYASAL,Mani and Tayasal,Mani und Tayasal
 FRA,FRANKISH_REALM,Frankish Realm,Reich der Franken
 FRA,WEST_FRANCIA,West Francia,Westfränkisches Reich
 KHM,CHENLA,Chenla,Reich von Chenla

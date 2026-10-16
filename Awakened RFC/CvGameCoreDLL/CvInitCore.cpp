@@ -1766,6 +1766,20 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 		if (getPitboss() && getNumHumans()>=30) //maybe that isn't the case with Pitboss??
 			return false;
 
+		// This authored world has a fixed starting roster. In particular, an
+		// explicit false must not fall through to RFC's later-join birth gate.
+		// Identify the map before game initialization too, when getStartTurn()
+		// may still describe the previous game rather than the setup selection.
+		if (getWBMapScript() && !getWBMapNoPlayers())
+		{
+			CvWString szMapName = getMapScriptName();
+			CvWString::size_type iSeparator = szMapName.find_last_of(L"\\/");
+			const wchar* szFileName = szMapName.GetCString() +
+				(iSeparator == CvWString::npos ? 0 : iSeparator + 1);
+			if (wcsicmp(szFileName, L"Start 5 - 1453 AD.CivBeyondSwordWBSave") == 0)
+				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
+		}
+
 		// Authored scenarios can start with a civilization already established
 		// on its birth turn (e.g. Germany in the 840 AD start). Honor their
 		// explicit playable slots before applying the later-join birth gate.

@@ -23214,8 +23214,9 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
 		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
 	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
-		szForm = iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
-			L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS";
+		szForm = iYear >= 1400 ? L"CASTILE_ARAGON" :
+			(iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
+			 L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS");
 	else if (iPlayer == ENGLAND && bChristianMonarchy && iYear < 927)
 		szForm = L"ANGLO_SAXON";
 	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)
@@ -23258,7 +23259,7 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		else if (iPlayer == JAPAN && bOrdinaryMonarchy && iYear >= 1336 && iYear < 1573)
 			szForm = L"ASHIKAGA";
 		else if (iPlayer == GREECE && bChristianMonarchy && iNumCities <= 2 && iYear >= 1204 && iYear < 1832)
-			szForm = L"DESPOTATE";
+			szForm = iYear >= 1349 && iYear < 1460 ? L"MOREA" : L"DESPOTATE";
 		else if (iPlayer == RUSSIA && bChristianMonarchy && iYear >= 1283 && iYear < 1547)
 			szForm = L"MUSCOVY";
 		else if (iPlayer == ETHIOPIA && bChristianMonarchy && iYear >= 1270 && iYear < 1974)
@@ -23266,7 +23267,9 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		else if (iPlayer == NETHERLANDS && bChristianMonarchy && iYear >= 1384 && iYear < 1581)
 			szForm = iYear < 1482 ? L"BURGUNDIAN" : L"HABSBURG";
 		else if (iPlayer == VIKING && bChristianMonarchy && iYear >= 1000 && iYear < 1523)
-			szForm = L"NORSE_KINGDOMS";
+			szForm = iYear >= 1397 ? L"KALMAR" : L"NORSE_KINGDOMS";
+		else if (iPlayer == MAYA && bOrdinaryMonarchy && iYear >= 1441 && iYear < 1697)
+			szForm = L"MANI_TAYASAL";
 		else if (iPlayer == MONGOLIA && bOrdinaryMonarchy && iYear >= 1368 && iYear < 1635)
 			szForm = L"NORTHERN_YUAN";
 		else if (iPlayer == AZTEC && bOrdinaryMonarchy && iYear >= 1428 && iYear < 1521)
@@ -23276,7 +23279,7 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	}
 	if (iPlayer == ROME && iYear >= 476 && iYear < 1861 &&
 		(wcscmp(szForm, L"REPUBLIC") == 0 || wcscmp(szForm, L"MERCHANT_REPUBLIC") == 0))
-		szForm = L"ITALIAN_STATES";
+		szForm = iYear >= 1400 && iYear < 1797 ? L"VENICE" : L"ITALIAN_STATES";
 
 	CvWString szNameKey = civDynamicNames[iPlayer][0];
 	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);

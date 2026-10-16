@@ -125,7 +125,10 @@ class CvDawnOfMan:
 
 ##Rhye - end		
 		# Main Body text
-		szDawnTitle = u"<font=3>" + localText.getText("TXT_KEY_DAWN_OF_MAN_SCREEN_TITLE", ()).upper() + u"</font>"
+		titleKey = "TXT_KEY_DAWN_OF_MAN_SCREEN_TITLE"
+		if Scenario1453AD.isScenario():
+			titleKey = "TXT_KEY_RFCMP_1453_INTRO_TITLE"
+		szDawnTitle = u"<font=3>" + localText.getText(titleKey, ()).upper() + u"</font>"
 		screen.setLabel("DawnTitle", "Background", szDawnTitle, CvUtil.FONT_CENTER_JUSTIFY,
 				self.X_TEXT_PANEL + (self.W_TEXT_PANEL / 2), self.Y_TEXT_PANEL + 15, -2.0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
@@ -147,6 +150,8 @@ class CvDawnOfMan:
                         year = con.tYear[CyGame().getActiveTeam()][0] + CyTranslator().getText(con.tYear[CyGame().getActiveTeam()][1], ())
 		
 		bodyString = localText.getText("TXT_KEY_RHYES_DAWN_OF_MAN_TEXT", (year, self.player.getCivilizationAdjectiveKey(), self.player.getNameKey()))
+		if Scenario1453AD.isScenario() and self.player.getID() in Scenario1453AD.ACTIVE_PLAYERS:
+			bodyString = localText.getText("TXT_KEY_RFCMP_1453_INTRO_" + str(self.player.getID()), ())
 
                 #RFCMP
 ##		screen.addStackedBarGFC("ProgressBar", 300, 400, 435, 40, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)

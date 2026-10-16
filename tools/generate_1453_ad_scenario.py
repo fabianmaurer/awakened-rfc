@@ -21,7 +21,8 @@ RELIGIONS = {0: ISLAM, 1: ISLAM, 2: CONFUCIAN, 4: CHRISTIAN,
              5: ISLAM, 6: ISLAM, 7: CHRISTIAN, 8: BUDDHISM,
              9: CHRISTIAN, 11: CHRISTIAN, 12: ISLAM, 13: BUDDHISM,
              14: CHRISTIAN, 15: CHRISTIAN, 16: CHRISTIAN, 17: CHRISTIAN,
-             18: CHRISTIAN, 19: CHRISTIAN, 20: ISLAM, 21: CHRISTIAN}
+             18: CHRISTIAN, 19: CHRISTIAN, 20: ISLAM, 21: CHRISTIAN,
+             25: ISLAM}
 
 # First city per major is the capital. Sizes are relative urban weights, not a
 # census conversion. The crowded RFC map requires regional aggregations.
@@ -144,7 +145,27 @@ CITY_RELIGIONS = {
     'Fes': ISLAM, 'Tlemcen': ISLAM, 'Masqat': ISLAM, 'Melaka': ISLAM,
     'Lhasa': BUDDHISM, 'Colombo': BUDDHISM,
     'Surabaya': 'RELIGION_HINDUISM',
+    "Sana'a": ISLAM, 'Gharnata': ISLAM,
+    'Baghdad': ISLAM, 'Shiraz': ISLAM, 'Tabriz': ISLAM,
+    'Jaunpur': ISLAM, 'Gaur': ISLAM, 'Dabhol': ISLAM, 'Multan': ISLAM,
+    'Timbuktu': ISLAM, 'Gao': ISLAM, 'Kilwa': ISLAM,
+    'Inbhir Nis': CHRISTIAN, 'Krakow': CHRISTIAN,
+    'Novgorod': CHRISTIAN, 'Trapezous': CHRISTIAN,
+    'Thessaloniki': CHRISTIAN,
+    'Ava': BUDDHISM, 'Ayutthaya': BUDDHISM, 'Thang Long': BUDDHISM,
+    'Hanseong': CONFUCIAN,
+    'Vijayanagara': 'RELIGION_HINDUISM',
 }
+
+# Local American, African and Mongolian traditions are not among Civ4's seven
+# religions. Name these exceptions explicitly so missing assignments elsewhere
+# cannot silently create more cities without an authored religion.
+NO_GAME_RELIGION_CITIES = frozenset((
+    'Mani', 'Tayasal', 'Qusqu', 'Chan Chan', 'Cajamarca', 'Huamanga',
+    'Hatun Qulla', 'Tumipampa', 'Tupiza', 'Copiapo',
+    'Qaraqorum', 'Qobdo', 'Tenochtitlan', 'Texcoco', 'Oaxaca',
+    'Mbanza Kongo', 'Great Zimbabwe',
+))
 
 BASE_TECHS = ('MYSTICISM MEDITATION POLYTHEISM PRIESTHOOD MONOTHEISM '
               'MONARCHY LITERATURE CODE_OF_LAWS DRAMA FEUDALISM THEOLOGY '
@@ -162,22 +183,103 @@ GUNPOWDER = (0, 1, 2, 5, 8, 11, 14, 15, 16, 17, 18, 19, 21, 25)
 OPTICS = (2, 7, 11, 14, 15, 16, 19, 21)
 LEADERS = {
     0: ('Inal', 'Inal'), 1: ('Bahlul Lodi', 'Bahlul Lodi'),
-    2: ('Jingtai', 'Jingtai'), 4: ('Palaiologan Despots', 'Despoten der Palaiologen'),
-    5: ('Timurid Princes', 'Timuridische Fürsten'),
+    2: ('Jingtai', 'Jingtai'), 4: ('Demetrios Palaiologos', 'Demetrios Palaiologos'),
+    5: ("Abu Sa'id Mirza", "Abu Sa'id Mirza"),
     6: ('Abu Amr Uthman', 'Abu Amr Uthman'),
-    7: ('Italian City Councils', 'Italienische Stadträte'),
+    7: ('Francesco Foscari', 'Francesco Foscari'),
     8: ('Ashikaga Yoshimasa', 'Ashikaga Yoshimasa'),
-    9: ('Zara Yaqob', 'Zara Yaqob'), 10: ('Maya Dynasties', 'Maya-Dynastien'),
-    11: ('Scandinavian Crowns', 'Skandinavische Königshäuser'),
-    12: ('Sharifs of Mecca', 'Scharifen von Mekka'),
+    9: ('Zara Yaqob', 'Zara Yaqob'), 10: ('Ah Xupan Xiu', 'Ah Xupan Xiu'),
+    11: ('Christian I', 'Christian I.'),
+    12: ('Barakat ibn Hasan', 'Barakat ibn Hasan'),
     13: ('Ponhea Yat', 'Ponhea Yat'),
-    14: ('Iberian Crowns', 'Iberische Königshäuser'),
+    14: ('John II of Castile', 'Johann II. von Kastilien'),
     15: ('Charles VII', 'Karl VII.'), 16: ('Henry VI', 'Heinrich VI.'),
     17: ('Frederick III', 'Friedrich III.'), 18: ('Vasily II', 'Wassili II.'),
     19: ('Philip the Good', 'Philipp der Gute'),
-    20: ('Mansa of Mali', 'Mansa von Mali'), 21: ('Afonso V', 'Alfons V.'),
-    22: ('Pachacuti', 'Pachacuti'), 23: ('Mongol Taishis', 'Mongolische Taischi'),
+    20: ('Uli II', 'Uli II.'), 21: ('Afonso V', 'Alfons V.'),
+    22: ('Pachacuti', 'Pachacuti'), 23: ('Esen Taishi', 'Esen Taishi'),
     24: ('Moctezuma I', 'Moctezuma I.'), 25: ('Mehmed II', 'Mehmed II.'),
+}
+
+
+# Briefings describe the authored position, including aggregated regional states.
+# Keep them short enough for the existing Dawn of Man panel.
+INTRODUCTIONS = {
+    0: (
+        '1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.',
+        '1453: Von Kairo aus beherrscht das Mamlukensultanat Ägypten und die Levante. Der Nil ernährt eure Städte, Verbindungen zum Mittelmeer und Roten Meer bringen Wohlstand. Die Osmanen haben Konstantinopel erobert. Sichert die Nordgrenze und bewahrt die Stärke eures Sultanats.'),
+    1: (
+        '1453: Delhi and Lahore form the heart of your sultanate under Bahlul Lodi. Jaunpur, Bengal and the Deccan follow their own rulers; Vijayanagara stands strong in the south. Consolidate your northern possessions before seeking a wider dominion in India.',
+        '1453: Delhi und Lahore bilden unter Bahlul Lodi den Kern eures Sultanats. Jaunpur, Bengalen und der Dekkan folgen eigenen Herrschern; im Süden steht Vijayanagara. Festigt eure nordindischen Besitzungen, bevor ihr nach einer größeren Herrschaft in Indien strebt.'),
+    2: (
+        '1453: The Ming court rules from Beijing over populous cities and rich farmland. Beyond the northern frontier, Mongol powers remain a threat. Confucian learning, Buddhist temples and Daoist traditions shape your realm. Protect the frontier and turn the strength of your cities into lasting security.',
+        '1453: Der Ming-Hof regiert von Beijing aus über bevölkerungsreiche Städte und fruchtbares Land. Jenseits der Nordgrenze bleiben mongolische Mächte eine Gefahr. Konfuzianische Bildung, buddhistische Tempel und daoistische Traditionen prägen euer Reich. Sichert die Grenze und nutzt die Stärke eurer Städte.'),
+    4: (
+        '1453: Constantinople has fallen, but the Greek despotate in the Morea survives around Mistra. Your small realm faces an Ottoman power established on both sides of the straits. Preserve your independence through careful diplomacy, defensible borders and the resources of your remaining city.',
+        '1453: Konstantinopel ist gefallen, doch das griechische Despotat in der Morea besteht um Mistra fort. Euer kleines Reich steht einer osmanischen Macht gegenüber, die beide Seiten der Meerengen beherrscht. Bewahrt eure Unabhängigkeit durch kluge Diplomatie, sichere Grenzen und die Kräfte eurer verbliebenen Stadt.'),
+    5: (
+        '1453: Timur\'s legacy is divided among competing princes. Your cities stretch from Samarqand through Merv and Herat to Kandahar, while other Iranian rulers hold Tabriz and Shiraz. Guard the routes between your scattered centers and build a durable realm from a contested inheritance.',
+        '1453: Timurs Erbe ist unter rivalisierenden Fürsten geteilt. Eure Städte reichen von Samarqand über Merv und Herat bis Kandahar; andere iranische Herrscher halten Tabriz und Shiraz. Schützt die Wege zwischen euren verstreuten Zentren und formt aus dem umkämpften Erbe eine dauerhafte Herrschaft.'),
+    6: (
+        '1453: Tunis anchors your Hafsid realm on the North African coast, with Tripoli to the east. Fes and Tlemcen remain separate centers of power to the west. Strengthen your ports and inland defenses, and balance Mediterranean opportunities against the ambitions of neighboring states.',
+        '1453: Tunis ist das Zentrum eures Hafsidenreichs an Nordafrikas Küste, Tripolis sein östlicher Stützpunkt. Fès und Tlemcen bleiben eigenständige Machtzentren im Westen. Stärkt Häfen und Landesverteidigung und wägt die Chancen des Mittelmeers gegen die Ansprüche eurer Nachbarn ab.'),
+    7: (
+        '1453: Your Italian cities unite the maritime reach of Venice with the prestige of Rome. Naples and Sicily remain outside your rule, and powerful neighbors watch the Alpine approaches. Develop your wealthy urban centers and secure a place in the struggle for influence across Italy and the Mediterranean.',
+        '1453: Eure italienischen Städte verbinden Venedigs maritime Reichweite mit dem Ansehen Roms. Neapel und Sizilien stehen außerhalb eurer Herrschaft; mächtige Nachbarn wachen über die Alpenzugänge. Entwickelt eure reichen Städte und sichert euren Einfluss in Italien und im Mittelmeer.'),
+    8: (
+        '1453: The Ashikaga shogunate governs from Kyoto, but regional warrior houses limit its authority. Hakata connects your islands to overseas exchange, while Edo is still a small settlement. Strengthen your cities and defenses, and give a divided country a stable center of power.',
+        '1453: Das Ashikaga-Shogunat regiert von Kyoto aus, doch regionale Kriegerhäuser begrenzen seine Macht. Hakata verbindet eure Inseln mit dem überseeischen Handel, während Edo noch eine kleine Siedlung ist. Stärkt Städte und Verteidigung und gebt dem geteilten Land ein beständiges Machtzentrum.'),
+    9: (
+        '1453: Your Christian highland kingdom draws strength from the royal traditions of Aksum and the religious center of Dabra Libanos. Muslim powers surround the approaches to the Red Sea and the northern trade routes. Develop the highlands, defend their passes and preserve your kingdom\'s independence.',
+        '1453: Euer christliches Hochlandreich schöpft Kraft aus Aksums königlicher Tradition und dem religiösen Zentrum Dabra Libanos. Muslimische Mächte prägen die Zugänge zum Roten Meer und die nördlichen Handelswege. Entwickelt das Hochland, schützt seine Pässe und bewahrt eure Unabhängigkeit.'),
+    10: (
+        '1453: Maya lands are divided among regional dynasties. Mani and Tayasal sustain your realm, while the Aztec powers lie to the west. Build on local agriculture and exchange, defend your communities and seek a stronger position among the competing states of Mesoamerica.',
+        '1453: Die Länder der Maya sind unter regionalen Dynastien geteilt. Mani und Tayasal tragen eure Herrschaft, westlich liegen die Mächte der Azteken. Stützt euch auf Landwirtschaft und Austausch, schützt eure Gemeinden und festigt eure Stellung unter den rivalisierenden Staaten Mesoamerikas.'),
+    11: (
+        '1453: Copenhagen, Nidaros and Stockholm represent the Scandinavian crowns under your command. The northern kingdoms share maritime ties, but their interests often diverge. Secure the sea lanes of the Baltic and North Atlantic, develop your ports and hold your scattered lands together.',
+        '1453: Kopenhagen, Nidaros und Stockholm vertreten die skandinavischen Kronen unter eurer Führung. Seeverbindungen vereinen die nördlichen Königreiche, doch ihre Interessen gehen oft auseinander. Sichert die Wege über Ostsee und Nordatlantik, entwickelt eure Häfen und haltet die verstreuten Länder zusammen.'),
+    12: (
+        '1453: Mecca is the heart of your sharifate and a holy city of Islam. Mamluk Egypt lies to the northwest, while Yemen and the ports of Oman remain outside your rule. Safeguard the pilgrimage routes and build the resources and diplomacy needed to preserve your position in the Hejaz.',
+        '1453: Mekka ist das Herz eures Scharifats und eine heilige Stadt des Islam. Im Nordwesten liegt das mamlukische Ägypten; Jemen und die Häfen Omans stehen außerhalb eurer Herrschaft. Schützt die Pilgerwege und sichert durch Wohlstand und Diplomatie eure Stellung im Hedschas.'),
+    13: (
+        '1453: Cambodia\'s court is centered on Chaktomuk, while Angkor preserves the legacy of a greater empire. Ayutthaya to the west and the Vietnamese realm to the east stand apart. Restore the strength of your cities and protect the river lands on which your kingdom depends.',
+        '1453: Kambodschas Hof hat sein Zentrum in Chaktomuk, während Angkor das Erbe eines größeren Reiches bewahrt. Ayutthaya im Westen und das vietnamesische Reich im Osten stehen eigenständig daneben. Stärkt eure Städte und schützt die Flusslandschaften, von denen euer Königreich lebt.'),
+    14: (
+        '1453: Your Christian Iberian realms span the Castilian interior and Barcelona\'s Mediterranean coast. Portugal and Muslim Granada remain outside your rule. Develop the peninsula\'s cities, secure the southern frontier and choose between continental ambitions and opportunities at sea.',
+        '1453: Eure christlichen Reiche Iberiens umfassen das kastilische Binnenland und Barcelonas Mittelmeerküste. Portugal und das muslimische Granada stehen außerhalb eurer Herrschaft. Entwickelt die Städte der Halbinsel, sichert die Südgrenze und wägt Ziele auf dem Festland gegen Chancen zur See ab.'),
+    15: (
+        '1453: France is still at war with England. Paris and Marseille anchor your kingdom, but Bordeaux remains in English hands. Reclaim your southwestern foothold, strengthen royal power and rebuild the prosperity of a realm shaped by a long struggle for its crown.',
+        '1453: Frankreich liegt noch im Krieg mit England. Paris und Marseille tragen euer Königreich, doch Bordeaux ist weiterhin englisch. Gewinnt den Stützpunkt im Südwesten zurück, festigt die königliche Macht und erneuert den Wohlstand eines Landes, das lange um seine Krone gekämpft hat.'),
+    16: (
+        '1453: London and York sustain your English kingdom, while Bordeaux remains your foothold in a war-torn France. Scotland and Ireland lie beyond your direct rule. Decide how much strength to commit across the Channel while securing the island and the resources of the crown.',
+        '1453: London und York tragen euer englisches Königreich; Bordeaux bleibt euer Stützpunkt im umkämpften Frankreich. Schottland und Irland stehen außerhalb eurer direkten Herrschaft. Entscheidet, wie viel Kraft ihr jenseits des Ärmelkanals einsetzen könnt, und sichert zugleich Insel und Krone.'),
+    17: (
+        '1453: Your imperial lands stretch from Frankfurt and Berlin to Prague and Vienna. The Holy Roman Empire is a mosaic of cities and princely interests, with Burgundy to the west and Hungary to the southeast. Connect your centers, strengthen their defenses and turn imperial prestige into practical power.',
+        '1453: Eure Reichsgebiete reichen von Frankfurt und Berlin bis Prag und Wien. Das Heilige Römische Reich ist ein Geflecht städtischer und fürstlicher Interessen, mit Burgund im Westen und Ungarn im Südosten. Verbindet eure Zentren, stärkt ihre Verteidigung und verleiht dem kaiserlichen Ansehen Gewicht.'),
+    18: (
+        '1453: Moscow and Vladimir form the core of your principality. Novgorod remains independent to the northwest, and the wider Russian lands are divided among rival powers. Consolidate your cities, defend the approaches to Moscow and build the strength to extend your influence.',
+        '1453: Moskau und Wladimir bilden den Kern eures Fürstentums. Im Nordwesten bleibt Nowgorod unabhängig, und die weiteren russischen Länder sind unter rivalisierenden Mächten geteilt. Festigt eure Städte, schützt die Zugänge zu Moskau und schafft die Grundlage für wachsenden Einfluss.'),
+    19: (
+        '1453: Bruges anchors your Burgundian Low Countries, a wealthy urban region between France, England and the Empire. Prosperity attracts powerful neighbors as well as distant commerce. Protect your compact territory and use its wealth and diplomacy to preserve room for your own ambitions.',
+        '1453: Brügge ist das Zentrum eurer burgundischen Niederlande, einer reichen Städtelandschaft zwischen Frankreich, England und dem Reich. Wohlstand zieht mächtige Nachbarn ebenso an wie fernen Handel. Schützt euer kleines Gebiet und nutzt seine Mittel für eine eigenständige Politik.'),
+    20: (
+        '1453: Niani and Djenne sustain your Malian realm, but Timbuktu and Gao lie outside your authority. Gold and trans-Saharan exchange offer wealth amid competing powers along the Niger. Consolidate the lands you hold and rebuild your influence over the region\'s important routes and cities.',
+        '1453: Niani und Djenne tragen euer Malireich, doch Timbuktu und Gao stehen außerhalb eurer Herrschaft. Gold und der Austausch durch die Sahara versprechen Wohlstand zwischen rivalisierenden Mächten am Niger. Festigt eure Länder und erneuert euren Einfluss auf die Wege und Städte der Region.'),
+    21: (
+        '1453: Lisbon and Porto face the Atlantic from Portugal\'s narrow western shore. Your Iberian neighbors are strong, while the coasts of Africa offer routes for exploration and exchange. Develop your fleet and ports, safeguard the homeland and choose how far to pursue opportunities overseas.',
+        '1453: Lissabon und Porto blicken von Portugals schmaler Westküste auf den Atlantik. Eure iberischen Nachbarn sind stark, während Afrikas Küsten Wege für Erkundung und Austausch eröffnen. Entwickelt Flotte und Häfen, schützt das Kernland und bestimmt die Reichweite eurer überseeischen Ziele.'),
+    22: (
+        '1453: Pachacuti\'s realm is growing from Cusco into the Andean highlands. Chan Chan, Cajamarca and other regional centers are still independent. Strengthen the connections between your mountain cities and decide where diplomacy or conquest can extend the land of the four quarters.',
+        '1453: Pachacutis Reich wächst von Cusco aus in das Andenhochland. Chan Chan, Cajamarca und weitere regionale Zentren bleiben unabhängig. Stärkt die Verbindungen zwischen euren Bergstädten und entscheidet, wo Diplomatie oder Eroberung das Land der vier Weltgegenden erweitern können.'),
+    23: (
+        '1453: The Northern Yuan preserve a Mongol power beyond the Ming frontier. Qaraqorum and Qobdo anchor your scattered settlements, while China commands much larger cities to the south. Use the space of the steppe, protect your centers and seek opportunities without exhausting your limited urban base.',
+        '1453: Die Nördlichen Yuan bewahren eine mongolische Macht jenseits der Ming-Grenze. Qaraqorum und Qobdo tragen eure verstreuten Siedlungen, während China im Süden weit größere Städte besitzt. Nutzt den Raum der Steppe, schützt eure Zentren und schont die Kräfte eurer kleinen städtischen Basis.'),
+    24: (
+        '1453: Tenochtitlan is the heart of the Aztec Triple Alliance under Moctezuma I. Texcoco and Oaxaca extend your reach, while Maya states endure to the east. Sustain your populous capital, strengthen your armies and bring neighboring lands within your sphere of influence.',
+        '1453: Tenochtitlan ist unter Moctezuma I. das Herz des aztekischen Dreibunds. Texcoco und Oaxaca erweitern euren Einfluss, während im Osten die Staaten der Maya bestehen. Versorgt eure bevölkerungsreiche Hauptstadt, stärkt eure Heere und gewinnt Einfluss auf die umliegenden Länder.'),
+    25: (
+        '1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate\'s next frontier should lie.',
+        '1453: Konstantinopel gehört euch. Eure osmanischen Länder verbinden nun den Balkan mit West- und Zentralanatolien, doch Morea, Trapezunt und das Mamlukenreich bestehen fort. Sichert die Meerengen, baut eure neue Hauptstadt aus und entscheidet, wo die nächste Grenze des Sultanats liegen soll.'),
 }
 
 
@@ -207,12 +309,23 @@ def text_entries():
           'Zivilisationen sind spielbar. Regionale Staaten werden durch die RFC-Zivilisationen '
           'abgebildet; Amerika erscheint nach dem gewohnten Zeitplan.')
     entries = [('TXT_KEY_RFCMP_SCENARIO_1453_AD', en, de)]
+    title_translations = {
+        'English': 'The World in 1453', 'French': 'Le monde en 1453',
+        'German': 'Die Welt im Jahr 1453', 'Italian': 'Il mondo nel 1453',
+        'Spanish': 'El mundo en 1453',
+    }
+    entries.append(('TXT_KEY_RFCMP_1453_INTRO_TITLE', title_translations['English'], title_translations['German']))
     entries += [('TXT_KEY_RFCMP_1453_LEADER_' + str(i), *LEADERS[i]) for i in sorted(LEADERS)]
+    if set(INTRODUCTIONS) != set(ACTIVE):
+        raise ValueError('Every starting civilization needs its own introduction')
+    entries += [('TXT_KEY_RFCMP_1453_INTRO_' + str(i), *INTRODUCTIONS[i]) for i in ACTIVE]
     lines = ['<?xml version="1.0" encoding="UTF-8"?>', '<Civ4GameText xmlns="http://www.firaxis.com">']
     for tag, english, german in entries:
         lines += ['  <TEXT>', '    <Tag>' + tag + '</Tag>']
         for language in ('English', 'French', 'German', 'Italian', 'Spanish'):
             value = german if language == 'German' else english
+            if tag == 'TXT_KEY_RFCMP_1453_INTRO_TITLE':
+                value = title_translations[language]
             lines.append('    <' + language + '>' + escape(value) + '</' + language + '>')
         lines.append('  </TEXT>')
     lines.append('</Civ4GameText>')
@@ -225,6 +338,9 @@ def main():
     text = text.replace('GameTurn=205', 'GameTurn=' + str(START_TURN))
     text = text.replace('TXT_KEY_RFCMP_SCENARIO_840_AD', 'TXT_KEY_RFCMP_SCENARIO_1453_AD')
     cities = records()
+    for owner, _, name, _ in cities:
+        if name not in CITY_RELIGIONS and owner not in RELIGIONS and name not in NO_GAME_RELIGION_CITIES:
+            raise ValueError('Missing city religion assignment: ' + name)
     if {owner for owner, _, _, _ in cities if owner < 27} != set(ACTIVE):
         raise ValueError('Every populated major must be selectable, and every selectable major needs a city')
     for index, (_, (x, y), name, _) in enumerate(cities):
@@ -439,6 +555,17 @@ def main():
         for value in re.findall(prefix + r'=(\w+)', text):
             if value not in known:
                 raise ValueError('Unknown %s: %s' % (prefix, value))
+    # Inspect the emitted flags as well as the source roster: non-playable
+    # majors (Babylon and the future American spawn) must stay out of setup.
+    playable = set()
+    for owner, block in enumerate(re.findall(r'BeginPlayer\b(.*?)EndPlayer', text, re.S)):
+        flags = re.findall(r'^\s*PlayableCiv=(\d+)\s*$', block, re.M)
+        if len(flags) != 1 or flags[0] not in ('0', '1'):
+            raise ValueError('Invalid playable flag for player %d' % owner)
+        if flags[0] == '1':
+            playable.add(owner)
+    if playable != set(ACTIVE):
+        raise ValueError('Generated selectable players do not match the 1453 starting roster')
     TARGET.write_text(text, encoding='utf-8')
     data = ('# Generated by tools/generate_1453_ad_scenario.py; Python 2.4.\n'
             'START_TURN = %r\nSTART_YEAR = 1453\nACTIVE_PLAYERS = %r\nCAPITALS = %r\n' %
