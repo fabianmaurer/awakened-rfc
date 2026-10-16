@@ -18,11 +18,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>
-        <English>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</English>
-        <French>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</French>
-        <German>Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Gro&#223;e Pers&#246;nlichkeiten sind ausgenommen.</German>
-        <Italian>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</Italian>
-        <Spanish>Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.</Spanish>
+        <English>Assigned specialists except slaves consume 1 less food.</English>
+        <French>Assigned specialists except slaves consume 1 less food.</French>
+        <German>Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 Nahrung weniger.</German>
+        <Italian>Assigned specialists except slaves consume 1 less food.</Italian>
+        <Spanish>Assigned specialists except slaves consume 1 less food.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DICTATORSHIP_STRATEGY</Tag>
@@ -34,11 +34,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DEMOCRACY_STRATEGY</Tag>
-        <English>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</English>
-        <French>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</French>
-        <German>+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Bei Einf&#252;hrung werden alle anderen Staatsformen zuf&#228;llig gew&#228;hlt; Wahlen &#228;ndern alle zehn Runden eine davon. Andere Kategorien k&#246;nnen bei Beibehaltung der Demokratie nicht manuell gewechselt werden. Ihre Abschaffung verl&#228;ngert Anarchie um zwei Runden. Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen.</German>
-        <Italian>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</Italian>
-        <Spanish>+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.</Spanish>
+        <English>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</English>
+        <French>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</French>
+        <German>+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Andere Staatsformen werden durch Wahlen entschieden. Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen.</German>
+        <Italian>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</Italian>
+        <Spanish>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DESPOTISM_STRATEGY</Tag>
@@ -50,11 +50,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_THEOCRATIC_LEGITIMACY_STRATEGY</Tag>
-        <English>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</English>
-        <French>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</French>
-        <German>+15% Kampfst&#228;rke f&#252;r Landeinheiten gegen Barbaren und L&#228;nder mit anderer oder keiner Staatsreligion; erfordert eigene Staatsreligion. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, andere religi&#246;se Geb&#228;ude -2 Zufriedenheit.</German>
-        <Italian>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Italian>
-        <Spanish>+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Spanish>
+        <English>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</English>
+        <French>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</French>
+        <German>+15% Kampfst&#228;rke f&#252;r Landeinheiten gegen Barbaren und L&#228;nder mit anderer oder keiner Staatsreligion. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, andere religi&#246;se Geb&#228;ude -2 Zufriedenheit.</German>
+        <Italian>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Italian>
+        <Spanish>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLUTOCRACY_STRATEGY</Tag>
@@ -66,11 +66,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_NATIONALISM_STRATEGY</Tag>
-        <English>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</English>
-        <French>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</French>
-        <German>+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit, wenn die Kultur eines anderen Spielers auf dem Stadtfeld gr&#246;&#223;er ist als die des Besitzers.</German>
-        <Italian>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</Italian>
-        <Spanish>+5 culture per city and +20% production. -5 happiness where another player's city-tile culture exceeds the owner's.</Spanish>
+        <English>+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.</English>
+        <French>+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.</French>
+        <German>+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit in St&#228;dten mit vorherrschender fremder Kultur.</German>
+        <Italian>+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.</Italian>
+        <Spanish>+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_RULE_OF_LAW_STRATEGY</Tag>
@@ -82,11 +82,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SELF_SUFFICIENCY_STRATEGY</Tag>
-        <English>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</English>
-        <French>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</French>
-        <German>+2 Gesundheit in jeder Stadt. H&#252;ttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt, freie Spezialisten bleiben.</German>
-        <Italian>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</Italian>
-        <Spanish>+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.</Spanish>
+        <English>+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.</English>
+        <French>+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.</French>
+        <German>+2 Gesundheit in jeder Stadt. H&#252;ttenverbesserungen wachsen nicht. Kann keine Spezialisten zuweisen.</German>
+        <Italian>+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.</Italian>
+        <Spanish>+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SLAVERY_STRATEGY</Tag>
@@ -98,11 +98,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
-        <English>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</English>
-        <French>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</French>
-        <German>+1 Nahrung durch Bauernh&#246;fe, -1 Wirtschaftspunkt durch D&#246;rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev&#246;lkerung kann Einheiten beschleunigen.</German>
-        <Italian>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</Italian>
-        <Spanish>+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.</Spanish>
+        <English>+1 food from farms; workers build improvements 50% faster, and population can rush units.</English>
+        <French>+1 food from farms; workers build improvements 50% faster, and population can rush units.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller und Bev&#246;lkerung kann Einheiten beschleunigen.</German>
+        <Italian>+1 food from farms; workers build improvements 50% faster, and population can rush units.</Italian>
+        <Spanish>+1 food from farms; workers build improvements 50% faster, and population can rush units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
@@ -138,11 +138,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD_STRATEGY</Tag>
-        <English>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</English>
-        <French>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</French>
-        <German>+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten und Samurai. Hei&#223;t f&#252;r Japan Bushido.</German>
-        <Italian>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</Italian>
-        <Spanish>+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.</Spanish>
+        <English>+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.</English>
+        <French>+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.</French>
+        <German>+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten und Samurai; +2 Zufriedenheit durch Burgen. Hei&#223;t f&#252;r Japan Bushido.</German>
+        <Italian>+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.</Italian>
+        <Spanish>+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>

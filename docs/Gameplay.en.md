@@ -226,8 +226,9 @@ from farms and per slave specialist, with medium civic upkeep. It replaces the
 unit production bonus, research penalty and city-maintenance penalties of Tribal
 System. Under Divine Kingship, each assigned priest in a city with an Egyptian
 Obelisk grants +1 happiness, capped at +2 per city. This replaces the happiness
-from palaces and monuments. Obelisks retain their two priest slots and remain
-buildable after Calendar while the civic is active. No state religion is required. Independent
+from palaces and monuments. Obelisks do not become obsolete while the civic is
+active: all effects and construction remain available after Calendar.
+No state religion is required. Independent
 Egypt under Pharaonic Kingship is **Pharaonic Egypt**, with the leader titled
 **Pharaoh**. Theocracy or God State instead produces a **Temple State of Egypt**:
 political rule is subordinate to religion, whereas Divine Kingship presents the
@@ -236,7 +237,7 @@ ruler as embodying divine authority.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | Each active, constructed capital building gives +1 culture and +1 commerce. Each active capital world wonder gives +1 happiness in all cities, capped at +3. Enables inheritance events. |
+| **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. |
 | **Republic** | Code of Laws | Medium | Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
 | **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Adoption randomizes all other civic columns; elections every ten turns change one column. Other columns cannot be changed manually while Democracy is retained. Leaving adds two turns to normal revolution anarchy. |
@@ -256,8 +257,8 @@ ruler as embodying divine authority.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
-| **Slavery** | Bronze Working | Low | +2 commerce from plantations; captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
-| **Serfdom** | Feudalism | Low | +1 food from farms; -1 commerce from villages; workers build improvements 50% faster. |
+| **Slavery** | Bronze Working | Low | Captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
+| **Serfdom** | Feudalism | Low | +1 food from farms; workers build improvements 50% faster. |
 | **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
@@ -280,7 +281,7 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | --- | --- | --- | --- |
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
-| **Knighthood** | Engineering | High | Newly trained mounted units and Samurai start with +6 experience. Called **Bushidō** for Japan. |
+| **Knighthood** | Engineering | High | Newly trained mounted units and Samurai start with +6 experience. +2 happiness from castles until they become obsolete. Called **Bushido** for Japan. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
 | **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 
@@ -367,6 +368,15 @@ The following combinations contribute to base stability:
 | Theocracy in Legitimacy + State Religion or Holy State in Religion | +2 |
 | Plutocracy + Market Economy | +1 |
 | Theocracy in Legitimacy + State Atheism | -3 |
+
+Theocracy with State Atheism gives land units +15% combat strength against
+countries of any state religion, and still against barbarians. The bonus does
+not apply against countries without a state religion. Religious buildings each
+cause -2 happiness even while State Atheism suppresses their positive effects;
+technologically obsolete buildings still do not count. There is no happiness
+bonus for buildings of your own state religion. The combination selects bespoke
+names such as **Pontificate of Reason** and **Holy Empire of Reason**. The
+stability penalty above still applies (except under Democracy).
 
 Matching contributions add together, with an overall limit of **-5 to +5**.
 Other combinations contribute zero. This is a base-stability modifier recalculated

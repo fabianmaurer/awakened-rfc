@@ -34,7 +34,7 @@
 
 // Public Functions...
 
-// Only real, active buildings contribute to royal capital prestige.
+// Capital buildings must be active; world-wonder prestige survives obsolescence.
 static int royalCapitalBuildings(const CvCity* pCity, bool bWorldWonders)
 {
 	if (pCity == NULL || !pCity->isCapital() ||
@@ -44,7 +44,8 @@ static int royalCapitalBuildings(const CvCity* pCity, bool bWorldWonders)
 	{
 		BuildingTypes eBuilding = (BuildingTypes)i;
 		if (!bWorldWonders || isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo(eBuilding).getBuildingClassType()))
-			iCount += std::min(pCity->getNumRealBuilding(eBuilding), pCity->getNumActiveBuilding(eBuilding));
+			iCount += bWorldWonders ? pCity->getNumRealBuilding(eBuilding) :
+				std::min(pCity->getNumRealBuilding(eBuilding), pCity->getNumActiveBuilding(eBuilding));
 	}
 	return iCount;
 }
@@ -3951,7 +3952,7 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	const bool bReligious = GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION || GC.getBuildingInfo(eBuilding).getPrereqReligion() != NO_RELIGION;
 	const bool bEffects = bCivicTransition || !bReligious || !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
 
-	if ((!(GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding)) || bObsolete) && bEffects)
+	if ((!(GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eBuilding)) || bObsolete) && bEffects)
 	{
 		if (iChange > 0 && !bCivicTransition)
 		{
@@ -5232,7 +5233,7 @@ int CvCity::getNumActiveBuilding(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex != NO_BUILDING, "BuildingType eIndex is expected to not be NO_BUILDING");
 
-	if (GET_TEAM(getTeam()).isObsoleteBuilding(eIndex))
+	if (GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eIndex))
 	{
 		return 0;
 	}
@@ -5254,7 +5255,7 @@ bool CvCity::hasActiveWorldWonder() const
 	{
 		if (isWorldWonderClass((BuildingClassTypes)(GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType())))
 		{
-			if (getNumRealBuilding((BuildingTypes)iI) > 0 && !(GET_TEAM(getTeam()).isObsoleteBuilding((BuildingTypes)iI)))
+			if (getNumRealBuilding((BuildingTypes)iI) > 0 && !(GET_PLAYER(getOwnerINLINE()).isBuildingObsolete((BuildingTypes)iI)))
 			{
 				return true;
 			}
@@ -6838,6 +6839,7 @@ int CvCity::getExtraHappiness() const
 
 	if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
 	{
+		const bool bAtheism = kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
 		for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 		{
 			const CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
@@ -6846,9 +6848,12 @@ int CvCity::getExtraHappiness() const
 			{
 				eReligion = (ReligionTypes)kBuilding.getPrereqReligion();
 			}
-			if (eReligion != NO_RELIGION && getNumActiveBuilding((BuildingTypes)iI) > 0)
+			// Atheism suppresses religious benefits, not the theocratic penalty.
+			const int iCount = bAtheism && !kPlayer.isBuildingObsolete((BuildingTypes)iI) ?
+				getNumBuilding((BuildingTypes)iI) : getNumActiveBuilding((BuildingTypes)iI);
+			if (eReligion != NO_RELIGION && iCount > 0)
 			{
-				iHappiness += (eReligion == kPlayer.getStateReligion() ? 1 : -2) * getNumActiveBuilding((BuildingTypes)iI);
+				iHappiness += (!bAtheism && eReligion == kPlayer.getStateReligion() ? 1 : -2) * iCount;
 			}
 		}
 	}
@@ -10440,18 +10445,7 @@ int CvCity::getMaxSpecialistCount(SpecialistTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumSpecialistInfos(), "eIndex expected to be < GC.getNumSpecialistInfos()");
-	int iCount = m_paiMaxSpecialistCount[eIndex];
-	const CvPlayer& player = GET_PLAYER(getOwnerINLINE());
-	if (eIndex == GC.getInfoTypeForString("SPECIALIST_PRIEST") &&
-		player.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
-		player.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
-	{
-		BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
-		// Restore only obsolete priest slots, not other building effects.
-		if (GET_TEAM(getTeam()).isObsoleteBuilding(eObelisk))
-			iCount += getNumBuilding(eObelisk) * GC.getBuildingInfo(eObelisk).getSpecialistCount(eIndex);
-	}
-	return iCount;
+	return m_paiMaxSpecialistCount[eIndex];
 }
 
 

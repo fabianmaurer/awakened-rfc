@@ -481,19 +481,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_ALL_CITIES_HAPPINESS</Tag>
-        <English>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</English>
-        <French>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</French>
-        <German>[ICON_BULLET]%D1_Change%F2_HappyOrUn in allen St&#228;dten</German>
-        <Italian>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Italian>
-        <Spanish>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Spanish>
+        <English>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</English>
+        <French>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</French>
+        <German>[ICON_BULLET]%D1_Change %F2_HappyOrUn in allen St&#228;dten</German>
+        <Italian>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</Italian>
+        <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</Spanish>
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MONARCHY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</English>
-        <French>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</French>
-        <German>[ICON_BULLET]+1 [ICON_CULTURE] und +1 [ICON_COMMERCE] je aktivem errichtetem Geb&#228;ude in der Hauptstadt[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in allen St&#228;dten je aktivem Weltwunder der Hauptstadt (maximal +3)[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
-        <Italian>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</English>
+        <French>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</French>
+        <German>[ICON_BULLET]+1 [ICON_CULTURE] und +1 [ICON_COMMERCE] je Geb&#228;ude in der Hauptstadt[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in allen St&#228;dten je Weltwunder der Hauptstadt (maximal +3)[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
+        <Italian>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DICTATORSHIP</Tag>
@@ -505,27 +505,27 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</English>
-        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</French>
-        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige; erfordert Staatsreligion</German>
-        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NATIONALISM</Tag>
-        <English>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</English>
-        <French>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</French>
-        <German>[ICON_BULLET]+5 [ICON_CULTURE] in allen St&#228;dten[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in St&#228;dten mit vorherrschender fremder Kultur auf dem Stadtfeld</German>
-        <Italian>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</Italian>
-        <Spanish>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</Spanish>
+        <English>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</English>
+        <French>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</French>
+        <German>[ICON_BULLET]+5 [ICON_CULTURE] in allen St&#228;dten[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in St&#228;dten mit vorherrschender fremder Kultur</German>
+        <Italian>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</Italian>
+        <Spanish>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_SELF_SUFFICIENCY</Tag>
-        <English>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</English>
-        <French>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</French>
-        <German>[ICON_BULLET]H&#252;tten, Weiler und D&#246;rfer wachsen nicht[NEWLINE][ICON_BULLET]Keine zugewiesenen Spezialisten (freie Spezialisten bleiben erhalten)</German>
-        <Italian>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</Italian>
-        <Spanish>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</Spanish>
+        <English>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</English>
+        <French>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</French>
+        <German>[ICON_BULLET]H&#252;tten, Weiler und D&#246;rfer wachsen nicht[NEWLINE][ICON_BULLET]Kann keine Spezialisten zuweisen</German>
+        <Italian>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</Italian>
+        <Spanish>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MILITIA</Tag>
@@ -585,11 +585,11 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TOLERANCE</Tag>
-        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</English>
-        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</French>
-        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Keine diplomatischen Religionsmali mit eurem Land[NEWLINE][ICON_BULLET]+2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion (au&#223;er Staatsatheismus)</German>
-        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Italian>
-        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Spanish>
+        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Better diplomatic relations with other religions</English>
+        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Meilleures relations diplomatiques avec les autres religions</French>
+        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Bessere diplomatische Beziehungen mit fremden Religionen</German>
+        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Migliori relazioni diplomatiche con le altre religioni</Italian>
+        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Mejores relaciones diplom&#225;ticas con otras religiones</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TRIBAL</Tag>
@@ -609,11 +609,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DEMOCRACY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</English>
-        <French>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</French>
-        <German>[ICON_BULLET]+1 [ICON_COMMERCE] je Spezialist[NEWLINE][ICON_BULLET]Bei Einf&#252;hrung werden alle anderen Staatsformen zuf&#228;llig gew&#228;hlt[NEWLINE][ICON_BULLET]Wahlen alle 10 Runden &#228;ndern eine andere Staatsform; manuelle Wechsel sind gesperrt[NEWLINE][ICON_BULLET]Abschaffung der Demokratie verl&#228;ngert Anarchie um 2 Runden[NEWLINE][ICON_BULLET]Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen</German>
-        <Italian>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</English>
+        <French>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</French>
+        <German>[ICON_BULLET]+1 [ICON_COMMERCE] je Spezialist[NEWLINE][ICON_BULLET]Andere Staatsformen werden durch Wahlen entschieden[NEWLINE][ICON_BULLET]Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen</German>
+        <Italian>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Spanish>
     </TEXT>
 
     <TEXT>
@@ -659,11 +659,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_REPUBLIC</Tag>
-        <English>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</English>
-        <French>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</French>
-        <German>[ICON_BULLET]Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 [ICON_FOOD] weniger[NEWLINE][ICON_BULLET]Freie Spezialisten und angesiedelte Gro&#223;e Pers&#246;nlichkeiten sind ausgenommen</German>
-        <Italian>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Italian>
-        <Spanish>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Spanish>
+        <English>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</English>
+        <French>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</French>
+        <German>[ICON_BULLET]Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 [ICON_FOOD] weniger</German>
+        <Italian>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</Italian>
+        <Spanish>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_ATTITUDE_TOLERANCE</Tag>
@@ -723,19 +723,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP</Tag>
-        <English>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</English>
-        <French>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</French>
-        <German>[ICON_BULLET]In St&#228;dten mit &#228;gyptischem Obelisk gibt jeder zugewiesene Priester +1 [ICON_HAPPY] (maximal +2 je Stadt)[NEWLINE][ICON_BULLET]Obelisken behalten ihre zwei Priesterpl&#228;tze und bleiben unter dieser Staatsform nach Kalender baubar</German>
-        <Italian>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</Italian>
-        <Spanish>[ICON_BULLET]In cities with an Egyptian Obelisk, each assigned priest gives +1 [ICON_HAPPY] (maximum +2 per city)[NEWLINE][ICON_BULLET]Obelisks retain their two priest slots and can be built after Calendar while this civic is active</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per priest in cities with an Obelisk (max. +2)[NEWLINE][ICON_BULLET]Obelisks do not become obsolete</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] par pr&#234;tre dans les villes avec un ob&#233;lisque (max. +2)[NEWLINE][ICON_BULLET]Les ob&#233;lisques ne deviennent pas obsol&#232;tes</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Priester in St&#228;dten mit Obelisk (max. +2)[NEWLINE][ICON_BULLET]Obelisken veralten nicht</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per sacerdote nelle citt&#224; con un obelisco (max. +2)[NEWLINE][ICON_BULLET]Gli obelischi non diventano obsoleti</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] por sacerdote en ciudades con obelisco (m&#225;x. +2)[NEWLINE][ICON_BULLET]Los obeliscos no quedan obsoletos</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_DIVINE_KINGSHIP_PEDIA</Tag>
-        <English>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</English>
-        <French>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</French>
-        <German>Das Gottk&#246;nigtum versteht den Herrscher als Verk&#246;rperung g&#246;ttlicher Autorit&#228;t. In St&#228;dten mit &#228;gyptischem Obelisk erzeugt jeder zugewiesene Priester einen Zufriedenheitspunkt, bis zu zwei je Stadt. Freie und angesiedelte Priester z&#228;hlen nicht. Unter Gottk&#246;nigtum behalten Obelisken nach Kalender ihre zwei Priesterpl&#228;tze und bleiben baubar. Beim Staatsformwechsel entf&#228;llt dieser Schutz; andere Quellen f&#252;r Priesterpl&#228;tze bleiben wirksam. Eine Staatsreligion ist nicht erforderlich. Dieser Effekt ersetzt die Zufriedenheit durch Pal&#228;ste und Monumente des Despotismus.</German>
-        <Italian>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Italian>
-        <Spanish>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks retain their two priest slots after Calendar and can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Spanish>
+        <English>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</English>
+        <French>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</French>
+        <German>Das Gottk&#246;nigtum versteht den Herrscher als Verk&#246;rperung g&#246;ttlicher Autorit&#228;t. In St&#228;dten mit &#228;gyptischem Obelisk erzeugt jeder zugewiesene Priester einen Zufriedenheitspunkt, bis zu zwei je Stadt. Freie und angesiedelte Priester z&#228;hlen nicht. Unter Gottk&#246;nigtum veralten Obelisken nicht: Alle ihre Effekte bleiben nach Kalender wirksam und sie bleiben baubar. Beim Staatsformwechsel entf&#228;llt dieser Schutz; andere Quellen f&#252;r Priesterpl&#228;tze bleiben wirksam. Eine Staatsreligion ist nicht erforderlich. Dieser Effekt ersetzt die Zufriedenheit durch Pal&#228;ste und Monumente des Despotismus.</German>
+        <Italian>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Italian>
+        <Spanish>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_HAPPY_RULER_CULT</Tag>

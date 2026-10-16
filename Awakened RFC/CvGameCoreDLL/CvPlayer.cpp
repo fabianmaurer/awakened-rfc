@@ -5730,10 +5730,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		}
 	}
 
-	if (currentTeam.isObsoleteBuilding(eBuilding) &&
-		!(getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
-		  eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
-		  isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"))))
+	if (isBuildingObsolete(eBuilding))
 	{
 		return false;
 	}
@@ -5917,7 +5914,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 	{
 		BuildingTypes ePrereqBuilding = (BuildingTypes)civilizationInfo.getCivilizationBuildings(iI);
 
-		if (NO_BUILDING != ePrereqBuilding && currentTeam.isObsoleteBuilding(ePrereqBuilding))
+		if (NO_BUILDING != ePrereqBuilding && isBuildingObsolete(ePrereqBuilding))
 		{
 			if (getBuildingClassCount((BuildingClassTypes)iI) < getBuildingClassPrereqBuilding(eBuilding, (BuildingClassTypes)iI, 0))
 			{
@@ -6894,6 +6891,16 @@ void CvPlayer::removeBuildingClass(BuildingClassTypes eBuildingClass)
 
 
 // courtesy of the Gourd Bros...
+bool CvPlayer::isBuildingObsolete(BuildingTypes eBuilding) const
+{
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+		getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+		return false;
+	return GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+}
+
+
 void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pArea)
 {
 	int iI, iJ;
@@ -12812,6 +12819,22 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 	if (eOldCivic != eNewValue)
 	{
 		m_paeCivics[eIndex] = eNewValue;
+
+		// Obelisk protection is local to Egypt, even in a shared team.
+		const CivicTypes eDivineKingship = (CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM");
+		const BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			((eOldCivic == eDivineKingship) != (eNewValue == eDivineKingship)) &&
+			GET_TEAM(getTeam()).isObsoleteBuilding(eObelisk))
+		{
+			int iLoop;
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				int iCount = pCity->getNumBuilding(eObelisk);
+				if (iCount != 0)
+					pCity->processBuilding(eObelisk, eNewValue == eDivineKingship ? iCount : -iCount, true, true);
+			}
+		}
 
 		// Reprocess cached religious-building effects when entering/leaving atheism.
 		// The buildings and their ownership counts remain intact.
@@ -23337,6 +23360,10 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		else if (bTribal)
 			szForm = L"PHARAONIC";
 	}
+
+	// An enforced atheist creed is an intentional form of theocratic rule.
+	if (bAtheism && hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"))
+		szForm = L"ATHEOCRACY";
 
 	CvWString szNameKey = civDynamicNames[iPlayer][0];
 	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);

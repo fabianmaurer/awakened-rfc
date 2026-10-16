@@ -4681,7 +4681,12 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 						{
 							if (pLoopCity->getNumBuilding(eIndex) > 0)
 							{
-								pLoopCity->processBuilding(eIndex, ((isObsoleteBuilding(eIndex)) ? -pLoopCity->getNumBuilding(eIndex) : pLoopCity->getNumBuilding(eIndex)), true);
+								const CvPlayer& owner = GET_PLAYER((PlayerTypes)iI);
+								const bool bProtectedObelisk = eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+									owner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+									owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"));
+								if (!bProtectedObelisk)
+									pLoopCity->processBuilding(eIndex, ((isObsoleteBuilding(eIndex)) ? -pLoopCity->getNumBuilding(eIndex) : pLoopCity->getNumBuilding(eIndex)), true);
 							}
 						}
 					}

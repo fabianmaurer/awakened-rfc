@@ -1,5 +1,15 @@
 # Dynamic country names
 
+Theocracy combined with State Atheism selects a bespoke **ATHEOCRACY** name
+for each of the 27 major civilizations, regardless of government or era. These
+are deliberately fictional enforced creeds of reason, such as the Roman
+**Pontificate of Reason**, German **Holy Empire of Reason**, and Egyptian
+**Order of the Godless Sun**. This combination overrides the usual independent
+government and historical names, including Egypt's Temple State. Existing
+vassal and colonial naming takes priority as usual. English and German names
+are authored in `tools/country_name_catalog.py`; other languages currently use
+the English names.
+
 Independent countries use named civic types in `CvPlayer::processCivNames()`.
 The rule names below are internal categories, not compulsory words in the
 displayed name. Several civic combinations deliberately share a natural name:

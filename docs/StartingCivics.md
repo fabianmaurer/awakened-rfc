@@ -24,8 +24,8 @@ farm and slave production and actual upkeep. Despotism is displayed as
 **Divine Kingship / Gottkönigtum** for Egypt. Both labels apply in every era
 and with any religion. Divine Kingship replaces Despotism's palace/monument
 happiness with +1 happiness per assigned priest in cities with an Egyptian
-Obelisk, capped at +2 per city. It preserves the Obelisk's two priest slots and
-allows its construction after Calendar while active. Free and settled priests
+Obelisk, capped at +2 per city. Obelisks do not become obsolete while the civic
+is active: all effects and construction remain available after Calendar. Free and settled priests
 do not count. It describes a ruler embodying divine authority;
 the separate Theocracy and God State civics describe rule subordinate to religion.
 Under Pharaonic Kingship, the leader's displayed personal name receives the title

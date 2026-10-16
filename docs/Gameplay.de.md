@@ -235,9 +235,9 @@ und je Sklavenspezialist bei mittlerem Staatsform-Unterhalt. Es ersetzt die
 Einheitenproduktion, den Forschungsabzug und die erhöhten Unterhaltskosten des
 Stammessystems. Unter Gottkönigtum gibt jeder zugewiesene Priester in einer Stadt
 mit ägyptischem Obelisken +1 Zufriedenheit, höchstens +2 pro Stadt. Dies ersetzt
-die Zufriedenheit durch Palast und Monument. Obelisken behalten ihre zwei
-Priesterplätze und bleiben auch nach Kalender baubar, solange die Staatsform
-aktiv ist. Eine Staatsreligion ist nicht erforderlich. Das unabhängige Land
+die Zufriedenheit durch Palast und Monument. Obelisken veralten unter dieser
+Staatsform nicht: Alle Effekte bleiben nach Kalender wirksam und sie bleiben
+baubar. Eine Staatsreligion ist nicht erforderlich. Das unabhängige Land
 heißt unter Pharaonentum **Pharaonenreich**, sein Anführer trägt den Titel
 **Pharao**. Theokratie oder Gottesstaat wählen stattdessen **Tempelstaat Ägypten**:
 Hier ordnet sich die politische Herrschaft der Religion unter, während das
@@ -246,7 +246,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | Jedes aktive, errichtete Hauptstadtgebäude gibt +1 Kultur und +1 Handel. Aktive Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3. Ermöglicht Erbfolgeereignisse. |
+| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. |
 | **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
 | **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
@@ -266,8 +266,8 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
-| **Sklaverei** | Bronzebearbeitung | Niedrig | +2 Handel durch Plantagen; eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; -1 Handel durch Dörfer; Bautrupps errichten Verbesserungen 50% schneller. |
+| **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
+| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
@@ -291,7 +291,7 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. Heißt für Japan **Bushidō**. |
+| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. +2 Zufriedenheit durch Burgen, solange diese nicht veraltet sind. Heißt für Japan **Bushido**. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
@@ -381,6 +381,15 @@ Die folgenden Kombinationen tragen zur Basisstabilität bei:
 | Theokratie + Staatsreligion oder Gottesstaat | +2 |
 | Plutokratie + Marktwirtschaft | +1 |
 | Theokratie + Staatsatheismus | -3 |
+
+Theokratie mit Staatsatheismus gibt Landeinheiten +15% Kampfstärke gegen Länder
+mit beliebiger Staatsreligion und weiterhin gegen Barbaren. Gegen religionslose
+Länder gilt dieser Bonus nicht. Religionsgebäude verursachen je -2 Zufriedenheit,
+auch wenn Staatsatheismus ihre positiven Effekte unterdrückt; technisch veraltete
+Gebäude zählen weiterhin nicht. Der Zufriedenheitsbonus für Gebäude der eigenen
+Staatsreligion entfällt. Die Kombination erhält eigene Ländernamen wie
+„Pontifikat der Vernunft“ und „Heiliges Reich der Vernunft“. Der oben aufgeführte
+Stabilitätsmalus bleibt bestehen (außer unter Demokratie).
 
 Passende Beiträge werden addiert und insgesamt auf **-5 bis +5** begrenzt.
 Andere Kombinationen tragen null bei. Der Modifikator wird alle drei Runden

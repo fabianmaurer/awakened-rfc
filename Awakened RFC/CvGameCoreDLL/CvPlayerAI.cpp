@@ -10385,7 +10385,8 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		{
 			int iCount = std::min(getCapitalCity()->getNumRealBuilding((BuildingTypes)iBuilding), getCapitalCity()->getNumActiveBuilding((BuildingTypes)iBuilding));
 			iBuildings += iCount;
-			if (isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType())) iWonders += iCount;
+			if (isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType()))
+				iWonders += getCapitalCity()->getNumRealBuilding((BuildingTypes)iBuilding);
 		}
 		iValue += iBuildings * 5 + std::min(3, iWonders) * getNumCities() * 8;
 	}
@@ -10420,8 +10421,26 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))
 		iValue += getNumCities() * (bWarPlan ? 18 : 12);
-	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") && getStateReligion() != NO_RELIGION)
+	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") &&
+		(getStateReligion() != NO_RELIGION || isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))))
 		iValue += getNumCities() * (bWarPlan ? 8 : 3);
+	if ((eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) ||
+		(eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"))))
+	{
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))
+			iValue += getNumCities() * (bWarPlan ? 8 : 3);
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); ++iBuilding)
+			{
+				BuildingTypes eBuilding = (BuildingTypes)iBuilding;
+				const CvBuildingInfo& building = GC.getBuildingInfo(eBuilding);
+				if ((building.getReligionType() != NO_RELIGION || building.getPrereqReligion() != NO_RELIGION) &&
+					!isBuildingObsolete(eBuilding))
+					iValue -= 8 * pLoopCity->getNumBuilding(eBuilding);
+			}
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE"))
 		for (int iOther = 0; iOther < MAX_CIV_PLAYERS; ++iOther)
 			if (iOther != getID() && GET_PLAYER((PlayerTypes)iOther).isAlive() && GET_TEAM(getTeam()).isHasMet(GET_PLAYER((PlayerTypes)iOther).getTeam()) &&

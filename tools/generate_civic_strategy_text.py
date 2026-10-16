@@ -13,38 +13,38 @@ SUMMARIES = {
         'Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.',
         'Hauptstadtgeb\xe4ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm\xf6glicht Erbfolgeereignisse.'),
     'REPUBLIC': (
-        'Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded.',
-        'Zugewiesene Spezialisten au\xdfer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Gro\xdfe Pers\xf6nlichkeiten sind ausgenommen.'),
+        'Assigned specialists except slaves consume 1 less food.',
+        'Zugewiesene Spezialisten au\xdfer Sklaven verbrauchen 1 Nahrung weniger.'),
     'DICTATORSHIP': (
         '+20% production and no war weariness, but -2 happiness in every city.',
         '+20% Produktion und keine Kriegsmüdigkeit, aber -2 Zufriedenheit in jeder Stadt.'),
     'DEMOCRACY': (
-        '+2 happiness in every city and +1 commerce per specialist. Adoption randomizes all other civics; elections change one every ten turns. Other columns cannot be changed manually while Democracy is retained. Leaving Democracy adds two turns of anarchy. No stability penalties from incompatible civics.',
-        '+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Bei Einf\xfchrung werden alle anderen Staatsformen zuf\xe4llig gew\xe4hlt; Wahlen \xe4ndern alle zehn Runden eine davon. Andere Kategorien k\xf6nnen bei Beibehaltung der Demokratie nicht manuell gewechselt werden. Ihre Abschaffung verl\xe4ngert Anarchie um zwei Runden. Keine Stabilit\u00e4tsmali durch unvereinbare Staatsformen.'),
+        '+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.',
+        '+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Andere Staatsformen werden durch Wahlen entschieden. Keine Stabilit\u00e4tsmali durch unvereinbare Staatsformen.'),
     'DESPOTISM': (
         '+1 happiness from palaces and monuments, including unique replacements.',
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),
     'THEOCRATIC_LEGITIMACY': (
-        '+15% land combat strength against barbarians and countries with a different or no state religion; requires your own state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.',
-        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit anderer oder keiner Staatsreligion; erfordert eigene Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, andere religi\xf6se Geb\xe4ude -2 Zufriedenheit.'),
+        '+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.',
+        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit anderer oder keiner Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, andere religi\xf6se Geb\xe4ude -2 Zufriedenheit.'),
     'PLUTOCRACY': (
         '+25% gold income and +50% trade-route commerce.',
         '+25% Goldeinnahmen und +50% Wirtschaftspunkte durch Handelsrouten.'),
     'NATIONALISM': (
-        '+5 culture per city and +20% production. -5 happiness where another player\'s city-tile culture exceeds the owner\'s.',
-        '+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit, wenn die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers.'),
+        '+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.',
+        '+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit in Städten mit vorherrschender fremder Kultur.'),
     'RULE_OF_LAW': (
         '+2 happiness in every city and +10% commerce.',
         '+2 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.'),
     'SELF_SUFFICIENCY': (
-        '+2 health in every city. Cottage improvements stop growing; assigned specialists are blocked, but free specialists remain.',
-        '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt, freie Spezialisten bleiben.'),
+        '+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.',
+        '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht. Kann keine Spezialisten zuweisen.'),
     'SLAVERY': (
         'Enables slave specialists. Enslave conquered peoples.',
         'Erm\u00f6glicht Sklavenspezialisten. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
-        '+1 food from farms, -1 commerce from villages, workers build improvements 50% faster, and population can rush units.',
-        '+1 Nahrung durch Bauernh\u00f6fe, -1 Wirtschaftspunkt durch D\u00f6rfer; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
+        '+1 food from farms; workers build improvements 50% faster, and population can rush units.',
+        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
     'PLANNED_ECONOMY': (
         '+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.',
         '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.'),
@@ -58,8 +58,8 @@ SUMMARIES = {
         '+30% city defense, but -10% combat strength outside your own territory.',
         '+30% Stadtverteidigung, aber -10% Kampfstärke außerhalb des eigenen Gebiets.'),
     'KNIGHTHOOD': (
-        '+6 experience for newly trained mounted units and Samurai. Called Bushido for Japan.',
-        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten und Samurai. Hei\xdft f\xfcr Japan Bushido.'),
+        '+6 experience for newly trained mounted units and Samurai; +2 happiness from castles. Called Bushido for Japan.',
+        '+6 Erfahrung f\xfcr neu ausgebildete berittene Einheiten und Samurai; +2 Zufriedenheit durch Burgen. Hei\xdft f\xfcr Japan Bushido.'),
     'PROFESSIONAL_ARMY': (
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),

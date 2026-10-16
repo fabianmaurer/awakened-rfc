@@ -31,6 +31,16 @@
 
 // Public Functions...
 
+static bool hasTheocraticCombatBonus(const CvPlayer& owner, const CvPlayer& opponent)
+{
+	if (!owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
+		return false;
+	if (owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")))
+		return opponent.isBarbarian() || opponent.getStateReligion() != NO_RELIGION;
+	return owner.getStateReligion() != NO_RELIGION &&
+		(opponent.isBarbarian() || opponent.getStateReligion() != owner.getStateReligion());
+}
+
 
 CvUnit::CvUnit()
 {
@@ -7934,15 +7944,12 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	{
 		const CvPlayer& kDefender = GET_PLAYER(getOwnerINLINE());
 		const CvPlayer& kAttacker = GET_PLAYER(pAttacker->getOwnerINLINE());
-		const CivicTypes eTheocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY");
-		if (getDomainType() == DOMAIN_LAND && kDefender.isCivic(eTheocracy) && kDefender.getStateReligion() != NO_RELIGION &&
-			(pAttacker->isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		if (getDomainType() == DOMAIN_LAND && hasTheocraticCombatBonus(kDefender, kAttacker))
 		{
 			iModifier += 15;
 			if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += 15;
 		}
-		if (pAttacker->getDomainType() == DOMAIN_LAND && kAttacker.isCivic(eTheocracy) && kAttacker.getStateReligion() != NO_RELIGION &&
-			(isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		if (pAttacker->getDomainType() == DOMAIN_LAND && hasTheocraticCombatBonus(kAttacker, kDefender))
 		{
 			// Civ4 applies opponent-specific attack bonuses against the defender.
 			iModifier -= 15;
