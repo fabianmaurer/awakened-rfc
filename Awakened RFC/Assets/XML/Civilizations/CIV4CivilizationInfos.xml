@@ -2871,6 +2871,10 @@
 					<BuildingClassType>BUILDINGCLASS_MARKET</BuildingClassType>
 					<BuildingType>BUILDING_ROMAN_FORUM</BuildingType>
 				</Building>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_COURTHOUSE</BuildingClassType>
+					<BuildingType>BUILDING_ROMAN_ADMINISTRATION</BuildingType>
+				</Building>
 			</Buildings>
 			<Units>
 				<Unit>

@@ -3736,7 +3736,8 @@ void CvTeamAI::AI_doWar()
 		}
 	}
 	// if no war plans, consider starting one!
-	else if (getAnyWarPlanCount(true) == 0)
+	else if (getAnyWarPlanCount(true) == 0 &&
+		!(getNumMembers() == 1 && GET_PLAYER(getLeaderID()).AI_isRomanCampaignExclusive()))
 	{
 		bool bAggressive = GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI);
 		

@@ -12,6 +12,7 @@ class SetupConfirmation:
         self.last_input = 0
         self.attempts = 0
         self.focused_since = None
+        self.focused_hwnd = None
         self.last_state = None
         self.user32 = ctypes.WinDLL('user32', use_last_error=True)
         self.kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
@@ -77,7 +78,11 @@ class SetupConfirmation:
         now = time.monotonic()
         if self.ready_since is None:
             self.ready_since = now
-        if now - self.ready_since < 0.25 or now - self.last_input < 0.35:
+        # Readiness is published while the scenario is loading, before its
+        # setup UI necessarily accepts DirectInput. Under parallel load a
+        # short burst can exhaust every attempt before that UI is ready.
+        retry_interval = min(15.0, 2.0 ** max(0, self.attempts - 1))
+        if now - self.ready_since < 0.5 or now - self.last_input < retry_interval:
             return
         windows = []
         dialogs = []
@@ -110,13 +115,16 @@ class SetupConfirmation:
             self.focused_since = None
             self.log_state('Waiting for visible child game window')
             return
-        if self.attempts >= 4:
-            self.log_state('Four confirmations sent; waiting for GameStart')
+        if self.attempts >= 12:
+            self.log_state('Twelve confirmations sent; waiting for GameStart')
             return  # Allow slow map loading to finish until the startup timeout.
         foreground = self.user32.GetForegroundWindow()
         # The executable can expose multiple large top-level windows. Prefer
         # its actual foreground window over an inactive larger render window.
         hwnd = next((window for area, window in windows if window == foreground), max(windows)[1])
+        if hwnd != self.focused_hwnd:
+            self.focused_hwnd = hwnd
+            self.focused_since = None
         if self.user32.GetForegroundWindow() != hwnd:
             self.focused_since = None
             self.foreground(hwnd)
@@ -125,7 +133,7 @@ class SetupConfirmation:
             return  # Windows may refuse focus; never send input to another app.
         if self.focused_since is None:
             self.focused_since = now
-        if now - self.focused_since < 0.2:
+        if now - self.focused_since < 0.3:
             self.log_state('Allowing DirectInput to acquire keyboard focus')
             return
 
@@ -157,19 +165,21 @@ class SetupConfirmation:
             # scan code can be accepted by SendInput but missed by the game.
             inputs[index].payload.keyboard = KeyInput(0, 0x1C, flags, 0, 0)
         # Recheck immediately before injecting input.
-        if (self.run / 'game-starting.json').exists() or self.user32.GetForegroundWindow() != hwnd:
+        if ((self.run / 'game-starting.json').exists() or
+                (self.run / 'started.json').exists() or
+                self.user32.GetForegroundWindow() != hwnd):
             return
         if send(1, ctypes.byref(inputs[0]), ctypes.sizeof(Input)) != 1:
             raise ctypes.WinError(ctypes.get_last_error())
         # DirectInput polls between frames; an instantaneous down/up pair can
         # otherwise disappear without the menu ever observing the held key.
         try:
-            time.sleep(0.1)
+            time.sleep(0.2)
         finally:
             # Always release a key we pressed, even if focus changes meanwhile.
             if send(1, ctypes.byref(inputs[1]), ctypes.sizeof(Input)) != 1:
                 raise ctypes.WinError(ctypes.get_last_error())
-        self.last_input = now
+        self.last_input = time.monotonic()
         self.attempts += 1
         self.log_state('Confirmation %d sent to child PID %d (Enter scan code)' %
                        (self.attempts, self.pid))

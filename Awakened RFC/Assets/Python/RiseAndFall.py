@@ -1140,7 +1140,9 @@ class RiseAndFall:
                                         # as the original barbarian-held-city threshold.
                                         if (iNumCities > 0 and iLostCities >= 2 and iLostCities*2 > iNumCities and iStability < -20):
                                                 print ("COLLAPSE BY BARBS", gc.getPlayer(iCiv).getCivilizationAdjective(0))
-                                                utils.pickFragmentation(iCiv, iIndependent, iIndependent2, iBarbarian, False, reason='barbarian_city_losses')
+                                                import RomanEmpire
+                                                if (not RomanEmpire.handleProvincialLoss(iCiv, 'barbarian_city_losses')):
+                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, iBarbarian, False, reason='barbarian_city_losses')
 
         def collapseGeneric(self, iGameTurn):
                 #lNumCitiesNew = con.l0Array
@@ -1174,7 +1176,10 @@ class RiseAndFall:
                                                                                 bVassal = True
                                                                                 break
                                                                 if (not bVassal):
-                                                                        utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False, reason='city_count_halved')
+                                                                        import RomanEmpire
+                                                                        if (not RomanEmpire.handleProvincialLoss(iCiv, 'city_count_halved')):
+                                                                                utils.pickFragmentation(iCiv, iIndependent, iIndependent2, -1, False, reason='city_count_halved')
+                                                                        self.setNumCities(iCiv, pCiv.getNumCities())
                                                 else:
                                                         self.setNumCities(iCiv, lNumCitiesNew[iCiv])
 
@@ -3708,9 +3713,11 @@ class RiseAndFall:
                 teamRome.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 teamRome.setHasTech(con.iPottery, True, iCiv, False, False)
                 teamRome.setHasTech(con.iWriting, True, iCiv, False, False)
+                teamRome.setHasTech(con.iMathematics, True, iCiv, False, False)
                 #teamRome.setHasTech(con.iCodeOfLaws, True, iCiv, False, False) founds Confucianism
                 teamRome.setHasTech(con.iAlphabet, True, iCiv, False, False)
                 teamRome.setHasTech(con.iHunting, True, iCiv, False, False)
+                teamRome.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamRome.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 iCiv = iJapan
                 teamJapan.setHasTech(con.iMining, True, iCiv, False, False)
@@ -3800,9 +3807,11 @@ class RiseAndFall:
                         teamRome.setHasTech(con.iTheWheel, True, iCiv, False, False)
                         teamRome.setHasTech(con.iPottery, True, iCiv, False, False)
                         teamRome.setHasTech(con.iWriting, True, iCiv, False, False)
+                        teamRome.setHasTech(con.iMathematics, True, iCiv, False, False)
                         #teamRome.setHasTech(con.iCodeOfLaws, True, iCiv, False, False) founds Confucianism
                         teamRome.setHasTech(con.iAlphabet, True, iCiv, False, False)
                         teamRome.setHasTech(con.iHunting, True, iCiv, False, False)
+                        teamRome.setHasTech(con.iArchery, True, iCiv, False, False)
                         teamRome.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 if (iCiv == iJapan):
                         teamJapan.setHasTech(con.iMining, True, iCiv, False, False)

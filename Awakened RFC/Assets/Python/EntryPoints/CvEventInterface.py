@@ -28,3 +28,17 @@ def applyEvent(argsList):
 
 def beginEvent(context, argsList=-1):
 	return getEventManager().beginEvent(context, argsList)
+
+
+# Native mod callbacks must enter through an engine-visible EntryPoints module.
+# Resolve ordinary helper modules with Python imports, not native module lookup.
+def canRomanCampaign(argsList):
+    iPlayer = argsList[0]
+    import RomanEmpire
+    return RomanEmpire.canCampaign(iPlayer)
+
+
+def recordLaborEvaluation(argsList):
+    player, current, best, flat_scores = argsList
+    import GameObserver
+    GameObserver.record_labor_evaluation(player, current, best, flat_scores)

@@ -7,6 +7,11 @@ They do not overwrite civic choices every turn or when loading a save.
 
 ## Preferred profiles
 
+Rome's Republic and Warrior Society choices now resolve to **Roman Republic**
+and **Roman Legions**, including civilization-specific effects and help.
+Roman Republic is available from birth. See [RomanEmpire.md](RomanEmpire.md)
+for provincial administration, campaign AI and collapse behavior.
+
 These are preferences, not technology grants. A civic is selected only when the
 player can adopt it under the game's technology and unique-power rules after
 starting technologies are assigned by the scenario or spawn code. Thus an ancient civilization may start with the basic civics even

@@ -3316,6 +3316,11 @@ int CvCity::getMilitaryCivicProductionModifier(UnitTypes eUnit, CivicTypes eCivi
 	// Combat strength includes armed transports but excludes those civilians.
 	if (!kUnit.isMilitaryProduction() || kUnit.getCombat() <= 0)
 		return 0;
+	if (GC.getCivicInfo(eCivic).isRomanLegionsVariant(GET_PLAYER(getOwnerINLINE()).getCivilizationType()) &&
+		(kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") ||
+		 kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE") ||
+		 GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(eUnit)))
+		return 50;
 	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE") && kUnit.getDomainType() == DOMAIN_SEA)
 		return 50;
 	if (eCivic == GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES") && kUnit.getDomainType() == DOMAIN_LAND)
@@ -4928,7 +4933,8 @@ int CvCity::healthRate(bool bNoAngry, int iExtra) const
 int CvCity::foodConsumption(bool bNoAngry, int iExtra) const
 {
 	int iDiscount = 0;
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")))
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")) &&
+		!GET_PLAYER(getOwnerINLINE()).isRomanRepublic())
 	{
 		for (int i = 0; i < GC.getNumSpecialistInfos(); ++i)
 			if (i != GC.getInfoTypeForString("SPECIALIST_SLAVE")) iDiscount += getSpecialistCount((SpecialistTypes)i);

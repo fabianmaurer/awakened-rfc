@@ -129,7 +129,7 @@ class CvPediaCivic:
 		screen.attachLabel(panelName, "", "  ")
 		
 		iTech = gc.getCivicInfo(self.iCivic).getTechPrereq()
-		if (iTech > -1):
+		if (iTech > -1 and not (gc.getGame().getActiveCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ROME") and self.iCivic == gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
 			screen.attachImageButton( panelName, "", gc.getTechInfo(iTech).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iTech, 1, False )
 			
 	def placeSpecial(self):
@@ -162,6 +162,11 @@ class CvPediaCivic:
 		if (gc.getGame().getActivePlayer() >= 0 and
 			gc.getCivicInfo(self.iCivic).isDivineKingshipVariant(gc.getPlayer(gc.getGame().getActivePlayer()).getCivilizationType())):
 			szText = localText.getText("TXT_KEY_RFCMP_DIVINE_KINGSHIP_PEDIA", ())
+		if (gc.getGame().getActiveCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ROME")):
+			if (self.iCivic == gc.getInfoTypeForString("CIVIC_REPUBLIC")):
+				szText = localText.getText("TXT_KEY_ROMAN_REPUBLIC_PEDIA", ())
+			elif (self.iCivic == gc.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")):
+				szText = localText.getText("TXT_KEY_ROMAN_LEGIONS_PEDIA", ())
 		screen.attachMultilineText( panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 	def placeLinks(self):

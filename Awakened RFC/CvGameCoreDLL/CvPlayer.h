@@ -41,6 +41,13 @@ protected:
 
 public:
 
+	bool isRomanRepublic() const;
+	bool isRomanLegions() const;
+	bool isRomanLogisticsUnit(UnitTypes eUnit) const;
+	int getRomanCargoBonus(UnitTypes eUnit) const;
+	int getRomanProvinceStage(int iX, int iY) const;
+	bool isRomanProvince(int iX, int iY) const;
+
 	void initFreeState();
 	void initFreeUnits();
 	void addFreeUnitAI(UnitAITypes eUnitAI, int iCount);

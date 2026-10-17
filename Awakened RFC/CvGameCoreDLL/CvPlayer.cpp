@@ -1748,6 +1748,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 			//Rhye - end UP 
 		}
 
+		if (isRomanRepublic())
+			pNewCity->setOccupationTimer((pNewCity->getOccupationTimer() + 1) / 2);
 		GC.getMapINLINE().verifyUnitValidPlot();
 	}
 
@@ -5694,6 +5696,9 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 
 bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_ROMAN_ADMINISTRATION") && !isRomanRepublic())
+		return false;
+
 	BuildingClassTypes eBuildingClass;
 	int iI;
 	CvTeamAI& currentTeam = GET_TEAM(getTeam());
@@ -7361,6 +7366,8 @@ int CvPlayer::calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const
 	iBaseSupplyCost = iPaidUnits * GC.getDefineINT("INITIAL_OUTSIDE_UNIT_GOLD_PERCENT");
 	iBaseSupplyCost /= 100;
 
+	if (isRomanLegions())
+		iBaseSupplyCost /= 2;
 	iSupply = iBaseSupplyCost;
 
 	if (!isHuman() && !isBarbarian())
@@ -7840,6 +7847,53 @@ bool CvPlayer::isCivic(CivicTypes eCivic) const
 }
 
 
+bool CvPlayer::isRomanRepublic() const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
+}
+
+bool CvPlayer::isRomanLegions() const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"));
+}
+
+bool CvPlayer::isRomanLogisticsUnit(UnitTypes eUnit) const
+{
+	if (eUnit == NO_UNIT || getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ROME")) return false;
+	const int iClass = GC.getUnitInfo(eUnit).getUnitClassType();
+	return iClass == GC.getInfoTypeForString("UNITCLASS_GALLEY") ||
+		iClass == GC.getInfoTypeForString("UNITCLASS_TRIREME");
+}
+
+int CvPlayer::getRomanCargoBonus(UnitTypes eUnit) const
+{
+	return isRomanLegions() && isRomanLogisticsUnit(eUnit) &&
+		GC.getUnitInfo(eUnit).getCargoSpace() > 0 ? 1 : 0;
+}
+
+int CvPlayer::getRomanProvinceStage(int iX, int iY) const
+{
+	// Explicit historical province envelope on RFC's fixed Earth map.
+	// Earlier stages guide campaigns; all stages have identical administration.
+	if (iX >= 57 && iX <= 64 && iY >= 40 && iY <= 47) return 1; // Italy, Sardinia, Sicily
+	if (iX >= 48 && iX <= 63 && iY >= 35 && iY <= 40) return 2; // western North Africa
+	if (iX >= 46 && iX <= 54 && iY >= 40 && iY <= 46) return 2; // Iberia
+	if (iX >= 64 && iX <= 76 && iY >= 39 && iY <= 47) return 3; // Greece, Balkans, Anatolia
+	if (iX >= 51 && iX <= 60 && iY >= 47 && iY <= 53) return 4; // Gaul, Rhine frontier
+	if (iX >= 49 && iX <= 55 && iY >= 53 && iY <= 57) return 4; // southern Britain
+	if (iX >= 64 && iX <= 73 && iY >= 31 && iY <= 38) return 4; // Egypt, Cyrenaica
+	if (iX >= 72 && iX <= 76 && iY >= 36 && iY <= 42) return 4; // Levant
+	return 0;
+}
+
+bool CvPlayer::isRomanProvince(int iX, int iY) const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		getRomanProvinceStage(iX, iY) > 0;
+}
+
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
 	PROFILE_FUNC();
@@ -7866,6 +7920,9 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 		if (eCivic == (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
 			return true;
 	//Rhye - end UP
+	// The Roman Republic is available at Rome's birth without founding a religion.
+	if (GC.getCivicInfo(eCivic).isRomanRepublicVariant(getCivilizationType()))
+		return true;
 
 	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 	{

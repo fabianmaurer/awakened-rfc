@@ -2046,6 +2046,8 @@ class AIWars:
                         iCiv = -1
                         for i in range( iRndnum, iRndnum + iMaxCivs ):
                                 iLoopCiv = i % iMaxCivs
+                                if (iLoopCiv == con.iRome and gc.getPlayer(iLoopCiv).isRomanCampaignExclusive()):
+                                        continue
                                 if (gc.getPlayer(iLoopCiv).isAlive() and not gc.getPlayer(iLoopCiv).isHuman()):
                                         if (utils.getPlagueCountdown(iLoopCiv) >= -10 and utils.getPlagueCountdown(iLoopCiv) <= 0): #civ is not under plague or quit recently from it
                                                 iAlreadyAttacked = self.getAttackingCivsArray(iLoopCiv)

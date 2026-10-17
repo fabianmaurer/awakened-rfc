@@ -116,10 +116,12 @@ confirm scenario setup for each game in the batch. An authenticated WorldBuilder
 hook restricts the human selector to the scenario observer, sets Prince/Normal, and signals the
 launcher when the correct scenario has loaded. Other civilizations still spawn
 and play normally. The launcher brings only its own game window forward and
-sends Enter's physical scan code to advance setup, with at most four attempts.
-Setup polling runs every 50 ms. Confirmation retries wait at least 350 ms after
-the preceding key release, following a 250 ms initial readiness delay. Keyboard
-focus settles for 200 ms, and Enter is held for 100 ms for DirectInput polling.
+sends Enter's physical scan code to advance setup, with at most twelve attempts.
+Setup polling runs every 50 ms. Confirmation retries wait 1, 2, 4, 8 and then
+15 seconds after the preceding key release, following a 500 ms initial readiness
+delay. This spreads retries across slow parallel startup instead of exhausting
+them before the setup UI accepts input. Keyboard focus settles for 300 ms for
+each new game window, and Enter is held for 200 ms for DirectInput polling.
 After bringing the game forward it waits for keyboard focus to settle before
 pressing the key. `setup-input.log` records focus waits and each confirmation;
 the launcher prefers an already focused game window, restores minimized game

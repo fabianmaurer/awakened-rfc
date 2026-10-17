@@ -591,6 +591,51 @@ class Observer:
         self.civic_exposure = {}
         self.events = []
 
+    def observe_roman_campaign(self):
+        if not self.autoplay or self.mode == 'performance':
+            return
+        import Consts
+        player = self.gc.getPlayer(Consts.iRome)
+        if not player.isAlive() or player.getNumCities() == 0 or self.game.getGameTurnYear() >= 300:
+            return
+        if not hasattr(player, 'getRomanCampaignReadiness'):
+            raise ValueError('Roman campaign recording requires the updated observer DLL')
+        evaluated_turn, cached_reason, values, native_observer, native_performance, active = player.getRomanCampaignReadiness()
+        turn = self.game.getGameTurn()
+        fresh = evaluated_turn == turn
+        if turn % 5 != 0 and not (fresh and cached_reason == 'war_plan_started'):
+            return
+        keys = ('target_x', 'target_y', 'port_x', 'port_y',
+                'required_attackers', 'required_siege', 'attackers', 'siege',
+                'transport_capacity', 'escorts', 'attack_strength',
+                'visible_defense_strength', 'stall_turns')
+        if len(values) != len(keys):
+            raise ValueError('Unexpected Roman campaign recording payload')
+        # Stale/unevaluated data must not look like a current decision.
+        fresh_values = values
+        if not fresh:
+            fresh_values = [-1] * len(keys)
+        details = dict(zip(keys, fresh_values))
+        reason = cached_reason
+        if not native_observer:
+            reason = 'native_observer_inactive'
+        elif native_performance:
+            reason = 'native_performance_mode'
+        elif not fresh:
+            reason = 'not_evaluated'
+        import RFCUtils
+        utils = RFCUtils.RFCUtils()
+        stability = utils.getStability(Consts.iRome)
+        plague = utils.getPlagueCountdown(Consts.iRome)
+        details.update({'event': 'roman_campaign_readiness', 'player': Consts.iRome,
+                        'turn': turn, 'year': self.game.getGameTurnYear(),
+                        'reason': reason, 'stability': stability, 'plague_countdown': plague,
+                        'native_evaluated_turn': evaluated_turn, 'native_cached_reason': cached_reason,
+                        'native_observer_enabled': native_observer,
+                        'native_performance_enabled': native_performance,
+                        'native_campaign_active': active})
+        self.events.append(details)
+
     def end_turn(self, args):
         if not self.enabled or not self.started:
             return
@@ -612,6 +657,7 @@ class Observer:
                     self.enabled = False
                 return
             self.observe_players(True)
+            self.observe_roman_campaign()
             if self.turns % self.record_interval == 0 or self.turns >= self.limit:
                 self.snapshot('turn')
             if self.checkpoint_interval > 0 and self.turns % self.checkpoint_interval == 0:

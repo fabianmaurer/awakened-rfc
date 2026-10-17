@@ -470,7 +470,8 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 	// Value the food saved when assigning a citizen under Republic. This does
 	// not change specialist yields or give food to free/settled specialists.
 	if (eSpecialist != GC.getInfoTypeForString("SPECIALIST_SLAVE") &&
-		GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")))
+		GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")) &&
+		!GET_PLAYER(getOwnerINLINE()).isRomanRepublic())
 		aiYields[YIELD_FOOD] += 1;
 
 	short int aiCommerceYields[NUM_COMMERCE_TYPES];
@@ -651,7 +652,7 @@ int CvCityAI::AI_slaveryEmploymentValue(CivicTypes eCivic)
 	const SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
 	const SpecialistTypes eCitizen = (SpecialistTypes)GC.getDefineINT("DEFAULT_SPECIALIST");
 	const CivicTypes eCurrent = kPlayer.getCivics((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType());
-	const bool bRepublic = kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
+	const bool bRepublic = kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")) && !kPlayer.isRomanRepublic();
 	const bool bAvoidGrowth = AI_avoidGrowth();
 	const int iModifier = getBaseYieldRateModifier(YIELD_FOOD);
 	const int iHealth = goodHealth() - badHealth(false, 0);
@@ -887,6 +888,8 @@ void CvCityAI::AI_chooseProduction()
 	int iWaterPercent = AI_calculateWaterWorldPercent();
 	
 	int iBuildUnitProb = AI_buildUnitProb();
+	if (kPlayer.AI_isRomanCampaign() && !kPlayer.AI_isFinancialTrouble())
+		iBuildUnitProb = std::min(90, iBuildUnitProb + 25);
     
     int iExistingWorkers = kPlayer.AI_totalAreaUnitAIs(pArea, UNITAI_WORKER);
     int iNeededWorkers = kPlayer.AI_neededWorkers(pArea);
@@ -1004,6 +1007,19 @@ void CvCityAI::AI_chooseProduction()
 		{
 			return;
 		}
+	}
+
+	// Replace expensive quiet-city garrisons before training more legions.
+	if (kPlayer.AI_isRomanCampaign() && !isOccupation() && !AI_isDanger())
+	{
+		const UnitTypes eArcher = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
+		int iArchers = 0;
+		for (CLLNode<IDInfo>* pNode = plot()->headUnitNode(); pNode != NULL; pNode = plot()->nextUnitNode(pNode))
+		{
+			CvUnit* pGuard = ::getUnit(pNode->m_data);
+			if (pGuard->getOwnerINLINE() == getOwnerINLINE() && pGuard->getUnitType() == eArcher && !pGuard->isCargo() && pGuard->canDefend()) ++iArchers;
+		}
+		if (iArchers < AI_minDefenders() && canTrain(eArcher) && AI_chooseUnit(eArcher, UNITAI_CITY_DEFENSE)) return;
 	}
 
 	if (plot()->getNumDefenders(getOwnerINLINE()) == 0) // XXX check for other team's units?
@@ -1636,6 +1652,48 @@ void CvCityAI::AI_chooseProduction()
 		FAssertMsg(false, "AI_bestSpreadUnit should provide a valid unit when it returns true");
 	}
 	
+	if (kPlayer.AI_isRomanCampaignPreparing() && AI_isDefended() &&
+		!AI_isDanger() && kPlayer.getNumMilitaryUnits() < 5 * kPlayer.getNumCities() + 8)
+	{
+		CvCity* pTarget = kPlayer.AI_romanCampaignTarget();
+		if (pTarget != NULL)
+		{
+			const int iAttackers = kPlayer.AI_getNumAIUnits(UNITAI_ATTACK_CITY);
+			int iRequiredAttackers, iRequiredSiege;
+			kPlayer.AI_romanCampaignRequirements(pTarget, iRequiredAttackers, iRequiredSiege);
+			int iSiege = 0, iLoop;
+			for (CvUnit* pUnit = kPlayer.firstUnit(&iLoop); pUnit != NULL; pUnit = kPlayer.nextUnit(&iLoop))
+				if (pUnit->AI_getUnitAIType() == UNITAI_ATTACK_CITY &&
+					pUnit->getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE")) ++iSiege;
+			if (iSiege < iRequiredSiege)
+			{
+				UnitTypes eSiege = NO_UNIT;
+				int iBest = 0;
+				for (int iUnit = 0; iUnit < GC.getNumUnitClassInfos(); ++iUnit)
+				{
+					UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(iUnit);
+					if (eUnit != NO_UNIT && canTrain(eUnit) && GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
+					{
+						int iValue = kPlayer.AI_unitValue(eUnit, UNITAI_ATTACK_CITY, pArea);
+						if (iValue > iBest) { iBest = iValue; eSiege = eUnit; }
+					}
+				}
+				if (iBest > 0 && AI_chooseUnit(eSiege, UNITAI_ATTACK_CITY)) return;
+			}
+			if (kPlayer.AI_romanCampaignPort(pTarget) != NULL && isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+			{
+				if (kPlayer.AI_countCargoSpace(UNITAI_ASSAULT_SEA) < iRequiredAttackers && AI_chooseUnit(UNITAI_ASSAULT_SEA)) return;
+			}
+			if (iAttackers < std::max(iRequiredAttackers, 2 * kPlayer.getNumCities()) ||
+				iAttackers - iSiege < iRequiredAttackers - iRequiredSiege)
+			{
+				const UnitTypes ePraetorian = (UnitTypes)GC.getInfoTypeForString("UNIT_ROME_PRAETORIAN");
+				if (canTrain(ePraetorian) && AI_chooseUnit(ePraetorian, UNITAI_ATTACK_CITY)) return;
+				if (AI_chooseUnit(UNITAI_ATTACK_CITY)) return;
+			}
+		}
+	}
+
 	//int iMaxUnitSpending = (bAggressiveAI ? 7 : 3) + iBuildUnitProb / 3; //Rhye
     int iMaxUnitSpending =  3 + iBuildUnitProb / 3; //Rhye
     if (bAlwaysPeace)
@@ -5242,6 +5300,10 @@ bool CvCityAI::AI_isAirDefended(int iExtra)
 int CvCityAI::AI_neededDefenders()
 {
 	PROFILE_FUNC();
+	// Early AI Rome accepts exposed provinces to keep its conquest army moving.
+	// Occupation and nearby threats retain ordinary reinforcement demands.
+	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() && !isOccupation() && !AI_isDanger())
+		return AI_minDefenders();
 	int iDefenders;
 	bool bOffenseWar = ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING));
 	bool bDefenseWar = ((area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE));
@@ -5322,6 +5384,7 @@ int CvCityAI::AI_neededDefenders()
 
 int CvCityAI::AI_minDefenders()
 {
+	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign()) return isCapital() ? 2 : 1;
 	int iDefenders = 1;
 	int iEra = GET_PLAYER(getOwnerINLINE()).getCurrentEra();
 	if (iEra > 0)

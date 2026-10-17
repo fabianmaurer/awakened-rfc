@@ -5366,7 +5366,21 @@ std::wstring CvCivicInfo::getCivilizationDescription(int iCivilization) const
 		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
 			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP");
 	}
+	if (isRomanRepublicVariant(iCivilization))
+		return gDLL->getText("TXT_KEY_ROMAN_REPUBLIC");
+	if (isRomanLegionsVariant(iCivilization))
+		return gDLL->getText("TXT_KEY_ROMAN_LEGIONS");
 	return getDescription();
+}
+
+bool CvCivicInfo::isRomanRepublicVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_ROME") && strcmp(getType(), "CIVIC_REPUBLIC") == 0;
+}
+
+bool CvCivicInfo::isRomanLegionsVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_ROME") && strcmp(getType(), "CIVIC_WARRIOR_SOCIETY") == 0;
 }
 
 bool CvCivicInfo::isPharaonicVariant(int iCivilization) const

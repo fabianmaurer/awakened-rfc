@@ -33,6 +33,15 @@ public:
 	static void freeStatics();
 	DllExport static bool areStaticsInitialized();
 
+	bool AI_isRomanCampaign() const;
+	bool AI_isRomanCampaignExclusive() const;
+	bool AI_isRomanCampaignPreparing() const;
+	int AI_getRomanCampaignReadiness(int iIndex) const;
+	const CvString& AI_getRomanCampaignReadinessReason() const;
+	CvCity* AI_romanCampaignTarget() const;
+	int AI_romanCampaignRoute(const CvCity* pTarget, CvCity*& pPort) const;
+	CvCity* AI_romanCampaignPort(const CvCity* pTarget) const;
+	void AI_romanCampaignRequirements(const CvCity* pTarget, int& iAttackers, int& iSiege) const;
 	void AI_init();
 	void AI_uninit();
 	void AI_reset(bool bConstructor);
@@ -356,6 +365,11 @@ protected:
 	int m_iCivicTimer;
 	int m_iReligionTimer;
 	int m_iExtraGoldTarget;
+	int m_iRomanCampaignStallTurns;
+	bool m_bRomanCampaignPreparing;
+	mutable int m_iRomanCampaignReadinessTurn;
+	mutable CvString m_szRomanCampaignReadinessReason;
+	mutable std::vector<int> m_aiRomanCampaignReadiness;
 	
 	mutable int m_iStrategyHash;
 	mutable int m_iStrategyHashCacheTurn;
@@ -403,6 +417,10 @@ protected:
 
 	void AI_doCounter();
 	void AI_doMilitary();
+	void AI_doRomanCampaign();
+	void AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget = NULL, const CvCity* pPort = NULL,
+		int iRequiredAttackers = -1, int iRequiredSiege = -1, int iAttackers = -1, int iSiege = -1,
+		int iCargo = -1, int iEscorts = -1, int iAttackStrength = -1, int iDefenseStrength = -1) const;
 	void AI_doResearch();
 	void AI_doCivics();
 	void AI_doReligion();

@@ -4548,6 +4548,8 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	const bool bDivineKingship = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isDivineKingshipVariant(GC.getGameINLINE().getActiveCivilizationType());
 	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(GC.getGameINLINE().getActiveCivilizationType());
 	CvWString szFirstBuffer;
 	bool bFound;
 	bool bFirst;
@@ -4576,7 +4578,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			if (!bPlayerContext || !(GET_TEAM(GC.getGameINLINE().getActiveTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 			{
-				if (GC.getCivicInfo(eCivic).getTechPrereq() != NO_TECH)
+				if (!bRomanRepublic && GC.getCivicInfo(eCivic).getTechPrereq() != NO_TECH)
 				{
 					szHelpText.append(NEWLINE);
 					szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REQUIRES", GC.getTechInfo((TechTypes)GC.getCivicInfo(eCivic).getTechPrereq()).getTextKeyWide()));
@@ -5132,6 +5134,11 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		szHelpText.append(NEWLINE);
 		szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP"));
+	}
+	else if (bRomanRepublic || bRomanLegions)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText(bRomanRepublic ? "TXT_KEY_ROMAN_REPUBLIC_EFFECT" : "TXT_KEY_ROMAN_LEGIONS_EFFECT"));
 	}
 	else if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
 	{
@@ -5751,7 +5758,10 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	if (GC.getUnitInfo(eUnit).getCargoSpace() > 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_CARGO_SPACE", GC.getUnitInfo(eUnit).getCargoSpace()));
+		int iCargoSpace = GC.getUnitInfo(eUnit).getCargoSpace();
+		if (!bCivilopediaText && GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
+			iCargoSpace += GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getRomanCargoBonus(eUnit);
+		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_CARGO_SPACE", iCargoSpace));
 
 		if (GC.getUnitInfo(eUnit).getSpecialCargo() != NO_SPECIALUNIT)
 		{

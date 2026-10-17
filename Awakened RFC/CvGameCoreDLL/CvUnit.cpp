@@ -6523,7 +6523,10 @@ bool CvUnit::goldenAge()
 bool CvUnit::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestVisible) const
 {
     FAssertMsg(eBuild < GC.getNumBuildInfos(), "Index out of bounds");
-	if (!(m_pUnitInfo->getBuilds(eBuild)))
+	if (!(m_pUnitInfo->getBuilds(eBuild)) &&
+		!(GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+		  getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") &&
+		  eBuild == GC.getInfoTypeForString("BUILD_ROAD")))
 	{
 		return false;
 	}
@@ -7456,7 +7459,10 @@ bool CvUnit::canBuildRoute() const
 	{
 		if (GC.getBuildInfo((BuildTypes)iI).getRoute() != NO_ROUTE)
 		{
-			if (m_pUnitInfo->getBuilds(iI))
+			if (m_pUnitInfo->getBuilds(iI) ||
+				(GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+				 getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") &&
+				 iI == GC.getInfoTypeForString("BUILD_ROAD")))
 			{
 				if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBuildInfo((BuildTypes)iI).getTechPrereq())))
 				{
@@ -7550,6 +7556,9 @@ int CvUnit::workRate(bool bMax) const
 	}
 
 	iRate = m_pUnitInfo->getWorkRate();
+	if (GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE"))
+		iRate = std::max(iRate, 100);
 
 	iRate *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getWorkerSpeedModifier() + 100));
 	iRate /= 100;
@@ -7927,7 +7936,8 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		iExtraModifier += std::min(15, GET_TEAM(getTeam()).getTechCount(eMilitaryResearch));
 
 
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) &&
+		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{
 		iExtraModifier -= 20;
 	}
@@ -9094,6 +9104,10 @@ DomainTypes CvUnit::domainCargo() const
 
 int CvUnit::cargoSpace() const
 {
+	// Changing civics never strands existing passengers; no new cargo can be
+	// loaded above the current civic capacity until the excess has disembarked.
+	if (GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(getUnitType()))
+		return std::max(getCargo(), m_iCargoCapacity + GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType()));
 	return m_iCargoCapacity;
 }
 
