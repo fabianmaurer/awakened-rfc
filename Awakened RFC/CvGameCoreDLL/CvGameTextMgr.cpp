@@ -4521,6 +4521,11 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
 	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(GC.getGameINLINE().getActiveCivilizationType());
 	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(GC.getGameINLINE().getActiveCivilizationType());
+	// Widget tooltips omit bPlayerContext, but can still show the active faith.
+	const PlayerTypes eReligionPlayer = GC.getGameINLINE().getActivePlayer();
+	const ReligionTypes eHelpReligion = eReligionPlayer == NO_PLAYER ? NO_RELIGION : GET_PLAYER(eReligionPlayer).getStateReligion();
+	const bool bReligionContext = eHelpReligion != NO_RELIGION;
+	const int iReligionSymbol = bReligionContext ? GC.getReligionInfo(eHelpReligion).getChar() : gDLL->getSymbolID(RELIGION_CHAR);
 	CvWString szFirstBuffer;
 	bool bFound;
 	bool bFirst;
@@ -4577,6 +4582,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		if (GC.getCivicInfo(eCivic).isSpecialistValid(iI))
 		{
+			// Slavery already explains the slave specialist unlock in its help.
+			if (eCivic == GC.getInfoTypeForString("CIVIC_SLAVERY") && iI == GC.getInfoTypeForString("SPECIALIST_SLAVE"))
+				continue;
 			szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_UNLIMTED").c_str());
 			CvWString szSpecialist;
 			szSpecialist.Format(L"<link=literal>%s</link>", GC.getSpecialistInfo((SpecialistTypes)iI).getDescription());
@@ -4608,7 +4616,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Great People Modifier...
 	if (GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_GREAT_PEOPLE_MOD_RELIGION", GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier(), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
@@ -4864,7 +4872,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (GC.getCivicInfo(eCivic).getStateReligionHappiness() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_STATE_RELIGION_HAPPINESS", abs(GC.getCivicInfo(eCivic).getStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
@@ -4878,7 +4886,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (GC.getCivicInfo(eCivic).getNonStateReligionHappiness() != 0)
 	{
-		if (GC.getCivicInfo(eCivic).isStateReligion())
+		if (!GC.getCivicInfo(eCivic).isStateReligion())
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_NO_STATE", abs(GC.getCivicInfo(eCivic).getNonStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getNonStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
@@ -4893,7 +4901,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Unit Production Modifier
 	if (GC.getCivicInfo(eCivic).getStateReligionUnitProductionModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_TRAIN_BONUS", GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionUnitProductionModifier()));
@@ -4908,7 +4916,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Building Production Modifier
 	if (GC.getCivicInfo(eCivic).getStateReligionBuildingProductionModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_BUILDING_BONUS", GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionBuildingProductionModifier()));
@@ -4923,7 +4931,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Free Experience
 	if (GC.getCivicInfo(eCivic).getStateReligionFreeExperience() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_FREE_XP", GC.getCivicInfo(eCivic).getStateReligionFreeExperience(), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
@@ -5110,6 +5118,16 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		szHelpText.append(NEWLINE);
 		szHelpText.append(gDLL->getText(bRomanRepublic ? "TXT_KEY_ROMAN_REPUBLIC_EFFECT" : "TXT_KEY_ROMAN_LEGIONS_EFFECT"));
+	}
+	else if ((eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE") ||
+		eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION") ||
+		eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
+	{
+		szHelpText.append(NEWLINE);
+		const char* szKey = eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE") ? "TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE_WITH_RELIGION" :
+			(eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION") ? "TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_RELIGION_WITH_RELIGION" :
+			"TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY_WITH_RELIGION");
+		szHelpText.append(gDLL->getText(szKey, iReligionSymbol, iReligionSymbol));
 	}
 	else if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
 	{

@@ -1698,6 +1698,7 @@
     <Define><DefineName>RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR</DefineName><iDefineIntVal>2</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT</DefineName><iDefineIntVal>12</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_TRADE_RELIGION_TOLERANCE_BONUS_PERCENT</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_OWNER_CULTURE_START_PERCENT</DefineName><iDefineIntVal>75</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
     <!-- Food is redistributed along actual trade routes, not created. -->

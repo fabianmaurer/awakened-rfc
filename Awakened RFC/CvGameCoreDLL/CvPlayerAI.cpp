@@ -10551,6 +10551,14 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 					iValue -= 8 * pLoopCity->getNumBuilding(eBuilding);
 			}
 	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE"))
+	{
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			if (getStateReligion() != NO_RELIGION && pLoopCity->isHasReligion(getStateReligion()))
+				iValue += pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) / 2;
+		if (getStateReligion() != NO_RELIGION && bWarPlan)
+			iValue += getNumCities() * 3;
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE"))
 		for (int iOther = 0; iOther < MAX_CIV_PLAYERS; ++iOther)
 			if (iOther != getID() && GET_PLAYER((PlayerTypes)iOther).isAlive() && GET_TEAM(getTeam()).isHasMet(GET_PLAYER((PlayerTypes)iOther).getTeam()) &&

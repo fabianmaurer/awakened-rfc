@@ -426,7 +426,7 @@ SPECIAL_NAMES = {
     ('FRA', 'CAROLINGIAN'): ('Carolingian Empire', 'Karolingerreich'),
     ('CHI', 'ZHOU'): ('Zhou Kingdom', 'Zhou-Reich'),
     ('IND', 'VEDIC_KINGDOMS'): ('Kuru and Panchala', 'Kuru und Panchala'),
-    ('ROM', 'LATIN_COMMUNITIES'): ('Latin Communities', 'Latinische Stammesgemeinden'),
+    ('ROM', 'LATIN_COMMUNITIES'): ('Rome', 'Rom'),
     ('EGY', 'PHARAONIC'): ('Pharaonic Egypt', 'Pharaonenreich'),
     ('EGY', 'TEMPLE_STATE'): ('Temple State of Egypt', 'Tempelstaat Ägypten'),
     ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),

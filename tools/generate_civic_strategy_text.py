@@ -27,7 +27,7 @@ SUMMARIES = {
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),
     'THEOCRATIC_LEGITIMACY': (
         '+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.',
-        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit anderer oder keiner Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, andere religi\xf6se Geb\xe4ude -2 Zufriedenheit.'),
+        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit fremder oder keiner Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, Geb\xe4ude fremder Religionen -2 Zufriedenheit.'),
     'PLUTOCRACY': (
         '+25% gold income and +50% trade-route commerce.',
         '+25% Goldeinnahmen und +50% Wirtschaftspunkte durch Handelsrouten.'),
@@ -42,7 +42,7 @@ SUMMARIES = {
         '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht. Kann keine Spezialisten zuweisen.'),
     'SLAVERY': (
         'Enables slave specialists. Enslave conquered peoples.',
-        'Erm\u00f6glicht Sklavenspezialisten. Versklavt eroberte V\u00f6lker.'),
+        'Schaltet Sklavenspezialisten frei. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
         '+1 food from farms; workers build improvements 50% faster, and population can rush units.',
         '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
@@ -69,14 +69,14 @@ SUMMARIES = {
         '+1 culture from monuments, including unique replacements.',
         '+1 Kultur durch Monumente, einschließlich einzigartiger Ersatzgebäude.'),
     'STATE_RELIGION': (
-        '+1 happiness in cities with the state religion; +100% production for missionaries of any religion.',
-        '+1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare aller Religionen.'),
+        '+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.',
+        '+1 Zufriedenheit in St\xe4dten mit Staatsreligion; +100% Produktion f\xfcr Missionare und +25% Produktion f\xfcr Geb\xe4ude der Staatsreligion.'),
     'GOD_STATE': (
-        'Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.',
-        'Städte mit Staatsreligion erhalten +2 Zufriedenheit und +10% Produktion; Städte ohne sie erhalten -2 Zufriedenheit.'),
+        '+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.',
+        '+10% Produktion in St\xe4dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
     'TOLERANCE': (
-        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.',
-        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus.'),
+        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes.',
+        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte.'),
     'STATE_ATHEISM': (
         '+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.',
         '+10% Forschung und +10% Produktion; -1 Zufriedenheit in allen St\xe4dten. Religi\xf6se Geb\xe4ude wirken nicht und Religionen verbreiten sich nicht.'),

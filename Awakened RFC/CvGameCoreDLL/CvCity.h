@@ -839,6 +839,7 @@ public:
 
 	bool isHasReligion(ReligionTypes eIndex) const;
 	void setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true, bool bPreserve = false);
+	void setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings);
 
 	bool isHasCorporation(CorporationTypes eIndex) const;
 	void setHasCorporation(CorporationTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true);
@@ -1063,6 +1064,8 @@ protected:
 	int m_iDefenseDamage;
 	int m_iLastDefenseDamage;
 	int m_iOccupationTimer;
+	ReligionTypes m_eGodStateConquestReligion;
+	std::vector<BuildingTypes> m_aeGodStateDestroyedBuildings;
 	int m_iCultureUpdateTimer;
 	int m_iCitySizeBoost;
 	int m_iSpecialistFreeExperience;

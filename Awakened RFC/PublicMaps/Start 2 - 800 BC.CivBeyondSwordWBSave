@@ -26189,8 +26189,6 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=69,y=35
-	BonusType=BONUS_MARBLE
-	ImprovementType=IMPROVEMENT_QUARRY
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	RouteType=ROUTE_ROAD
 	TerrainType=TERRAIN_DESERT

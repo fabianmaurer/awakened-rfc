@@ -1323,6 +1323,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	int iI;
 	CLinkList<IDInfo> oldUnits;
 	std::vector<int> aeFreeSpecialists;
+	std::vector<BuildingTypes> aeGodStateDestroyedBuildings;
+	// Every conquest qualifies independently, including repeat recaptures.
+	const ReligionTypes eGodStateReligion = (bConquest && getStateReligion() != NO_RELIGION &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) &&
+		!pOldCity->isHasReligion(getStateReligion())) ? getStateReligion() : NO_RELIGION;
 
 	pCityPlot = pOldCity->plot();
 
@@ -1660,6 +1665,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				}
 
 				pNewCity->setNumRealBuildingTimed(eBuilding, std::min(pNewCity->getNumRealBuilding(eBuilding) + iNum, GC.getCITY_MAX_NUM_BUILDINGS()), false, ((PlayerTypes)(paiBuildingOriginalOwner[iI])), paiBuildingOriginalTime[iI]);
+				if (eGodStateReligion != NO_RELIGION && iNum == 0)
+					aeGodStateDestroyedBuildings.push_back(eBuilding);
 			}
 		}
 	}
@@ -1762,6 +1769,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	// Arm only after ownership transfer has restored religions and occupation.
+	pNewCity->setGodStateConquest(eGodStateReligion, aeGodStateDestroyedBuildings);
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 
 	SAFE_DELETE_ARRAY(pabHasReligion);

@@ -51,8 +51,7 @@ The other eight initial 800 BC players also have explicit profiles now. India,
 China, Greece and Carthage receive Monarchy so their intended governments are
 available at initialization. India and China use Self-sufficiency instead of
 an unavailable medieval labor civic; Japan uses tribal government,
-Self-sufficiency, Warrior Society and Ancestor Cult. Persia and the Latin
-settlements use tribal government. The existing ancient technology packages
+Self-sufficiency, Warrior Society and Ancestor Cult. Persia and Rome use tribal government. The existing ancient technology packages
 are otherwise retained. Later births use their normal profiles.
 See [800BCScenario.md](800BCScenario.md) for the complete audit and ruler names.
 

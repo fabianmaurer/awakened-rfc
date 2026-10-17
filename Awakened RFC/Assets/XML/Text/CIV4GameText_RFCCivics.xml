@@ -507,9 +507,17 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY</Tag>
         <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</English>
         <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</French>
-        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige</German>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] von Geb&#228;uden der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] von Geb&#228;uden fremder Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige</German>
         <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Italian>
         <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY_WITH_RELIGION</Tag>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building %F1_StateReligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building %F1_StateReligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] von Geb&#228;uden der Staatsreligion %F1_StateReligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] von Geb&#228;uden fremder Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building %F1_StateReligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building %F1_StateReligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NATIONALISM</Tag>
@@ -553,19 +561,35 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_RELIGION</Tag>
-        <English>[ICON_BULLET]+100% [ICON_PRODUCTION] for missionaries</English>
-        <French>[ICON_BULLET]+100% [ICON_PRODUCTION] for missionaries</French>
-        <German>[ICON_BULLET]+100% [ICON_PRODUCTION] f&#252;r Missionare</German>
-        <Italian>[ICON_BULLET]+100% [ICON_PRODUCTION] for missionaries</Italian>
-        <Spanish>[ICON_BULLET]+100% [ICON_PRODUCTION] for missionaries</Spanish>
+        <English>[ICON_BULLET]+100% [ICON_PRODUCTION] for state-religion missionaries[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] for state-religion buildings</English>
+        <French>[ICON_BULLET]+100% [ICON_PRODUCTION] pour les missionnaires de la religion d&#8217;&#201;tat[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] pour ses b&#226;timents religieux</French>
+        <German>[ICON_BULLET]+100% [ICON_PRODUCTION] f&#252;r Missionare der Staatsreligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Geb&#228;ude der Staatsreligion</German>
+        <Italian>[ICON_BULLET]+100% [ICON_PRODUCTION] per i missionari della religione di Stato[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] per i suoi edifici religiosi</Italian>
+        <Spanish>[ICON_BULLET]+100% [ICON_PRODUCTION] para misioneros de la religi&#243;n estatal[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] para sus edificios religiosos</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_RELIGION_WITH_RELIGION</Tag>
+        <English>[ICON_BULLET]+100% [ICON_PRODUCTION] for state-religion missionaries %F1_StateReligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] for state-religion buildings %F2_StateReligion</English>
+        <French>[ICON_BULLET]+100% [ICON_PRODUCTION] pour les missionnaires de la religion d&#8217;&#201;tat %F1_StateReligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] pour ses b&#226;timents religieux %F2_StateReligion</French>
+        <German>[ICON_BULLET]+100% [ICON_PRODUCTION] f&#252;r Missionare der Staatsreligion %F1_StateReligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Geb&#228;ude der Staatsreligion %F2_StateReligion</German>
+        <Italian>[ICON_BULLET]+100% [ICON_PRODUCTION] per i missionari della religione di Stato %F1_StateReligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] per i suoi edifici religiosi %F2_StateReligion</Italian>
+        <Spanish>[ICON_BULLET]+100% [ICON_PRODUCTION] para misioneros de la religi&#243;n estatal %F1_StateReligion[NEWLINE][ICON_BULLET]+25% [ICON_PRODUCTION] para sus edificios religiosos %F2_StateReligion</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE</Tag>
-        <English>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] in cities without the state religion</English>
-        <French>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] in cities without the state religion</French>
-        <German>[ICON_BULLET]+10% [ICON_PRODUCTION] in St&#228;dten mit Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] in St&#228;dten ohne Staatsreligion</German>
-        <Italian>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] in cities without the state religion</Italian>
-        <Spanish>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] in cities without the state religion</Spanish>
+        <English>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion</English>
+        <French>[ICON_BULLET]+10% [ICON_PRODUCTION] dans les villes de la religion d&#8217;&#201;tat[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises</French>
+        <German>[ICON_BULLET]+10% [ICON_PRODUCTION] in St&#228;dten mit Staatsreligion[NEWLINE][ICON_BULLET]Eroberte St&#228;dte werden durch Konvertierung befriedet</German>
+        <Italian>[ICON_BULLET]+10% [ICON_PRODUCTION] nelle citt&#224; con la religione di Stato[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate</Italian>
+        <Spanish>[ICON_BULLET]+10% [ICON_PRODUCTION] en ciudades con la religi&#243;n estatal[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE_WITH_RELIGION</Tag>
+        <English>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion %F1_StateReligion[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion</English>
+        <French>[ICON_BULLET]+10% [ICON_PRODUCTION] dans les villes de la religion d&#8217;&#201;tat %F1_StateReligion[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises</French>
+        <German>[ICON_BULLET]+10% [ICON_PRODUCTION] in St&#228;dten mit Staatsreligion %F1_StateReligion[NEWLINE][ICON_BULLET]Eroberte St&#228;dte werden durch Konvertierung befriedet</German>
+        <Italian>[ICON_BULLET]+10% [ICON_PRODUCTION] nelle citt&#224; con la religione di Stato %F1_StateReligion[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate</Italian>
+        <Spanish>[ICON_BULLET]+10% [ICON_PRODUCTION] en ciudades con la religi&#243;n estatal %F1_StateReligion[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_ATHEISM</Tag>
@@ -585,11 +609,11 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TOLERANCE</Tag>
-        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Better diplomatic relations with other religions</English>
-        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Meilleures relations diplomatiques avec les autres religions</French>
-        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Bessere diplomatische Beziehungen mit fremden Religionen</German>
-        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Migliori relazioni diplomatiche con le altre religioni</Italian>
-        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Mejores relaciones diplom&#225;ticas con otras religiones</Spanish>
+        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Better diplomatic relations with other religions[NEWLINE][ICON_BULLET]+5 percentage points to incoming religion spread chances through trade routes.</English>
+        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Meilleures relations diplomatiques avec les autres religions[NEWLINE][ICON_BULLET]+5 points de pourcentage aux chances de propagation des religions vers vos villes par les routes commerciales.</French>
+        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Bessere diplomatische Beziehungen mit fremden Religionen[NEWLINE][ICON_BULLET]+5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St&#228;dte.</German>
+        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Migliori relazioni diplomatiche con le altre religioni[NEWLINE][ICON_BULLET]+5 punti percentuali alla probabilit&#224; di diffusione delle religioni nelle proprie citt&#224; tramite rotte commerciali.</Italian>
+        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Mejores relaciones diplom&#225;ticas con otras religiones[NEWLINE][ICON_BULLET]+5 puntos porcentuales a la probabilidad de propagaci&#243;n religiosa a tus ciudades por rutas comerciales.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TRIBAL</Tag>
@@ -653,7 +677,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_SLAVERY</Tag>
         <English>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</English>
         <French>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</French>
-        <German>[ICON_BULLET]Erm&#246;glicht Sklavenspezialisten[NEWLINE][ICON_BULLET]Versklavt eroberte V&#246;lker</German>
+        <German>[ICON_BULLET]Schaltet Sklavenspezialisten frei[NEWLINE][ICON_BULLET]Versklavt eroberte V&#246;lker</German>
         <Italian>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Italian>
         <Spanish>[ICON_BULLET]Enables slave specialists[NEWLINE][ICON_BULLET]Enslave conquered peoples</Spanish>
     </TEXT>
@@ -768,5 +792,45 @@
         <German>+%d1_Modifier% [ICON_PRODUCTION] durch %s2_Civic</German>
         <Italian>+%d1_Modifier% [ICON_PRODUCTION] da %s2_Civic</Italian>
         <Spanish>+%d1_Modifier% [ICON_PRODUCTION] por %s2_Civic</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ACTION_CANNOT_SPREAD_NON_STATE_RELIGION</Tag>
+        <English>[COLOR_WARNING_TEXT]Cannot spread Non-State [ICON_RELIGION] in this city.[COLOR_REVERT]</English>
+        <French>[COLOR_WARNING_TEXT]Impossible de r&#233;pandre une [ICON_RELIGION] qui n'est pas une religion d'&#233;tat dans cette ville.[COLOR_REVERT]</French>
+        <German>[COLOR_WARNING_TEXT]Kann die fremde Religion [ICON_RELIGION] in dieser Stadt nicht verbreiten.[COLOR_REVERT]</German>
+        <Italian>[COLOR_WARNING_TEXT]Non si pu&#242; diffondere una religione non ufficiale[ICON_RELIGION] in questa citt&#224;.[COLOR_REVERT]</Italian>
+        <Spanish>[COLOR_WARNING_TEXT]En esta ciudad no se puede propagar una [ICON_RELIGION] que no sea la oficial.[COLOR_REVERT]</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIVIC_NO_NON_STATE_SPREAD</Tag>
+        <English>[ICON_BULLET]No Non-State [ICON_RELIGION] Spread</English>
+        <French>[ICON_BULLET]Aucune [ICON_RELIGION] propag&#233;e</French>
+        <German>[ICON_BULLET]Keine fremde Religion [ICON_RELIGION] verbreitet</German>
+        <Italian>[ICON_BULLET]Nessuna diffusione di [ICON_RELIGION] non ufficiale</Italian>
+        <Spanish>[ICON_BULLET]No se propaga ninguna [ICON_RELIGION] que no sea la oficial</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_WITH_STATE</Tag>
+        <English>[ICON_BULLET]%D1_Change%F2_HappyOrUn per Non-State [ICON_RELIGION] in a City</English>
+        <French>[ICON_BULLET]%D1_Change%F2_HappyOrUn par [ICON_RELIGION] non officielle dans une ville</French>
+        <German>[ICON_BULLET]%D1_Change%F2_HappyOrUn je fremder Religion [ICON_RELIGION] in einer Stadt</German>
+        <Italian>[ICON_BULLET]%D1_Change di %F2_HappyOrUn per [ICON_RELIGION] non ufficiale di una citt&#224;</Italian>
+        <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn por cada [ICON_RELIGION] no oficial en cada ciudad</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIVIC_STATE_RELIGION_HAPPINESS</Tag>
+        <English>[ICON_BULLET]%D1_Change%F2_HappyOrUn in Cities with %F3_RelIcon</English>
+        <French>[ICON_BULLET]%D1_Change%F2_HappyOrUn dans les villes ayant pour religion %F3_RelIcon</French>
+        <German>[ICON_BULLET]%D1_Change%F2_HappyOrUn in St&#228;dten mit Staatsreligion %F3_RelIcon</German>
+        <Italian>[ICON_BULLET]%D1_Change di %F2_HappyOrUn nelle citt&#224; con %F3_RelIcon</Italian>
+        <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn en las ciudades con %F3_RelIcon</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIVIC_RELIGION_HAPPINESS</Tag>
+        <English>[ICON_BULLET]%D1_Change%F2_HappyOrUn in Cities with State [ICON_RELIGION]</English>
+        <French>[ICON_BULLET]%D1_Change%F2_HappyOrUn dans les villes ayant comme religion  d'&#233;tat [ICON_RELIGION]</French>
+        <German>[ICON_BULLET]%D1_Change%F2_HappyOrUn in St&#228;dten mit Staatsreligion [ICON_RELIGION]</German>
+        <Italian>[ICON_BULLET]%D1_Change di %F2_HappyOrUn nelle citt&#224; con la religione di stato [ICON_RELIGION]</Italian>
+        <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn en las ciudades con [ICON_RELIGION] oficial</Spanish>
     </TEXT>
 </Civ4GameText>

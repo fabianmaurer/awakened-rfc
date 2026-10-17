@@ -2162,6 +2162,13 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 
 	if (getFeatureType() != NO_FEATURE)
 	{
+		// Oases support irrigated farming, but no other improvements.
+		if (getFeatureType() == GC.getInfoTypeForString("FEATURE_OASIS") &&
+			eImprovement != GC.getInfoTypeForString("IMPROVEMENT_FARM"))
+		{
+			return false;
+		}
+
 		if (GC.getFeatureInfo(getFeatureType()).isNoImprovement())
 		{
 			return false;

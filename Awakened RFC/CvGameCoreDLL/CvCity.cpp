@@ -584,6 +584,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iDefenseDamage = 0;
 	m_iLastDefenseDamage = 0;
 	m_iOccupationTimer = 0;
+	m_eGodStateConquestReligion = NO_RELIGION;
+	m_aeGodStateDestroyedBuildings.clear();
 	m_iCultureUpdateTimer = 0;
 	m_iCitySizeBoost = 0;
 	m_iSpecialistFreeExperience = 0;
@@ -3373,14 +3375,9 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")))
 	{
-		for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
-		{
-			if (GC.getUnitInfo(eUnit).getReligionSpreads(iReligion) > 0)
-			{
-				iMultiplier += 100;
-				break;
-			}
-		}
+		const ReligionTypes eStateReligion = GET_PLAYER(getOwnerINLINE()).getStateReligion();
+		if (eStateReligion != NO_RELIGION && GC.getUnitInfo(eUnit).getReligionSpreads(eStateReligion) > 0)
+			iMultiplier += 100;
 	}
 
 	return std::max(0, iMultiplier);
@@ -3390,6 +3387,13 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 {
 	int iMultiplier = GET_PLAYER(getOwnerINLINE()).getProductionModifier(eBuilding);
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	const ReligionTypes eStateReligion = kOwner.getStateReligion();
+	const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	if (eStateReligion != NO_RELIGION &&
+		kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")) &&
+		(kBuilding.getReligionType() == eStateReligion || kBuilding.getPrereqReligion() == eStateReligion))
+		iMultiplier += 25;
 
 	for (int iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
@@ -6887,11 +6891,6 @@ int CvCity::getExtraHappiness() const
 	iHappiness += getDivineKingshipHappiness();
 	CvPlayer& kPlayer = GET_PLAYER(getOwnerINLINE());
 	iHappiness += std::min(3, royalCapitalBuildings(kPlayer.getCapitalCity(), true));
-
-	if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && (kPlayer.getStateReligion() == NO_RELIGION || !isHasReligion(kPlayer.getStateReligion())))
-	{
-		iHappiness -= 2;
-	}
 
 	if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
 	{
@@ -11208,6 +11207,13 @@ bool CvCity::isHasReligion(ReligionTypes eIndex) const
 }
 
 
+void CvCity::setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings)
+{
+	m_eGodStateConquestReligion = eReligion;
+	m_aeGodStateDestroyedBuildings = aeDestroyedBuildings;
+}
+
+
 void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows, bool bPreserve)
 {
 	// Block spread from missionaries, events and Python alike. Ownership transfers
@@ -11236,6 +11242,29 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 		updateMaintenance();
 		updateReligionHappiness();
 		updateReligionCommerce();
+
+		if (bNewValue && !bPreserve && eIndex == m_eGodStateConquestReligion)
+		{
+			// Consume this conquest's entitlement even if the civic/religion changed.
+			// Removing and spreading the religion again must never repeat the reward.
+			m_eGodStateConquestReligion = NO_RELIGION;
+			CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+			if (kOwner.getStateReligion() == eIndex &&
+				kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")))
+			{
+				setOccupationTimer(0);
+				changePopulation(1);
+				for (std::vector<BuildingTypes>::const_iterator it = m_aeGodStateDestroyedBuildings.begin(); it != m_aeGodStateDestroyedBuildings.end(); ++it)
+				{
+					if (getNumBuilding(*it) == 0 && canConstruct(*it))
+					{
+						setNumRealBuilding(*it, 1);
+						break;
+					}
+				}
+			}
+			m_aeGodStateDestroyedBuildings.clear();
+		}
 
 		AI_setAssignWorkDirty(true);
 
@@ -12779,6 +12808,8 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
     }
     CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
     if (GET_PLAYER(eSource).isCivic(eAtheism) || GET_PLAYER(pTarget->getOwnerINLINE()).isCivic(eAtheism)) return;
+    const int iToleranceBonus = GET_PLAYER(pTarget->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) ?
+        std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_TOLERANCE_BONUS_PERCENT")) : 0;
     int iChance = iValue * GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR") / (iPopulation * std::max(1, GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR")));
     int iMaxChance = std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT"));
     iChance = std::min(iMaxChance, iChance);
@@ -12792,7 +12823,7 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
         int iPenalty = (int)((iMaxChance * iExcess + iRange - 1) / iRange);
         iChance = std::max(0, iChance - iPenalty);
     }
-    if (iChance <= 0) return;
+    if (iChance <= 0 && iToleranceBonus <= 0) return;
     for (int j = 0; j < GC.getNumReligionInfos(); j++)
     {
         ReligionTypes eReligion = (ReligionTypes)j;
@@ -12801,6 +12832,9 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
         int iReligionChance = iChance;
         if (pTarget->isHolyCity() && !pTarget->isHolyCity(eReligion))
             iReligionChance = std::max(0, iReligionChance - GC.getDefineINT("RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT"));
+        // Openness permits incoming religions even when cultural/holy-city
+        // resistance would otherwise reduce trade spread to zero.
+        iReligionChance = std::min(100, iReligionChance + iToleranceBonus);
         if (iReligionChance > 0 && GC.getGameINLINE().getSorenRandNum(100, "Trade religion spread") < iReligionChance)
             pTarget->setHasReligion(eReligion, true, true, true);
     }
@@ -13039,6 +13073,15 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iDefenseDamage);
 	pStream->Read(&m_iLastDefenseDamage);
 	pStream->Read(&m_iOccupationTimer);
+	pStream->Read((int*)&m_eGodStateConquestReligion);
+	int iDestroyedBuildings;
+	pStream->Read(&iDestroyedBuildings);
+	for (int iDestroyed = 0; iDestroyed < iDestroyedBuildings; ++iDestroyed)
+	{
+		int iBuilding;
+		pStream->Read(&iBuilding);
+		m_aeGodStateDestroyedBuildings.push_back((BuildingTypes)iBuilding);
+	}
 	pStream->Read(&m_iCultureUpdateTimer);
 	pStream->Read(&m_iCitySizeBoost);
 	pStream->Read(&m_iSpecialistFreeExperience);
@@ -13320,6 +13363,10 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iDefenseDamage);
 	pStream->Write(m_iLastDefenseDamage);
 	pStream->Write(m_iOccupationTimer);
+	pStream->Write((int)m_eGodStateConquestReligion);
+	pStream->Write((int)m_aeGodStateDestroyedBuildings.size());
+	for (std::vector<BuildingTypes>::const_iterator it = m_aeGodStateDestroyedBuildings.begin(); it != m_aeGodStateDestroyedBuildings.end(); ++it)
+		pStream->Write((int)*it);
 	pStream->Write(m_iCultureUpdateTimer);
 	pStream->Write(m_iCitySizeBoost);
 	pStream->Write(m_iSpecialistFreeExperience);

@@ -13,8 +13,8 @@ The map, forces and expansion rules are unchanged by this audit.
 | Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Militia | State Religion |
 | Greece | Greek City-States | Ariphron | Monarchy | Slavery | Warrior Society | Ancestor Cult |
 | Persia | Iranian Tribes | Persian tribal chiefs | Tribal System | Slavery | Militia | State Religion |
-| Carthage | Kingdom of Carthage | Elissa | Monarchy | Slavery | Militia | State Religion |
-| Rome | Latin Communities | Latin tribal elders | Tribal System | Slavery | Warrior Society | State Religion |
+| Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Militia | State Religion |
+| Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | State Religion |
 | Japan | Peoples of the Japanese Islands | Japanese clan elders | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
 
 All nine use Despotism in the legitimacy column (shown as Divine Kingship for
@@ -32,7 +32,7 @@ early access to Slavery. Later civilizations keep the normal spawn profiles.
 
 Profiles in `StartingCivics.py` drive both initialization and country-name
 previews. Zhou (-1046 to -256), Kuru/Panchala (-1500 to -600, small monarchies)
-and pre-753 Latin communities also appear naturally in other scenarios when
+and the pre-753 founding-era Rome identity also appear naturally in other scenarios when
 their date and civic conditions fit. Their borders are approximate game naming
 windows. Civic changes and vassal status continue to change country names.
 
@@ -58,11 +58,14 @@ Normal later leaderhead replacements can replace the displayed ruler name.
 - Ariphron comes from the traditional Athenian king/archon lists, not a securely
   dated contemporary inscription. See
   [the differing ancient lists](https://www.csun.edu/~hcfll004/kings-Athens.html).
-- Elissa (Dido) is the traditional, legendary founder of Carthage, used as a
+- Dido (Elissa) is the traditional, legendary founder of Carthage, used as a
   recognizable early ruler rather than presented as securely documented. See
   [Oxford Classical Dictionary](https://academic.oup.com/edited-volume/61673/chapter-abstract/548725644).
-- Persia, the Latin communities and Japan have collective leadership labels
-  because no individual ruler can be securely assigned here to 800 BC. Cyrus,
-  Augustus and Tokugawa would be substantially anachronistic.
+- Rome starts as Rome under Romulus, treating its settler start as the legendary
+  founding of the city. This is an intentional naming convention for the 800 BC
+  scenario; the scenario date and starting institutions remain unchanged.
+- Persia and Japan retain collective leadership labels because no individual
+  ruler can be securely assigned here to 800 BC. Cyrus and Tokugawa would be
+  substantially anachronistic.
 
 No gameplay or multiplayer test was run. New-game load validation is pending.

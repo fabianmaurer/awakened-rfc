@@ -110,6 +110,9 @@ growth remainder and use the new rate immediately.
 
 ## Land reclamation
 
+- **Oases** yield **2 food and 2 commerce** and allow only **farms**, available
+  with Agriculture. Farming preserves the oasis and its fresh water, normally
+  yielding **3 food and 2 commerce**, or **4 food and 2 commerce** with Biology.
 - **Flood-plain farms** require only Agriculture and the usual farm conditions.
   Farming preserves the flood plains; there is no additional technology or
   construction-time requirement for the feature.
@@ -177,7 +180,7 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   per religion present in the partner city, capped at **12%** per route.
   The receiving city's owner-culture share adds a linear penalty: zero at
   **75%**, rising to the full **12 percentage points at 100%**, which blocks
-  trade spread entirely. The share uses stored city culture before that route's
+  trade spread entirely without Tolerance. The share uses stored city culture before that route's
   cultural exchange. A holy city subtracts another **3 percentage points** for
   religions for which it is not holy; multiple holy religions do not stack this
   penalty. Final chances are rounded down and cannot fall below zero. These
@@ -287,14 +290,13 @@ ruler as embodying divine authority.
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
 | **Slavery** | Bronze Working | Low | Captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
-| **Serfdom** | Feudalism | Low | +1 food from farms; workers build improvements 50% faster. |
+| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 50% faster. |
 | **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
 Improvement growth includes every upgrade stage: **Cottage → Hamlet → Village →
 Town**. Self-sufficiency stops upgrades; Market Economy doubles their rate.
-Serfdom's commerce penalty specifically affects the **Village** stage. Normal
-idle citizens remain available under Self-sufficiency as a population fallback.
+Normal idle citizens remain available under Self-sufficiency as a population fallback.
 
 ### Conquest aftermath
 
@@ -309,8 +311,8 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
-| **Militia** | Archery | Low | +30% city defense; -10% combat strength outside the unit owner's territory. |
-| **Knighthood** | Engineering | High | Newly trained mounted units and Samurai start with +6 experience. +2 happiness from castles until they become obsolete. Called **Bushido** for Japan. |
+| **Naval Warfare** | Sailing | Low | +50% production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. |
+| **Feudal Retinues** | Feudalism | Medium | +5% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +30%. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
 | **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 
@@ -323,11 +325,15 @@ it does not grant an additional drafting ability.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. |
-| **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for missionaries of any religion. |
-| **Holy State** | Theology | High | +2 happiness and +10% production in cities with the state religion; -2 happiness in cities without it. |
-| **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. |
+| **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
+| **Holy State** | Theology | High | +10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
+| **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
+
+Tolerance adds **5 percentage points** to incoming trade spread for each missing religion and route after all culture and holy-city penalties (up to **17%**). A chance otherwise reduced to zero becomes 5%; domestic routes also qualify. State Atheism and other spread restrictions still apply.
+
+Holy State pacification: If your state religion was absent at conquest, spreading it once ends occupation, adds +1 population and restores one building destroyed in that conquest if it can currently be built. Holy State must be active at conquest and conversion, with the same state religion. Each recapture checks eligibility anew; pending rewards survive saving.
 
 State Atheism disables a state religion; the other four Religion civics allow one.
 
@@ -393,7 +399,7 @@ The following combinations contribute to base stability:
 | Monarchy + Theocracy | +1 |
 | Plutocracy + Planned Economy | -1 |
 | Republic or Democracy + Rule of Law | +2 |
-| Monarchy + Knighthood | +2 |
+| Monarchy + Feudal Retinues | +2 |
 | Theocracy in Legitimacy + State Religion or Holy State in Religion | +2 |
 | Plutocracy + Market Economy | +1 |
 | Theocracy in Legitimacy + Tolerance | -3 |

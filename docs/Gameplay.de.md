@@ -114,6 +114,10 @@ gespeicherten Nachkommarest und verwenden den neuen Malus sofort.
 
 ## Landerschließung
 
+- **Oasen** liefern **2 Nahrung und 2 Handel** und erlauben ausschließlich
+  **Bauernhöfe** ab Landwirtschaft. Die Oase bleibt erhalten und liefert das
+  nötige Süßwasser; mit Bauernhof ergibt das normalerweise **3 Nahrung und
+  2 Handel**, mit Biologie **4 Nahrung und 2 Handel**.
 - **Bauernhöfe auf Schwemmland** benötigen nur Landwirtschaft und die üblichen
   Voraussetzungen für Bauernhöfe. Das Schwemmland bleibt erhalten; es gibt keine
   zusätzliche Technologie oder zusätzliche Bauzeit für dieses Geländemerkmal.
@@ -188,7 +192,7 @@ Routenbesitzers aufgedeckt.
   Religion der Partnerstadt, höchstens **12%** pro Route.
   Der Anteil der Besitzerkultur in der empfangenden Stadt verursacht einen
   linearen Abzug: null bei **75%**, bis zu **12 Prozentpunkten bei 100%**.
-  Bei vollständig eigener Kultur ist die Handelsverbreitung damit unmöglich.
+  Bei vollständig eigener Kultur ist die Handelsverbreitung ohne Toleranz damit unmöglich.
   Grundlage ist die gespeicherte Stadtkultur vor dem Kulturaustausch dieser Route.
   Heilige Städte erhalten weitere **3 Prozentpunkte Abzug** für Religionen,
   für die sie nicht heilig sind; mehrere heilige Religionen stapeln diesen Abzug
@@ -281,7 +285,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Despotismus** | Keine | Keiner | +1 Zufriedenheit durch Paläste und Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit je Gebäude der Staatsreligion; -2 Zufriedenheit je Gebäude einer anderen Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit anderer oder keiner Staatsreligion, bei Angriff und Verteidigung. |
+| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit von Gebäuden der Staatsreligion; -2 Zufriedenheit von Gebäuden einer fremden Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit fremder oder keiner Staatsreligion, bei Angriff und Verteidigung. |
 | **Plutokratie** | Bankwesen | Mittel | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
 | **Nationalismus** | Nationalismus | Mittel | +5 Kultur in jeder Stadt; +20% Produktion; -5 Zufriedenheit in Städten, in denen die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers. |
 | **Rechtsstaat** | Verfassung | Hoch | +2 Zufriedenheit in jeder Stadt; +10% Handel. |
@@ -292,14 +296,13 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
+| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
 Das Wachstum umfasst sämtliche Ausbaustufen: **Hütte → Weiler → Dorf → Gemeinde**.
 Selbstversorgung verhindert die Aufwertung; Marktwirtschaft verdoppelt ihre
-Geschwindigkeit. Der Handelsmalus der Leibeigenschaft betrifft ausschließlich
-die Stufe **Dorf**. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
+Geschwindigkeit. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
 als Möglichkeit für überschüssige Bevölkerung verfügbar.
 
 ### Folgen großer Eroberungen
@@ -315,8 +318,8 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
-| **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. +2 Zufriedenheit durch Burgen, solange diese nicht veraltet sind. Heißt für Japan **Bushido**. |
+| **Seekriegsführung** | Segeln | Niedrig | +50% Produktion und +2 Erfahrung für neu gebaute militärische Schiffe, einschließlich Transportschiffen. Arbeitsboote erhalten keinen dieser Boni. |
+| **Heeresfolge** | Feudalismus | Mittel | +5% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +30%. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
@@ -329,10 +332,14 @@ Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare aller Religionen. |
-| **Gottesstaat** | Theologie | Hoch | +2 Zufriedenheit und +10% Produktion in Städten mit Staatsreligion; -2 Zufriedenheit in Städten ohne Staatsreligion. |
-| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. |
+| **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
+| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
+| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
+
+Unter Toleranz erhöht sich die eingehende Handelsverbreitung je fehlender Religion und Route nach allen Kultur- und Heilige-Stadt-Abzügen um **5 Prozentpunkte** (maximal **17%**). Auch eine sonst auf null gesenkte Chance beträgt damit 5%; Inlandsrouten zählen ebenfalls. Staatsatheismus und andere Verbreitungsverbote bleiben wirksam.
+
+Befriedung durch Gottesstaat: Fehlte die eigene Staatsreligion bei der Eroberung, beendet ihre Verbreitung einmalig die Eroberungsunruhe, gibt +1 Bevölkerung und stellt nach Möglichkeit ein dabei zerstörtes Gebäude wieder her. Gottesstaat muss bei Eroberung und Konvertierung aktiv und die Staatsreligion dieselbe sein. Jede Rückeroberung prüft den Anspruch neu; er bleibt beim Speichern erhalten.
 
 Staatsatheismus deaktiviert die Staatsreligion; die anderen vier religiösen
 Staatsformen erlauben eine Staatsreligion.
@@ -402,7 +409,7 @@ Die folgenden Kombinationen tragen zur Basisstabilität bei:
 | Monarchie + Theokratie | +1 |
 | Plutokratie + Planwirtschaft | -1 |
 | Republik oder Demokratie + Rechtsstaat | +2 |
-| Monarchie + Rittertum | +2 |
+| Monarchie + Heeresfolge | +2 |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 |
 | Plutokratie + Marktwirtschaft | +1 |
 | Theokratie + Toleranz | -3 |

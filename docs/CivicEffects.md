@@ -28,9 +28,9 @@ an in-game or multiplayer check.
 | Berufsarmee | +5 starting experience | civic XML |
 | Wehrpflicht | +25% production for all units | `CvCity::getProductionModifier(UnitTypes)` |
 | Ahnenkult | +1 culture from monuments, including civilization replacements | `CvCity::getBaseCommerceRateTimes100` |
-| Staatsreligion | +1 happiness in state-religion cities; +100% missionary production, irrespective of missionary religion | civic XML; `CvCity::getProductionModifier(UnitTypes)` |
-| Gottesstaat | +2 happiness and +10% production in state-religion cities; −2 happiness in other cities | civic XML; `CvCity::getBaseYieldRateModifier` and `getExtraHappiness` |
-| Toleranz | Removes religion anger; does not grant additional happiness for religions | `CvCity::getReligionPercentAnger` |
+| Staatsreligion | +1 happiness in state-religion cities; +100% production for state-religion missionaries; +25% production for state-religion buildings (religion affiliation or prerequisite) | civic XML; `CvCity::getProductionModifier(UnitTypes/BuildingTypes)` |
+| Gottesstaat | +10% production in state-religion cities; -1 happiness per non-state religion; conversion pacifies eligible conquests (+1 population, occupation ends, one lost building restored if buildable) | civic XML; `CvCity::setHasReligion` and `CvPlayer::acquireCity` |
+| Toleranz | Removes religion anger; +5 percentage points to incoming trade religion spread after penalties, including domestic routes | `CvCity::getReligionPercentAnger`; `applyTradeInfluence`; `RFCMP_TRADE_RELIGION_TOLERANCE_BONUS_PERCENT` |
 | Staatsatheismus | +10% research; disables religious building effects; blocks natural, missionary, event and scripted spread | civic XML; `CvCity::processBuilding`, `getNumActiveBuilding`, `getBuildingCommerceByBuilding`, `setHasReligion`, `doReligion`; `CvPlayer::setCivics`; `CvUnit::canSpread` |
 
 ## Details and boundaries

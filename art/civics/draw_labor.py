@@ -1,4 +1,4 @@
-"""Draw five atmospheric object studies directly at the native 64px size."""
+"""Export the five imagegen Labor paintings as native 64px Civ4 buttons."""
 from pathlib import Path
 from math import sin
 from PIL import Image, ImageDraw
@@ -171,7 +171,9 @@ def main():
     preview=Image.new('RGB',(960,225),(23,26,32))
     d=ImageDraw.Draw(preview)
     for row,(name,label,draw) in enumerate(ICONS):
-        icon=draw(); icon.putalpha(alpha)
+        with Image.open(ART/'labor-imagegen'/(name+'.png')) as source:
+            icon=source.convert('RGBA').resize((64,64),Image.Resampling.LANCZOS)
+        icon.putalpha(alpha)
         icon.save(ART/(name.lower().replace('_','-')+'-pixel.png'))
         icon.save(DEST/(name+'.dds'),pixel_format='DXT3')
         with Image.open(DEST/(name+'.dds')) as compressed: rgba=compressed.convert('RGBA')
@@ -187,7 +189,7 @@ def main():
                 tile=rgba.resize((size,size),Image.Resampling.NEAREST)
                 sheet.paste(tile,(x,y),tile); sheet.save(path)
     preview.save(ART/'labor-pixel-preview.png')
-    print('Created five atmospheric 64px DXT3 Labor icons.')
+    print('Exported five imagegen paintings as 64px DXT3 Labor icons.')
 
 
 if __name__=='__main__': main()
