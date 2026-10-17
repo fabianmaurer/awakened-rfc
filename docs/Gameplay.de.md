@@ -11,6 +11,31 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+## Historische Wunderbedingungen
+
+Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. Regionen beziehen sich auf die RFC-Weltkarte und sind unabhängig von Zivilisation und Besitzer. Bestehende Technologie-, Ressourcen- und Gebäudevoraussetzungen gelten weiterhin. Religionen müssen in der Stadt vorhanden sein; sie müssen keine Staatsreligion sein. Staatsformbedingungen gelten auch für laufende Bauaufträge; fertige Wunder behalten ihre Wirkung nach einem Staatsformwechsel.
+
+| Wunder | Zusätzliche Voraussetzung |
+| --- | --- |
+| Großer Leuchtturm, Koloss | Mittelmeerküste |
+| Parthenon, Artemistempel, Zeusstatue, Mausoleum von Maussollos | Mittelmeerraum |
+| Tempel des Kukulkan (Chichén Itzá) | Mesoamerika (Mexiko / Mittelamerika) |
+| Große Mauer | Ostasien |
+| Moai-Statuen | Pazifikküste oder Pazifikinsel |
+| Pyramiden | Mindestens ein Wüstenfeld im Stadtradius, einschließlich Stadtfeld |
+| Hängende Gärten | Stadt an einem Fluss |
+| Shwedagon-Pagode | Buddhismus in der Stadt |
+| Angkor Wat | Hinduismus in der Stadt |
+| Hagia Sophia, Sixtinische Kapelle, Notre Dame, Cristo Redentor | Christentum in der Stadt |
+| Spiralminarett, Universität von Sankore, Taj Mahal | Islam in der Stadt |
+| Versailles | Monarchie während des Baus |
+| Freiheitsstatue | Küstenstadt; Republik oder Demokratie während des Baus |
+| Kreml | Hauptstadt |
+| Große Bibliothek | Bibliothek in der Stadt |
+| Pentagon | Kaserne in der Stadt |
+| Wembley | Kolosseum in der Stadt |
+| Graceland, Hollywood | Theater in der Stadt |
+
 ## Spieländerungen im Überblick
 
 - **25 Staatsformen in fünf Kategorien:** Regierung, Legitimation, Arbeit,

@@ -6913,6 +6913,21 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 	if (GC.getBuildingInfo(eBuilding).getFreeBuildingClass() != NO_BUILDINGCLASS)
 	{
 		BuildingTypes eFreeBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(GC.getBuildingInfo(eBuilding).getFreeBuildingClass());
+		// Divine Kingship preserves existing Obelisks when the Pyramids expire.
+		// Convert the last free grant before removing it, leaving city effects intact.
+		if (iChange < 0 && GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding) &&
+			getFreeBuildingCount(eFreeBuilding) + iChange == 0 &&
+			eFreeBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+			getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+		{
+			int iLoop;
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				if (pCity->getNumFreeBuilding(eFreeBuilding) > 0 && pCity->getNumRealBuilding(eFreeBuilding) == 0)
+					pCity->setNumRealBuildingTimed(eFreeBuilding, 1, false, getID(), GC.getGameINLINE().getGameTurnYear());
+			}
+		}
 		changeFreeBuildingCount(eFreeBuilding, iChange);
 	}
 

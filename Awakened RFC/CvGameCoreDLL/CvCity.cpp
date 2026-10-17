@@ -1999,6 +1999,19 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		return false;
 	}
 
+	// Civic prerequisites govern construction, including queued production.
+	// Existing wonders retain their effects after a government change.
+	if (!bTestVisible)
+	{
+		const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+		if (eBuilding == VERSAILLES && !kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY")))
+			return false;
+		if (eBuilding == STATUEOFLIBERTY &&
+			!kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC")) &&
+			!kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY")))
+			return false;
+	}
+
 	if (getNumBuilding(eBuilding) >= GC.getCITY_MAX_NUM_BUILDINGS())
 	{
 		return false;
@@ -13757,6 +13770,71 @@ bool CvCity::isStarCity() const
 
 bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
 {
+    // Broad historical regions, independent of the city owner. Coordinates
+    // use the RFC Earth grid (124 x 68), normalized for the current map size.
+    const int iX = getX_INLINE() * 124 / GC.getMapINLINE().getGridWidthINLINE();
+    const int iY = getY_INLINE() * 68 / GC.getMapINLINE().getGridHeightINLINE();
+    switch (eBuilding)
+    {
+    case GREATLIGHTHOUSE:
+    case COLOSSUS:
+    case MOAI:
+    {
+        bool bMatchingCoast = false;
+        for (int i = 0; i < NUM_DIRECTION_TYPES; ++i)
+        {
+            CvPlot* pWater = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)i);
+            if (pWater == NULL || !pWater->isWater() || pWater->isLake()) continue;
+            const int x = pWater->getX_INLINE() * 124 / GC.getMapINLINE().getGridWidthINLINE();
+            const int y = pWater->getY_INLINE() * 68 / GC.getMapINLINE().getGridHeightINLINE();
+            if (eBuilding == MOAI)
+            {
+                // Both shores of the Pacific and its islands, across the map seam.
+                const int iAmericanEdge = y >= 50 ? 12 : y >= 40 ? 14 : y >= 37 ? 16 :
+                    y >= 35 ? 18 : y >= 33 ? 21 : y >= 31 ? 23 : y >= 29 ? 25 :
+                    y >= 24 ? 24 : y >= 20 ? 27 : y >= 14 ? 29 : 32;
+                const int iAsianEdge = y >= 52 ? 112 : y >= 42 ? 107 : y >= 34 ? 103 :
+                    y >= 26 ? 101 : y >= 22 ? 108 : 116;
+                if (y >= 8 && y <= 57 && (x <= iAmericanEdge || x >= iAsianEdge)) bMatchingCoast = true;
+            }
+            else if (x >= 51 && x <= 72 && y >= 37 && y <= 45 && (x < 67 || y <= 43))
+            {
+                // Mediterranean water, excluding the Atlantic, Red Sea and Black Sea.
+                bMatchingCoast = true;
+            }
+        }
+        if (!bMatchingCoast) return false;
+        break;
+    }
+    case PARTHENON:
+    case ARTEMIS:
+    case ZEUS:
+    case MAUSOLLOS:
+        if (iX < 49 || iX > 74 || iY < 35 || iY > 47) return false;
+        break;
+    case CHICHENITZA:
+        if (iX < 15 || iX > 29 || iY < 25 || iY > 40) return false;
+        break;
+    case GREATWALL:
+        if (iX < 95 || iX > 115 || iY < 35 || iY > 55) return false;
+        break;
+    case PYRAMID:
+    {
+        bool bDesert = false;
+        const TerrainTypes eDesert = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_DESERT");
+        for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+        {
+            CvPlot* pPlot = plotCity(getX_INLINE(), getY_INLINE(), i);
+            if (pPlot != NULL && pPlot->getTerrainType() == eDesert) bDesert = true;
+        }
+        if (!bDesert) return false;
+        break;
+    }
+    case KREMLIN:
+        if (!isCapital()) return false;
+        break;
+    }
+
     // Harbors (including unique replacements) can serve an ocean coast
     // through one intervening land tile. Other coastal requirements, such
     // as ship construction, continue to use the normal isCoastal check.

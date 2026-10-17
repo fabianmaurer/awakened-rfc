@@ -7679,6 +7679,31 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		}
 	}
 
+	// Historical prerequisites also appear in the Civilopedia.
+	const char* szHistoricalRequirement = NULL;
+	switch (eBuilding)
+	{
+	case GREATLIGHTHOUSE:
+	case COLOSSUS: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MED_COAST"; break;
+	case PARTHENON:
+	case ARTEMIS:
+	case ZEUS:
+	case MAUSOLLOS: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MEDITERRANEAN"; break;
+	case CHICHENITZA: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MESOAMERICA"; break;
+	case GREATWALL: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_EAST_ASIA"; break;
+	case MOAI: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_PACIFIC"; break;
+	case PYRAMID: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_DESERT"; break;
+	case HANGINGGARDEN: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_RIVER"; break;
+	case KREMLIN: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_CAPITAL"; break;
+	case VERSAILLES: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MONARCHY"; break;
+	case STATUEOFLIBERTY: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_REPUBLIC"; break;
+	}
+	if (szHistoricalRequirement != NULL)
+	{
+		szBuffer.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR),
+			gDLL->getText(szHistoricalRequirement).GetCString()));
+	}
+
 	if (!CvWString(kBuilding.getHelp()).empty())
 	{
 		szBuffer.append(NEWLINE);

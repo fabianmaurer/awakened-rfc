@@ -11,6 +11,31 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+## Historical wonder requirements
+
+These additional requirements apply equally to human players and AI. Regions refer to the RFC Earth map and do not depend on civilization or ownership. Existing technology, resource and building requirements still apply. Religion must be present in the city; it need not be the state religion. Civic requirements also apply to queued construction; completed wonders retain their effects after civic changes.
+
+| Wonder | Additional requirement |
+| --- | --- |
+| Great Lighthouse, Colossus | Mediterranean coast |
+| Parthenon, Temple of Artemis, Statue of Zeus, Mausoleum of Maussollos | Mediterranean region |
+| Temple of Kukulkan (Chichen Itza) | Mesoamerica (Mexico / Central America) |
+| Great Wall | East Asia |
+| Moai Statues | Pacific coast or Pacific island |
+| Pyramids | At least one desert tile in the city radius, including the city tile |
+| Hanging Gardens | City on a river |
+| Shwedagon Paya | Buddhism in the city |
+| Angkor Wat | Hinduism in the city |
+| Hagia Sophia, Sistine Chapel, Notre Dame, Cristo Redentor | Christianity in the city |
+| Spiral Minaret, University of Sankore, Taj Mahal | Islam in the city |
+| Versailles | Monarchy during construction |
+| Statue of Liberty | Coastal city; Republic or Democracy during construction |
+| Kremlin | Capital |
+| Great Library | Library in the city |
+| Pentagon | Barracks in the city |
+| Wembley | Colosseum in the city |
+| Graceland, Hollywood | Theatre in the city |
+
 ## Gameplay overview
 
 - **25 civics in five columns:** Government, Legitimacy, Labor, Military, and
@@ -229,6 +254,9 @@ System. Under Divine Kingship, each assigned priest in a city with an Egyptian
 Obelisk grants +1 happiness, capped at +2 per city. This replaces the happiness
 from palaces and monuments. Obelisks do not become obsolete while the civic is
 active: all effects and construction remain available after Calendar.
+If Calendar obsoletes the Pyramids while Divine Kingship is active, their
+existing free Obelisks become permanent city buildings. The obsolete Pyramids
+do not grant Obelisks to newly founded cities.
 No state religion is required. Independent
 Egypt under Pharaonic Kingship is **Pharaonic Egypt**, with the leader titled
 **Pharaoh**. Theocracy or God State instead produces a **Temple State of Egypt**:
