@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -373,7 +373,7 @@
 			<Plural>1</Plural>
 		</French>
 		<German>
-			<Text>Départements von Griechenland:Départements von Griechenland:Départements von Griechenland</Text>
+			<Text>D&#233;partements von Griechenland:D&#233;partements von Griechenland:D&#233;partements von Griechenland</Text>
 			<Gender>Female:Female:Female</Gender>
 			<Plural>1:1:1</Plural>
 		</German>

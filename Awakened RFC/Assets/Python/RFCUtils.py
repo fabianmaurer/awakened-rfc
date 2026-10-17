@@ -358,7 +358,7 @@ class RFCUtils:
 
         #RiseAndFall
         def updateMinorTechs( self, iMinorCiv, iMajorCiv):                
-                for t in range(con.iNumTechs):
+                for t in range(gc.getNumTechInfos()):
                         if (gc.getTeam(gc.getPlayer(iMajorCiv).getTeam()).isHasTech(t)):
                                     gc.getTeam(gc.getPlayer(iMinorCiv).getTeam()).setHasTech(t, True, iMinorCiv, False, False)
 
@@ -885,8 +885,14 @@ class RFCUtils:
 
 
 
-        def pickFragmentation(self, iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities):
+        def pickFragmentation(self, iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities, reason='unspecified'):
+                import GameObserver
+                citiesBefore = gc.getPlayer(iPlayer).getNumCities()
+                stabilityBefore = self.getStability(iPlayer)
                 if (not bAssignCities and self.tryMonarchyInheritance(iPlayer)):
+                        GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                                {'reason': reason, 'outcome': 'inheritance', 'cities_before': citiesBefore, 'stability_before': stabilityBefore,
+                                 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
                         return
                 if (iPlayer == con.iAztecs or \
                     iPlayer == con.iInca or \
@@ -899,6 +905,9 @@ class RFCUtils:
                                 self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
                 else:
                         self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
+                GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                        {'reason': reason, 'outcome': 'fragmentation', 'partial': bool(bAssignCities), 'stability_before': stabilityBefore,
+                         'cities_before': citiesBefore, 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
 
 
                 

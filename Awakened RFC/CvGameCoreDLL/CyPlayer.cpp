@@ -9,6 +9,8 @@
 #include "CyArea.h"
 #include "CyPlot.h"
 #include "CvPlayerAI.h"
+#include "CvGameAI.h"
+#include "ObserverPerformance.h"
 //#include "CvEnums.h"
 #include "CvCity.h"
 #include "CvMap.h"
@@ -595,6 +597,27 @@ bool CyPlayer::isNoResearchAvailable()
 int CyPlayer::getResearchTurnsLeft(int /*TechTypes*/ eTech, bool bOverflow)
 {
 	return m_pPlayer ? m_pPlayer->getResearchTurnsLeft((TechTypes)eTech, bOverflow) : -1;
+}
+
+bool CyPlayer::isRomanProvince(int iX, int iY)
+{
+	return m_pPlayer ? m_pPlayer->isRomanProvince(iX, iY) : false;
+}
+
+bool CyPlayer::isRomanCampaignExclusive()
+{
+	return m_pPlayer ? GET_PLAYER(m_pPlayer->getID()).AI_isRomanCampaignExclusive() : false;
+}
+
+python::tuple CyPlayer::getRomanCampaignReadiness()
+{
+	python::list details;
+	if (m_pPlayer == NULL) return python::make_tuple(-1, "no_player", details, false, false, false);
+	const CvPlayerAI& kPlayer = GET_PLAYER(m_pPlayer->getID());
+	for (int i = 0; i < 13; ++i) details.append(kPlayer.AI_getRomanCampaignReadiness(i));
+	return python::make_tuple(kPlayer.AI_getRomanCampaignReadiness(13),
+		kPlayer.AI_getRomanCampaignReadinessReason().c_str(), details,
+		GC.getGameINLINE().isObserverAutoPlay(), g_observerPerformance, kPlayer.AI_isRomanCampaign());
 }
 
 bool CyPlayer::isCivic(int /*CivicTypes*/ eCivic)

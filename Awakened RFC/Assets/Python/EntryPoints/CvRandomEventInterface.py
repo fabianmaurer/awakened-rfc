@@ -3050,7 +3050,7 @@ def canApplyCrusadeDone2(argsList):
 	holyCity = gc.getGame().getHolyCity(kTriggeredData.eReligion)
 
 	#Rhye - switch to Jerusalem
-	if (not gc.getPlayer(0).isPlayable()): #late start condition
+	if (gc.getGame().getStartTurn() != 0): #late start condition
 		if (holyCity.getX() == 60 and holyCity.getY() == 44):
 			pJerusalem = gc.getMap().plot(73, 38)
 			if (not pJerusalem.getPlotCity().isNone()):

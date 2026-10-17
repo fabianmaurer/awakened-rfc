@@ -79,7 +79,7 @@ def main():
                 xml.append('    <' + language + '>' + escape(value) + '</' + language + '>')
             xml.append('  </TEXT>')
             rows.append((code, form, english, german))
-    # Additional titles selected only by religion-specific DLL branches.
+    # Additional titles selected by bespoke civic, religion or period branches.
     for (code, form), (english, german) in SPECIAL_NAMES.items():
         if form in FORMS:
             continue

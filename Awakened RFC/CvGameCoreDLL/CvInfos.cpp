@@ -5357,7 +5357,62 @@ CvCivicInfo::~CvCivicInfo()
 	}
 }
 
-int CvCivicInfo::getCivicOptionType() const										
+std::wstring CvCivicInfo::getCivilizationDescription(int iCivilization) const
+{
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+	{
+		if (strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0)
+			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_PHARAONISM");
+		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
+			return gDLL->getText("TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP");
+	}
+	if (isRomanRepublicVariant(iCivilization))
+		return gDLL->getText("TXT_KEY_ROMAN_REPUBLIC");
+	if (isRomanLegionsVariant(iCivilization))
+		return gDLL->getText("TXT_KEY_ROMAN_LEGIONS");
+	return getDescription();
+}
+
+bool CvCivicInfo::isRomanRepublicVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_ROME") && strcmp(getType(), "CIVIC_REPUBLIC") == 0;
+}
+
+bool CvCivicInfo::isRomanLegionsVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_ROME") && strcmp(getType(), "CIVIC_WARRIOR_SOCIETY") == 0;
+}
+
+bool CvCivicInfo::isPharaonicVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0;
+}
+
+std::string CvCivicInfo::getCivilizationButton(int iCivilization) const
+{
+	if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+	{
+		if (strcmp(getType(), "CIVIC_TRIBAL_SYSTEM") == 0)
+			return "Art/Interface/Buttons/civics/RFCMP/Pharaonic_Kingship.dds";
+		if (strcmp(getType(), "CIVIC_DESPOTISM") == 0)
+			return "Art/Interface/Buttons/civics/RFCMP/Divine_Kingship.dds";
+	}
+	return getButton();
+}
+
+int CvCivicInfo::getCivilizationUpkeep(int iCivilization) const
+{
+	return isPharaonicVariant(iCivilization) ? GC.getInfoTypeForString("UPKEEP_MEDIUM") : getUpkeep();
+}
+
+bool CvCivicInfo::isDivineKingshipVariant(int iCivilization) const
+{
+	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		strcmp(getType(), "CIVIC_DESPOTISM") == 0;
+}
+
+int CvCivicInfo::getCivicOptionType() const
 {
 	return m_iCivicOptionType;
 }
@@ -10068,7 +10123,7 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 		}
 	}
 
-	if (!GET_PLAYER((PlayerTypes)EGYPT).isPlayable()) { //late start condition - apparently it goes too fast from 600AD
+	if (GC.getGameINLINE().getStartTurn() != 0) { //late start condition - apparently it goes too fast from 600AD
 		researchPercent *= 108;
 		researchPercent /= 100;
 	}

@@ -1,6 +1,7 @@
 // player.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvGlobals.h"
 #include "CvArea.h"
 #include "CvGameAI.h"
@@ -1747,6 +1748,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 			//Rhye - end UP 
 		}
 
+		if (isRomanRepublic())
+			pNewCity->setOccupationTimer((pNewCity->getOccupationTimer() + 1) / 2);
 		GC.getMapINLINE().verifyUnitValidPlot();
 	}
 
@@ -2302,7 +2305,7 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 bool CvPlayer::isHuman() const
 {
 	//return m_bHuman; //Rhye - restored
-	return GC.getInitCore().getHuman(getID());
+	return !GC.getGameINLINE().isObserverAutoPlay() && GC.getInitCore().getHuman(getID());
 }
 
 void CvPlayer::updateHuman()
@@ -2325,6 +2328,16 @@ bool CvPlayer::isBarbarian() const
 
 const wchar* CvPlayer::getName(uint uiForm) const
 {
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")))
+	{
+		const bool bUseLeader = GC.getInitCore().getLeaderName(getID(), uiForm).empty() ||
+			(GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive() && GC.getGameINLINE().getGameState() == GAMESTATE_ON);
+		const wchar* szPersonalName = bUseLeader ? GC.getLeaderHeadInfo(getLeaderType()).getDescription(uiForm) :
+			GC.getInitCore().getLeaderName(getID(), uiForm).GetCString();
+		m_szPharaohName = gDLL->getText("TXT_KEY_RFCMP_LEADER_PHARAOH", szPersonalName);
+		return m_szPharaohName;
+	}
 	//Rhye (jdog) -  start ---------------------
 	if (GC.getInitCore().getLeaderName(getID(), uiForm).empty() || (GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive() && GC.getGameINLINE().getGameState() == GAMESTATE_ON))
 	{
@@ -2368,6 +2381,13 @@ void CvPlayer::setName(std::wstring szNewValue)
 
 const wchar* CvPlayer::getNameKey() const
 {
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")))
+	{
+		// A localized literal is valid here, just like a custom player name.
+		m_szPharaohNameKey = getName();
+		return m_szPharaohNameKey;
+	}
 	//Rhye (jdog) -  start ---------------------
 	if (GC.getInitCore().getLeaderNameKey(getID()).empty() || (GC.getGameINLINE().isMPOption(MPOPTION_ANONYMOUS) && isAlive()))
 	{
@@ -2701,6 +2721,7 @@ const TCHAR* CvPlayer::getUnitButton(UnitTypes eUnit) const
 
 void CvPlayer::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doTurn");
 	PROFILE_FUNC();
 	//GC.getGameINLINE().logMsg("player doTurn", getID()); //Rhye
 
@@ -2798,6 +2819,7 @@ void CvPlayer::doTurn()
 
 void CvPlayer::doTurnUnits()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doTurnUnits");
 	PROFILE_FUNC();
 
 	CvSelectionGroup* pLoopSelectionGroup;
@@ -2868,6 +2890,7 @@ void CvPlayer::doTurnUnits()
 
 void CvPlayer::verifyCivics()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::verifyCivics");
 	int iI, iJ;
 
 	if (!isAnarchy())
@@ -3006,6 +3029,7 @@ void CvPlayer::updateReligionHappiness()
 
 void CvPlayer::updateExtraSpecialistYield()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::updateExtraSpecialistYield");
 	CvCity* pLoopCity;
 	int iLoop;
 
@@ -3100,6 +3124,7 @@ void CvPlayer::updateCitySight(bool bIncrement, bool bUpdatePlotGroups)
 
 void CvPlayer::updateTradeRoutes()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::updateTradeRoutes");
 	CLLNode<int>* pCityNode;
 	CvCity* pLoopCity;
 	CvCity* pListCity;
@@ -5549,6 +5574,12 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	const CvUnitInfo& kModernUnit = GC.getUnitInfo(eUnit);
+	if (kModernUnit.getDomainType() == DOMAIN_AIR || kModernUnit.getNukeRange() >= 0 ||
+		strcmp(kModernUnit.getType(), "UNIT_CARRIER") == 0 || strcmp(kModernUnit.getType(), "UNIT_GUNSHIP") == 0 ||
+		strcmp(kModernUnit.getType(), "UNIT_SAM_INFANTRY") == 0 || strcmp(kModernUnit.getType(), "UNIT_MOBILE_SAM") == 0)
+		return false;
+
 	PROFILE_FUNC();
 
 	UnitClassTypes eUnitClass;
@@ -5665,6 +5696,9 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 
 bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_ROMAN_ADMINISTRATION") && !isRomanRepublic())
+		return false;
+
 	BuildingClassTypes eBuildingClass;
 	int iI;
 	CvTeamAI& currentTeam = GET_TEAM(getTeam());
@@ -5701,7 +5735,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		}
 	}
 
-	if (currentTeam.isObsoleteBuilding(eBuilding))
+	if (isBuildingObsolete(eBuilding))
 	{
 		return false;
 	}
@@ -5885,7 +5919,7 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 	{
 		BuildingTypes ePrereqBuilding = (BuildingTypes)civilizationInfo.getCivilizationBuildings(iI);
 
-		if (NO_BUILDING != ePrereqBuilding && currentTeam.isObsoleteBuilding(ePrereqBuilding))
+		if (NO_BUILDING != ePrereqBuilding && isBuildingObsolete(ePrereqBuilding))
 		{
 			if (getBuildingClassCount((BuildingClassTypes)iI) < getBuildingClassPrereqBuilding(eBuilding, (BuildingClassTypes)iI, 0))
 			{
@@ -6862,6 +6896,16 @@ void CvPlayer::removeBuildingClass(BuildingClassTypes eBuildingClass)
 
 
 // courtesy of the Gourd Bros...
+bool CvPlayer::isBuildingObsolete(BuildingTypes eBuilding) const
+{
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+		getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+		return false;
+	return GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+}
+
+
 void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pArea)
 {
 	int iI, iJ;
@@ -7322,6 +7366,8 @@ int CvPlayer::calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const
 	iBaseSupplyCost = iPaidUnits * GC.getDefineINT("INITIAL_OUTSIDE_UNIT_GOLD_PERCENT");
 	iBaseSupplyCost /= 100;
 
+	if (isRomanLegions())
+		iBaseSupplyCost /= 2;
 	iSupply = iBaseSupplyCost;
 
 	if (!isHuman() && !isBarbarian())
@@ -7571,6 +7617,9 @@ bool CvPlayer::canEverResearch(TechTypes eTech) const
 
 bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 {
+	if (eTech == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && GET_TEAM(getTeam()).getTechCount(eTech) >= 15)
+		return false;
+
 	bool bFoundPossible;
 	bool bFoundValid;
 	int iI;
@@ -7798,6 +7847,53 @@ bool CvPlayer::isCivic(CivicTypes eCivic) const
 }
 
 
+bool CvPlayer::isRomanRepublic() const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
+}
+
+bool CvPlayer::isRomanLegions() const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"));
+}
+
+bool CvPlayer::isRomanLogisticsUnit(UnitTypes eUnit) const
+{
+	if (eUnit == NO_UNIT || getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ROME")) return false;
+	const int iClass = GC.getUnitInfo(eUnit).getUnitClassType();
+	return iClass == GC.getInfoTypeForString("UNITCLASS_GALLEY") ||
+		iClass == GC.getInfoTypeForString("UNITCLASS_TRIREME");
+}
+
+int CvPlayer::getRomanCargoBonus(UnitTypes eUnit) const
+{
+	return isRomanLegions() && isRomanLogisticsUnit(eUnit) &&
+		GC.getUnitInfo(eUnit).getCargoSpace() > 0 ? 1 : 0;
+}
+
+int CvPlayer::getRomanProvinceStage(int iX, int iY) const
+{
+	// Explicit historical province envelope on RFC's fixed Earth map.
+	// Earlier stages guide campaigns; all stages have identical administration.
+	if (iX >= 57 && iX <= 64 && iY >= 40 && iY <= 47) return 1; // Italy, Sardinia, Sicily
+	if (iX >= 48 && iX <= 63 && iY >= 35 && iY <= 40) return 2; // western North Africa
+	if (iX >= 46 && iX <= 54 && iY >= 40 && iY <= 46) return 2; // Iberia
+	if (iX >= 64 && iX <= 76 && iY >= 39 && iY <= 47) return 3; // Greece, Balkans, Anatolia
+	if (iX >= 51 && iX <= 60 && iY >= 47 && iY <= 53) return 4; // Gaul, Rhine frontier
+	if (iX >= 49 && iX <= 55 && iY >= 53 && iY <= 57) return 4; // southern Britain
+	if (iX >= 64 && iX <= 73 && iY >= 31 && iY <= 38) return 4; // Egypt, Cyrenaica
+	if (iX >= 72 && iX <= 76 && iY >= 36 && iY <= 42) return 4; // Levant
+	return 0;
+}
+
+bool CvPlayer::isRomanProvince(int iX, int iY) const
+{
+	return getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME") &&
+		getRomanProvinceStage(iX, iY) > 0;
+}
+
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
 	PROFILE_FUNC();
@@ -7821,9 +7917,12 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 	}
 	//Rhye - start UP
 	if (getID() == EGYPT)
-		if ((eCivic == 1) || (eCivic == 11))
+		if (eCivic == (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
 			return true;
 	//Rhye - end UP
+	// The Roman Republic is available at Rome's birth without founding a religion.
+	if (GC.getCivicInfo(eCivic).isRomanRepublicVariant(getCivilizationType()))
+		return true;
 
 	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 	{
@@ -12690,6 +12789,7 @@ CivicTypes CvPlayer::getCivics(CivicOptionTypes eIndex) const
 int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 {
 	int iUpkeep;
+	const int iCivicUpkeep = eCivic == NO_CIVIC ? NO_UPKEEP : GC.getCivicInfo(eCivic).getCivilizationUpkeep(getCivilizationType());
 
 	if (eCivic == NO_CIVIC)
 	{
@@ -12701,7 +12801,7 @@ int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 		return 0;
 	}
 
-	if (GC.getCivicInfo(eCivic).getUpkeep() == NO_UPKEEP)
+	if (iCivicUpkeep == NO_UPKEEP)
 	{
 		return 0;
 	}
@@ -12716,8 +12816,8 @@ int CvPlayer::getSingleCivicUpkeep(CivicTypes eCivic, bool bIgnoreAnarchy) const
 
 	iUpkeep = 0;
 
-	iUpkeep += ((std::max(0, (getTotalPopulation() + GC.getDefineINT("UPKEEP_POPULATION_OFFSET") - GC.getCivicInfo(eCivic).getCivicOptionType())) * GC.getUpkeepInfo((UpkeepTypes)(GC.getCivicInfo(eCivic).getUpkeep())).getPopulationPercent()) / 100);
-	iUpkeep += ((std::max(0, (getNumCities() + GC.getDefineINT("UPKEEP_CITY_OFFSET") + GC.getCivicInfo(eCivic).getCivicOptionType() - (GC.getNumCivicOptionInfos() / 2))) * GC.getUpkeepInfo((UpkeepTypes)(GC.getCivicInfo(eCivic).getUpkeep())).getCityPercent()) / 100);
+	iUpkeep += ((std::max(0, (getTotalPopulation() + GC.getDefineINT("UPKEEP_POPULATION_OFFSET") - GC.getCivicInfo(eCivic).getCivicOptionType())) * GC.getUpkeepInfo((UpkeepTypes)(iCivicUpkeep)).getPopulationPercent()) / 100);
+	iUpkeep += ((std::max(0, (getNumCities() + GC.getDefineINT("UPKEEP_CITY_OFFSET") + GC.getCivicInfo(eCivic).getCivicOptionType() - (GC.getNumCivicOptionInfos() / 2))) * GC.getUpkeepInfo((UpkeepTypes)(iCivicUpkeep)).getCityPercent()) / 100);
 
 	iUpkeep *= std::max(0, (getUpkeepModifier() + 100));
 	iUpkeep /= 100;
@@ -12777,6 +12877,22 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 	{
 		m_paeCivics[eIndex] = eNewValue;
 
+		// Obelisk protection is local to Egypt, even in a shared team.
+		const CivicTypes eDivineKingship = (CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM");
+		const BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			((eOldCivic == eDivineKingship) != (eNewValue == eDivineKingship)) &&
+			GET_TEAM(getTeam()).isObsoleteBuilding(eObelisk))
+		{
+			int iLoop;
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				int iCount = pCity->getNumBuilding(eObelisk);
+				if (iCount != 0)
+					pCity->processBuilding(eObelisk, eNewValue == eDivineKingship ? iCount : -iCount, true, true);
+			}
+		}
+
 		// Reprocess cached religious-building effects when entering/leaving atheism.
 		// The buildings and their ownership counts remain intact.
 		const CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
@@ -12825,6 +12941,18 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		}
 
 		// Custom culture/happiness effects must refresh immediately after adoption.
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			eOldCivic == GC.getInfoTypeForString("CIVIC_DESPOTISM"))
+		{
+			int iLoop;
+			SpecialistTypes ePriest = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				if (!isSpecialistValid(ePriest))
+					pCity->setForceSpecialistCount(ePriest, std::min(pCity->getForceSpecialistCount(ePriest), pCity->getMaxSpecialistCount(ePriest)));
+				pCity->AI_assignWorkingPlots();
+			}
+		}
 		updateExtraSpecialistYield();
 		updateCommerce();
 		invalidateYieldRankCache();
@@ -13895,6 +14023,7 @@ void CvPlayer::setSmtpHost(const char* szHost)
 
 void CvPlayer::doGold()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doGold");
 	bool bStrike;
 	int iGoldChange;
 	int iDisbandUnit;
@@ -13956,6 +14085,7 @@ void CvPlayer::doGold()
 
 void CvPlayer::doResearch()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doResearch");
 	bool bForceResearchChoice;
 	int iOverflowResearch;
 
@@ -14009,6 +14139,7 @@ void CvPlayer::doResearch()
 
 void CvPlayer::doEspionagePoints()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doEspionagePoints");
 	if (getCommerceRate(COMMERCE_ESPIONAGE) > 0)
 	{
 		GET_TEAM(getTeam()).changeEspionagePointsEver(getCommerceRate(COMMERCE_ESPIONAGE));
@@ -16710,6 +16841,8 @@ int CvPlayer::getAdvancedStartVisibilityCost(bool bAdd, CvPlot* pPlot) const
 
 void CvPlayer::doWarnings()
 {
+	// Rapid observer turns outpace real-time alert icon expiry. UI only.
+	if (GC.getGameINLINE().isObserverAutoPlay()) return;
 	CvCity* pNearestCity;
 	CvPlot* pLoopPlot;
 	CvUnit* pLoopUnit;
@@ -16782,13 +16915,20 @@ void CvPlayer::verifyGoldCommercePercent()
 void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 {
 	int iI, iJ;
+	const bool bPharaonic = GC.getCivicInfo(eCivic).isPharaonicVariant(getCivilizationType());
+	const bool bDivineKingship = GC.getCivicInfo(eCivic).isDivineKingshipVariant(getCivilizationType());
+	if (bPharaonic)
+	{
+		changeImprovementYieldChange((ImprovementTypes)GC.getInfoTypeForString("IMPROVEMENT_FARM"), YIELD_PRODUCTION, iChange);
+		changeSpecialistExtraYield((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"), YIELD_PRODUCTION, iChange);
+	}
 
 	changeGreatPeopleRateModifier(GC.getCivicInfo(eCivic).getGreatPeopleRateModifier() * iChange);
 	changeGreatGeneralRateModifier(GC.getCivicInfo(eCivic).getGreatGeneralRateModifier() * iChange);
 	changeDomesticGreatGeneralRateModifier(GC.getCivicInfo(eCivic).getDomesticGreatGeneralRateModifier() * iChange);
 	changeStateReligionGreatPeopleRateModifier(GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier() * iChange);
-	changeDistanceMaintenanceModifier(GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() * iChange);
-	changeNumCitiesMaintenanceModifier(GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() * iChange);
+	changeDistanceMaintenanceModifier((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier()) * iChange);
+	changeNumCitiesMaintenanceModifier((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier()) * iChange);
 	changeCorporationMaintenanceModifier(GC.getCivicInfo(eCivic).getCorporationMaintenanceModifier() * iChange);
 	changeExtraHealth(GC.getCivicInfo(eCivic).getExtraHealth() * iChange);
 	changeFreeExperience(GC.getCivicInfo(eCivic).getFreeExperience() * iChange);
@@ -16832,7 +16972,7 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
-		changeCommerceRateModifier(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getCommerceModifier(iI) * iChange));
+		changeCommerceRateModifier(((CommerceTypes)iI), ((bPharaonic ? 0 : GC.getCivicInfo(eCivic).getCommerceModifier(iI)) * iChange));
 		changeCapitalCommerceRateModifier(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getCapitalCommerceModifier(iI) * iChange));
 		changeSpecialistExtraCommerce(((CommerceTypes)iI), (GC.getCivicInfo(eCivic).getSpecialistExtraCommerce(iI) * iChange));
 	}
@@ -16842,7 +16982,8 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 		BuildingTypes eOurBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(iI);
 		if (NO_BUILDING != eOurBuilding)
 		{
-			changeExtraBuildingHappiness(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) * iChange));
+			if (!bDivineKingship)
+				changeExtraBuildingHappiness(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) * iChange));
 			changeExtraBuildingHealth(eOurBuilding, (GC.getCivicInfo(eCivic).getBuildingHealthChanges(iI) * iChange));
 		}
 	}
@@ -19976,6 +20117,7 @@ int CvPlayer::getEventCost(EventTypes eEvent, PlayerTypes eOtherPlayer, bool bRa
 
 void CvPlayer::doEvents()
 {
+	OBSERVER_PERFORMANCE("CvPlayer::doEvents");
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_EVENTS))
 	{
 		return;
@@ -23089,6 +23231,267 @@ bool CvPlayer::hasSpaceshipArrived() const
 
 	return false;
 }
+// Shared by live country naming and scenario selection previews.
+static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
+{
+	const int iCivic = GC.getInfoTypeForString(szType);
+	return iCivic >= 0 && std::find(civics.begin(), civics.end(), iCivic) != civics.end();
+}
+
+CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
+{
+	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS)
+		return L"";
+	const bool bTribal = hasCountryCivic(civics, "CIVIC_TRIBAL_SYSTEM");
+	const bool bMonarchy = hasCountryCivic(civics, "CIVIC_MONARCHY");
+	const bool bRepublic = hasCountryCivic(civics, "CIVIC_REPUBLIC");
+	const bool bDemocracy = hasCountryCivic(civics, "CIVIC_DEMOCRACY");
+	const bool bDictatorship = hasCountryCivic(civics, "CIVIC_DICTATORSHIP");
+	const bool bNationalism = hasCountryCivic(civics, "CIVIC_NATIONALISM");
+	const bool bPlutocracy = hasCountryCivic(civics, "CIVIC_PLUTOCRACY");
+	const bool bRuleOfLaw = hasCountryCivic(civics, "CIVIC_RULE_OF_LAW");
+	const bool bPlanned = hasCountryCivic(civics, "CIVIC_PLANNED_ECONOMY");
+	const bool bAtheism = hasCountryCivic(civics, "CIVIC_STATE_ATHEISM");
+	const bool bGodState = hasCountryCivic(civics, "CIVIC_GOD_STATE");
+	const bool bTheocracy = iReligion != NO_RELIGION &&
+		(bGodState || hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"));
+	const bool bIslam = iReligion != NO_RELIGION &&
+		iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+	const bool bMilitary = hasCountryCivic(civics, "CIVIC_PROFESSIONAL_ARMY") ||
+		hasCountryCivic(civics, "CIVIC_CONSCRIPTION");
+
+	// Use stable text keys on every peer; selection never uses language or RNG.
+	const wchar* szForm = L"REPUBLIC";
+	if (bTribal && !bTheocracy)
+		szForm = L"TRIBAL";
+	else if (bTheocracy)
+	{
+		if (bMonarchy)
+			szForm = bIslam ? L"CALIPHATE" : L"HOLY_KINGDOM";
+		else if (bRepublic || bDemocracy)
+			szForm = bIslam ? L"ISLAMIC_REPUBLIC" : L"THEOCRATIC_REPUBLIC";
+		else
+			szForm = L"THEOCRACY";
+	}
+	else if (bMonarchy)
+	{
+		if (bIslam && hasCountryCivic(civics, "CIVIC_STATE_RELIGION"))
+			szForm = L"SULTANATE";
+		else if (bRuleOfLaw)
+			szForm = L"CONSTITUTIONAL";
+		else if (bPlanned)
+			szForm = bPlutocracy ? L"PLUTOCRATIC_PLANNED" : L"ROYAL_PLANNED";
+		else
+			szForm = iNumCities > 6 ? L"EMPIRE" : L"KINGDOM";
+	}
+	else if (bPlanned)
+	{
+		if (bPlutocracy)
+			szForm = L"PLUTOCRATIC_PLANNED";
+		else if (bDemocracy)
+			szForm = L"SOCIALIST_DEMOCRACY";
+		else if (bRepublic)
+			szForm = L"SOCIALIST_REPUBLIC";
+		else
+			szForm = L"PEOPLES_STATE";
+	}
+	else if (bDictatorship)
+	{
+		if (bNationalism)
+			szForm = L"NATIONAL_STATE";
+		else if (bMilitary)
+			szForm = L"MILITARY";
+		else
+			szForm = L"DICTATORSHIP";
+	}
+	else if (bRepublic || bDemocracy)
+	{
+		if (bAtheism)
+			szForm = L"SECULAR_REPUBLIC";
+		else if (bIslam && hasCountryCivic(civics, "CIVIC_STATE_RELIGION"))
+			szForm = L"ISLAMIC_REPUBLIC";
+		else if (bPlutocracy)
+			szForm = L"MERCHANT_REPUBLIC";
+		else if (bNationalism)
+			szForm = L"NATIONAL_REPUBLIC";
+		else
+			szForm = bDemocracy ? L"DEMOCRACY" : L"REPUBLIC";
+	}
+
+	// Historical church-state titles require the corresponding religion.
+	if (bTheocracy && iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+	{
+		if (iPlayer == GERMANY && bMonarchy)
+			szForm = L"HOLY_ROMAN";
+		else if (iPlayer == ROME && !bRepublic && !bDemocracy)
+			szForm = L"PAPAL_STATES";
+	}
+
+	// Period names describe the polities represented by the scenario slots.
+	// Keep republican, constitutional, Islamic and alternate religious outcomes.
+	const bool bOrdinaryMonarchy = bMonarchy && !bTheocracy && !bIslam && !bRuleOfLaw;
+	const bool bChristianMonarchy = bMonarchy && !bIslam && !bRuleOfLaw &&
+		(!bTheocracy || iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
+	if (iPlayer == GERMANY && bChristianMonarchy && iYear < 962)
+		szForm = L"EAST_FRANCIA";
+	else if (iPlayer == FRANCE && bChristianMonarchy && iYear < 987)
+		szForm = iYear < 800 ? L"FRANKISH_REALM" :
+			(iYear < 843 ? L"CAROLINGIAN" : L"WEST_FRANCIA");
+	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
+		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
+	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
+		szForm = iYear >= 1400 ? L"CASTILE_ARAGON" :
+			(iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
+			 L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS");
+	else if (iPlayer == ENGLAND && bChristianMonarchy && iYear < 927)
+		szForm = L"ANGLO_SAXON";
+	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)
+		szForm = L"NORSE_KINGDOMS";
+	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
+		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+	else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= -1046 && iYear < -256)
+		szForm = L"ZHOU";
+	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear >= -1500 && iYear < -600)
+		szForm = L"VEDIC_KINGDOMS";
+	else if (iPlayer == ROME && bTribal && !bTheocracy && iYear < -753)
+		szForm = L"LATIN_COMMUNITIES";
+	else if (iPlayer == INDIA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1900)
+		szForm = L"INDUS";
+	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear < -322)
+		szForm = L"INDIAN_KINGDOMS";
+	else if (iPlayer == CHINA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1600)
+		szForm = L"EARLY_CHINA";
+	else if (iPlayer == BABYLONIA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < -1900)
+		szForm = L"EARLY_MESOPOTAMIA";
+	else if (iPlayer == GREECE && iYear < -323 &&
+		((bOrdinaryMonarchy && iNumCities <= 6) || wcscmp(szForm, L"REPUBLIC") == 0))
+		szForm = L"POLEIS";
+	else if (iPlayer == ARABIA && bOrdinaryMonarchy && iReligion == NO_RELIGION && iYear < 622)
+		szForm = L"EARLY_ARABIA";
+
+	// Late-medieval identities. These names do not grant institutions or techs.
+	if (bMonarchy && !bRuleOfLaw)
+	{
+		if (iPlayer == EGYPT && bIslam && !bTheocracy && iYear >= 1250 && iYear < 1517)
+			szForm = L"MAMLUK";
+		else if (iPlayer == INDIA && bIslam && !bTheocracy && iYear >= 1206 && iYear < 1526)
+			szForm = L"DELHI";
+		else if (iPlayer == PERSIA && bIslam && !bTheocracy && iYear >= 1370 && iYear < 1507)
+			szForm = L"TIMURID";
+		else if (iPlayer == CARTHAGE && bIslam && !bTheocracy && iYear >= 1229 && iYear < 1574)
+			szForm = L"HAFSID";
+		else if (iPlayer == ARABIA && bIslam && !bTheocracy && iYear >= 1201 && iYear < 1916)
+			szForm = L"MECCA";
+		else if (iPlayer == TURKEY && bIslam && iYear < 1517)
+			szForm = L"SULTANATE";
+		else if (iPlayer == MALI && bIslam && !bTheocracy && iYear >= 1235 && iYear < 1600)
+			szForm = L"EMPIRE";
+		else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= 1368 && iYear < 1644)
+			szForm = L"MING";
+		else if (iPlayer == JAPAN && bOrdinaryMonarchy && iYear >= 1336 && iYear < 1573)
+			szForm = L"ASHIKAGA";
+		else if (iPlayer == GREECE && bChristianMonarchy && iNumCities <= 2 && iYear >= 1204 && iYear < 1832)
+			szForm = iYear >= 1349 && iYear < 1460 ? L"MOREA" : L"DESPOTATE";
+		else if (iPlayer == RUSSIA && bChristianMonarchy && iYear >= 1283 && iYear < 1547)
+			szForm = L"MUSCOVY";
+		else if (iPlayer == ETHIOPIA && bChristianMonarchy && iYear >= 1270 && iYear < 1974)
+			szForm = L"ABYSSINIA";
+		else if (iPlayer == NETHERLANDS && bChristianMonarchy && iYear >= 1384 && iYear < 1581)
+			szForm = iYear < 1482 ? L"BURGUNDIAN" : L"HABSBURG";
+		else if (iPlayer == VIKING && bChristianMonarchy && iYear >= 1000 && iYear < 1523)
+			szForm = iYear >= 1397 ? L"KALMAR" : L"NORSE_KINGDOMS";
+		else if (iPlayer == MAYA && bOrdinaryMonarchy && iYear >= 1441 && iYear < 1697)
+			szForm = L"MANI_TAYASAL";
+		else if (iPlayer == MONGOLIA && bOrdinaryMonarchy && iYear >= 1368 && iYear < 1635)
+			szForm = L"NORTHERN_YUAN";
+		else if (iPlayer == AZTEC && bOrdinaryMonarchy && iYear >= 1428 && iYear < 1521)
+			szForm = L"TRIPLE_ALLIANCE";
+		else if (iPlayer == INCA && bOrdinaryMonarchy && iYear >= 1438 && iYear < 1533)
+			szForm = L"EMPIRE";
+	}
+	// Fill major imperial identities without changing alternate governments.
+	// These are naming windows, not scripted dynasties or territorial changes.
+	if (bOrdinaryMonarchy)
+	{
+		if (iPlayer == CHINA)
+		{
+			if (iYear >= -221 && iYear < -206)
+				szForm = L"QIN";
+			else if (iYear >= -206 && iYear < 220)
+				szForm = L"HAN";
+			else if (iYear >= 618 && iYear < 907)
+				szForm = L"TANG";
+			else if (iYear >= 1271 && iYear < 1368)
+				szForm = L"YUAN";
+			else if (iYear >= 960 && iYear < 1271)
+				szForm = L"SONG";
+			else if (iYear >= 1644 && iYear < 1912)
+				szForm = L"QING";
+		}
+		else if (iPlayer == INDIA)
+		{
+			if (iYear >= -321 && iYear < -185)
+				szForm = L"MAURYA";
+			else if (iYear >= 320 && iYear < 550)
+				szForm = L"GUPTA";
+		}
+		else if (iPlayer == PERSIA)
+		{
+			if (iYear >= -550 && iYear < -330)
+				szForm = L"ACHAEMENID";
+			else if (iYear >= -247 && iYear < 224)
+				szForm = L"PARTHIAN";
+			else if (iYear >= 224 && iYear < 651)
+				szForm = L"SASANIAN";
+		}
+		else if (iPlayer == GREECE && iNumCities > 6 && iYear >= -336 && iYear < -323)
+			szForm = L"MACEDONIAN";
+	}
+	if (bMonarchy && !bRuleOfLaw && bIslam)
+	{
+		if (iPlayer == INDIA && iYear >= 1526 && iYear < 1858)
+			szForm = L"MUGHAL";
+		else if (iPlayer == PERSIA && iYear >= 1507 && iYear < 1722)
+			szForm = L"SAFAVID";
+		else if (iPlayer == ARABIA && wcscmp(szForm, L"CALIPHATE") == 0)
+		{
+			if (iYear >= 661 && iYear < 750)
+				szForm = L"UMAYYAD";
+			else if (iYear >= 750 && iYear < 1258)
+				szForm = L"ABBASID";
+		}
+	}
+	if (iPlayer == ROME && iYear >= 476 && iYear < 1861 &&
+		(wcscmp(szForm, L"REPUBLIC") == 0 || wcscmp(szForm, L"MERCHANT_REPUBLIC") == 0))
+		szForm = iYear >= 1400 && iYear < 1797 ? L"VENICE" : L"ITALIAN_STATES";
+
+	// Territorial expansion changes only the ordinary nationalist dictatorship.
+	// Keep religious and planned-economy identities at their existing priority.
+	if (iPlayer == GERMANY && bDictatorship && bNationalism && iLandPlots >= 100 &&
+		wcscmp(szForm, L"NATIONAL_STATE") == 0)
+		szForm = L"GREATER_GERMAN";
+
+	// Egyptian civic variants are available in every era and with any religion.
+	// A ruler embodying divinity differs from a state subordinate to religion.
+	if (iPlayer == EGYPT)
+	{
+		if (bGodState || hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"))
+			szForm = L"TEMPLE_STATE";
+		else if (bTribal)
+			szForm = L"PHARAONIC";
+	}
+
+	// An enforced atheist creed is an intentional form of theocratic rule.
+	if (bAtheism && hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY"))
+		szForm = L"ATHEOCRACY";
+
+	CvWString szNameKey = civDynamicNames[iPlayer][0];
+	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
+	szNameKey += L"_";
+	szNameKey += szForm;
+	return szNameKey;
+}
+
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
@@ -23168,91 +23571,10 @@ void CvPlayer::processCivNames()
 			return;
 		}
 		else { // Independent countries: classify the five new civic columns.
-			const bool bTribal = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM"));
-			const bool bMonarchy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY"));
-			const bool bRepublic = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC"));
-			const bool bDemocracy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"));
-			const bool bDictatorship = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DICTATORSHIP"));
-			const bool bNationalism = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_NATIONALISM"));
-			const bool bPlutocracy = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PLUTOCRACY"));
-			const bool bRuleOfLaw = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_RULE_OF_LAW"));
-			const bool bPlanned = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PLANNED_ECONOMY"));
-			const bool bAtheism = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
-			const bool bGodState = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"));
-			const bool bTheocracy = getStateReligion() != NO_RELIGION &&
-				(bGodState || isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")));
-			const bool bIslam = getStateReligion() != NO_RELIGION &&
-				getStateReligion() == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
-			const bool bMilitary = isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_PROFESSIONAL_ARMY")) ||
-				isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"));
-
-			// Use stable text keys on every peer; selection never uses language or RNG.
-			const wchar* szForm = L"REPUBLIC";
-			if (bTribal && !bTheocracy)
-				szForm = L"TRIBAL";
-			else if (bTheocracy)
-			{
-				if (bMonarchy)
-					szForm = bIslam ? L"CALIPHATE" : L"HOLY_KINGDOM";
-				else if (bRepublic || bDemocracy)
-					szForm = bIslam ? L"ISLAMIC_REPUBLIC" : L"THEOCRATIC_REPUBLIC";
-				else
-					szForm = L"THEOCRACY";
-			}
-			else if (bMonarchy)
-			{
-				if (bIslam && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")))
-					szForm = L"SULTANATE";
-				else if (bRuleOfLaw)
-					szForm = L"CONSTITUTIONAL";
-				else
-					szForm = getNumCities() > 6 ? L"EMPIRE" : L"KINGDOM";
-			}
-			else if (bPlanned)
-			{
-				if (bDemocracy)
-					szForm = L"SOCIALIST_DEMOCRACY";
-				else if (bRepublic)
-					szForm = L"SOCIALIST_REPUBLIC";
-				else
-					szForm = L"PEOPLES_STATE";
-			}
-			else if (bDictatorship)
-			{
-				if (bNationalism)
-					szForm = L"NATIONAL_STATE";
-				else if (bMilitary)
-					szForm = L"MILITARY";
-				else
-					szForm = L"DICTATORSHIP";
-			}
-			else if (bRepublic || bDemocracy)
-			{
-				if (bAtheism)
-					szForm = L"SECULAR_REPUBLIC";
-				else if (bIslam && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION")))
-					szForm = L"ISLAMIC_REPUBLIC";
-				else if (bPlutocracy)
-					szForm = L"MERCHANT_REPUBLIC";
-				else if (bNationalism)
-					szForm = L"NATIONAL_REPUBLIC";
-				else
-					szForm = bDemocracy ? L"DEMOCRACY" : L"REPUBLIC";
-			}
-
-			// Historical church-state titles require the corresponding religion.
-			if (bTheocracy && getStateReligion() == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
-			{
-				if (getID() == GERMANY && bMonarchy)
-					szForm = L"HOLY_ROMAN";
-				else if (getID() == ROME && !bRepublic && !bDemocracy)
-					szForm = L"PAPAL_STATES";
-			}
-
-			CvWString szNameKey = civDynamicNames[getID()][0];
-			szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
-			szNameKey += L"_";
-			szNameKey += szForm;
+			std::vector<int> civics;
+			for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+				civics.push_back(getCivics((CivicOptionTypes)iOption));
+			const CvWString szNameKey = getIndependentCountryNameKey(getID(), civics, getStateReligion(), getNumCities(), GC.getGameINLINE().getGameTurnYear(), getTotalLand());
 			// Refresh cached names after translation edits or a language change.
 			if (m_szCivDescKey != szNameKey || m_szCivDesc != gDLL->getText(szNameKey))
 				setCivDescription(szNameKey);

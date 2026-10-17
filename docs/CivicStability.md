@@ -8,12 +8,22 @@ werden addiert und insgesamt auf **−5 bis +5** begrenzt.
 | --- | ---: | --- |
 | Stammessystem + Despotismus | +1 | Persönliche Autorität und traditionelle Institutionen passen zur Stammesregierung. |
 | Monarchie + Theokratie | +1 | Religiöse Legitimation stützt die erbliche Herrschaft. |
-| Plutokratie + Planwirtschaft | −1 | Politische Macht durch privaten Reichtum steht in Spannung zur zentralen Wirtschaftslenkung. |
+| Monarchie + Planwirtschaft | 0 | Dynastische Herrschaft legt die Wirtschaftsordnung nicht fest; zentrale Planung begründet allein weder einen Bonus noch einen Malus. |
+| Plutokratie + Planwirtschaft | −1 | Auch wenn vermögende Häuser den Plan gemeinsam kontrollieren, können ihre privaten Vermögensinteressen mit der zentralen Ressourcenverteilung kollidieren. |
 | Republik oder Demokratie + Rechtsstaat | +2 | Rechtliche Institutionen stützen die geregelte Ausübung und Übertragung politischer Macht. |
 | Monarchie + Rittertum | +2 | Dynastische Herrschaft und die militärische Ordnung des Rittertums passen zusammen. |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 | Religiöse Legitimation und die staatliche Religionsordnung stimmen überein. |
 | Plutokratie + Marktwirtschaft | +1 | Politischer Einfluss durch Vermögen und privatwirtschaftliche Organisation passen zusammen. |
-| Theokratie + Staatsatheismus | −3 | Religiöse Herrschaftslegitimation widerspricht der offiziellen Ablehnung religiöser Institutionen. |
+| Theokratie + Toleranz | −3 | Ein religiöser Herrschaftsanspruch steht in Spannung zur Gleichstellung fremder Glaubensrichtungen. |
+
+Demokratie ignoriert alle negativen Kombinationsbeiträge, also auch den Malus
+für Plutokratie + Planwirtschaft. Positive Beiträge bleiben erhalten.
+
+Die besonderen Ländernamen für Monarchie beziehungsweise Plutokratie mit
+Planwirtschaft ändern diese Wertung nicht. Monarchie + Planwirtschaft bleibt
+neutral; der kleine Malus für Plutokratie + Planwirtschaft bleibt als bewusste
+Balance-Entscheidung bestehen. Treffen beide Kombinationen zusammen, entsteht
+ohne weitere Kombinationsbeiträge ein Wert von −1.
 
 Alle anderen Kombinationen sind in diesem Modell neutral. Die Werte sind
 Spielbalance-Entscheidungen und keine Aussage, dass eine Wirtschafts- oder

@@ -147,22 +147,32 @@ def showEspionageAdvisor():
 
 dawnOfMan = CvDawnOfMan.CvDawnOfMan(DAWN_OF_MAN)
 def showDawnOfMan(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	dawnOfMan.interfaceScreen()
 
 introMovie = CvIntroMovieScreen.CvIntroMovieScreen()
 def showIntroMovie(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	introMovie.interfaceScreen()
 	
 victoryMovie = CvVictoryMovieScreen.CvVictoryMovieScreen()
 def showVictoryMovie(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	victoryMovie.interfaceScreen(argsList[0])
 	
 wonderMovie = CvWonderMovieScreen.CvWonderMovieScreen()
 def showWonderMovie(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	wonderMovie.interfaceScreen(argsList[0], argsList[1], argsList[2])
 
 eraMovie = CvEraMovieScreen.CvEraMovieScreen()
 def showEraMovie(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	eraMovie.interfaceScreen(argsList[0])
 	
 spaceShip = CvSpaceShipScreen.CvSpaceShipScreen()
@@ -201,6 +211,8 @@ def showDebugInfoScreen():
 
 techSplashScreen = CvTechSplashScreen.CvTechSplashScreen(TECH_SPLASH)
 def showTechSplash(argsList):
+	if CyGame().isObserverAutoPlay():
+		return
 	techSplashScreen.interfaceScreen(argsList[0])
 
 victoryScreen = CvVictoryScreen.CvVictoryScreen(VICTORY_SCREEN)

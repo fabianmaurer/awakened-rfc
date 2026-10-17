@@ -138,6 +138,9 @@ public:
 	int getInitTech() const;
 	int getInitWonders() const;
 
+	void saveObserverCheckpoint(std::string path);
+	void setObserverAutoPlay(bool enabled);
+	bool isObserverAutoPlay() const;
 	int getAIAutoPlay() const;
 	void setAIAutoPlay(int iNewValue);
 

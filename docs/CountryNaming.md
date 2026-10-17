@@ -1,5 +1,15 @@
 # Dynamic country names
 
+Theocracy combined with State Atheism selects a bespoke **ATHEOCRACY** name
+for each of the 27 major civilizations, regardless of government or era. These
+are deliberately fictional enforced creeds of reason, such as the Roman
+**Pontificate of Reason**, German **Holy Empire of Reason**, and Egyptian
+**Order of the Godless Sun**. This combination overrides the usual independent
+government and historical names, including Egypt's Temple State. Existing
+vassal and colonial naming takes priority as usual. English and German names
+are authored in `tools/country_name_catalog.py`; other languages currently use
+the English names.
+
 Independent countries use named civic types in `CvPlayer::processCivNames()`.
 The rule names below are internal categories, not compulsory words in the
 displayed name. Several civic combinations deliberately share a natural name:
@@ -10,6 +20,15 @@ catalogue, not a reconstruction of each state's dates, borders, or dynasty.
 Existing vassal and colonial names retain priority. The new names are stored as
 translation keys, using the existing RFC name setter and save format.
 
+Egypt's Tribal System variant is Pharaonic Kingship, and its Despotism variant
+is Divine Kingship, without date or religion gates. Independent Egypt using
+Pharaonic Kingship is named **Pharaonic Egypt / Pharaonenreich**. Theocracy or
+God State instead selects **Temple State of Egypt / Tempelstaat Ägypten**, even
+before a state religion is adopted. Other Egyptian government forms retain their
+existing country-name rules. The displayed leader under Pharaonic Kingship is
+**Pharaoh [personal name]**; this title is computed for display and not saved as
+a replacement personal name.
+
 Rules are evaluated in this order:
 
 | Condition | Name family |
@@ -18,7 +37,10 @@ Rules are evaluated in this order:
 | State religion and Holy State or Theocratic Legitimacy | Holy Kingdom, Theocracy, or Theocratic Republic according to government; Islamic rulers use Caliphate or Islamic Republic |
 | Monarchy, Islam, and State Religion | Sultanate |
 | Monarchy and Rule of Law | Constitutional Kingdom |
+| Monarchy with Planned Economy and Plutocracy | Plutocratic Planned State |
+| Other monarchies with Planned Economy | Royal Planned Economy |
 | Other monarchies | Kingdom up to six cities; Empire above six cities |
+| Planned Economy with Plutocracy, under Republic, Democracy or Dictatorship | Plutocratic Planned State |
 | Planned Economy with Democracy | Democratic Socialist Republic |
 | Planned Economy with Republic | Socialist Republic |
 | Planned Economy with Dictatorship | People's State |
@@ -41,6 +63,13 @@ Celestial Empire, Heavenly Kingdom of Great Peace, Land of the Four Quarters,
 Regno d'Italia, Commonwealth of England, Batavian Republic, Novgorod Republic,
 North Sea Empire, Tawantinsuyu, and the United Kingdom. Invented alternatives include the Nile
 League, League of the Jade Cities, Andean Federation, and Union of Bharat.
+Before 962, Germany's ordinary or Christian religious monarchy uses East Francia
+(Ostfränkisches Reich). From 962 onward the usual
+civic and religious names apply. Constitutional and alternate religious titles
+remain available before that date.
+The period rules and the audit of the starting scenarios are recorded in
+`docs/ScenarioCountryNamesAudit.md`. They change names only, preserve vassal
+priority, and retain alternate civic and religious outcomes.
 Germany uses the Holy Roman Empire for a Christian religious monarchy. Rome
 uses the Papal States for a Christian religious government which is not a
 Republic or Democracy. Other state religions use the ordinary country entries.
@@ -79,6 +108,42 @@ Other evocative titles include Egypt's **Realm of the Two Lands**, Persia's
 Greece's merchant **Delian League**. Some names are literary adaptations of
 historical titles; their civic mappings are roleplaying choices.
 
+### Crown economies and plutocratic planning
+
+Two additional families cover Planned Economy: **ROYAL_PLANNED** for Monarchy,
+and **PLUTOCRATIC_PLANNED** for Plutocracy under Monarchy, Republic, Democracy
+or Dictatorship. Each has 27 authored English/German entries. Plutocracy takes
+priority when both combinations apply. Tribal governments retain tribal names;
+religious governments, sultanates, constitutional monarchies, and the existing
+period-specific historical overrides retain their priority. Egypt's Temple State
+and the atheist theocracy also retain priority. Vassal/colonial rules are unchanged.
+Scenario previews and live names use the same classifier.
+
+The crown family describes a monarch directing a common economy, with names
+such as **Imperial Economic Union of China / Kaiserliche Wirtschaftsunion
+China**, **French Manufactory Monarchy / Französische Manufakturmonarchie**,
+**Royal Polder Union / Königliche Polderunion**, and **United Crown Industries
+of America / Vereinigte Kronwerke Amerikas**. Names evoke particular economic
+institutions rather than repeating a common crown-union template. The Inca
+retain **Land of the Four Quarters** rather than receiving a new economic label.
+
+The plutocratic family imagines wealthy houses jointly controlling the plan:
+**Directorate of the Seven Houses / Direktorium der Sieben Häuser** for Carthage,
+**German Cartel Union / Deutscher Kartellbund**, **United Netherlandish Company /
+Vereinigte Niederländische Kompanie**, and **American Corporate Collective /
+Amerikanisches Konzernkollektiv**. Other examples include **Babylonian Canal
+Company / Babylonische Kanalgesellschaft** and **Portuguese Spice Monopoly /
+Portugiesisches Gewürzmonopol**. These are fictional alternate-history identities, not
+claims that the named historical societies used the game's Planned Economy.
+They avoid compulsory republican titles so they can also name monarchies.
+
+Naming does not alter stability. Monarchy + Planned Economy remains neutral;
+Plutocracy + Planned Economy retains its small -1 contribution, waived under
+Democracy along with other negative civic-combination contributions. A ruling
+elite can direct a plan, but its private wealth interests can still conflict with
+central allocation. The names acknowledge a possible institutional arrangement
+without granting it an automatic stability bonus.
+
 ### Military regimes
 
 Every civilization has an individually authored `MILITARY` title rather than
@@ -103,11 +168,17 @@ Französisches Konsulat, Japanisches Shogunat, and Batavisches Protektorat retai
 their different institutional character.
 
 Civic changes and conversions refresh names through the original event hooks.
-Names also refresh once per player turn, including in existing saves. Existing
-pre-spawn names, country short names, and nationality adjectives use the original
-RFC text. Name selection does not depend on UI language or random numbers.
+Names also refresh once per player turn, including in existing saves. The five
+authored scenario selection screens preview country names using the same DLL
+classifier, with the intended profiles from `StartingCivics.PROFILES`, authored
+state religions, and authored city counts. These are starting-profile previews;
+technology restrictions and subsequent gameplay may produce a different name
+in play. `ScenarioCountryNames.py` supplies the preview descriptions through
+`CvWBInterface.getPlayerDesc`, without modifying scenario files or player state.
+Country short names and nationality adjectives use the original RFC text.
+Name selection does not depend on UI language or random numbers.
 
-`CountryNames.csv` lists 569 entries representing 358 distinct English/German
+`CountryNames.csv` lists 710 entries representing 495 distinct English/German
 name pairs. Repeated entries are intentional. The new text
 file is `Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml`. All five Civ4 language
 elements are present; French, Italian, and Spanish use English fallbacks.
@@ -117,6 +188,24 @@ To maintain the translations, edit `tools/country_name_catalog.py` and run
 using numeric Unicode entities for compatibility with Civ4's XML reader.
 
 Historical references used for selected identities:
+
+The major-empire coverage, additional period windows, and their references are
+listed in [HistoricalEmpireNames.md](HistoricalEmpireNames.md). Russia's
+**PEOPLES_STATE** title is **Union of Soviet Socialist Republics / Union der
+Sozialistischen Sowjetrepubliken** (USSR / UdSSR). This applies to Dictatorship
+with Planned Economy under the ordinary classifier, without a date or size gate.
+Religious naming and Plutocracy + Planned Economy keep their higher priority.
+Republic + Planned Economy retains **Russian Soviet Republic**.
+
+Germany's ordinary **NATIONAL_STATE** name becomes **Greater German Reich /
+Großdeutsches Reich** under Dictatorship + Nationalism with at least **100 owned
+land plots** (`CvPlayer::getTotalLand`). Overseas land counts; water and vassal
+territory do not. Below 100 plots it remains **German Reich / Deutsches Reich**.
+The rule has no date, Vienna or city-count condition. Religious and planned
+economy names, and vassal/colonial names, retain priority. The ordinary turn
+refresh changes the name again after territory is lost or civics change.
+Scenario previews pass zero land plots because WB descriptions do not contain
+resolved cultural borders; they show the base name until the live map is built.
 
 - [The Hanseatic League, European Hansemuseum](https://www.hansemuseum.eu/en/)
 - [Batavian Republic, Dutch National Archives](https://www.nationaalarchief.nl/beleven/onderwijs/bronnenbox/bataafse-revolutie-1795)

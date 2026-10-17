@@ -9,6 +9,7 @@
 //#include "CvStructs.h"
 #include "CvGlobals.h"
 #include "CvMap.h"
+#include <vector>
 
 #ifndef _USRDLL
 // use non inline functions when not in the dll
@@ -334,6 +335,14 @@ int borderValid(FAStarNode* parent, FAStarNode* node, int data, const void* poin
 int areaValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 int joinArea(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 int plotGroupValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
+// Optional membership collection for incremental plot-group rebuilding.
+// No persistent state: the caller owns both this context and the bitmap.
+struct PlotGroupSearchData
+{
+    int count;
+    std::vector<unsigned char>* reached;
+    PlotGroupSearchData() : count(0), reached(NULL) {}
+};
 int countPlotGroup(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 
 int baseYieldToSymbol(int iNumYieldTypes, int iYieldStack);

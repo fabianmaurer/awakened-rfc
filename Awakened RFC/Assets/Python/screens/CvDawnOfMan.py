@@ -3,7 +3,7 @@
 
 import math #Rhye
 import Consts as con
-import Scenario840AD
+import Scenario1453AD
 import CvUtil
 from CvPythonExtensions import *
 
@@ -124,7 +124,10 @@ class CvDawnOfMan:
 
 ##Rhye - end		
 		# Main Body text
-		szDawnTitle = u"<font=3>" + localText.getText("TXT_KEY_DAWN_OF_MAN_SCREEN_TITLE", ()).upper() + u"</font>"
+		titleKey = "TXT_KEY_DAWN_OF_MAN_SCREEN_TITLE"
+		if Scenario1453AD.isScenario():
+			titleKey = "TXT_KEY_RFCMP_1453_INTRO_TITLE"
+		szDawnTitle = u"<font=3>" + localText.getText(titleKey, ()).upper() + u"</font>"
 		screen.setLabel("DawnTitle", "Background", szDawnTitle, CvUtil.FONT_CENTER_JUSTIFY,
 				self.X_TEXT_PANEL + (self.W_TEXT_PANEL / 2), self.Y_TEXT_PANEL + 15, -2.0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
@@ -134,16 +137,18 @@ class CvDawnOfMan:
 
 		#year = CyGameTextMgr().getTimeStr(gc.getGame().getGameTurn(), false)
 		#RFCMP
-		if Scenario840AD.isScenario():
-                        year = "840 " + CyTranslator().getText("TXT_KEY_AD", ())
+		if Scenario1453AD.isScenario():
+                        year = "1453 " + CyTranslator().getText("TXT_KEY_AD", ())
                 elif (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and CyGame().getActiveTeam() <= con.iArabia):  #late start condition
                         year = "600 " + CyTranslator().getText("TXT_KEY_AD", ())
-                elif (not gc.getPlayer(0).isPlayable() and CyGame().getActiveTeam() <= con.iJapan):  #late start condition
+                elif (gc.getGame().getStartTurn() != 0 and CyGame().getActiveTeam() <= con.iJapan):  #late start condition
                         year = "800 " + CyTranslator().getText("TXT_KEY_BC", ())
                 else:
                         year = con.tYear[CyGame().getActiveTeam()][0] + CyTranslator().getText(con.tYear[CyGame().getActiveTeam()][1], ())
 		
 		bodyString = localText.getText("TXT_KEY_RHYES_DAWN_OF_MAN_TEXT", (year, self.player.getCivilizationAdjectiveKey(), self.player.getNameKey()))
+		if Scenario1453AD.isScenario() and self.player.getID() in Scenario1453AD.ACTIVE_PLAYERS:
+			bodyString = localText.getText("TXT_KEY_RFCMP_1453_INTRO_" + str(self.player.getID()), ())
 
                 #RFCMP
 ##		screen.addStackedBarGFC("ProgressBar", 300, 400, 435, 40, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)

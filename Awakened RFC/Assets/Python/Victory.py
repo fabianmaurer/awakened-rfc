@@ -909,7 +909,7 @@ class Victory:
                                         iTotalPopulation = 0
                                         for pCity in apCityList:			
                                                 iTotalPopulation += pCity.getPopulation()
-                                        if (iTotalPopulation / len(apCityList) >= 10):
+                                        if (apCityList and iTotalPopulation / len(apCityList) >= 10):
                                                 self.setGoal(iKhmer, 1, 1)
                                         else:
                                                 self.setGoal(iKhmer, 1, 0)                                        
@@ -1653,7 +1653,7 @@ class Victory:
                                 if (iGameTurn >= i1700AD and pJapan.getCurrentEra() >= iModern):
                                         if (self.getGoal(iJapan, 2) == -1):
                                                 bCompleted = True
-                                                for iTech in range(con.iNumTechs):
+                                                for iTech in range(gc.getNumTechInfos()):
                                                         if (teamJapan.isHasTech(iTech) == False):
                                                                 bCompleted = False
                                                                 return
@@ -1661,7 +1661,7 @@ class Victory:
                                                         for iCiv in range(iNumPlayers):
                                                                 if (iCiv != iJapan):
                                                                         bOtherCompleted = True
-                                                                        for iTech in range(con.iNumTechs):
+                                                                        for iTech in range(gc.getNumTechInfos()):
                                                                                 if (gc.getTeam(gc.getPlayer(iCiv).getTeam()).isHasTech(iTech) == False):
                                                                                         bOtherCompleted = False
                                                                                         break
@@ -1726,7 +1726,7 @@ class Victory:
                                 if (iGameTurn >= i1700AD and pGermany.getCurrentEra() >= iModern):
                                         if (self.getGoal(iGermany, 2) == -1):
                                                 bCompleted = True
-                                                for iTech in range(con.iNumTechs):
+                                                for iTech in range(gc.getNumTechInfos()):
                                                         if (teamGermany.isHasTech(iTech) == False):
                                                                 bCompleted = False
                                                                 return
@@ -1734,7 +1734,7 @@ class Victory:
                                                         for iCiv in range(iNumPlayers):
                                                                 if (iCiv != iGermany):
                                                                         bOtherCompleted = True
-                                                                        for iTech in range(con.iNumTechs):
+                                                                        for iTech in range(gc.getNumTechInfos()):
                                                                                 if (gc.getTeam(gc.getPlayer(iCiv).getTeam()).isHasTech(iTech) == False):
                                                                                         bOtherCompleted = False
                                                                                         break

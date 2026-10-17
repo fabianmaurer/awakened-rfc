@@ -206,6 +206,9 @@ class Stability:
 
                 #moved here with its own stored value to save loading time (scrolls the map only once instead of every player)
                 if (iGameTurn % 6 == 0): #3 is too short to detect any change; must be a multiple of 3 anyway
+                        iRomanConnectedPlots = 0
+                        pRome = gc.getPlayer(con.iRome)
+                        bRomanRepublic = pRome.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))
                         lOwnedPlots = []
                         lOwnedCities = []
                         for i in range(len(con.l0Array)):
@@ -218,6 +221,8 @@ class Stability:
                                         if (iOwner >= 0 and iOwner < iNumPlayers and (pCurrent.isHills() or pCurrent.isFlatlands())):
                                                 if (gc.getPlayer(iOwner).getSettlersMaps( 67-y, x ) < 90):
                                                         lOwnedPlots[iOwner] += 1
+                                                        if (iOwner == con.iRome and bRomanRepublic and pRome.isRomanProvince(x, y) and pCurrent.isConnectedToCapital(iOwner)):
+                                                                iRomanConnectedPlots += 1
                                                 if (pCurrent.isCity()):
                                                         cityOwner = pCurrent.getPlotCity().getOwner()
                                                         for iLoop in range(con.iNumPlayers):
@@ -230,6 +235,9 @@ class Stability:
                                                                 if (iLoop == con.iAmerica):
                                                                         if (lOwnedCities[iLoop] >= 2):
                                                                                 lOwnedCities[iLoop] -= 2 #their normal area is too large
+                        scriptDict = pickle.loads(gc.getGame().getScriptData())
+                        scriptDict["iRomanConnectedProvincePlots"] = iRomanConnectedPlots
+                        gc.getGame().setScriptData(pickle.dumps(scriptDict))
                         for iLoopCiv in range(iNumPlayers):
                                 self.setOwnedPlotsLastTurn(iLoopCiv, lOwnedPlots[iLoopCiv])
                                 self.setOwnedCitiesLastTurn(iLoopCiv, lOwnedCities[iLoopCiv])
@@ -273,7 +281,7 @@ class Stability:
                                 self.setParameter(iPlayer, iParDiplomacyE, True, self.getStability(iPlayer) - iTempNormalizationThreshold)
 
 
-                if (((iGameTurn > con.i600BC and gc.getPlayer(0).isPlayable()) or (iGameTurn > 181+20 and not gc.getPlayer(0).isPlayable())) and iGameTurn % 20 == 15): #late start condition
+                if (((iGameTurn > con.i600BC and gc.getGame().getStartTurn() == 0) or (iGameTurn > 181+20 and gc.getGame().getStartTurn() != 0)) and iGameTurn % 20 == 15): #late start condition
                 #if (iGameTurn > 0): #debug
                         self.continentsNormalization(iGameTurn)
                         self.normalization(iGameTurn)
@@ -427,13 +435,13 @@ class Stability:
                         iScore -= 1
                 if ((hasCivic("CIVIC_REPUBLIC") or hasCivic("CIVIC_DEMOCRACY")) and hasCivic("CIVIC_RULE_OF_LAW")):
                         iScore += 2
-                if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_KNIGHTHOOD")):
+                if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_FEUDAL_RETINUES")):
                         iScore += 2
                 if (hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and (hasCivic("CIVIC_STATE_RELIGION") or hasCivic("CIVIC_GOD_STATE"))):
                         iScore += 2
                 if (hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_CORPORATE_ECONOMY")):
                         iScore += 1
-                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_STATE_ATHEISM")):
+                if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_TOLERANCE")):
                         iScore -= 3
                 return max(-5, min(5, iScore))
 
@@ -509,7 +517,12 @@ class Stability:
                         iHandicap = gc.getGame().getHandicapType()
                         
                         iNumPlotsAbroad = max(0,self.getOwnedPlotsLastTurn(iPlayer)-iMaxPlotsAbroad)                        
-                        iNewBaseStability -= iNumPlotsAbroad*2/7
+                        iPlotPenalty = iNumPlotsAbroad*2/7
+                        if (iPlayer == con.iRome and pPlayer.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
+                                scriptDict = pickle.loads(gc.getGame().getScriptData())
+                                iEligible = scriptDict["iRomanConnectedProvincePlots"]
+                                iPlotPenalty -= iPlotPenalty*iEligible/(2*max(1,self.getOwnedPlotsLastTurn(iPlayer)))
+                        iNewBaseStability -= iPlotPenalty
                         #if (not gc.getPlayer(iPlayer).isHuman()):
                         #        iNewBaseStability += iNumPlotsAbroad*1/14
                         #print("iNewBaseStability number of owned plots abroad",iNewBaseStability, iPlayer)
@@ -719,7 +732,15 @@ class Stability:
                 if (iNumPlayerCities < 8):
                         pass
                 else:
-                        iNewBaseStability -= (iNumPlayerCities-5)*(iNumPlayerCities-5)/9
+                        iCityPenalty = (iNumPlayerCities-5)*(iNumPlayerCities-5)/9
+                        if (iPlayer == con.iRome and pPlayer.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
+                                iConnected = 0
+                                for pyCity in PyPlayer(iPlayer).getCityList():
+                                        city = pyCity.GetCy()
+                                        if (pPlayer.isRomanProvince(city.getX(), city.getY()) and city.isConnectedToCapital(iPlayer)):
+                                                iConnected += 1
+                                iCityPenalty -= iCityPenalty*iConnected/(2*iNumPlayerCities)
+                        iNewBaseStability -= iCityPenalty
                         #print("iNewBaseStability number of cities",iNewBaseStability, iPlayer)
                 self.setParameter(iPlayer, iParExpansion1, False, iNewBaseStability - iTempExpansionThreshold)
 
@@ -1055,9 +1076,9 @@ class Stability:
                                                                         CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
                                                                                                             CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
                                                                 if (iGameTurn < con.i1400AD):
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False)
+                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
                                                                 else:
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False)
+                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
                                                         else: #another human
                                                                 CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
                                                                                         CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
@@ -1066,7 +1087,7 @@ class Stability:
                                                 else:
                                                         if (gc.getPlayer(iPlayer).getNumCities() > 1):
                                                                 CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True)
+                                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True, reason='stability_civil_war')
                                                                 utils.setStartingStabilityParameters(iPlayer)
                                                                 self.setGNPold(iPlayer, 0)
                                                                 self.setGNPnew(iPlayer, 0)

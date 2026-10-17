@@ -4546,6 +4546,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 {
 	PROFILE_FUNC();
 
+	const bool bDivineKingship = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isDivineKingshipVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(GC.getGameINLINE().getActiveCivilizationType());
 	CvWString szFirstBuffer;
 	bool bFound;
 	bool bFirst;
@@ -4563,7 +4567,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (!bSkipName)
 	{
-		szHelpText.append(GC.getCivicInfo(eCivic).getDescription());
+		PlayerTypes eActive = GC.getGameINLINE().getActivePlayer();
+		szHelpText.append(GC.getCivicInfo(eCivic).getCivilizationDescription(
+			eActive == NO_PLAYER ? NO_CIVILIZATION : GET_PLAYER(eActive).getCivilizationType()).c_str());
 	}
 
 	if (!bCivilopediaText)
@@ -4572,7 +4578,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		{
 			if (!bPlayerContext || !(GET_TEAM(GC.getGameINLINE().getActiveTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 			{
-				if (GC.getCivicInfo(eCivic).getTechPrereq() != NO_TECH)
+				if (!bRomanRepublic && GC.getCivicInfo(eCivic).getTechPrereq() != NO_TECH)
 				{
 					szHelpText.append(NEWLINE);
 					szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REQUIRES", GC.getTechInfo((TechTypes)GC.getCivicInfo(eCivic).getTechPrereq()).getTextKeyWide()));
@@ -4644,7 +4650,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	}
 
 	//	Distance Maintenance Modifer...
-	if (GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() != 0)
+	if (!bPharaonic && GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() != 0)
 	{
 		if (GC.getCivicInfo(eCivic).getDistanceMaintenanceModifier() <= -100)
 		{
@@ -4659,7 +4665,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	}
 
 	//	Num Cities Maintenance Modifer...
-	if (GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() != 0)
+	if (!bPharaonic && GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() != 0)
 	{
 		if (GC.getCivicInfo(eCivic).getNumCitiesMaintenanceModifier() <= -100)
 		{
@@ -5001,7 +5007,8 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	setYieldChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_FROM_TRADE_ROUTES").GetCString(), GC.getCivicInfo(eCivic).getTradeYieldModifierArray(), true);
 
 	//	Commerce Modifier
-	setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES").GetCString(), GC.getCivicInfo(eCivic).getCommerceModifierArray(), true);
+	if (!bPharaonic)
+		setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_ALL_CITIES").GetCString(), GC.getCivicInfo(eCivic).getCommerceModifierArray(), true);
 
 	//	Capital Commerce Modifiers
 	setCommerceChangeHelp(szHelpText, L"", L"", gDLL->getText("TXT_KEY_CIVIC_IN_CAPITAL").GetCString(), GC.getCivicInfo(eCivic).getCapitalCommerceModifierArray(), true);
@@ -5043,7 +5050,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	Building Happiness
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
 	{
-		if (GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) != 0)
+		if (!bDivineKingship && GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) != 0)
 		{
 			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
 			{
@@ -5118,7 +5125,22 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_MILITARY_SUPPORT_COSTS", (GC.getCivicInfo(eCivic).getGoldPerMilitaryUnit() > 0), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
 	}
 
-	if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
+	if (bPharaonic)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_CIVIC_EFFECT_PHARAONISM"));
+	}
+	else if (bDivineKingship)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP"));
+	}
+	else if (bRomanRepublic || bRomanLegions)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText(bRomanRepublic ? "TXT_KEY_ROMAN_REPUBLIC_EFFECT" : "TXT_KEY_ROMAN_LEGIONS_EFFECT"));
+	}
+	else if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
 	{
 		szHelpText.append(CvWString::format(L"%s%s", NEWLINE, GC.getCivicInfo(eCivic).getHelp()).c_str());
 	}
@@ -5365,7 +5387,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 				{
 					if (!bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canTrain(eLoopUnit)))
 					{
-						if (GC.getUnitInfo(eLoopUnit).getPrereqAndTech() == eTech)
+						if (GC.getUnitInfo(eLoopUnit).getProductionCost() >= 0 && GC.getUnitInfo(eLoopUnit).getPrereqAndTech() == eTech)
 						{
 							szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_TECH_CAN_TRAIN").c_str());
 							szTempBuffer.Format( SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), GC.getUnitInfo(eLoopUnit).getDescription());
@@ -5376,7 +5398,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 						{
 							for (int iJ = 0; iJ < GC.getNUM_UNIT_AND_TECH_PREREQS(); iJ++)
 							{
-								if (GC.getUnitInfo(eLoopUnit).getPrereqAndTechs(iJ) == eTech)
+								if (GC.getUnitInfo(eLoopUnit).getProductionCost() >= 0 && GC.getUnitInfo(eLoopUnit).getPrereqAndTechs(iJ) == eTech)
 								{
 									szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_TECH_CAN_TRAIN").c_str());
 									szTempBuffer.Format( SETCOLR L"%s" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), GC.getUnitInfo(eLoopUnit).getDescription());
@@ -5410,7 +5432,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 				{
 					if (!bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canConstruct(eLoopBuilding, false, true)))
 					{
-						if (GC.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == eTech)
+						if (GC.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0 && GC.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == eTech)
 						{
 							szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_TECH_CAN_CONSTRUCT").c_str());
 							szTempBuffer.Format( SETCOLR L"<link=literal>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo(eLoopBuilding).getDescription());
@@ -5421,7 +5443,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 						{
 							for (int iJ = 0; iJ < GC.getNUM_BUILDING_AND_TECH_PREREQS(); iJ++)
 							{
-								if (GC.getBuildingInfo(eLoopBuilding).getPrereqAndTechs(iJ) == eTech)
+								if (GC.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0 && GC.getBuildingInfo(eLoopBuilding).getPrereqAndTechs(iJ) == eTech)
 								{
 									szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_TECH_CAN_CONSTRUCT").c_str());
 									szTempBuffer.Format( SETCOLR L"<link=literal>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo(eLoopBuilding).getDescription());
@@ -5736,7 +5758,10 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	if (GC.getUnitInfo(eUnit).getCargoSpace() > 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_CARGO_SPACE", GC.getUnitInfo(eUnit).getCargoSpace()));
+		int iCargoSpace = GC.getUnitInfo(eUnit).getCargoSpace();
+		if (!bCivilopediaText && GC.getGameINLINE().getActivePlayer() != NO_PLAYER)
+			iCargoSpace += GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getRomanCargoBonus(eUnit);
+		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_CARGO_SPACE", iCargoSpace));
 
 		if (GC.getUnitInfo(eUnit).getSpecialCargo() != NO_SPECIALUNIT)
 		{
@@ -6881,7 +6906,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 		//Rhye - start (embassy)
-		if (eBuilding >= NUM_BUILDINGS_PLAGUE) {
+		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS) {
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_EMBASSY_ABILITY"));
 		}
@@ -9022,7 +9047,15 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			szBuffer.append(NEWLINE);
 		}
 
-		iHappy = (city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness());
+		const int iRulerCultHappy = std::min(city.getDivineKingshipHappiness(), std::max(0, city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness()));
+		iHappy = iRulerCultHappy;
+		if (iHappy > 0)
+		{
+			iTotalHappy += iHappy;
+			szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_HAPPY_RULER_CULT", iHappy));
+			szBuffer.append(NEWLINE);
+		}
+		iHappy = city.getExtraHappiness() + GET_PLAYER(city.getOwnerINLINE()).getExtraHappiness() - iRulerCultHappy;
 		if (iHappy > 0)
 		{
 			iTotalHappy += iHappy;
@@ -11489,6 +11522,18 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 			}
 		}
 
+		// The same calculation used by production, including worked farms.
+		const CivicOptionTypes eMilitary = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_MILITARY");
+		const CivicTypes eMilitaryCivic = GET_PLAYER(city.getOwnerINLINE()).getCivics(eMilitary);
+		const int iCivicMod = city.getMilitaryCivicProductionModifier(eUnit, eMilitaryCivic);
+		if (iCivicMod != 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_PRODUCTION_MILITARY_CIVIC", iCivicMod,
+				GC.getCivicInfo(eMilitaryCivic).getCivilizationDescription(GET_PLAYER(city.getOwnerINLINE()).getCivilizationType()).c_str()));
+			szBuffer.append(NEWLINE);
+			iBaseModifier += iCivicMod;
+		}
+
 		// Bonus
 		for (int i = 0; i < GC.getNumBonusInfos(); i++)
 		{
@@ -11916,7 +11961,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -11932,7 +11977,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
@@ -11984,6 +12029,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	{
 		if (NO_CIVIC != owner.getCivics((CivicOptionTypes)i))
 		{
+			if (!GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).isPharaonicVariant(owner.getCivilizationType()))
 			iCivicMod += GC.getCivicInfo(owner.getCivics((CivicOptionTypes)i)).getCommerceModifier(eCommerceType);
 		}
 	}
@@ -12067,7 +12113,7 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -12083,7 +12129,7 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
@@ -12339,7 +12385,7 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
 		CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(city.getTeam()).isObsoleteBuilding((BuildingTypes)i))
+		if (city.getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(city.getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 		{
 			for (int iLoop = 0; iLoop < city.getNumBuilding((BuildingTypes)i); iLoop++)
 			{
@@ -12355,7 +12401,7 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 					int iLoop;
 					for (CvCity* pLoopCity = GET_PLAYER((PlayerTypes)j).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)j).nextCity(&iLoop))
 					{
-						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_TEAM(pLoopCity->getTeam()).isObsoleteBuilding((BuildingTypes)i))
+						if (pLoopCity->getNumBuilding((BuildingTypes)i) > 0 && !GET_PLAYER(pLoopCity->getOwnerINLINE()).isBuildingObsolete((BuildingTypes)i))
 						{
 							for (int iLoop = 0; iLoop < pLoopCity->getNumBuilding((BuildingTypes)i); iLoop++)
 							{
@@ -14099,7 +14145,7 @@ void CvGameTextMgr::getTradeScreenIcons(std::vector< std::pair<CvString, CvWidge
 		widgetData.m_iData1 = eCivic;
 		widgetData.m_iData2 = -1;
 		widgetData.m_bOption = false;
-		aIconInfos.push_back(std::make_pair(GC.getCivicInfo(eCivic).getButton(), widgetData));
+		aIconInfos.push_back(std::make_pair(CvString(GC.getCivicInfo(eCivic).getCivilizationButton(GET_PLAYER(ePlayer).getCivilizationType()).c_str()), widgetData));
 	}
 
 }

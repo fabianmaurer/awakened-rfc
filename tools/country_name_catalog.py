@@ -11,7 +11,7 @@ FAMILIES = (
 
 CATALOG = """
 EGY
-Peoples of the Nile | Völker am Nil
+Peoples of the Nile Valley | Völker des Niltals
 Kingdom of Egypt | Königreich Ägypten
 Egyptian Empire | Ägyptisches Reich
 Republic of Egypt | Republik Ägypten
@@ -84,7 +84,7 @@ ROM
 Latin Tribes | Latinische Stämme
 Kingdom of Rome | Königreich Rom
 Roman Empire | Römisches Reich
-Senate and People of Rome | Senat und Volk von Rom
+SPQR | SPQR
 Roman Republic | Römische Republik
 League of the Seven Hills | Siebenhügelbund
 Roman Commune | Römische Kommune
@@ -262,8 +262,8 @@ Mexican State | Mexikanischer Staat
 Sacred Realm of Anahuac | Heiliges Reich Anáhuac
 TUR
 Turkic Tribes | Turkstämme
-Ottoman State | Osmanischer Staat
-Ottoman Empire | Osmanisches Reich
+Ottoman Empire | Osmanenreich
+Ottoman Empire | Osmanenreich
 Republic of Turkey | Republik Türkei
 Turkey | Türkei
 Anatolian Maritime League | Anatolischer Seebund
@@ -319,6 +319,153 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    # Alternate-history crown economies. Period/religious/constitutional names
+    # retain priority in the DLL. The Inca keep their established imperial title.
+    ('EGY', 'ROYAL_PLANNED'): ('Realm of the Royal Granaries', 'Reich der königlichen Speicher'),
+    ('IND', 'ROYAL_PLANNED'): ('Maharajas\' Economic Union', 'Wirtschaftsunion der Maharadschas'),
+    ('CHI', 'ROYAL_PLANNED'): ('Imperial Economic Union of China', 'Kaiserliche Wirtschaftsunion China'),
+    ('BAB', 'ROYAL_PLANNED'): ('Palace State of Babylon', 'Palaststaat Babylon'),
+    ('GRE', 'ROYAL_PLANNED'): ('Hellenic Crown Collective', 'Hellenisches Kronkollektiv'),
+    ('PER', 'ROYAL_PLANNED'): ('Realm of the Royal Satrapies', 'Reich der königlichen Satrapien'),
+    ('CAR', 'ROYAL_PLANNED'): ('Punic Crown Monopoly', 'Punisches Kronmonopol'),
+    ('ROM', 'ROYAL_PLANNED'): ('Imperium of the State Estates', 'Imperium der Staatsgüter'),
+    ('JAP', 'ROYAL_PLANNED'): ('Japanese Imperial Provisioning State', 'Kaiserlicher Versorgungsstaat Japan'),
+    ('ETH', 'ROYAL_PLANNED'): ('Imperial Domains of Abyssinia', 'Kaiserliche Domänen Abessiniens'),
+    ('MAY', 'ROYAL_PLANNED'): ('Realm of the Royal Maize Stores', 'Reich der königlichen Maiskammern'),
+    ('VIK', 'ROYAL_PLANNED'): ('Nordic Crown of Common Provision', 'Nordisches Versorgungskönigtum'),
+    ('ARA', 'ROYAL_PLANNED'): ('Royal Oasis Union', 'Königlicher Oasenverbund'),
+    ('KHM', 'ROYAL_PLANNED'): ('Realm of the Royal Waterworks', 'Reich der königlichen Wasserwerke'),
+    ('SPA', 'ROYAL_PLANNED'): ('Iberian Crown Estates Union', 'Iberische Krongüterunion'),
+    ('FRA', 'ROYAL_PLANNED'): ('French Manufactory Monarchy', 'Französische Manufakturmonarchie'),
+    ('ENG', 'ROYAL_PLANNED'): ('British Crown Monopoly', 'Britisches Kronmonopol'),
+    ('GER', 'ROYAL_PLANNED'): ('German Chamber Empire', 'Deutsches Kammerreich'),
+    ('RUS', 'ROYAL_PLANNED'): ('Tsardom of the State Combines', 'Zarenreich der Staatskombinate'),
+    ('NED', 'ROYAL_PLANNED'): ('Royal Polder Union', 'Königliche Polderunion'),
+    ('MAL', 'ROYAL_PLANNED'): ('Empire of the Malian Gold Treasury', 'Goldkammerreich Mali'),
+    ('POR', 'ROYAL_PLANNED'): ('Royal Overseas Company of Portugal', 'Königliche Überseekompanie Portugal'),
+    ('INC', 'ROYAL_PLANNED'): ('Land of the Four Quarters', 'Land der vier Weltgegenden'),
+    ('MON', 'ROYAL_PLANNED'): ('Khanate of the Common Pastures', 'Khanat der gemeinsamen Weiden'),
+    ('AZT', 'ROYAL_PLANNED'): ('Realm of the Royal Tribute', 'Reich der königlichen Tribute'),
+    ('TUR', 'ROYAL_PLANNED'): ('Sublime Porte of the State Manufactories', 'Hohe Pforte der Staatsmanufakturen'),
+    ('AME', 'ROYAL_PLANNED'): ('United Crown Industries of America', 'Vereinigte Kronwerke Amerikas'),
+    # Wealth-holding houses jointly control the plan. These names deliberately
+    # avoid republican titles: the family can also apply under a monarchy.
+    ('EGY', 'PLUTOCRATIC_PLANNED'): ('Nile Granary Directorate', 'Speicherdirektorium am Nil'),
+    ('IND', 'PLUTOCRATIC_PLANNED'): ('Indian Guild Dominion', 'Indische Gildenherrschaft'),
+    ('CHI', 'PLUTOCRATIC_PLANNED'): ('Silken Mandate of the Merchant Houses', 'Seidenmandat der Handelshäuser'),
+    ('BAB', 'PLUTOCRATIC_PLANNED'): ('Babylonian Canal Company', 'Babylonische Kanalgesellschaft'),
+    ('GRE', 'PLUTOCRATIC_PLANNED'): ('Aegean Shipowners\' Cartel', 'Ägäisches Reederkartell'),
+    ('PER', 'PLUTOCRATIC_PLANNED'): ('Iranian Caravan Monopoly', 'Iranisches Karawanenmonopol'),
+    ('CAR', 'PLUTOCRATIC_PLANNED'): ('Directorate of the Seven Houses', 'Direktorium der Sieben Häuser'),
+    ('ROM', 'PLUTOCRATIC_PLANNED'): ('Roman Patrician Directorate', 'Römisches Patrizierdirektorium'),
+    ('JAP', 'PLUTOCRATIC_PLANNED'): ('Japanese Industrial Conclave', 'Japanischer Industriekonvent'),
+    ('ETH', 'PLUTOCRATIC_PLANNED'): ('Abyssinian Coffee and Salt Monopoly', 'Abessinisches Kaffee- und Salzmonopol'),
+    ('MAY', 'PLUTOCRATIC_PLANNED'): ('Maya Jade and Cacao Cartel', 'Jade- und Kakaokartell der Maya'),
+    ('VIK', 'PLUTOCRATIC_PLANNED'): ('Nordic Shipyard Cartel', 'Nordisches Werftenkartell'),
+    ('ARA', 'PLUTOCRATIC_PLANNED'): ('Arabian Oasis Monopoly', 'Arabisches Oasenmonopol'),
+    ('KHM', 'PLUTOCRATIC_PLANNED'): ('Angkor Rice Directorate', 'Reisdirektorium Angkor'),
+    ('SPA', 'PLUTOCRATIC_PLANNED'): ('Iberian Silver Syndicate', 'Iberisches Silbersyndikat'),
+    ('FRA', 'PLUTOCRATIC_PLANNED'): ('French Industrial Directorate', 'Französisches Industriedirektorium'),
+    ('ENG', 'PLUTOCRATIC_PLANNED'): ('British United Company', 'Britische Einheitskompanie'),
+    ('GER', 'PLUTOCRATIC_PLANNED'): ('German Cartel Union', 'Deutscher Kartellbund'),
+    ('RUS', 'PLUTOCRATIC_PLANNED'): ('Russian Combine Directorate', 'Russisches Kombinatsdirektorium'),
+    ('NED', 'PLUTOCRATIC_PLANNED'): ('United Netherlandish Company', 'Vereinigte Niederländische Kompanie'),
+    ('MAL', 'PLUTOCRATIC_PLANNED'): ('Malian Gold and Salt Cartel', 'Gold- und Salzkartell Mali'),
+    ('POR', 'PLUTOCRATIC_PLANNED'): ('Portuguese Spice Monopoly', 'Portugiesisches Gewürzmonopol'),
+    ('INC', 'PLUTOCRATIC_PLANNED'): ('Andean Storehouse Cartel', 'Andines Speicherkartell'),
+    ('MON', 'PLUTOCRATIC_PLANNED'): ('Steppe Cartel of the Caravan Lords', 'Steppenkartell der Karawanenherren'),
+    ('AZT', 'PLUTOCRATIC_PLANNED'): ('Aztec Tribute Cartel', 'Aztekisches Tributkartell'),
+    ('TUR', 'PLUTOCRATIC_PLANNED'): ('High Chamber of Anatolian Commerce', 'Hohe Handelskammer Anatoliens'),
+    ('AME', 'PLUTOCRATIC_PLANNED'): ('American Corporate Collective', 'Amerikanisches Konzernkollektiv'),
+    # Deliberately fictional atheist creeds: Theocracy + State Atheism.
+    ('EGY', 'ATHEOCRACY'): ('Order of the Godless Sun', 'Orden der gottlosen Sonne'),
+    ('IND', 'ATHEOCRACY'): ('Bharat of the Eternal Law', 'Bharat des ewigen Gesetzes'),
+    ('CHI', 'ATHEOCRACY'): ('Realm of the Earthly Mandate', 'Reich des irdischen Mandats'),
+    ('BAB', 'ATHEOCRACY'): ('Babylon of the Godless Law', 'Babylon des gottlosen Gesetzes'),
+    ('GRE', 'ATHEOCRACY'): ('Hellenic League of the Logos', 'Hellenischer Bund des Logos'),
+    ('PER', 'ATHEOCRACY'): ('Order of the Godless Flame', 'Orden der gottlosen Flamme'),
+    ('CAR', 'ATHEOCRACY'): ('Carthaginian Empire of Dogma', 'Karthagisches Dogmenreich'),
+    ('ROM', 'ATHEOCRACY'): ('Pontificate of Reason', 'Pontifikat der Vernunft'),
+    ('JAP', 'ATHEOCRACY'): ('Order of the Godless Dawn', 'Orden der gottlosen Morgenröte'),
+    ('ETH', 'ATHEOCRACY'): ('Ethiopian Patriarchate of Humanity', 'Äthiopisches Patriarchat der Menschheit'),
+    ('MAY', 'ATHEOCRACY'): ('Order of the Godless Calendar', 'Orden des gottlosen Kalenders'),
+    ('VIK', 'ATHEOCRACY'): ('Northern League of the Godless', 'Nordbund der Götterlosen'),
+    ('ARA', 'ATHEOCRACY'): ('Caliphate of Human Truth', 'Kalifat der menschlichen Wahrheit'),
+    ('KHM', 'ATHEOCRACY'): ('Angkor of the Empty Temples', 'Angkor der leeren Tempel'),
+    ('SPA', 'ATHEOCRACY'): ('Iberian Inquisition of the Godless', 'Iberische Inquisition der Gottlosen'),
+    ('FRA', 'ATHEOCRACY'): ('French Cult of Reason', 'Französischer Kult der Vernunft'),
+    ('ENG', 'ATHEOCRACY'): ('English Protectorate of Pure Doctrine', 'Englisches Protektorat der reinen Lehre'),
+    ('GER', 'ATHEOCRACY'): ('Holy Empire of Reason', 'Heiliges Reich der Vernunft'),
+    ('RUS', 'ATHEOCRACY'): ('Russian Synod of the Godless', 'Russische Synode der Gottlosen'),
+    ('NED', 'ATHEOCRACY'): ('Netherlandish Consistory of Truth', 'Niederländisches Konsistorium der Wahrheit'),
+    ('MAL', 'ATHEOCRACY'): ('Malian Covenant of the Infallible Word', 'Malischer Bund des unfehlbaren Wortes'),
+    ('POR', 'ATHEOCRACY'): ('Portuguese Mission of Enlightenment', 'Portugiesische Mission der Aufklärung'),
+    ('INC', 'ATHEOCRACY'): ('Andean Realm of the Dethroned Sun', 'Andenreich der entthronten Sonne'),
+    ('MON', 'ATHEOCRACY'): ('Khanate of the Godless Sky', 'Khanat des gottlosen Himmels'),
+    ('AZT', 'ATHEOCRACY'): ('Order of the Godless Eagle', 'Orden des gottlosen Adlers'),
+    ('TUR', 'ATHEOCRACY'): ('Sublime Porte of Earthly Truth', 'Hohe Pforte der weltlichen Wahrheit'),
+    ('AME', 'ATHEOCRACY'): ('American Church of Humanity', 'Amerikanische Kirche der Menschheit'),
+    # Major historical empires selected by dated DLL branches, not by
+    # dynastic succession or territorial claims simulated elsewhere.
+    ('CHI', 'QIN'): ('Qin Empire', 'Qin-Reich'),
+    ('CHI', 'HAN'): ('Han Empire', 'Han-Reich'),
+    ('CHI', 'TANG'): ('Tang Empire', 'Tang-Reich'),
+    ('CHI', 'SONG'): ('Song Empire', 'Song-Reich'),
+    ('CHI', 'YUAN'): ('Yuan Empire', 'Yuan-Reich'),
+    ('CHI', 'QING'): ('Qing Empire', 'Qing-Reich'),
+    ('IND', 'MAURYA'): ('Maurya Empire', 'Maurya-Reich'),
+    ('IND', 'GUPTA'): ('Gupta Empire', 'Gupta-Reich'),
+    ('IND', 'MUGHAL'): ('Mughal Empire', 'Mogulreich'),
+    ('PER', 'ACHAEMENID'): ('Achaemenid Empire', 'Achämenidenreich'),
+    ('PER', 'PARTHIAN'): ('Parthian Empire', 'Partherreich'),
+    ('PER', 'SASANIAN'): ('Sasanian Empire', 'Sassanidenreich'),
+    ('PER', 'SAFAVID'): ('Safavid Empire', 'Safawidenreich'),
+    ('GRE', 'MACEDONIAN'): ('Macedonian Empire', 'Makedonisches Weltreich'),
+    ('ARA', 'UMAYYAD'): ('Umayyad Caliphate', 'Umayyadenkalifat'),
+    ('ARA', 'ABBASID'): ('Abbasid Caliphate', 'Abbasidenkalifat'),
+    ('FRA', 'CAROLINGIAN'): ('Carolingian Empire', 'Karolingerreich'),
+    ('CHI', 'ZHOU'): ('Zhou Kingdom', 'Zhou-Reich'),
+    ('IND', 'VEDIC_KINGDOMS'): ('Kuru and Panchala', 'Kuru und Panchala'),
+    ('ROM', 'LATIN_COMMUNITIES'): ('Latin Communities', 'Latinische Stammesgemeinden'),
+    ('EGY', 'PHARAONIC'): ('Pharaonic Egypt', 'Pharaonenreich'),
+    ('EGY', 'TEMPLE_STATE'): ('Temple State of Egypt', 'Tempelstaat Ägypten'),
+    ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),
+    ('EGY', 'MAMLUK'): ('Mamluk Sultanate', 'Mamlukensultanat'),
+    ('IND', 'DELHI'): ('Delhi Sultanate', 'Sultanat von Delhi'),
+    ('PER', 'TIMURID'): ('Timurid Empire', 'Timuridenreich'),
+    ('CAR', 'HAFSID'): ('Hafsid Sultanate', 'Hafsiden-Sultanat'),
+    ('ARA', 'MECCA'): ('Sharifate of Mecca', 'Scharifat von Mekka'),
+    ('CHI', 'MING'): ('Ming Empire', 'Ming-Reich'),
+    ('JAP', 'ASHIKAGA'): ('Ashikaga Shogunate', 'Ashikaga-Shogunat'),
+    ('GRE', 'DESPOTATE'): ('Greek Despotate', 'Griechisches Despotat'),
+    ('GRE', 'MOREA'): ('Despotate of the Morea', 'Despotat Morea'),
+    ('RUS', 'MUSCOVY'): ('Grand Principality of Moscow', 'Großfürstentum Moskau'),
+    ('NED', 'BURGUNDIAN'): ('Burgundian Netherlands', 'Burgundische Niederlande'),
+    ('NED', 'HABSBURG'): ('Habsburg Netherlands', 'Habsburgische Niederlande'),
+    ('MON', 'NORTHERN_YUAN'): ('Northern Yuan', 'Nördliche Yuan'),
+    ('AZT', 'TRIPLE_ALLIANCE'): ('Aztec Triple Alliance', 'Aztekischer Dreibund'),
+    ('ROM', 'ITALIAN_STATES'): ('Italian City-States', 'Italienische Stadtstaaten'),
+    ('ROM', 'VENICE'): ('Republic of Venice', 'Republik Venedig'),
+    ('SPA', 'CASTILE_ARAGON'): ('Castile and Aragon', 'Kastilien und Aragon'),
+    ('VIK', 'KALMAR'): ('Kalmar Union', 'Kalmarer Union'),
+    ('MAY', 'MANI_TAYASAL'): ('Mani and Tayasal', 'Mani und Tayasal'),
+    # Period identities shared by scenario previews and live country naming.
+    ('FRA', 'FRANKISH_REALM'): ('Frankish Realm', 'Reich der Franken'),
+    ('FRA', 'WEST_FRANCIA'): ('West Francia', 'Westfränkisches Reich'),
+    ('KHM', 'CHENLA'): ('Chenla', 'Reich von Chenla'),
+    ('KHM', 'ANGKOR'): ('Khmer Empire', 'Khmerreich'),
+    ('SPA', 'CHRISTIAN_IBERIA'): ('Christian Kingdoms of Iberia', 'Christliche Reiche Iberiens'),
+    ('SPA', 'IBERIAN_KINGDOMS'): ('Iberian Kingdoms', 'Iberische Königreiche'),
+    ('ENG', 'ANGLO_SAXON'): ('Anglo-Saxon Kingdoms', 'Angelsächsische Königreiche'),
+    ('VIK', 'NORSE_KINGDOMS'): ('Scandinavian Kingdoms', 'Skandinavische Königreiche'),
+    ('JAP', 'EARLY_JAPAN'): ('Peoples of the Japanese Islands', 'Völker der japanischen Inseln'),
+    ('JAP', 'YAMATO'): ('Yamato Realm', 'Reich von Yamato'),
+    ('IND', 'INDUS'): ('Indus Valley Cultures', 'Induskulturen'),
+    ('IND', 'INDIAN_KINGDOMS'): ('Indian Kingdoms', 'Indische Königreiche'),
+    ('CHI', 'EARLY_CHINA'): ('Early Chinese Cultures', 'Frühe chinesische Kulturen'),
+    ('BAB', 'EARLY_MESOPOTAMIA'): ('Mesopotamian City-States', 'Stadtstaaten Mesopotamiens'),
+    ('GRE', 'POLEIS'): ('Greek City-States', 'Griechische Stadtstaaten'),
+    ('ARA', 'EARLY_ARABIA'): ('Arabian Kingdoms', 'Arabische Königreiche'),
     # Literary and historical identities, selected by existing civic families.
     # America represents a settler-founded nation, not an indigenous tribal group.
     # Religious names are historical inspirations, not denominational checks.
@@ -335,6 +482,8 @@ SPECIAL_NAMES = {
     ('JAP', 'THEOCRACY'): ('Land of the Gods', 'Land der Götter'),
     ('JAP', 'HOLY_KINGDOM'): ('Land of the Gods', 'Land der Götter'),
     ('GRE', 'MERCHANT_REPUBLIC'): ('Delian League', 'Attischer Seebund'),
+    ('GER', 'GREATER_GERMAN'): ('Greater German Reich', 'Großdeutsches Reich'),
+    ('GER', 'EAST_FRANCIA'): ('East Francia', 'Ostfränkisches Reich'),
     ('GER', 'HOLY_ROMAN'): ('Holy Roman Empire', 'Heiliges Römisches Reich'),
     ('ROM', 'PAPAL_STATES'): ('Papal States', 'Kirchenstaat'),
     ('ENG', 'CONSTITUTIONAL'): ('United Kingdom', 'Vereinigtes Königreich'),
@@ -370,14 +519,14 @@ SPECIAL_NAMES = {
     ('FRA', 'SOCIALIST_DEMOCRACY'): ('French Commune', 'Französische Kommune'),
     ('GER', 'CONSTITUTIONAL'): ('German Reich', 'Deutsches Reich'),
     ('GER', 'SOCIALIST_DEMOCRACY'): ('German Republic', 'Deutsche Republik'),
-    ('RUS', 'PEOPLES_STATE'): ('Russian Soviet Republic', 'Russische Sowjetrepublik'),
+    ('RUS', 'PEOPLES_STATE'): ('Union of Soviet Socialist Republics', 'Union der Sozialistischen Sowjetrepubliken'),
     ('RUS', 'SOCIALIST_DEMOCRACY'): ('Russian Union', 'Russische Union'),
     ('VIK', 'CONSTITUTIONAL'): ('Nordic Union', 'Nordische Union'),
     ('IND', 'SULTANATE'): ('Sultanate of Hindustan', 'Sultanat Hindustan'),
     ('EGY', 'CALIPHATE'): ('Caliphate of the Nile', 'Nilkalifat'),
     ('ARA', 'CALIPHATE'): ('Arab Caliphate', 'Arabisches Kalifat'),
     ('TUR', 'CALIPHATE'): ('Ottoman Caliphate', 'Osmanisches Kalifat'),
-    ('TUR', 'SULTANATE'): ('Ottoman Sultanate', 'Osmanisches Sultanat'),
+    ('TUR', 'SULTANATE'): ('Ottoman Empire', 'Osmanenreich'),
     ('PER', 'ISLAMIC_REPUBLIC'): ('Islamic Republic of Iran', 'Islamische Republik Iran'),
     ('PER', 'SULTANATE'): ('Sultanate of Persia', 'Sultanat Persien'),
     ('PER', 'CALIPHATE'): ('Caliphate of Iran', 'Kalifat Iran'),

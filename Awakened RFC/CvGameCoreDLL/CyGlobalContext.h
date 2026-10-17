@@ -29,6 +29,7 @@ public:
 
 	static CyGlobalContext& getInstance();		// singleton accessor
 
+	std::wstring getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear, int iLandPlots);
 	bool isDebugBuild() const;
 	CyGame* getCyGame() const;
 	CyMap* getCyMap() const;

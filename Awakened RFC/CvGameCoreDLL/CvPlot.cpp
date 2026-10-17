@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvPlot.h"
+#include "ObserverPerformance.h"
 #include "CvCity.h"
 #include "CvUnit.h"
 #include "CvGlobals.h"
@@ -4508,6 +4509,7 @@ void CvPlot::updateIrrigated()
 {
 	PROFILE("CvPlot::updateIrrigated()");
 
+	OBSERVER_PERFORMANCE(observerPerformanceInScope("CvCity::doPlotCulture") ? "culture.irrigation" : "plot.irrigation");
 	CvPlot* pLoopPlot;
 	FAStar* pIrrigatedFinder;
 	bool bFoundFreshWater;
@@ -4525,6 +4527,7 @@ void CvPlot::updateIrrigated()
 	}
 
 	pIrrigatedFinder = gDLL->getFAStarIFace()->create();
+	observerPerformanceCount("count.irrigation.finderCreated");
 
 	if (isIrrigated())
 	{
@@ -4540,12 +4543,14 @@ void CvPlot::updateIrrigated()
 				{
 					bFoundFreshWater = false;
 					gDLL->getFAStarIFace()->Initialize(pIrrigatedFinder, GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE(), GC.getMapINLINE().isWrapXINLINE(), GC.getMapINLINE().isWrapYINLINE(), NULL, NULL, NULL, potentialIrrigation, NULL, checkFreshWater, &bFoundFreshWater);
+					observerPerformanceScope.addWork();
 					gDLL->getFAStarIFace()->GeneratePath(pIrrigatedFinder, pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), -1, -1);
 
 					if (!bFoundFreshWater)
 					{
 						bIrrigated = false;
 						gDLL->getFAStarIFace()->Initialize(pIrrigatedFinder, GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE(), GC.getMapINLINE().isWrapXINLINE(), GC.getMapINLINE().isWrapYINLINE(), NULL, NULL, NULL, potentialIrrigation, NULL, changeIrrigated, &bIrrigated);
+						observerPerformanceScope.addWork();
 						gDLL->getFAStarIFace()->GeneratePath(pIrrigatedFinder, pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), -1, -1);
 					}
 				}
@@ -4558,6 +4563,7 @@ void CvPlot::updateIrrigated()
 		{
 			bIrrigated = true;
 			gDLL->getFAStarIFace()->Initialize(pIrrigatedFinder, GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE(), GC.getMapINLINE().isWrapXINLINE(), GC.getMapINLINE().isWrapYINLINE(), NULL, NULL, NULL, potentialIrrigation, NULL, changeIrrigated, &bIrrigated);
+			observerPerformanceScope.addWork();
 			gDLL->getFAStarIFace()->GeneratePath(pIrrigatedFinder, getX_INLINE(), getY_INLINE(), -1, -1);
 		}
 	}
@@ -4712,6 +4718,11 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 	if (getOwnerINLINE() != eNewValue)
 	{
+		const bool bCultureUpdate = observerPerformanceInScope("CvCity::doPlotCulture");
+		OBSERVER_PERFORMANCE(bCultureUpdate ? "culture.ownerChange" : "plot.ownerChange");
+        if (bCultureUpdate)
+            observerPerformanceCount(eNewValue == NO_PLAYER ? "count.culture.ownerReleased" :
+                getOwnerINLINE() == NO_PLAYER ? "count.culture.ownerClaimed" : "count.culture.ownerTransferred");
 		GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_PLOT_OWNER_CHANGE, eNewValue, (char*)NULL, getX_INLINE(), getY_INLINE());
 
 		pOldCity = getPlotCity();
@@ -4784,7 +4795,10 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 			if (isOwned())
 			{
-				changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), false, NULL, bUpdatePlotGroup);
+				{
+					ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerOldSight" : "plot.ownerOldSight");
+					changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), false, NULL, bUpdatePlotGroup);
+				}
 
 				if (area())
 				{
@@ -4833,12 +4847,18 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 			m_eOwner = eNewValue;
 
-			setWorkingCityOverride(NULL);
-			updateWorkingCity();
+			{
+				ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerWorkingCity" : "plot.ownerWorkingCity");
+				setWorkingCityOverride(NULL);
+				updateWorkingCity();
+			}
 
 			if (isOwned())
 			{
-				changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), true, NULL, bUpdatePlotGroup);
+				{
+					ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerNewSight" : "plot.ownerNewSight");
+					changeAdjacentSight(getTeam(), GC.getDefineINT("PLOT_VISIBILITY_RANGE"), true, NULL, bUpdatePlotGroup);
+				}
 
 				if (area())
 				{
@@ -4886,17 +4906,29 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 				}
 			}
 
-			updateIrrigated();
-			updateYield();
+			{
+				ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerIrrigation" : "plot.ownerIrrigation");
+				updateIrrigated();
+			}
+			{
+				ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerYield" : "plot.ownerYield");
+				updateYield();
+			}
 
 			if (bUpdatePlotGroup)
 			{
-				updatePlotGroup();
+				{
+					ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerPlotGroups" : "plot.ownerPlotGroups");
+					updatePlotGroup();
+				}
 			}
 
 			if (bCheckUnits)
 			{
-				verifyUnitValidPlot();
+				{
+					ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerUnitValidation" : "plot.ownerUnitValidation");
+					verifyUnitValidPlot();
+				}
 			}
 
 			if (isOwned())
@@ -4928,7 +4960,10 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 			}
 		}
 
-		updateSymbols();
+		{
+			ObserverPerformanceScope step(bCultureUpdate ? "culture.ownerSymbols" : "plot.ownerSymbols");
+			updateSymbols();
+		}
 	}
 }
 

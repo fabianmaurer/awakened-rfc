@@ -73,41 +73,47 @@ EndTeam
 BeginTeam                 
 EndTeam
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_0
 	LeaderType=LEADER_RAMESSES
 	CivType=CIVILIZATION_EGYPT                 
 	Team=0                 
-	PlayableCiv=0                
+	PlayableCiv=1                
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_1
 	LeaderType=LEADER_ASOKA
 	CivType=CIVILIZATION_INDIA                 
 	Team=1                 
-	PlayableCiv=0                 
+	PlayableCiv=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_2
 	LeaderType=LEADER_QIN_SHI_HUANG
 	CivType=CIVILIZATION_CHINA                 
 	Team=2                 
-	PlayableCiv=0                 
+	PlayableCiv=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_3
 	LeaderType=LEADER_HAMMURABI
 	CivType=CIVILIZATION_BABYLONIA                 
 	Team=3                 
-	PlayableCiv=0                 
+	PlayableCiv=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_4
 	LeaderType=LEADER_PERICLES
 	CivType=CIVILIZATION_GREECE                 
 	Team=4                 
-	PlayableCiv=0                 
+	PlayableCiv=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_5
 	LeaderType=LEADER_CYRUS
 	CivType=CIVILIZATION_PERSIA                 
 	Team=5                 
@@ -115,6 +121,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_6
 	LeaderType=LEADER_HANNIBAL
 	CivType=CIVILIZATION_CARTHAGE                 
 	Team=6                 
@@ -122,6 +129,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_7
 	LeaderType=LEADER_AUGUSTUS
 	CivType=CIVILIZATION_ROME                 
 	Team=7                 
@@ -129,6 +137,7 @@ BeginPlayer
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
+	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_8
 	LeaderType=LEADER_TOKUGAWA
 	CivType=CIVILIZATION_JAPAN                 
 	Team=8                 
@@ -20282,7 +20291,7 @@ BeginPlot
 	x=54,y=39
 	isWOfRiver
 	RiverNSDirection=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot
@@ -21019,13 +21028,14 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=56,y=38
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=56,y=39
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot
@@ -21384,7 +21394,8 @@ EndPlot
 BeginPlot
 	x=57,y=38
 	TerrainType=TERRAIN_PLAINS
-	PlotType=0
+	PlotType=1
+	BonusType=BONUS_IRON
 EndPlot
 BeginPlot
 	x=57,y=39
@@ -21756,7 +21767,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=58,y=39
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22109,12 +22120,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=59,y=36
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=59,y=37
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22499,12 +22511,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=60,y=36
-	TerrainType=TERRAIN_DESERT
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=60,y=37
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -22871,7 +22884,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=61,y=36
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -23278,7 +23291,7 @@ EndPlot
 BeginPlot
 	x=62,y=42
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=1
 EndPlot
 BeginPlot

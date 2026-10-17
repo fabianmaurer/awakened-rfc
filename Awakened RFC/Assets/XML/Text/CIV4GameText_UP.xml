@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -10,7 +10,7 @@
 		<French>Pouvoir unique</French>
 		<German>Einzigartige Macht</German>
 		<Italian>Potere unico</Italian>
-		<Spanish>Poder único:</Spanish>
+		<Spanish>Poder &#250;nico:</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_EGY</Tag>
@@ -22,24 +22,24 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_EGY2</Tag>
-		<English>Hereditary Rule and Slavery are enabled at start</English>
-		<French>Le droit héréditaire et l'esclavage sont disponibles au départ</French>
-		<German>Aktivierung von Erbrecht und Sklaverei beim Spielstart</German>
-		<Italian>All'avvio sono abilitati governo ereditario e schiavitù</Italian>
-		<Spanish>Gobierno hereditario y Esclavitud est&#225;n activados al principio</Spanish>
+		<English>Starts with special civics</English>
+		<French>Commence avec des institutions particuli&#232;res</French>
+		<German>Beginnt mit besonderen Staatsformen</German>
+		<Italian>Inizia con forme di governo speciali</Italian>
+		<Spanish>Comienza con sistemas de gobierno especiales</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_IND</Tag>
 		<English>The Power of Spirituality:</English>
-		<French>Le Pouvoir de la Spiritualité :</French>
-		<German>Die Macht der Spiritualität:</German>
+		<French>Le Pouvoir de la Spiritualit&#233; :</French>
+		<German>Die Macht der Spiritualit&#228;t:</German>
 		<Italian>Il potere della spiritualit&#224;:</Italian>
 		<Spanish>El poder de la espiritualidad:</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_IND2</Tag>
 		<English>No Anarchy in revolutions</English>
-		<French>Pas d'anarchie lors des révolutions</French>
+		<French>Pas d'anarchie lors des r&#233;volutions</French>
 		<German>Keine Anarchiephase bei Revolutionen</German>
 		<Italian>Niente anarchia durante le rivoluzioni</Italian>
 		<Spanish>No hay anarqu&#237;a por las revoluciones</Spanish>
@@ -55,8 +55,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_CHI2</Tag>
 		<English>1.5X Melee and Gunpowder units train speed</English>
-		<French>1.5X Vitesse d'entraînement des unités de combat rapproché et équipées d'armes à feu</French>
-		<German>1,5x schnellere Ausbildung von Nahkampf- und Schießpulver-Einheiten</German>
+		<French>1.5X Vitesse d'entra&#238;nement des unit&#233;s de combat rapproch&#233; et &#233;quip&#233;es d'armes &#224; feu</French>
+		<German>1,5x schnellere Ausbildung von Nahkampf- und Schie&#223;pulver-Einheiten</German>
 		<Italian>Velocit&#224; di addestramento 1,5X per le unit&#224; da mischia e con armi da fuoco</Italian>
 		<Spanish>Velocidad de entrenamiento de unidades de cuerpo a cuerpo y con armas de p&#243;lvora multiplicada x1,5</Spanish>
 	</TEXT>
@@ -71,8 +71,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_GRE2</Tag>
 		<English>+150% Great People birth rate until the end of the Middle Ages</English>
-		<French>+150 % Taux de natalité des personnages illustres jusqu'à la fin du Moyen Age</French>
-		<German>+150% Geburtenrate von Großen Persönlichkeiten bis zum Ende des Mittelalters</German>
+		<French>+150 % Taux de natalit&#233; des personnages illustres jusqu'&#224; la fin du Moyen Age</French>
+		<German>+150% Geburtenrate von Gro&#223;en Pers&#246;nlichkeiten bis zum Ende des Mittelalters</German>
 		<Italian>+150% tasso di natalit&#224; dei Grandi Personaggi fino alla fine del Medioevo</Italian>
 		<Spanish>+100% a la tasa de natalidad de grandes personajes hasta el final de la Edad Media</Spanish>
 	</TEXT>
@@ -87,8 +87,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_PER2</Tag>
 		<English>+2 additional Stability Points for each city conquered</English>
-		<French>+2 points de stabilité par ville conquise</French>
-		<German>+2 zusätzliche Stabilitätspunkte für jede eroberte Stadt</German>
+		<French>+2 points de stabilit&#233; par ville conquise</French>
+		<German>+2 zus&#228;tzliche Stabilit&#228;tspunkte f&#252;r jede eroberte Stadt</German>
 		<Italian>+2 punti stabilit&#224; addizionali per ogni citt&#224; conquistata</Italian>
 		<Spanish>+2 puntos de estabilidad adicionales por cada ciudad conquistada</Spanish>
 	</TEXT>
@@ -103,8 +103,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_ROM2</Tag>
 		<English>Roads within Roman borders allow 4X unit movement instead of 2X</English>
-		<French>Les routes à l'intérieur des frontières romaines permettent aux unités un mouvement 4X au lieu de 2X.</French>
-		<German>4x statt 2x Einheitenfortbewegung auf Straßen innerhalb der römischen Grenzen</German>
+		<French>Les routes &#224; l'int&#233;rieur des fronti&#232;res romaines permettent aux unit&#233;s un mouvement 4X au lieu de 2X.</French>
+		<German>4x statt 2x Einheitenfortbewegung auf Stra&#223;en innerhalb der r&#246;mischen Grenzen</German>
 		<Italian>Le strade all'interno dei confini romani permettono movimento delle unit&#224; 4X invece di 2X</Italian>
 		<Spanish>Las carreteras dentro de las fronteras romanas permiten un movimiento de unidades multiplicado x4 en lugar de x2</Spanish>
 	</TEXT>
@@ -119,8 +119,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_JAP2</Tag>
 		<English>All military land units have a bonus in city defending</English>
-		<French>Toutes les unités terrestres ont un bonus de défense des villes</French>
-		<German>Stadtverteidigungsbonus für alle militärischen Landeinheiten</German>
+		<French>Toutes les unit&#233;s terrestres ont un bonus de d&#233;fense des villes</French>
+		<German>Stadtverteidigungsbonus f&#252;r alle milit&#228;rischen Landeinheiten</German>
 		<Italian>Tutte le unit&#224; militari terrestri hanno un bonus in difesa delle citt&#224;</Italian>
 		<Spanish>Todas las unidades militares terrestres tienen una bonificaci&#243;n al defender ciudades</Spanish>
 	</TEXT>
@@ -135,15 +135,15 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_ARA2</Tag>
 		<English>State religion spreads with temples and cathedrals to conquered cities</English>
-		<French>La religion d'état se répand dans les petits et grands lieux de culte pour conquérir les villes</French>
-		<German>Ausbreitung der Staatsreligion in eroberten Städten durch Tempel und Kathedralen</German>
+		<French>La religion d'&#233;tat se r&#233;pand dans les petits et grands lieux de culte pour conqu&#233;rir les villes</French>
+		<German>Ausbreitung der Staatsreligion in eroberten St&#228;dten durch Tempel und Kathedralen</German>
 		<Italian>La religione di stato si diffonde con templi e cattedrali nelle citt&#224; conquistate</Italian>
 		<Spanish>La religi&#243;n oficial se propaga con los templos y catedrales a las ciudades conquistadas</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_SPA</Tag>
 		<English>The Power of Discovery:</English>
-		<French>Le Pouvoir de la Découverte :</French>
+		<French>Le Pouvoir de la D&#233;couverte :</French>
 		<German>Die Macht der Entdeckungen:</German>
 		<Italian>Il potere della scoperta:</Italian>
 		<Spanish>El poder del descubrimiento:</Spanish>
@@ -151,8 +151,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_SPA2</Tag>
 		<English>Naval units receive +2 movement points</English>
-		<French>Les unités navales reçoivent +2 points de mouvement</French>
-		<German>2 zusätzliche Fortbewegungspunkte für Marineeinheiten</German>
+		<French>Les unit&#233;s navales re&#231;oivent +2 points de mouvement</French>
+		<German>2 zus&#228;tzliche Fortbewegungspunkte f&#252;r Marineeinheiten</German>
 		<Italian>Le unit&#224; navali ricevono +2 punti di movimento</Italian>
 		<Spanish>Las unidades navales nuevas reciben +2 puntos de movimiento</Spanish>
 	</TEXT>
@@ -169,22 +169,22 @@
 		<English>Other civilizations have a friendlier attitude</English>
 		<French>Les autres civilisations ont une attitude plus amicale</French>
 		<German>Freundlichere Haltung seitens anderer Zivilisationen</German>
-		<Italian>Le altre civilt&#224; hanno un atteggiamento più amichevole</Italian>
+		<Italian>Le altre civilt&#224; hanno un atteggiamento pi&#249; amichevole</Italian>
 		<Spanish>Las dem&#225;s civilizaciones mantienen una actitud m&#225;s amistosa</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_ENG</Tag>
 		<English>The Power of the Royal Navy:</English>
 		<French>Le Pouvoir de la Royal Navy :</French>
-		<German>Die Macht der Königlichen Marine:</German>
+		<German>Die Macht der K&#246;niglichen Marine:</German>
 		<Italian>Il potere della marina reale:</Italian>
 		<Spanish>El poder de la Royal Navy:</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_ENG2</Tag>
 		<English>Naval units have 2 extra first strike chances</English>
-		<French>Les unités navales ont 2 chances de première attaque supplémentaires</French>
-		<German>2 zusätzliche Erstangriffschancen für Marineeinheiten</German>
+		<French>Les unit&#233;s navales ont 2 chances de premi&#232;re attaque suppl&#233;mentaires</French>
+		<German>2 zus&#228;tzliche Erstangriffschancen f&#252;r Marineeinheiten</German>
 		<Italian>Le unit&#224; navali hanno 2 possibilit&#224; di Attacchi improvvisi supplementari</Italian>
 		<Spanish>Las unidades navales tienen 2 posibilidades adicionales de ataque de iniciativa</Spanish>
 	</TEXT>
@@ -199,15 +199,15 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_GER2</Tag>
 		<English>Free unit upgrades after the discovery of Industrialism</English>
-		<French>Les unités gratuites s'améliorent après la découverte de l'Industrialisation</French>
-		<German>Freie Einheitenbeförderungen nach der Erforschung der Industrialisierung</German>
+		<French>Les unit&#233;s gratuites s'am&#233;liorent apr&#232;s la d&#233;couverte de l'Industrialisation</French>
+		<German>Freie Einheitenbef&#246;rderungen nach der Erforschung der Industrialisierung</German>
 		<Italian>Aggiornamenti gratuiti per le unit&#224; dopo la scoperta dell'industrialismo</Italian>
 		<Spanish>Modernizaci&#243;n de unidades gratuita tras el descubrimiento del Industrialismo</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_RUS</Tag>
 		<English>The Power of General Winter:</English>
-		<French>Le Pouvoir du Général Hiver :</French>
+		<French>Le Pouvoir du G&#233;n&#233;ral Hiver :</French>
 		<German>Die Macht von "General Winter":</German>
 		<Italian>Il potere del Generale Inverno:</Italian>
 		<Spanish>El poder del General Invierno:</Spanish>
@@ -215,8 +215,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_RUS2</Tag>
 		<English>Enemy units in Russia take damage every turn</English>
-		<French>Les unités ennemies en Russie subissent des dommages à chaque tour</French>
-		<German>Schaden in jeder Runde für feindliche Einheiten in Russland</German>
+		<French>Les unit&#233;s ennemies en Russie subissent des dommages &#224; chaque tour</French>
+		<German>Schaden in jeder Runde f&#252;r feindliche Einheiten in Russland</German>
 		<Italian>Le unit&#224; nemiche in Russia subiscono danni a ogni turno</Italian>
 		<Spanish>Las unidades enemigas en Rusia sufren da&#241;os cada turno</Spanish>
 	</TEXT>
@@ -232,7 +232,7 @@
 		<Tag>TXT_KEY_UP_MAL2</Tag>
 		<English>+1 trade in every land plot</English>
 		<French>+1 commerce sur toutes les cases de terre</French>
-		<German>+1 Handel auf jedem Land-Geländefeld</German>
+		<German>+1 Handel auf jedem Land-Gel&#228;ndefeld</German>
 		<Italian>+1 commercio in ogni casella di terra</Italian>
 		<Spanish>+1 intercambio en cada casilla de tierra</Spanish>
 	</TEXT>
@@ -248,7 +248,7 @@
 		<Tag>TXT_KEY_UP_INC2</Tag>
 		<English>Mountains produce 2 food and 1 hammer</English>
 		<French>Les montagnes produisent 2 de nourriture et 1 marteau</French>
-		<German>Berge gewähren 2 Nahrung und 1 Hammer</German>
+		<German>Berge gew&#228;hren 2 Nahrung und 1 Hammer</German>
 		<Italian>Le montagne producono 2 cibo e 1 scudo</Italian>
 		<Spanish>Las monta&#241;as producen 2 alimentos y 1 martillo</Spanish>
 	</TEXT>
@@ -263,8 +263,8 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_MON2</Tag>
 		<English>Any razed city makes nearby enemy cities surrender if approached</English>
-		<French>Chaque ville rasée entraîne la reddition des villes ennemies voisines si elles sont approchées</French>
-		<German>Kapitulation umliegender feindlicher Städte durch jede zerstörte Stadt bei Annäherung</German>
+		<French>Chaque ville ras&#233;e entra&#238;ne la reddition des villes ennemies voisines si elles sont approch&#233;es</French>
+		<German>Kapitulation umliegender feindlicher St&#228;dte durch jede zerst&#246;rte Stadt bei Ann&#228;herung</German>
 		<Italian>Ogni citt&#224; distrutta fa s&#236; che le citt&#224; nemiche vicine si arrendano, se avvicinate</Italian>
 		<Spanish>Una ciudad arrasada provoca que las ciudades enemigas cercanas se rindan al aproximarse</Spanish>
 	</TEXT>
@@ -279,15 +279,15 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_AZT2</Tag>
 		<English>Military units can enslave defeated enemy units</English>
-		<French>Les unités militaires peuvent asservir les unités ennemies vaincues</French>
-		<German>Versklavung besiegter feindlicher Einheiten durch Militäreinheiten</German>
+		<French>Les unit&#233;s militaires peuvent asservir les unit&#233;s ennemies vaincues</French>
+		<German>Versklavung besiegter feindlicher Einheiten durch Milit&#228;reinheiten</German>
 		<Italian>Le unit&#224; militari possono schiavizzare le unit&#224; nemiche sconfitte</Italian>
 		<Spanish>Las unidades militares pueden esclavizar a las unidades enemigas derrotadas</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_AME</Tag>
 		<English>The Power of the American Dream:</English>
-		<French>Le Pouvoir du Rêve Américain :</French>
+		<French>Le Pouvoir du R&#234;ve Am&#233;ricain :</French>
 		<German>Die Macht des Amerikanischen Traums:</German>
 		<Italian>Il potere del sogno americano:</Italian>
 		<Spanish>El poder del sue&#241;o americano:</Spanish>
@@ -295,56 +295,56 @@
 	<TEXT>
 		<Tag>TXT_KEY_UP_AME2</Tag>
 		<English>Population migrates from other civilizations to American cities</English>
-		<French>Les populations des autres civilisations migrent vers les villes américaines</French>
-		<German>Einwanderung der Bevölkerung anderer Zivilisationen in amerikanische Städte</German>
+		<French>Les populations des autres civilisations migrent vers les villes am&#233;ricaines</French>
+		<German>Einwanderung der Bev&#246;lkerung anderer Zivilisationen in amerikanische St&#228;dte</German>
 		<Italian>La popolazione migra dalle altre civilt&#224; nelle citt&#224; americane</Italian>
 		<Spanish>La poblaci&#243;n emigra de otras civilizaciones a las ciudades estadounidenses</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_EMIGRATION</Tag>
 		<English>A part of our population is emigrating to America!</English>
-		<French>Une partie de notre population émigre en Amérique !</French>
-		<German>Ein Teil unserer Bevölkerung wandert nach Amerika aus!</German>
+		<French>Une partie de notre population &#233;migre en Am&#233;rique !</French>
+		<German>Ein Teil unserer Bev&#246;lkerung wandert nach Amerika aus!</German>
 		<Italian>Parte della nostra popolazione emigra in America!</Italian>
-		<Spanish>¡Parte de nuestra poblaci&#243;n est&#225; emigrando a Estados Unidos!</Spanish>
+		<Spanish>&#161;Parte de nuestra poblaci&#243;n est&#225; emigrando a Estados Unidos!</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_IMMIGRATION</Tag>
 		<English>Our population is growing due to immigrants from the Old World!</English>
-		<French>Notre population augmente grâce aux immigrants du Vieux Monde !</French>
-		<German>Wir profitieren von einem Bevölkerungszuwachs durch Einwanderer aus der Alten Welt!</German>
+		<French>Notre population augmente gr&#226;ce aux immigrants du Vieux Monde !</French>
+		<German>Wir profitieren von einem Bev&#246;lkerungszuwachs durch Einwanderer aus der Alten Welt!</German>
 		<Italian>La nostra popolazione sta crescendo grazie agli immigranti dal vecchio mondo!</Italian>
-		<Spanish>¡Nuestra poblaci&#243;n est&#225; creciendo como consecuencia de la inmigraci&#243;n procedente del Viejo Mundo!</Spanish>
+		<Spanish>&#161;Nuestra poblaci&#243;n est&#225; creciendo como consecuencia de la inmigraci&#243;n procedente del Viejo Mundo!</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_ENSLAVE_WIN</Tag>
 		<English>An enemy unit has been enslaved!</English>
-		<French>Une unité ennemie a été asservie !</French>
+		<French>Une unit&#233; ennemie a &#233;t&#233; asservie !</French>
 		<German>Eine feindliche Einheit wurde versklavt!</German>
 		<Italian>Un'unit&#224; nemica &#232; stata schiavizzata!</Italian>
-		<Spanish>¡Una unidad enemiga ha sido esclavizada!</Spanish>
+		<Spanish>&#161;Una unidad enemiga ha sido esclavizada!</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_ENSLAVE_LOSE</Tag>
 		<English>Your unit has been enslaved!</English>
-		<French>Votre unité a été asservie !</French>
+		<French>Votre unit&#233; a &#233;t&#233; asservie !</French>
 		<German>Eure Einheit wurde versklavt!</German>
 		<Italian>La tua unit&#224; &#232; stata schiavizzata!</Italian>
-		<Spanish>¡Tu unidad ha sido esclavizada!</Spanish>
+		<Spanish>&#161;Tu unidad ha sido esclavizada!</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_TERROR1</Tag>
 		<English>Citizens of</English>
 		<French>Les citoyens de</French>
-		<German>Die Bürger von</German>
+		<German>Die B&#252;rger von</German>
 		<Italian>I cittadini di</Italian>
 		<Spanish>Los ciudadanos de</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UP_TERROR2</Tag>
 		<English>fear the same fate of their neighbour inhabitants and surrender!</English>
-		<French>craignent de subir le même sort que leurs voisins et se rendent !</French>
-		<German>fürchten, dass sie dasselbe Schicksal ereilt wie ihre Nachbarn, und kapitulieren!</German>
+		<French>craignent de subir le m&#234;me sort que leurs voisins et se rendent !</French>
+		<German>f&#252;rchten, dass sie dasselbe Schicksal ereilt wie ihre Nachbarn, und kapitulieren!</German>
 		<Italian>temono di subire lo stesso fato dei vicini e si arrendono!</Italian>
 		<Spanish>temen sufrir el mismo destino que sus vecinos y se rinden.</Spanish>
 	</TEXT>

@@ -1297,6 +1297,13 @@ public:
 
 	CvCivicInfo();
 	virtual ~CvCivicInfo();
+	std::wstring getCivilizationDescription(int iCivilization) const;
+	std::string getCivilizationButton(int iCivilization) const;
+	bool isPharaonicVariant(int iCivilization) const;
+	bool isDivineKingshipVariant(int iCivilization) const;
+	bool isRomanRepublicVariant(int iCivilization) const;
+	bool isRomanLegionsVariant(int iCivilization) const;
+	int getCivilizationUpkeep(int iCivilization) const;
 
 	int getCivicOptionType() const;				// Exposed to Python					
 	int getAnarchyLength() const;				// Exposed to Python

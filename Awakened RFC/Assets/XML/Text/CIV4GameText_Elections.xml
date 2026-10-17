@@ -49,6 +49,14 @@
     <Spanish>The electorate has entrusted its freedom to one exceptionally trustworthy individual. Further elections may confirm this assessment.</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_FEUDAL_RETINUES</Tag>
+    <English>The voters have pledged military service from their estates. Every worked farm must support the muster; the turnips have requested an exemption.</English>
+    <French>Les &#233;lecteurs ont promis le service militaire de leurs domaines. Chaque ferme exploit&#233;e doit soutenir la lev&#233;e ; les navets ont demand&#233; une exemption.</French>
+    <German>Die W&#228;hler haben den Kriegsdienst ihrer G&#252;ter zugesagt. Jeder bewirtschaftete Bauernhof soll das Aufgebot versorgen; die R&#252;ben beantragen eine Befreiung.</German>
+    <Italian>Gli elettori hanno promesso il servizio militare delle loro terre. Ogni fattoria lavorata deve sostenere la leva; le rape hanno chiesto un&#8217;esenzione.</Italian>
+    <Spanish>Los votantes han comprometido el servicio militar de sus tierras. Cada granja trabajada debe sostener la leva; los nabos han solicitado una exenci&#243;n.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_RFCMP_ELECTION_GOD_STATE</Tag>
     <English>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</English>
     <French>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</French>
@@ -57,28 +65,20 @@
     <Spanish>The voters have chosen a holy mission for the nation. The distinction between cabinet meetings and religious services is becoming ceremonial.</Spanish>
   </TEXT>
   <TEXT>
-    <Tag>TXT_KEY_RFCMP_ELECTION_KNIGHTHOOD</Tag>
-    <English>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</English>
-    <French>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</French>
-    <German>Die W&#228;hler verlangen Ritter, Ehre und pr&#228;chtige Pferde. Die Staatskasse fragt, ob gew&#246;hnliche Pferde auch gen&#252;gen w&#252;rden.</German>
-    <Italian>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</Italian>
-    <Spanish>The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.</Spanish>
-  </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_RFCMP_ELECTION_MILITIA</Tag>
-    <English>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</English>
-    <French>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</French>
-    <German>Das Volk will seine H&#228;user pers&#246;nlich verteidigen. Die Ausbildung beginnt nach der Ernte; jeder bringe etwas Spitzes mit.</German>
-    <Italian>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</Italian>
-    <Spanish>The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.</Spanish>
-  </TEXT>
-  <TEXT>
     <Tag>TXT_KEY_RFCMP_ELECTION_NATIONALISM</Tag>
     <English>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</English>
     <French>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</French>
     <German>Die Nation hat entschieden, die Nation an erste Stelle zu setzen. Andere Nationen d&#252;rfen diese Entscheidung aus respektvollem Abstand bewundern.</German>
     <Italian>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</Italian>
     <Spanish>The nation has voted to put the nation first. Other nations are invited to admire the decision from a respectful distance.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_ELECTION_NAVAL_WARFARE</Tag>
+    <English>The electorate has voted to rule the waves. The shipyards applaud; the admiralty is checking whether anyone remembered to build transports.</English>
+    <French>Les &#233;lecteurs ont vot&#233; pour dominer les mers. Les chantiers applaudissent ; l&#8217;amiraut&#233; v&#233;rifie si quelqu&#8217;un a pens&#233; aux transports.</French>
+    <German>Die W&#228;hler wollen die Meere beherrschen. Die Werften applaudieren; die Admiralit&#228;t pr&#252;ft, ob jemand an Transportschiffe gedacht hat.</German>
+    <Italian>Gli elettori hanno votato per dominare i mari. I cantieri applaudono; l&#8217;ammiragliato controlla se qualcuno si &#232; ricordato dei trasporti.</Italian>
+    <Spanish>El electorado ha votado por dominar los mares. Los astilleros aplauden; el almirantazgo comprueba si alguien se acord&#243; de los transportes.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_ELECTION_PLANNED_ECONOMY</Tag>

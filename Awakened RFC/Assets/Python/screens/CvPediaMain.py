@@ -10,6 +10,7 @@
 from CvPythonExtensions import *
 import PyHelpers
 import string
+import ModernEraData
 import CvUtil
 import ScreenInput
 
@@ -362,7 +363,7 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 	
 	def placeTechs(self):
 
-		tList = self.getSortedList( gc.getNumTechInfos(), gc.getTechInfo )
+		tList = [entry for entry in self.getSortedList(gc.getNumTechInfos(), gc.getTechInfo) if not gc.getTechInfo(entry[1]).isDisable()]
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, gc.getTechInfo)	
 	
 	
@@ -402,13 +403,13 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 
 	def placePromotions(self):
 
-		tList = self.getSortedList( gc.getNumPromotionInfos(), gc.getPromotionInfo )
+		tList = [entry for entry in self.getSortedList(gc.getNumPromotionInfos(), gc.getPromotionInfo) if gc.getPromotionInfo(entry[1]).getType() not in ModernEraData.RETIRED_PROMOTIONS]
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, gc.getPromotionInfo)
 												
 
 	def placeUnitGroups(self):
 
-		tList = self.getSortedList( gc.getNumUnitCombatInfos(), gc.getUnitCombatInfo )
+		tList = [entry for entry in self.getSortedList(gc.getNumUnitCombatInfos(), gc.getUnitCombatInfo) if gc.getUnitCombatInfo(entry[1]).getType() not in ("UNITCOMBAT_AIR", "UNITCOMBAT_HELICOPTER")]
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, gc.getUnitCombatInfo)
 									
 
@@ -436,13 +437,15 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
 							
 	def placeCivics(self):
 
-		tList = self.getSortedList( gc.getNumCivicInfos(), gc.getCivicInfo )
+		import CivicNames
+		tList = [(CivicNames.description(i), i) for i in range(gc.getNumCivicInfos())]
+		tList.sort()
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, gc.getCivicInfo)
 
 		
 	def placeProjects(self):
 
-		tList = self.getSortedList( gc.getNumProjectInfos(), gc.getProjectInfo )
+		tList = [entry for entry in self.getSortedList(gc.getNumProjectInfos(), gc.getProjectInfo) if gc.getProjectInfo(entry[1]).getProductionCost() >= 0]
 		self.displayTopics(tList, WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, gc.getProjectInfo)
 
 	def placeTerrains(self):
@@ -527,6 +530,8 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
                         tList.pop(7) #peak
                         pass                  
                     
+                if widgeyType == WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT:
+                        tList = [entry for entry in tList if gc.getUnitInfo(entry[1]).getType() not in ModernEraData.RETIRED_UNITS]
                 tList.sort()
                 #Rhye - end
 
@@ -555,7 +560,11 @@ class CvPediaMain( CvPediaScreen.CvPediaScreen ):
                                 if iRow >= iNumRows:
                                         iNumRows += 1
                                         screen.appendTableRow(self.SUBLIST_ID)
-                                screen.setTableText(self.SUBLIST_ID, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", buttonType(item[1]).getButton(), widgeyType, item[1], 1, CvUtil.FONT_LEFT_JUSTIFY)
+                                icon = buttonType(item[1]).getButton()
+                                if widgeyType == WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC:
+                                    import CivicNames
+                                    icon = CivicNames.button(item[1])
+                                screen.setTableText(self.SUBLIST_ID, iColumn, iRow, u"<font=3>" + item[0] + u"</font>", icon, widgeyType, item[1], 1, CvUtil.FONT_LEFT_JUSTIFY)
                                 iCounter += 1
                         #Rhye - end
 

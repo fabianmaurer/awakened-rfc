@@ -1,6 +1,7 @@
 // selectionGroup.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvGlobals.h"
 #include "CvSelectionGroup.h"
 #include "CvGameAI.h"
@@ -185,7 +186,7 @@ void CvSelectionGroup::doTurn()
 
 		if (AI_isControlled())
 		{
-			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0)))
+			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2) > 0)))
 			{
 				setForceUpdate(true);
 			}
@@ -205,7 +206,7 @@ void CvSelectionGroup::doTurn()
 					}
 				}
 
-				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0)
+				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2) > 0)
 				{
 					clearMissionQueue();
 				}
@@ -253,6 +254,7 @@ void CvSelectionGroup::doTurn()
 
 bool CvSelectionGroup::showMoves() const
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) return false;
 	if (GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS) || GC.getGameINLINE().isSimultaneousTeamTurns())
 	{
 		return false;
@@ -502,7 +504,7 @@ void CvSelectionGroup::autoMission()
 					}
 				}
 
-				if (bVisibleHuman && GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 1) > 0)
+				if (bVisibleHuman && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 1) > 0)
 				{
 					clearMissionQueue();
 				}
@@ -3496,7 +3498,7 @@ void CvSelectionGroup::setMissionTimer(int iNewValue)
 {
 	FAssert(getOwnerINLINE() != NO_PLAYER);
 
-	m_iMissionTimer = iNewValue;
+	m_iMissionTimer = GC.getGameINLINE().isObserverAutoPlay() ? 0 : iNewValue;
 	FAssert(getMissionTimer() >= 0);
 }
 
@@ -3759,6 +3761,7 @@ CvPlot* CvSelectionGroup::getPathEndTurnPlot() const
 
 bool CvSelectionGroup::generatePath( const CvPlot* pFromPlot, const CvPlot* pToPlot, int iFlags, bool bReuse, int* piPathTurns) const
 {
+	OBSERVER_PERFORMANCE("unitAI.generatePath");
 	PROFILE("CvSelectionGroup::generatePath()")
 
 	FAStarNode* pNode;

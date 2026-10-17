@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -8,7 +8,7 @@
 		<Tag>TXT_KEY_CIV_AMERICA_ADJECTIVE</Tag>
 		<English>American</English>
 		<French>
-			<Text>américain:américaine:américains:américaines</Text>
+			<Text>am&#233;ricain:am&#233;ricaine:am&#233;ricains:am&#233;ricaines</Text>
 			<Gender>Male:Female:Male:Female</Gender>
 			<Plural>0:0:1:1</Plural>
 		</French>
@@ -56,7 +56,7 @@
 		<Tag>TXT_KEY_CIV_AZTEC_ADJECTIVE</Tag>
 		<English>Aztec</English>
 		<French>
-			<Text>aztèque:aztèque:aztèques:aztèques</Text>
+			<Text>azt&#232;que:azt&#232;que:azt&#232;ques:azt&#232;ques</Text>
 			<Gender>Male:Female:Male:Female</Gender>
 			<Plural>0:0:1:1</Plural>
 		</French>
@@ -104,7 +104,7 @@
 		<Tag>TXT_KEY_CIV_EGYPT_ADJECTIVE</Tag>
 		<English>Egyptian</English>
 		<French>
-			<Text>égyptien:égyptienne:égyptiens:égyptiennes</Text>
+			<Text>&#233;gyptien:&#233;gyptienne:&#233;gyptiens:&#233;gyptiennes</Text>
 			<Gender>Male:Female:Male:Female</Gender>
 			<Plural>0:0:1:1</Plural>
 		</French>
@@ -152,7 +152,7 @@
 		<Tag>TXT_KEY_CIV_FRANCE_ADJECTIVE</Tag>
 		<English>French</English>
 		<French>
-			<Text>français:française:français:françaises</Text>
+			<Text>fran&#231;ais:fran&#231;aise:fran&#231;ais:fran&#231;aises</Text>
 			<Gender>Male:Female:Male:Female</Gender>
 			<Plural>0:0:1:1</Plural>
 		</French>
@@ -610,7 +610,7 @@
 			<Plural>0:0:1:1</Plural>
 		</French>
 		<German>
-			<Text>Zululändisch:zululändischen:zululändische</Text>
+			<Text>Zulul&#228;ndisch:zulul&#228;ndischen:zulul&#228;ndische</Text>
 			<Gender>Neuter:Neuter:Neuter</Gender>
 			<Plural>0:0:0</Plural>
 		</German>

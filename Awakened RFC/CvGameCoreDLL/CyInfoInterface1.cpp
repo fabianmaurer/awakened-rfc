@@ -368,6 +368,11 @@ void CyInfoPythonInterface1()
 		;
 
 	python::class_<CvCivicInfo, python::bases<CvInfoBase> >("CvCivicInfo")
+		.def("getCivilizationDescription", &CvCivicInfo::getCivilizationDescription, "unicode (int civilization)")
+		.def("getCivilizationButton", &CvCivicInfo::getCivilizationButton, "str (int civilization)")
+		.def("isPharaonicVariant", &CvCivicInfo::isPharaonicVariant, "bool (int civilization)")
+		.def("isDivineKingshipVariant", &CvCivicInfo::isDivineKingshipVariant, "bool (int civilization)")
+		.def("getCivilizationUpkeep", &CvCivicInfo::getCivilizationUpkeep, "int (int civilization)")
 
 		.def("getCivicOptionType", &CvCivicInfo::getCivicOptionType, "int ()")
 		.def("getAnarchyLength", &CvCivicInfo::getAnarchyLength, "int ()")

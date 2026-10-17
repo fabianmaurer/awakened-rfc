@@ -345,6 +345,12 @@ public:
 	int getTradeYield(int /*YieldTypes*/ eIndex);
 	int totalTradeModifier();
 
+	int getLocalFoodYield();
+	int getFoodTradeImports();
+	int getFoodTradeExports();
+	int getFoodExportLimit();
+	int getTradeInfrastructureEfficiency(CyCity* city);
+	int getFoodTradeWith(CyCity* city);
 	int calculateTradeProfit(CyCity* pCity);
 	int calculateTradeYield(int /*YieldTypes*/ eIndex, int iTradeProfit);
 

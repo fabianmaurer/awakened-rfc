@@ -1,6 +1,7 @@
 // team.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvDefines.h"
 #include "CvGameCoreUtils.h"
@@ -863,6 +864,7 @@ void CvTeam::processBuilding(BuildingTypes eBuilding, int iChange)
 
 void CvTeam::doTurn()
 {
+	OBSERVER_PERFORMANCE("CvTeam::doTurn");
 	PROFILE("CvTeam::doTurn()")
 
 	int iCount;
@@ -2669,7 +2671,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}
 	}
 
-	if (bAstronomy) {
+	if (bAstronomy && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
 		for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
 			if (GET_TEAM((TeamTypes)iI).isHasTech(eTech))
@@ -2711,6 +2713,14 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	//Rhye - end
 
 
+
+	// Each repeatable field has its own exponential cost. Use integer math
+	// and a bounded cost so research-rate and UI arithmetic cannot overflow.
+	if (GC.getTechInfo(eTech).isRepeat())
+	{
+		for (int iLevel = 0; iLevel < getTechCount(eTech) && iCost < 2000000; ++iLevel)
+			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * 135 + 99) / 100));
+	}
 
 	return std::max(1, iCost);
 }
@@ -4671,7 +4681,12 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 						{
 							if (pLoopCity->getNumBuilding(eIndex) > 0)
 							{
-								pLoopCity->processBuilding(eIndex, ((isObsoleteBuilding(eIndex)) ? -pLoopCity->getNumBuilding(eIndex) : pLoopCity->getNumBuilding(eIndex)), true);
+								const CvPlayer& owner = GET_PLAYER((PlayerTypes)iI);
+								const bool bProtectedObelisk = eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+									owner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+									owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"));
+								if (!bProtectedObelisk)
+									pLoopCity->processBuilding(eIndex, ((isObsoleteBuilding(eIndex)) ? -pLoopCity->getNumBuilding(eIndex) : pLoopCity->getNumBuilding(eIndex)), true);
 							}
 						}
 					}
@@ -5139,6 +5154,14 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		}
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
+		// A capped military field must stop consuming research after level 15.
+		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)
+		{
+			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+				if (GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())
+					GET_PLAYER((PlayerTypes)iPlayer).popResearch(eIndex);
+		}
+
 
 		// Research, trading and scenario grants all upgrade the team's conversion.
 		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_CURRENCY"))

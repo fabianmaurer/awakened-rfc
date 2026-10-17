@@ -1,5 +1,6 @@
 """Generate the election announcements, retaining all five Civ4 languages."""
 from pathlib import Path
+from military_civic_text import ENTRIES
 from xml.sax.saxutils import escape
 
 ANNOUNCEMENTS = {
@@ -36,12 +37,10 @@ ANNOUNCEMENTS = {
     'WARRIOR_SOCIETY': (
         'The voters demand a return to traditional values: courage, strength, and settling policy disagreements with a club.',
         'Die Wähler verlangen traditionelle Werte: Mut, Stärke und die Klärung politischer Meinungsverschiedenheiten mit einer Keule.'),
-    'MILITIA': (
-        'The people have voted to defend their homes personally. Training begins after the harvest; everyone should bring something pointy.',
-        'Das Volk will seine Häuser persönlich verteidigen. Die Ausbildung beginnt nach der Ernte; jeder bringe etwas Spitzes mit.'),
-    'KNIGHTHOOD': (
-        'The electorate has demanded knights, honor, and magnificent horses. The treasury has asked whether ordinary horses would suffice.',
-        'Die Wähler verlangen Ritter, Ehre und prächtige Pferde. Die Staatskasse fragt, ob gewöhnliche Pferde auch genügen würden.'),
+    'NAVAL_WARFARE': (ENTRIES['TXT_KEY_RFCMP_ELECTION_NAVAL_WARFARE']['English'],
+        ENTRIES['TXT_KEY_RFCMP_ELECTION_NAVAL_WARFARE']['German']),
+    'FEUDAL_RETINUES': (ENTRIES['TXT_KEY_RFCMP_ELECTION_FEUDAL_RETINUES']['English'],
+        ENTRIES['TXT_KEY_RFCMP_ELECTION_FEUDAL_RETINUES']['German']),
     'PROFESSIONAL_ARMY': (
         'National defense will be entrusted to trained professionals. The public is relieved; the payroll department is less enthusiastic.',
         'Die Landesverteidigung wird ausgebildeten Profis anvertraut. Die Bevölkerung ist erleichtert; die Besoldungsstelle zeigt weniger Begeisterung.'),
@@ -75,7 +74,8 @@ def main():
     for key, en, de in entries:
         lines += ['  <TEXT>', '    <Tag>' + key + '</Tag>']
         for lang in ('English', 'French', 'German', 'Italian', 'Spanish'):
-            value = escape(de if lang == 'German' else en).encode('ascii', 'xmlcharrefreplace').decode('ascii')
+            value = ENTRIES.get(key, {}).get(lang, de if lang == 'German' else en)
+            value = escape(value).encode('ascii', 'xmlcharrefreplace').decode('ascii')
             lines.append('    <' + lang + '>' + value + '</' + lang + '>')
         lines.append('  </TEXT>')
     lines.append('</Civ4GameText>')

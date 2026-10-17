@@ -198,7 +198,7 @@ class CvReligionScreen:
                                 #RFCMP
                                 if (gc.getPlayer(30).getCivilizationType() == 4 and i != 2):  #late start condition (2 == Islam)
                                         szFounded = localText.getText("TXT_KEY_AGE_BRONZE", ())
-                                elif (not gc.getPlayer(0).isPlayable() and i != 2 and i != 1):  #late start condition 800BC (1 == Christianity)
+                                elif (gc.getGame().getStartTurn() != 0 and i != 2 and i != 1):  #late start condition 800BC (1 == Christianity)
                                         szFounded = localText.getText("TXT_KEY_AGE_BRONZE", ())
                                 else:
                                 

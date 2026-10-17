@@ -8,6 +8,9 @@
 #include "CvGameCoreUtils.h"
 #include "CvMap.h"
 #include "CvPlot.h"
+#include "CvCity.h"
+#include "CvSelectionGroup.h"
+#include "CvUnit.h"
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvGameAI.h"
 #include "CvInfos.h"
@@ -2227,9 +2230,122 @@ DenialTypes CvTeamAI::AI_declareWarTrade(TeamTypes eWarTeam, TeamTypes eTeam, bo
 }
 
 
+// Geographic distance only: no hypothetical declarations of war, unrevealed
+// territory, or trade-route income. Closed borders stay closed except for the
+// prospective partner. Planned enemy cities may be endpoints, never corridors.
+static void militaryAccessDistances(TeamTypes eUs, TeamTypes eAccess, bool bAllowAccess, CvPlot* pStart,
+                                   bool bWater, std::vector<int>& distances)
+{
+	CvMap& map = GC.getMapINLINE();
+	distances.assign(map.numPlotsINLINE(), -1);
+	std::vector<CvPlot*> pending;
+	pending.push_back(pStart);
+	distances[map.plotNumINLINE(pStart->getX_INLINE(), pStart->getY_INLINE())] = 0;
+	for (unsigned int i = 0; i < pending.size(); ++i)
+	{
+		CvPlot* pFrom = pending[i];
+		const int iNext = distances[map.plotNumINLINE(pFrom->getX_INLINE(), pFrom->getY_INLINE())] + 1;
+		for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+		{
+			CvPlot* pNext = plotDirection(pFrom->getX_INLINE(), pFrom->getY_INLINE(), (DirectionTypes)iDirection);
+			if (pNext == NULL || pNext->isImpassable() || !pNext->isRevealed(eUs, false))
+				continue;
+			if (pNext->isWater() != bWater && !(bWater && pNext->isCity()))
+				continue;
+			const int iIndex = map.plotNumINLINE(pNext->getX_INLINE(), pNext->getY_INLINE());
+			if (distances[iIndex] != -1)
+				continue;
+			TeamTypes eOwner = pNext->getRevealedTeam(eUs, false);
+			const bool bPass = eOwner == eAccess ? bAllowAccess :
+				(eOwner == NO_TEAM || eOwner == eUs || GET_TEAM(eUs).isFriendlyTerritory(eOwner) ||
+				 GET_TEAM(eUs).isOpenBorders(eOwner) || GET_TEAM(eUs).isAtWar(eOwner));
+			if (!bPass && !(pNext->isCity() && GET_TEAM(eUs).AI_getWarPlan(eOwner) != NO_WARPLAN))
+				continue;
+			distances[iIndex] = iNext;
+			if (bPass)
+				pending.push_back(pNext);
+		}
+	}
+}
+
+bool CvTeamAI::AI_hasMilitaryAccessInterest(TeamTypes eTeam) const
+{
+	PROFILE_FUNC();
+	if (eTeam == NO_TEAM || eTeam == getID() || isAtWar(eTeam))
+		return false;
+
+	std::vector<int> closed, opened;
+	for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; ++iPlayer)
+	{
+		CvPlayerAI& player = GET_PLAYER((PlayerTypes)iPlayer);
+		if (!player.isAlive() || player.getTeam() != getID())
+			continue;
+		CvCity* pCapital = player.getCapitalCity();
+		if (pCapital != NULL)
+		{
+			militaryAccessDistances(getID(), eTeam, false, pCapital->plot(), false, closed);
+			militaryAccessDistances(getID(), eTeam, true, pCapital->plot(), false, opened);
+			for (int iPlot = 0; iPlot < GC.getMapINLINE().numPlotsINLINE(); ++iPlot)
+			{
+				CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(iPlot);
+				if (!pPlot->isCity() || !pPlot->isRevealed(getID(), false) || opened[iPlot] < 0)
+					continue;
+				TeamTypes eOwner = pPlot->getRevealedTeam(getID(), false);
+				if (eOwner == getID() || (eOwner != NO_TEAM && eOwner != eTeam &&
+					(isAtWar(eOwner) || AI_getWarPlan(eOwner) != NO_WARPLAN)))
+				{
+					if (closed[iPlot] < 0 || opened[iPlot] + 3 <= closed[iPlot])
+						return true;
+				}
+			}
+		}
+
+		// Existing mission goals also cover exploration, civilian transit and
+		// naval movement. Access must improve the route from the actual group.
+		int iLoop;
+		for (CvSelectionGroup* pGroup = player.firstSelectionGroup(&iLoop); pGroup != NULL;
+			pGroup = player.nextSelectionGroup(&iLoop))
+		{
+			CvPlot* pGoal = pGroup->AI_getMissionAIPlot();
+			CvUnit* pHead = pGroup->getHeadUnit();
+			if (pGoal == NULL || pHead == NULL || !pGoal->isRevealed(getID(), false) ||
+				(pHead->getDomainType() != DOMAIN_LAND && pHead->getDomainType() != DOMAIN_SEA))
+				continue;
+			// Spies, privateers and unique powers that already allow passage do
+			// not justify a treaty. Wait until other groups approach the border
+			// before doing a route search for their mission.
+			if (pHead->canEnterTerritory(eTeam, true))
+				continue;
+			bool bNearBorder = false;
+			for (int iDX = -2; iDX <= 2 && !bNearBorder; ++iDX)
+			{
+				for (int iDY = -2; iDY <= 2; ++iDY)
+				{
+					CvPlot* pNear = plotXY(pHead->getX_INLINE(), pHead->getY_INLINE(), iDX, iDY);
+					if (pNear != NULL && pNear->isRevealed(getID(), false) &&
+						pNear->getRevealedTeam(getID(), false) == eTeam)
+					{
+						bNearBorder = true;
+						break;
+					}
+				}
+			}
+			if (!bNearBorder)
+				continue;
+			const bool bWater = pHead->getDomainType() == DOMAIN_SEA;
+			militaryAccessDistances(getID(), eTeam, false, pHead->plot(), bWater, closed);
+			militaryAccessDistances(getID(), eTeam, true, pHead->plot(), bWater, opened);
+			const int iGoal = GC.getMapINLINE().plotNumINLINE(pGoal->getX_INLINE(), pGoal->getY_INLINE());
+			if (opened[iGoal] >= 0 && (closed[iGoal] < 0 || opened[iGoal] + 3 <= closed[iGoal]))
+				return true;
+		}
+	}
+	return false;
+}
+
 int CvTeamAI::AI_openBordersTradeVal(TeamTypes eTeam) const
 {
-	return (getNumCities() + GET_TEAM(eTeam).getNumCities());
+	return AI_hasMilitaryAccessInterest(eTeam) ? getNumCities() + GET_TEAM(eTeam).getNumCities() : 0;
 }
 
 
@@ -3620,7 +3736,8 @@ void CvTeamAI::AI_doWar()
 		}
 	}
 	// if no war plans, consider starting one!
-	else if (getAnyWarPlanCount(true) == 0)
+	else if (getAnyWarPlanCount(true) == 0 &&
+		!(getNumMembers() == 1 && GET_PLAYER(getLeaderID()).AI_isRomanCampaignExclusive()))
 	{
 		bool bAggressive = GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI);
 		

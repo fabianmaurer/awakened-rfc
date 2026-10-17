@@ -17,7 +17,7 @@
 			<AnyonePrereqProject>NONE</AnyonePrereqProject>
 			<iMaxGlobalInstances>1</iMaxGlobalInstances>
 			<iMaxTeamInstances>-1</iMaxTeamInstances>
-			<iCost>1500</iCost>
+			<iCost>-1</iCost>
 			<iNukeInterception>0</iNukeInterception>
 			<iTechShare>0</iTechShare>
 			<EveryoneSpecialUnit>NONE</EveryoneSpecialUnit>
@@ -81,7 +81,7 @@
 			<AnyonePrereqProject>PROJECT_MANHATTAN_PROJECT</AnyonePrereqProject>
 			<iMaxGlobalInstances>-1</iMaxGlobalInstances>
 			<iMaxTeamInstances>1</iMaxTeamInstances>
-			<iCost>1000</iCost>
+			<iCost>-1</iCost>
 			<!-- Rhye -->
 			<iNukeInterception>50</iNukeInterception>
 			<iTechShare>0</iTechShare>

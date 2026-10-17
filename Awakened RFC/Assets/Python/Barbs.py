@@ -50,6 +50,7 @@ lCarthage = [58, 39, 86, 0] #814BC
 lGordion = [71, 43, 87, 0] #800BC
 lPalermo = [60, 40, 94-5, 0] #700BC
 lMilan = [59, 47, 94-5, 0] #700BC
+lKaralis = [58, 42, con.i700BC, 0] #Phoenician Sardinia, outside Rome's birth-flip area
 lAugsburg = [60, 49, 94-5, 0] 
 lRusadir = [54, 38, 97, 0] #650BC
 lLyon = [56, 47, 117, 0] #350BC???
@@ -200,11 +201,16 @@ class Barbs:
                         self.spawnUnits( iBarbarian, (81, 37), (87, 45), con.iChariot, 2, iGameTurn, 8-iHandicap, 0, utils.outerInvasion, 0)
 
                 #barbarians in north africa
-                if (iGameTurn >= con.i210BC and iGameTurn < con.i50AD):
-                        self.spawnUnits( iBarbarian, (54, 31), (67, 35), con.iHorseArcher, 1, iGameTurn, 9-iHandicap, 3, utils.outerInvasion, 0)
-                if (iGameTurn >= con.i50AD and iGameTurn < con.i900AD):
-                        self.spawnUnits( iBarbarian, (54, 31), (67, 35), con.iHorseArcher, 2, iGameTurn, 10-iHandicap, 5, utils.outerInvasion, 0)
-                        self.spawnUnits( iBarbarian, (56, 29), (70, 33), con.iCamelArcher, 2 + iHandicap, iGameTurn, 10, 0, utils.outerInvasion, 0)
+                # Frontier raids should be containable by a developed coastal state.
+                # Do not spawn Guilds-strength camel cavalry throughout antiquity.
+                if (iGameTurn >= con.i210BC and iGameTurn < con.i300AD):
+                        self.spawnUnits( iBarbarian, (54, 31), (67, 35), con.iHorseArcher, 1, iGameTurn, 15, 3, utils.outerInvasion, 0)
+                if (iGameTurn >= con.i300AD and iGameTurn < con.i700AD):
+                        # Concentrated late-antique pressure in Tripolitania,
+                        # with recovery time between two-unit raiding groups.
+                        self.spawnUnits( iBarbarian, (60, 31), (70, 35), con.iHorseArcher, 2, iGameTurn, 18, 5, utils.outerInvasion, 0)
+                if (iGameTurn >= con.i700AD and iGameTurn < con.i900AD):
+                        self.spawnUnits( iBarbarian, (54, 31), (67, 35), con.iHorseArcher, 1, iGameTurn, 15, 3, utils.outerInvasion, 0)
                 if (iGameTurn >= con.i900AD and iGameTurn <= con.i1800AD):
                         self.spawnUnits( iBarbarian, (54, 27), (67, 35), con.iCamelArcher, 1, iGameTurn, 8-iHandicap, 4, utils.outerInvasion, 0)
                         
@@ -225,13 +231,14 @@ class Barbs:
                                 self.spawnUnits( iNative, (60, 10), (72, 27), con.iZuluImpi, 3 + iHandicap, iGameTurn, 15, 4, utils.outerInvasion, 1)
                 #west africa
                 if (iGameTurn >= con.i450AD and iGameTurn <= con.i1700AD):
-                        self.spawnUnits( iBarbarian, (48, 26), (65, 37), con.iWarElephant, 2, iGameTurn, 16, 4, utils.outerInvasion, 1)
+                        # Regional infantry raiders replace recurring elephant armies.
+                        self.spawnUnits( iBarbarian, (48, 26), (65, 37), con.iSwordsman, 1, iGameTurn, 16, 4, utils.outerInvasion, 1)
                         self.spawnUnits( iBarbarian, (48, 22), (63, 33), con.iZuluImpi, 2, iGameTurn, 16, 10, utils.outerInvasion, 1)
 
                 #American natives
                 if (iGameTurn >= con.i600AD and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iNativeAmericaDogSoldier, 2 + iHandicap, iGameTurn, 20, 0, utils.outerInvasion, 1)
-                        if (gc.getPlayer(0).isPlayable()):  #late start condition
+                        if (gc.getGame().getStartTurn() == 0):  #late start condition
                                 self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 3, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
                         else:  #late start condition
                                 self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 1, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
@@ -266,13 +273,30 @@ class Barbs:
                 self.foundCity(iBarbarian, lHattusas, "Hattusas", iGameTurn, 1, con.iChariot, 2)
                 self.foundCity(iIndependent, lSamarkand, "Afrasiyab", iGameTurn, 1, con.iArcher, 1)
                 #self.foundCity(iBarbarian, lNineveh, "Nineveh", iGameTurn, 1, -1, -1)
-                #self.foundCity(lGadir, "Qart-Gadir", iGameTurn, 1, -1, -1)
+                if (gc.getGame().getStartTurn() == 0):
+                        # An existing Phoenician port to acquire in Iberia.
+                        # Outside Carthage's birth flips and shared by all contenders.
+                        if (self.foundCity(iIndependent, lGadir, "Gadir", iGameTurn, 2, con.iArcher, 1)):
+                                crabPlot = gc.getMap().plot(50, 40)
+                                if (crabPlot.getOwner() == -1 or crabPlot.getOwner() == iIndependent):
+                                        if (crabPlot.getBonusType(-1) == gc.getInfoTypeForString('BONUS_CRAB') and crabPlot.getImprovementType() == -1):
+                                                crabPlot.setImprovementType(gc.getInfoTypeForString('IMPROVEMENT_FISHING_BOATS'))
                 #self.foundCity(lLepcis, "Lpqy", iGameTurn, 2, -1, -1)
                 #self.foundCity(lCarthage, "Qart-Hadasht", iGameTurn, 2, -1, -1)
                 self.foundCity(iBarbarian, lGordion, "Gordion", iGameTurn, 1, con.iChariot, 1)
                 #self.foundCity(lPalermo, "Ziz", iGameTurn, 2, con.iArcher, 1)
-                if (gc.getPlayer(con.iEgypt).isPlayable()):  #late start 800BC condition (RFCMP)
+                if (gc.getGame().getStartTurn() == 0):  #late start 800BC condition (RFCMP)
                         self.foundCity(iCeltia, lMilan, "Melpum", iGameTurn, 2, con.iArcher, 2)
+                        # An inhabited island to contest, rather than empty land
+                        # for a Roman or Carthaginian settler. Existing ownership
+                        # and nearby cities prevent the normal optional founding.
+                        if (self.foundCity(iIndependent2, lKaralis, "Karalis", iGameTurn, 2, con.iArcher, 1)):
+                                # The small island needs its existing clam bed to
+                                # support an inhabited town without mainland imports.
+                                clamPlot = gc.getMap().plot(57, 42)
+                                if (clamPlot.getOwner() == -1 or clamPlot.getOwner() == iIndependent2):
+                                        if (clamPlot.getBonusType(-1) == gc.getInfoTypeForString('BONUS_CLAM') and clamPlot.getImprovementType() == -1):
+                                                clamPlot.setImprovementType(gc.getInfoTypeForString('IMPROVEMENT_FISHING_BOATS'))
                 #self.foundCity(iBarbarian, lAugsburg, "Damasia", iGameTurn, 1, -1, -1)
                 #self.foundCity(lRusadir, "Rusadir", iGameTurn, 2, -1, -1)
                 self.foundCity(iCeltia, lLyon, "Lugodunon", iGameTurn, 2, -1, -1)
@@ -378,6 +402,14 @@ class Barbs:
                                 result = plotList[rndNum]
                                 if (result):
                                         self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack)
+                                        # Observe successful scripted groups without another
+                                        # spawn search, unit creation or RNG draw.
+                                        import GameObserver
+                                        GameObserver.record_mechanic('scripted_spawn', iCiv,
+                                                {'unit': iUnitType, 'count': iNumUnits,
+                                                 'x': result[0], 'y': result[1],
+                                                 'region': [tTopLeft[0], tTopLeft[1], tBottomRight[0], tBottomRight[1]],
+                                                 'period': iPeriod})
                                 
 
 

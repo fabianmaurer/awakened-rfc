@@ -4159,7 +4159,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_COMBAT2</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>NONE</TechPrereq>
+			<TechPrereq>TECH_FLIGHT</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<bBlitz>0</bBlitz>
@@ -4226,7 +4226,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_RANGE1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>NONE</TechPrereq>
+			<TechPrereq>TECH_FLIGHT</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<bBlitz>0</bBlitz>
@@ -4293,7 +4293,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>NONE</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>NONE</TechPrereq>
+			<TechPrereq>TECH_FLIGHT</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<bBlitz>0</bBlitz>
@@ -4364,7 +4364,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_INTERCEPTION1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>NONE</TechPrereq>
+			<TechPrereq>TECH_FLIGHT</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<bBlitz>0</bBlitz>
@@ -4435,7 +4435,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_COMBAT3</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>NONE</TechPrereq>
+			<TechPrereq>TECH_FLIGHT</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<bBlitz>0</bBlitz>

@@ -1,6 +1,7 @@
 // playerAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvRandom.h"
 #include "CvGlobals.h"
@@ -179,6 +180,11 @@ void CvPlayerAI::AI_reset(bool bConstructor)
 	m_iCivicTimer = 0;
 	m_iReligionTimer = 0;
 	m_iExtraGoldTarget = 0;
+	m_iRomanCampaignStallTurns = 0;
+	m_bRomanCampaignPreparing = false;
+	m_iRomanCampaignReadinessTurn = -1;
+	m_szRomanCampaignReadinessReason = "not_evaluated";
+	m_aiRomanCampaignReadiness.assign(13, -1);
 
 	for (iI = 0; iI < NUM_UNITAI_TYPES; iI++)
 	{
@@ -297,6 +303,7 @@ int CvPlayerAI::AI_getFlavorValue(FlavorTypes eFlavor) const
 
 void CvPlayerAI::AI_doTurnPre()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnPre");
 	PROFILE_FUNC();
 
 	FAssertMsg(getPersonalityType() != NO_LEADER, "getPersonalityType() is not expected to be equal with NO_LEADER");
@@ -342,6 +349,7 @@ void CvPlayerAI::AI_doTurnPre()
 
 void CvPlayerAI::AI_doTurnPost()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnPost");
 	PROFILE_FUNC();
 
 	if (isHuman())
@@ -373,6 +381,7 @@ void CvPlayerAI::AI_doTurnPost()
 
 void CvPlayerAI::AI_doTurnUnitsPre()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPre");
 	PROFILE_FUNC();
 
 	AI_updateFoundValues();
@@ -401,6 +410,7 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 
 void CvPlayerAI::AI_doTurnUnitsPost()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPost");
 	PROFILE_FUNC();
 
 	CvUnit* pLoopUnit;
@@ -491,7 +501,7 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 							{
 								if ((iExp == 0) || (iExp < (iCityExp + 1) / 2))
 								{
-									if ((calculateUnitCost() > 0) && (AI_getPlotDanger( pLoopUnit->plot(), 2, false) == 0))
+									if ((calculateUnitCost() > 0) && (AI_isPlotDanger( pLoopUnit->plot(), 2, false) == 0))
 									{
 										if ((pLoopUnit->getDomainType() != DOMAIN_LAND) || pLoopUnit->plot()->plotCount(PUF_isMilitaryHappiness, -1, -1, getID()) > 1)
 										{
@@ -847,6 +857,7 @@ void CvPlayerAI::AI_doPeace()
 
 void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_updateFoundValues");
 	PROFILE_FUNC();
 
 	CvArea* pLoopArea;
@@ -893,6 +904,7 @@ void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 
 				if (lResult == -1)
 				{
+					observerPerformanceScope.addWork();
 					iValue = AI_foundValue(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
 				}
 				else
@@ -1048,6 +1060,7 @@ int CvPlayerAI::AI_movementPriority(CvSelectionGroup* pGroup) const
 
 void CvPlayerAI::AI_unitUpdate()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_unitUpdate");
 	PROFILE_FUNC();
 
 	CLLNode<int>* pCurrUnitNode;
@@ -1163,6 +1176,7 @@ void CvPlayerAI::AI_makeAssignWorkDirty()
 
 void CvPlayerAI::AI_assignWorkingPlots()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_assignWorkingPlots");
 	CvCity* pLoopCity;
 	int iLoop;
 
@@ -1206,7 +1220,7 @@ void CvPlayerAI::AI_conquerCity(CvCity* pCity)
 	int iRazeValue;
 	int iI;
 
-	if (canRaze(pCity))
+	if (canRaze(pCity) && !(isRomanRepublic() && isRomanProvince(pCity->getX_INLINE(), pCity->getY_INLINE())))
 	{
 	    iRazeValue = 0;
 		if (GC.getGameINLINE().getElapsedGameTurns() > 20)
@@ -3342,6 +3356,16 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 
 	
 
+	if (AI_isRomanCampaign())
+	{
+		CvCity* pCampaign = AI_romanCampaignTarget();
+		if (pCampaign != NULL && pCampaign->getTeam() == pCity->getTeam())
+		{
+			iValue *= 3;
+			if (pCampaign == pCity) iValue += 100;
+		}
+	}
+
 	if (bRandomize)
 	{
 		//iValue += GC.getGameINLINE().getSorenRandNum(((pCity->getPopulation() / 2) + 1), "AI Target City Value");
@@ -3400,6 +3424,16 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 
 int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
 {
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, false);
+}
+
+bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
+{
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true) > 0;
+}
+
+int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const
+{
 	PROFILE_FUNC();
 
 	CLLNode<IDInfo>* pUnitNode;
@@ -3442,6 +3476,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
 				        }
 				    }
 
+				    if (bAnyDanger && iBorderDanger > 0 && !isHuman() && !pPlot->isCity()) return 1;
 
 					pUnitNode = pLoopPlot->headUnitNode();
 
@@ -3460,6 +3495,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
 								    {
                                         if (!bTestMoves)
                                         {
+                                            if (bAnyDanger) return 1;
                                             iCount++;
                                         }
                                         else
@@ -3468,6 +3504,7 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) con
                                             iDangerRange += ((pLoopPlot->isValidRoute(pLoopUnit)) ? 1 : 0);
                                             if (iDangerRange >= iDistance)
 											{
+												if (bAnyDanger) return 1;
 												iCount++;
 											}
 										}
@@ -3675,7 +3712,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 		if (iGameTurn == startingTurn[getID()] || iGameTurn == startingTurn[getID()] + 1 || iGameTurn == startingTurn[getID()] + 2)
 			return false;
 		if ((GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4 && iGameTurn <= 181+2) || 
-			(!GET_PLAYER((PlayerTypes)EGYPT).isPlayable() && iGameTurn <= 87+2)) //late start condition //RFCMP
+			(GC.getGameINLINE().getStartTurn() != 0 && iGameTurn <= 87+2)) //late start condition //RFCMP
 				return false;
 		//Rhye - end
 		int iNetCommerce = 1 + getCommerceRate(COMMERCE_GOLD) + getCommerceRate(COMMERCE_RESEARCH) + std::max(0, getGoldPerTurn());
@@ -5124,7 +5161,10 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 
 								if (GC.getTechInfo((TechTypes)iI).isRepeat())
 								{
-									iValue /= 10;
+									iValue += GC.getTechInfo((TechTypes)iI).getHappiness() * (200 + 20 * getNumCities());
+									if (iI == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH"))
+										iValue += (GET_TEAM(getTeam()).getAtWarCount(true) > 0 ? 1000 : 400);
+									iValue /= 2;
 								}
 
 								if (bIgnoreCost)
@@ -5598,6 +5638,11 @@ void CvPlayerAI::AI_chooseResearch()
 //		lResult = -1;
 //		gDLL->getPythonIFace()->callFunction(PYGameModule, "AI_chooseTech", argsList.makeFunctionArgs(), &lResult);
 //		eBestTech = ((TechTypes)lResult);
+        // Catapults require Mathematics in this mod. Birth grants it to Rome;
+        // retain the correct prerequisite if a later Roman setup lacks it.
+        const TechTypes eMathematics = (TechTypes)GC.getInfoTypeForString("TECH_MATHEMATICS");
+        if (AI_isRomanCampaignPreparing() && !GET_TEAM(getTeam()).isHasTech(eMathematics) && pushResearch(eMathematics))
+            return;
         eBestTech = NO_TECH;
 //Speed: End Modify
 		//Rhye - end
@@ -9357,7 +9402,7 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, CvArea* pArea
 	case UNITAI_SPY_SEA:
 		iValue += (iCombatValue / 2);
 		iValue += (GC.getUnitInfo(eUnit).getMoves() * 200);
-		iValue += (GC.getUnitInfo(eUnit).getCargoSpace() * 300);
+		iValue += ((GC.getUnitInfo(eUnit).getCargoSpace() + getRomanCargoBonus(eUnit)) * 300);
 		break;
 
 	case UNITAI_CARRIER_SEA:
@@ -10270,6 +10315,10 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 	int iValue;
 	int iBestValue;
 	int iI;
+	// Observe existing evaluations only. Never re-score a civic for logging.
+	const bool bRecordLabor = GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
+		eCivicOption == GC.getInfoTypeForString("CIVICOPTION_LABOR") && getNumCities() > 0;
+	std::vector<int> laborScores;
 
 	iBestValue = MIN_INT;
 	eBestCivic = NO_CIVIC;
@@ -10281,6 +10330,11 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			if (canDoCivics((CivicTypes)iI))
 			{
 				iValue = AI_civicValue((CivicTypes)iI);
+				if (bRecordLabor)
+				{
+					laborScores.push_back(iI);
+					laborScores.push_back(iValue);
+				}
 
 				if (isCivic((CivicTypes)iI))
 				{
@@ -10296,6 +10350,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 					}
 				}
 
+				if (bRecordLabor) laborScores.push_back(iValue);
 				if (iValue > iBestValue)
 				{
 					iBestValue = iValue;
@@ -10305,6 +10360,17 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 		}
 	}
 
+	if (bRecordLabor && !laborScores.empty())
+	{
+		CyArgsList args;
+		args.add((int)getID());
+		args.add((int)getCivics(eCivicOption));
+		args.add((int)eBestCivic);
+		args.add(&laborScores[0], (int)laborScores.size());
+		if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true) ||
+			!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordLaborEvaluation", args.makeFunctionArgs()))
+			gDLL->logMsg("PythonErr.log", "Awakened RFC: labor evaluation recording callback could not be loaded or called.", false, false);
+	}
 	return eBestCivic;
 }
 
@@ -10360,17 +10426,131 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		{
 			int iCount = std::min(getCapitalCity()->getNumRealBuilding((BuildingTypes)iBuilding), getCapitalCity()->getNumActiveBuilding((BuildingTypes)iBuilding));
 			iBuildings += iCount;
-			if (isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType())) iWonders += iCount;
+			if (isWorldWonderClass((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)iBuilding).getBuildingClassType()))
+				iWonders += getCapitalCity()->getNumRealBuilding((BuildingTypes)iBuilding);
 		}
 		iValue += iBuildings * 5 + std::min(3, iWonders) * getNumCities() * 8;
 	}
-	if (eCivic == GC.getInfoTypeForString("CIVIC_REPUBLIC"))
+	if (eCivic == GC.getInfoTypeForString("CIVIC_REPUBLIC") && !kCivic.isRomanRepublicVariant(getCivilizationType()))
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 			iValue += std::max(0, pLoopCity->getSpecialistPopulation() - pLoopCity->getSpecialistCount((SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE"))) * 6;
-	if (eCivic == GC.getInfoTypeForString("CIVIC_KNIGHTHOOD"))
-		iValue += getNumCities() * (bWarPlan ? 18 : 12);
-	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") && getStateReligion() != NO_RELIGION)
+	if (kCivic.isRomanRepublicVariant(getCivilizationType()))
+	{
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (isRomanProvince(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE()) && pLoopCity->isConnectedToCapital())
+				iValue += 12;
+			if (pLoopCity->getOccupationTimer() > 0) iValue += 8;
+		}
+		if (getCurrentEra() <= GC.getInfoTypeForString("ERA_CLASSICAL")) iValue += getNumCities() * 8;
+	}
+	if (kCivic.isRomanLegionsVariant(getCivilizationType()))
+	{
+		int iAncient = 0, iMilitary = 0;
+		for (int iUnit = 0; iUnit < GC.getNumUnitClassInfos(); ++iUnit)
+		{
+			UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iUnit);
+			if (eUnit == NO_UNIT || !canTrain(eUnit)) continue;
+			const CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+			if (kUnit.getDomainType() != DOMAIN_LAND || kUnit.getCombat() <= 0) continue;
+			++iMilitary;
+			if (kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") ||
+				kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE")) ++iAncient;
+		}
+		const int iShare = (100 * iAncient) / std::max(1, iMilitary);
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			iValue += (50 * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent * iShare) /
+				(bWarPlan ? 150000 : 250000);
+		// Value logistics under the candidate civic, even when it is not active.
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			if (pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+			{
+				bool bCanBuildFleet = false;
+				for (int iUnit = 0; iUnit < GC.getNumUnitClassInfos(); ++iUnit)
+				{
+					UnitTypes eUnit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iUnit);
+					if (isRomanLogisticsUnit(eUnit) && pLoopCity->canTrain(eUnit)) bCanBuildFleet = true;
+				}
+				if (bCanBuildFleet) iValue += pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) / (bWarPlan ? 2 : 4);
+			}
+		// Candidate supply benefit: current expense is already halved when active.
+		iValue += calculateUnitSupply() * (isRomanLegions() ? 8 : 4);
+	}
+	if (kCivic.isDivineKingshipVariant(getCivilizationType()))
+	{
+		const BuildingTypes eObelisk = (BuildingTypes)GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK");
+		const SpecialistTypes ePriest = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (pLoopCity->getNumBuilding(eObelisk) > 0)
+				iValue += 6 * std::min(2, pLoopCity->getSpecialistCount(ePriest)) + 3;
+		}
+	}
+	if (kCivic.isPharaonicVariant(getCivilizationType()))
+	{
+		const int iFarm = GC.getInfoTypeForString("IMPROVEMENT_FARM");
+		const SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			int iProduction = pLoopCity->getSpecialistCount(eSlave) + pLoopCity->getFreeSpecialistCount(eSlave);
+			for (int iPlot = 0; iPlot < NUM_CITY_PLOTS; ++iPlot)
+			{
+				CvPlot* pPlot = pLoopCity->getCityIndexPlot(iPlot);
+				if (pPlot != NULL && pLoopCity->isWorkingPlot(iPlot) && pPlot->getImprovementType() == iFarm)
+					++iProduction;
+			}
+			iValue += 4 * iProduction + 4;
+		}
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES"))
+	{
+		// Value present, worked farms against each city's actual productive
+		// capacity. Do not count every farm in the empire or forecast new ones.
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			const int iModifier = 5 * pLoopCity->countWorkedFarms();
+			iValue += (iModifier * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent) /
+				(bWarPlan ? 1500 : 2500);
+		}
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE"))
+	{
+		const int iCoastalCities = countNumCoastalCities();
+		const int iNavalUnits = AI_getNumAIUnits(UNITAI_ATTACK_SEA) + AI_getNumAIUnits(UNITAI_RESERVE_SEA) +
+			AI_getNumAIUnits(UNITAI_ESCORT_SEA) + AI_getNumAIUnits(UNITAI_ASSAULT_SEA);
+		const int iNavalShare = std::min(100, 25 + (10 * iNavalUnits) / std::max(1, iCoastalCities));
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			if (!pLoopCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
+				continue;
+			const AreaAITypes eAreaAI = pLoopCity->area()->getAreaAIType(getTeam());
+			const bool bAssault = eAreaAI == AREAAI_ASSAULT || eAreaAI == AREAAI_ASSAULT_MASSING;
+			const int iShare = bAssault ? 100 : iNavalShare;
+			iValue += (50 * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent * iShare) /
+				(bWarPlan ? 150000 : 250000);
+			iValue += (2 * (bWarPlan ? 8 : 5) * iWarmongerPercent * iShare) / 10000;
+		}
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") &&
+		(getStateReligion() != NO_RELIGION || isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))))
 		iValue += getNumCities() * (bWarPlan ? 8 : 3);
+	if ((eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) ||
+		(eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"))))
+	{
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))
+			iValue += getNumCities() * (bWarPlan ? 8 : 3);
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); ++iBuilding)
+			{
+				BuildingTypes eBuilding = (BuildingTypes)iBuilding;
+				const CvBuildingInfo& building = GC.getBuildingInfo(eBuilding);
+				if ((building.getReligionType() != NO_RELIGION || building.getPrereqReligion() != NO_RELIGION) &&
+					!isBuildingObsolete(eBuilding))
+					iValue -= 8 * pLoopCity->getNumBuilding(eBuilding);
+			}
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE"))
 		for (int iOther = 0; iOther < MAX_CIV_PLAYERS; ++iOther)
 			if (iOther != getID() && GET_PLAYER((PlayerTypes)iOther).isAlive() && GET_TEAM(getTeam()).isHasMet(GET_PLAYER((PlayerTypes)iOther).getTeam()) &&
@@ -10409,11 +10589,11 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	iCurrentNumCitiesModifier = getNumCitiesMaintenanceModifier();
 	if (eCurrentCivic != NO_CIVIC)
 	{
-		iCurrentDistanceModifier -= GC.getCivicInfo(eCurrentCivic).getDistanceMaintenanceModifier();
-		iCurrentNumCitiesModifier -= GC.getCivicInfo(eCurrentCivic).getNumCitiesMaintenanceModifier();
+		iCurrentDistanceModifier -= (GC.getCivicInfo(eCurrentCivic).isPharaonicVariant(getCivilizationType()) ? 0 : GC.getCivicInfo(eCurrentCivic).getDistanceMaintenanceModifier());
+		iCurrentNumCitiesModifier -= (GC.getCivicInfo(eCurrentCivic).isPharaonicVariant(getCivilizationType()) ? 0 : GC.getCivicInfo(eCurrentCivic).getNumCitiesMaintenanceModifier());
 	}
-	iCandidateDistanceModifier = iCurrentDistanceModifier + kCivic.getDistanceMaintenanceModifier();
-	iCandidateNumCitiesModifier = iCurrentNumCitiesModifier + kCivic.getNumCitiesMaintenanceModifier();
+	iCandidateDistanceModifier = iCurrentDistanceModifier + (kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getDistanceMaintenanceModifier());
+	iCandidateNumCitiesModifier = iCurrentNumCitiesModifier + (kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getNumCitiesMaintenanceModifier());
 	iMaintenanceTimes100 = 0;
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
@@ -10452,7 +10632,19 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		iValue += (getNumCities() * 8 * AI_getHappinessWeight(isCivic(eCivic) ? -iTempValue : iTempValue, 1)) / 100;
 	}
-	iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent) / 100; 
+	int iExperienceShare = 100;
+	if (kCivic.isRomanLegionsVariant(getCivilizationType()))
+	{
+		int iMelee = 0, iMilitary = 0, iUnitLoop;
+		for (CvUnit* pUnit = firstUnit(&iUnitLoop); pUnit != NULL; pUnit = nextUnit(&iUnitLoop))
+		{
+			if (pUnit->getDomainType() != DOMAIN_LAND || !pUnit->canFight()) continue;
+			++iMilitary;
+			if (pUnit->getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE")) ++iMelee;
+		}
+		iExperienceShare = (100 * iMelee) / std::max(1, iMilitary);
+	}
+	iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);
 	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 ); 
@@ -10626,7 +10818,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		iTempValue = 0;
 
-		iTempValue += ((kCivic.getCommerceModifier(iI) * getNumCities()) / 3);
+		iTempValue += (((kCivic.isPharaonicVariant(getCivilizationType()) ? 0 : kCivic.getCommerceModifier(iI)) * getNumCities()) / 3);
 		iTempValue += (kCivic.getCapitalCommerceModifier(iI) / 2);
 		if (iI == COMMERCE_ESPIONAGE)
 		{
@@ -10652,7 +10844,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
 	{
-		if (kCivic.getBuildingHappinessChanges(iI) != 0)
+		if (!kCivic.isDivineKingshipVariant(getCivilizationType()) && kCivic.getBuildingHappinessChanges(iI) != 0)
 		{
 			iValue += (kCivic.getBuildingHappinessChanges(iI) * getBuildingClassCount((BuildingClassTypes)iI) * 3);
 		}
@@ -10696,7 +10888,15 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		iTempValue = 0; 
 		if (kCivic.isSpecialistValid(iI)) 
 		{ 
-			iTempValue += ((getNumCities() *  (bCultureVictory3 ? 10 : 1)) + 6);
+			if (iI == GC.getInfoTypeForString("SPECIALIST_SLAVE"))
+			{
+				// Count profitable, food-supported job replacements, including
+				// existing slaves when deciding whether to retain this civic.
+				for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+					iValue += pLoopCity->AI_slaveryEmploymentValue(eCivic);
+			}
+			else
+				iTempValue += ((getNumCities() *  (bCultureVictory3 ? 10 : 1)) + 6);
 		} 
 		iValue += (iTempValue / 2); 
 	} 
@@ -11918,8 +12118,319 @@ void CvPlayerAI::AI_doCounter()
 }
 
 
+bool CvPlayerAI::AI_isRomanCampaign() const
+{
+	// Campaign direction ends after the ancient imperial expansion window.
+	// Civic benefits themselves remain available to human and AI Rome.
+	return !isHuman() && isRomanLegions() && getCapitalCity() != NULL &&
+		GC.getGameINLINE().getGameTurnYear() < 300;
+}
+
+bool CvPlayerAI::AI_isRomanCampaignExclusive() const
+{
+	// A stalled special planner must not lock out normal war selection forever.
+	return AI_isRomanCampaign() && GET_TEAM(getTeam()).getNumMembers() == 1 &&
+		m_iRomanCampaignStallTurns < 30;
+}
+
+void CvPlayerAI::AI_romanCampaignRequirements(const CvCity* pTarget, int& iAttackers, int& iSiege) const
+{
+	// Unobserved garrisons use a modest fallback, not a fixed ten-unit army.
+	iAttackers = 6;
+	iSiege = 1;
+	if (pTarget == NULL || !pTarget->plot()->isVisible(getTeam(), false)) return;
+	int iDefenders = 0;
+	for (CLLNode<IDInfo>* pNode = pTarget->plot()->headUnitNode(); pNode != NULL; pNode = pTarget->plot()->nextUnitNode(pNode))
+	{
+		CvUnit* pUnit = ::getUnit(pNode->m_data);
+		if (pUnit->getTeam() == pTarget->getTeam() && pUnit->canDefend() &&
+			pUnit->getDomainType() == DOMAIN_LAND && !pUnit->isCargo() &&
+			!pUnit->isInvisible(getTeam(), false)) ++iDefenders;
+	}
+	const int iDefense = pTarget->getDefenseModifier(false);
+	iSiege = (iDefense >= 60 || iDefenders >= 5) ? 2 : ((iDefense > 20 || iDefenders >= 3) ? 1 : 0);
+	const int iNonSiege = std::max(4, std::min(8, iDefenders + 2));
+	iAttackers = iNonSiege + iSiege;
+}
+
+bool CvPlayerAI::AI_isRomanCampaignPreparing() const
+{
+	return AI_isRomanCampaign() && GET_TEAM(getTeam()).getNumMembers() == 1 &&
+		m_bRomanCampaignPreparing && !AI_isFinancialTrouble();
+}
+
+// Use the existing passable-plot distance finder for strategic route choice.
+// Actual units still validate access, danger and movement on their own paths.
+static CvPlot* romanCampaignWaterPlot(const CvCity* pCity, int iWaterArea)
+{
+	for (int i = 0; i < NUM_DIRECTION_TYPES; ++i)
+	{
+		CvPlot* pPlot = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)i);
+		if (pPlot != NULL && pPlot->isWater() && pPlot->getArea() == iWaterArea && !pPlot->isImpassable()) return pPlot;
+	}
+	return NULL;
+}
+
+int CvPlayerAI::AI_romanCampaignRoute(const CvCity* pTarget, CvCity*& pPort) const
+{
+	pPort = NULL;
+	if (!AI_isRomanCampaign() || pTarget == NULL) return -1;
+	int iLand = MAX_INT, iSea = MAX_INT, iLoop;
+	CvCity* pBestPort = NULL;
+	CvArea* pWater = pTarget->waterArea();
+	CvPlot* pLanding = pWater != NULL ? romanCampaignWaterPlot(pTarget, pWater->getID()) : NULL;
+	for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+	{
+		if (pCity->isOccupation()) continue;
+		if (pCity->getArea() == pTarget->getArea())
+		{
+			const int iDistance = GC.getMapINLINE().calculatePathDistance(pCity->plot(), pTarget->plot());
+			if (iDistance >= 0) iLand = std::min(iLand, iDistance);
+		}
+		if (pLanding == NULL || pCity->getArea() != getCapitalCity()->getArea() ||
+			!pCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) || AI_isPlotDanger(pCity->plot(), 2)) continue;
+		CvPlot* pStart = romanCampaignWaterPlot(pCity, pWater->getID());
+		if (pStart == NULL) continue;
+		const int iDistance = GC.getMapINLINE().calculatePathDistance(pStart, pLanding);
+		// Four steps allow for assembly/landing; prefer land when costs tie.
+		if (iDistance >= 0 && iDistance + 4 < iSea)
+		{
+			iSea = iDistance + 4;
+			pBestPort = pCity;
+		}
+	}
+	if (iSea < iLand) { pPort = pBestPort; return iSea; }
+	return iLand == MAX_INT ? -1 : iLand;
+}
+
+CvCity* CvPlayerAI::AI_romanCampaignPort(const CvCity* pTarget) const
+{
+	CvCity* pPort;
+	AI_romanCampaignRoute(pTarget, pPort);
+	return pPort;
+}
+
+CvCity* CvPlayerAI::AI_romanCampaignTarget() const
+{
+	if (!AI_isRomanCampaign()) return NULL;
+	const CvTeamAI& kTeam = GET_TEAM(getTeam());
+	CvCity* pBest = NULL;
+	int iBest = 0;
+	const bool bCommitted = kTeam.getAnyWarPlanCount(true) > 0;
+	for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; ++iPlayer)
+	{
+		const CvPlayer& kOther = GET_PLAYER((PlayerTypes)iPlayer);
+		if (!kOther.isAlive() || kOther.getTeam() == getTeam() ||
+			!kTeam.isHasMet(kOther.getTeam())) continue;
+		if (bCommitted && kTeam.AI_getWarPlan(kOther.getTeam()) == NO_WARPLAN &&
+			!kTeam.isAtWar(kOther.getTeam())) continue;
+		if (!kTeam.isAtWar(kOther.getTeam()) && !kTeam.canDeclareWar(kOther.getTeam())) continue;
+		// Do not plan around a friendship the normal AI considers binding.
+		if (!kTeam.isAtWar(kOther.getTeam()) && !kOther.isMinorCiv() &&
+			AI_getAttitude((PlayerTypes)iPlayer) >= ATTITUDE_FRIENDLY) continue;
+		int iLoop;
+		for (CvCity* pCity = kOther.firstCity(&iLoop); pCity != NULL; pCity = kOther.nextCity(&iLoop))
+		{
+			if (!pCity->isRevealed(getTeam(), false)) continue;
+			const int iStage = getRomanProvinceStage(pCity->getX_INLINE(), pCity->getY_INLINE());
+			if (iStage == 0) continue;
+			CvCity* pPort;
+			const int iDistance = AI_romanCampaignRoute(pCity, pPort);
+			if (iDistance < 0) continue;
+			int iScore = 160 - iStage * 20 - iDistance * 3 + std::min(12, pCity->getPopulation());
+			if (kTeam.isAtWar(kOther.getTeam())) iScore += 80;
+			if (iScore > iBest) { iBest = iScore; pBest = pCity; }
+		}
+	}
+	return pBest;
+}
+
+
+int CvPlayerAI::AI_getRomanCampaignReadiness(int iIndex) const
+{
+	if (iIndex == 13) return m_iRomanCampaignReadinessTurn;
+	return iIndex >= 0 && iIndex < (int)m_aiRomanCampaignReadiness.size() ? m_aiRomanCampaignReadiness[iIndex] : -1;
+}
+
+const CvString& CvPlayerAI::AI_getRomanCampaignReadinessReason() const
+{
+	return m_szRomanCampaignReadinessReason;
+}
+
+void CvPlayerAI::AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget, const CvCity* pPort,
+	int iRequiredAttackers, int iRequiredSiege, int iAttackers, int iSiege, int iCargo, int iEscorts,
+	int iAttackStrength, int iDefenseStrength) const
+{
+	if (!GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance) return;
+	int aiDetails[13] = {pTarget != NULL ? pTarget->getX_INLINE() : -1,
+		pTarget != NULL ? pTarget->getY_INLINE() : -1,
+		pPort != NULL ? pPort->getX_INLINE() : -1, pPort != NULL ? pPort->getY_INLINE() : -1,
+		iRequiredAttackers, iRequiredSiege, iAttackers, iSiege, iCargo, iEscorts,
+		iAttackStrength, iDefenseStrength, m_iRomanCampaignStallTurns};
+	// Cache the actual decision; the authenticated observer pulls it at end turn.
+	// No Python callback, repeated scoring, RNG work or serialized diagnostic state.
+	m_aiRomanCampaignReadiness.assign(aiDetails, aiDetails + 13);
+	m_szRomanCampaignReadinessReason = szReason;
+	m_iRomanCampaignReadinessTurn = GC.getGameINLINE().getGameTurn();
+}
+
+void CvPlayerAI::AI_doRomanCampaign()
+{
+	CvTeamAI& kTeam = GET_TEAM(getTeam());
+	m_bRomanCampaignPreparing = false;
+	if (!AI_isRomanCampaign() || kTeam.isAVassal() || kTeam.getNumMembers() != 1)
+	{
+		m_iRomanCampaignStallTurns = 0;
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ROME"))
+			AI_recordRomanCampaign(!AI_isRomanCampaign() ? "campaign_inactive" : (kTeam.isAVassal() ? "vassal" : "shared_team"));
+		return;
+	}
+	// Cheap archers hold quiet cities; legions become campaign troops only
+	// once those replacements are physically present. Leave exposed cities alone.
+	const UnitTypes eArcher = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
+	const UnitTypes ePraetorian = (UnitTypes)GC.getInfoTypeForString("UNIT_ROME_PRAETORIAN");
+	int iRecruitLoop;
+	for (CvUnit* pRecruit = firstUnit(&iRecruitLoop); pRecruit != NULL; pRecruit = nextUnit(&iRecruitLoop))
+	{
+		if (pRecruit->isCargo() || pRecruit->plot()->getOwnerINLINE() != getID()) continue;
+		CvCity* pCity = pRecruit->plot()->getPlotCity();
+		if (pCity != NULL && (pCity->isOccupation() || pCity->AI_isDanger())) continue;
+		if (pRecruit->getUnitType() == eArcher && pCity != NULL)
+		{
+			pRecruit->AI_setUnitAIType(UNITAI_CITY_DEFENSE);
+			if (pRecruit->getGroup()->getNumUnits() > 1) pRecruit->joinGroup(NULL);
+		}
+		if (pRecruit->getUnitType() != ePraetorian || pRecruit->AI_getUnitAIType() == UNITAI_ATTACK_CITY) continue;
+		if (pCity != NULL)
+		{
+			int iArchers = 0;
+			for (CLLNode<IDInfo>* pNode = pCity->plot()->headUnitNode(); pNode != NULL; pNode = pCity->plot()->nextUnitNode(pNode))
+			{
+				CvUnit* pGuard = ::getUnit(pNode->m_data);
+				if (pGuard->getOwnerINLINE() == getID() && pGuard->getUnitType() == eArcher && !pGuard->isCargo() && pGuard->canDefend())
+				{
+					pGuard->AI_setUnitAIType(UNITAI_CITY_DEFENSE);
+					if (pGuard->getGroup()->getNumUnits() > 1) pGuard->joinGroup(NULL);
+					++iArchers;
+				}
+			}
+			if (iArchers < pCity->AI_minDefenders()) continue;
+		}
+		else if (AI_getPlotDanger(pRecruit->plot(), 2, false) ||
+			pRecruit->getGroup()->countNumUnitAIType(UNITAI_SETTLE) > 0) continue;
+		pRecruit->AI_setUnitAIType(UNITAI_ATTACK_CITY);
+	}
+	const bool bCommitted = kTeam.getAnyWarPlanCount(true) > 0 || kTeam.getAtWarCount(true) > 0;
+	if (bCommitted) m_iRomanCampaignStallTurns = 0;
+	else m_iRomanCampaignStallTurns = std::min(30, m_iRomanCampaignStallTurns + 1);
+	CyArgsList args;
+	args.add((int)getID());
+	// Native callbacks resolve entry-point modules, not arbitrary helper modules.
+	// CvEventInterface imports the Roman helper through Python's normal loader.
+	// A failed lookup/call must never masquerade as a gameplay prerequisite.
+	if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true))
+	{
+		AI_recordRomanCampaign("prerequisite_module_load_failed");
+		return;
+	}
+	long lReady = -999;
+	if (!gDLL->getPythonIFace()->callFunction("CvEventInterface", "canRomanCampaign", args.makeFunctionArgs(), &lReady))
+	{
+		AI_recordRomanCampaign("prerequisite_callback_failed");
+		return;
+	}
+	if (lReady != 1)
+	{
+		const char* szReason = "prerequisite_result_invalid";
+		switch (lReady)
+		{
+		case -2: szReason = "ineligible_player"; break;
+		case -3: szReason = "stability"; break;
+		case -4: szReason = "plague"; break;
+		case -5: szReason = "capital"; break;
+		case -6: szReason = "italian_occupation"; break;
+		}
+		AI_recordRomanCampaign(szReason);
+		return;
+	}
+	if (AI_isFinancialTrouble()) { AI_recordRomanCampaign("finances"); return; }
+	// Fallback opens normal war selection without abandoning a viable expedition.
+	m_bRomanCampaignPreparing = true;
+	if (bCommitted) { AI_recordRomanCampaign("major_war_or_plan"); return; }
+	CvCity* pTarget = AI_romanCampaignTarget();
+	if (pTarget == NULL) { AI_recordRomanCampaign("no_target"); return; }
+	int iRequiredAttackers, iRequiredSiege;
+	AI_romanCampaignRequirements(pTarget, iRequiredAttackers, iRequiredSiege);
+	int iLoop;
+	for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+		if ((pCity->isCapital() || pCity->AI_isDanger()) && !pCity->AI_isDefended())
+		{
+			AI_recordRomanCampaign("garrison", pTarget, NULL, iRequiredAttackers, iRequiredSiege);
+			return;
+		}
+	CvCity* pPort = AI_romanCampaignPort(pTarget);
+	const bool bOverseas = pPort != NULL;
+	int iAttackers = 0, iSiege = 0, iCargo = 0, iEscorts = 0, iAttackStrength = 0;
+	for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+	{
+		// An overseas expedition must be assembled at its actual embarkation port.
+		if (bOverseas && pUnit->plot() != pPort->plot()) continue;
+		if (pUnit->AI_getUnitAIType() == UNITAI_ATTACK_CITY && pUnit->getDomainType() == DOMAIN_LAND)
+		{
+			++iAttackers;
+			iAttackStrength += pUnit->currCombatStr(NULL, NULL);
+			if (pUnit->getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE")) ++iSiege;
+		}
+		if (pUnit->AI_getUnitAIType() == UNITAI_ASSAULT_SEA) iCargo += pUnit->cargoSpace();
+		if (pUnit->AI_getUnitAIType() == UNITAI_ESCORT_SEA) ++iEscorts;
+	}
+	// Judge the intended theater using visible defenders, not the opponent's
+	// worldwide power. Rome accepts a 20% local strength disadvantage.
+	int iDefenseStrength = 0;
+	for (int iDX = -2; iDX <= 2; ++iDX)
+	{
+		for (int iDY = -2; iDY <= 2; ++iDY)
+		{
+			CvPlot* pPlot = plotXY(pTarget->getX_INLINE(), pTarget->getY_INLINE(), iDX, iDY);
+			if (pPlot == NULL || !pPlot->isVisible(getTeam(), false)) continue;
+			for (CLLNode<IDInfo>* pNode = pPlot->headUnitNode(); pNode != NULL; pNode = pPlot->nextUnitNode(pNode))
+			{
+				CvUnit* pDefender = ::getUnit(pNode->m_data);
+				if (pDefender->getTeam() == pTarget->getTeam() && pDefender->canDefend() &&
+					pDefender->getDomainType() == DOMAIN_LAND && !pDefender->isCargo() &&
+					!pDefender->isInvisible(getTeam(), false))
+					iDefenseStrength += pDefender->currCombatStr(pPlot, NULL);
+			}
+		}
+	}
+	const char* szBlock = NULL;
+	if (iAttackers < iRequiredAttackers) szBlock = "attackers";
+	else if (iSiege < iRequiredSiege) szBlock = "siege";
+	else if (iAttackers - iSiege < iRequiredAttackers - iRequiredSiege) szBlock = "non_siege_attackers";
+	else if (bOverseas && iCargo < iRequiredAttackers) szBlock = "transport_capacity";
+	else if (iAttackStrength * 100 < iDefenseStrength * 80) szBlock = "local_strength";
+	if (szBlock != NULL)
+	{
+		AI_recordRomanCampaign(szBlock, pTarget, pPort, iRequiredAttackers, iRequiredSiege,
+			iAttackers, iSiege, iCargo, iEscorts, iAttackStrength, iDefenseStrength);
+		return;
+	}
+	if (!kTeam.isAtWar(pTarget->getTeam()) && kTeam.AI_getWarPlan(pTarget->getTeam()) == NO_WARPLAN)
+	{
+		kTeam.AI_setWarPlan(pTarget->getTeam(), WARPLAN_PREPARING_TOTAL);
+		m_iRomanCampaignStallTurns = 0;
+		AI_recordRomanCampaign("war_plan_started", pTarget, pPort, iRequiredAttackers, iRequiredSiege,
+			iAttackers, iSiege, iCargo, iEscorts, iAttackStrength, iDefenseStrength);
+	}
+	else AI_recordRomanCampaign("engaged", pTarget, pPort, iRequiredAttackers, iRequiredSiege,
+		iAttackers, iSiege, iCargo, iEscorts, iAttackStrength, iDefenseStrength);
+	pTarget->area()->setTargetCity(getID(), pTarget);
+}
+
+
 void CvPlayerAI::AI_doMilitary()
 {
+	AI_doRomanCampaign();
 	if (GET_TEAM(getTeam()).getAnyWarPlanCount(true) == 0)
 	{
 		while (AI_isFinancialTrouble() && (calculateUnitCost() > 0))
@@ -12291,6 +12802,7 @@ void CvPlayerAI::AI_doReligion()
 
 void CvPlayerAI::AI_doDiplo()
 {
+	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doDiplo");
 	PROFILE_FUNC();
 
 	CLLNode<TradeData>* pNode;
@@ -13261,7 +13773,8 @@ void CvPlayerAI::AI_doDiplo()
 											{
 												setTradeItem(&item, TRADE_OPEN_BORDERS);
 
-												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true))
+												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
+													GET_TEAM(getTeam()).AI_hasMilitaryAccessInterest(GET_PLAYER((PlayerTypes)iI).getTeam()))
 												{
 													ourList.clear();
 													theirList.clear();
@@ -13861,6 +14374,12 @@ void CvPlayerAI::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iCivicTimer);
 	pStream->Read(&m_iReligionTimer);
 	pStream->Read(&m_iExtraGoldTarget);
+	pStream->Read(&m_iRomanCampaignStallTurns);
+	pStream->Read(&m_bRomanCampaignPreparing);
+	// Diagnostic caches are transient and never restored from saves.
+	m_iRomanCampaignReadinessTurn = -1;
+	m_szRomanCampaignReadinessReason = "not_evaluated";
+	m_aiRomanCampaignReadiness.assign(13, -1);
 
 	pStream->Read(&m_iStrategyHash);
 	pStream->Read(&m_iStrategyHashCacheTurn);
@@ -13938,6 +14457,8 @@ void CvPlayerAI::write(FDataStreamBase* pStream)
 	pStream->Write(m_iCivicTimer);
 	pStream->Write(m_iReligionTimer);
 	pStream->Write(m_iExtraGoldTarget);
+	pStream->Write(m_iRomanCampaignStallTurns);
+	pStream->Write(m_bRomanCampaignPreparing);
 
 	pStream->Write(m_iStrategyHash);
 	pStream->Write(m_iStrategyHashCacheTurn);

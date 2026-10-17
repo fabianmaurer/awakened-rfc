@@ -12,6 +12,7 @@ import CvUtil
 import ScreenInput
 import CvScreenEnums
 import string
+import CivicNames
 
 # globals
 gc = CyGlobalContext()
@@ -69,7 +70,7 @@ class CvPediaCivic:
 		if bNotActive:
 			self.top.setPediaCommonWidgets()
 		# Header...
-		szHeader = u"<font=4b>" + gc.getCivicInfo(self.iCivic).getDescription().upper() + u"</font>"
+		szHeader = u"<font=4b>" + CivicNames.description(self.iCivic).upper() + u"</font>"
 		szHeaderId = self.top.getNextWidgetName()
 		screen.setLabel(szHeaderId, "Background", szHeader, CvUtil.FONT_CENTER_JUSTIFY, self.top.X_SCREEN, self.top.Y_TITLE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		
@@ -87,9 +88,9 @@ class CvPediaCivic:
 		    self.X_MAIN_PANE, self.Y_MAIN_PANE, self.W_MAIN_PANE, self.H_MAIN_PANE, PanelStyles.PANEL_STYLE_BLUE50)
 		screen.addPanel(self.top.getNextWidgetName(), "", "", false, false,
 		    self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
-		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getCivicInfo(self.iCivic).getButton(),
+		screen.addDDSGFC(self.top.getNextWidgetName(), CivicNames.button(self.iCivic),
 		    self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-#		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getCivicInfo(self.iCivic).getButton(), self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, WidgetTypes.WIDGET_GENERAL, self.iCivic, -1 )
+#		screen.addDDSGFC(self.top.getNextWidgetName(), CivicNames.button(self.iCivic), self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, WidgetTypes.WIDGET_GENERAL, self.iCivic, -1 )
 		
 		self.placeStats()
 		self.placeSpecial()
@@ -112,7 +113,7 @@ class CvPediaCivic:
 #			screen.setText(self.top.getNextWidgetName(), "Background", gc.getCivicOptionInfo(iCivicOptionType).getDescription().upper(), CvUtil.FONT_LEFT_JUSTIFY, self.X_STATS_PANE, self.Y_STATS_PANE-35, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 		# Upkeep
-		pUpkeepInfo = gc.getUpkeepInfo(gc.getCivicInfo(self.iCivic).getUpkeep())
+		pUpkeepInfo = gc.getUpkeepInfo(CivicNames.upkeep(self.iCivic))
 		if (pUpkeepInfo):
 			screen.appendListBoxString(panelName, u"<font=3>" + pUpkeepInfo.getDescription().upper() + u"</font>", WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
 #			screen.setText(self.top.getNextWidgetName(), "Background", pUpkeepInfo.getDescription().upper(), CvUtil.FONT_LEFT_JUSTIFY, self.X_STATS_PANE, self.Y_STATS_PANE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
@@ -128,7 +129,7 @@ class CvPediaCivic:
 		screen.attachLabel(panelName, "", "  ")
 		
 		iTech = gc.getCivicInfo(self.iCivic).getTechPrereq()
-		if (iTech > -1):
+		if (iTech > -1 and not (gc.getGame().getActiveCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ROME") and self.iCivic == gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
 			screen.attachImageButton( panelName, "", gc.getTechInfo(iTech).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iTech, 1, False )
 			
 	def placeSpecial(self):
@@ -155,6 +156,17 @@ class CvPediaCivic:
 				 self.X_TEXT, self.Y_TEXT, self.W_TEXT, self.H_TEXT, PanelStyles.PANEL_STYLE_BLUE50 )
  
 		szText = gc.getCivicInfo(self.iCivic).getCivilopedia()
+		if (gc.getGame().getActivePlayer() >= 0 and
+			gc.getCivicInfo(self.iCivic).isPharaonicVariant(gc.getPlayer(gc.getGame().getActivePlayer()).getCivilizationType())):
+			szText = localText.getText("TXT_KEY_RFCMP_PHARAONISM_PEDIA", ())
+		if (gc.getGame().getActivePlayer() >= 0 and
+			gc.getCivicInfo(self.iCivic).isDivineKingshipVariant(gc.getPlayer(gc.getGame().getActivePlayer()).getCivilizationType())):
+			szText = localText.getText("TXT_KEY_RFCMP_DIVINE_KINGSHIP_PEDIA", ())
+		if (gc.getGame().getActiveCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ROME")):
+			if (self.iCivic == gc.getInfoTypeForString("CIVIC_REPUBLIC")):
+				szText = localText.getText("TXT_KEY_ROMAN_REPUBLIC_PEDIA", ())
+			elif (self.iCivic == gc.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")):
+				szText = localText.getText("TXT_KEY_ROMAN_LEGIONS_PEDIA", ())
 		screen.attachMultilineText( panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 	def placeLinks(self):

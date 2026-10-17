@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- Copyright Firaxis Games 2005 -->
@@ -65,7 +65,7 @@
 	<TEXT>
 		<Tag>TXT_KEY_MISSION_START_GOLDENAGE_HELP</Tag>
 		<English>This order will consume one or more Great People (of different types) and initiate a Golden Age (extra [ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE]).</English>
-		<French>Cette ordre consommera plusieurs personnages illustres (de types différents) et déclenchera un âge d'or ([ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE] supplémentaires).</French>
+		<French>Cette ordre consommera plusieurs personnages illustres (de types diff&#233;rents) et d&#233;clenchera un &#226;ge d'or ([ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE] suppl&#233;mentaires).</French>
 		<German>Opfern Sie eine oder mehrere Gro&#223;e Pers&#246;nlichkeiten (unterschiedlicher Klassen), um ein Goldenes Zeitalter (zus&#228;tzliche [ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE], keine Anarchie) zu begr&#252;nden.</German>
 		<Italian>Con questo ordine si consumano uno o pi&#249; Grandi Personaggi (di tipi differenti) e si avvia un'Et&#224; dell'Oro (extra [ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE]).</Italian>
 		<Spanish>Esta orden consume uno o m&#225;s grandes personajes (de diferentes tipos) e inicia una edad de oro (extra [ICON_PRODUCTION], [ICON_COMMERCE], [ICON_GREATPEOPLE]).</Spanish>

@@ -1,6 +1,7 @@
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
+import CivicNames
 import CvUtil
 import ScreenInput
 import CvScreenEnums
@@ -199,11 +200,11 @@ class CvTechChooser:
 
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
-				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(j)
-				if (eLoopUnit != -1):
+				eLoopUnit = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationUnits(j)
+				if (eLoopUnit != -1 and gc.getUnitInfo(eLoopUnit).getProductionCost() >= 0):
 					if (gc.getUnitInfo(eLoopUnit).getPrereqAndTech() == i):
 						szUnitButton = "Unit" + str(j)
-						screen.addDDSGFCAt( szUnitButton, szTechRecord, gc.getPlayer(gc.getGame().getActivePlayer()).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, eLoopUnit, 1, True )
+						screen.addDDSGFCAt( szUnitButton, szTechRecord, gc.getPlayer(self.iCivSelected).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, eLoopUnit, 1, True )
 						fX += X_INCREMENT
 
 			j = 0
@@ -212,15 +213,15 @@ class CvTechChooser:
 			# Unlockable Buildings...
 			for j in range(gc.getNumBuildingClassInfos()):
 				bTechFound = 0
-				eLoopBuilding = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationBuildings(j)
+				eLoopBuilding = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationBuildings(j)
 
-				if (eLoopBuilding != -1):
+				if (eLoopBuilding != -1 and gc.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0):
                                         #Rhye - start
 					#if (gc.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == i):
 					#	szBuildingButton = "Building" + str(j)
 					#	screen.addDDSGFCAt( szBuildingButton, szTechRecord, gc.getBuildingInfo(eLoopBuilding).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, eLoopBuilding, 1, True )
 					#	fX += X_INCREMENT 
-                                        if (eLoopBuilding < con.iNumBuildingsPlague or eLoopBuilding == con.iNumBuildingsPlague + self.iCivSelected):
+                                        if (eLoopBuilding < con.iNumBuildingsPlague or eLoopBuilding >= con.iNumBuildingsEmbassy or eLoopBuilding == con.iNumBuildingsPlague + self.iCivSelected):
                                                 if (gc.getBuildingInfo(eLoopBuilding).getPrereqAndTech() == i):
                                                         szBuildingButton = "Building" + str(j)
                                                         screen.addDDSGFCAt( szBuildingButton, szTechRecord, gc.getBuildingInfo(eLoopBuilding).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, eLoopBuilding, 1, True )
@@ -234,7 +235,7 @@ class CvTechChooser:
 			for j in range(gc.getNumBuildingClassInfos()):
 				eLoopBuilding = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationBuildings(j)
 
-				if (eLoopBuilding != -1):
+				if (eLoopBuilding != -1 and gc.getBuildingInfo(eLoopBuilding).getProductionCost() >= 0):
 					if (gc.getBuildingInfo(eLoopBuilding).getObsoleteTech() == i):
 						# Add obsolete picture here...
 						szObsoleteButton = "Obsolete" + str(j)
@@ -296,10 +297,10 @@ class CvTechChooser:
 			if ( gc.getTechInfo(i).getFirstFreeUnitClass() != UnitClassTypes.NO_UNITCLASS ):
 				szFreeUnitButton = "FreeUnit" + str(i)
 
-				eLoopUnit = gc.getCivilizationInfo(gc.getGame().getActiveCivilizationType()).getCivilizationUnits(gc.getTechInfo(i).getFirstFreeUnitClass())
-				if (eLoopUnit != -1):
+				eLoopUnit = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationUnits(gc.getTechInfo(i).getFirstFreeUnitClass())
+				if (eLoopUnit != -1 and gc.getUnitInfo(eLoopUnit).getProductionCost() >= 0):
 					if (gc.getUnitInfo(eLoopUnit).getEspionagePoints() == 0 or not gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE)):				
-						screen.addDDSGFCAt( szFreeUnitButton, szTechRecord, gc.getPlayer(gc.getGame().getActivePlayer()).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_FREE_UNIT, eLoopUnit, i, False )
+						screen.addDDSGFCAt( szFreeUnitButton, szTechRecord, gc.getPlayer(self.iCivSelected).getUnitButton(eLoopUnit), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_FREE_UNIT, eLoopUnit, i, False )
 						fX += X_INCREMENT
 
 			j = 0
@@ -586,7 +587,7 @@ class CvTechChooser:
 			for j in range( gc.getNumCivicInfos() ):
 				if (gc.getCivicInfo(j).getTechPrereq() == i):
 					szCivicReveal = "CivicRevealButton" + str( ( i * 1000 ) + j )
-					screen.addDDSGFCAt( szCivicReveal, szTechRecord, gc.getCivicInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_CIVIC_REVEAL, i, j, False )
+					screen.addDDSGFCAt( szCivicReveal, szTechRecord, CivicNames.button(j), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_CIVIC_REVEAL, i, j, False )
 					fX += X_INCREMENT
 
 			j = 0
@@ -733,6 +734,10 @@ class CvTechChooser:
 
 		for i in range(gc.getNumTechInfos()):
 
+			# Hidden technologies have no valid endpoint in the visible tree.
+			if gc.getTechInfo(i).getGridX() < 0 or gc.getTechInfo(i).getGridY() < 0:
+				continue
+
 			bFirst = 1
 
 			fX = (BOX_INCREMENT_WIDTH * PIXEL_INCREMENT) - 8
@@ -761,6 +766,8 @@ class CvTechChooser:
 				eTech = gc.getTechInfo(i).getPrereqOrTechs(j)
 
 				if ( eTech > -1 ):
+					if gc.getTechInfo(eTech).getGridX() < 0 or gc.getTechInfo(eTech).getGridY() < 0:
+						continue
 
 					iX = 24 + ( (gc.getTechInfo(eTech).getGridX() - 1) * ( ( BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH ) * PIXEL_INCREMENT ) )
 					iY = ( gc.getTechInfo(eTech).getGridY() - 1 ) * ( BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT ) + 5
@@ -770,8 +777,13 @@ class CvTechChooser:
 					yDiff = gc.getTechInfo(i).getGridY() - gc.getTechInfo(eTech).getGridY()
 
 					if (yDiff == 0):
-						screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + self.getXStart(), iY + self.getYStart(3), self.getWidth(xDiff), 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
-						screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_HEAD, iX + self.getXStart() + self.getWidth(xDiff), iY + self.getYStart(3), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+						iArrowY = self.getYStart(3)
+						# Pass below the Environmental Quality box in the intervening column.
+						if (gc.getTechInfo(eTech).getType() == "TECH_FIBER_OPTICS" and
+							gc.getTechInfo(i).getType() == "TECH_DIGITAL_ADMINISTRATION"):
+							iArrowY = self.getYStart(4)
+						screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + self.getXStart(), iY + iArrowY, self.getWidth(xDiff), 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+						screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_HEAD, iX + self.getXStart() + self.getWidth(xDiff), iY + iArrowY, 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
 					elif (yDiff < 0):
 						if ( yDiff == -6 ):
 							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + self.getXStart(), iY + self.getYStart(1), self.getWidth(xDiff) / 2, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
@@ -788,11 +800,18 @@ class CvTechChooser:
 							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + 8 + self.getXStart() + ( self.getWidth(xDiff) * 5 / 6 ), iY + self.getYStart(2) - self.getHeight(yDiff, 3), ( self.getWidth(xDiff) / 6 ) - 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
 							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_HEAD, iX + self.getXStart() + self.getWidth(xDiff), iY + self.getYStart(2) - self.getHeight(yDiff, 3), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
 						else:
-							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + self.getXStart(), iY + self.getYStart(2), self.getWidth(xDiff) / 2, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
-							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_XY, iX + self.getXStart() + ( self.getWidth(xDiff) / 2 ), iY + self.getYStart(2), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
-							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_Y, iX + self.getXStart() + ( self.getWidth(xDiff) / 2 ), iY + self.getYStart(2) + 8 - self.getHeight(yDiff, 3), 8, self.getHeight(yDiff, 3) - 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
-							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_XMY, iX + self.getXStart() + ( self.getWidth(xDiff) / 2 ), iY + self.getYStart(2) - self.getHeight(yDiff, 3), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
-							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + 8 + self.getXStart() + ( self.getWidth(xDiff) / 2 ), iY + self.getYStart(2) - self.getHeight(yDiff, 3), ( self.getWidth(xDiff) / 2 ) - 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+							iArrowBend = self.getWidth(xDiff) / 2
+							iArrowTail = iArrowBend - 8
+							# Give the long Combustion-to-Rocketry line its own lane.
+							if (gc.getTechInfo(eTech).getType() == "TECH_COMBUSTION" and
+								gc.getTechInfo(i).getType() == "TECH_ROCKETRY"):
+								iArrowBend += 16
+								iArrowTail -= 16
+							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + self.getXStart(), iY + self.getYStart(2), iArrowBend, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_XY, iX + self.getXStart() + ( iArrowBend ), iY + self.getYStart(2), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_Y, iX + self.getXStart() + ( iArrowBend ), iY + self.getYStart(2) + 8 - self.getHeight(yDiff, 3), 8, self.getHeight(yDiff, 3) - 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_XMY, iX + self.getXStart() + ( iArrowBend ), iY + self.getYStart(2) - self.getHeight(yDiff, 3), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
+							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_X, iX + 8 + self.getXStart() + ( iArrowBend ), iY + self.getYStart(2) - self.getHeight(yDiff, 3), iArrowTail, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
 							screen.addDDSGFCAt( self.getNextWidgetName(), "TechList", ARROW_HEAD, iX + self.getXStart() + self.getWidth(xDiff), iY + self.getYStart(2) - self.getHeight(yDiff, 3), 8, 8, WidgetTypes.WIDGET_GENERAL, -1, -1, False )
 					elif (yDiff > 0):
 						if ( yDiff == 2 and xDiff == 2):

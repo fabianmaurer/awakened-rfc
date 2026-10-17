@@ -158,6 +158,9 @@ public:
 	int getResearchTurnsLeft(int /*TechTypes*/ eTech, bool bOverflow);
 
 	bool isCivic(int /*CivicTypes*/ eCivic);
+	bool isRomanProvince(int iX, int iY);
+	bool isRomanCampaignExclusive();
+	python::tuple getRomanCampaignReadiness();
 	bool canDoCivics(int /*CivicTypes*/ eCivic);
 	bool canRevolution(int /*CivicTypes**/ paeNewCivics);
 	void revolution(int /*CivicTypes**/ paeNewCivics, bool bForce);

@@ -1924,10 +1924,11 @@ class AIWars:
 
         def setup(self):
                 iTurn = iStartTurn
-                if (not gc.getPlayer(0).isPlayable()):  #late start condition
+                if (gc.getGame().getStartTurn() != 0):  #late start condition
                         iTurn = con.i350BC #(RFCMP)
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
                                 iTurn = con.i900AD
+                iTurn = max(iTurn, gc.getGame().getStartTurn())
                 self.setNextTurnAIWar(iTurn + utils.getFakeRandNum(iMaxIntervalEarly-iMinIntervalEarly, 'random turn'))
 
 
@@ -2045,6 +2046,8 @@ class AIWars:
                         iCiv = -1
                         for i in range( iRndnum, iRndnum + iMaxCivs ):
                                 iLoopCiv = i % iMaxCivs
+                                if (iLoopCiv == con.iRome and gc.getPlayer(iLoopCiv).isRomanCampaignExclusive()):
+                                        continue
                                 if (gc.getPlayer(iLoopCiv).isAlive() and not gc.getPlayer(iLoopCiv).isHuman()):
                                         if (utils.getPlagueCountdown(iLoopCiv) >= -10 and utils.getPlagueCountdown(iLoopCiv) <= 0): #civ is not under plague or quit recently from it
                                                 iAlreadyAttacked = self.getAttackingCivsArray(iLoopCiv)
@@ -2079,6 +2082,8 @@ class AIWars:
         def checkGrid(self, iCiv):
                 pCiv = gc.getPlayer(iCiv)
                 tCiv = gc.getTeam(pCiv.getTeam())
+                iGameTurn = gc.getGame().getGameTurn()
+                bPunicCampaign = (iCiv == con.iCarthage and iGameTurn >= con.tBirth[con.iCarthage] + 20 and iGameTurn <= con.i300AD)
                 lTargetCivs = []
                 #lTargetCivs = con.l0ArrayTotal
 
@@ -2115,6 +2120,13 @@ class AIWars:
                                 if (iOwner >= 0 and iOwner < iNumTotalPlayers and iOwner != iCiv):
                                         if (lTargetCivs[iOwner] > 0):
                                                 lTargetCivs[iOwner] += tWarsMap[iCiv][67-j][i]
+                                                # Prefer actual western Mediterranean footholds
+                                                # over broad inland territory. The ordinary
+                                                # contact, vassal, attitude and peace checks apply.
+                                                if (bPunicCampaign and gc.getMap().plot(i, j).isCity()):
+                                                        if ((49 <= i <= 55 and 40 <= j <= 45) or
+                                                            (57 <= i <= 63 and 40 <= j <= 44)):
+                                                                lTargetCivs[iOwner] += 60
                                                 
                 #there are other routines for this
                 #RFCMP

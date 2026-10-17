@@ -41,6 +41,13 @@ protected:
 
 public:
 
+	bool isRomanRepublic() const;
+	bool isRomanLegions() const;
+	bool isRomanLogisticsUnit(UnitTypes eUnit) const;
+	int getRomanCargoBonus(UnitTypes eUnit) const;
+	int getRomanProvinceStage(int iX, int iY) const;
+	bool isRomanProvince(int iX, int iY) const;
+
 	void initFreeState();
 	void initFreeUnits();
 	void addFreeUnitAI(UnitAITypes eUnitAI, int iCount);
@@ -198,6 +205,7 @@ public:
 	DllExport int getBuildingClassPrereqBuilding(BuildingTypes eBuilding, BuildingClassTypes ePrereqBuildingClass, int iExtra = 0) const;	// Exposed to Python
 	void removeBuildingClass(BuildingClassTypes eBuildingClass);																		// Exposed to Python
 	void processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pArea);
+	bool isBuildingObsolete(BuildingTypes eBuilding) const;
 
 	int getBuildCost(const CvPlot* pPlot, BuildTypes eBuild) const;
 	bool canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestEra = false, bool bTestVisible = false) const;	// Exposed to Python
@@ -1174,6 +1182,9 @@ protected:
 
 	//Rhye (jdog) -  start ---------------------
 	CvWString m_szName;
+	// Presentation-only caches; no persistent or synchronized title state.
+	mutable CvWString m_szPharaohName;
+	mutable CvWString m_szPharaohNameKey;
 	CvWString m_szCivDesc;
 	CvWString m_szCivDescKey;
 	CvWString m_szCivShort;

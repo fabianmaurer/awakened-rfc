@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
 <!-- Sid Meier's Civilization 4 -->
 <!-- -->
@@ -277,7 +277,7 @@
 			<Plural>0</Plural>
 		</French>
 		<German>
-			<Text>Fünfte Satrapie:Fünfte Satrapie:Fünften Satrapie</Text>
+			<Text>F&#252;nfte Satrapie:F&#252;nfte Satrapie:F&#252;nften Satrapie</Text>
 			<Gender>Female:Female:Female</Gender>
 			<Plural>0:0:0</Plural>
 		</German>

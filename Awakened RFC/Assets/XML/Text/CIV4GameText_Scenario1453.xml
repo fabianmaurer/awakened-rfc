@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_SCENARIO_1453_AD</Tag>
+    <English>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</English>
+    <French>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</French>
+    <German>1453 n. Chr.: Nach dem Fall Konstantinopels. Alle bestehenden gro&#223;en Zivilisationen sind spielbar. Regionale Staaten werden durch die RFC-Zivilisationen abgebildet; Amerika erscheint nach dem gewohnten Zeitplan.</German>
+    <Italian>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</Italian>
+    <Spanish>1453 AD: After the fall of Constantinople. Every established major civilization is playable. Regional states are represented by RFC civilization slots; America appears on its usual schedule.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_TITLE</Tag>
+    <English>The World in 1453</English>
+    <French>Le monde en 1453</French>
+    <German>Die Welt im Jahr 1453</German>
+    <Italian>Il mondo nel 1453</Italian>
+    <Spanish>El mundo en 1453</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_0</Tag>
+    <English>Inal</English>
+    <French>Inal</French>
+    <German>Inal</German>
+    <Italian>Inal</Italian>
+    <Spanish>Inal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_1</Tag>
+    <English>Bahlul Lodi</English>
+    <French>Bahlul Lodi</French>
+    <German>Bahlul Lodi</German>
+    <Italian>Bahlul Lodi</Italian>
+    <Spanish>Bahlul Lodi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_2</Tag>
+    <English>Jingtai</English>
+    <French>Jingtai</French>
+    <German>Jingtai</German>
+    <Italian>Jingtai</Italian>
+    <Spanish>Jingtai</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_4</Tag>
+    <English>Demetrios Palaiologos</English>
+    <French>Demetrios Palaiologos</French>
+    <German>Demetrios Palaiologos</German>
+    <Italian>Demetrios Palaiologos</Italian>
+    <Spanish>Demetrios Palaiologos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_5</Tag>
+    <English>Abu Sa'id Mirza</English>
+    <French>Abu Sa'id Mirza</French>
+    <German>Abu Sa'id Mirza</German>
+    <Italian>Abu Sa'id Mirza</Italian>
+    <Spanish>Abu Sa'id Mirza</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_6</Tag>
+    <English>Abu Amr Uthman</English>
+    <French>Abu Amr Uthman</French>
+    <German>Abu Amr Uthman</German>
+    <Italian>Abu Amr Uthman</Italian>
+    <Spanish>Abu Amr Uthman</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_7</Tag>
+    <English>Francesco Foscari</English>
+    <French>Francesco Foscari</French>
+    <German>Francesco Foscari</German>
+    <Italian>Francesco Foscari</Italian>
+    <Spanish>Francesco Foscari</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_8</Tag>
+    <English>Ashikaga Yoshimasa</English>
+    <French>Ashikaga Yoshimasa</French>
+    <German>Ashikaga Yoshimasa</German>
+    <Italian>Ashikaga Yoshimasa</Italian>
+    <Spanish>Ashikaga Yoshimasa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_9</Tag>
+    <English>Zara Yaqob</English>
+    <French>Zara Yaqob</French>
+    <German>Zara Yaqob</German>
+    <Italian>Zara Yaqob</Italian>
+    <Spanish>Zara Yaqob</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_10</Tag>
+    <English>Ah Xupan Xiu</English>
+    <French>Ah Xupan Xiu</French>
+    <German>Ah Xupan Xiu</German>
+    <Italian>Ah Xupan Xiu</Italian>
+    <Spanish>Ah Xupan Xiu</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_11</Tag>
+    <English>Christian I</English>
+    <French>Christian I</French>
+    <German>Christian I.</German>
+    <Italian>Christian I</Italian>
+    <Spanish>Christian I</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_12</Tag>
+    <English>Barakat ibn Hasan</English>
+    <French>Barakat ibn Hasan</French>
+    <German>Barakat ibn Hasan</German>
+    <Italian>Barakat ibn Hasan</Italian>
+    <Spanish>Barakat ibn Hasan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_13</Tag>
+    <English>Ponhea Yat</English>
+    <French>Ponhea Yat</French>
+    <German>Ponhea Yat</German>
+    <Italian>Ponhea Yat</Italian>
+    <Spanish>Ponhea Yat</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_14</Tag>
+    <English>John II of Castile</English>
+    <French>John II of Castile</French>
+    <German>Johann II. von Kastilien</German>
+    <Italian>John II of Castile</Italian>
+    <Spanish>John II of Castile</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_15</Tag>
+    <English>Charles VII</English>
+    <French>Charles VII</French>
+    <German>Karl VII.</German>
+    <Italian>Charles VII</Italian>
+    <Spanish>Charles VII</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_16</Tag>
+    <English>Henry VI</English>
+    <French>Henry VI</French>
+    <German>Heinrich VI.</German>
+    <Italian>Henry VI</Italian>
+    <Spanish>Henry VI</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_17</Tag>
+    <English>Frederick III</English>
+    <French>Frederick III</French>
+    <German>Friedrich III.</German>
+    <Italian>Frederick III</Italian>
+    <Spanish>Frederick III</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_18</Tag>
+    <English>Vasily II</English>
+    <French>Vasily II</French>
+    <German>Wassili II.</German>
+    <Italian>Vasily II</Italian>
+    <Spanish>Vasily II</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_19</Tag>
+    <English>Philip the Good</English>
+    <French>Philip the Good</French>
+    <German>Philipp der Gute</German>
+    <Italian>Philip the Good</Italian>
+    <Spanish>Philip the Good</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_20</Tag>
+    <English>Uli II</English>
+    <French>Uli II</French>
+    <German>Uli II.</German>
+    <Italian>Uli II</Italian>
+    <Spanish>Uli II</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_21</Tag>
+    <English>Afonso V</English>
+    <French>Afonso V</French>
+    <German>Alfons V.</German>
+    <Italian>Afonso V</Italian>
+    <Spanish>Afonso V</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_22</Tag>
+    <English>Pachacuti</English>
+    <French>Pachacuti</French>
+    <German>Pachacuti</German>
+    <Italian>Pachacuti</Italian>
+    <Spanish>Pachacuti</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_23</Tag>
+    <English>Esen Taishi</English>
+    <French>Esen Taishi</French>
+    <German>Esen Taishi</German>
+    <Italian>Esen Taishi</Italian>
+    <Spanish>Esen Taishi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_24</Tag>
+    <English>Moctezuma I</English>
+    <French>Moctezuma I</French>
+    <German>Moctezuma I.</German>
+    <Italian>Moctezuma I</Italian>
+    <Spanish>Moctezuma I</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_25</Tag>
+    <English>Mehmed II</English>
+    <French>Mehmed II</French>
+    <German>Mehmed II.</German>
+    <Italian>Mehmed II</Italian>
+    <Spanish>Mehmed II</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_0</Tag>
+    <English>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</English>
+    <French>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</French>
+    <German>1453: Von Kairo aus beherrscht das Mamlukensultanat &#196;gypten und die Levante. Der Nil ern&#228;hrt eure St&#228;dte, Verbindungen zum Mittelmeer und Roten Meer bringen Wohlstand. Die Osmanen haben Konstantinopel erobert. Sichert die Nordgrenze und bewahrt die St&#228;rke eures Sultanats.</German>
+    <Italian>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</Italian>
+    <Spanish>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_1</Tag>
+    <English>1453: Delhi and Lahore form the heart of your sultanate under Bahlul Lodi. Jaunpur, Bengal and the Deccan follow their own rulers; Vijayanagara stands strong in the south. Consolidate your northern possessions before seeking a wider dominion in India.</English>
+    <French>1453: Delhi and Lahore form the heart of your sultanate under Bahlul Lodi. Jaunpur, Bengal and the Deccan follow their own rulers; Vijayanagara stands strong in the south. Consolidate your northern possessions before seeking a wider dominion in India.</French>
+    <German>1453: Delhi und Lahore bilden unter Bahlul Lodi den Kern eures Sultanats. Jaunpur, Bengalen und der Dekkan folgen eigenen Herrschern; im S&#252;den steht Vijayanagara. Festigt eure nordindischen Besitzungen, bevor ihr nach einer gr&#246;&#223;eren Herrschaft in Indien strebt.</German>
+    <Italian>1453: Delhi and Lahore form the heart of your sultanate under Bahlul Lodi. Jaunpur, Bengal and the Deccan follow their own rulers; Vijayanagara stands strong in the south. Consolidate your northern possessions before seeking a wider dominion in India.</Italian>
+    <Spanish>1453: Delhi and Lahore form the heart of your sultanate under Bahlul Lodi. Jaunpur, Bengal and the Deccan follow their own rulers; Vijayanagara stands strong in the south. Consolidate your northern possessions before seeking a wider dominion in India.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_2</Tag>
+    <English>1453: The Ming court rules from Beijing over populous cities and rich farmland. Beyond the northern frontier, Mongol powers remain a threat. Confucian learning, Buddhist temples and Daoist traditions shape your realm. Protect the frontier and turn the strength of your cities into lasting security.</English>
+    <French>1453: The Ming court rules from Beijing over populous cities and rich farmland. Beyond the northern frontier, Mongol powers remain a threat. Confucian learning, Buddhist temples and Daoist traditions shape your realm. Protect the frontier and turn the strength of your cities into lasting security.</French>
+    <German>1453: Der Ming-Hof regiert von Beijing aus &#252;ber bev&#246;lkerungsreiche St&#228;dte und fruchtbares Land. Jenseits der Nordgrenze bleiben mongolische M&#228;chte eine Gefahr. Konfuzianische Bildung, buddhistische Tempel und daoistische Traditionen pr&#228;gen euer Reich. Sichert die Grenze und nutzt die St&#228;rke eurer St&#228;dte.</German>
+    <Italian>1453: The Ming court rules from Beijing over populous cities and rich farmland. Beyond the northern frontier, Mongol powers remain a threat. Confucian learning, Buddhist temples and Daoist traditions shape your realm. Protect the frontier and turn the strength of your cities into lasting security.</Italian>
+    <Spanish>1453: The Ming court rules from Beijing over populous cities and rich farmland. Beyond the northern frontier, Mongol powers remain a threat. Confucian learning, Buddhist temples and Daoist traditions shape your realm. Protect the frontier and turn the strength of your cities into lasting security.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_4</Tag>
+    <English>1453: Constantinople has fallen, but the Greek despotate in the Morea survives around Mistra. Your small realm faces an Ottoman power established on both sides of the straits. Preserve your independence through careful diplomacy, defensible borders and the resources of your remaining city.</English>
+    <French>1453: Constantinople has fallen, but the Greek despotate in the Morea survives around Mistra. Your small realm faces an Ottoman power established on both sides of the straits. Preserve your independence through careful diplomacy, defensible borders and the resources of your remaining city.</French>
+    <German>1453: Konstantinopel ist gefallen, doch das griechische Despotat in der Morea besteht um Mistra fort. Euer kleines Reich steht einer osmanischen Macht gegen&#252;ber, die beide Seiten der Meerengen beherrscht. Bewahrt eure Unabh&#228;ngigkeit durch kluge Diplomatie, sichere Grenzen und die Kr&#228;fte eurer verbliebenen Stadt.</German>
+    <Italian>1453: Constantinople has fallen, but the Greek despotate in the Morea survives around Mistra. Your small realm faces an Ottoman power established on both sides of the straits. Preserve your independence through careful diplomacy, defensible borders and the resources of your remaining city.</Italian>
+    <Spanish>1453: Constantinople has fallen, but the Greek despotate in the Morea survives around Mistra. Your small realm faces an Ottoman power established on both sides of the straits. Preserve your independence through careful diplomacy, defensible borders and the resources of your remaining city.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_5</Tag>
+    <English>1453: Timur's legacy is divided among competing princes. Your cities stretch from Samarqand through Merv and Herat to Kandahar, while other Iranian rulers hold Tabriz and Shiraz. Guard the routes between your scattered centers and build a durable realm from a contested inheritance.</English>
+    <French>1453: Timur's legacy is divided among competing princes. Your cities stretch from Samarqand through Merv and Herat to Kandahar, while other Iranian rulers hold Tabriz and Shiraz. Guard the routes between your scattered centers and build a durable realm from a contested inheritance.</French>
+    <German>1453: Timurs Erbe ist unter rivalisierenden F&#252;rsten geteilt. Eure St&#228;dte reichen von Samarqand &#252;ber Merv und Herat bis Kandahar; andere iranische Herrscher halten Tabriz und Shiraz. Sch&#252;tzt die Wege zwischen euren verstreuten Zentren und formt aus dem umk&#228;mpften Erbe eine dauerhafte Herrschaft.</German>
+    <Italian>1453: Timur's legacy is divided among competing princes. Your cities stretch from Samarqand through Merv and Herat to Kandahar, while other Iranian rulers hold Tabriz and Shiraz. Guard the routes between your scattered centers and build a durable realm from a contested inheritance.</Italian>
+    <Spanish>1453: Timur's legacy is divided among competing princes. Your cities stretch from Samarqand through Merv and Herat to Kandahar, while other Iranian rulers hold Tabriz and Shiraz. Guard the routes between your scattered centers and build a durable realm from a contested inheritance.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_6</Tag>
+    <English>1453: Tunis anchors your Hafsid realm on the North African coast, with Tripoli to the east. Fes and Tlemcen remain separate centers of power to the west. Strengthen your ports and inland defenses, and balance Mediterranean opportunities against the ambitions of neighboring states.</English>
+    <French>1453: Tunis anchors your Hafsid realm on the North African coast, with Tripoli to the east. Fes and Tlemcen remain separate centers of power to the west. Strengthen your ports and inland defenses, and balance Mediterranean opportunities against the ambitions of neighboring states.</French>
+    <German>1453: Tunis ist das Zentrum eures Hafsidenreichs an Nordafrikas K&#252;ste, Tripolis sein &#246;stlicher St&#252;tzpunkt. F&#232;s und Tlemcen bleiben eigenst&#228;ndige Machtzentren im Westen. St&#228;rkt H&#228;fen und Landesverteidigung und w&#228;gt die Chancen des Mittelmeers gegen die Anspr&#252;che eurer Nachbarn ab.</German>
+    <Italian>1453: Tunis anchors your Hafsid realm on the North African coast, with Tripoli to the east. Fes and Tlemcen remain separate centers of power to the west. Strengthen your ports and inland defenses, and balance Mediterranean opportunities against the ambitions of neighboring states.</Italian>
+    <Spanish>1453: Tunis anchors your Hafsid realm on the North African coast, with Tripoli to the east. Fes and Tlemcen remain separate centers of power to the west. Strengthen your ports and inland defenses, and balance Mediterranean opportunities against the ambitions of neighboring states.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_7</Tag>
+    <English>1453: Your Italian cities unite the maritime reach of Venice with the prestige of Rome. Naples and Sicily remain outside your rule, and powerful neighbors watch the Alpine approaches. Develop your wealthy urban centers and secure a place in the struggle for influence across Italy and the Mediterranean.</English>
+    <French>1453: Your Italian cities unite the maritime reach of Venice with the prestige of Rome. Naples and Sicily remain outside your rule, and powerful neighbors watch the Alpine approaches. Develop your wealthy urban centers and secure a place in the struggle for influence across Italy and the Mediterranean.</French>
+    <German>1453: Eure italienischen St&#228;dte verbinden Venedigs maritime Reichweite mit dem Ansehen Roms. Neapel und Sizilien stehen au&#223;erhalb eurer Herrschaft; m&#228;chtige Nachbarn wachen &#252;ber die Alpenzug&#228;nge. Entwickelt eure reichen St&#228;dte und sichert euren Einfluss in Italien und im Mittelmeer.</German>
+    <Italian>1453: Your Italian cities unite the maritime reach of Venice with the prestige of Rome. Naples and Sicily remain outside your rule, and powerful neighbors watch the Alpine approaches. Develop your wealthy urban centers and secure a place in the struggle for influence across Italy and the Mediterranean.</Italian>
+    <Spanish>1453: Your Italian cities unite the maritime reach of Venice with the prestige of Rome. Naples and Sicily remain outside your rule, and powerful neighbors watch the Alpine approaches. Develop your wealthy urban centers and secure a place in the struggle for influence across Italy and the Mediterranean.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_8</Tag>
+    <English>1453: The Ashikaga shogunate governs from Kyoto, but regional warrior houses limit its authority. Hakata connects your islands to overseas exchange, while Edo is still a small settlement. Strengthen your cities and defenses, and give a divided country a stable center of power.</English>
+    <French>1453: The Ashikaga shogunate governs from Kyoto, but regional warrior houses limit its authority. Hakata connects your islands to overseas exchange, while Edo is still a small settlement. Strengthen your cities and defenses, and give a divided country a stable center of power.</French>
+    <German>1453: Das Ashikaga-Shogunat regiert von Kyoto aus, doch regionale Kriegerh&#228;user begrenzen seine Macht. Hakata verbindet eure Inseln mit dem &#252;berseeischen Handel, w&#228;hrend Edo noch eine kleine Siedlung ist. St&#228;rkt St&#228;dte und Verteidigung und gebt dem geteilten Land ein best&#228;ndiges Machtzentrum.</German>
+    <Italian>1453: The Ashikaga shogunate governs from Kyoto, but regional warrior houses limit its authority. Hakata connects your islands to overseas exchange, while Edo is still a small settlement. Strengthen your cities and defenses, and give a divided country a stable center of power.</Italian>
+    <Spanish>1453: The Ashikaga shogunate governs from Kyoto, but regional warrior houses limit its authority. Hakata connects your islands to overseas exchange, while Edo is still a small settlement. Strengthen your cities and defenses, and give a divided country a stable center of power.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_9</Tag>
+    <English>1453: Your Christian highland kingdom draws strength from the royal traditions of Aksum and the religious center of Dabra Libanos. Muslim powers surround the approaches to the Red Sea and the northern trade routes. Develop the highlands, defend their passes and preserve your kingdom's independence.</English>
+    <French>1453: Your Christian highland kingdom draws strength from the royal traditions of Aksum and the religious center of Dabra Libanos. Muslim powers surround the approaches to the Red Sea and the northern trade routes. Develop the highlands, defend their passes and preserve your kingdom's independence.</French>
+    <German>1453: Euer christliches Hochlandreich sch&#246;pft Kraft aus Aksums k&#246;niglicher Tradition und dem religi&#246;sen Zentrum Dabra Libanos. Muslimische M&#228;chte pr&#228;gen die Zug&#228;nge zum Roten Meer und die n&#246;rdlichen Handelswege. Entwickelt das Hochland, sch&#252;tzt seine P&#228;sse und bewahrt eure Unabh&#228;ngigkeit.</German>
+    <Italian>1453: Your Christian highland kingdom draws strength from the royal traditions of Aksum and the religious center of Dabra Libanos. Muslim powers surround the approaches to the Red Sea and the northern trade routes. Develop the highlands, defend their passes and preserve your kingdom's independence.</Italian>
+    <Spanish>1453: Your Christian highland kingdom draws strength from the royal traditions of Aksum and the religious center of Dabra Libanos. Muslim powers surround the approaches to the Red Sea and the northern trade routes. Develop the highlands, defend their passes and preserve your kingdom's independence.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_10</Tag>
+    <English>1453: Maya lands are divided among regional dynasties. Mani and Tayasal sustain your realm, while the Aztec powers lie to the west. Build on local agriculture and exchange, defend your communities and seek a stronger position among the competing states of Mesoamerica.</English>
+    <French>1453: Maya lands are divided among regional dynasties. Mani and Tayasal sustain your realm, while the Aztec powers lie to the west. Build on local agriculture and exchange, defend your communities and seek a stronger position among the competing states of Mesoamerica.</French>
+    <German>1453: Die L&#228;nder der Maya sind unter regionalen Dynastien geteilt. Mani und Tayasal tragen eure Herrschaft, westlich liegen die M&#228;chte der Azteken. St&#252;tzt euch auf Landwirtschaft und Austausch, sch&#252;tzt eure Gemeinden und festigt eure Stellung unter den rivalisierenden Staaten Mesoamerikas.</German>
+    <Italian>1453: Maya lands are divided among regional dynasties. Mani and Tayasal sustain your realm, while the Aztec powers lie to the west. Build on local agriculture and exchange, defend your communities and seek a stronger position among the competing states of Mesoamerica.</Italian>
+    <Spanish>1453: Maya lands are divided among regional dynasties. Mani and Tayasal sustain your realm, while the Aztec powers lie to the west. Build on local agriculture and exchange, defend your communities and seek a stronger position among the competing states of Mesoamerica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_11</Tag>
+    <English>1453: Copenhagen, Nidaros and Stockholm represent the Scandinavian crowns under your command. The northern kingdoms share maritime ties, but their interests often diverge. Secure the sea lanes of the Baltic and North Atlantic, develop your ports and hold your scattered lands together.</English>
+    <French>1453: Copenhagen, Nidaros and Stockholm represent the Scandinavian crowns under your command. The northern kingdoms share maritime ties, but their interests often diverge. Secure the sea lanes of the Baltic and North Atlantic, develop your ports and hold your scattered lands together.</French>
+    <German>1453: Kopenhagen, Nidaros und Stockholm vertreten die skandinavischen Kronen unter eurer F&#252;hrung. Seeverbindungen vereinen die n&#246;rdlichen K&#246;nigreiche, doch ihre Interessen gehen oft auseinander. Sichert die Wege &#252;ber Ostsee und Nordatlantik, entwickelt eure H&#228;fen und haltet die verstreuten L&#228;nder zusammen.</German>
+    <Italian>1453: Copenhagen, Nidaros and Stockholm represent the Scandinavian crowns under your command. The northern kingdoms share maritime ties, but their interests often diverge. Secure the sea lanes of the Baltic and North Atlantic, develop your ports and hold your scattered lands together.</Italian>
+    <Spanish>1453: Copenhagen, Nidaros and Stockholm represent the Scandinavian crowns under your command. The northern kingdoms share maritime ties, but their interests often diverge. Secure the sea lanes of the Baltic and North Atlantic, develop your ports and hold your scattered lands together.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_12</Tag>
+    <English>1453: Mecca is the heart of your sharifate and a holy city of Islam. Mamluk Egypt lies to the northwest, while Yemen and the ports of Oman remain outside your rule. Safeguard the pilgrimage routes and build the resources and diplomacy needed to preserve your position in the Hejaz.</English>
+    <French>1453: Mecca is the heart of your sharifate and a holy city of Islam. Mamluk Egypt lies to the northwest, while Yemen and the ports of Oman remain outside your rule. Safeguard the pilgrimage routes and build the resources and diplomacy needed to preserve your position in the Hejaz.</French>
+    <German>1453: Mekka ist das Herz eures Scharifats und eine heilige Stadt des Islam. Im Nordwesten liegt das mamlukische &#196;gypten; Jemen und die H&#228;fen Omans stehen au&#223;erhalb eurer Herrschaft. Sch&#252;tzt die Pilgerwege und sichert durch Wohlstand und Diplomatie eure Stellung im Hedschas.</German>
+    <Italian>1453: Mecca is the heart of your sharifate and a holy city of Islam. Mamluk Egypt lies to the northwest, while Yemen and the ports of Oman remain outside your rule. Safeguard the pilgrimage routes and build the resources and diplomacy needed to preserve your position in the Hejaz.</Italian>
+    <Spanish>1453: Mecca is the heart of your sharifate and a holy city of Islam. Mamluk Egypt lies to the northwest, while Yemen and the ports of Oman remain outside your rule. Safeguard the pilgrimage routes and build the resources and diplomacy needed to preserve your position in the Hejaz.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_13</Tag>
+    <English>1453: Cambodia's court is centered on Chaktomuk, while Angkor preserves the legacy of a greater empire. Ayutthaya to the west and the Vietnamese realm to the east stand apart. Restore the strength of your cities and protect the river lands on which your kingdom depends.</English>
+    <French>1453: Cambodia's court is centered on Chaktomuk, while Angkor preserves the legacy of a greater empire. Ayutthaya to the west and the Vietnamese realm to the east stand apart. Restore the strength of your cities and protect the river lands on which your kingdom depends.</French>
+    <German>1453: Kambodschas Hof hat sein Zentrum in Chaktomuk, w&#228;hrend Angkor das Erbe eines gr&#246;&#223;eren Reiches bewahrt. Ayutthaya im Westen und das vietnamesische Reich im Osten stehen eigenst&#228;ndig daneben. St&#228;rkt eure St&#228;dte und sch&#252;tzt die Flusslandschaften, von denen euer K&#246;nigreich lebt.</German>
+    <Italian>1453: Cambodia's court is centered on Chaktomuk, while Angkor preserves the legacy of a greater empire. Ayutthaya to the west and the Vietnamese realm to the east stand apart. Restore the strength of your cities and protect the river lands on which your kingdom depends.</Italian>
+    <Spanish>1453: Cambodia's court is centered on Chaktomuk, while Angkor preserves the legacy of a greater empire. Ayutthaya to the west and the Vietnamese realm to the east stand apart. Restore the strength of your cities and protect the river lands on which your kingdom depends.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_14</Tag>
+    <English>1453: Your Christian Iberian realms span the Castilian interior and Barcelona's Mediterranean coast. Portugal and Muslim Granada remain outside your rule. Develop the peninsula's cities, secure the southern frontier and choose between continental ambitions and opportunities at sea.</English>
+    <French>1453: Your Christian Iberian realms span the Castilian interior and Barcelona's Mediterranean coast. Portugal and Muslim Granada remain outside your rule. Develop the peninsula's cities, secure the southern frontier and choose between continental ambitions and opportunities at sea.</French>
+    <German>1453: Eure christlichen Reiche Iberiens umfassen das kastilische Binnenland und Barcelonas Mittelmeerk&#252;ste. Portugal und das muslimische Granada stehen au&#223;erhalb eurer Herrschaft. Entwickelt die St&#228;dte der Halbinsel, sichert die S&#252;dgrenze und w&#228;gt Ziele auf dem Festland gegen Chancen zur See ab.</German>
+    <Italian>1453: Your Christian Iberian realms span the Castilian interior and Barcelona's Mediterranean coast. Portugal and Muslim Granada remain outside your rule. Develop the peninsula's cities, secure the southern frontier and choose between continental ambitions and opportunities at sea.</Italian>
+    <Spanish>1453: Your Christian Iberian realms span the Castilian interior and Barcelona's Mediterranean coast. Portugal and Muslim Granada remain outside your rule. Develop the peninsula's cities, secure the southern frontier and choose between continental ambitions and opportunities at sea.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_15</Tag>
+    <English>1453: France is still at war with England. Paris and Marseille anchor your kingdom, but Bordeaux remains in English hands. Reclaim your southwestern foothold, strengthen royal power and rebuild the prosperity of a realm shaped by a long struggle for its crown.</English>
+    <French>1453: France is still at war with England. Paris and Marseille anchor your kingdom, but Bordeaux remains in English hands. Reclaim your southwestern foothold, strengthen royal power and rebuild the prosperity of a realm shaped by a long struggle for its crown.</French>
+    <German>1453: Frankreich liegt noch im Krieg mit England. Paris und Marseille tragen euer K&#246;nigreich, doch Bordeaux ist weiterhin englisch. Gewinnt den St&#252;tzpunkt im S&#252;dwesten zur&#252;ck, festigt die k&#246;nigliche Macht und erneuert den Wohlstand eines Landes, das lange um seine Krone gek&#228;mpft hat.</German>
+    <Italian>1453: France is still at war with England. Paris and Marseille anchor your kingdom, but Bordeaux remains in English hands. Reclaim your southwestern foothold, strengthen royal power and rebuild the prosperity of a realm shaped by a long struggle for its crown.</Italian>
+    <Spanish>1453: France is still at war with England. Paris and Marseille anchor your kingdom, but Bordeaux remains in English hands. Reclaim your southwestern foothold, strengthen royal power and rebuild the prosperity of a realm shaped by a long struggle for its crown.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_16</Tag>
+    <English>1453: London and York sustain your English kingdom, while Bordeaux remains your foothold in a war-torn France. Scotland and Ireland lie beyond your direct rule. Decide how much strength to commit across the Channel while securing the island and the resources of the crown.</English>
+    <French>1453: London and York sustain your English kingdom, while Bordeaux remains your foothold in a war-torn France. Scotland and Ireland lie beyond your direct rule. Decide how much strength to commit across the Channel while securing the island and the resources of the crown.</French>
+    <German>1453: London und York tragen euer englisches K&#246;nigreich; Bordeaux bleibt euer St&#252;tzpunkt im umk&#228;mpften Frankreich. Schottland und Irland stehen au&#223;erhalb eurer direkten Herrschaft. Entscheidet, wie viel Kraft ihr jenseits des &#196;rmelkanals einsetzen k&#246;nnt, und sichert zugleich Insel und Krone.</German>
+    <Italian>1453: London and York sustain your English kingdom, while Bordeaux remains your foothold in a war-torn France. Scotland and Ireland lie beyond your direct rule. Decide how much strength to commit across the Channel while securing the island and the resources of the crown.</Italian>
+    <Spanish>1453: London and York sustain your English kingdom, while Bordeaux remains your foothold in a war-torn France. Scotland and Ireland lie beyond your direct rule. Decide how much strength to commit across the Channel while securing the island and the resources of the crown.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_17</Tag>
+    <English>1453: Your imperial lands stretch from Frankfurt and Berlin to Prague and Vienna. The Holy Roman Empire is a mosaic of cities and princely interests, with Burgundy to the west and Hungary to the southeast. Connect your centers, strengthen their defenses and turn imperial prestige into practical power.</English>
+    <French>1453: Your imperial lands stretch from Frankfurt and Berlin to Prague and Vienna. The Holy Roman Empire is a mosaic of cities and princely interests, with Burgundy to the west and Hungary to the southeast. Connect your centers, strengthen their defenses and turn imperial prestige into practical power.</French>
+    <German>1453: Eure Reichsgebiete reichen von Frankfurt und Berlin bis Prag und Wien. Das Heilige R&#246;mische Reich ist ein Geflecht st&#228;dtischer und f&#252;rstlicher Interessen, mit Burgund im Westen und Ungarn im S&#252;dosten. Verbindet eure Zentren, st&#228;rkt ihre Verteidigung und verleiht dem kaiserlichen Ansehen Gewicht.</German>
+    <Italian>1453: Your imperial lands stretch from Frankfurt and Berlin to Prague and Vienna. The Holy Roman Empire is a mosaic of cities and princely interests, with Burgundy to the west and Hungary to the southeast. Connect your centers, strengthen their defenses and turn imperial prestige into practical power.</Italian>
+    <Spanish>1453: Your imperial lands stretch from Frankfurt and Berlin to Prague and Vienna. The Holy Roman Empire is a mosaic of cities and princely interests, with Burgundy to the west and Hungary to the southeast. Connect your centers, strengthen their defenses and turn imperial prestige into practical power.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_18</Tag>
+    <English>1453: Moscow and Vladimir form the core of your principality. Novgorod remains independent to the northwest, and the wider Russian lands are divided among rival powers. Consolidate your cities, defend the approaches to Moscow and build the strength to extend your influence.</English>
+    <French>1453: Moscow and Vladimir form the core of your principality. Novgorod remains independent to the northwest, and the wider Russian lands are divided among rival powers. Consolidate your cities, defend the approaches to Moscow and build the strength to extend your influence.</French>
+    <German>1453: Moskau und Wladimir bilden den Kern eures F&#252;rstentums. Im Nordwesten bleibt Nowgorod unabh&#228;ngig, und die weiteren russischen L&#228;nder sind unter rivalisierenden M&#228;chten geteilt. Festigt eure St&#228;dte, sch&#252;tzt die Zug&#228;nge zu Moskau und schafft die Grundlage f&#252;r wachsenden Einfluss.</German>
+    <Italian>1453: Moscow and Vladimir form the core of your principality. Novgorod remains independent to the northwest, and the wider Russian lands are divided among rival powers. Consolidate your cities, defend the approaches to Moscow and build the strength to extend your influence.</Italian>
+    <Spanish>1453: Moscow and Vladimir form the core of your principality. Novgorod remains independent to the northwest, and the wider Russian lands are divided among rival powers. Consolidate your cities, defend the approaches to Moscow and build the strength to extend your influence.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_19</Tag>
+    <English>1453: Bruges anchors your Burgundian Low Countries, a wealthy urban region between France, England and the Empire. Prosperity attracts powerful neighbors as well as distant commerce. Protect your compact territory and use its wealth and diplomacy to preserve room for your own ambitions.</English>
+    <French>1453: Bruges anchors your Burgundian Low Countries, a wealthy urban region between France, England and the Empire. Prosperity attracts powerful neighbors as well as distant commerce. Protect your compact territory and use its wealth and diplomacy to preserve room for your own ambitions.</French>
+    <German>1453: Br&#252;gge ist das Zentrum eurer burgundischen Niederlande, einer reichen St&#228;dtelandschaft zwischen Frankreich, England und dem Reich. Wohlstand zieht m&#228;chtige Nachbarn ebenso an wie fernen Handel. Sch&#252;tzt euer kleines Gebiet und nutzt seine Mittel f&#252;r eine eigenst&#228;ndige Politik.</German>
+    <Italian>1453: Bruges anchors your Burgundian Low Countries, a wealthy urban region between France, England and the Empire. Prosperity attracts powerful neighbors as well as distant commerce. Protect your compact territory and use its wealth and diplomacy to preserve room for your own ambitions.</Italian>
+    <Spanish>1453: Bruges anchors your Burgundian Low Countries, a wealthy urban region between France, England and the Empire. Prosperity attracts powerful neighbors as well as distant commerce. Protect your compact territory and use its wealth and diplomacy to preserve room for your own ambitions.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_20</Tag>
+    <English>1453: Niani and Djenne sustain your Malian realm, but Timbuktu and Gao lie outside your authority. Gold and trans-Saharan exchange offer wealth amid competing powers along the Niger. Consolidate the lands you hold and rebuild your influence over the region's important routes and cities.</English>
+    <French>1453: Niani and Djenne sustain your Malian realm, but Timbuktu and Gao lie outside your authority. Gold and trans-Saharan exchange offer wealth amid competing powers along the Niger. Consolidate the lands you hold and rebuild your influence over the region's important routes and cities.</French>
+    <German>1453: Niani und Djenne tragen euer Malireich, doch Timbuktu und Gao stehen au&#223;erhalb eurer Herrschaft. Gold und der Austausch durch die Sahara versprechen Wohlstand zwischen rivalisierenden M&#228;chten am Niger. Festigt eure L&#228;nder und erneuert euren Einfluss auf die Wege und St&#228;dte der Region.</German>
+    <Italian>1453: Niani and Djenne sustain your Malian realm, but Timbuktu and Gao lie outside your authority. Gold and trans-Saharan exchange offer wealth amid competing powers along the Niger. Consolidate the lands you hold and rebuild your influence over the region's important routes and cities.</Italian>
+    <Spanish>1453: Niani and Djenne sustain your Malian realm, but Timbuktu and Gao lie outside your authority. Gold and trans-Saharan exchange offer wealth amid competing powers along the Niger. Consolidate the lands you hold and rebuild your influence over the region's important routes and cities.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_21</Tag>
+    <English>1453: Lisbon and Porto face the Atlantic from Portugal's narrow western shore. Your Iberian neighbors are strong, while the coasts of Africa offer routes for exploration and exchange. Develop your fleet and ports, safeguard the homeland and choose how far to pursue opportunities overseas.</English>
+    <French>1453: Lisbon and Porto face the Atlantic from Portugal's narrow western shore. Your Iberian neighbors are strong, while the coasts of Africa offer routes for exploration and exchange. Develop your fleet and ports, safeguard the homeland and choose how far to pursue opportunities overseas.</French>
+    <German>1453: Lissabon und Porto blicken von Portugals schmaler Westk&#252;ste auf den Atlantik. Eure iberischen Nachbarn sind stark, w&#228;hrend Afrikas K&#252;sten Wege f&#252;r Erkundung und Austausch er&#246;ffnen. Entwickelt Flotte und H&#228;fen, sch&#252;tzt das Kernland und bestimmt die Reichweite eurer &#252;berseeischen Ziele.</German>
+    <Italian>1453: Lisbon and Porto face the Atlantic from Portugal's narrow western shore. Your Iberian neighbors are strong, while the coasts of Africa offer routes for exploration and exchange. Develop your fleet and ports, safeguard the homeland and choose how far to pursue opportunities overseas.</Italian>
+    <Spanish>1453: Lisbon and Porto face the Atlantic from Portugal's narrow western shore. Your Iberian neighbors are strong, while the coasts of Africa offer routes for exploration and exchange. Develop your fleet and ports, safeguard the homeland and choose how far to pursue opportunities overseas.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_22</Tag>
+    <English>1453: Pachacuti's realm is growing from Cusco into the Andean highlands. Chan Chan, Cajamarca and other regional centers are still independent. Strengthen the connections between your mountain cities and decide where diplomacy or conquest can extend the land of the four quarters.</English>
+    <French>1453: Pachacuti's realm is growing from Cusco into the Andean highlands. Chan Chan, Cajamarca and other regional centers are still independent. Strengthen the connections between your mountain cities and decide where diplomacy or conquest can extend the land of the four quarters.</French>
+    <German>1453: Pachacutis Reich w&#228;chst von Cusco aus in das Andenhochland. Chan Chan, Cajamarca und weitere regionale Zentren bleiben unabh&#228;ngig. St&#228;rkt die Verbindungen zwischen euren Bergst&#228;dten und entscheidet, wo Diplomatie oder Eroberung das Land der vier Weltgegenden erweitern k&#246;nnen.</German>
+    <Italian>1453: Pachacuti's realm is growing from Cusco into the Andean highlands. Chan Chan, Cajamarca and other regional centers are still independent. Strengthen the connections between your mountain cities and decide where diplomacy or conquest can extend the land of the four quarters.</Italian>
+    <Spanish>1453: Pachacuti's realm is growing from Cusco into the Andean highlands. Chan Chan, Cajamarca and other regional centers are still independent. Strengthen the connections between your mountain cities and decide where diplomacy or conquest can extend the land of the four quarters.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_23</Tag>
+    <English>1453: The Northern Yuan preserve a Mongol power beyond the Ming frontier. Qaraqorum and Qobdo anchor your scattered settlements, while China commands much larger cities to the south. Use the space of the steppe, protect your centers and seek opportunities without exhausting your limited urban base.</English>
+    <French>1453: The Northern Yuan preserve a Mongol power beyond the Ming frontier. Qaraqorum and Qobdo anchor your scattered settlements, while China commands much larger cities to the south. Use the space of the steppe, protect your centers and seek opportunities without exhausting your limited urban base.</French>
+    <German>1453: Die N&#246;rdlichen Yuan bewahren eine mongolische Macht jenseits der Ming-Grenze. Qaraqorum und Qobdo tragen eure verstreuten Siedlungen, w&#228;hrend China im S&#252;den weit gr&#246;&#223;ere St&#228;dte besitzt. Nutzt den Raum der Steppe, sch&#252;tzt eure Zentren und schont die Kr&#228;fte eurer kleinen st&#228;dtischen Basis.</German>
+    <Italian>1453: The Northern Yuan preserve a Mongol power beyond the Ming frontier. Qaraqorum and Qobdo anchor your scattered settlements, while China commands much larger cities to the south. Use the space of the steppe, protect your centers and seek opportunities without exhausting your limited urban base.</Italian>
+    <Spanish>1453: The Northern Yuan preserve a Mongol power beyond the Ming frontier. Qaraqorum and Qobdo anchor your scattered settlements, while China commands much larger cities to the south. Use the space of the steppe, protect your centers and seek opportunities without exhausting your limited urban base.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_24</Tag>
+    <English>1453: Tenochtitlan is the heart of the Aztec Triple Alliance under Moctezuma I. Texcoco and Oaxaca extend your reach, while Maya states endure to the east. Sustain your populous capital, strengthen your armies and bring neighboring lands within your sphere of influence.</English>
+    <French>1453: Tenochtitlan is the heart of the Aztec Triple Alliance under Moctezuma I. Texcoco and Oaxaca extend your reach, while Maya states endure to the east. Sustain your populous capital, strengthen your armies and bring neighboring lands within your sphere of influence.</French>
+    <German>1453: Tenochtitlan ist unter Moctezuma I. das Herz des aztekischen Dreibunds. Texcoco und Oaxaca erweitern euren Einfluss, w&#228;hrend im Osten die Staaten der Maya bestehen. Versorgt eure bev&#246;lkerungsreiche Hauptstadt, st&#228;rkt eure Heere und gewinnt Einfluss auf die umliegenden L&#228;nder.</German>
+    <Italian>1453: Tenochtitlan is the heart of the Aztec Triple Alliance under Moctezuma I. Texcoco and Oaxaca extend your reach, while Maya states endure to the east. Sustain your populous capital, strengthen your armies and bring neighboring lands within your sphere of influence.</Italian>
+    <Spanish>1453: Tenochtitlan is the heart of the Aztec Triple Alliance under Moctezuma I. Texcoco and Oaxaca extend your reach, while Maya states endure to the east. Sustain your populous capital, strengthen your armies and bring neighboring lands within your sphere of influence.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_25</Tag>
+    <English>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</English>
+    <French>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</French>
+    <German>1453: Konstantinopel geh&#246;rt euch. Eure osmanischen L&#228;nder verbinden nun den Balkan mit West- und Zentralanatolien, doch Morea, Trapezunt und das Mamlukenreich bestehen fort. Sichert die Meerengen, baut eure neue Hauptstadt aus und entscheidet, wo die n&#228;chste Grenze des Sultanats liegen soll.</German>
+    <Italian>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</Italian>
+    <Spanish>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</Spanish>
+  </TEXT>
+</Civ4GameText>

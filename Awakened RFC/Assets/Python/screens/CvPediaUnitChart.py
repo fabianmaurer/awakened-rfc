@@ -8,6 +8,7 @@
 
 
 from CvPythonExtensions import *
+import ModernEraData
 import CvUtil
 import ScreenInput
 import CvScreenEnums
@@ -92,6 +93,8 @@ class CvPediaUnitChart:
 		# count units in this group
 		nUnits = 0
 		for j in range(gc.getNumUnitInfos()):
+			if gc.getUnitInfo(j).getType() in ModernEraData.RETIRED_UNITS:
+				continue
 			if (self.iGroup == gc.getUnitInfo(j).getUnitCombatType() or self.iGroup == gc.getNumUnitCombatInfos()):
 				nUnits += 1
 
@@ -105,6 +108,8 @@ class CvPediaUnitChart:
 		i = 0
 		unitsList=[(0,0,0,0,0)]*nUnits
 		for j in range(gc.getNumUnitInfos()):
+			if gc.getUnitInfo(j).getType() in ModernEraData.RETIRED_UNITS:
+				continue
 			if (self.iGroup == gc.getUnitInfo(j).getUnitCombatType() or self.iGroup == gc.getNumUnitCombatInfos()):
 				if (gc.getUnitInfo(j).getProductionCost() < 0):
 					szCost = localText.getText("TXT_KEY_NON_APPLICABLE", ())

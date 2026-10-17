@@ -333,6 +333,12 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getTradeYield", &CyCity::getTradeYield, "int (int /*YieldTypes*/) - trade adjustment to YieldType")
 		.def("totalTradeModifier", &CyCity::totalTradeModifier, "int () - total trade adjustment")
 
+		.def("getLocalFoodYield", &CyCity::getLocalFoodYield)
+		.def("getFoodTradeImports", &CyCity::getFoodTradeImports)
+		.def("getFoodTradeExports", &CyCity::getFoodTradeExports)
+		.def("getFoodExportLimit", &CyCity::getFoodExportLimit)
+		.def("getTradeInfrastructureEfficiency", &CyCity::getTradeInfrastructureEfficiency)
+		.def("getFoodTradeWith", &CyCity::getFoodTradeWith)
 		.def("calculateTradeProfit", &CyCity::calculateTradeProfit, "int (CyCity) - returns the trade profit created by CyCity")
 		.def("calculateTradeYield", &CyCity::calculateTradeYield, "int (YieldType, int iTradeProfit) - calculates Trade Yield")
 

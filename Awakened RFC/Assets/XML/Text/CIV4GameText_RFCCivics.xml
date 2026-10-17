@@ -358,20 +358,20 @@
         <Spanish>Warrior Society</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_MILITIA</Tag>
-        <English>Militia</English>
-        <French>Militia</French>
-        <German>Miliz</German>
-        <Italian>Militia</Italian>
-        <Spanish>Militia</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE</Tag>
+        <English>Naval Warfare</English>
+        <French>Guerre navale</French>
+        <German>Seekriegsf&#252;hrung</German>
+        <Italian>Guerra navale</Italian>
+        <Spanish>Guerra naval</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_KNIGHTHOOD</Tag>
-        <English>Knighthood</English>
-        <French>Knighthood</French>
-        <German>Rittertum</German>
-        <Italian>Knighthood</Italian>
-        <Spanish>Knighthood</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES</Tag>
+        <English>Feudal Retinues</English>
+        <French>Osts f&#233;odaux</French>
+        <German>Feudale Aufgebote</German>
+        <Italian>Seguiti feudali</Italian>
+        <Spanish>Mesnadas feudales</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY</Tag>
@@ -481,19 +481,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CIVIC_ALL_CITIES_HAPPINESS</Tag>
-        <English>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</English>
-        <French>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</French>
-        <German>[ICON_BULLET]%D1_Change%F2_HappyOrUn in allen St&#228;dten</German>
-        <Italian>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Italian>
-        <Spanish>[ICON_BULLET]%D1_Change%F2_HappyOrUn in all cities</Spanish>
+        <English>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</English>
+        <French>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</French>
+        <German>[ICON_BULLET]%D1_Change %F2_HappyOrUn in allen St&#228;dten</German>
+        <Italian>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</Italian>
+        <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn in all cities</Spanish>
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MONARCHY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</English>
-        <French>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</French>
-        <German>[ICON_BULLET]+1 [ICON_CULTURE] und +1 [ICON_COMMERCE] je aktivem errichtetem Geb&#228;ude in der Hauptstadt[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in allen St&#228;dten je aktivem Weltwunder der Hauptstadt (maximal +3)[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
-        <Italian>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per active constructed building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per active capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</English>
+        <French>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</French>
+        <German>[ICON_BULLET]+1 [ICON_CULTURE] und +1 [ICON_COMMERCE] je Geb&#228;ude in der Hauptstadt[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in allen St&#228;dten je Weltwunder der Hauptstadt (maximal +3)[NEWLINE][ICON_BULLET]Erm&#246;glicht Erbfolgeereignisse</German>
+        <Italian>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_CULTURE] and +1 [ICON_COMMERCE] per building in the capital[NEWLINE][ICON_BULLET]+1 [ICON_HAPPY] in all cities per capital world wonder (maximum +3)[NEWLINE][ICON_BULLET]Enables inheritance events</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DICTATORSHIP</Tag>
@@ -505,43 +505,43 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</English>
-        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</French>
-        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige; erfordert Staatsreligion</German>
-        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels; requires a state religion</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Geb&#228;ude der Staatsreligion[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] je Geb&#228;ude anderer Religionen[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] f&#252;r Landeinheiten gegen Ungl&#228;ubige</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] per state-religion building[NEWLINE][ICON_BULLET]+2 [ICON_UNHAPPY] per other religious building[NEWLINE][ICON_BULLET]+15% [ICON_STRENGTH] for land units against infidels</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NATIONALISM</Tag>
-        <English>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</English>
-        <French>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</French>
-        <German>[ICON_BULLET]+5 [ICON_CULTURE] in allen St&#228;dten[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in St&#228;dten mit vorherrschender fremder Kultur auf dem Stadtfeld</German>
-        <Italian>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</Italian>
-        <Spanish>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality on the city tile</Spanish>
+        <English>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</English>
+        <French>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</French>
+        <German>[ICON_BULLET]+5 [ICON_CULTURE] in allen St&#228;dten[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in St&#228;dten mit vorherrschender fremder Kultur</German>
+        <Italian>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</Italian>
+        <Spanish>[ICON_BULLET]+5 [ICON_CULTURE] in all cities[NEWLINE][ICON_BULLET]+5 [ICON_UNHAPPY] in cities with a foreign culture plurality</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_SELF_SUFFICIENCY</Tag>
-        <English>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</English>
-        <French>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</French>
-        <German>[ICON_BULLET]H&#252;tten, Weiler und D&#246;rfer wachsen nicht[NEWLINE][ICON_BULLET]Keine zugewiesenen Spezialisten (freie Spezialisten bleiben erhalten)</German>
-        <Italian>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</Italian>
-        <Spanish>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]No assigned specialists (free specialists remain)</Spanish>
+        <English>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</English>
+        <French>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</French>
+        <German>[ICON_BULLET]H&#252;tten, Weiler und D&#246;rfer wachsen nicht[NEWLINE][ICON_BULLET]Kann keine Spezialisten zuweisen</German>
+        <Italian>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</Italian>
+        <Spanish>[ICON_BULLET]Cottages, hamlets and villages do not grow[NEWLINE][ICON_BULLET]Cannot assign specialists</Spanish>
     </TEXT>
     <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_MILITIA</Tag>
-        <English>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</English>
-        <French>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</French>
-        <German>[ICON_BULLET]+30% Stadtverteidigung[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] au&#223;erhalb des eigenen Gebiets</German>
-        <Italian>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Italian>
-        <Spanish>[ICON_BULLET]+30% city defense[NEWLINE][ICON_BULLET]-10% [ICON_STRENGTH] outside your own territory</Spanish>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NAVAL_WARFARE</Tag>
+        <English>[ICON_BULLET]+50% production of military ships, including transports[NEWLINE][ICON_BULLET]+2 experience for newly trained military ships</English>
+        <French>[ICON_BULLET]+50% &#224; la production de navires militaires, transports compris[NEWLINE][ICON_BULLET]+2 points d&#8217;exp&#233;rience pour les nouveaux navires militaires</French>
+        <German>[ICON_BULLET]+50% Produktion f&#252;r Milit&#228;rschiffe einschlie&#223;lich Transportschiffen[NEWLINE][ICON_BULLET]+2 Erfahrung f&#252;r neu gebaute Milit&#228;rschiffe</German>
+        <Italian>[ICON_BULLET]+50% alla produzione di navi militari, inclusi i trasporti[NEWLINE][ICON_BULLET]+2 esperienza per le nuove navi militari</Italian>
+        <Spanish>[ICON_BULLET]+50% a la producci&#243;n de barcos militares, incluidos los transportes[NEWLINE][ICON_BULLET]+2 de experiencia para los nuevos barcos militares</Spanish>
     </TEXT>
-        <TEXT>
-        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_KNIGHTHOOD</Tag>
-        <English>[ICON_BULLET]+6 experience for newly trained mounted units</English>
-        <French>[ICON_BULLET]+6 experience for newly trained mounted units</French>
-        <German>[ICON_BULLET]+6 Erfahrung f&#252;r neu ausgebildete berittene Einheiten</German>
-        <Italian>[ICON_BULLET]+6 experience for newly trained mounted units</Italian>
-        <Spanish>[ICON_BULLET]+6 experience for newly trained mounted units</Spanish>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES</Tag>
+        <English>[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units</English>
+        <French>[ICON_BULLET]+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e par cette ville, unit&#233;s de si&#232;ge comprises</French>
+        <German>[ICON_BULLET]+5% Produktion milit&#228;rischer Landeinheiten je von dieser Stadt bewirtschaftetem Bauernhof, einschlie&#223;lich Belagerungseinheiten</German>
+        <Italian>[ICON_BULLET]+5% alla produzione di unit&#224; militari terrestri per fattoria lavorata da questa citt&#224;, incluse le unit&#224; d&#8217;assedio</Italian>
+        <Spanish>[ICON_BULLET]+5% a la producci&#243;n de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_ANCESTOR_CULT</Tag>
@@ -585,11 +585,11 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TOLERANCE</Tag>
-        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</English>
-        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</French>
-        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Keine diplomatischen Religionsmali mit eurem Land[NEWLINE][ICON_BULLET]+2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion (au&#223;er Staatsatheismus)</German>
-        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Italian>
-        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]No different-religion diplomatic penalties involving your country[NEWLINE][ICON_BULLET]+2 relations toward you from countries with a different state religion (except State Atheism)</Spanish>
+        <English>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Better diplomatic relations with other religions</English>
+        <French>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Meilleures relations diplomatiques avec les autres religions</French>
+        <German>[ICON_BULLET]Keine Unzufriedenheit durch fremde Religionen[NEWLINE][ICON_BULLET]Bessere diplomatische Beziehungen mit fremden Religionen</German>
+        <Italian>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Migliori relazioni diplomatiche con le altre religioni</Italian>
+        <Spanish>[ICON_BULLET]No unhappiness from non-state religions[NEWLINE][ICON_BULLET]Mejores relaciones diplom&#225;ticas con otras religiones</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_TRIBAL</Tag>
@@ -609,11 +609,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DEMOCRACY</Tag>
-        <English>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</English>
-        <French>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</French>
-        <German>[ICON_BULLET]+1 [ICON_COMMERCE] je Spezialist[NEWLINE][ICON_BULLET]Bei Einf&#252;hrung werden alle anderen Staatsformen zuf&#228;llig gew&#228;hlt[NEWLINE][ICON_BULLET]Wahlen alle 10 Runden &#228;ndern eine andere Staatsform; manuelle Wechsel sind gesperrt[NEWLINE][ICON_BULLET]Abschaffung der Demokratie verl&#228;ngert Anarchie um 2 Runden[NEWLINE][ICON_BULLET]Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen</German>
-        <Italian>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Italian>
-        <Spanish>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Adoption randomly selects all other civics[NEWLINE][ICON_BULLET]Elections every 10 turns change one other civic; manual changes are locked[NEWLINE][ICON_BULLET]Leaving Democracy adds 2 turns of anarchy[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Spanish>
+        <English>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</English>
+        <French>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</French>
+        <German>[ICON_BULLET]+1 [ICON_COMMERCE] je Spezialist[NEWLINE][ICON_BULLET]Andere Staatsformen werden durch Wahlen entschieden[NEWLINE][ICON_BULLET]Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen</German>
+        <Italian>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_COMMERCE] per specialist[NEWLINE][ICON_BULLET]Other civics are decided by elections[NEWLINE][ICON_BULLET]No stability penalties from incompatible civics</Spanish>
     </TEXT>
 
     <TEXT>
@@ -659,11 +659,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_REPUBLIC</Tag>
-        <English>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</English>
-        <French>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</French>
-        <German>[ICON_BULLET]Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 [ICON_FOOD] weniger[NEWLINE][ICON_BULLET]Freie Spezialisten und angesiedelte Gro&#223;e Pers&#246;nlichkeiten sind ausgenommen</German>
-        <Italian>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Italian>
-        <Spanish>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD][NEWLINE][ICON_BULLET]Free specialists and settled Great People are excluded</Spanish>
+        <English>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</English>
+        <French>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</French>
+        <German>[ICON_BULLET]Zugewiesene Spezialisten au&#223;er Sklaven verbrauchen 1 [ICON_FOOD] weniger</German>
+        <Italian>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</Italian>
+        <Spanish>[ICON_BULLET]Assigned non-slave specialists consume 1 less [ICON_FOOD]</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_ATTITUDE_TOLERANCE</Tag>
@@ -672,5 +672,101 @@
         <German>%D1: Eure religi&#246;se Toleranz wird gesch&#228;tzt.</German>
         <Italian>%D1: Your religious tolerance is appreciated.</Italian>
         <Spanish>%D1: Your religious tolerance is appreciated.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_BUSHIDO</Tag>
+        <English>Bushido</English>
+        <French>Bushido</French>
+        <German>Bushido</German>
+        <Italian>Bushido</Italian>
+        <Spanish>Bushido</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_PHARAONISM</Tag>
+        <English>Pharaonic Kingship</English>
+        <French>Royaut&#233; pharaonique</French>
+        <German>Pharaonentum</German>
+        <Italian>Monarchia faraonica</Italian>
+        <Spanish>Monarqu&#237;a fara&#243;nica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_DIVINE_KINGSHIP</Tag>
+        <English>Divine Kingship</English>
+        <French>Royaut&#233; divine</French>
+        <German>Gottk&#246;nigtum</German>
+        <Italian>Regalit&#224; divina</Italian>
+        <Spanish>Realeza divina</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_LEADER_PHARAOH</Tag>
+        <English>Pharaoh %s1_Name</English>
+        <French>Pharaon %s1_Name</French>
+        <German>Pharao %s1_Name</German>
+        <Italian>Faraone %s1_Name</Italian>
+        <Spanish>Fara&#243;n %s1_Name</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_PHARAONISM</Tag>
+        <English>[ICON_BULLET]+1 [ICON_PRODUCTION] from farms[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] per slave specialist</English>
+        <French>[ICON_BULLET]+1 [ICON_PRODUCTION] pour les fermes[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] par sp&#233;cialiste esclave</French>
+        <German>[ICON_BULLET]+1 [ICON_PRODUCTION] durch Bauernh&#246;fe[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] je Sklavenspezialist</German>
+        <Italian>[ICON_BULLET]+1 [ICON_PRODUCTION] dalle fattorie[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] per specialista schiavo</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_PRODUCTION] de las granjas[NEWLINE][ICON_BULLET]+1 [ICON_PRODUCTION] por especialista esclavo</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_PHARAONISM_PEDIA</Tag>
+        <English>Pharaonic Kingship organizes agricultural resources and slave labor around the ruler's authority. Farms and slave specialists each produce one additional production. Civic upkeep is medium. The civic is available in every era, without a research penalty, increased city maintenance or a unit production bonus.</English>
+        <French>La royaut&#233; pharaonique organise les ressources agricoles et le travail des esclaves autour du souverain. Les fermes et les sp&#233;cialistes esclaves produisent chacun un point de production suppl&#233;mentaire. Entretien moyen. Disponible &#224; toutes les &#233;poques, sans malus de recherche, hausse de l'entretien des villes ou bonus de production d'unit&#233;s.</French>
+        <German>Das Pharaonentum b&#252;ndelt landwirtschaftliche Ressourcen und Sklavenarbeit unter der Autorit&#228;t des Herrschers. Bauernh&#246;fe und Sklavenspezialisten erzeugen jeweils einen zus&#228;tzlichen Produktionspunkt. Der Staatsform-Unterhalt ist mittel. Die Staatsform ist in jeder Epoche verf&#252;gbar, ohne Forschungsabzug, erh&#246;hten St&#228;dteunterhalt oder Einheitenproduktionsbonus.</German>
+        <Italian>La monarchia faraonica organizza le risorse agricole e il lavoro degli schiavi sotto l'autorit&#224; del sovrano. Fattorie e specialisti schiavi producono un punto produzione aggiuntivo. Mantenimento medio. Disponibile in ogni epoca, senza penalit&#224; alla ricerca, maggiori costi cittadini o bonus alla produzione di unit&#224;.</Italian>
+        <Spanish>La monarqu&#237;a fara&#243;nica organiza los recursos agr&#237;colas y el trabajo esclavo bajo la autoridad del soberano. Las granjas y los especialistas esclavos producen un punto de producci&#243;n adicional. Mantenimiento medio. Disponible en todas las eras, sin penalizaci&#243;n a la investigaci&#243;n, mayor mantenimiento urbano ni bonificaci&#243;n a la producci&#243;n de unidades.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DIVINE_KINGSHIP</Tag>
+        <English>[ICON_BULLET]+1 [ICON_HAPPY] per priest in cities with an Obelisk (max. +2)[NEWLINE][ICON_BULLET]Obelisks do not become obsolete</English>
+        <French>[ICON_BULLET]+1 [ICON_HAPPY] par pr&#234;tre dans les villes avec un ob&#233;lisque (max. +2)[NEWLINE][ICON_BULLET]Les ob&#233;lisques ne deviennent pas obsol&#232;tes</French>
+        <German>[ICON_BULLET]+1 [ICON_HAPPY] je Priester in St&#228;dten mit Obelisk (max. +2)[NEWLINE][ICON_BULLET]Obelisken veralten nicht</German>
+        <Italian>[ICON_BULLET]+1 [ICON_HAPPY] per sacerdote nelle citt&#224; con un obelisco (max. +2)[NEWLINE][ICON_BULLET]Gli obelischi non diventano obsoleti</Italian>
+        <Spanish>[ICON_BULLET]+1 [ICON_HAPPY] por sacerdote en ciudades con obelisco (m&#225;x. +2)[NEWLINE][ICON_BULLET]Los obeliscos no quedan obsoletos</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_DIVINE_KINGSHIP_PEDIA</Tag>
+        <English>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</English>
+        <French>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</French>
+        <German>Das Gottk&#246;nigtum versteht den Herrscher als Verk&#246;rperung g&#246;ttlicher Autorit&#228;t. In St&#228;dten mit &#228;gyptischem Obelisk erzeugt jeder zugewiesene Priester einen Zufriedenheitspunkt, bis zu zwei je Stadt. Freie und angesiedelte Priester z&#228;hlen nicht. Unter Gottk&#246;nigtum veralten Obelisken nicht: Alle ihre Effekte bleiben nach Kalender wirksam und sie bleiben baubar. Beim Staatsformwechsel entf&#228;llt dieser Schutz; andere Quellen f&#252;r Priesterpl&#228;tze bleiben wirksam. Eine Staatsreligion ist nicht erforderlich. Dieser Effekt ersetzt die Zufriedenheit durch Pal&#228;ste und Monumente des Despotismus.</German>
+        <Italian>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Italian>
+        <Spanish>Divine Kingship presents the ruler as embodying divine authority. In cities with an Egyptian Obelisk, each assigned priest generates one happiness, up to two per city. Free and settled priests do not count. While Divine Kingship is active, obelisks do not become obsolete: all their effects remain active after Calendar and they can still be built. Changing civic removes this protection; other sources of priest slots remain effective. No state religion is required. This replaces the palace and monument happiness of Despotism.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_HAPPY_RULER_CULT</Tag>
+        <English>%D1_Amount [ICON_HAPPY] from the cult of the ruler</English>
+        <French>%D1_Amount [ICON_HAPPY] from the cult of the ruler</French>
+        <German>%D1_Amount [ICON_HAPPY] durch den Herrscherkult</German>
+        <Italian>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Italian>
+        <Spanish>%D1_Amount [ICON_HAPPY] from the cult of the ruler</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_PEDIA</Tag>
+        <English>Naval Warfare organizes shipyards, crews and transport fleets for war at sea and overseas expeditions. A maritime power can devote more resources to replacing ships and training crews, while another military institution may better serve a continental army.</English>
+        <French>La guerre navale organise les chantiers, les &#233;quipages et les flottes de transport pour le combat en mer et les exp&#233;ditions outre-mer. Une puissance maritime peut renforcer sa flotte et former ses &#233;quipages, tandis qu&#8217;une autre institution militaire peut mieux servir une arm&#233;e continentale.</French>
+        <German>Seekriegsf&#252;hrung organisiert Werften, Besatzungen und Transportflotten f&#252;r den Krieg auf See und &#252;berseeische Feldz&#252;ge. Eine Seemacht kann mehr Mittel in neue Schiffe und ausgebildete Besatzungen investieren, w&#228;hrend eine andere Milit&#228;rordnung einem Landheer besser dienen kann.</German>
+        <Italian>La guerra navale organizza cantieri, equipaggi e flotte da trasporto per i combattimenti in mare e le spedizioni oltremare. Una potenza marittima pu&#242; investire nelle navi e nell&#8217;addestramento degli equipaggi, mentre un&#8217;altra istituzione militare pu&#242; servire meglio un esercito continentale.</Italian>
+        <Spanish>La guerra naval organiza astilleros, tripulaciones y flotas de transporte para combatir en el mar y realizar expediciones ultramarinas. Una potencia mar&#237;tima puede invertir en barcos y tripulaciones, mientras que otra instituci&#243;n militar puede servir mejor a un ej&#233;rcito continental.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_PEDIA</Tag>
+        <English>Feudal Retinues mobilize military service and provisions through agricultural estates. Worked farms support the producing city&#8217;s land forces, making a productive rural base an alternative to the superior training of a Professional Army.</English>
+        <French>Les osts f&#233;odaux mobilisent le service militaire et les provisions des domaines agricoles. Les fermes exploit&#233;es soutiennent les forces terrestres de leur ville : une base rurale productive offre ainsi une alternative &#224; l&#8217;entra&#238;nement sup&#233;rieur d&#8217;une arm&#233;e professionnelle.</French>
+        <German>Feudale Aufgebote mobilisieren Kriegsdienste und Versorgung durch landwirtschaftliche G&#252;ter. Bewirtschaftete Bauernh&#246;fe unterst&#252;tzen die Landstreitkr&#228;fte ihrer Stadt. Eine leistungsf&#228;hige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.</German>
+        <Italian>I seguiti feudali mobilitano il servizio militare e le provviste delle propriet&#224; agricole. Le fattorie lavorate sostengono le forze terrestri della propria citt&#224;: una base rurale produttiva offre un&#8217;alternativa al migliore addestramento di un esercito professionale.</Italian>
+        <Spanish>Las mesnadas feudales movilizan el servicio militar y los suministros de las propiedades agr&#237;colas. Las granjas trabajadas sostienen las fuerzas terrestres de su ciudad: una base rural productiva ofrece una alternativa al mejor adiestramiento de un ej&#233;rcito profesional.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_PRODUCTION_MILITARY_CIVIC</Tag>
+        <English>+%d1_Modifier% [ICON_PRODUCTION] from %s2_Civic</English>
+        <French>+%d1_Modifier% [ICON_PRODUCTION] gr&#226;ce &#224; %s2_Civic</French>
+        <German>+%d1_Modifier% [ICON_PRODUCTION] durch %s2_Civic</German>
+        <Italian>+%d1_Modifier% [ICON_PRODUCTION] da %s2_Civic</Italian>
+        <Spanish>+%d1_Modifier% [ICON_PRODUCTION] por %s2_Civic</Spanish>
     </TEXT>
 </Civ4GameText>

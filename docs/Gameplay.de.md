@@ -21,7 +21,7 @@ Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 - **Start-Staatsformen:** Jede Zivilisation erhält ein Profil passend zu ihrer
   Zeit, soweit die Starttechnologien des Szenarios oder der Gründung es erlauben.
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
-  Boni; Theokratie mit Staatsatheismus erhält einen Malus. Die Summe ist begrenzt.
+  Boni; Theokratie mit Toleranz erhält einen Malus. Die Summe ist begrenzt.
 - **Vorwarnungen vor Gebietswechseln:** Feld-Tooltips zeigen zukünftige
   Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten drei
   Runden vor dem Wechsel Unruhen.
@@ -147,6 +147,14 @@ Routenbesitzers aufgedeckt.
 - **Militärzugang** ersetzt die Bezeichnung Offene Grenzen und regelt die
   Einreise von Einheiten, einschließlich ziviler Einheiten, unabhängig vom Handel.
   Das Abkommen bleibt gegenseitig; einseitige Abkommen sind noch nicht umgesetzt.
+  Die KI schlägt es nur vor, wenn der Zugang einen bekannten Weg eröffnet oder
+  mindestens drei Felder einspart: eine Landverbindung von ihrer Hauptstadt zu
+  einer weiteren eigenen Stadt oder einer Stadt eines aktuellen/geplanten
+  Kriegsgegners, oder einen Weg zum bestehenden Auftrag einer Einheitengruppe
+  nahe der Grenze des Partners (auch zivile Einheiten und Schiffe). Dies ist
+  eine geografische Schätzung, keine vollständige Bewegungssimulation.
+  Handelseinnahmen geben dem Abkommen keinen Wert; die üblichen diplomatischen
+  Ablehnungsgründe gelten weiterhin.
 - Jede Route verbreitet **Kultur und Religionen in beide Richtungen**, auch
   beim Inlandshandel. Die Bevölkerung der jeweils empfangenden Stadt schwächt
   den Einfluss. Kultur pro Route und Richtung: `abgerundet(5 × Routenwert / Bevölkerung) / 10`:
@@ -221,10 +229,24 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 
 ### Regierung
 
+Für Ägypten heißt das Stammessystem in jeder Epoche **Pharaonentum** und
+Despotismus **Gottkönigtum**. Pharaonentum gibt +1 Produktion durch Bauernhöfe
+und je Sklavenspezialist bei mittlerem Staatsform-Unterhalt. Es ersetzt die
+Einheitenproduktion, den Forschungsabzug und die erhöhten Unterhaltskosten des
+Stammessystems. Unter Gottkönigtum gibt jeder zugewiesene Priester in einer Stadt
+mit ägyptischem Obelisken +1 Zufriedenheit, höchstens +2 pro Stadt. Dies ersetzt
+die Zufriedenheit durch Palast und Monument. Obelisken veralten unter dieser
+Staatsform nicht: Alle Effekte bleiben nach Kalender wirksam und sie bleiben
+baubar. Eine Staatsreligion ist nicht erforderlich. Das unabhängige Land
+heißt unter Pharaonentum **Pharaonenreich**, sein Anführer trägt den Titel
+**Pharao**. Theokratie oder Gottesstaat wählen stattdessen **Tempelstaat Ägypten**:
+Hier ordnet sich die politische Herrschaft der Religion unter, während das
+Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität versteht.
+
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | Jedes aktive, errichtete Hauptstadtgebäude gibt +1 Kultur und +1 Handel. Aktive Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3. Ermöglicht Erbfolgeereignisse. |
+| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. |
 | **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
 | **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
@@ -244,8 +266,8 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
-| **Sklaverei** | Bronzebearbeitung | Niedrig | +2 Handel durch Plantagen; eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; -1 Handel durch Dörfer; Bautrupps errichten Verbesserungen 50% schneller. |
+| **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
+| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
@@ -269,9 +291,9 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten starten mit +6 Erfahrung. |
+| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. +2 Zufriedenheit durch Burgen, solange diese nicht veraltet sind. Heißt für Japan **Bushido**. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
-| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe und Flugzeuge nutzen diese Nahrungsumwandlung nicht. |
+| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
 Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
@@ -320,7 +342,7 @@ ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 
 Jede reguläre Wahl öffnet eine eigene, leicht satirische Bekanntmachung zur gewählten Staatsform mit einem einzigen Bestätigungsbutton. Dessen Tooltip lautet nur **[Staatsform] annehmen**. Das Ergebnis gilt sofort; die Bestätigung verändert keinen synchronisierten Spielzustand.
 
-Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Staatsatheismus. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
+Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Toleranz. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
 
 Bei Einführung wird in jeder anderen Kategorie sofort eine verfügbare Staatsform zufällig gewählt; die bisherige kann erneut gewählt werden. Solange Demokratie beibehalten wird, sind andere Kategorien nicht manuell wechselbar. Ihre Abschaffung entsperrt sie und verlängert die normale Revolutionsanarchie um **zwei Runden**. Bestehende Anarchieimmunität gilt weiterhin.
 
@@ -358,7 +380,15 @@ Die folgenden Kombinationen tragen zur Basisstabilität bei:
 | Monarchie + Rittertum | +2 |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 |
 | Plutokratie + Marktwirtschaft | +1 |
-| Theokratie + Staatsatheismus | -3 |
+| Theokratie + Toleranz | -3 |
+
+Theokratie mit Staatsatheismus gibt Landeinheiten +15% Kampfstärke gegen Länder
+mit beliebiger Staatsreligion und weiterhin gegen Barbaren. Gegen religionslose
+Länder gilt dieser Bonus nicht. Religionsgebäude verursachen je -2 Zufriedenheit,
+auch wenn Staatsatheismus ihre positiven Effekte unterdrückt; technisch veraltete
+Gebäude zählen weiterhin nicht. Der Zufriedenheitsbonus für Gebäude der eigenen
+Staatsreligion entfällt. Die Kombination erhält eigene Ländernamen wie
+„Pontifikat der Vernunft“ und „Heiliges Reich der Vernunft“. Diese Kombination verursacht keinen eigenen Stabilitätsmalus.
 
 Passende Beiträge werden addiert und insgesamt auf **-5 bis +5** begrenzt.
 Andere Kombinationen tragen null bei. Der Modifikator wird alle drei Runden
@@ -526,7 +556,7 @@ englische Ersatztexte.
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **1453 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
@@ -553,23 +583,23 @@ kopiert die neu erzeugte DLL in den Mod-Ordner des Projekts und in den
 installierten Mod. Civ4 vor dem Kompilieren schließen, damit die installierte
 DLL ersetzt werden kann.
 
-### Start 840 n. Chr.
+### Moderne und Zukunftsforschung
 
-Das vierte Szenario beginnt in Runde 205 (840 n. Chr. im Kalender dieses Mods):
-dem frühesten Zeitpunkt, an dem Spanien, Frankreich, England und Deutschland
-ihre regulären Gründungsdaten erreicht haben. Diese vier Länder sind sofort
-spielbar, ebenso China, Japan, die Wikinger, Arabien und die Khmer. Sie beginnen
-mit bestehenden Städten, Geländeverbesserungen, Straßen, Armeen,
-Starttechnologien und passenden Staatsformen. Spätere Zivilisationen behalten
-ihren regulären Gründungszeitplan.
+Globale Erwärmung und Lufteinheiten einschließlich Raketen und Atomwaffen sind
+entfernt. Drei getrennte Dauerforschungen verbessern Zufriedenheit, Gesundheit
+oder Kampfstärke; ihre Kosten steigen je Abschluss um 35 %. Militärische
+Forschung endet bei +15 %. Ein sehr teurer KI- und Automatisierungsbaum eröffnet
+sechs neue Stadtgebäude. Ein Sozialstaatssystem ist noch nicht umgesetzt.
+Siehe [Regeln, Kosten und technische Umsetzung](ModernEra.md).
 
-Die Ausgangslage wurde auf Grundlage der Weltkarte von 600 n. Chr. gestaltet
-und ist kein Ergebnis einer automatisch gespielten Partie. Die Startaufstellung
-wird mit `tools/generate_840_ad_scenario.py` bearbeitet und neu erzeugt.
-Die Initialisierung erfolgt in `Assets/Python/Scenario840AD.py`.
+### Start 1453 n. Chr.
 
-Die Stadtgrößen orientieren sich an der ungefähren urbanen Bedeutung im
-9. Jahrhundert; siehe [Bevölkerungsliste und historische Begründung](840ADPopulation.md).
+Das Szenario von 1453 beginnt unmittelbar nach der osmanischen Eroberung
+Konstantinopels. Es umfasst 96 Städte und 25 bestehende, sofort spielbare
+Hauptzivilisationen. Namen und Startprofile bilden unter anderem das
+Mamlukensultanat, Ming-China, Moskau, die italienischen Staaten und das
+Osmanische Sultanat ab. Amerika behält seinen späteren Gründungszeitpunkt.
+Siehe [Staatenliste, Kartenabstraktionen und Einrichtung](1453ADScenario.md).
 
 ### Verbuchung der Nahrungstransfers
 

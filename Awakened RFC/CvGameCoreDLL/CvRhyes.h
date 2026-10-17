@@ -188,6 +188,7 @@ extern char rating[34][6][15];
 extern int turnPlayed[32];
 extern int civSpreadFactor[32][7];
 extern int borders[27][27];
+CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots);
 extern wchar civDynamicNames[27][22][19]; //(dynamic civ names - not jdog's)
 extern int civDynamicNamesFlag[27];
 extern int civDynamicNamesEraThreshold[27];

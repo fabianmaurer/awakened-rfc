@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_0</Tag>
+        <English>Shoshenq III</English>
+        <French>Sheshonq III</French>
+        <German>Schoschenq III.</German>
+        <Italian>Sheshonq III</Italian>
+        <Spanish>Sheshonq III</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_1</Tag>
+        <English>Kesin Dalbhya</English>
+        <French>Kesin Dalbhya</French>
+        <German>Kesin Dalbhya</German>
+        <Italian>Kesin Dalbhya</Italian>
+        <Spanish>Kesin Dalbhya</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_2</Tag>
+        <English>Xuan of Zhou</English>
+        <French>Xuan des Zhou</French>
+        <German>Xuan von Zhou</German>
+        <Italian>Xuan di Zhou</Italian>
+        <Spanish>Xuan de Zhou</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_3</Tag>
+        <English>Ninurta-apla-X</English>
+        <French>Ninurta-apla-X</French>
+        <German>Ninurta-apla-X</German>
+        <Italian>Ninurta-apla-X</Italian>
+        <Spanish>Ninurta-apla-X</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_4</Tag>
+        <English>Ariphron</English>
+        <French>Ariphron</French>
+        <German>Ariphron</German>
+        <Italian>Arifrone</Italian>
+        <Spanish>Arifr&#243;n</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_5</Tag>
+        <English>Persian tribal chiefs</English>
+        <French>Chefs des tribus perses</French>
+        <German>Persische Stammesf&#252;rsten</German>
+        <Italian>Capi delle trib&#249; persiane</Italian>
+        <Spanish>Jefes tribales persas</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_6</Tag>
+        <English>Elissa</English>
+        <French>&#201;lissa</French>
+        <German>Elissa</German>
+        <Italian>Elissa</Italian>
+        <Spanish>Elisa</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_7</Tag>
+        <English>Latin tribal elders</English>
+        <French>Anciens des tribus latines</French>
+        <German>Latinische Stammes&#228;lteste</German>
+        <Italian>Anziani delle trib&#249; latine</Italian>
+        <Spanish>Ancianos de las tribus latinas</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_800BC_LEADER_8</Tag>
+        <English>Japanese clan elders</English>
+        <French>Anciens des clans japonais</French>
+        <German>Japanische Clan&#228;lteste</German>
+        <Italian>Anziani dei clan giapponesi</Italian>
+        <Spanish>Ancianos de los clanes japoneses</Spanish>
+    </TEXT>
+</Civ4GameText>

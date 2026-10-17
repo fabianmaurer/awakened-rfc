@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_TRIBAL</Tag>
-    <English>Peoples of the Nile</English>
-    <French>Peoples of the Nile</French>
-    <German>V&#246;lker am Nil</German>
-    <Italian>Peoples of the Nile</Italian>
-    <Spanish>Peoples of the Nile</Spanish>
+    <English>Peoples of the Nile Valley</English>
+    <French>Peoples of the Nile Valley</French>
+    <German>V&#246;lker des Niltals</German>
+    <Italian>Peoples of the Nile Valley</Italian>
+    <Spanish>Peoples of the Nile Valley</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_KINGDOM</Tag>
@@ -1210,11 +1210,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_REPUBLIC</Tag>
-    <English>Senate and People of Rome</English>
-    <French>Senate and People of Rome</French>
-    <German>Senat und Volk von Rom</German>
-    <Italian>Senate and People of Rome</Italian>
-    <Spanish>Senate and People of Rome</Spanish>
+    <English>SPQR</English>
+    <French>SPQR</French>
+    <German>SPQR</German>
+    <Italian>SPQR</Italian>
+    <Spanish>SPQR</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_DEMOCRACY</Tag>
@@ -1306,11 +1306,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_THEOCRATIC_REPUBLIC</Tag>
-    <English>Senate and People of Rome</English>
-    <French>Senate and People of Rome</French>
-    <German>Senat und Volk von Rom</German>
-    <Italian>Senate and People of Rome</Italian>
-    <Spanish>Senate and People of Rome</Spanish>
+    <English>SPQR</English>
+    <French>SPQR</French>
+    <German>SPQR</German>
+    <Italian>SPQR</Italian>
+    <Spanish>SPQR</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_ISLAMIC_REPUBLIC</Tag>
@@ -3098,11 +3098,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_PEOPLES_STATE</Tag>
-    <English>Russian Soviet Republic</English>
-    <French>Russian Soviet Republic</French>
-    <German>Russische Sowjetrepublik</German>
-    <Italian>Russian Soviet Republic</Italian>
-    <Spanish>Russian Soviet Republic</Spanish>
+    <English>Union of Soviet Socialist Republics</English>
+    <French>Union of Soviet Socialist Republics</French>
+    <German>Union der Sozialistischen Sowjetrepubliken</German>
+    <Italian>Union of Soviet Socialist Republics</Italian>
+    <Spanish>Union of Soviet Socialist Republics</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_DICTATORSHIP</Tag>
@@ -4210,27 +4210,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_KINGDOM</Tag>
-    <English>Ottoman State</English>
-    <French>Ottoman State</French>
-    <German>Osmanischer Staat</German>
-    <Italian>Ottoman State</Italian>
-    <Spanish>Ottoman State</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_EMPIRE</Tag>
     <English>Ottoman Empire</English>
     <French>Ottoman Empire</French>
-    <German>Osmanisches Reich</German>
+    <German>Osmanenreich</German>
     <Italian>Ottoman Empire</Italian>
     <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_CONSTITUTIONAL</Tag>
-    <English>Ottoman State</English>
-    <French>Ottoman State</French>
-    <German>Osmanischer Staat</German>
-    <Italian>Ottoman State</Italian>
-    <Spanish>Ottoman State</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_REPUBLIC</Tag>
@@ -4354,11 +4354,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_SULTANATE</Tag>
-    <English>Ottoman Sultanate</English>
-    <French>Ottoman Sultanate</French>
-    <German>Osmanisches Sultanat</German>
-    <Italian>Ottoman Sultanate</Italian>
-    <Spanish>Ottoman Sultanate</Spanish>
+    <English>Ottoman Empire</English>
+    <French>Ottoman Empire</French>
+    <German>Osmanenreich</German>
+    <Italian>Ottoman Empire</Italian>
+    <Spanish>Ottoman Empire</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_SECULAR_REPUBLIC</Tag>
@@ -4535,6 +4535,1134 @@
     <German>Vereinigte Staaten von Amerika</German>
     <Italian>United States of America</Italian>
     <Spanish>United States of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Granaries</English>
+    <French>Realm of the Royal Granaries</French>
+    <German>Reich der k&#246;niglichen Speicher</German>
+    <Italian>Realm of the Royal Granaries</Italian>
+    <Spanish>Realm of the Royal Granaries</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_ROYAL_PLANNED</Tag>
+    <English>Maharajas' Economic Union</English>
+    <French>Maharajas' Economic Union</French>
+    <German>Wirtschaftsunion der Maharadschas</German>
+    <Italian>Maharajas' Economic Union</Italian>
+    <Spanish>Maharajas' Economic Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ROYAL_PLANNED</Tag>
+    <English>Imperial Economic Union of China</English>
+    <French>Imperial Economic Union of China</French>
+    <German>Kaiserliche Wirtschaftsunion China</German>
+    <Italian>Imperial Economic Union of China</Italian>
+    <Spanish>Imperial Economic Union of China</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_ROYAL_PLANNED</Tag>
+    <English>Palace State of Babylon</English>
+    <French>Palace State of Babylon</French>
+    <German>Palaststaat Babylon</German>
+    <Italian>Palace State of Babylon</Italian>
+    <Spanish>Palace State of Babylon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_ROYAL_PLANNED</Tag>
+    <English>Hellenic Crown Collective</English>
+    <French>Hellenic Crown Collective</French>
+    <German>Hellenisches Kronkollektiv</German>
+    <Italian>Hellenic Crown Collective</Italian>
+    <Spanish>Hellenic Crown Collective</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Satrapies</English>
+    <French>Realm of the Royal Satrapies</French>
+    <German>Reich der k&#246;niglichen Satrapien</German>
+    <Italian>Realm of the Royal Satrapies</Italian>
+    <Spanish>Realm of the Royal Satrapies</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_ROYAL_PLANNED</Tag>
+    <English>Punic Crown Monopoly</English>
+    <French>Punic Crown Monopoly</French>
+    <German>Punisches Kronmonopol</German>
+    <Italian>Punic Crown Monopoly</Italian>
+    <Spanish>Punic Crown Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ROYAL_PLANNED</Tag>
+    <English>Imperium of the State Estates</English>
+    <French>Imperium of the State Estates</French>
+    <German>Imperium der Staatsg&#252;ter</German>
+    <Italian>Imperium of the State Estates</Italian>
+    <Spanish>Imperium of the State Estates</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ROYAL_PLANNED</Tag>
+    <English>Japanese Imperial Provisioning State</English>
+    <French>Japanese Imperial Provisioning State</French>
+    <German>Kaiserlicher Versorgungsstaat Japan</German>
+    <Italian>Japanese Imperial Provisioning State</Italian>
+    <Spanish>Japanese Imperial Provisioning State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ROYAL_PLANNED</Tag>
+    <English>Imperial Domains of Abyssinia</English>
+    <French>Imperial Domains of Abyssinia</French>
+    <German>Kaiserliche Dom&#228;nen Abessiniens</German>
+    <Italian>Imperial Domains of Abyssinia</Italian>
+    <Spanish>Imperial Domains of Abyssinia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Maize Stores</English>
+    <French>Realm of the Royal Maize Stores</French>
+    <German>Reich der k&#246;niglichen Maiskammern</German>
+    <Italian>Realm of the Royal Maize Stores</Italian>
+    <Spanish>Realm of the Royal Maize Stores</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_ROYAL_PLANNED</Tag>
+    <English>Nordic Crown of Common Provision</English>
+    <French>Nordic Crown of Common Provision</French>
+    <German>Nordisches Versorgungsk&#246;nigtum</German>
+    <Italian>Nordic Crown of Common Provision</Italian>
+    <Spanish>Nordic Crown of Common Provision</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ROYAL_PLANNED</Tag>
+    <English>Royal Oasis Union</English>
+    <French>Royal Oasis Union</French>
+    <German>K&#246;niglicher Oasenverbund</German>
+    <Italian>Royal Oasis Union</Italian>
+    <Spanish>Royal Oasis Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Waterworks</English>
+    <French>Realm of the Royal Waterworks</French>
+    <German>Reich der k&#246;niglichen Wasserwerke</German>
+    <Italian>Realm of the Royal Waterworks</Italian>
+    <Spanish>Realm of the Royal Waterworks</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_ROYAL_PLANNED</Tag>
+    <English>Iberian Crown Estates Union</English>
+    <French>Iberian Crown Estates Union</French>
+    <German>Iberische Krong&#252;terunion</German>
+    <Italian>Iberian Crown Estates Union</Italian>
+    <Spanish>Iberian Crown Estates Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_ROYAL_PLANNED</Tag>
+    <English>French Manufactory Monarchy</English>
+    <French>French Manufactory Monarchy</French>
+    <German>Franz&#246;sische Manufakturmonarchie</German>
+    <Italian>French Manufactory Monarchy</Italian>
+    <Spanish>French Manufactory Monarchy</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ROYAL_PLANNED</Tag>
+    <English>British Crown Monopoly</English>
+    <French>British Crown Monopoly</French>
+    <German>Britisches Kronmonopol</German>
+    <Italian>British Crown Monopoly</Italian>
+    <Spanish>British Crown Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_ROYAL_PLANNED</Tag>
+    <English>German Chamber Empire</English>
+    <French>German Chamber Empire</French>
+    <German>Deutsches Kammerreich</German>
+    <Italian>German Chamber Empire</Italian>
+    <Spanish>German Chamber Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_ROYAL_PLANNED</Tag>
+    <English>Tsardom of the State Combines</English>
+    <French>Tsardom of the State Combines</French>
+    <German>Zarenreich der Staatskombinate</German>
+    <Italian>Tsardom of the State Combines</Italian>
+    <Spanish>Tsardom of the State Combines</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_ROYAL_PLANNED</Tag>
+    <English>Royal Polder Union</English>
+    <French>Royal Polder Union</French>
+    <German>K&#246;nigliche Polderunion</German>
+    <Italian>Royal Polder Union</Italian>
+    <Spanish>Royal Polder Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_ROYAL_PLANNED</Tag>
+    <English>Empire of the Malian Gold Treasury</English>
+    <French>Empire of the Malian Gold Treasury</French>
+    <German>Goldkammerreich Mali</German>
+    <Italian>Empire of the Malian Gold Treasury</Italian>
+    <Spanish>Empire of the Malian Gold Treasury</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_ROYAL_PLANNED</Tag>
+    <English>Royal Overseas Company of Portugal</English>
+    <French>Royal Overseas Company of Portugal</French>
+    <German>K&#246;nigliche &#220;berseekompanie Portugal</German>
+    <Italian>Royal Overseas Company of Portugal</Italian>
+    <Spanish>Royal Overseas Company of Portugal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_ROYAL_PLANNED</Tag>
+    <English>Land of the Four Quarters</English>
+    <French>Land of the Four Quarters</French>
+    <German>Land der vier Weltgegenden</German>
+    <Italian>Land of the Four Quarters</Italian>
+    <Spanish>Land of the Four Quarters</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_ROYAL_PLANNED</Tag>
+    <English>Khanate of the Common Pastures</English>
+    <French>Khanate of the Common Pastures</French>
+    <German>Khanat der gemeinsamen Weiden</German>
+    <Italian>Khanate of the Common Pastures</Italian>
+    <Spanish>Khanate of the Common Pastures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Tribute</English>
+    <French>Realm of the Royal Tribute</French>
+    <German>Reich der k&#246;niglichen Tribute</German>
+    <Italian>Realm of the Royal Tribute</Italian>
+    <Spanish>Realm of the Royal Tribute</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_ROYAL_PLANNED</Tag>
+    <English>Sublime Porte of the State Manufactories</English>
+    <French>Sublime Porte of the State Manufactories</French>
+    <German>Hohe Pforte der Staatsmanufakturen</German>
+    <Italian>Sublime Porte of the State Manufactories</Italian>
+    <Spanish>Sublime Porte of the State Manufactories</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_ROYAL_PLANNED</Tag>
+    <English>United Crown Industries of America</English>
+    <French>United Crown Industries of America</French>
+    <German>Vereinigte Kronwerke Amerikas</German>
+    <Italian>United Crown Industries of America</Italian>
+    <Spanish>United Crown Industries of America</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_PLUTOCRATIC_PLANNED</Tag>
+    <English>Nile Granary Directorate</English>
+    <French>Nile Granary Directorate</French>
+    <German>Speicherdirektorium am Nil</German>
+    <Italian>Nile Granary Directorate</Italian>
+    <Spanish>Nile Granary Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_PLUTOCRATIC_PLANNED</Tag>
+    <English>Indian Guild Dominion</English>
+    <French>Indian Guild Dominion</French>
+    <German>Indische Gildenherrschaft</German>
+    <Italian>Indian Guild Dominion</Italian>
+    <Spanish>Indian Guild Dominion</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_PLUTOCRATIC_PLANNED</Tag>
+    <English>Silken Mandate of the Merchant Houses</English>
+    <French>Silken Mandate of the Merchant Houses</French>
+    <German>Seidenmandat der Handelsh&#228;user</German>
+    <Italian>Silken Mandate of the Merchant Houses</Italian>
+    <Spanish>Silken Mandate of the Merchant Houses</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_PLUTOCRATIC_PLANNED</Tag>
+    <English>Babylonian Canal Company</English>
+    <French>Babylonian Canal Company</French>
+    <German>Babylonische Kanalgesellschaft</German>
+    <Italian>Babylonian Canal Company</Italian>
+    <Spanish>Babylonian Canal Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_PLUTOCRATIC_PLANNED</Tag>
+    <English>Aegean Shipowners' Cartel</English>
+    <French>Aegean Shipowners' Cartel</French>
+    <German>&#196;g&#228;isches Reederkartell</German>
+    <Italian>Aegean Shipowners' Cartel</Italian>
+    <Spanish>Aegean Shipowners' Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_PLUTOCRATIC_PLANNED</Tag>
+    <English>Iranian Caravan Monopoly</English>
+    <French>Iranian Caravan Monopoly</French>
+    <German>Iranisches Karawanenmonopol</German>
+    <Italian>Iranian Caravan Monopoly</Italian>
+    <Spanish>Iranian Caravan Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_PLUTOCRATIC_PLANNED</Tag>
+    <English>Directorate of the Seven Houses</English>
+    <French>Directorate of the Seven Houses</French>
+    <German>Direktorium der Sieben H&#228;user</German>
+    <Italian>Directorate of the Seven Houses</Italian>
+    <Spanish>Directorate of the Seven Houses</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_PLUTOCRATIC_PLANNED</Tag>
+    <English>Roman Patrician Directorate</English>
+    <French>Roman Patrician Directorate</French>
+    <German>R&#246;misches Patrizierdirektorium</German>
+    <Italian>Roman Patrician Directorate</Italian>
+    <Spanish>Roman Patrician Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_PLUTOCRATIC_PLANNED</Tag>
+    <English>Japanese Industrial Conclave</English>
+    <French>Japanese Industrial Conclave</French>
+    <German>Japanischer Industriekonvent</German>
+    <Italian>Japanese Industrial Conclave</Italian>
+    <Spanish>Japanese Industrial Conclave</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_PLUTOCRATIC_PLANNED</Tag>
+    <English>Abyssinian Coffee and Salt Monopoly</English>
+    <French>Abyssinian Coffee and Salt Monopoly</French>
+    <German>Abessinisches Kaffee- und Salzmonopol</German>
+    <Italian>Abyssinian Coffee and Salt Monopoly</Italian>
+    <Spanish>Abyssinian Coffee and Salt Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_PLUTOCRATIC_PLANNED</Tag>
+    <English>Maya Jade and Cacao Cartel</English>
+    <French>Maya Jade and Cacao Cartel</French>
+    <German>Jade- und Kakaokartell der Maya</German>
+    <Italian>Maya Jade and Cacao Cartel</Italian>
+    <Spanish>Maya Jade and Cacao Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_PLUTOCRATIC_PLANNED</Tag>
+    <English>Nordic Shipyard Cartel</English>
+    <French>Nordic Shipyard Cartel</French>
+    <German>Nordisches Werftenkartell</German>
+    <Italian>Nordic Shipyard Cartel</Italian>
+    <Spanish>Nordic Shipyard Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_PLUTOCRATIC_PLANNED</Tag>
+    <English>Arabian Oasis Monopoly</English>
+    <French>Arabian Oasis Monopoly</French>
+    <German>Arabisches Oasenmonopol</German>
+    <Italian>Arabian Oasis Monopoly</Italian>
+    <Spanish>Arabian Oasis Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_PLUTOCRATIC_PLANNED</Tag>
+    <English>Angkor Rice Directorate</English>
+    <French>Angkor Rice Directorate</French>
+    <German>Reisdirektorium Angkor</German>
+    <Italian>Angkor Rice Directorate</Italian>
+    <Spanish>Angkor Rice Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_PLUTOCRATIC_PLANNED</Tag>
+    <English>Iberian Silver Syndicate</English>
+    <French>Iberian Silver Syndicate</French>
+    <German>Iberisches Silbersyndikat</German>
+    <Italian>Iberian Silver Syndicate</Italian>
+    <Spanish>Iberian Silver Syndicate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_PLUTOCRATIC_PLANNED</Tag>
+    <English>French Industrial Directorate</English>
+    <French>French Industrial Directorate</French>
+    <German>Franz&#246;sisches Industriedirektorium</German>
+    <Italian>French Industrial Directorate</Italian>
+    <Spanish>French Industrial Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_PLUTOCRATIC_PLANNED</Tag>
+    <English>British United Company</English>
+    <French>British United Company</French>
+    <German>Britische Einheitskompanie</German>
+    <Italian>British United Company</Italian>
+    <Spanish>British United Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_PLUTOCRATIC_PLANNED</Tag>
+    <English>German Cartel Union</English>
+    <French>German Cartel Union</French>
+    <German>Deutscher Kartellbund</German>
+    <Italian>German Cartel Union</Italian>
+    <Spanish>German Cartel Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_PLUTOCRATIC_PLANNED</Tag>
+    <English>Russian Combine Directorate</English>
+    <French>Russian Combine Directorate</French>
+    <German>Russisches Kombinatsdirektorium</German>
+    <Italian>Russian Combine Directorate</Italian>
+    <Spanish>Russian Combine Directorate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_PLUTOCRATIC_PLANNED</Tag>
+    <English>United Netherlandish Company</English>
+    <French>United Netherlandish Company</French>
+    <German>Vereinigte Niederl&#228;ndische Kompanie</German>
+    <Italian>United Netherlandish Company</Italian>
+    <Spanish>United Netherlandish Company</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_PLUTOCRATIC_PLANNED</Tag>
+    <English>Malian Gold and Salt Cartel</English>
+    <French>Malian Gold and Salt Cartel</French>
+    <German>Gold- und Salzkartell Mali</German>
+    <Italian>Malian Gold and Salt Cartel</Italian>
+    <Spanish>Malian Gold and Salt Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_PLUTOCRATIC_PLANNED</Tag>
+    <English>Portuguese Spice Monopoly</English>
+    <French>Portuguese Spice Monopoly</French>
+    <German>Portugiesisches Gew&#252;rzmonopol</German>
+    <Italian>Portuguese Spice Monopoly</Italian>
+    <Spanish>Portuguese Spice Monopoly</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_PLUTOCRATIC_PLANNED</Tag>
+    <English>Andean Storehouse Cartel</English>
+    <French>Andean Storehouse Cartel</French>
+    <German>Andines Speicherkartell</German>
+    <Italian>Andean Storehouse Cartel</Italian>
+    <Spanish>Andean Storehouse Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_PLUTOCRATIC_PLANNED</Tag>
+    <English>Steppe Cartel of the Caravan Lords</English>
+    <French>Steppe Cartel of the Caravan Lords</French>
+    <German>Steppenkartell der Karawanenherren</German>
+    <Italian>Steppe Cartel of the Caravan Lords</Italian>
+    <Spanish>Steppe Cartel of the Caravan Lords</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_PLUTOCRATIC_PLANNED</Tag>
+    <English>Aztec Tribute Cartel</English>
+    <French>Aztec Tribute Cartel</French>
+    <German>Aztekisches Tributkartell</German>
+    <Italian>Aztec Tribute Cartel</Italian>
+    <Spanish>Aztec Tribute Cartel</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_PLUTOCRATIC_PLANNED</Tag>
+    <English>High Chamber of Anatolian Commerce</English>
+    <French>High Chamber of Anatolian Commerce</French>
+    <German>Hohe Handelskammer Anatoliens</German>
+    <Italian>High Chamber of Anatolian Commerce</Italian>
+    <Spanish>High Chamber of Anatolian Commerce</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_PLUTOCRATIC_PLANNED</Tag>
+    <English>American Corporate Collective</English>
+    <French>American Corporate Collective</French>
+    <German>Amerikanisches Konzernkollektiv</German>
+    <Italian>American Corporate Collective</Italian>
+    <Spanish>American Corporate Collective</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_ATHEOCRACY</Tag>
+    <English>Order of the Godless Sun</English>
+    <French>Order of the Godless Sun</French>
+    <German>Orden der gottlosen Sonne</German>
+    <Italian>Order of the Godless Sun</Italian>
+    <Spanish>Order of the Godless Sun</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_ATHEOCRACY</Tag>
+    <English>Bharat of the Eternal Law</English>
+    <French>Bharat of the Eternal Law</French>
+    <German>Bharat des ewigen Gesetzes</German>
+    <Italian>Bharat of the Eternal Law</Italian>
+    <Spanish>Bharat of the Eternal Law</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ATHEOCRACY</Tag>
+    <English>Realm of the Earthly Mandate</English>
+    <French>Realm of the Earthly Mandate</French>
+    <German>Reich des irdischen Mandats</German>
+    <Italian>Realm of the Earthly Mandate</Italian>
+    <Spanish>Realm of the Earthly Mandate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_ATHEOCRACY</Tag>
+    <English>Babylon of the Godless Law</English>
+    <French>Babylon of the Godless Law</French>
+    <German>Babylon des gottlosen Gesetzes</German>
+    <Italian>Babylon of the Godless Law</Italian>
+    <Spanish>Babylon of the Godless Law</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_ATHEOCRACY</Tag>
+    <English>Hellenic League of the Logos</English>
+    <French>Hellenic League of the Logos</French>
+    <German>Hellenischer Bund des Logos</German>
+    <Italian>Hellenic League of the Logos</Italian>
+    <Spanish>Hellenic League of the Logos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ATHEOCRACY</Tag>
+    <English>Order of the Godless Flame</English>
+    <French>Order of the Godless Flame</French>
+    <German>Orden der gottlosen Flamme</German>
+    <Italian>Order of the Godless Flame</Italian>
+    <Spanish>Order of the Godless Flame</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_ATHEOCRACY</Tag>
+    <English>Carthaginian Empire of Dogma</English>
+    <French>Carthaginian Empire of Dogma</French>
+    <German>Karthagisches Dogmenreich</German>
+    <Italian>Carthaginian Empire of Dogma</Italian>
+    <Spanish>Carthaginian Empire of Dogma</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ATHEOCRACY</Tag>
+    <English>Pontificate of Reason</English>
+    <French>Pontificate of Reason</French>
+    <German>Pontifikat der Vernunft</German>
+    <Italian>Pontificate of Reason</Italian>
+    <Spanish>Pontificate of Reason</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ATHEOCRACY</Tag>
+    <English>Order of the Godless Dawn</English>
+    <French>Order of the Godless Dawn</French>
+    <German>Orden der gottlosen Morgenr&#246;te</German>
+    <Italian>Order of the Godless Dawn</Italian>
+    <Spanish>Order of the Godless Dawn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ATHEOCRACY</Tag>
+    <English>Ethiopian Patriarchate of Humanity</English>
+    <French>Ethiopian Patriarchate of Humanity</French>
+    <German>&#196;thiopisches Patriarchat der Menschheit</German>
+    <Italian>Ethiopian Patriarchate of Humanity</Italian>
+    <Spanish>Ethiopian Patriarchate of Humanity</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_ATHEOCRACY</Tag>
+    <English>Order of the Godless Calendar</English>
+    <French>Order of the Godless Calendar</French>
+    <German>Orden des gottlosen Kalenders</German>
+    <Italian>Order of the Godless Calendar</Italian>
+    <Spanish>Order of the Godless Calendar</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_ATHEOCRACY</Tag>
+    <English>Northern League of the Godless</English>
+    <French>Northern League of the Godless</French>
+    <German>Nordbund der G&#246;tterlosen</German>
+    <Italian>Northern League of the Godless</Italian>
+    <Spanish>Northern League of the Godless</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ATHEOCRACY</Tag>
+    <English>Caliphate of Human Truth</English>
+    <French>Caliphate of Human Truth</French>
+    <German>Kalifat der menschlichen Wahrheit</German>
+    <Italian>Caliphate of Human Truth</Italian>
+    <Spanish>Caliphate of Human Truth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ATHEOCRACY</Tag>
+    <English>Angkor of the Empty Temples</English>
+    <French>Angkor of the Empty Temples</French>
+    <German>Angkor der leeren Tempel</German>
+    <Italian>Angkor of the Empty Temples</Italian>
+    <Spanish>Angkor of the Empty Temples</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_ATHEOCRACY</Tag>
+    <English>Iberian Inquisition of the Godless</English>
+    <French>Iberian Inquisition of the Godless</French>
+    <German>Iberische Inquisition der Gottlosen</German>
+    <Italian>Iberian Inquisition of the Godless</Italian>
+    <Spanish>Iberian Inquisition of the Godless</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_ATHEOCRACY</Tag>
+    <English>French Cult of Reason</English>
+    <French>French Cult of Reason</French>
+    <German>Franz&#246;sischer Kult der Vernunft</German>
+    <Italian>French Cult of Reason</Italian>
+    <Spanish>French Cult of Reason</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ATHEOCRACY</Tag>
+    <English>English Protectorate of Pure Doctrine</English>
+    <French>English Protectorate of Pure Doctrine</French>
+    <German>Englisches Protektorat der reinen Lehre</German>
+    <Italian>English Protectorate of Pure Doctrine</Italian>
+    <Spanish>English Protectorate of Pure Doctrine</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_ATHEOCRACY</Tag>
+    <English>Holy Empire of Reason</English>
+    <French>Holy Empire of Reason</French>
+    <German>Heiliges Reich der Vernunft</German>
+    <Italian>Holy Empire of Reason</Italian>
+    <Spanish>Holy Empire of Reason</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_ATHEOCRACY</Tag>
+    <English>Russian Synod of the Godless</English>
+    <French>Russian Synod of the Godless</French>
+    <German>Russische Synode der Gottlosen</German>
+    <Italian>Russian Synod of the Godless</Italian>
+    <Spanish>Russian Synod of the Godless</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_ATHEOCRACY</Tag>
+    <English>Netherlandish Consistory of Truth</English>
+    <French>Netherlandish Consistory of Truth</French>
+    <German>Niederl&#228;ndisches Konsistorium der Wahrheit</German>
+    <Italian>Netherlandish Consistory of Truth</Italian>
+    <Spanish>Netherlandish Consistory of Truth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAL_ATHEOCRACY</Tag>
+    <English>Malian Covenant of the Infallible Word</English>
+    <French>Malian Covenant of the Infallible Word</French>
+    <German>Malischer Bund des unfehlbaren Wortes</German>
+    <Italian>Malian Covenant of the Infallible Word</Italian>
+    <Spanish>Malian Covenant of the Infallible Word</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_POR_ATHEOCRACY</Tag>
+    <English>Portuguese Mission of Enlightenment</English>
+    <French>Portuguese Mission of Enlightenment</French>
+    <German>Portugiesische Mission der Aufkl&#228;rung</German>
+    <Italian>Portuguese Mission of Enlightenment</Italian>
+    <Spanish>Portuguese Mission of Enlightenment</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_INC_ATHEOCRACY</Tag>
+    <English>Andean Realm of the Dethroned Sun</English>
+    <French>Andean Realm of the Dethroned Sun</French>
+    <German>Andenreich der entthronten Sonne</German>
+    <Italian>Andean Realm of the Dethroned Sun</Italian>
+    <Spanish>Andean Realm of the Dethroned Sun</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_ATHEOCRACY</Tag>
+    <English>Khanate of the Godless Sky</English>
+    <French>Khanate of the Godless Sky</French>
+    <German>Khanat des gottlosen Himmels</German>
+    <Italian>Khanate of the Godless Sky</Italian>
+    <Spanish>Khanate of the Godless Sky</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_ATHEOCRACY</Tag>
+    <English>Order of the Godless Eagle</English>
+    <French>Order of the Godless Eagle</French>
+    <German>Orden des gottlosen Adlers</German>
+    <Italian>Order of the Godless Eagle</Italian>
+    <Spanish>Order of the Godless Eagle</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_TUR_ATHEOCRACY</Tag>
+    <English>Sublime Porte of Earthly Truth</English>
+    <French>Sublime Porte of Earthly Truth</French>
+    <German>Hohe Pforte der weltlichen Wahrheit</German>
+    <Italian>Sublime Porte of Earthly Truth</Italian>
+    <Spanish>Sublime Porte of Earthly Truth</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AME_ATHEOCRACY</Tag>
+    <English>American Church of Humanity</English>
+    <French>American Church of Humanity</French>
+    <German>Amerikanische Kirche der Menschheit</German>
+    <Italian>American Church of Humanity</Italian>
+    <Spanish>American Church of Humanity</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_QIN</Tag>
+    <English>Qin Empire</English>
+    <French>Qin Empire</French>
+    <German>Qin-Reich</German>
+    <Italian>Qin Empire</Italian>
+    <Spanish>Qin Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_HAN</Tag>
+    <English>Han Empire</English>
+    <French>Han Empire</French>
+    <German>Han-Reich</German>
+    <Italian>Han Empire</Italian>
+    <Spanish>Han Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_TANG</Tag>
+    <English>Tang Empire</English>
+    <French>Tang Empire</French>
+    <German>Tang-Reich</German>
+    <Italian>Tang Empire</Italian>
+    <Spanish>Tang Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_SONG</Tag>
+    <English>Song Empire</English>
+    <French>Song Empire</French>
+    <German>Song-Reich</German>
+    <Italian>Song Empire</Italian>
+    <Spanish>Song Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_YUAN</Tag>
+    <English>Yuan Empire</English>
+    <French>Yuan Empire</French>
+    <German>Yuan-Reich</German>
+    <Italian>Yuan Empire</Italian>
+    <Spanish>Yuan Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_QING</Tag>
+    <English>Qing Empire</English>
+    <French>Qing Empire</French>
+    <German>Qing-Reich</German>
+    <Italian>Qing Empire</Italian>
+    <Spanish>Qing Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MAURYA</Tag>
+    <English>Maurya Empire</English>
+    <French>Maurya Empire</French>
+    <German>Maurya-Reich</German>
+    <Italian>Maurya Empire</Italian>
+    <Spanish>Maurya Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_GUPTA</Tag>
+    <English>Gupta Empire</English>
+    <French>Gupta Empire</French>
+    <German>Gupta-Reich</German>
+    <Italian>Gupta Empire</Italian>
+    <Spanish>Gupta Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_MUGHAL</Tag>
+    <English>Mughal Empire</English>
+    <French>Mughal Empire</French>
+    <German>Mogulreich</German>
+    <Italian>Mughal Empire</Italian>
+    <Spanish>Mughal Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_ACHAEMENID</Tag>
+    <English>Achaemenid Empire</English>
+    <French>Achaemenid Empire</French>
+    <German>Ach&#228;menidenreich</German>
+    <Italian>Achaemenid Empire</Italian>
+    <Spanish>Achaemenid Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_PARTHIAN</Tag>
+    <English>Parthian Empire</English>
+    <French>Parthian Empire</French>
+    <German>Partherreich</German>
+    <Italian>Parthian Empire</Italian>
+    <Spanish>Parthian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SASANIAN</Tag>
+    <English>Sasanian Empire</English>
+    <French>Sasanian Empire</French>
+    <German>Sassanidenreich</German>
+    <Italian>Sasanian Empire</Italian>
+    <Spanish>Sasanian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_SAFAVID</Tag>
+    <English>Safavid Empire</English>
+    <French>Safavid Empire</French>
+    <German>Safawidenreich</German>
+    <Italian>Safavid Empire</Italian>
+    <Spanish>Safavid Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MACEDONIAN</Tag>
+    <English>Macedonian Empire</English>
+    <French>Macedonian Empire</French>
+    <German>Makedonisches Weltreich</German>
+    <Italian>Macedonian Empire</Italian>
+    <Spanish>Macedonian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_UMAYYAD</Tag>
+    <English>Umayyad Caliphate</English>
+    <French>Umayyad Caliphate</French>
+    <German>Umayyadenkalifat</German>
+    <Italian>Umayyad Caliphate</Italian>
+    <Spanish>Umayyad Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_ABBASID</Tag>
+    <English>Abbasid Caliphate</English>
+    <French>Abbasid Caliphate</French>
+    <German>Abbasidenkalifat</German>
+    <Italian>Abbasid Caliphate</Italian>
+    <Spanish>Abbasid Caliphate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_CAROLINGIAN</Tag>
+    <English>Carolingian Empire</English>
+    <French>Carolingian Empire</French>
+    <German>Karolingerreich</German>
+    <Italian>Carolingian Empire</Italian>
+    <Spanish>Carolingian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_ZHOU</Tag>
+    <English>Zhou Kingdom</English>
+    <French>Zhou Kingdom</French>
+    <German>Zhou-Reich</German>
+    <Italian>Zhou Kingdom</Italian>
+    <Spanish>Zhou Kingdom</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_VEDIC_KINGDOMS</Tag>
+    <English>Kuru and Panchala</English>
+    <French>Kuru and Panchala</French>
+    <German>Kuru und Panchala</German>
+    <Italian>Kuru and Panchala</Italian>
+    <Spanish>Kuru and Panchala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_LATIN_COMMUNITIES</Tag>
+    <English>Latin Communities</English>
+    <French>Latin Communities</French>
+    <German>Latinische Stammesgemeinden</German>
+    <Italian>Latin Communities</Italian>
+    <Spanish>Latin Communities</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_PHARAONIC</Tag>
+    <English>Pharaonic Egypt</English>
+    <French>Pharaonic Egypt</French>
+    <German>Pharaonenreich</German>
+    <Italian>Pharaonic Egypt</Italian>
+    <Spanish>Pharaonic Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_TEMPLE_STATE</Tag>
+    <English>Temple State of Egypt</English>
+    <French>Temple State of Egypt</French>
+    <German>Tempelstaat &#196;gypten</German>
+    <Italian>Temple State of Egypt</Italian>
+    <Spanish>Temple State of Egypt</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ETH_ABYSSINIA</Tag>
+    <English>Abyssinian Empire</English>
+    <French>Abyssinian Empire</French>
+    <German>Kaiserreich Abessinien</German>
+    <Italian>Abyssinian Empire</Italian>
+    <Spanish>Abyssinian Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_EGY_MAMLUK</Tag>
+    <English>Mamluk Sultanate</English>
+    <French>Mamluk Sultanate</French>
+    <German>Mamlukensultanat</German>
+    <Italian>Mamluk Sultanate</Italian>
+    <Spanish>Mamluk Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_DELHI</Tag>
+    <English>Delhi Sultanate</English>
+    <French>Delhi Sultanate</French>
+    <German>Sultanat von Delhi</German>
+    <Italian>Delhi Sultanate</Italian>
+    <Spanish>Delhi Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_PER_TIMURID</Tag>
+    <English>Timurid Empire</English>
+    <French>Timurid Empire</French>
+    <German>Timuridenreich</German>
+    <Italian>Timurid Empire</Italian>
+    <Spanish>Timurid Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CAR_HAFSID</Tag>
+    <English>Hafsid Sultanate</English>
+    <French>Hafsid Sultanate</French>
+    <German>Hafsiden-Sultanat</German>
+    <Italian>Hafsid Sultanate</Italian>
+    <Spanish>Hafsid Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_MECCA</Tag>
+    <English>Sharifate of Mecca</English>
+    <French>Sharifate of Mecca</French>
+    <German>Scharifat von Mekka</German>
+    <Italian>Sharifate of Mecca</Italian>
+    <Spanish>Sharifate of Mecca</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_MING</Tag>
+    <English>Ming Empire</English>
+    <French>Ming Empire</French>
+    <German>Ming-Reich</German>
+    <Italian>Ming Empire</Italian>
+    <Spanish>Ming Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_ASHIKAGA</Tag>
+    <English>Ashikaga Shogunate</English>
+    <French>Ashikaga Shogunate</French>
+    <German>Ashikaga-Shogunat</German>
+    <Italian>Ashikaga Shogunate</Italian>
+    <Spanish>Ashikaga Shogunate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_DESPOTATE</Tag>
+    <English>Greek Despotate</English>
+    <French>Greek Despotate</French>
+    <German>Griechisches Despotat</German>
+    <Italian>Greek Despotate</Italian>
+    <Spanish>Greek Despotate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_MOREA</Tag>
+    <English>Despotate of the Morea</English>
+    <French>Despotate of the Morea</French>
+    <German>Despotat Morea</German>
+    <Italian>Despotate of the Morea</Italian>
+    <Spanish>Despotate of the Morea</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_MUSCOVY</Tag>
+    <English>Grand Principality of Moscow</English>
+    <French>Grand Principality of Moscow</French>
+    <German>Gro&#223;f&#252;rstentum Moskau</German>
+    <Italian>Grand Principality of Moscow</Italian>
+    <Spanish>Grand Principality of Moscow</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_BURGUNDIAN</Tag>
+    <English>Burgundian Netherlands</English>
+    <French>Burgundian Netherlands</French>
+    <German>Burgundische Niederlande</German>
+    <Italian>Burgundian Netherlands</Italian>
+    <Spanish>Burgundian Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_NED_HABSBURG</Tag>
+    <English>Habsburg Netherlands</English>
+    <French>Habsburg Netherlands</French>
+    <German>Habsburgische Niederlande</German>
+    <Italian>Habsburg Netherlands</Italian>
+    <Spanish>Habsburg Netherlands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MON_NORTHERN_YUAN</Tag>
+    <English>Northern Yuan</English>
+    <French>Northern Yuan</French>
+    <German>N&#246;rdliche Yuan</German>
+    <Italian>Northern Yuan</Italian>
+    <Spanish>Northern Yuan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_AZT_TRIPLE_ALLIANCE</Tag>
+    <English>Aztec Triple Alliance</English>
+    <French>Aztec Triple Alliance</French>
+    <German>Aztekischer Dreibund</German>
+    <Italian>Aztec Triple Alliance</Italian>
+    <Spanish>Aztec Triple Alliance</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_ITALIAN_STATES</Tag>
+    <English>Italian City-States</English>
+    <French>Italian City-States</French>
+    <German>Italienische Stadtstaaten</German>
+    <Italian>Italian City-States</Italian>
+    <Spanish>Italian City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ROM_VENICE</Tag>
+    <English>Republic of Venice</English>
+    <French>Republic of Venice</French>
+    <German>Republik Venedig</German>
+    <Italian>Republic of Venice</Italian>
+    <Spanish>Republic of Venice</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CASTILE_ARAGON</Tag>
+    <English>Castile and Aragon</English>
+    <French>Castile and Aragon</French>
+    <German>Kastilien und Aragon</German>
+    <Italian>Castile and Aragon</Italian>
+    <Spanish>Castile and Aragon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_KALMAR</Tag>
+    <English>Kalmar Union</English>
+    <French>Kalmar Union</French>
+    <German>Kalmarer Union</German>
+    <Italian>Kalmar Union</Italian>
+    <Spanish>Kalmar Union</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_MAY_MANI_TAYASAL</Tag>
+    <English>Mani and Tayasal</English>
+    <French>Mani and Tayasal</French>
+    <German>Mani und Tayasal</German>
+    <Italian>Mani and Tayasal</Italian>
+    <Spanish>Mani and Tayasal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_FRANKISH_REALM</Tag>
+    <English>Frankish Realm</English>
+    <French>Frankish Realm</French>
+    <German>Reich der Franken</German>
+    <Italian>Frankish Realm</Italian>
+    <Spanish>Frankish Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_FRA_WEST_FRANCIA</Tag>
+    <English>West Francia</English>
+    <French>West Francia</French>
+    <German>Westfr&#228;nkisches Reich</German>
+    <Italian>West Francia</Italian>
+    <Spanish>West Francia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_CHENLA</Tag>
+    <English>Chenla</English>
+    <French>Chenla</French>
+    <German>Reich von Chenla</German>
+    <Italian>Chenla</Italian>
+    <Spanish>Chenla</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_KHM_ANGKOR</Tag>
+    <English>Khmer Empire</English>
+    <French>Khmer Empire</French>
+    <German>Khmerreich</German>
+    <Italian>Khmer Empire</Italian>
+    <Spanish>Khmer Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CHRISTIAN_IBERIA</Tag>
+    <English>Christian Kingdoms of Iberia</English>
+    <French>Christian Kingdoms of Iberia</French>
+    <German>Christliche Reiche Iberiens</German>
+    <Italian>Christian Kingdoms of Iberia</Italian>
+    <Spanish>Christian Kingdoms of Iberia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_IBERIAN_KINGDOMS</Tag>
+    <English>Iberian Kingdoms</English>
+    <French>Iberian Kingdoms</French>
+    <German>Iberische K&#246;nigreiche</German>
+    <Italian>Iberian Kingdoms</Italian>
+    <Spanish>Iberian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ENG_ANGLO_SAXON</Tag>
+    <English>Anglo-Saxon Kingdoms</English>
+    <French>Anglo-Saxon Kingdoms</French>
+    <German>Angels&#228;chsische K&#246;nigreiche</German>
+    <Italian>Anglo-Saxon Kingdoms</Italian>
+    <Spanish>Anglo-Saxon Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_VIK_NORSE_KINGDOMS</Tag>
+    <English>Scandinavian Kingdoms</English>
+    <French>Scandinavian Kingdoms</French>
+    <German>Skandinavische K&#246;nigreiche</German>
+    <Italian>Scandinavian Kingdoms</Italian>
+    <Spanish>Scandinavian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_EARLY_JAPAN</Tag>
+    <English>Peoples of the Japanese Islands</English>
+    <French>Peoples of the Japanese Islands</French>
+    <German>V&#246;lker der japanischen Inseln</German>
+    <Italian>Peoples of the Japanese Islands</Italian>
+    <Spanish>Peoples of the Japanese Islands</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_YAMATO</Tag>
+    <English>Yamato Realm</English>
+    <French>Yamato Realm</French>
+    <German>Reich von Yamato</German>
+    <Italian>Yamato Realm</Italian>
+    <Spanish>Yamato Realm</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_INDUS</Tag>
+    <English>Indus Valley Cultures</English>
+    <French>Indus Valley Cultures</French>
+    <German>Induskulturen</German>
+    <Italian>Indus Valley Cultures</Italian>
+    <Spanish>Indus Valley Cultures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_IND_INDIAN_KINGDOMS</Tag>
+    <English>Indian Kingdoms</English>
+    <French>Indian Kingdoms</French>
+    <German>Indische K&#246;nigreiche</German>
+    <Italian>Indian Kingdoms</Italian>
+    <Spanish>Indian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_CHI_EARLY_CHINA</Tag>
+    <English>Early Chinese Cultures</English>
+    <French>Early Chinese Cultures</French>
+    <German>Fr&#252;he chinesische Kulturen</German>
+    <Italian>Early Chinese Cultures</Italian>
+    <Spanish>Early Chinese Cultures</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_BAB_EARLY_MESOPOTAMIA</Tag>
+    <English>Mesopotamian City-States</English>
+    <French>Mesopotamian City-States</French>
+    <German>Stadtstaaten Mesopotamiens</German>
+    <Italian>Mesopotamian City-States</Italian>
+    <Spanish>Mesopotamian City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GRE_POLEIS</Tag>
+    <English>Greek City-States</English>
+    <French>Greek City-States</French>
+    <German>Griechische Stadtstaaten</German>
+    <Italian>Greek City-States</Italian>
+    <Spanish>Greek City-States</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_ARA_EARLY_ARABIA</Tag>
+    <English>Arabian Kingdoms</English>
+    <French>Arabian Kingdoms</French>
+    <German>Arabische K&#246;nigreiche</German>
+    <Italian>Arabian Kingdoms</Italian>
+    <Spanish>Arabian Kingdoms</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_GREATER_GERMAN</Tag>
+    <English>Greater German Reich</English>
+    <French>Greater German Reich</French>
+    <German>Gro&#223;deutsches Reich</German>
+    <Italian>Greater German Reich</Italian>
+    <Spanish>Greater German Reich</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_GER_EAST_FRANCIA</Tag>
+    <English>East Francia</English>
+    <French>East Francia</French>
+    <German>Ostfr&#228;nkisches Reich</German>
+    <Italian>East Francia</Italian>
+    <Spanish>East Francia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_HOLY_ROMAN</Tag>

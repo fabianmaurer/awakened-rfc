@@ -62,6 +62,8 @@ class CvTopCivs:
 		self.H_EXIT = 30
 
 	def showScreen(self):
+		if CyGame().isObserverAutoPlay():
+			return
 			  
 		'Use a popup to display the opening text'
 		if ( CyGame().isPitbossHost() ):
@@ -236,6 +238,8 @@ class CvTopCivs:
 				self.screen.addMultilineText( szWidgetName, unicode(szWidgetDesc), iXLoc, iYLoc, self.W_RANK_TEXT, self.H_RANK_TEXT, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 				
 	def turnChecker(self, iTurnNum):
+		if CyGame().isObserverAutoPlay():
+			return
 
 		# Check to see if this is a turn when the screen should pop up (every 50 turns)
 		if (not CyGame().isNetworkMultiPlayer() and CyGame().getActivePlayer()>=0):

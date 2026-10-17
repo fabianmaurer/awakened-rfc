@@ -86,6 +86,7 @@ public:
 	DenialTypes AI_declareWarTrade(TeamTypes eWarTeam, TeamTypes eTeam, bool bConsiderPower = true) const;
 
 	int AI_openBordersTradeVal(TeamTypes eTeam) const;
+	bool AI_hasMilitaryAccessInterest(TeamTypes eTeam) const;
 	DenialTypes AI_openBordersTrade(TeamTypes eTeam) const;
 
 	int AI_defensivePactTradeVal(TeamTypes eTeam) const;

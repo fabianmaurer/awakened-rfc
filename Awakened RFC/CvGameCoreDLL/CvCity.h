@@ -62,6 +62,8 @@ public:
 	void verifyWorkingPlots();
 	void clearWorkingOverride(int iIndex);														// Exposed to Python
 	int countNumImprovedPlots(ImprovementTypes eImprovement = NO_IMPROVEMENT, bool bPotential = false) const;																			// Exposed to Python
+	int countWorkedFarms() const;
+	int getMilitaryCivicProductionModifier(UnitTypes eUnit, CivicTypes eCivic) const;
 	int countNumWaterPlots() const;																					// Exposed to Python
 	int countNumRiverPlots() const;																					// Exposed to Python
 
@@ -409,6 +411,7 @@ public:
 	void updateReligionHappiness();
 
 	int getExtraHappiness() const;																				// Exposed to Python
+	int getDivineKingshipHappiness() const;
 	void changeExtraHappiness(int iChange);													// Exposed to Python
 
 	int getExtraHealth() const;																				// Exposed to Python
@@ -921,6 +924,7 @@ public:
 	virtual void AI_updateAssignWork() = 0;
 	virtual bool AI_avoidGrowth() = 0;											// Exposed to Python
 	virtual int AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth, bool bRemove) = 0;
+	virtual int AI_slaveryEmploymentValue(CivicTypes eCivic) = 0;
 	virtual void AI_chooseProduction() = 0;
 	virtual UnitTypes AI_bestUnit(bool bAsync = false, AdvisorTypes eIgnoreAdvisor = NO_ADVISOR, UnitAITypes* peBestUnitAI = NULL) = 0;
 	virtual UnitTypes AI_bestUnitAI(UnitAITypes eUnitAI, bool bAsync = false, AdvisorTypes eIgnoreAdvisor = NO_ADVISOR) = 0;

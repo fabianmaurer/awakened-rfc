@@ -31,6 +31,16 @@
 
 // Public Functions...
 
+static bool hasTheocraticCombatBonus(const CvPlayer& owner, const CvPlayer& opponent)
+{
+	if (!owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
+		return false;
+	if (owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")))
+		return opponent.isBarbarian() || opponent.getStateReligion() != NO_RELIGION;
+	return owner.getStateReligion() != NO_RELIGION &&
+		(opponent.isBarbarian() || opponent.getStateReligion() != owner.getStateReligion());
+}
+
 
 CvUnit::CvUnit()
 {
@@ -2857,6 +2867,7 @@ void CvUnit::attackForDamage(CvUnit *pDefender, int attackerDamageChange, int de
 
 void CvUnit::move(CvPlot* pPlot, bool bShow)
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) bShow = false;
 	FAssert(canMoveOrAttackInto(pPlot) || isMadeAttack());
 
 	CvPlot* pOldPlot = plot();
@@ -6512,7 +6523,10 @@ bool CvUnit::goldenAge()
 bool CvUnit::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestVisible) const
 {
     FAssertMsg(eBuild < GC.getNumBuildInfos(), "Index out of bounds");
-	if (!(m_pUnitInfo->getBuilds(eBuild)))
+	if (!(m_pUnitInfo->getBuilds(eBuild)) &&
+		!(GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+		  getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") &&
+		  eBuild == GC.getInfoTypeForString("BUILD_ROAD")))
 	{
 		return false;
 	}
@@ -7445,7 +7459,10 @@ bool CvUnit::canBuildRoute() const
 	{
 		if (GC.getBuildInfo((BuildTypes)iI).getRoute() != NO_ROUTE)
 		{
-			if (m_pUnitInfo->getBuilds(iI))
+			if (m_pUnitInfo->getBuilds(iI) ||
+				(GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+				 getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") &&
+				 iI == GC.getInfoTypeForString("BUILD_ROAD")))
 			{
 				if (GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBuildInfo((BuildTypes)iI).getTechPrereq())))
 				{
@@ -7539,6 +7556,9 @@ int CvUnit::workRate(bool bMax) const
 	}
 
 	iRate = m_pUnitInfo->getWorkRate();
+	if (GET_PLAYER(getOwnerINLINE()).isRomanLegions() &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE"))
+		iRate = std::max(iRate, 100);
 
 	iRate *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getWorkerSpeedModifier() + 100));
 	iRate /= 100;
@@ -7911,16 +7931,17 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	int iExtraModifier;
 
 	iExtraModifier = getExtraCombatPercent();
+	const TechTypes eMilitaryResearch = (TechTypes)GC.getInfoTypeForString("TECH_MILITARY_RESEARCH");
+	if (eMilitaryResearch != NO_TECH && (getDomainType() == DOMAIN_LAND || getDomainType() == DOMAIN_SEA))
+		iExtraModifier += std::min(15, GET_TEAM(getTeam()).getTechCount(eMilitaryResearch));
 
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
+
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) &&
+		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{
 		iExtraModifier -= 20;
 	}
 	const CvPlot* pCombatPlot = (pPlot != NULL ? pPlot : plot());
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_MILITIA")) && pCombatPlot->getOwnerINLINE() != getOwnerINLINE())
-	{
-		iExtraModifier -= 10;
-	}
 	iModifier += iExtraModifier;
 	if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent = iExtraModifier;
 	
@@ -7929,15 +7950,12 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	{
 		const CvPlayer& kDefender = GET_PLAYER(getOwnerINLINE());
 		const CvPlayer& kAttacker = GET_PLAYER(pAttacker->getOwnerINLINE());
-		const CivicTypes eTheocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY");
-		if (getDomainType() == DOMAIN_LAND && kDefender.isCivic(eTheocracy) && kDefender.getStateReligion() != NO_RELIGION &&
-			(pAttacker->isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		if (getDomainType() == DOMAIN_LAND && hasTheocraticCombatBonus(kDefender, kAttacker))
 		{
 			iModifier += 15;
 			if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += 15;
 		}
-		if (pAttacker->getDomainType() == DOMAIN_LAND && kAttacker.isCivic(eTheocracy) && kAttacker.getStateReligion() != NO_RELIGION &&
-			(isBarbarian() || kAttacker.getStateReligion() != kDefender.getStateReligion()))
+		if (pAttacker->getDomainType() == DOMAIN_LAND && hasTheocraticCombatBonus(kAttacker, kDefender))
 		{
 			// Civ4 applies opponent-specific attack bonuses against the defender.
 			iModifier -= 15;
@@ -9086,6 +9104,10 @@ DomainTypes CvUnit::domainCargo() const
 
 int CvUnit::cargoSpace() const
 {
+	// Changing civics never strands existing passengers; no new cargo can be
+	// loaded above the current civic capacity until the excess has disembarked.
+	if (GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(getUnitType()))
+		return std::max(getCargo(), m_iCargoCapacity + GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType()));
 	return m_iCargoCapacity;
 }
 
@@ -13005,6 +13027,7 @@ bool CvUnit::verifyStackValid()
 //check if quick combat
 bool CvUnit::isCombatVisible(const CvUnit* pDefender) const
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) return false;
 	bool bVisible = false;
 
 	if (!m_pUnitInfo->isQuickCombat())
@@ -13034,6 +13057,7 @@ bool CvUnit::isCombatVisible(const CvUnit* pDefender) const
 // used by the executable for the red glow and plot indicators
 bool CvUnit::shouldShowEnemyGlow(TeamTypes eForTeam) const
 {
+	if (GC.getGameINLINE().isObserverAutoPlay()) return false;
 	if (isDelayedDeath())
 	{
 		return false;

@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS</Tag>
+<English>Environmental Quality</English>
+<French>Environmental Quality</French>
+<German>Umwelt- und Lebensqualit&#228;t</German>
+<Italian>Environmental Quality</Italian>
+<Spanish>Environmental Quality</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS_HELP</Tag>
+<English>Repeatable; each completion increases this field's cost by 35%.</English>
+<French>Repeatable; each completion increases this field's cost by 35%.</French>
+<German>Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_ENVIRONMENTAL_PROGRESS_PEDIA</Tag>
+<English>Repeatable; each completion increases this field's cost by 35%.</English>
+<French>Repeatable; each completion increases this field's cost by 35%.</French>
+<German>Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS</Tag>
+<English>Medical Progress</English>
+<French>Medical Progress</French>
+<German>Medizinischer Fortschritt</German>
+<Italian>Medical Progress</Italian>
+<Spanish>Medical Progress</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS_HELP</Tag>
+<English>Repeatable; each completion increases this field's cost by 35%.</English>
+<French>Repeatable; each completion increases this field's cost by 35%.</French>
+<German>Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MEDICAL_PROGRESS_PEDIA</Tag>
+<English>Repeatable; each completion increases this field's cost by 35%.</English>
+<French>Repeatable; each completion increases this field's cost by 35%.</French>
+<German>Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH</Tag>
+<English>Military Research</English>
+<French>Military Research</French>
+<German>Milit&#228;rische Forschung</German>
+<Italian>Military Research</Italian>
+<Spanish>Military Research</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH_HELP</Tag>
+<English>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</English>
+<French>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</French>
+<German>+1 Prozentpunkt Kampfst&#228;rke f&#252;r Land- und Marineeinheiten, h&#246;chstens +15 %. Die Forschung endet bei Stufe 15. Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MILITARY_RESEARCH_PEDIA</Tag>
+<English>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</English>
+<French>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</French>
+<German>+1 Prozentpunkt Kampfst&#228;rke f&#252;r Land- und Marineeinheiten, h&#246;chstens +15 %. Die Forschung endet bei Stufe 15. Wiederholbar; jeder Abschluss verteuert diese Forschungsrichtung um 35 %.</German>
+<Italian>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</Italian>
+<Spanish>+1 percentage point of combat strength for land and naval units, up to +15%. Research ends at level 15. Repeatable; each completion increases this field's cost by 35%.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION</Tag>
+<English>Digital Administration</English>
+<French>Digital Administration</French>
+<German>Digitale Verwaltung</German>
+<Italian>Digital Administration</Italian>
+<Spanish>Digital Administration</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION_HELP</Tag>
+<English>Connected public records and automated procedures reduce administrative overhead.</English>
+<French>Connected public records and automated procedures reduce administrative overhead.</French>
+<German>Vernetzte Register und automatisierte Abl&#228;ufe verringern den Verwaltungsaufwand.</German>
+<Italian>Connected public records and automated procedures reduce administrative overhead.</Italian>
+<Spanish>Connected public records and automated procedures reduce administrative overhead.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_DIGITAL_ADMINISTRATION_PEDIA</Tag>
+<English>Connected public records and automated procedures reduce administrative overhead.[PARAGRAPH:1]Unlocks [LINK=BUILDING_DIGITAL_ADMINISTRATION]Digital Administration Centre[\LINK].</English>
+<French>Connected public records and automated procedures reduce administrative overhead.[PARAGRAPH:1]Unlocks [LINK=BUILDING_DIGITAL_ADMINISTRATION]Digital Administration Centre[\LINK].</French>
+<German>Vernetzte Register und automatisierte Abl&#228;ufe verringern den Verwaltungsaufwand.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_DIGITAL_ADMINISTRATION]Digitales Verwaltungszentrum[\LINK].</German>
+<Italian>Connected public records and automated procedures reduce administrative overhead.[PARAGRAPH:1]Unlocks [LINK=BUILDING_DIGITAL_ADMINISTRATION]Digital Administration Centre[\LINK].</Italian>
+<Spanish>Connected public records and automated procedures reduce administrative overhead.[PARAGRAPH:1]Unlocks [LINK=BUILDING_DIGITAL_ADMINISTRATION]Digital Administration Centre[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING</Tag>
+<English>Machine Learning</English>
+<French>Machine Learning</French>
+<German>Maschinelles Lernen</German>
+<Italian>Machine Learning</Italian>
+<Spanish>Machine Learning</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING_HELP</Tag>
+<English>Learning algorithms identify patterns in scientific data and improve research methods.</English>
+<French>Learning algorithms identify patterns in scientific data and improve research methods.</French>
+<German>Lernende Algorithmen erkennen Muster in wissenschaftlichen Daten und verbessern Forschungsmethoden.</German>
+<Italian>Learning algorithms identify patterns in scientific data and improve research methods.</Italian>
+<Spanish>Learning algorithms identify patterns in scientific data and improve research methods.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_MACHINE_LEARNING_PEDIA</Tag>
+<English>Learning algorithms identify patterns in scientific data and improve research methods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_MACHINE_LEARNING]Machine Learning Laboratory[\LINK].</English>
+<French>Learning algorithms identify patterns in scientific data and improve research methods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_MACHINE_LEARNING]Machine Learning Laboratory[\LINK].</French>
+<German>Lernende Algorithmen erkennen Muster in wissenschaftlichen Daten und verbessern Forschungsmethoden.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_MACHINE_LEARNING]Labor f&#252;r maschinelles Lernen[\LINK].</German>
+<Italian>Learning algorithms identify patterns in scientific data and improve research methods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_MACHINE_LEARNING]Machine Learning Laboratory[\LINK].</Italian>
+<Spanish>Learning algorithms identify patterns in scientific data and improve research methods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_MACHINE_LEARNING]Machine Learning Laboratory[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES</Tag>
+<English>AI-Assisted Services</English>
+<French>AI-Assisted Services</French>
+<German>KI-gest&#252;tzte Dienstleistungen</German>
+<Italian>AI-Assisted Services</Italian>
+<Spanish>AI-Assisted Services</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES_HELP</Tag>
+<English>AI supports medical diagnosis, public services and commercial planning.</English>
+<French>AI supports medical diagnosis, public services and commercial planning.</French>
+<German>KI unterst&#252;tzt medizinische Diagnosen, &#246;ffentliche Dienstleistungen und die Wirtschaftsplanung.</German>
+<Italian>AI supports medical diagnosis, public services and commercial planning.</Italian>
+<Spanish>AI supports medical diagnosis, public services and commercial planning.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AI_SERVICES_PEDIA</Tag>
+<English>AI supports medical diagnosis, public services and commercial planning.[PARAGRAPH:1]Unlocks [LINK=BUILDING_AI_SERVICES]AI Services Centre[\LINK].</English>
+<French>AI supports medical diagnosis, public services and commercial planning.[PARAGRAPH:1]Unlocks [LINK=BUILDING_AI_SERVICES]AI Services Centre[\LINK].</French>
+<German>KI unterst&#252;tzt medizinische Diagnosen, &#246;ffentliche Dienstleistungen und die Wirtschaftsplanung.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_AI_SERVICES]KI-Dienstleistungszentrum[\LINK].</German>
+<Italian>AI supports medical diagnosis, public services and commercial planning.[PARAGRAPH:1]Unlocks [LINK=BUILDING_AI_SERVICES]AI Services Centre[\LINK].</Italian>
+<Spanish>AI supports medical diagnosis, public services and commercial planning.[PARAGRAPH:1]Unlocks [LINK=BUILDING_AI_SERVICES]AI Services Centre[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION</Tag>
+<English>Networked Production</English>
+<French>Networked Production</French>
+<German>Vernetzte Produktion</German>
+<Italian>Networked Production</Italian>
+<Spanish>Networked Production</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION_HELP</Tag>
+<English>Connected robots coordinate manufacturing and respond to changing demand.</English>
+<French>Connected robots coordinate manufacturing and respond to changing demand.</French>
+<German>Vernetzte Roboter koordinieren die Fertigung und passen sie an wechselnden Bedarf an.</German>
+<Italian>Connected robots coordinate manufacturing and respond to changing demand.</Italian>
+<Spanish>Connected robots coordinate manufacturing and respond to changing demand.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_NETWORKED_PRODUCTION_PEDIA</Tag>
+<English>Connected robots coordinate manufacturing and respond to changing demand.[PARAGRAPH:1]Unlocks [LINK=BUILDING_NETWORKED_PRODUCTION]Networked Factory[\LINK].</English>
+<French>Connected robots coordinate manufacturing and respond to changing demand.[PARAGRAPH:1]Unlocks [LINK=BUILDING_NETWORKED_PRODUCTION]Networked Factory[\LINK].</French>
+<German>Vernetzte Roboter koordinieren die Fertigung und passen sie an wechselnden Bedarf an.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_NETWORKED_PRODUCTION]Vernetzte Fabrik[\LINK].</German>
+<Italian>Connected robots coordinate manufacturing and respond to changing demand.[PARAGRAPH:1]Unlocks [LINK=BUILDING_NETWORKED_PRODUCTION]Networked Factory[\LINK].</Italian>
+<Spanish>Connected robots coordinate manufacturing and respond to changing demand.[PARAGRAPH:1]Unlocks [LINK=BUILDING_NETWORKED_PRODUCTION]Networked Factory[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI</Tag>
+<English>General Artificial Intelligence</English>
+<French>General Artificial Intelligence</French>
+<German>Allgemeine k&#252;nstliche Intelligenz</German>
+<Italian>General Artificial Intelligence</Italian>
+<Spanish>General Artificial Intelligence</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI_HELP</Tag>
+<English>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.</English>
+<French>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.</French>
+<German>Allgemeine lernf&#228;hige Systeme &#252;bertragen Wissen zwischen Fachgebieten und beschleunigen wissenschaftliche Entdeckungen.</German>
+<Italian>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.</Italian>
+<Spanish>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_GENERAL_AI_PEDIA</Tag>
+<English>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.[PARAGRAPH:1]Unlocks [LINK=BUILDING_GENERAL_AI]General AI Research Centre[\LINK].</English>
+<French>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.[PARAGRAPH:1]Unlocks [LINK=BUILDING_GENERAL_AI]General AI Research Centre[\LINK].</French>
+<German>Allgemeine lernf&#228;hige Systeme &#252;bertragen Wissen zwischen Fachgebieten und beschleunigen wissenschaftliche Entdeckungen.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_GENERAL_AI]Forschungszentrum f&#252;r allgemeine KI[\LINK].</German>
+<Italian>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.[PARAGRAPH:1]Unlocks [LINK=BUILDING_GENERAL_AI]General AI Research Centre[\LINK].</Italian>
+<Spanish>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery.[PARAGRAPH:1]Unlocks [LINK=BUILDING_GENERAL_AI]General AI Research Centre[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION</Tag>
+<English>Full Automation</English>
+<French>Full Automation</French>
+<German>Vollst&#228;ndige Automatisierung</German>
+<Italian>Full Automation</Italian>
+<Spanish>Full Automation</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION_HELP</Tag>
+<English>Integrated AI manages production chains from raw materials to finished goods.</English>
+<French>Integrated AI manages production chains from raw materials to finished goods.</French>
+<German>Integrierte KI steuert Produktionsketten vom Rohstoff bis zum fertigen Erzeugnis.</German>
+<Italian>Integrated AI manages production chains from raw materials to finished goods.</Italian>
+<Spanish>Integrated AI manages production chains from raw materials to finished goods.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_FULL_AUTOMATION_PEDIA</Tag>
+<English>Integrated AI manages production chains from raw materials to finished goods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_FULL_AUTOMATION]Automated Production Complex[\LINK].</English>
+<French>Integrated AI manages production chains from raw materials to finished goods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_FULL_AUTOMATION]Automated Production Complex[\LINK].</French>
+<German>Integrierte KI steuert Produktionsketten vom Rohstoff bis zum fertigen Erzeugnis.[PARAGRAPH:1]Erm&#246;glicht [LINK=BUILDING_FULL_AUTOMATION]Vollautomatisierter Produktionskomplex[\LINK].</German>
+<Italian>Integrated AI manages production chains from raw materials to finished goods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_FULL_AUTOMATION]Automated Production Complex[\LINK].</Italian>
+<Spanish>Integrated AI manages production chains from raw materials to finished goods.[PARAGRAPH:1]Unlocks [LINK=BUILDING_FULL_AUTOMATION]Automated Production Complex[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS</Tag>
+<English>Autonomous Systems</English>
+<French>Autonomous Systems</French>
+<German>Autonome Systeme</German>
+<Italian>Autonomous Systems</Italian>
+<Spanish>Autonomous Systems</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS_HELP</Tag>
+<English>Machine perception and robotic control enable unmanned ground combat vehicles.</English>
+<French>Machine perception and robotic control enable unmanned ground combat vehicles.</French>
+<German>Maschinelle Wahrnehmung und Robotersteuerung erm&#246;glichen unbemannte Bodenkampffahrzeuge.</German>
+<Italian>Machine perception and robotic control enable unmanned ground combat vehicles.</Italian>
+<Spanish>Machine perception and robotic control enable unmanned ground combat vehicles.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_SYSTEMS_PEDIA</Tag>
+<English>Machine perception and robotic control enable unmanned ground combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_COMBAT_VEHICLE]Autonomous Combat Vehicle[\LINK].</English>
+<French>Machine perception and robotic control enable unmanned ground combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_COMBAT_VEHICLE]Autonomous Combat Vehicle[\LINK].</French>
+<German>Maschinelle Wahrnehmung und Robotersteuerung erm&#246;glichen unbemannte Bodenkampffahrzeuge.[PARAGRAPH:1]Erm&#246;glicht [LINK=UNIT_AUTONOMOUS_COMBAT_VEHICLE]Autonomes Kampffahrzeug[\LINK].</German>
+<Italian>Machine perception and robotic control enable unmanned ground combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_COMBAT_VEHICLE]Autonomous Combat Vehicle[\LINK].</Italian>
+<Spanish>Machine perception and robotic control enable unmanned ground combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_COMBAT_VEHICLE]Autonomous Combat Vehicle[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_WARFARE</Tag>
+<English>Autonomous Warfare</English>
+<French>Autonomous Warfare</French>
+<German>Autonome Gefechtsf&#252;hrung</German>
+<Italian>Autonomous Warfare</Italian>
+<Spanish>Autonomous Warfare</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_WARFARE_HELP</Tag>
+<English>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.</English>
+<French>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.</French>
+<German>Anpassungsf&#228;hige taktische Systeme koordinieren schwer gepanzerte autonome Kampffahrzeuge.</German>
+<Italian>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.</Italian>
+<Spanish>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_TECH_AUTONOMOUS_WARFARE_PEDIA</Tag>
+<English>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_TANK]Autonomous Battle Tank[\LINK].</English>
+<French>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_TANK]Autonomous Battle Tank[\LINK].</French>
+<German>Anpassungsf&#228;hige taktische Systeme koordinieren schwer gepanzerte autonome Kampffahrzeuge.[PARAGRAPH:1]Erm&#246;glicht [LINK=UNIT_AUTONOMOUS_TANK]Autonomer Kampfpanzer[\LINK].</German>
+<Italian>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_TANK]Autonomous Battle Tank[\LINK].</Italian>
+<Spanish>Adaptive tactical systems coordinate heavily armored autonomous combat vehicles.[PARAGRAPH:1]Unlocks [LINK=UNIT_AUTONOMOUS_TANK]Autonomous Battle Tank[\LINK].</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION</Tag>
+<English>Digital Administration Centre</English>
+<French>Digital Administration Centre</French>
+<German>Digitales Verwaltungszentrum</German>
+<Italian>Digital Administration Centre</Italian>
+<Spanish>Digital Administration Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION_PEDIA</Tag>
+<English>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</English>
+<French>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</French>
+<German>Vernetzte Register und automatisierte Abl&#228;ufe verringern den Verwaltungsaufwand. Wirkung in dieser Stadt: -20 % st&#228;dtische Unterhaltskosten.</German>
+<Italian>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</Italian>
+<Spanish>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_MACHINE_LEARNING</Tag>
+<English>Machine Learning Laboratory</English>
+<French>Machine Learning Laboratory</French>
+<German>Labor f&#252;r maschinelles Lernen</German>
+<Italian>Machine Learning Laboratory</Italian>
+<Spanish>Machine Learning Laboratory</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_MACHINE_LEARNING_PEDIA</Tag>
+<English>Learning algorithms identify patterns in scientific data and improve research methods. Effects in this city: +25% research.</English>
+<French>Learning algorithms identify patterns in scientific data and improve research methods. Effects in this city: +25% research.</French>
+<German>Lernende Algorithmen erkennen Muster in wissenschaftlichen Daten und verbessern Forschungsmethoden. Wirkung in dieser Stadt: +25 % Forschung.</German>
+<Italian>Learning algorithms identify patterns in scientific data and improve research methods. Effects in this city: +25% research.</Italian>
+<Spanish>Learning algorithms identify patterns in scientific data and improve research methods. Effects in this city: +25% research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_AI_SERVICES</Tag>
+<English>AI Services Centre</English>
+<French>AI Services Centre</French>
+<German>KI-Dienstleistungszentrum</German>
+<Italian>AI Services Centre</Italian>
+<Spanish>AI Services Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_AI_SERVICES_PEDIA</Tag>
+<English>AI supports medical diagnosis, public services and commercial planning. Effects in this city: +15% gold, +2 health, +1 happiness.</English>
+<French>AI supports medical diagnosis, public services and commercial planning. Effects in this city: +15% gold, +2 health, +1 happiness.</French>
+<German>KI unterst&#252;tzt medizinische Diagnosen, &#246;ffentliche Dienstleistungen und die Wirtschaftsplanung. Wirkung in dieser Stadt: +15 % Gold, +2 Gesundheit, +1 Zufriedenheit.</German>
+<Italian>AI supports medical diagnosis, public services and commercial planning. Effects in this city: +15% gold, +2 health, +1 happiness.</Italian>
+<Spanish>AI supports medical diagnosis, public services and commercial planning. Effects in this city: +15% gold, +2 health, +1 happiness.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_NETWORKED_PRODUCTION</Tag>
+<English>Networked Factory</English>
+<French>Networked Factory</French>
+<German>Vernetzte Fabrik</German>
+<Italian>Networked Factory</Italian>
+<Spanish>Networked Factory</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_NETWORKED_PRODUCTION_PEDIA</Tag>
+<English>Connected robots coordinate manufacturing and respond to changing demand. Effects in this city: +25% production.</English>
+<French>Connected robots coordinate manufacturing and respond to changing demand. Effects in this city: +25% production.</French>
+<German>Vernetzte Roboter koordinieren die Fertigung und passen sie an wechselnden Bedarf an. Wirkung in dieser Stadt: +25 % Produktion.</German>
+<Italian>Connected robots coordinate manufacturing and respond to changing demand. Effects in this city: +25% production.</Italian>
+<Spanish>Connected robots coordinate manufacturing and respond to changing demand. Effects in this city: +25% production.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_GENERAL_AI</Tag>
+<English>General AI Research Centre</English>
+<French>General AI Research Centre</French>
+<German>Forschungszentrum f&#252;r allgemeine KI</German>
+<Italian>General AI Research Centre</Italian>
+<Spanish>General AI Research Centre</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_GENERAL_AI_PEDIA</Tag>
+<English>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery. Effects in this city: +40% research.</English>
+<French>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery. Effects in this city: +40% research.</French>
+<German>Allgemeine lernf&#228;hige Systeme &#252;bertragen Wissen zwischen Fachgebieten und beschleunigen wissenschaftliche Entdeckungen. Wirkung in dieser Stadt: +40 % Forschung.</German>
+<Italian>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery. Effects in this city: +40% research.</Italian>
+<Spanish>General-purpose learning systems transfer knowledge between disciplines and accelerate scientific discovery. Effects in this city: +40% research.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_FULL_AUTOMATION</Tag>
+<English>Automated Production Complex</English>
+<French>Automated Production Complex</French>
+<German>Vollautomatisierter Produktionskomplex</German>
+<Italian>Automated Production Complex</Italian>
+<Spanish>Automated Production Complex</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_BUILDING_FULL_AUTOMATION_PEDIA</Tag>
+<English>Integrated AI manages production chains from raw materials to finished goods. Effects in this city: +25% gold, +50% production.</English>
+<French>Integrated AI manages production chains from raw materials to finished goods. Effects in this city: +25% gold, +50% production.</French>
+<German>Integrierte KI steuert Produktionsketten vom Rohstoff bis zum fertigen Erzeugnis. Wirkung in dieser Stadt: +25 % Gold, +50 % Produktion.</German>
+<Italian>Integrated AI manages production chains from raw materials to finished goods. Effects in this city: +25% gold, +50% production.</Italian>
+<Spanish>Integrated AI manages production chains from raw materials to finished goods. Effects in this city: +25% gold, +50% production.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_UNIT_AUTONOMOUS_COMBAT_VEHICLE</Tag>
+<English>Autonomous Combat Vehicle</English>
+<French>Autonomous Combat Vehicle</French>
+<German>Autonomes Kampffahrzeug</German>
+<Italian>Autonomous Combat Vehicle</Italian>
+<Spanish>Autonomous Combat Vehicle</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_UNIT_AUTONOMOUS_COMBAT_VEHICLE_PEDIA</Tag>
+<English>An unmanned ground combat vehicle with 42 strength and 2 movement. Costs 320 production. Cannot be drafted and provides no military happiness.</English>
+<French>An unmanned ground combat vehicle with 42 strength and 2 movement. Costs 320 production. Cannot be drafted and provides no military happiness.</French>
+<German>Ein unbemanntes Bodenkampffahrzeug mit St&#228;rke 42 und 2 Bewegungspunkten. Kostet 320 Produktion. Kann nicht rekrutiert werden und erzeugt keine milit&#228;rische Zufriedenheit.</German>
+<Italian>An unmanned ground combat vehicle with 42 strength and 2 movement. Costs 320 production. Cannot be drafted and provides no military happiness.</Italian>
+<Spanish>An unmanned ground combat vehicle with 42 strength and 2 movement. Costs 320 production. Cannot be drafted and provides no military happiness.</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_UNIT_AUTONOMOUS_TANK</Tag>
+<English>Autonomous Battle Tank</English>
+<French>Autonomous Battle Tank</French>
+<German>Autonomer Kampfpanzer</German>
+<Italian>Autonomous Battle Tank</Italian>
+<Spanish>Autonomous Battle Tank</Spanish>
+</TEXT>
+<TEXT><Tag>TXT_KEY_UNIT_AUTONOMOUS_TANK_PEDIA</Tag>
+<English>An unmanned ground combat vehicle with 54 strength and 2 movement. Costs 420 production. Cannot be drafted and provides no military happiness.</English>
+<French>An unmanned ground combat vehicle with 54 strength and 2 movement. Costs 420 production. Cannot be drafted and provides no military happiness.</French>
+<German>Ein unbemanntes Bodenkampffahrzeug mit St&#228;rke 54 und 2 Bewegungspunkten. Kostet 420 Produktion. Kann nicht rekrutiert werden und erzeugt keine milit&#228;rische Zufriedenheit.</German>
+<Italian>An unmanned ground combat vehicle with 54 strength and 2 movement. Costs 420 production. Cannot be drafted and provides no military happiness.</Italian>
+<Spanish>An unmanned ground combat vehicle with 54 strength and 2 movement. Costs 420 production. Cannot be drafted and provides no military happiness.</Spanish>
+</TEXT>
+</Civ4GameText>

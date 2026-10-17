@@ -149,6 +149,8 @@ class CvMainInterface:
 		xResolution = screen.getXResolution()
 		yResolution = screen.getYResolution()
 		self.m_iNumPlotListButtons = (xResolution - (iMultiListXL+iMultiListXR) - 68) / 34
+
+
 		
 		screen.setDimensions(0, 0, xResolution, yResolution)
 
@@ -611,6 +613,9 @@ class CvMainInterface:
 
 	# Will update the screen (every 250 MS)
 	def updateScreen(self):
+		import GameObserver
+		if GameObserver.CURRENT is not None:
+			GameObserver.CURRENT.setup_camera(())
 		
 		global g_szTimeText
 		global g_iTimeTextCounter
@@ -621,6 +626,39 @@ class CvMainInterface:
 		xResolution = screen.getXResolution()
 		yResolution = screen.getYResolution()
 		self.m_iNumPlotListButtons = (xResolution - (iMultiListXL+iMultiListXR) - 68) / 34
+
+		# Centered spectator progress bar; refresh only when its values change.
+		observer = GameObserver.CURRENT
+		if observer and observer.enabled and observer.started and observer.autoplay:
+			screen.setRenderInterfaceOnly(True)
+			progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
+			if getattr(self, 'observerProgressDisplay', None) != progress:
+				if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
+					screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
+					screen.setPanelColor("ObserverSimulationBackground", 0, 0, 0)
+					self.observerSimulationSize = (xResolution, yResolution)
+				width = min(800, xResolution - 80)
+				screen.addStackedBarGFC("ObserverProgressBar", (xResolution - width) / 2, yResolution / 2 - 18, width, 36, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
+				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_GREEN"))
+				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_WHITE"))
+				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, min(1.0, float(observer.turns) / max(1, observer.limit)))
+				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
+				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
+				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
+				self.observerProgressDisplay = progress
+			screen.show("ObserverSimulationBackground")
+			screen.moveToFront("ObserverSimulationBackground")
+			screen.show("ObserverProgressBar")
+			screen.moveToFront("ObserverProgressBar")
+			return
+		else:
+			if getattr(self, 'observerSimulationSize', None) is not None:
+				screen.setRenderInterfaceOnly(False)
+				screen.hide("ObserverSimulationBackground")
+				self.observerSimulationSize = None
+			screen.hide("ObserverProgressBar")
+			self.observerProgressDisplay = None
+		screen.hide("ObserverProgressOverlay")
 		
 		# This should recreate the minimap on load games and returns if already exists -JW
 		screen.initMinimap( xResolution - 210, xResolution - 9, yResolution - 131, yResolution - 9, -0.1 )
@@ -702,6 +740,8 @@ class CvMainInterface:
 
 	# Will redraw the interface
 	def redraw( self ):
+		if gc.getGame().isObserverAutoPlay():
+			return
 
 		screen = CyGInterfaceScreen( "MainInterface", CvScreenEnums.MAIN_INTERFACE )
 
@@ -1805,9 +1845,16 @@ class CvMainInterface:
 		if (CyUserProfile().isClockOn()):# and bUseClockText):
 			g_szTimeText = getClockText() + u" - " + localText.getText("TXT_KEY_TIME_TURN", (CyGame().getElapsedGameTurns(), )) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 		else:
-			#g_szTimeText = localText.getText("TXT_KEY_TIME_TURN", (CyGame().getGameTurn(), )) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer)) #Rhye
-			g_szTimeText = unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer)) #Rhye
+			g_szTimeText = localText.getText("TXT_KEY_TIME_TURN", (CyGame().getElapsedGameTurns(), )) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 		
+		# Observer progress is measured in completed simulated turns, not snapshots.
+		import GameObserver
+		observer = GameObserver.CURRENT
+		if observer and observer.enabled and observer.started and observer.autoplay:
+			g_szTimeText = localText.getText("TXT_KEY_OBSERVER_RUN_PROGRESS", (observer.turns, observer.limit)) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
+			if CyUserProfile().isClockOn():
+				g_szTimeText = getClockText() + u" - " + g_szTimeText
+
 	# Will update the selection Data Strings
 	def updateCityScreen( self ):
 	
@@ -2783,18 +2830,18 @@ class CvMainInterface:
 		iBtnHeight = 18 #Rhye (22)
 		
 		if ((CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_HIDE_ALL and CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_MINIMAP_ONLY)):
-			if (CyInterface().isScoresVisible() and not CyInterface().isCityScreenUp() and CyEngine().isGlobeviewUp() == false):
+			if ((CyInterface().isScoresVisible() or gc.getGame().isObserverAutoPlay()) and not CyInterface().isCityScreenUp() and CyEngine().isGlobeviewUp() == false):
 
 				i = gc.getMAX_CIV_TEAMS() - 1
 				while (i > -1):
 					eTeam = gc.getGame().getRankTeam(i)
 
-					if (gc.getTeam(gc.getGame().getActiveTeam()).isHasMet(eTeam) or gc.getTeam(eTeam).isHuman() or gc.getGame().isDebugMode()):
+					if (gc.getTeam(gc.getGame().getActiveTeam()).isHasMet(eTeam) or gc.getTeam(eTeam).isHuman() or gc.getGame().isDebugMode() or gc.getGame().isObserverAutoPlay()):
 						j = gc.getMAX_CIV_PLAYERS() - 1
 						while (j > -1):
 							ePlayer = gc.getGame().getRankPlayer(j)
 
-							if (not CyInterface().isScoresMinimized() or gc.getGame().getActivePlayer() == ePlayer):
+							if (gc.getGame().isObserverAutoPlay() or not CyInterface().isScoresMinimized() or gc.getGame().getActivePlayer() == ePlayer):
                                                                 #if (gc.getPlayer(ePlayer).isAlive() and not gc.getPlayer(ePlayer).isMinorCiv()): #Rhye
                                                                 if (gc.getPlayer(ePlayer).isEverAlive() and not gc.getPlayer(ePlayer).isMinorCiv()):
 
