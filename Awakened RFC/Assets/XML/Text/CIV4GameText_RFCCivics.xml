@@ -369,7 +369,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES</Tag>
         <English>Feudal Retinues</English>
         <French>Osts f&#233;odaux</French>
-        <German>Feudale Aufgebote</German>
+        <German>Heeresfolge</German>
         <Italian>Seguiti feudali</Italian>
         <Spanish>Mesnadas feudales</Spanish>
     </TEXT>
@@ -531,7 +531,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_NAVAL_WARFARE</Tag>
         <English>[ICON_BULLET]+50% production of military ships, including transports[NEWLINE][ICON_BULLET]+2 experience for newly trained military ships</English>
         <French>[ICON_BULLET]+50% &#224; la production de navires militaires, transports compris[NEWLINE][ICON_BULLET]+2 points d&#8217;exp&#233;rience pour les nouveaux navires militaires</French>
-        <German>[ICON_BULLET]+50% Produktion f&#252;r Milit&#228;rschiffe einschlie&#223;lich Transportschiffen[NEWLINE][ICON_BULLET]+2 Erfahrung f&#252;r neu gebaute Milit&#228;rschiffe</German>
+        <German>[ICON_BULLET]+50% Produktion f&#252;r Schiffe[NEWLINE][ICON_BULLET]+2XP f&#252;r neu gebaute Schiffe</German>
         <Italian>[ICON_BULLET]+50% alla produzione di navi militari, inclusi i trasporti[NEWLINE][ICON_BULLET]+2 esperienza per le nuove navi militari</Italian>
         <Spanish>[ICON_BULLET]+50% a la producci&#243;n de barcos militares, incluidos los transportes[NEWLINE][ICON_BULLET]+2 de experiencia para los nuevos barcos militares</Spanish>
     </TEXT>
@@ -539,7 +539,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES</Tag>
         <English>[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units</English>
         <French>[ICON_BULLET]+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e par cette ville, unit&#233;s de si&#232;ge comprises</French>
-        <German>[ICON_BULLET]+5% Produktion milit&#228;rischer Landeinheiten je von dieser Stadt bewirtschaftetem Bauernhof, einschlie&#223;lich Belagerungseinheiten</German>
+        <German>[ICON_BULLET]+5% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet</German>
         <Italian>[ICON_BULLET]+5% alla produzione di unit&#224; militari terrestri per fattoria lavorata da questa citt&#224;, incluse le unit&#224; d&#8217;assedio</Italian>
         <Spanish>[ICON_BULLET]+5% a la producci&#243;n de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio</Spanish>
     </TEXT>
@@ -757,7 +757,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_PEDIA</Tag>
         <English>Feudal Retinues mobilize military service and provisions through agricultural estates. Worked farms support the producing city&#8217;s land forces, making a productive rural base an alternative to the superior training of a Professional Army.</English>
         <French>Les osts f&#233;odaux mobilisent le service militaire et les provisions des domaines agricoles. Les fermes exploit&#233;es soutiennent les forces terrestres de leur ville : une base rurale productive offre ainsi une alternative &#224; l&#8217;entra&#238;nement sup&#233;rieur d&#8217;une arm&#233;e professionnelle.</French>
-        <German>Feudale Aufgebote mobilisieren Kriegsdienste und Versorgung durch landwirtschaftliche G&#252;ter. Bewirtschaftete Bauernh&#246;fe unterst&#252;tzen die Landstreitkr&#228;fte ihrer Stadt. Eine leistungsf&#228;hige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.</German>
+        <German>Heeresfolge mobilisiert Kriegsdienste und Versorgung durch landwirtschaftliche G&#252;ter. Bewirtschaftete Bauernh&#246;fe unterst&#252;tzen die Landstreitkr&#228;fte ihrer Stadt. Eine leistungsf&#228;hige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.</German>
         <Italian>I seguiti feudali mobilitano il servizio militare e le provviste delle propriet&#224; agricole. Le fattorie lavorate sostengono le forze terrestri della propria citt&#224;: una base rurale produttiva offre un&#8217;alternativa al migliore addestramento di un esercito professionale.</Italian>
         <Spanish>Las mesnadas feudales movilizan el servicio militar y los suministros de las propiedades agr&#237;colas. Las granjas trabajadas sostienen las fuerzas terrestres de su ciudad: una base rural productiva ofrece una alternativa al mejor adiestramiento de un ej&#233;rcito profesional.</Spanish>
     </TEXT>

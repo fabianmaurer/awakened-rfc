@@ -132,7 +132,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY</Tag>
         <English>+50% military ship production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. Available to every civilization with Sailing.</English>
         <French>+50% &#224; la production de navires militaires et +2 points d&#8217;exp&#233;rience pour les nouveaux navires militaires, transports compris. Les bateaux de p&#234;che ne re&#231;oivent aucun de ces bonus. Accessible &#224; toute civilisation connaissant la voile.</French>
-        <German>+50% Produktion und +2 Erfahrung f&#252;r neu gebaute Milit&#228;rschiffe einschlie&#223;lich Transportschiffen. Arbeitsboote erhalten keine dieser Boni. Mit Segeln f&#252;r alle Zivilisationen verf&#252;gbar.</German>
+        <German>+50% Produktion f&#252;r Schiffe und +2XP f&#252;r neu gebaute Schiffe. Mit Segeln f&#252;r alle Zivilisationen verf&#252;gbar.</German>
         <Italian>+50% alla produzione e +2 esperienza per le nuove navi militari, inclusi i trasporti. Le barche da lavoro non ricevono questi bonus. Disponibile per tutte le civilt&#224; con la Vela.</Italian>
         <Spanish>+50% a la producci&#243;n y +2 de experiencia para los nuevos barcos militares, incluidos los transportes. Los barcos de trabajo no reciben estas bonificaciones. Disponible para todas las civilizaciones con Navegaci&#243;n a vela.</Spanish>
     </TEXT>
@@ -140,7 +140,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY</Tag>
         <English>+5% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +30%.</English>
         <French>+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme effectivement exploit&#233;e par la ville productrice. Inclut les unit&#233;s de si&#232;ge ; exclut les unit&#233;s civiles et les navires. Six fermes exploit&#233;es donnent +30%.</French>
-        <German>+5% Produktion milit&#228;rischer Landeinheiten je tats&#228;chlich von der produzierenden Stadt bewirtschaftetem Bauernhof. Gilt auch f&#252;r Belagerungseinheiten, aber nicht f&#252;r zivile Einheiten oder Schiffe. Sechs bewirtschaftete Bauernh&#246;fe geben +30%.</German>
+        <German>+5% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet.</German>
         <Italian>+5% alla produzione di unit&#224; militari terrestri per fattoria effettivamente lavorata dalla citt&#224; produttrice. Include le unit&#224; d&#8217;assedio; esclude le unit&#224; civili e le navi. Sei fattorie lavorate danno +30%.</Italian>
         <Spanish>+5% a la producci&#243;n de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +30%.</Spanish>
     </TEXT>

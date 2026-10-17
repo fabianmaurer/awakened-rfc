@@ -59,6 +59,9 @@ def getStability(argsList):
         return utils.getStability(argsList[0])
 def countAchievedGoals(argsList):
         return utils.countAchievedGoals(argsList[0])
+def getBirthFlipMask(argsList):
+        return con.getBirthFlipMask(argsList)
+
 def resetStabilityParameters(argsList):
         for i in range(con.iNumStabilityParameters):
                 utils.setStabilityParameters(i, 0)

@@ -113,10 +113,10 @@ class Slavery:
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_TITLE", ()))
 			if bSlavery:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_SLAVERY", (cityName,)))
-				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", ()))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", (player.getCity(iCity).getName(), CAPTURE_AFTERMATH_REFUGEE_TURNS)))
 			else:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_FREE", (cityName,)))
-				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", ()))
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", (player.getCity(iCity).getName(),)))
 		popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
 		popup.launch(False)
 
@@ -151,11 +151,11 @@ class Slavery:
 			if bSlavery:
 				city.addTemporarySlaveSpecialist(CAPTURE_AFTERMATH_REFUGEE_TURNS)
 				city.addSlaveRefugeeUnhappiness(CAPTURE_AFTERMATH_REFUGEE_TURNS)
-				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVED", (cityName,)), "", 0, "", ColorTypes(7), city.getX(), city.getY(), True, True)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVED", (cityName, city.getName())), "", 0, "", ColorTypes(7), city.getX(), city.getY(), True, True)
 			else:
 				city.changePopulation(1)
 				city.changeCulture(iOldOwner, culture, False)
-				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPTED", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPTED", (cityName, city.getName())), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
 
 	def _garrisonStrength(self, city, owner):
 		plot = city.plot()

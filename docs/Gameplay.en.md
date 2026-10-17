@@ -23,7 +23,8 @@ victory goals, and other inherited systems form the underlying game.
 - **Civic-combination stability:** compatible institutions receive small bonuses;
   Theocracy with Tolerance incurs a small penalty. The total is bounded.
 - **Spawn warnings:** tile tooltips identify pending civilizations whose core
-  flip areas include that tile. Cities receive unrest three turns before a flip.
+  flip areas or additional exception tiles include that tile. Cities receive
+  unrest three turns before a flip.
 - **Dynamic country names:** English and German names respond to civic choices,
   religion, empire size, and existing vassal/colonial relationships.
 - **Production consistency:** major civilizations no longer have their original
@@ -404,14 +405,15 @@ behavior, and [CivicEffects.md](CivicEffects.md) for implementation details.
 ### Tile tooltips
 
 Hovering over a tile shows the **base country names** of pending civilizations
-whose core flip areas include it. Each name appears on its own line in that
-civilization's color. Your own civilization and civilizations currently alive
+whose core flip areas or additional scripted flip tiles include it. Each name
+appears on its own line in that civilization's color. Your own civilization and civilizations currently alive
 are excluded. The labels use names such as **Germany**, rather than an early
 dynamic name such as “Germanic Peoples.”
 
-The tooltip uses fixed core-area rectangles and a birth-turn cutoff. It does not
-recalculate every scripted exception or adjusted spawn delay, so it is an aid
-to planning rather than a complete prediction of every possible flip.
+The tooltip reads the core-area rectangles and additional exception tiles from
+the same data as the spawn logic. It retains a birth-turn cutoff and does not
+predict adjusted spawn delays or whether a particular city is eligible to flip,
+so it is an aid to planning rather than a guarantee of a flip.
 
 ### Pre-flip unrest
 

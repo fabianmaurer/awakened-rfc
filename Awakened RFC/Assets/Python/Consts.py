@@ -490,6 +490,21 @@ tExceptions = (  #for RiseAndFall
 
 
 
+def getBirthFlipMask(argsList):
+        # DLL tooltip callback: use the same rectangles and added tiles as RiseAndFall.
+        iX, iY, iGameTurn = argsList
+        iMask = 0
+        for iCiv in range(iNumMajorPlayers):
+                if tBirth[iCiv] <= 0 or iGameTurn > tBirth[iCiv] + 5:
+                        continue
+                tTL = tCoreAreasTL[iCiv]
+                tBR = tCoreAreasBR[iCiv]
+                if ((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
+                    (iX, iY) in tExceptions[iCiv]):
+                        iMask |= 1 << iCiv
+        return iMask
+
+
 #normal areas (for Victory and resurrection)
 
 tNormalAreasTL = (

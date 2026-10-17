@@ -2816,46 +2816,17 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 	}
 	else
 	{
-		// RFC birth flip bounds. Keep these in the same order as tCoreAreasTL/BR
-		// in Assets/Python/Consts.py (player IDs are the array indexes).
-		static const int aiBirthTurns[27] = {0, 0, 0, 0, 50, 84, 86, 90, 97, 121, 145, 177, 183, 187, 193, 196, 203, 205, 207, 213, 220, 234, 236, 240, 241, 249, 346};
-		int iGameTurn = GC.getGameINLINE().getGameTurn();
-		static const int aiBirthFlipBounds[27][4] =
-		{
-			{66, 30, 70, 36}, // Egypt
-			{87, 33, 94, 40}, // India
-			{99, 43, 107, 47}, // China
-			{74, 38, 77, 42}, // Babylonia
-			{65, 39, 70, 44}, // Greece
-			{79, 37, 85, 44}, // Persia
-			{54, 37, 60, 39}, // Carthage
-			{59, 40, 63, 47}, // Rome
-			{111, 41, 116, 49}, // Japan
-			{69, 27, 73, 30}, // Ethiopia
-			{20, 35, 23, 37}, // Maya
-			{57, 57, 70, 65}, // Vikings
-			{73, 30, 81, 39}, // Arabia
-			{100, 32, 103, 36}, // Khmer
-			{49, 40, 55, 46}, // Spain
-			{54, 47, 57, 52}, // France
-			{50, 53, 54, 60}, // England
-			{59, 48, 66, 54}, // Germany
-			{67, 50, 74, 57}, // Russia
-			{56, 52, 58, 53}, // Netherlands
-			{49, 26, 57, 31}, // Mali
-			{44, 42, 50, 44}, // Portugal
-			{24, 18, 29, 24}, // Inca
-			{90, 48, 105, 58}, // Mongolia
-			{15, 36, 20, 41}, // Aztecs
-			{69, 43, 79, 49}, // Turkey
-			{26, 42, 31, 48} // America
-		};
-		for (int iCiv = 0; iCiv < 27; ++iCiv)
+		// Read the birth areas and exception tiles from the same data as RiseAndFall.
+		long lBirthFlipMask = 0;
+		CyArgsList argsList;
+		argsList.add(pPlot->getX_INLINE());
+		argsList.add(pPlot->getY_INLINE());
+		argsList.add(GC.getGameINLINE().getGameTurn());
+		gDLL->getPythonIFace()->callFunction(PYScreensModule, "getBirthFlipMask", argsList.makeFunctionArgs(), &lBirthFlipMask);
+		for (int iCiv = 0; iCiv < NUM_MAJOR_PLAYERS; ++iCiv)
 		{
 			if (iCiv != GC.getGameINLINE().getActivePlayer() && !GET_PLAYER((PlayerTypes)iCiv).isAlive() &&
-				aiBirthTurns[iCiv] > 0 && iGameTurn <= aiBirthTurns[iCiv] + 5 &&
-				pPlot->getX_INLINE() >= aiBirthFlipBounds[iCiv][0] && pPlot->getX_INLINE() <= aiBirthFlipBounds[iCiv][2] &&
-				pPlot->getY_INLINE() >= aiBirthFlipBounds[iCiv][1] && pPlot->getY_INLINE() <= aiBirthFlipBounds[iCiv][3])
+				(lBirthFlipMask & (1L << iCiv)) != 0)
 			{
 				szString.append(CvWString::format(SETCOLR L"%s\n" ENDCOLR, GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorR(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorG(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorB(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorA(), GC.getCivilizationInfo(GET_PLAYER((PlayerTypes)iCiv).getCivilizationType()).getShortDescription()));
 			}
