@@ -251,10 +251,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             pass
 
     def slaveEventApply7624(self, playerID, netUserData, popupReturn):
-            self.slave.eventApply(popupReturn)
+            self.slave.eventApply(playerID, netUserData, popupReturn)
 
     def slaveEventBegin7625(self):
             pass
 
     def slaveEventApply7625(self, playerID, netUserData, popupReturn):
-            self.slave.captureEventApply(playerID, popupReturn)
+            self.slave.captureEventApply(playerID, netUserData, popupReturn)

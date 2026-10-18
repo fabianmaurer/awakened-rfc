@@ -12946,6 +12946,63 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			processCivics(getCivics(eIndex), 1);
 		}
 
+		// Abolition gives each armed slave one synchronized chance to join the army.
+		if (eOldCivic == (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+		{
+			const char* aszSlaveTypes[] = {
+				"UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN", "UNIT_SLAVE_MACEMAN",
+				"UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN", "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+			};
+			const char* aszRegularClasses[] = {
+				"UNITCLASS_AXEMAN", "UNITCLASS_SWORDSMAN", "UNITCLASS_MACEMAN",
+				"UNITCLASS_MUSKETMAN", "UNITCLASS_RIFLEMAN", "UNITCLASS_INFANTRY", "UNITCLASS_MARINE"
+			};
+			std::vector< std::pair<int, UnitTypes> > aCaptives;
+			int iLoop;
+			for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+			{
+				if (pUnit->isDelayedDeath()) continue;
+				for (int iTier = 0; iTier < (int)(sizeof(aszSlaveTypes) / sizeof(aszSlaveTypes[0])); ++iTier)
+				{
+					if (pUnit->getUnitType() == GC.getInfoTypeForString(aszSlaveTypes[iTier]))
+					{
+						UnitClassTypes eClass = (UnitClassTypes)GC.getInfoTypeForString(aszRegularClasses[iTier]);
+						UnitTypes eRegular = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eClass);
+						if (eRegular != NO_UNIT) aCaptives.push_back(std::make_pair(pUnit->getID(), eRegular));
+						break;
+					}
+				}
+			}
+			int iConverted = 0;
+			int iDisbanded = 0;
+			const PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+			for (unsigned int i = 0; i < aCaptives.size(); ++i)
+			{
+				CvUnit* pSlave = getUnit(aCaptives[i].first);
+				if (pSlave == NULL || pSlave->isDelayedDeath()) continue;
+				if (GC.getGameINLINE().getSorenRandNum(100, "Armed slave emancipation") < 50)
+				{
+					CvUnit* pRegular = initUnit(aCaptives[i].second, pSlave->getX_INLINE(), pSlave->getY_INLINE(), pSlave->AI_getUnitAIType());
+					if (pRegular != NULL)
+					{
+						pRegular->convert(pSlave);
+						pRegular->setHasPromotion(eCannonFodder, false);
+						++iConverted;
+					}
+				}
+				else
+				{
+					pSlave->kill(true);
+					++iDisbanded;
+				}
+			}
+			if (iConverted + iDisbanded > 0)
+			{
+				gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText("TXT_KEY_RFCMP_SLAVE_EMANCIPATION", iConverted, iDisbanded), "", MESSAGE_TYPE_INFO);
+			}
+		}
+
 		// Clear assigned specialists on adopting self-sufficiency; free specialists
 		// are separate counts and remain available. Idle citizens remain a fallback.
 		if (eNewValue == (CivicTypes)GC.getInfoTypeForString("CIVIC_SELF_SUFFICIENCY"))

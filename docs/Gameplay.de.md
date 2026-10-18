@@ -107,6 +107,11 @@ Siedler/Bautrupps bleiben unverändert. Der Malus greift nach Handel und Verbrau
 also auch auf positiven Überschuss aus importierter Nahrung. Bestehende gemeinsame
 Wachstumsschwellen und die Nahrungserhaltung durch Kornspeicher bleiben bestehen.
 
+Auch während der Produktion von Siedlern, Bautrupps und anderen Einheiten mit
+Nahrungsproduktion bleiben Nahrungsdefizite wirksam: Vorräte werden verbraucht,
+und bei leeren Vorräten kann die Stadt schrumpfen. Nur positiver Überschuss
+wird in Produktion umgewandelt.
+
 `RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) und
 `RFCMP_GROWTH_TECH_REDUCTION_TIMES100` (50) in `Assets/XML/GlobalDefines.xml`
 verwenden Hundertstel eines Prozentpunkts. Bestehende Spielstände beginnen ohne
@@ -296,7 +301,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
+| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
@@ -310,6 +315,22 @@ als Möglichkeit für überschüssige Bevölkerung verfügbar.
 Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Angebote erhalten nur große Zivilisationen mit einer Stadt auf demselben Kontinent.
 
 Unter Sklaverei kostet eine Eroberung **zwei Bevölkerungspunkte** statt einem und erzeugt eine Sklaveneinheit je verlorenem Bevölkerungspunkt. Städte behalten mindestens Größe eins; Rückeroberungen sind ausgenommen.
+
+Unter Sklaverei werden gefangene **Bautrupps, Missionare und Siedler** garantiert
+zu je einer Sklaveneinheit anstelle der normalen Gefangennahme oder Vernichtung.
+Das gilt auch für zivilisationsspezifische Varianten. Der Sklave erscheint auf
+dem Feld der gefangenen Einheit, hat in dieser Runde keine Bewegung mehr und
+erhält, soweit vorhanden, die Herkunftsbeförderung ihres bisherigen Besitzers.
+
+Alle bewaffneten Sklaveneinheiten können unter Sklaverei in einer Stadt
+desselben Teams als Sklavenspezialist für **20 Runden** angesiedelt werden.
+Bei Abschaffung der Sklaverei wird für jede Kriegersklaveneinheit einzeln mit
+**50% Chance** die passende reguläre Einheit gebildet, einschließlich der
+zivilisationsspezifischen Variante: etwa Axtkämpfer, Schwertkämpfer oder
+Streitkolbenträger; moderne Sklaveninfanterie wird zu Marines. Die übrigen
+Kriegersklaveneinheiten lösen sich auf. Umgewandelte Einheiten behalten
+Erfahrung, Beförderungen, Schaden und bereits verbrauchte Bewegung; die
+Kanonenfutter-Beförderung und der ermäßigte Sklavenunterhalt entfallen.
 
 Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Sklaven gefangen zu nehmen**, wenn er einen schwächeren Landverteidiger tötet. Tiere sind ausgenommen. Verglichen wird die effektive Kampfstärke zu Kampfbeginn einschließlich Verteidigungsboni. Der Angreifer muss vollständig gesund beginnen und darf nur durch Erstangriffe des Verteidigers Schaden erleiden. Rückzüge und Kollateraltötungen zählen nicht. Der Sklave erscheint auf dem Feld des Angreifers und erhält, soweit vorhanden, die Herkunftsbeförderung der besiegten Zivilisation.
 
@@ -333,13 +354,20 @@ Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
 | **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
-| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
+| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
 | **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
 Unter Toleranz erhöht sich die eingehende Handelsverbreitung je fehlender Religion und Route nach allen Kultur- und Heilige-Stadt-Abzügen um **5 Prozentpunkte** (maximal **17%**). Auch eine sonst auf null gesenkte Chance beträgt damit 5%; Inlandsrouten zählen ebenfalls. Staatsatheismus und andere Verbreitungsverbote bleiben wirksam.
 
 Befriedung durch Gottesstaat: Fehlte die eigene Staatsreligion bei der Eroberung, beendet ihre Verbreitung einmalig die Eroberungsunruhe, gibt +1 Bevölkerung und stellt nach Möglichkeit ein dabei zerstörtes Gebäude wieder her. Gottesstaat muss bei Eroberung und Konvertierung aktiv und die Staatsreligion dieselbe sein. Jede Rückeroberung prüft den Anspruch neu; er bleibt beim Speichern erhalten.
+
+Jede in einer Stadt vorhandene **Nichtstaatsreligion verursacht grundsätzlich
+-1 Zufriedenheit**. Ohne Staatsreligion gilt das für jede vorhandene Religion.
+Toleranz hebt diese Religionsunzufriedenheit auf, ohne zusätzliche
+Zufriedenheit zu erzeugen. Andere Boni auf Nichtstaatsreligionen werden mit
+dem Grundmalus verrechnet. Der Gottesstaat verursacht zusätzlich -1, also
+insgesamt **-2 Zufriedenheit je Nichtstaatsreligion**.
 
 Staatsatheismus deaktiviert die Staatsreligion; die anderen vier religiösen
 Staatsformen erlauben eine Staatsreligion.
@@ -461,15 +489,37 @@ Verzögerung neu und dient daher als Planungshilfe.
 
 ### Unruhen vor dem Gebietswechsel
 
-**Drei Runden vor einem geplanten ersten Gebietswechsel** erhalten Städte im
-Kerngebiet und auf Ausnahmefeldern der neuen Zivilisation drei Runden Unruhen
+**Drei Runden vor dem frühestmöglichen ersten Gebietswechsel** erhalten Städte
+im Kerngebiet und auf Ausnahmefeldern der neuen Zivilisation drei Runden Unruhen
 über den Besatzungszähler. Eine bereits länger andauernde Besatzung bleibt
-erhalten. Der Zeitplan berücksichtigt die Verzögerungen der Gründungslogik.
+erhalten. Bei einer zweistufigen Gründung werden die Unruhen bis zum um zwei
+Runden verzögerten Gebietswechsel verlängert, auch wenn die neue Zivilisation
+bereits ihre Starteinheiten besitzt. Die Vorwarnung hängt nicht von einer
+wechselnden Prognose des Gründungswegs ab.
 
 Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen
 dynamischen Namen der Zivilisation, etwa **„Die [Völker] erheben sich!“**.
 Diese Vorwarnung begleitet das bestehende Gebietswechsel-System und führt
 keine eigene Regel für den Wechsel stationierter Einheiten ein.
+
+### Wiederauferstehende Zivilisationen
+
+Ein Respawn kann Städte einer regulären Zivilisation nur noch bei deren
+Stabilität **unter -20** beanspruchen. Der frühere versteckte Abzug von zehn
+Stabilitätspunkten und die mildere Ausnahme für die alte Hauptstadt der
+wiederkehrenden Zivilisation entfallen.
+
+Aktuelle und historische Hauptstädte des Besitzers sowie feiernde Städte sind
+geschützt; der Besitzer muss mindestens drei Städte haben. Eine beanspruchte
+Stadt muss von der wiederkehrenden Zivilisation gegründet worden sein, ihre
+historische Hauptstadt sein oder mindestens **25% ihrer Stadtkultur** besitzen.
+Bei Stabilität von **-40 bis unter -20** muss die Stadt zusätzlich unzufrieden,
+unter Besatzung oder mindestens acht Felder von der Hauptstadt entfernt sein;
+für die Entfernungsbedingung braucht der Besitzer mindestens vier Städte.
+Unter -40 entfällt diese zusätzliche Bedingung.
+
+Die regionalen Grenzen, Mindestzahl beanspruchbarer Städte und Regeln für
+unabhängige oder barbarische Städte bleiben bestehen.
 
 ## Kulturaufstände
 
@@ -578,6 +628,15 @@ Der Katalog steht in [CountryNames.csv](CountryNames.csv), die Auswahlregeln
 in [CountryNaming.md](CountryNaming.md). Die neuen Ländernamen sind auf
 Deutsch und Englisch vorhanden; Französisch, Italienisch und Spanisch verwenden
 englische Ersatztexte.
+
+## Zufällige Feldereignisse
+
+Zufallsereignisse, die ein geeignetes Kartenfeld voraussetzen, haben gegenüber
+anderen Zufallsereignissen das doppelte Auswahlgewicht. Das betrifft etwa die
+Entdeckung von Präriehunden, aber auch negative Ereignisse wie Waldbrände.
+Die tatsächliche Häufigkeit hängt von den jeweils erfüllten Voraussetzungen
+und den anderen verfügbaren Ereignissen ab. Die allgemeine Ereignischance
+pro Runde sowie Voraussetzungen und Einmaligkeitsregeln bleiben unverändert.
 
 ## Installation und Mehrspieler
 

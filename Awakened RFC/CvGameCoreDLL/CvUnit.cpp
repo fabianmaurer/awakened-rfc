@@ -678,6 +678,35 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 	eCapturingPlayer = getCapturingPlayer();
 	eCaptureUnitType = ((eCapturingPlayer != NO_PLAYER) ? getCaptureUnitType(GET_PLAYER(eCapturingPlayer).getCivilizationType()) : NO_UNIT);
 
+	// Civilian captives become slaves under the captor's current labor civic.
+	// Work boats and combat units retain their existing capture rules.
+	bool bEnslaveCaptive = false;
+	PromotionTypes eCaptiveOrigin = NO_PROMOTION;
+	if (eCapturingPlayer != NO_PLAYER && !GET_PLAYER(eCapturingPlayer).isBarbarian() &&
+		getDomainType() == DOMAIN_LAND && !canFight() &&
+		GET_PLAYER(eCapturingPlayer).getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
+		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+	{
+		bool bEligibleCivilian = isFound() || getUnitClassType() == (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_WORKER");
+		for (int iReligion = 0; iReligion < GC.getNumReligionInfos() && !bEligibleCivilian; ++iReligion)
+		{
+			bEligibleCivilian = m_pUnitInfo->getReligionSpreads(iReligion) > 0;
+		}
+		if (bEligibleCivilian)
+		{
+			UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+			if (eSlave != NO_UNIT)
+			{
+				eCaptureUnitType = eSlave;
+				bEnslaveCaptive = true;
+				CvString szCivType = GC.getCivilizationInfo(GET_PLAYER(eOwner).getCivilizationType()).getType();
+				CvString szPromotion = "PROMOTION_SLAVE_";
+				if (szCivType.length() > 13) szPromotion += szCivType.substr(13);
+				eCaptiveOrigin = (PromotionTypes)GC.getInfoTypeForString(szPromotion, true);
+			}
+		}
+	}
+
 	setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true);
 
 	joinGroup(NULL, false, false);
@@ -688,12 +717,13 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 	if ((eCapturingPlayer != NO_PLAYER) && (eCaptureUnitType != NO_UNIT) && !(GET_PLAYER(eCapturingPlayer).isBarbarian()))
 	{
-		if (GET_PLAYER(eCapturingPlayer).isHuman() || GET_PLAYER(eCapturingPlayer).AI_captureUnit(eCaptureUnitType, pPlot) || 0 == GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
+		if (bEnslaveCaptive || GET_PLAYER(eCapturingPlayer).isHuman() || GET_PLAYER(eCapturingPlayer).AI_captureUnit(eCaptureUnitType, pPlot) || 0 == GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
 		{
 			CvUnit* pkCapturedUnit = GET_PLAYER(eCapturingPlayer).initUnit(eCaptureUnitType, pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			if (pkCapturedUnit != NULL)
 			{
+				if (eCaptiveOrigin != NO_PROMOTION) pkCapturedUnit->setHasPromotion(eCaptiveOrigin, true);
 				szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(eCaptureUnitType).getTextKeyWide());
 				gDLL->getInterfaceIFace()->addMessage(eCapturingPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pkCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
@@ -708,7 +738,7 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 				pkCapturedUnit->finishMoves();
 
-				if (!GET_PLAYER(eCapturingPlayer).isHuman())
+				if (!bEnslaveCaptive && !GET_PLAYER(eCapturingPlayer).isHuman())
 				{
 					CvPlot* pPlot = pkCapturedUnit->plot();
 					if (pPlot && !pPlot->isCity(false))

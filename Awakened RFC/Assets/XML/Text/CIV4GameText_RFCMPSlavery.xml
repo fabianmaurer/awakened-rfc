@@ -19,4 +19,12 @@
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_SLAVE_RIFLEMAN</Tag><English>Slave Rifleman</English><French>Slave Rifleman</French><German>Sklavensch&#252;tze</German><Italian>Slave Rifleman</Italian><Spanish>Slave Rifleman</Spanish></TEXT>
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_SLAVE_INFANTRY</Tag><English>Slave Infantry</English><French>Slave Infantry</French><German>Sklaveninfanterie</German><Italian>Slave Infantry</Italian><Spanish>Slave Infantry</Spanish></TEXT>
   <TEXT><Tag>TXT_KEY_RFCMP_UNIT_SLAVE_MODERN_INFANTRY</Tag><English>Modern Slave Infantry</English><French>Modern Slave Infantry</French><German>Moderne Sklaveninfanterie</German><Italian>Modern Slave Infantry</Italian><Spanish>Modern Slave Infantry</Spanish></TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_SLAVE_EMANCIPATION</Tag>
+    <English>Slavery abolished: %d1 units joined the regular army; %d2 slave-warrior units disbanded.</English>
+    <French>Slavery abolished: %d1 units joined the regular army; %d2 slave-warrior units disbanded.</French>
+    <German>Sklaverei abgeschafft: %d1 Einheiten treten der regul&#228;ren Armee bei; %d2 Kriegersklaveneinheiten l&#246;sen sich auf.</German>
+    <Italian>Slavery abolished: %d1 units joined the regular army; %d2 slave-warrior units disbanded.</Italian>
+    <Spanish>Slavery abolished: %d1 units joined the regular army; %d2 slave-warrior units disbanded.</Spanish>
+  </TEXT>
 </Civ4GameText>

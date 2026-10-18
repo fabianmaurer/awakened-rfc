@@ -833,4 +833,12 @@
         <Italian>[ICON_BULLET]%D1_Change di %F2_HappyOrUn nelle citt&#224; con la religione di stato [ICON_RELIGION]</Italian>
         <Spanish>[ICON_BULLET]%D1_Change %F2_HappyOrUn en las ciudades con [ICON_RELIGION] oficial</Spanish>
     </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_SERFDOM_HURRY_UNITS</Tag>
+    <English>Can sacrifice population to rush units only; cannot rush buildings or projects.</English>
+    <French>Permet de sacrifier de la population pour acc&#233;l&#233;rer uniquement les unit&#233;s, pas les b&#226;timents ni les projets.</French>
+    <German>Kann Bev&#246;lkerung opfern, um ausschlie&#223;lich Einheiten zu beschleunigen; keine Geb&#228;ude oder Projekte.</German>
+    <Italian>Consente di sacrificare popolazione per accelerare solo le unit&#224;, non gli edifici o i progetti.</Italian>
+    <Spanish>Permite sacrificar poblaci&#243;n para acelerar solo unidades, no edificios ni proyectos.</Spanish>
+  </TEXT>
 </Civ4GameText>

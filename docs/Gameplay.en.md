@@ -103,7 +103,11 @@ settlers/workers are unaffected. The penalty applies after trade and consumption
 so positive surplus from imported food is reduced too. Existing shared growth
 threshold rules and granary retention remain in effect.
 
-The settings `RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) and
+The settings Producing settlers, workers or other food-production units does not prevent
+starvation: food deficits consume stored food and can reduce population when
+stores run out. Only a positive surplus is converted into production.
+
+`RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) and
 `RFCMP_GROWTH_TECH_REDUCTION_TIMES100` (50) in `Assets/XML/GlobalDefines.xml`
 use hundredths of a percentage point. Existing saves begin with zero fractional
 growth remainder and use the new rate immediately.
@@ -290,7 +294,7 @@ ruler as embodying divine authority.
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
 | **Slavery** | Bronze Working | Low | Captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
-| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 50% faster. |
+| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 50% faster. Population can rush units only, not buildings or projects. |
 | **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
@@ -303,6 +307,19 @@ Normal idle citizens remain available under Self-sufficiency as a population fal
 Conquering a large city while using **Slavery** creates a regional slave market. Other Slavery states can buy a slave unit, while other states can buy a captive's freedom: the freed person adds population, former-owner culture, and 20 turns of happiness. A large city conquered without Slavery instead sends refugees: non-Slavery states can accept them for free, while Slavery states can force them into 20 turns of labour for one temporary slave specialist and one temporary unhappiness. Only major civilizations with a city on the same continent receive an offer.
 
 Under Slavery, conquest removes **two population** instead of one and creates one slave unit per population lost. Cities remain at least size one; recaptures are exempt.
+
+Under Slavery, captured **workers, missionaries and settlers** become one slave
+unit each, including civilization-specific variants. The slave appears on the
+captive's tile with no movement left and receives its former owner's origin
+promotion where available.
+
+All armed-slave tiers can settle as a slave specialist for **20 turns** in a
+city on their team while Slavery is active. Abolishing Slavery gives each armed
+slave a **50% chance** to become its corresponding regular unit, including
+civilization-specific replacements: for example, an Axeman, Swordsman or
+Maceman; modern slave infantry becomes a Marine. The remaining armed slaves
+disband. Converted units keep experience, promotions, damage and spent
+movement, but lose Cannon Fodder and the slave upkeep discount.
 
 A land attacker under Slavery also has a **50% chance to capture one slave** after killing a weaker non-animal land defender. Strength is compared at the start of combat, including defensive bonuses. The attacker must start at full health and take no damage except from defender first strikes. Withdrawals and collateral kills do not qualify. The slave appears on the attacker's tile and receives the defeated civilization's origin promotion where available.
 
@@ -326,7 +343,7 @@ it does not grant an additional drafting ability.
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. |
 | **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
-| **Holy State** | Theology | High | +10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
+| **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
@@ -334,6 +351,12 @@ it does not grant an additional drafting ability.
 Tolerance adds **5 percentage points** to incoming trade spread for each missing religion and route after all culture and holy-city penalties (up to **17%**). A chance otherwise reduced to zero becomes 5%; domestic routes also qualify. State Atheism and other spread restrictions still apply.
 
 Holy State pacification: If your state religion was absent at conquest, spreading it once ends occupation, adds +1 population and restores one building destroyed in that conquest if it can currently be built. Holy State must be active at conquest and conversion, with the same state religion. Each recapture checks eligibility anew; pending rewards survive saving.
+
+Each **non-state religion present in a city causes -1 happiness by default**.
+Without a state religion, this applies to every religion present. Tolerance
+removes this religious unhappiness without granting extra happiness. Other
+non-state-religion happiness bonuses offset the baseline penalty. Holy State
+adds another -1, for a total of **-2 happiness per non-state religion**.
 
 State Atheism disables a state religion; the other four Religion civics allow one.
 
@@ -451,14 +474,34 @@ so it is an aid to planning rather than a guarantee of a flip.
 
 ### Pre-flip unrest
 
-**Three turns before a scheduled initial flip**, cities in the spawning
-civilization's core area and exception tiles receive three turns of unrest,
-using the city's occupation timer. An existing longer occupation is preserved.
-The schedule accounts for the spawn/flip delays used by the birth logic.
+**Three turns before the earliest possible initial flip**, cities in the
+spawning civilization's core area and exception tiles receive three turns of
+unrest using the city's occupation timer. An existing longer occupation is
+preserved. For a two-phase birth, unrest is extended until the flip two turns
+later, even if the new civilization already has its starting units. The warning
+no longer depends on a changing prediction of which birth path will be used.
 
 Affected human owners receive a message using the civilization's early dynamic
 name, for example **“The [people] are rising up!”** This warning accompanies the inherited flip
 system; it does not introduce a separate unit-flipping rule.
+
+### Returning civilizations
+
+A respawn can claim a major civilization's cities only when that owner's
+stability is **below -20**. The hidden ten-point stability deduction and the
+more permissive exception for the returning civilization's historical capital
+are removed.
+
+The owner's current and historical capitals and celebrating cities are
+protected; the owner must have at least three cities. A claimed city must have
+been founded by the returning civilization, be its historical capital, or have
+at least **25% of its city culture**. At stability **from -40 to below -20**,
+the city must also have angry citizens, be occupied, or be at least eight tiles
+from the owner's capital; the distance condition requires at least four owned
+cities. Below -40 this additional condition is waived.
+
+Existing regional limits, minimum claimable city counts and rules for
+independent and barbarian cities remain in place.
 
 ## Cultural uprisings
 

@@ -1090,7 +1090,7 @@
 	</Define>
 	<Define>
 		<DefineName>INITIAL_NON_STATE_RELIGION_HAPPINESS</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
+		<iDefineIntVal>-1</iDefineIntVal>
 	</Define>
 	<Define>
 		<DefineName>RELIGION_SPREAD_DISTANCE_DIVISOR</DefineName>

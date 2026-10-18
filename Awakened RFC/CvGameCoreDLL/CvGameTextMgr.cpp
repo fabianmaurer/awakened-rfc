@@ -5086,7 +5086,15 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		if (GC.getCivicInfo(eCivic).isHurry(iI))
 		{
-			szHelpText.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getHurryInfo((HurryTypes)iI).getDescription()));
+			if (eCivic == GC.getInfoTypeForString("CIVIC_SERFDOM") && iI == GC.getInfoTypeForString("HURRY_POPULATION"))
+			{
+				szHelpText.append(NEWLINE);
+				szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_SERFDOM_HURRY_UNITS"));
+			}
+			else
+			{
+				szHelpText.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getHurryInfo((HurryTypes)iI).getDescription()));
+			}
 		}
 	}
 

@@ -73,6 +73,17 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 - For routine installed-mod synchronization, copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
 - Do not add/run tests unless the user asks. The game itself is the authoritative load/runtime check.
 
+### Player-specific event popups
+
+- Open a player-specific Python decision popup only on the affected player's client: check `gc.getGame().getActivePlayer() == iPlayer` before creating or launching it. `isHuman()` alone is insufficient in multiplayer because every client runs the event code for every human player.
+- Keep pending decisions on every peer and synchronize their resolution. For these Python popups, retain `EventContextTypes.EVENTCONTEXT_ALL`; restrict the UI locally, but do not restrict the synchronized apply callback to the active player.
+- Give each pending decision a unique ID and pass its owner and ID through `popup.setUserData`. Forward `playerID` and `netUserData` from the event manager, verify the responding player against the stored owner, and resolve each decision only once. Multiple open events must not overwrite one shared pending slot or one slot per player.
+- Apply this rule to new and modified event choices. Slave revolts, refugees and slave markets in `Assets/Python/Slavery.py` are the reference implementation for this fix.
+
+- `CyPopupInfo` uses a different delivery path: enqueue it with `addPopup(iOwner)` (or the owning `CvPlayer` in C++). A local `BUTTONPOPUP_PYTHON` click callback must not directly change synchronized game state; use a synchronized message or an acknowledgement with no gameplay effects.
+
+Static review on 2026-10-18: checked all added event/decision paths for recipient routing and response synchronization. Slave revolt, refugee and slave-market choices use the corrected owner/decision IDs. Democracy announcements already use `addPopup(iPlayer)` and have no click callback that changes gameplay; conquest/relocation choices already target the conqueror and send player-scoped city tasks. Cultural uprisings and historical birth-unrest warnings use addressed messages without player choices. Embargo requests use synchronized mod-net messages. The standard XML event path also queues choices on the owning player and synchronizes responses. No additional instance of the reported popup bug was found in these paths. This is a source review, not in-game multiplayer validation; legacy RFC congress/civilization-switch systems are outside this review of added events.
+
 ## Optional AI observer
 
 When investigating performance, flag small mechanic changes only when the

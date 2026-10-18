@@ -833,9 +833,10 @@ class RiseAndFall:
                 else:
                         iFirstSpawn = iKhmer
                 for iLoopCiv in range(iFirstSpawn, iNumMajorPlayers):
-                        self.checkFlipUnrest(iGameTurn, iLoopCiv)
                         if (iGameTurn >= con.tBirth[iLoopCiv] - 2 and iGameTurn <= con.tBirth[iLoopCiv] + 6):
                                 self.initBirth(iGameTurn, con.tBirth[iLoopCiv], iLoopCiv)
+                        # The birth phase can set the actual two-turn flip delay.
+                        self.checkFlipUnrest(iGameTurn, iLoopCiv)
 
                 if (iGameTurn == 87):
                         if (gc.getGame().getStartTurn() != 0):  #late start condition (RFCMP) 800BC
@@ -1403,6 +1404,30 @@ class RiseAndFall:
 
 
                               
+        def _canRespawnFlip(self, city, iDeadCiv):
+                iOwner = city.getOwner()
+                if iOwner >= iNumActivePlayers:
+                        return True # independent and barbarian cities have no national stability
+                owner = gc.getPlayer(iOwner)
+                if owner.getNumCities() < 3 or city.isCapital() or city.isWeLoveTheKingDay():
+                        return False
+                if (city.getX(), city.getY()) == tCapitals[iOwner]:
+                        return False # protect the owner's historical capital as well
+                iStability = utils.getStability(iOwner)
+                if iStability >= -20:
+                        return False
+                # A normal-area border alone is not enough to claim another state's city.
+                bHistoricalCapital = (city.getX(), city.getY()) == tCapitals[iDeadCiv]
+                if (city.getOriginalOwner() != iDeadCiv and not bHistoricalCapital and
+                    city.calculateCulturePercent(iDeadCiv) < 25):
+                        return False
+                if iStability < -40:
+                        return True
+                capital = owner.getCapitalCity()
+                iDistance = utils.calculateDistance(city.getX(), city.getY(), capital.getX(), capital.getY())
+                return (city.angryPopulation(0) > 0 or city.getOccupationTimer() > 0 or
+                        (iDistance >= 8 and owner.getNumCities() >= 4))
+
         def resurrection(self, iGameTurn):
                 #return
                 iMinNumCities = 2
@@ -1434,50 +1459,8 @@ class RiseAndFall:
                                                         if ( pCurrent.isCity()):
                                                                 city = pCurrent.getPlotCity()
                                                                 iOwner = city.getOwner()
-                                                                if (iOwner >= iNumActivePlayers): #if (iOwner == iBarbarian or iOwner == iIndependent or iOwner == iIndependent2): #remove in vanilla
-                                                                        cityList.append(pCurrent.getPlotCity())
-                                                                        #print (iDeadCiv, pCurrent.getPlotCity().getName(), pCurrent.getPlotCity().getOwner(), "1", cityList)
-                                                                else:
-                                                                        iMinNumCitiesOwner = 3
-                                                                        #iOwnerStability = utils.getStability(iOwner)
-                                                                        #RFCMP
-                                                                        iOwnerStability = utils.getStability(iOwner) -10
-                                                                        #if (not gc.getPlayer(iOwner).isHuman()):
-                                                                        #        iMinNumCitiesOwner = 2
-                                                                        #        iOwnerStability -= 20
-                                                                        if (gc.getPlayer(iOwner).getNumCities() >= iMinNumCitiesOwner):
-                                                                                if (iOwnerStability < -20):
-                                                                                        if (not city.isWeLoveTheKingDay() and not city.isCapital()):
-                                                                                                    cityList.append(pCurrent.getPlotCity())
-                                                                                                    #print (iDeadCiv, pCurrent.getPlotCity().getName(), pCurrent.getPlotCity().getOwner(), "2", cityList)
-                                                                                elif (iOwnerStability < 0):
-                                                                                        if (not city.isWeLoveTheKingDay() and not city.isCapital() and (not (city.getX() == tCapitals[iOwner][0] and city.getY() == tCapitals[iOwner][1]))):
-                                                                                                if (gc.getPlayer(iOwner).getNumCities() > 0): #this check is needed, otherwise game crashes
-                                                                                                        capital = gc.getPlayer(iOwner).getCapitalCity()
-                                                                                                        iDistance = utils.calculateDistance(x, y, capital.getX(), capital.getY())
-                                                                                                        if ((iDistance >= 6 and gc.getPlayer(iOwner).getNumCities() >= 4) or \
-                                                                                                            city.angryPopulation(0) > 0 or \
-                                                                                                            city.healthRate(False, 0) < 0 or \
-                                                                                                            city.getReligionBadHappiness() > 0 or \
-                                                                                                            city.getLargestCityHappiness() < 0 or \
-                                                                                                            city.getHurryAngerModifier() > 0 or \
-                                                                                                            city.getNoMilitaryPercentAnger() > 0 or \
-                                                                                                            city.getWarWearinessPercentAnger() > 0):
-                                                                                                                    cityList.append(pCurrent.getPlotCity())
-                                                                                                                    #print (iDeadCiv, pCurrent.getPlotCity().getName(), pCurrent.getPlotCity().getOwner(), "3", cityList)
-                                                                                if (iOwnerStability < 20):
-                                                                                         if (city.getX() == tCapitals[iDeadCiv][0] and city.getY() == tCapitals[iDeadCiv][1]):
-                                                                                                 #print(pCurrent.getPlotCity(), cityList)
-                                                                                                 #if (pCurrent.getPlotCity() not in cityList):  #sadly, this doesn't work
-                                                                                                 bAlreadyAdded = False
-                                                                                                 for l in range(len(cityList)):
-                                                                                                         if (cityList[l].getName() == city.getName()):
-                                                                                                                 bAlreadyAdded = True
-                                                                                                                 break
-                                                                                                 #print("bAlreadyAdded",bAlreadyAdded)
-                                                                                                 if (not bAlreadyAdded):
-                                                                                                         cityList.append(pCurrent.getPlotCity())
-                                                                                                         #print (iDeadCiv, pCurrent.getPlotCity().getName(), pCurrent.getPlotCity().getOwner(), "4", cityList)
+                                                                if self._canRespawnFlip(city, iDeadCiv):
+                                                                        cityList.append(city)
                                 #print("len(cityList)",len(cityList))
                                 if (len(cityList) >= iMinNumCities or (len(cityList) >= 1 and (iDeadCiv == iNetherlands))): #no portugal: they have the azores
                                         bDeadCivFound = True
@@ -1705,62 +1688,51 @@ class RiseAndFall:
                                 
                             
                                     
-        def willBirthInFreeRegion(self, iCiv):
-                iHuman = utils.getHumanID()
-                tCapital = tCapitals[iCiv]
-                pCapital = gc.getMap().plot(tCapital[0], tCapital[1])
-                if (not pCapital.isOwned()):
-                        return True
-
-                bDeleteEverything = False
-                if (iCiv == iHuman or not gc.getPlayer(iHuman).isAlive()):
-                        if not (pCapital.isCity() and pCapital.getPlotCity().isHolyCity()):
-                                bDeleteEverything = True
-                else:
-                        bDeleteEverything = True
-                        for x in range(tCapital[0] - 1, tCapital[0] + 2):
-                                for y in range(tCapital[1] - 1, tCapital[1] + 2):
-                                        pCurrent = gc.getMap().plot(x, y)
-                                        if (pCurrent.isCity() and (gc.getPlayer(pCurrent.getPlotCity().getOwner()).isHuman() or pCurrent.getPlotCity().isHolyCity())):
-                                                bDeleteEverything = False
-                return bDeleteEverything
-
-        def startFlipUnrest(self, iCiv, tTopLeft, tBottomRight):
+        def startFlipUnrest(self, iCiv, tTopLeft, tBottomRight, iTurns=3, bNotify=True):
                 lNotifiedPlayers = []
                 for x in range(tTopLeft[0], tBottomRight[0] + 1):
                         for y in range(tTopLeft[1], tBottomRight[1] + 1):
                                 pCurrent = gc.getMap().plot(x, y)
-                                if (pCurrent.isCity()):
+                                if (pCurrent.isCity() and pCurrent.getPlotCity().getOwner() != iCiv):
                                         city = pCurrent.getPlotCity()
-                                        if (city.getOccupationTimer() < 3):
-                                                city.setOccupationTimer(3)
+                                        if (city.getOccupationTimer() < iTurns):
+                                                city.setOccupationTimer(iTurns)
                                         iOwner = city.getOwner()
-                                        if (gc.getPlayer(iOwner).isHuman() and iOwner not in lNotifiedPlayers):
+                                        if (bNotify and gc.getPlayer(iOwner).isHuman() and iOwner not in lNotifiedPlayers):
                                                 CyInterface().addMessage(iOwner, True, con.iDuration, CyTranslator().getText("TXT_KEY_RNF_FLIP_UNREST", (gc.getPlayer(iCiv).getCivilizationDescriptionKey(),)), "", 0, "", ColorTypes(con.iGreen), city.getX(), city.getY(), True, True)
                                                 lNotifiedPlayers.append(iOwner)
 
                 if (len(tExceptions[iCiv])):
                         for j in range(len(tExceptions[iCiv])):
                                 pCurrent = gc.getMap().plot(tExceptions[iCiv][j][0], tExceptions[iCiv][j][1])
-                                if (pCurrent.isCity()):
+                                if (pCurrent.isCity() and pCurrent.getPlotCity().getOwner() != iCiv):
                                         city = pCurrent.getPlotCity()
-                                        if (city.getOccupationTimer() < 3):
-                                                city.setOccupationTimer(3)
+                                        if (city.getOccupationTimer() < iTurns):
+                                                city.setOccupationTimer(iTurns)
                                         iOwner = city.getOwner()
-                                        if (gc.getPlayer(iOwner).isHuman() and iOwner not in lNotifiedPlayers):
+                                        if (bNotify and gc.getPlayer(iOwner).isHuman() and iOwner not in lNotifiedPlayers):
                                                 CyInterface().addMessage(iOwner, True, con.iDuration, CyTranslator().getText("TXT_KEY_RNF_FLIP_UNREST", (gc.getPlayer(iCiv).getCivilizationDescriptionKey(),)), "", 0, "", ColorTypes(con.iGreen), city.getX(), city.getY(), True, True)
                                                 lNotifiedPlayers.append(iOwner)
 
         def checkFlipUnrest(self, iGameTurn, iCiv):
-                if (gc.getPlayer(iCiv).isAlive()):
+                # Warn before the earliest possible flip, without predicting whether
+                # capital ownership will force a free-region or foreign-border birth.
+                iBirthTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv)
+                iWarningTurn = iBirthTurn - 3
+                if iGameTurn < iWarningTurn:
                         return
-
-                iFlipTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv) + self.getFlipsDelay(iCiv)
-                if (self.getFlipsDelay(iCiv) == 0 and self.willBirthInFreeRegion(iCiv)):
-                        iFlipTurn += 2
-
-                if (iGameTurn == iFlipTurn - 3):
+                iFlipsDelay = self.getFlipsDelay(iCiv)
+                if gc.getPlayer(iCiv).isAlive() and iFlipsDelay == 0:
+                        return
+                iFlipTurn = iBirthTurn + iFlipsDelay
+                if iGameTurn >= iFlipTurn:
+                        return
+                if iGameTurn == iWarningTurn:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv])
+                elif iFlipsDelay > 0:
+                        # Starting units can already make this civ alive. Extend
+                        # the warning unrest until its scheduled second-phase flip.
+                        self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
                 iHuman = utils.getHumanID()

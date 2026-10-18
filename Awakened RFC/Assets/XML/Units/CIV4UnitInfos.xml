@@ -24095,7 +24095,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -24284,7 +24289,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -24473,7 +24483,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -24662,7 +24677,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -24851,7 +24871,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -25040,7 +25065,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>
@@ -25224,7 +25254,12 @@
 			<Builds />
 			<ReligionSpreads />
 			<CorporationSpreads />
-			<GreatPeoples />
+			<GreatPeoples>
+                <GreatPeople>
+                    <GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>
+                    <bGreatPeople>1</bGreatPeople>
+                </GreatPeople>
+            </GreatPeoples>
 			<Buildings />
 			<ForceBuildings />
 			<HolyCity>NONE</HolyCity>

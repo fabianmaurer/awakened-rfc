@@ -15,8 +15,9 @@ CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
 class Slavery:
 
 	def __init__(self):
-		self.pending = (-1, -1)
+		self.pending = {}
 		self.capturePending = {}
+		self.nextDecisionID = 0
 
 	def _info(self, name):
 		return gc.getInfoTypeForString(name)
@@ -99,8 +100,13 @@ class Slavery:
 			self._resolveCaptureAftermath(iPlayer, data, bAccept)
 			return
 
-		self.capturePending[iPlayer] = data
+		iDecision = self.nextDecisionID
+		self.nextDecisionID += 1
+		# Keep pending decisions on every peer; only the owner opens the UI.
+		self.capturePending[iDecision] = (iPlayer, data)
+		if gc.getGame().getActivePlayer() != iPlayer: return
 		popup = Popup.PyPopup(CAPTURE_AFTERMATH_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
+		popup.setUserData((iPlayer, iDecision))
 		if bSlaveMarket:
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_TITLE", ()))
 			if bSlavery:
@@ -120,11 +126,15 @@ class Slavery:
 		popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
 		popup.launch(False)
 
-	def captureEventApply(self, iPlayer, popupReturn):
-		if not self.capturePending.has_key(iPlayer): return
-		data = self.capturePending[iPlayer]
-		del self.capturePending[iPlayer]
-		self._resolveCaptureAftermath(iPlayer, data, popupReturn.getButtonClicked() == 0)
+	def captureEventApply(self, iPlayer, netUserData, popupReturn):
+		iOwner, iDecision = netUserData
+		if iPlayer != iOwner or not self.capturePending.has_key(iDecision): return
+		iPendingOwner, data = self.capturePending[iDecision]
+		if iPlayer != iPendingOwner: return
+		iButton = popupReturn.getButtonClicked()
+		if iButton not in (0, 1): return
+		del self.capturePending[iDecision]
+		self._resolveCaptureAftermath(iPlayer, data, iButton == 0)
 
 	def _resolveCaptureAftermath(self, iPlayer, data, bAccept):
 		if not bAccept: return
@@ -132,7 +142,7 @@ class Slavery:
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive(): return
 		city = player.getCity(iCity)
-		if city.getOwner() != iPlayer: return
+		if city.isNone() or city.getOwner() != iPlayer: return
 		bSlavery = self._hasSlavery(player)
 
 		if bSlaveMarket:
@@ -192,9 +202,13 @@ class Slavery:
 				return # one decision per player turn
 
 	def _startRevolt(self, iPlayer, city):
-		self.pending = (iPlayer, city.getID())
 		if gc.getPlayer(iPlayer).isHuman():
+			iDecision = self.nextDecisionID
+			self.nextDecisionID += 1
+			self.pending[iDecision] = (iPlayer, city.getID())
+			if gc.getGame().getActivePlayer() != iPlayer: return
 			popup = Popup.PyPopup(SLAVE_REVOLT_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
+			popup.setUserData((iPlayer, iDecision))
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_TITLE", ()))
 			popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_TEXT", (city.getName(), self._slaveCount(city))))
 			popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_FREE", ()))
@@ -207,15 +221,21 @@ class Slavery:
 			else:
 				self._free(city)
 
-	def eventApply(self, popupReturn):
-		iPlayer, iCity = self.pending
-		self.pending = (-1, -1)
-		if iPlayer < 0: return
+	def eventApply(self, iPlayer, netUserData, popupReturn):
+		iOwner, iDecision = netUserData
+		if iPlayer != iOwner or not self.pending.has_key(iDecision): return
+		iPendingOwner, iCity = self.pending[iDecision]
+		if iPlayer != iPendingOwner: return
+		iButton = popupReturn.getButtonClicked()
+		if iButton not in (0, 1): return
+		# EVENTCONTEXT_ALL delivers this answer to every peer, including non-owners.
+		del self.pending[iDecision]
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive(): return
 		city = player.getCity(iCity)
+		if city.isNone() or city.getOwner() != iPlayer: return
 		if self._slaveCount(city) <= 0: return
-		if popupReturn.getButtonClicked() == 0:
+		if iButton == 0:
 			self._free(city)
 		else:
 			self._suppress(iPlayer, city, True)

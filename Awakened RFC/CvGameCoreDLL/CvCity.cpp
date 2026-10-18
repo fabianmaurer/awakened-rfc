@@ -6824,7 +6824,11 @@ int CvCity::getReligionHappiness(ReligionTypes eReligion) const
 		}
 		else
 		{
-			iHappiness += GET_PLAYER(getOwnerINLINE()).getNonStateReligionHappiness();
+			int iNonStateHappiness = GET_PLAYER(getOwnerINLINE()).getNonStateReligionHappiness();
+			// Tolerance cancels non-state-religion penalties, without creating a bonus.
+			if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
+				iNonStateHappiness = std::max(0, iNonStateHappiness);
+			iHappiness += iNonStateHappiness;
 		}
 	}
 
