@@ -998,6 +998,28 @@ void CvTeam::updateCommerce()
 }
 
 
+bool CvTeam::isArabianJihadWar(TeamTypes eTeam) const
+{
+    if (eTeam == NO_TEAM || eTeam == getID() || !isAtWar(eTeam)) return false;
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+        if (!kPlayer.isArabianJihadActive()) continue;
+        const TeamTypes eArabia = kPlayer.getTeam();
+        const bool bArabSide = getID() == eArabia || isVassal(eArabia) || GET_TEAM(eArabia).isVassal(getID());
+        const bool bOtherArabSide = eTeam == eArabia || GET_TEAM(eTeam).isVassal(eArabia) || GET_TEAM(eArabia).isVassal(eTeam);
+        if (!bArabSide && !bOtherArabSide) continue;
+        for (int j = 0; j < MAX_TEAMS; ++j)
+        {
+            const TeamTypes eEnemy = (TeamTypes)j;
+            if (!kPlayer.isArabianJihadEnemy(eEnemy)) continue;
+            if ((bArabSide && (eTeam == eEnemy || GET_TEAM(eTeam).isVassal(eEnemy) || GET_TEAM(eEnemy).isVassal(eTeam))) ||
+                (bOtherArabSide && (getID() == eEnemy || isVassal(eEnemy) || GET_TEAM(eEnemy).isVassal(getID())))) return true;
+        }
+    }
+    return false;
+}
+
 bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 {
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE))
@@ -1010,7 +1032,7 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 		return false;
 	}
 
-	if (isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
+	if (isArabianJihadWar(eTeam) || isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
 	{
 		return false;
 	}
@@ -1538,6 +1560,8 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 {
+	if (isArabianJihadWar(eTeam)) return;
+
 	CvWString szBuffer;
 	int iI;
 
@@ -3943,6 +3967,12 @@ bool CvTeam::isVassal(TeamTypes eIndex) const
 
 void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 {
+    if (bNewValue)
+    {
+        if (isArabianJihadWar(eIndex)) return;
+        for (int i = 0; i < MAX_TEAMS; ++i)
+            if (bCapitulated && isArabianJihadWar((TeamTypes)i) && !GET_TEAM(eIndex).isAtWar((TeamTypes)i)) return;
+    }
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(!bNewValue || !GET_TEAM(eIndex).isAVassal(), "can't become a vassal of a vassal")

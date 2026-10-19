@@ -15746,6 +15746,13 @@ void CvReligionInfo::setChar(int i)
 	m_iChar = i; 
 }
 
+// Dormant glyphs occupy unused slots after the religion/corporation icons.
+int CvReligionInfo::getDormantHolyCityChar() const
+{
+	const int iFirst = GC.getReligionInfo((ReligionTypes)0).getChar();
+	return iFirst + 2 * (GC.getNumReligionInfos() + GC.getNumCorporationInfos()) + (getChar() - iFirst) / 2;
+}
+
 int CvReligionInfo::getHolyCityChar() const		
 {
 	return m_iHolyCityChar; 

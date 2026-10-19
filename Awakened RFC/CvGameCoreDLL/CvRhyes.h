@@ -37,12 +37,14 @@
 #define AZTEC					(24)
 #define TURKEY					(25)
 #define AMERICA					(26)
-#define NUM_MAJOR_PLAYERS		(27)
-#define INDEPENDENT				(27)
-#define INDEPENDENT2			(28)
-#define NATIVE					(29)
-#define CELTIA					(30)
-#define BARBARIAN				(31)
+#define CALIPHATE_SLOT_1 (27)
+#define CALIPHATE_SLOT_2 (28)
+#define NUM_MAJOR_PLAYERS		(29)
+#define INDEPENDENT				(29)
+#define INDEPENDENT2			(30)
+#define NATIVE					(31)
+#define CELTIA					(32)
+#define BARBARIAN				(33)
 
 
 #define MEDITATION				(1)
@@ -165,6 +167,8 @@
 #define LEANINGTOWER			(159)
 #define OLYMPICPARK				(160)
 
+// Embassy assets cover the original roster; later buildings are not embassies.
+#define NUM_EMBASSY_BUILDINGS (27)
 #define NUM_BUILDINGS_PLAGUE	(162)
 
 #define NUM_BUILDINGTYPES_PLAGUE	(128)
@@ -174,24 +178,24 @@
 
 
 extern int startingTurn[];
-extern char loadingTime[34][4];
-extern char loadingTime600AD[34][4];
-extern char startingYear[34][6];
-extern bool startingEra[34];
-extern char startingYear600AD[34][6];
-extern bool startingEra600AD[34];
+extern char loadingTime[42][4];
+extern char loadingTime600AD[42][4];
+extern char startingYear[42][6];
+extern bool startingEra[42];
+extern char startingYear600AD[42][6];
+extern bool startingEra600AD[42];
 //extern int militaryBonus[2][18];
-extern char uniquePower[34][2][16];
-extern char uniqueGoals[34][3][18];
-extern char rating[34][6][15];
+extern char uniquePower[42][2][16];
+extern char uniqueGoals[42][3][18];
+extern char rating[42][6][15];
 
-extern int turnPlayed[32];
-extern int civSpreadFactor[32][7];
-extern int borders[27][27];
+extern int turnPlayed[34];
+extern int civSpreadFactor[34][7];
+extern int borders[29][29];
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots);
-extern wchar civDynamicNames[27][22][19]; //(dynamic civ names - not jdog's)
-extern int civDynamicNamesFlag[27];
-extern int civDynamicNamesEraThreshold[27];
+extern wchar civDynamicNames[29][22][19]; //(dynamic civ names - not jdog's)
+extern int civDynamicNamesFlag[29];
+extern int civDynamicNamesEraThreshold[29];
 extern int settlersMaps[][68][124];
 
 

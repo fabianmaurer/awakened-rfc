@@ -140,6 +140,7 @@ public:
 
 	void saveObserverCheckpoint(std::string path);
 	void setObserverAutoPlay(bool enabled);
+	void setObserverRevealMap(bool enabled);
 	bool isObserverAutoPlay() const;
 	int getAIAutoPlay() const;
 	void setAIAutoPlay(int iNewValue);

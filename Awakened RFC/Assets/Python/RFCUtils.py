@@ -499,7 +499,7 @@ class RFCUtils:
 
 
         #Congresses, RiseAndFall
-        def flipCity(self, tCityPlot, bFlipType, bKillUnits, iNewOwner, iOldOwners):
+        def flipCity(self, tCityPlot, bFlipType, bKillUnits, iNewOwner, iOldOwners, bArabianBirth=False):
                 """Changes owner of city specified by tCityPlot.
                 bFlipType specifies if it's conquered or traded.
                 If bKillUnits != 0 all the units in the city will be killed.
@@ -525,6 +525,8 @@ class RFCUtils:
                                                 if (city.getPopulation() == 1):
                                                         city.setPopulation(2)
                                                 pNewOwner.acquireCity(city, True, False)
+                                        elif bArabianBirth:
+                                                pNewOwner.acquireArabianBirthCity(city)
                                         else: #trade
                                                 pNewOwner.acquireCity(city, False, True)
                                                 

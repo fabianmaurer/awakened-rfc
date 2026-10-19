@@ -2150,6 +2150,16 @@ bool CyCity::isHasReligion(int /*ReligionTypes*/ iIndex)
 	return m_pCity ? m_pCity->isHasReligion((ReligionTypes) iIndex) : false;
 }
 
+bool CyCity::isReligionBanned(int iReligion)
+{
+    return m_pCity && iReligion >= 0 && iReligion < GC.getNumReligionInfos() && m_pCity->isReligionBanned((ReligionTypes)iReligion);
+}
+
+bool CyCity::removeReligionByInquisition(int iReligion)
+{
+    return m_pCity && iReligion >= 0 && iReligion < GC.getNumReligionInfos() && m_pCity->removeReligionByInquisition((ReligionTypes)iReligion);
+}
+
 void CyCity::setHasReligion(int /*ReligionTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows)
 {
 	if (m_pCity)

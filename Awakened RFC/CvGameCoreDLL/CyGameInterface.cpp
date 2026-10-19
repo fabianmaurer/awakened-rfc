@@ -132,6 +132,7 @@ void CyGamePythonInterface()
 		.def("getAIAutoPlay", &CyGame::getAIAutoPlay)
 		.def("setAIAutoPlay", &CyGame::setAIAutoPlay)
 		.def("setObserverAutoPlay", &CyGame::setObserverAutoPlay)
+		.def("setObserverRevealMap", &CyGame::setObserverRevealMap)
 		.def("saveObserverCheckpoint", &CyGame::saveObserverCheckpoint)
 		.def("isObserverAutoPlay", &CyGame::isObserverAutoPlay)
 

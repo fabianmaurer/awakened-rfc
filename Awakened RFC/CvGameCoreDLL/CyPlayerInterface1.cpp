@@ -21,12 +21,20 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 	python::scope().attr("__doc__") = "Civilization IV Player Class"; 
 	x
 		.def("isNone", &CyPlayer::isNone, "checks for a null player")
+        .def("getCaliphatePartitionDecision", &CyPlayer::getCaliphatePartitionDecision, "int () - pending caliphate partition, or -1")
+        .def("isCaliphatePartitionInProgress", &CyPlayer::isCaliphatePartitionInProgress, "bool () - canonical partition city transfers in progress")
+        .def("getCaliphateRealmMask", &CyPlayer::getCaliphateRealmMask, "int () - eligible successor realms")
+        .def("resolveCaliphatePartition", &CyPlayer::resolveCaliphatePartition, "void (int decision, int realm) - synchronized successor choice")
+        .def("getIslamFoundingDecision", &CyPlayer::getIslamFoundingDecision, "int () - pending Islam founding decision, or -1")
+        .def("hasArabianJihadTriggered", &CyPlayer::hasArabianJihadTriggered, "bool () - full conquest event has started, including expired events")
+        .def("resolveIslamFounding", &CyPlayer::resolveIslamFounding, "void (int decision, bool join) - synchronized founding choice")
 		.def("startingPlotRange", &CyPlayer::startingPlotRange, "int ()")
 		.def("startingPlotWithinRange", &CyPlayer::startingPlotWithinRange, "bool (CyPlot *pPlot, int /*PlayerTypes*/ ePlayer, int iRange, int iPass)")
 
 		.def("findStartingPlot", &CyPlayer::findStartingPlot, python::return_value_policy<python::manage_new_object>(), "findStartingPlot(bool bRandomize) - Finds a starting plot for player")
 
 		.def("initCity", &CyPlayer::initCity, python::return_value_policy<python::manage_new_object>(), "initCity( plotX, plotY ) - spawns a city at x,y")
+		.def("acquireArabianBirthCity", &CyPlayer::acquireArabianBirthCity, "void (CyCity*) - birth flip with active Arabian event effects")
 		.def("acquireCity", &CyPlayer::acquireCity, "void (CyCity* pCity, bool bConquest, bool bTrade)")
 		.def("killCities", &CyPlayer::killCities, "void ()")
 

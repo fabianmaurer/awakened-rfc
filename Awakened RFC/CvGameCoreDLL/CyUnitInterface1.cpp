@@ -136,6 +136,7 @@ void CyUnitPythonInterface1(python::class_<CyUnit>& x)
 		.def("isHuman", &CyUnit::isHuman, "bool ()")
 		.def("visibilityRange", &CyUnit::visibilityRange, "int ()")
 		.def("baseMoves", &CyUnit::baseMoves, "int ()")
+		.def("getObserverArmyState", &CyUnit::getObserverArmyState, "dict () - read-only Arabian observer diagnostics")
 		.def("movesLeft", &CyUnit::movesLeft, "int ()")
 
 		.def("maxMoves", &CyUnit::maxMoves, "int ()")

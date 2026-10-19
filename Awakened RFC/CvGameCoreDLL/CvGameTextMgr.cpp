@@ -6903,7 +6903,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 		//Rhye - start (embassy)
-		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS) {
+		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_EMBASSY_BUILDINGS) {
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_EMBASSY_ABILITY"));
 		}
@@ -9442,6 +9442,17 @@ void CvGameTextMgr::setReligionHelpCity(CvWStringBuffer &szBuffer, ReligionTypes
 			}
 		}
 	}
+
+    if (pCity->isHolyCity(eReligion) && !pCity->isHasReligion(eReligion))
+    {
+        szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_HOLY_CITY_DORMANT"));
+        if (pCity->isReligionBanned(eReligion))
+        {
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_RELIGION_BANNED"));
+        }
+        return;
+    }
 
 	if (!bForceReligion)
 	{
@@ -12562,6 +12573,8 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 	// religion icons
 	for (int iI = 0; iI < GC.getNumReligionInfos(); ++iI)
 	{
+        if (pCity->isHolyCity((ReligionTypes)iI) && !pCity->isHasReligion((ReligionTypes)iI))
+            szBuffer.append(CvWString::format(L"%c", GC.getReligionInfo((ReligionTypes)iI).getDormantHolyCityChar()));
 		if (pCity->isHasReligion((ReligionTypes)iI))
 		{
 			if (pCity->isHolyCity((ReligionTypes)iI))
@@ -14532,6 +14545,8 @@ void CvGameTextMgr::getFontSymbols(std::vector< std::vector<wchar> >& aacSymbols
 		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getCorporationInfo((CorporationTypes) iI).getChar());
 		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getCorporationInfo((CorporationTypes) iI).getHeadquarterChar());
 	}
+	for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getReligionInfo((ReligionTypes)iI).getDormantHolyCityChar());
 
 	aacSymbols.push_back(std::vector<wchar>());
 	aiMaxNumRows.push_back(3);

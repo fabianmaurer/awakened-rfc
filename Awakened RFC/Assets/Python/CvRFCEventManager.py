@@ -7,6 +7,8 @@ import CvRFCEventHandler
 import RiseAndFall
 import Congresses
 import Slavery
+import Islam
+import Caliphate
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -63,7 +65,9 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             7623 : ('AskNoCityPopupEvent', self.congEventApply7623, self.congEventBegin7623),
 
             7624 : ('SlaveRevoltPopupEvent', self.slaveEventApply7624, self.slaveEventBegin7624),
-            7625 : ('CaptureAftermathPopupEvent', self.slaveEventApply7625, self.slaveEventBegin7625)
+            7625 : ('CaptureAftermathPopupEvent', self.slaveEventApply7625, self.slaveEventBegin7625),
+            7626 : ('IslamFoundingPopupEvent', Islam.applyChoice, Islam.beginChoice),
+            7627 : ('CaliphatePartitionPopupEvent', Caliphate.applyChoice, Caliphate.beginChoice)
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
@@ -74,6 +78,12 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         self.rnf = RiseAndFall.RiseAndFall()
         self.cong = Congresses.Congresses()
         self.slave = Slavery.slavery
+        self.addEventHandler("BeginPlayerTurn", Islam.onBeginPlayerTurn)
+        self.addEventHandler("OnLoad", Islam.onLoadGame)
+        self.addEventHandler("GameStart", Islam.onLoadGame)
+        self.addEventHandler("BeginPlayerTurn", Caliphate.onBeginPlayerTurn)
+        self.addEventHandler("OnLoad", Caliphate.onLoadGame)
+        self.addEventHandler("GameStart", Caliphate.onLoadGame)
         self.observer.install_after(self)
         
 

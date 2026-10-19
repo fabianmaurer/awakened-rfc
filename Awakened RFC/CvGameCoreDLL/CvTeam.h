@@ -36,6 +36,7 @@ public:
 	void updatePowerHealth();
 	void updateCommerce();
 
+	bool isArabianJihadWar(TeamTypes eTeam) const;
 	bool canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal = false) const;																			// Exposed to Python
 	DllExport bool canDeclareWar(TeamTypes eTeam) const;																// Exposed to Python
 	DllExport void declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan);										// Exposed to Python

@@ -3203,7 +3203,7 @@ bool CvPlot::isRevealedBarbarian() const
 
 bool CvPlot::isVisible(TeamTypes eTeam, bool bDebug) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return true;
 	}
@@ -4957,7 +4957,7 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 				}
 			}
 
-			if (GC.getGameINLINE().isDebugMode())
+			if (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam()))
 			{
 				updateMinimapColor();
 
@@ -5614,7 +5614,7 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 			verifyUnitValidPlot();
 		}
 
-		if (GC.getGameINLINE().isDebugMode())
+		if (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam()))
 		{
 			setLayoutDirty(true);
 		}
@@ -5686,7 +5686,7 @@ void CvPlot::setRouteType(RouteTypes eNewValue, bool bUpdatePlotGroups)
 			}
 		}
 
-		if (GC.getGameINLINE().isDebugMode())
+		if (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam()))
 		{
 			updateRouteSymbol(true, true);
 		}
@@ -6169,7 +6169,7 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 	PlayerTypes ePlayer;
 	int iYield;
 
-	if (bDisplay && GC.getGameINLINE().isDebugMode())
+	if (bDisplay && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam())))
 	{
 		return getYield(eYield);
 	}
@@ -7078,7 +7078,7 @@ void CvPlot::changeBlockadedCount(TeamTypes eTeam, int iChange)
 
 PlayerTypes CvPlot::getRevealedOwner(TeamTypes eTeam, bool bDebug) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return getOwnerINLINE();
 	}
@@ -7371,7 +7371,7 @@ bool CvPlot::isRevealed(TeamTypes eTeam, bool bDebug) const
 	FAssertMsg(eTeam >= 0, "eTeam is expected to be non-negative (invalid Index)");
 	FAssertMsg(eTeam < MAX_TEAMS, "eTeam is expected to be within maximum bounds (invalid Index)");
 
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return true;
 	}
@@ -7544,7 +7544,7 @@ bool CvPlot::isAdjacentNonrevealed(TeamTypes eTeam) const
 
 ImprovementTypes CvPlot::getRevealedImprovementType(TeamTypes eTeam, bool bDebug) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return getImprovementType();
 	}
@@ -7593,7 +7593,7 @@ void CvPlot::setRevealedImprovementType(TeamTypes eTeam, ImprovementTypes eNewVa
 
 RouteTypes CvPlot::getRevealedRouteType(TeamTypes eTeam, bool bDebug) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return getRouteType();
 	}
@@ -8072,7 +8072,7 @@ CvUnit* CvPlot::getDebugCenterUnit() const
 
 	if (pCenterUnit == NULL)
 	{
-		if (GC.getGameINLINE().isDebugMode())
+		if (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam()))
 		{
 			CLLNode<IDInfo>* pUnitNode = headUnitNode();
 			if(pUnitNode == NULL)
@@ -9441,7 +9441,7 @@ void CvPlot::getVisibleBonusState(BonusTypes& eType, bool& bImproved, bool& bWor
 		return;
 	}
 
-	if (GC.getGameINLINE().isDebugMode())
+	if (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(GC.getGameINLINE().getActiveTeam()))
 	{
 		eType = getBonusType();
 	}

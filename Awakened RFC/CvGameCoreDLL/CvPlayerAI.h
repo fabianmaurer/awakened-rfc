@@ -33,6 +33,7 @@ public:
 	static void freeStatics();
 	DllExport static bool areStaticsInitialized();
 
+	bool AI_isArabianJihad() const;
 	bool AI_isRomanCampaign() const;
 	bool AI_isRomanCampaignExclusive() const;
 	bool AI_isRomanCampaignPreparing() const;

@@ -6,11 +6,17 @@
 from CvPythonExtensions import *
 gc = CyGlobalContext()
 
-l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0
+]
+l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0
+]
+l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
+lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+-1, -1
+]
 
 # initialise player variables to player IDs from WBS
 iEgypt = 0
@@ -41,16 +47,18 @@ iMongolia = 23
 iAztecs = 24
 iTurkey = 25
 iAmerica = 26
-iNumPlayers = 27
-iNumMajorPlayers = 27
-iNumActivePlayers = 27
-iIndependent = 27
-iIndependent2 = 28
-iNative = 29
-iCeltia = 30
-iNumTotalPlayers = 31
-iBarbarian = 31
-iNumTotalPlayersB = 32
+iCaliphateSlot1 = 27
+iCaliphateSlot2 = 28
+iNumPlayers = 29
+iNumMajorPlayers = 29
+iNumActivePlayers = 29
+iIndependent = 29
+iIndependent2 = 30
+iNative = 31
+iCeltia = 32
+iNumTotalPlayers = 33
+iBarbarian = 33
+iNumTotalPlayersB = 34
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
@@ -125,6 +133,8 @@ lNeighbours = [
 [iSpain, iInca, iAmerica], #Aztec
 [iBabylonia, iGreece, iPersia, iRussia, iMongolia], #Turkey
 [iJapan, iSpain, iFrance, iEngland, iRussia, iInca, iAztecs] #America
+,
+[], []
 ]
 
 #for stability hit on spawn
@@ -156,6 +166,8 @@ lOlderNeighbours = [
 [iMaya], #Aztec
 [iBabylonia, iGreece, iPersia], #Turkey
 [iSpain, iFrance, iEngland, iNetherlands, iPortugal, iAztecs, iMaya] #America
+,
+[], []
 ]
 
 # civ birth dates
@@ -188,7 +200,7 @@ tBirth = (
 241, #1195AD
 249, #1280AD (1071AD)
 346, #1775AD #332 for 1733AD
-0,
+-10000, -10000, 0,
 0,
 0,
 0,
@@ -222,7 +234,9 @@ tYear = (
 ("1190 ", "TXT_KEY_AD"),
 ("1200 ", "TXT_KEY_AD"),
 ("1280 ", "TXT_KEY_AD"),
-("1775 ", "TXT_KEY_AD"))
+("1775 ", "TXT_KEY_AD"),
+1020, 1020
+)
 
 tGoals = (
 ("TXT_KEY_UHV_EGY1", "TXT_KEY_UHV_EGY2", "TXT_KEY_UHV_EGY3"),
@@ -252,6 +266,8 @@ tGoals = (
 ("TXT_KEY_UHV_AZT1", "TXT_KEY_UHV_AZT2", "TXT_KEY_UHV_AZT3"),
 ("TXT_KEY_UHV_TUR1", "TXT_KEY_UHV_TUR2", "TXT_KEY_UHV_TUR3"),
 ("TXT_KEY_UHV_AME1", "TXT_KEY_UHV_AME2", "TXT_KEY_UHV_AME3")
+,
+("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"), ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3")
 )
 
 
@@ -363,6 +379,8 @@ tCapitals = (
 (18, 37), #tTenochtitlan
 (70, 43), #tSogut ((72, 43), #tKonya  #71?)
 (27, 46) #tWashington
+,
+(75, 33), (75, 33)
 ) 
 
 #for minor civs
@@ -394,7 +412,14 @@ tReserveCapitals = (
 (),
 (),
 (), 
+
+(), ()
 )
+
+# Extra Arabian birth-flip tiles: eastern Egypt and Sinai. These do not change
+# the stability core; existing exception tiles are excluded to avoid duplicates.
+tArabianEgyptFlipTiles = tuple((x, y) for x in range(69, 73) for y in range(31, 38)
+                              if (x, y) not in ((71, 36), (72, 37)))
 
 #core areas (for RiseAndFall and Victory)
 
@@ -413,7 +438,7 @@ tCoreAreasTL = (
 (57, 57), #Vikings
 (73, 30), #Arabia
 (100, 32), #Khmer
-(49, 40), #Spain
+(49, 42), #Spain: southern Iberia (including Granada) stays outside the birth flip
 (54, 47), #France
 (50, 53), #England
 (59, 48), #Germany
@@ -426,6 +451,8 @@ tCoreAreasTL = (
 (15, 36), #Aztecs
 (69, 43), #Turkey
 (26, 42) #America
+,
+(73, 30), (73, 30)
 ) 
 
 tCoreAreasBR = (
@@ -456,6 +483,8 @@ tCoreAreasBR = (
 (20, 41), #Aztecs
 (79, 49), #Turkey
 (31, 48) #America
+,
+(81, 39), (81, 39)
 ) 
 
 
@@ -472,7 +501,7 @@ tExceptions = (  #for RiseAndFall
 (), #Ethiopia
 (), #Maya
 ((59, 55), (60, 55), (62, 55), (59, 56), (62, 56), (63, 56)), #Vikings
-((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)),  #Arabia
+((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles,  #Arabia
 (), #Khmer
 (), #Spain
 ((51, 50), (52, 49), (52, 50), (53, 47), (53, 48), (53, 49), (53, 50), (53, 51), (55, 46), (56, 46), (57, 46), (56, 45), (57, 45), (58, 48), (58, 49), (58, 50)), #France
@@ -486,8 +515,34 @@ tExceptions = (  #for RiseAndFall
 ((90, 47), (91, 47), (92, 47), (93, 47), (94, 47), (95, 47), (96, 47), (97, 47), (98, 47)), #Mongolia
 (), #Aztecs
 ((68, 48), (68, 49), (73, 40), (73, 41), (73, 42), (71, 42), (70, 42), (74, 42), (75, 42), (80, 47), (80, 48), (80, 49)), #Turkey
-((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43))) #America
+((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43)),
+((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles, ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles
+) #America
 
+
+
+def isArabianBirthRestricted(iCiv):
+        if iCiv != iArabia:
+                return False
+        for iPlayer in range(iNumMajorPlayers):
+                if iPlayer != iArabia and gc.getPlayer(iPlayer).hasArabianJihadTriggered():
+                        return True
+        return False
+
+
+def getBirthFlipArea(iCiv, tTL=None, tBR=None):
+        if tTL is None: tTL = tCoreAreasTL[iCiv]
+        if tBR is None: tBR = tCoreAreasBR[iCiv]
+        if isArabianBirthRestricted(iCiv):
+                # Arabian Peninsula only: exclude Egypt, Sinai, Levant and Iraq.
+                return (max(73, tTL[0]), max(30, tTL[1])), (min(82, tBR[0]), min(37, tBR[1]))
+        return tTL, tBR
+
+
+def getBirthFlipExceptions(iCiv):
+        if isArabianBirthRestricted(iCiv):
+                return tuple(t for t in tExceptions[iCiv] if 73 <= t[0] <= 82 and 30 <= t[1] <= 37)
+        return tExceptions[iCiv]
 
 
 def getBirthFlipMask(argsList):
@@ -497,10 +552,9 @@ def getBirthFlipMask(argsList):
         for iCiv in range(iNumMajorPlayers):
                 if tBirth[iCiv] <= 0 or iGameTurn > tBirth[iCiv] + 5:
                         continue
-                tTL = tCoreAreasTL[iCiv]
-                tBR = tCoreAreasBR[iCiv]
+                tTL, tBR = getBirthFlipArea(iCiv)
                 if ((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
-                    (iX, iY) in tExceptions[iCiv]):
+                    (iX, iY) in getBirthFlipExceptions(iCiv)):
                         iMask |= 1 << iCiv
         return iMask
 
@@ -535,6 +589,8 @@ tNormalAreasTL = (
 (15, 35), #Aztecs
 (68, 42), #Turkey
 (11, 43) #America
+,
+(73, 30), (73, 30)
 ) 
 
 tNormalAreasBR = (
@@ -565,6 +621,8 @@ tNormalAreasBR = (
 (20, 40), #Aztecs
 (78, 49), #Turkey
 (31, 49) #America
+,
+(82, 38), (82, 38)
 ) 
 
 
@@ -595,7 +653,9 @@ tNormalAreasSubtract = (  #for resurrection and stability
 ((92, 52), (92, 53), (92, 54), (93, 54), (94, 54), (100, 48), (101, 48), (102, 48), (103, 48), (104, 48)), #Mongolia
 ((20, 35)), #Aztecs #bts only
 (), #Turkey
-()) #America
+(),
+((81, 38), (82, 38), (82, 37)), ((81, 38), (82, 38), (82, 37))
+) #America
 
 
 
@@ -629,6 +689,8 @@ tBroaderAreasTL = (
 (14, 32), #Aztecs
 (68, 42), #Turkey
 (10, 42) #America
+,
+(64, 30), (64, 30)
 )
 
 tBroaderAreasBR = (
@@ -658,7 +720,9 @@ tBroaderAreasBR = (
 (110, 62), #Mongolia
 (24, 43), #Aztecs
 (86, 49), #Turkey
-(37, 56)) #America
+(37, 56),
+(85, 44), (85, 44)
+) #America
 
 
 
@@ -691,7 +755,7 @@ tHire = (
 30, #Aztec
 50, #Turkey
 50, #America
-100,
+50, 50, 100,
 100,
 100,
 100,
@@ -728,6 +792,8 @@ lEnemyCivsOnSpawn = [
 [iMaya], #Aztec
 [iEgypt,iBabylonia,iGreece,iGreece,iCeltia,iCeltia], #Turkey
 [iIndependent,iIndependent2] #America
+,
+[], []
 ]
 
 
@@ -760,7 +826,7 @@ tAggressionLevel = (
 1, #Aztec
 2, #Turkey
 2, #America
-0) #Barbs
+2, 2, 0) #Barbs
 
 
 #war during rise of new civs
@@ -792,7 +858,7 @@ tAIStopBirthThreshold = (
     50, #Aztec
     70, #Turkey
     50, #America
-    100,
+    80, 80, 100,
     100,
     100,
     100,
@@ -830,7 +896,7 @@ tResurrectionProb = (
 100, #America
 #    100, #Holland
 #    100, #Portugal
-100) #Barbs 
+0, 0, 100) #Barbs 
 
 
 #Congresses.
@@ -862,7 +928,7 @@ tPatienceThreshold = (
 30, #Aztec
 35, #Turkey
 30, #America
-100) #Barbs
+30, 30, 100) #Barbs
 
 
 #RnF Colonists
@@ -893,7 +959,9 @@ tMaxColonists = (
 0, #Mongolia
 0, #Aztec
 0, #Turkey
-0) #America
+0,
+0, 0
+) #America
 
 
 # initialise religion variables to religion indices from XML
@@ -1557,7 +1625,9 @@ tLeaders = (
 (iGenghis_Khan, iKublai_Khan),
 (iMontezuma,),
 (iMehmed, iSuleiman),
-(iFranklin_Roosevelt, iWashington, iLincoln))
+(iFranklin_Roosevelt, iWashington, iLincoln),
+(iSaladin,), (iSaladin,)
+)
 
 tEarlyLeaders = (
 (iRamesses), 
@@ -1586,7 +1656,9 @@ tEarlyLeaders = (
 (iGenghis_Khan),
 (iMontezuma),
 (iMehmed),
-(iWashington))
+(iWashington),
+iSaladin, iSaladin
+)
 
 #RFCMP
 #if (gc.getPlayer(0).isPlayable()): #late start condition
@@ -1623,7 +1695,9 @@ tRomanLateLeaders,
 (iKublai_Khan, i1500AD, 10, 3),
 (iMontezuma,),
 (iSuleiman, i1500AD, 10, 3),
-(iLincoln, i1800AD, 15, 5, iFranklin_Roosevelt, i1900AD, 15, 5))
+(iLincoln, i1800AD, 15, 5, iFranklin_Roosevelt, i1900AD, 15, 5),
+(iSaladin,), (iSaladin,)
+)
 
 
 tIsActiveOnLateStart = (
@@ -1654,7 +1728,13 @@ tIsActiveOnLateStart = (
 1,
 1,
 1,
-1,
+False, False, 1,
 1,
 1,
 1)
+
+# Mutable per-player regional tables also follow successor identities after a split.
+for _table in ("tCapitals", "tReserveCapitals", "tCoreAreasTL", "tCoreAreasBR",
+               "tNormalAreasTL", "tNormalAreasBR", "tNormalAreasSubtract",
+               "tBroaderAreasTL", "tBroaderAreasBR", "tExceptions", "tGoals"):
+        globals()[_table] = list(globals()[_table])

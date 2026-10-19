@@ -652,6 +652,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iAIAutoPlay = 0;
 	m_bObserverAutoPlay = false;
 	m_bObserverNoAutosaves = false;
+	m_bObserverRevealMap = false;
 	m_iCircumnavigated = -1; //Rhye
 
 	m_uiInitialTime = 0;
@@ -4365,6 +4366,7 @@ void CvGame::setObserverAutoPlay(bool enabled)
 {
 	// Preserve every civilization and its units. Never enable in multiplayer.
 	if (isGameMultiPlayer() || m_bObserverAutoPlay == enabled) return;
+	if (!enabled) setObserverRevealMap(false);
 	m_bObserverAutoPlay = enabled;
 	// Keep suppression through the final turn after observer AI is disabled.
 	// Transient session state: reset for new games, never serialized in saves.
@@ -4382,6 +4384,22 @@ void CvGame::setObserverAutoPlay(bool enabled)
 	gDLL->getInterfaceIFace()->setDirty(UnitInfo_DIRTY_BIT, true);
 	gDLL->getInterfaceIFace()->setDirty(CityInfo_DIRTY_BIT, true);
 	gDLL->getInterfaceIFace()->setDirty(GlobeLayer_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
+}
+
+void CvGame::setObserverRevealMap(bool enabled)
+{
+	if (isGameMultiPlayer() || (enabled && !isObserverAutoPlay()) || m_bObserverRevealMap == enabled) return;
+	m_bObserverRevealMap = enabled;
+	if (enabled) gDLL->getEngineIFace()->PushFogOfWar(FOGOFWARMODE_OFF);
+	else gDLL->getEngineIFace()->PopFogOfWar();
+	gDLL->getEngineIFace()->setFogOfWarFromStack();
+	GC.getMapINLINE().updateVisibility();
+	GC.getMapINLINE().updateSymbols();
+	GC.getMapINLINE().updateMinimapColor();
+	gDLL->getInterfaceIFace()->setDirty(GlobeLayer_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
 }
@@ -5959,7 +5977,68 @@ CvCity* CvGame::getHolyCity(ReligionTypes eIndex)
 }
 
 
-void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce)
+// Founding Christianity establishes a small coastal foothold. This is confined
+// to the RFC Mediterranean basin, excluding the Black Sea, Red Sea and Atlantic.
+static void seedChristianMediterraneanCities(CvCity* pHolyCity)
+{
+    const ReligionTypes eReligion = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+    const CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
+    std::vector<bool> abMediterranean(GC.getMapINLINE().numPlotsINLINE(), false);
+    std::vector<CvPlot*> apWater;
+    CvPlot* pSeed = GC.getMapINLINE().plotINLINE(60, 39);
+    if (pSeed == NULL || !pSeed->isWater()) return;
+    apWater.push_back(pSeed);
+    abMediterranean[GC.getMapINLINE().plotNum(60, 39)] = true;
+    for (int i = 0; i < (int)apWater.size(); ++i)
+    {
+        CvPlot* pPlot = apWater[i];
+        for (int j = 0; j < NUM_CARDINALDIRECTION_TYPES; ++j)
+        {
+            CvPlot* pNext = plotCardinalDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), (CardinalDirectionTypes)j);
+            if (pNext == NULL || !pNext->isWater()) continue;
+            const int x = pNext->getX_INLINE(), y = pNext->getY_INLINE();
+            if (x < 52 || x > 74 || y < 37 || y > 45 || (x >= 69 && y >= 44)) continue;
+            const int iIndex = GC.getMapINLINE().plotNum(x, y);
+            if (!abMediterranean[iIndex])
+            {
+                abMediterranean[iIndex] = true;
+                apWater.push_back(pNext);
+            }
+        }
+    }
+    const int iCount = std::max(0, GC.getDefineINT("RFCMP_CHRISTIANITY_INITIAL_COASTAL_CITIES"));
+    for (int i = 0; i < iCount; ++i)
+    {
+        CvCity* pBestCity = NULL;
+        int iBestDistance = MAX_INT;
+        // Map-index ordering breaks equal-distance ties identically on all peers.
+        for (int j = 0; j < GC.getMapINLINE().numPlotsINLINE(); ++j)
+        {
+            CvCity* pCity = GC.getMapINLINE().plotByIndexINLINE(j)->getPlotCity();
+            if (pCity == NULL || pCity == pHolyCity || pCity->isHasReligion(eReligion) || pCity->isReligionBanned(eReligion)) continue;
+            CvPlayer& kOwner = GET_PLAYER(pCity->getOwnerINLINE());
+            if (!kOwner.isAlive() || kOwner.isCivic(eAtheism) || (kOwner.isNoNonStateReligionSpread() && kOwner.getStateReligion() != eReligion)) continue;
+            bool bMediterraneanCoast = false;
+            for (int k = 0; k < NUM_DIRECTION_TYPES; ++k)
+            {
+                CvPlot* pAdjacent = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)k);
+                if (pAdjacent != NULL && abMediterranean[GC.getMapINLINE().plotNum(pAdjacent->getX_INLINE(), pAdjacent->getY_INLINE())])
+                    bMediterraneanCoast = true;
+            }
+            if (!bMediterraneanCoast) continue;
+            const int iDistance = plotDistance(pHolyCity->getX_INLINE(), pHolyCity->getY_INLINE(), pCity->getX_INLINE(), pCity->getY_INLINE());
+            if (iDistance < iBestDistance)
+            {
+                iBestDistance = iDistance;
+                pBestCity = pCity;
+            }
+        }
+        if (pBestCity == NULL) break;
+        pBestCity->spreadReligion(eReligion, true);
+    }
+}
+
+void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce, bool bSpreadReligion)
 {
 	CvWString szBuffer;
 	CvCity* pOldValue;
@@ -5969,6 +6048,7 @@ void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumReligionInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
 
+	const bool bNewReligion = !isReligionFounded(eIndex);
 	pOldValue = getHolyCity(eIndex);
 
 	if (pOldValue != pNewValue)
@@ -6001,12 +6081,20 @@ void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce
 		{
 			pHolyCity = getHolyCity(eIndex);
 
-			pHolyCity->setHasReligion(eIndex, true, bAnnounce, true, true);
+			// Persist the owner-scoped choice before adding Islam, suppressing the
+			// ordinary conversion popup until this founding decision is resolved.
+            const bool bIslamFounding = bSpreadReligion && bNewReligion &&
+                eIndex == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+            if (bIslamFounding) GET_PLAYER(pHolyCity->getOwnerINLINE()).prepareIslamFounding();
+			if (bSpreadReligion) pHolyCity->setHasReligion(eIndex, true, bAnnounce, true, true);
 			pHolyCity->changeReligionInfluence(eIndex, GC.getDefineINT("HOLY_CITY_INFLUENCE"));
 
 			pHolyCity->updateReligionCommerce();
 
 			pHolyCity->setInfoDirty(true);
+            if (bSpreadReligion && bNewReligion && eIndex == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+                seedChristianMediterraneanCities(pHolyCity);
+            if (bIslamFounding) GET_PLAYER(pHolyCity->getOwnerINLINE()).processIslamFounding();
 
 			if (bAnnounce)
 			{
@@ -6267,6 +6355,9 @@ void CvGame::doTurn()
 
 	// END OF TURN
 	CvEventReporter::getInstance().beginGameTurn( getGameTurn() );
+    // Check even dead players so expiry and announcements are never stranded.
+    for (int iJihadPlayer = 0; iJihadPlayer < MAX_PLAYERS; ++iJihadPlayer)
+        GET_PLAYER((PlayerTypes)iJihadPlayer).doArabianJihad();
 
 	doUpdateCacheOnTurn();
 

@@ -523,7 +523,7 @@ class CvMainInterface:
 			xCoord = xResolution - 242 + (i * 34)
 			yCoord = 42
 			szName = "ReligionHolyCityDDS" + str(i)
-			screen.addDDSGFC( szName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_HOLYCITY_OVERLAY").getPath(), xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
+			screen.setImageButton( szName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_HOLYCITY_OVERLAY").getPath(), xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
 			screen.hide( szName )
 
 		for i in range( gc.getNumCorporationInfos() ):
@@ -629,7 +629,7 @@ class CvMainInterface:
 
 		# Centered spectator progress bar; refresh only when its values change.
 		observer = GameObserver.CURRENT
-		if observer and observer.enabled and observer.started and observer.autoplay:
+		if observer and observer.enabled and observer.started and observer.autoplay and not observer.reveal_map:
 			screen.setRenderInterfaceOnly(True)
 			progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
 			if getattr(self, 'observerProgressDisplay', None) != progress:
@@ -740,7 +740,9 @@ class CvMainInterface:
 
 	# Will redraw the interface
 	def redraw( self ):
-		if gc.getGame().isObserverAutoPlay():
+		import GameObserver
+		observer = GameObserver.CURRENT
+		if gc.getGame().isObserverAutoPlay() and not (observer and observer.reveal_map):
 			return
 
 		screen = CyGInterfaceScreen( "MainInterface", CvScreenEnums.MAIN_INTERFACE )
@@ -2421,7 +2423,11 @@ class CvMainInterface:
 					
 						bEnable = False
 						szButton = gc.getReligionInfo(i).getButton()
+						if pHeadSelectedCity.isHolyCityByType(i):
+							szBuffer += u"%c " % gc.getReligionInfo(i).getDormantHolyCityChar()
+							screen.show("ReligionHolyCityDDS" + str(i))
 
+					screen.enable("ReligionHolyCityDDS" + str(i), bEnable)
 					szName = "ReligionDDS" + str(i)
 					screen.setImageButton( szName, szButton, xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
 					screen.enable( szName, bEnable )

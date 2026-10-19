@@ -888,7 +888,7 @@ void CvCityAI::AI_chooseProduction()
 	int iWaterPercent = AI_calculateWaterWorldPercent();
 	
 	int iBuildUnitProb = AI_buildUnitProb();
-	if (kPlayer.AI_isRomanCampaign() && !kPlayer.AI_isFinancialTrouble())
+	if ((kPlayer.AI_isRomanCampaign() || kPlayer.AI_isArabianJihad()) && !kPlayer.AI_isFinancialTrouble())
 		iBuildUnitProb = std::min(90, iBuildUnitProb + 25);
     
     int iExistingWorkers = kPlayer.AI_totalAreaUnitAIs(pArea, UNITAI_WORKER);
@@ -4872,7 +4872,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 //	}
 	
 	//Rhye - start (embassy)
-	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS)
+	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_EMBASSY_BUILDINGS)
 	{
 		int iOtherCiv = (int)eBuilding - NUM_BUILDINGS_PLAGUE;
 		iValue += 5; //from 3 to 7 (max=35) //change to 4 in vanilla and warlords as there is no espionage points there
@@ -5300,9 +5300,9 @@ bool CvCityAI::AI_isAirDefended(int iExtra)
 int CvCityAI::AI_neededDefenders()
 {
 	PROFILE_FUNC();
-	// Early AI Rome accepts exposed provinces to keep its conquest army moving.
+	// Campaign AI accepts exposed quiet cities to keep its conquest army moving.
 	// Occupation and nearby threats retain ordinary reinforcement demands.
-	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() && !isOccupation() && !AI_isDanger())
+	if ((GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad()) && !isOccupation() && !AI_isDanger())
 		return AI_minDefenders();
 	int iDefenders;
 	bool bOffenseWar = ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING));
@@ -5384,7 +5384,7 @@ int CvCityAI::AI_neededDefenders()
 
 int CvCityAI::AI_minDefenders()
 {
-	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign()) return isCapital() ? 2 : 1;
+	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad()) return isCapital() ? 2 : 1;
 	int iDefenders = 1;
 	int iEra = GET_PLAYER(getOwnerINLINE()).getCurrentEra();
 	if (iEra > 0)

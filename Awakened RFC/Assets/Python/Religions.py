@@ -126,51 +126,51 @@ class Religions:
                         if (gc.getPlayer(con.iEthiopia).isHuman()):
                                 iEthiopianModifier = 15 #for the UHV
                         if (iGameTurn == i33AD + 8*self.getSeed()/100 + iEthiopianModifier): #Christianity up to 190AD (15 = 330AD)
-                                pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])                
-                                if (not pJerusalem.getPlotCity().isNone()):  
-                                        if (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian):
-                                                bChristianResult = self.foundReligion(tJerusalem, iChristianity)
-                                                tCity = tJerusalem
-                                        else:
-                                                tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent2)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent2)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityReligionCiv(iJudaism, iCeltia)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iCeltia)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)                                                
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityReligionCiv(iJudaism, iBarbarian)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iBarbarian)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent2)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iCeltia)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == False):
-                                                tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iBarbarian)
-                                                bChristianResult = self.foundReligion(tCity, iChristianity)
-                                        if (bChristianResult == True):
-                                                self.spreadReligion(tCity, 3, iMissionary_Christian)   
- 
-          
+                                pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])
+                                # A razed Jerusalem must still allow the alternative-city search.
+                                if (not pJerusalem.getPlotCity().isNone() and (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian)):
+                                        bChristianResult = self.foundReligion(tJerusalem, iChristianity)
+                                        tCity = tJerusalem
+                                else:
+                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent2)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent2)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iCeltia)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iCeltia)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iBarbarian)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iBarbarian)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent2)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iCeltia)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == False):
+                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iBarbarian)
+                                        bChristianResult = self.foundReligion(tCity, iChristianity)
+                                if (bChristianResult == True):
+                                        self.spreadReligion(tCity, 3, iMissionary_Christian)
+
+
                 if (iGameTurn == i622AD+1):
                         if (gc.getGame().isReligionFounded(iIslam)):
                                 for pyCity in PyPlayer(iArabia).getCityList():

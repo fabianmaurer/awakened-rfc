@@ -63,6 +63,14 @@ void CvUnitAI::AI_reset(UnitAITypes eUnitAI)
 {
 	AI_uninit();
 
+	m_szObserverCityTarget = "not_attempted";
+	m_iObserverCityTargetX = -1;
+	m_iObserverCityTargetY = -1;
+	m_szObserverDecision.clear();
+	m_iObserverDecisionTurn = -1;
+	m_iObserverDecisionCount = 0;
+	m_iObserverRequiredStack = -1;
+	m_iObserverReadyToAttack = -1;
 	m_iBirthmark = 0;
 
 	m_eUnitAIType = eUnitAI;
@@ -70,10 +78,35 @@ void CvUnitAI::AI_reset(UnitAITypes eUnitAI)
 	m_iAutomatedAbortTurn = -1;
 }
 
+void CvUnitAI::AI_recordObserverCityTarget(const char* reason, const CvCity* city)
+{
+	if (!GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance || getOwnerINLINE() != ARABIA) return;
+	m_szObserverCityTarget = reason;
+	m_iObserverCityTargetX = city ? city->getX_INLINE() : -1;
+	m_iObserverCityTargetY = city ? city->getY_INLINE() : -1;
+}
+
+void CvUnitAI::AI_recordObserverDecision(const char* reason)
+{
+	if (!GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance || getOwnerINLINE() != ARABIA) return;
+	const int turn = GC.getGameINLINE().getGameTurn();
+	if (m_iObserverDecisionTurn != turn) m_iObserverDecisionCount = 0;
+	m_iObserverDecisionTurn = turn;
+	++m_iObserverDecisionCount;
+	m_szObserverDecision = reason;
+}
+
 // AI_update returns true when we should abort the loop and wait until next slice
 bool CvUnitAI::AI_update()
 {
 	OBSERVER_PERFORMANCE("CvUnitAI::AI_update");
+	if (GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance && getOwnerINLINE() == ARABIA)
+	{
+		AI_recordObserverDecision("AI_update:entered");
+		AI_recordObserverCityTarget("not_attempted");
+		m_iObserverRequiredStack = -1;
+		m_iObserverReadyToAttack = -1;
+	}
 	PROFILE_FUNC();
 
 	CvUnit* pTransportUnit;
@@ -1804,11 +1837,13 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCity(true))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(true)");
 			return;
 		}
 
 		if (AI_heal(30, 1))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_heal(30, 1)");
 			return;
 		}
 		
@@ -1817,11 +1852,13 @@ void CvUnitAI::AI_attackMove()
 		//{
 			if (AI_group(UNITAI_SETTLE, 1, -1, -1, false, false, false, 3, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_SETTLE, 1, -1, -1, false, false, false, 3, true)");
 				return;
 			}
 
 			if (AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true)");
 				return;
 			}
 		//}
@@ -1829,11 +1866,13 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCityAirlift())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCityAirlift()");
 			return;
 		}
 
 		if (AI_guardCity(false, true, 1))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, true, 1)");
 			return;
 		}
 
@@ -1842,6 +1881,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 1, true, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 1, true, true)");
 				return;
 			}
 		}
@@ -1855,6 +1895,7 @@ void CvUnitAI::AI_attackMove()
                 {
                     if (AI_offensiveAirlift())
                     {
+                        AI_recordObserverDecision("AI_attackMove:AI_offensiveAirlift()");
                         return;
                     }
                 }
@@ -1865,11 +1906,13 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_cityAttack(1, 55))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(1, 55)");
 				return;
 			}
 
 			if (AI_anyAttack(1, 65))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 65)");
 				return;
 			}
 
@@ -1877,6 +1920,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_anyAttack(1, 45, 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 45, 3)");
 					return;
 				}
 			}
@@ -1886,6 +1930,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_guardCity(false, false))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, false)");
 				return;
 			}
 		}
@@ -1897,17 +1942,20 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY, 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY, 3)");
 					return;
 				}
 
 				if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, 2, -1, -1, MOVE_SAFE_TERRITORY, 4))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, 2, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 					return;
 				}
 
 				if (GET_PLAYER(getOwnerINLINE()).AI_unitTargetMissionAIs(this, MISSIONAI_GROUP) > 0)
 				{
 					getGroup()->pushMission(MISSION_SKIP);
+					AI_recordObserverDecision("AI_attackMove:MISSION_SKIP");
 					return;
 				}
 			}
@@ -1918,37 +1966,44 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_pillageRange(1, 20))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_pillageRange(1, 20)");
 				return;
 			}
 
 			if (AI_cityAttack(1, 35))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(1, 35)");
 				return;
 			}
 
 			if (AI_anyAttack(1, 45))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 45)");
 				return;
 			}
 
 			if (AI_pillageRange(3, 20))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_pillageRange(3, 20)");
 				return;
 			}
 			
 			if (AI_choke(1))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_choke(1)");
 				return;
 			}
 		}
 
 		if (AI_goody(3))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_goody(3)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 70))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 70)");
 			return;
 		}
 	}
@@ -1960,11 +2015,13 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_cityAttack(4, 30))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(4, 30)");
 				return;
 			}
 
 			if (AI_anyAttack(2, 40))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(2, 40)");
 				return;
 			}
 		}
@@ -1973,6 +2030,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_heal())
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_heal()");
 				return;
 			}
 		}
@@ -1981,11 +2039,13 @@ void CvUnitAI::AI_attackMove()
 		{
 				if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, true, /*iMaxPath*/ 5))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, true, /*iMaxPath*/ 5)");
 					return;
 				}
 
 			if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, false, /*iMaxPath*/ 4))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, false, /*iMaxPath*/ 4)");
 				return;
 			}
 			
@@ -1993,6 +2053,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 4, /*iMaxOwnUnitAI*/ 1, -1, true, false, false, /*iMaxPath*/ 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 4, /*iMaxOwnUnitAI*/ 1, -1, true, false, false, /*iMaxPath*/ 3)");
 					return;
 				}
 			}
@@ -2004,6 +2065,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetBarbCity())
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetBarbCity()");
 					return;
 				}
 			}
@@ -2012,6 +2074,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(NATIVE))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(NATIVE)");
 					return;
 				}
 			}
@@ -2019,6 +2082,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(CELTIA))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(CELTIA)");
 					return;
 				}
 			}
@@ -2026,6 +2090,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(INDEPENDENT))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(INDEPENDENT)");
 					return;
 				}
 			}
@@ -2033,6 +2098,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(INDEPENDENT2))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(INDEPENDENT2)");
 					return;
 				}
 			}
@@ -2044,6 +2110,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetCity())
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetCity()");
 					return;
 				}
 			}
@@ -2051,6 +2118,7 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCity(false, true, 3))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, true, 3)");
 			return;
 		}
 
@@ -2064,11 +2132,13 @@ void CvUnitAI::AI_attackMove()
 					{
 						if (AI_exploreRange(3))
 						{
+							AI_recordObserverDecision("AI_attackMove:AI_exploreRange(3)");
 							return;
 						}
 
 						if (AI_explore())
 						{
+							AI_recordObserverDecision("AI_attackMove:AI_explore()");
 							return;
 						}
 					}
@@ -2078,41 +2148,49 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_protect(35))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_protect(35)");
 			return;
 		}
 
 		if (AI_offensiveAirlift())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_offensiveAirlift()");
 			return;
 		}
 
 		if (AI_defend())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_defend()");
 			return;
 		}
 
 		if (AI_travelToUpgradeCity())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_travelToUpgradeCity()");
 			return;
 		}
 
 		if (AI_patrol())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_patrol()");
 			return;
 		}
 
 		if (AI_retreatToCity())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_retreatToCity()");
 			return;
 		}
 
 		if (AI_safety())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_safety()");
 			return;
 		}
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_attackMove:MISSION_SKIP");
 	return;
 }
 
@@ -2247,6 +2325,7 @@ void CvUnitAI::AI_attackCityMove()
 {
 	OBSERVER_PERFORMANCE("unitAI.AI_attackCityMove");
 	PROFILE_FUNC();
+	const bool bArabianJihad = GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad();
 
 	bool bIgnoreFaster = false;
 	if (GET_PLAYER(getOwnerINLINE()).AI_isDoStrategy(AI_STRATEGY_FASTMOVERS))
@@ -2263,6 +2342,7 @@ void CvUnitAI::AI_attackCityMove()
         plot()->getOwnerINLINE() == getOwnerINLINE() && plot()->isCity())
     {
         getGroup()->pushMission(MISSION_HEAL);
+		AI_recordObserverDecision("AI_attackCityMove:MISSION_HEAL");
 		return;
     }
 
@@ -2279,6 +2359,7 @@ void CvUnitAI::AI_attackCityMove()
 
 			if (pOldGroup != getGroup())
 			{
+				AI_recordObserverDecision("AI_attackCityMove:other_return");
 				return;
 			}
 		}
@@ -2289,6 +2370,7 @@ void CvUnitAI::AI_attackCityMove()
 		    {
 		        if (AI_offensiveAirlift())
 		        {
+		            AI_recordObserverDecision("AI_attackCityMove:AI_offensiveAirlift()");
 		            return;
 		        }
 		    }
@@ -2297,11 +2379,13 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (AI_guardCity(false, false, 1))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_guardCity(false, false, 1)");
 		return;
 	}
 
 	if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 0, true, true, bIgnoreFaster))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 0, true, true, bIgnoreFaster)");
 		return;
 	}
 
@@ -2311,6 +2395,7 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_bombardCity())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_bombardCity()");
 			return;
 		}
 
@@ -2319,6 +2404,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_stackAttackCity(1, 250, true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_stackAttackCity(1, 250, true)");
 				return;
 			}
 		}
@@ -2326,8 +2412,10 @@ void CvUnitAI::AI_attackCityMove()
 		//stack attack
 		if (getGroup()->getNumUnits() > 1)
 		{
-			if (AI_stackAttackCity(1, 110, true))
+			// During the event, Arabia accepts a modest strength disadvantage.
+			if (AI_stackAttackCity(1, bArabianJihad ? 90 : 110, true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_stackAttackCity(1, bArabianJihad ? 90 : 110, true)");
 				return;
 			}
 		}
@@ -2335,11 +2423,13 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 2, true, true, bIgnoreFaster))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 2, true, true, bIgnoreFaster)");
 		return;
 	}
 
 	if (AI_heal(30, 1))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_heal(30, 1)");
 		return;
 	}
 
@@ -2386,15 +2476,27 @@ void CvUnitAI::AI_attackCityMove()
 	}
 	//Rhye - end
 	
-	if (AI_romanCampaignEmbark()) return;
+	if (AI_romanCampaignEmbark())
+	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_romanCampaignEmbark()");
+		return;
+	}
 
-	bool bReadyToAttack = ((getGroup()->getNumUnits() >= (bHuntBarbs ? 3 : AI_stackOfDoomExtra())));
+	// Smaller event armies advance instead of waiting for a large stack.
+	const int iRequiredStack = bHuntBarbs ? 3 : AI_stackOfDoomExtra();
+	bool bReadyToAttack = getGroup()->getNumUnits() >= (bArabianJihad ? std::min(4, iRequiredStack) : iRequiredStack);
+	if (GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance && getOwnerINLINE() == ARABIA)
+	{
+		m_iObserverRequiredStack = bArabianJihad ? std::min(4, iRequiredStack) : iRequiredStack;
+		m_iObserverReadyToAttack = bReadyToAttack ? 1 : 0;
+	}
 	if (plot()->getOwnerINLINE() == getOwnerINLINE())
 	{
 		if (!bLandWar)
 		{
 			if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 				return;
 			}
 		}
@@ -2406,6 +2508,7 @@ void CvUnitAI::AI_attackCityMove()
 			{
 				if (AI_moveToStagingCity())
 				{
+					AI_recordObserverDecision("AI_attackCityMove:AI_moveToStagingCity()");
 					return;
 				}
 			}
@@ -2416,12 +2519,14 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_anyAttack(1, 45, 3))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_anyAttack(1, 45, 3)");
 			return;
 		}
 	}
 
 	if (AI_anyAttack(1, 60))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_anyAttack(1, 60)");
 		return;
 	}
 
@@ -2431,17 +2536,20 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_pillageRange(3, 11))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_pillageRange(3, 11)");
 			return;
 		}
 
 		if (AI_pillageRange(1))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_pillageRange(1)");
 			return;
 		}
 	}
 
 	if (AI_heal(50, 3))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_heal(50, 3)");
 		return;
 	}
 
@@ -2449,6 +2557,7 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_heal())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_heal()");
 			return;
 		}
 
@@ -2456,6 +2565,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_retreatToCity())
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_retreatToCity()");
 				return;
 			}
 		}
@@ -2465,6 +2575,7 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -2477,23 +2588,28 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (bHuntBarbs && AI_targetBarbCity())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		//Rhye - start
 		else if (bHuntNatives && AI_targetMinorCity(NATIVE))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntCelts && AI_targetMinorCity(CELTIA))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntIndependents && AI_targetMinorCity(INDEPENDENT))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntIndependents2 && AI_targetMinorCity(INDEPENDENT2))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		//Rhye - end
@@ -2501,6 +2617,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_targetCity())
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_targetCity()");
 				return;
 			}
 			CvTeamAI& kTeam = GET_TEAM(getTeam());
@@ -2512,6 +2629,7 @@ void CvUnitAI::AI_attackCityMove()
 				{
 					if (AI_solveBlockageProblem(pTargetCity->plot(), (kTeam.getAtWarCount(true) == 0)))
 					{
+						AI_recordObserverDecision("AI_attackCityMove:AI_solveBlockageProblem(pTargetCity->plot(), (kTeam.getAtWarCount(true) == 0))");
 						return;
 					}
 				}
@@ -2524,6 +2642,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_group(UNITAI_ATTACK_CITY, -1, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_group(UNITAI_ATTACK_CITY, -1, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ true)");
 				return;
 			}
 		}
@@ -2531,6 +2650,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_group(UNITAI_ATTACK_CITY, AI_stackOfDoomExtra() * 2, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ false))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_group(UNITAI_ATTACK_CITY, AI_stackOfDoomExtra() * 2, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ false)");
 				return;
 			}
 		}
@@ -2538,25 +2658,30 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (AI_moveToStagingCity())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_moveToStagingCity()");
 		return;
 	}
 
 	if (AI_offensiveAirlift())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_offensiveAirlift()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_attackCityMove:MISSION_SKIP");
 	return;
 }
 
@@ -2841,6 +2966,7 @@ void CvUnitAI::AI_reserveMove()
 
 	if (bDanger && AI_leaveAttack(2, 55, 130))
 	{
+		AI_recordObserverDecision("AI_reserveMove:other_return");
 		return;
 	}
 	
@@ -2848,10 +2974,12 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 			return;
 		}
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_WORKER, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_WORKER, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 			return;
 		}
 	}
@@ -2860,12 +2988,14 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true)");
 			return;
 		}
 	}
 	
 	if (AI_guardCity(true))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(true)");
 		return;
 	}
 	
@@ -2873,22 +3003,26 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardFort(false))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardFort(false)");
 			return;
 		}
 	}
 		
 	if (AI_guardCityAirlift())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCityAirlift()");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 	
 	if (AI_guardCitySite())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCitySite()");
 		return;
 	}
 	
@@ -2896,17 +3030,20 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardFort(true))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardFort(true)");
 			return;
 		}
 		
 		if (AI_guardBonus(15))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardBonus(15)");
 			return;
 		}
 	}
 
 	if (AI_heal(30, 1))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_heal(30, 1)");
 		return;
 	}
 
@@ -2914,11 +3051,13 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_cityAttack(1, 55))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_cityAttack(1, 55)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 60))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_anyAttack(1, 60)");
 			return;
 		}
 	}
@@ -2927,6 +3066,7 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -2935,41 +3075,49 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_cityAttack(3, 45))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_cityAttack(3, 45)");
 			return;
 		}
 
 		if (AI_anyAttack(3, 50))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_anyAttack(3, 50)");
 			return;
 		}
 	}
 
 	if (AI_protect(45))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_protect(45)");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 3))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, true, 3)");
 		return;
 	}
 
 	if (AI_defend())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_defend()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_reserveMove:MISSION_SKIP");
 	return;
 }
 
@@ -2981,6 +3129,7 @@ void CvUnitAI::AI_counterMove()
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 	
@@ -2990,6 +3139,7 @@ void CvUnitAI::AI_counterMove()
 		{
 			if (AI_shadow(UNITAI_ATTACK_CITY))
 			{
+				AI_recordObserverDecision("AI_counterMove:AI_shadow(UNITAI_ATTACK_CITY)");
 				return;
 			}
 		}
@@ -3004,6 +3154,7 @@ void CvUnitAI::AI_counterMove()
             {
                 if (AI_offensiveAirlift())
                 {
+                    AI_recordObserverDecision("AI_counterMove:AI_offensiveAirlift()");
                     return;
                 }
             }
@@ -3016,11 +3167,13 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 			return;
 		}
 
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 			return;
 		}
 	}
@@ -3029,6 +3182,7 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -3037,17 +3191,20 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_cityAttack(1, 30))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_cityAttack(1, 30)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 40))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_anyAttack(1, 40)");
 			return;
 		}
 	}
 
 			if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6))
 			{
+				AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6)");
 				return;
 			}
 	
@@ -3055,40 +3212,48 @@ void CvUnitAI::AI_counterMove()
 
 	if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 2, -1, -1, bFastMovers, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 5))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 2, -1, -1, bFastMovers, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 5)");
 		return;
 	}
 	
 	if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6)");
 		return;
 	}
 	
 	if (AI_guardCity(false, true, 3))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, true, 3)");
 		return;
 	}
 
 	if (AI_heal())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_heal()");
 		return;
 	}
 
 	if (AI_offensiveAirlift())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_offensiveAirlift()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_counterMove:MISSION_SKIP");
 	return;
 }
 
@@ -3104,17 +3269,20 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_leaveAttack(1, 70, 175))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_leaveAttack(1, 70, 175)");
 			return;
 		}
 
 		if (AI_chokeDefend())
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_chokeDefend()");
 			return;
 		}
 	}
 
 	if (AI_guardCityBestDefender())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityBestDefender()");
 		return;
 	}
 	
@@ -3124,6 +3292,7 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY, 1))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY, 1)");
 				return;
 			}
 		}
@@ -3131,11 +3300,13 @@ void CvUnitAI::AI_cityDefenseMove()
 	
 	if (AI_guardCityMinDefender(true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityMinDefender(true)");
 		return;
 	}
 
 	if (AI_guardCity(true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(true)");
 		return;
 	}
 	
@@ -3144,11 +3315,13 @@ void CvUnitAI::AI_cityDefenseMove()
 	//{
 		if (AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 1, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 1, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true)");
 			return;
 		}
 
 		if (AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 2, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 2, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true)");
 			return;
 		}
 
@@ -3156,6 +3329,7 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 				return;
 			}
 		}
@@ -3167,6 +3341,7 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, 0, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, 0, MOVE_SAFE_TERRITORY)");
 			return;
 		}		
 	}
@@ -3175,17 +3350,20 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_guardFort())
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_guardFort()");
 			return;
 		}
 	}
 
 	if (AI_guardCityAirlift())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityAirlift()");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 
@@ -3194,18 +3372,21 @@ void CvUnitAI::AI_cityDefenseMove()
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY))
 		{
 			// will enter here if in danger
+			AI_recordObserverDecision("AI_cityDefenseMove:other_return");
 			return;
 		}
 	}
 
 	if (AI_guardCity(false, true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(false, true)");
 		return;
 	}
 	if (!isBarbarian() && ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING)))
 	{
 			if (AI_group(UNITAI_ATTACK_CITY, -1, 2, 4, /*bIgnoreFaster*/ true))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_ATTACK_CITY, -1, 2, 4, /*bIgnoreFaster*/ true)");
 				return;
 			}
 		}
@@ -3216,21 +3397,25 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			// does this ever occur? the previous settler check is less strict, this one should never be true (I think)
 			FAssertMsg(false, "unexpected settler load (non-fatal)");
+			AI_recordObserverDecision("AI_cityDefenseMove:other_return");
 			return;
 		}
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_cityDefenseMove:MISSION_SKIP");
 	return;
 }
 
@@ -10817,6 +11002,7 @@ bool CvUnitAI::AI_exploreRange(int iRange)
 bool CvUnitAI::AI_targetCity(int iFlags)
 {
 	PROFILE_FUNC();
+	AI_recordObserverCityTarget("no_reachable_city");
 
 	CvCity* pTargetCity;
 	CvCity* pLoopCity;
@@ -10893,6 +11079,7 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 
 	if (pBestCity != NULL)
 	{
+		AI_recordObserverCityTarget("no_approach_plot", pBestCity);
 		iBestValue = 0;
 		pBestPlot = NULL;
 
@@ -10948,10 +11135,12 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 
 		if (pBestPlot != NULL)
 		{
+			AI_recordObserverCityTarget("already_at_approach", pBestCity);
 			FAssert(!(pBestCity->at(pBestPlot)) || 0 != (iFlags & MOVE_THROUGH_ENEMY)); // no suicide missions...
 			if (!atPlot(pBestPlot))
 			{
 				getGroup()->pushMission(MISSION_MOVE_TO, pBestPlot->getX_INLINE(), pBestPlot->getY_INLINE(), iFlags);
+				AI_recordObserverCityTarget("move_queued", pBestCity);
 				return true;
 			}
 		}

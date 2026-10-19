@@ -156,9 +156,7 @@ class CvRFCEventHandler:
                 self.slave.onCityAcquired(owner, playerType, city, bConquest, bTrade)
                 self.cnm.renameCities(city, playerType)
                 
-                if (playerType == con.iArabia):
-                        self.up.arabianUP(city)
-                elif (playerType == con.iTurkey):
+                if (playerType == con.iTurkey):
                         self.up.turkishUP(city)
 
                 if (playerType < iNumMajorPlayers):

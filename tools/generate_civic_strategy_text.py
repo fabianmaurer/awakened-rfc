@@ -75,8 +75,8 @@ SUMMARIES = {
         '+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.',
         '+10% Produktion in St\xe4dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
     'TOLERANCE': (
-        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes.',
-        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte.'),
+        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of any religion.',
+        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte. Erlaubt die Ausbildung von Missionaren aller Religionen.'),
     'STATE_ATHEISM': (
         '+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.',
         '+10% Forschung und +10% Produktion; -1 Zufriedenheit in allen St\xe4dten. Religi\xf6se Geb\xe4ude wirken nicht und Religionen verbreiten sich nicht.'),
@@ -96,13 +96,23 @@ def main():
         source = source.replace(info, replacement, 1)
     civic_path.write_bytes(source.encode('utf-8'))
 
+    output = ASSETS / 'XML/Text/CIV4GameText_CivicStrategies.xml'
+    previous = {}
+    if output.exists():
+        for entry in ET.parse(output).getroot():
+            parts = {c.tag.split('}')[-1]: c.text for c in entry}
+            previous[parts['Tag']] = parts
     root = ET.Element('Civ4GameText', {'xmlns': 'http://www.firaxis.com'})
     for civic, (english, german) in SUMMARIES.items():
         entry = ET.SubElement(root, 'TEXT')
         ET.SubElement(entry, 'Tag').text = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
         for language in ('English', 'French', 'German', 'Italian', 'Spanish'):
             key = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
-            ET.SubElement(entry, language).text = ENTRIES.get(key, {}).get(language, german if language == 'German' else english)
+            existing = previous.get(key, {})
+            fallback = german if language == 'German' else english
+            if language not in ('English', 'German') and existing.get('English') == english:
+                fallback = existing.get(language, fallback)
+            ET.SubElement(entry, language).text = ENTRIES.get(key, {}).get(language, fallback)
     ET.indent(root, space='    ')
     output = ASSETS / 'XML/Text/CIV4GameText_CivicStrategies.xml'
     output.write_bytes(b'<?xml version="1.0" encoding="UTF-8"?>\n' +

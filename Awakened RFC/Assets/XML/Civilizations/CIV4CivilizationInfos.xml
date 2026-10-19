@@ -4529,5 +4529,230 @@
 			<CivilizationSelectionSound/>
 			<CivilizationActionSound/>
 		</CivilizationInfo>
+	<CivilizationInfo>
+			<Type>CIVILIZATION_ABBASID</Type>
+			<Description>TXT_KEY_CIV_ABBASID_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_ABBASID_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_ABBASID_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CIV_ABBASID_PEDIA</Civilopedia>
+			<!-- Rhye -->
+			<DefaultPlayerColor>PLAYERCOLOR_ABBASID</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ARABIA</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_MIDDLE_EAST</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_MIDDLE_EAST</UnitArtStyleType>
+			<bPlayable>0</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<!-- Rhye - start -->
+				<City>TXT_KEY_CITY_NAME_KUFAH</City>
+				<City>TXT_KEY_CITY_NAME_KHURASAN</City>
+				<City>TXT_KEY_CITY_NAME_ANJAR</City>
+				<City>TXT_KEY_CITY_NAME_YAMAMA</City>
+				<City>TXT_KEY_CITY_NAME_MANSURA</City>
+				<City>TXT_KEY_CITY_NAME_BUKHARA</City>
+				<City>TXT_KEY_CITY_NAME_AYDAB</City>
+				<City>TXT_KEY_CITY_NAME_BAYT_RAS</City>
+				<City>TXT_KEY_CITY_NAME_TAIF</City>
+				<City>TXT_KEY_CITY_NAME_SHIHR</City>
+				<City>Abu Dhabi</City>
+				<City>TXT_KEY_CITY_NAME_KAIROUAN</City>
+				<City>TXT_KEY_CITY_NAME_ORAN</City>
+				<!-- Rhye - end -->
+			</Cities>
+			<Buildings>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
+					<BuildingType>BUILDING_ARABIAN_MADRASSA</BuildingType>
+				</Building>
+			</Buildings>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_KNIGHT</UnitClassType>
+					<UnitType>UNIT_ARABIA_CAMELARCHER</UnitType>
+				</Unit>
+			</Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_ABBASID</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_ARABIA_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_ARABIA_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
+<CivilizationInfo>
+			<Type>CIVILIZATION_FATIMID</Type>
+			<Description>TXT_KEY_CIV_FATIMID_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_FATIMID_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_FATIMID_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CIV_FATIMID_PEDIA</Civilopedia>
+			<!-- Rhye -->
+			<DefaultPlayerColor>PLAYERCOLOR_DARK_GREEN</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ARABIA</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_MIDDLE_EAST</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_MIDDLE_EAST</UnitArtStyleType>
+			<bPlayable>0</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<!-- Rhye - start -->
+				<City>TXT_KEY_CITY_NAME_KUFAH</City>
+				<City>TXT_KEY_CITY_NAME_KHURASAN</City>
+				<City>TXT_KEY_CITY_NAME_ANJAR</City>
+				<City>TXT_KEY_CITY_NAME_YAMAMA</City>
+				<City>TXT_KEY_CITY_NAME_MANSURA</City>
+				<City>TXT_KEY_CITY_NAME_BUKHARA</City>
+				<City>TXT_KEY_CITY_NAME_AYDAB</City>
+				<City>TXT_KEY_CITY_NAME_BAYT_RAS</City>
+				<City>TXT_KEY_CITY_NAME_TAIF</City>
+				<City>TXT_KEY_CITY_NAME_SHIHR</City>
+				<City>Abu Dhabi</City>
+				<City>TXT_KEY_CITY_NAME_KAIROUAN</City>
+				<City>TXT_KEY_CITY_NAME_ORAN</City>
+				<!-- Rhye - end -->
+			</Cities>
+			<Buildings>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
+					<BuildingType>BUILDING_ARABIAN_MADRASSA</BuildingType>
+				</Building>
+			</Buildings>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_KNIGHT</UnitClassType>
+					<UnitType>UNIT_ARABIA_CAMELARCHER</UnitType>
+				</Unit>
+			</Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_FATIMID</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_ARABIA_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_ARABIA_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
+<CivilizationInfo>
+			<Type>CIVILIZATION_UMAYYAD</Type>
+			<Description>TXT_KEY_CIV_UMAYYAD_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_UMAYYAD_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_UMAYYAD_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CIV_UMAYYAD_PEDIA</Civilopedia>
+			<!-- Rhye -->
+			<DefaultPlayerColor>PLAYERCOLOR_WHITE</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ARABIA</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_MIDDLE_EAST</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_MIDDLE_EAST</UnitArtStyleType>
+			<bPlayable>0</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<!-- Rhye - start -->
+				<City>TXT_KEY_CITY_NAME_KUFAH</City>
+				<City>TXT_KEY_CITY_NAME_KHURASAN</City>
+				<City>TXT_KEY_CITY_NAME_ANJAR</City>
+				<City>TXT_KEY_CITY_NAME_YAMAMA</City>
+				<City>TXT_KEY_CITY_NAME_MANSURA</City>
+				<City>TXT_KEY_CITY_NAME_BUKHARA</City>
+				<City>TXT_KEY_CITY_NAME_AYDAB</City>
+				<City>TXT_KEY_CITY_NAME_BAYT_RAS</City>
+				<City>TXT_KEY_CITY_NAME_TAIF</City>
+				<City>TXT_KEY_CITY_NAME_SHIHR</City>
+				<City>Abu Dhabi</City>
+				<City>TXT_KEY_CITY_NAME_KAIROUAN</City>
+				<City>TXT_KEY_CITY_NAME_ORAN</City>
+				<!-- Rhye - end -->
+			</Cities>
+			<Buildings>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
+					<BuildingType>BUILDING_ARABIAN_MADRASSA</BuildingType>
+				</Building>
+			</Buildings>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_KNIGHT</UnitClassType>
+					<UnitType>UNIT_ARABIA_CAMELARCHER</UnitType>
+				</Unit>
+			</Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_UMAYYAD</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_ARABIA_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_ARABIA_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>

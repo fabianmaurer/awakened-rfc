@@ -193,11 +193,11 @@ Routenbesitzers aufgedeckt.
   beim Inlandshandel. Die Bevölkerung der jeweils empfangenden Stadt schwächt
   den Einfluss. Kultur pro Route und Richtung: `abgerundet(5 × Routenwert / Bevölkerung) / 10`:
   die Hälfte der bisherigen ungerundeten Rate, auf eine Nachkommastelle abgerundet.
-  Religionschance: `abgerundet(2,5 × Routenwert / Bevölkerung)` Prozent je
-  Religion der Partnerstadt, höchstens **12%** pro Route.
+  Religionschance: `abgerundet(5 × Routenwert bei voller Infrastruktur-Effizienz / Bevölkerung)` Prozent je
+  Religion der Partnerstadt, höchstens **12%** pro Route vor Abzügen und Boni.
   Der Anteil der Besitzerkultur in der empfangenden Stadt verursacht einen
   linearen Abzug: null bei **75%**, bis zu **12 Prozentpunkten bei 100%**.
-  Bei vollständig eigener Kultur ist die Handelsverbreitung ohne Toleranz damit unmöglich.
+  Bei vollständig eigener Kultur sinkt die Grundchance vor additiven Boni damit auf null.
   Grundlage ist die gespeicherte Stadtkultur vor dem Kulturaustausch dieser Route.
   Heilige Städte erhalten weitere **3 Prozentpunkte Abzug** für Religionen,
   für die sie nicht heilig sind; mehrere heilige Religionen stapeln diesen Abzug
@@ -214,8 +214,8 @@ Routenbesitzers aufgedeckt.
   und historische Religionsgründungen bleiben erhalten. Staatsatheismus sperrt
   weiterhin Missionare sowie das Senden und Empfangen von Religionen durch Handel.
 - Beispiel vor Kultur- und Heilige-Stadt-Abzügen: Eine Route mit sechs Wirtschaftspunkten bringt einer Stadt der
-  Größe 2 **1,5 Kultur pro Runde** und **7% Verbreitungschance** je zulässiger
-  Partnerreligion. Bei Größe 10 sind es 0,3 Kultur und 1% Religionschance.
+  Größe 2 **1,5 Kultur pro Runde** und **12% Verbreitungschance** je zulässiger
+  Partnerreligion. Bei Größe 10 sind es 0,3 Kultur und 3% Religionschance.
 - Ab **Währung** lässt sich im Außenberater unter Beziehungen eine Zivilisation
   auswählen und ein **Handelsembargo verhängen oder aufheben**. Es blockiert
   sofort die Routen zwischen beiden Zivilisationen, wird gespeichert und lässt
@@ -348,6 +348,37 @@ Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
 Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 
+### Islamisches Expansionsereignis
+
+Arabiens Übertrittsgebiet bei der Gründung umfasst auch Ostägypten und den Sinai (x=69–72, y=31–37), unter den normalen Regeln für Hauptstädte und menschliche Spieler. Das Stabilitätskerngebiet wird dadurch nicht erweitert.
+
+Arabien beginnt sowohl bei regulärer Gründung als auch im 600-n.-Chr.-Szenario mit **6 Langbogenschützen, 6 Schwertkämpfern, 8 Kamelbogenschützen und 4 Katapulten**. Schwertkämpfer und Katapulte beginnen mit der KI-Rolle für Stadtangriffe.
+
+Wird der Islam erstmals in **einer beliebigen arabischen Stadt** gegründet, schließt sich Arabien automatisch der islamischen Sache an; Mekka ist nicht erforderlich. Ein anderes Gründerland entscheidet zwischen **Anschluss** und **Unterdrückung**. Der Anschluss übernimmt ohne zusätzliche Anarchie **Islam, Monarchie, Theokratie (Legitimation) und Gottesstaat**, bekehrt alle eigenen Städte und vertreibt deren andere Religionen nach den normalen Regeln. Wirtschafts- und Militärstaatsformen bleiben bestehen. Das vollständige Ereignis gilt unabhängig von der Zivilisation für das angeschlossene Land. Es ersetzt die bisherige dauerhafte arabische Eroberungskonvertierung.
+
+KI-Gründer schließen sich ohne Staatsreligion mit **85%**, mit einer anderen Staatsreligion mit **25%** und als bereits islamisches Land mit **100%** Wahrscheinlichkeit an. Menschliche Gründer außerhalb Arabiens erhalten eine nur auf ihrem Client angezeigte Entscheidung mit synchronisierten Auswirkungen.
+
+Unterdrückung vertreibt den Islam aus den Städten des Gründerlandes und erzeugt nahe der heiligen Stadt ein Barbarenheer aus **10 Einheiten: 2 Langbogenschützen, 3 Schwertkämpfern, 3 Kamelbogenschützen und 2 Katapulten**. Das Heer kann in dieser Runde nicht ziehen. Stattdessen übernimmt Arabien die islamische Sache und bekehrt seine Städte; jede neu bekehrte Stadt gibt **nach ihrer Bevölkerung skalierte Truppenpakete (siehe unten)**. Das gilt auch für spätere Gründungsübertritte während der Mobilisierung. Hat Arabien noch keine Stadt, wartet die Mobilisierung bis zur ersten Stadt. Arabien muss die heilige Stadt des Islam **innerhalb von 20 Runden ab Mobilisierung militärisch erobern**. Erst diese Eroberung aktiviert das vollständige Ereignis für dessen normale Dauer. Bei Fristablauf bleiben Städte, Staatsformen, Religion und Truppen erhalten, das vollständige Ereignis entfällt jedoch. Während der Mobilisierung erklärt Arabien dem aktuellen nichtislamischen Besitzer der heiligen Stadt automatisch den totalen Krieg. Befristete Friedensverträge werden übergangen; dauerhafter Frieden und Vasallenbindungen bleiben erhalten. Der Besitzer wird jede Runde neu geprüft, auch bei Wechseln vor Arabiens Erscheinen. Ist ein anderes Land als Besitzer der heiligen Stadt islamisch, erhält es stattdessen das vollständige Ereignis und Arabiens Mobilisierung endet. Die KI priorisiert die heilige Stadt, solange deren Besitzer mit Arabien im Krieg liegt. Kriege gegen alle bekannten nichtislamischen Länder und Friedenssperren des vollständigen Ereignisses gelten noch nicht.
+
+Das Ereignis dauert **300 Kalenderjahre plus 10 Runden**. Beim Start wird die Kalenderdauer in eine Endrunde umgerechnet; anschließend werden die zusätzlichen Runden angehängt (normalerweise 620 bis 1020 n. Chr., 40 Runden). Währenddessen gilt:
+
+- Während des Ereignisses bevorzugt die KI des teilnehmenden Landes die Militärproduktion, strebt Garnisonen von zwei Verteidigern in der Hauptstadt und einem in anderen ruhigen Städten an, rückt mit kleineren Angriffsgruppen vor und wagt riskantere Angriffe. Die Zielwahl berücksichtigt außerdem die bevölkerungsabhängige Truppenbelohnung: Jede erwartete Einheit erhöht den Zielwert um vier Punkte und begünstigt entwickelte Städte bei erstmaliger Eroberung. Bereits belohnte Stadtstandorte erhalten keine Rekrutierungsgewichtung; normale Entfernungs- und Angriffserwägungen gelten weiterhin. Diese KI-Vorgaben enden sofort mit dem Ereignis.
+- Jede militärisch eroberte oder bei Arabiens Gründung übergetretene Stadt erhält während des Ereignisses den Islam. Alle anderen Religionen werden nach den normalen Vertreibungsregeln entfernt und verbannt; normale Religionsgebäude werden zerstört und Heilige Städte behalten ruhende einzigartige Tempel. Die normale Gottesstaat-Befriedung durch Konvertierung bleibt bei erfüllten Bedingungen wirksam.
+- Jede militärische Eroberung während des Ereignisses gibt außerdem sofort die Kontrolle über das Stadtfeld und seine acht Nachbarfelder. Deren fremde Feldkultur wird zurückgesetzt und dem Eroberer übertragen, mit **20 zusätzlichen Kulturpunkten je Feld**. Andere Stadtzentren sind ausgenommen; gespeicherte Stadtkultur bleibt unverändert. Dies gilt auch bei Rückeroberungen, aber nicht bei friedlichen Übertragungen oder Bekehrungen während der Mobilisierung nach einer Unterdrückung des Islam.
+- Jede erstmals durch militärische Eroberung vom teilnehmenden Land erworbene Stadt sowie arabische Gründungsübertritte während Arabiens Ereignis geben **ein Truppenpaket plus ein weiteres je vier Bevölkerung**: `1 + abgerundet(Bevölkerung / 4)` Pakete mit jeweils **2 Schwertkämpfern, 1 Kamelbogenschützen und 1 Katapult**, auch ohne normale Ausbildungsvoraussetzungen. Es zählt die Bevölkerung vor Eroberungsverlusten und dem Bevölkerungsbonus des Gottesstaats. Größe 1–3 gibt 4 Einheiten, 4–7 gibt 8 und 8–11 gibt 12. Dieselbe Skalierung gilt für neu bekehrte Städte während Arabiens Mobilisierung nach einer Unterdrückung des Islam; hier zählt die Bevölkerung vor der Bekehrung. Diese Einheiten haben in ihrer Ankunftsrunde keine Bewegung mehr. Rückeroberungen geben keine weiteren Truppen; die gespeicherte Geschichte verwendet Stadtstandorte und berücksichtigt Eroberungen vor dem Ereignis. Andere Schenkungen, Handelsübertragungen und friedliche Übertritte geben keine Ereignisbelohnungen.
+Hat eine andere Zivilisation das vollständige Jihad-Ereignis bereits erhalten, beschränken sich Arabiens Gründungsübertritte auf die arabische Halbinsel. Die zusätzlichen Gebiete in Ägypten, auf dem Sinai und in der Levante einschließlich Jerusalems entfallen. Das gilt auch für Kultur, Einheiten, Vorwarnungen und Kartenhinweise; ein bereits beendetes Ereignis zählt weiterhin.
+
+- Arabien erhält **einen Siedler**, wenn es Kairo während des Ereignisses militärisch erobert. Der Bonus gilt einmalig und unabhängig vom aktuellen Stadtnamen; friedliche Übertragungen und erneute Eroberungen geben keinen weiteren Siedler. Er kann in seiner Ankunftsrunde nicht ziehen.
+- Das teilnehmende Land erklärt allen bekannten nichtislamischen Ländern sofort den totalen Krieg und prüft jede Runde auf neue Kontakte. Teams mit mindestens einem lebenden islamischen Mitglied sind ausgenommen. Normale Friedensverträge werden übergangen; szenariobedingter dauerhafter Frieden und eigene Herrschafts-/Vasallenbindungen bleiben erhalten. Ereigniskriege einschließlich neu beteiligter Schutzpakt-, Herrschafts- und Vasallenparteien können bis zum Ende weder durch Frieden, Vermittlung, Kapitulation noch Skriptfrieden beendet werden.
+
+Start- und Endmeldungen nennen das teilnehmende Land und gehen gezielt an dessen Team, Ereignisgegner sowie Länder mit einer Stadt innerhalb von 16 Kartenentfernungseinheiten zur heiligen Stadt des Islam oder einer teilnehmenden Stadt. Am Ende entfallen automatische Konvertierung, Rekrutierung, Kriegserklärungen und die Ereignis-Friedenssperren. Bestehende Einheiten, Religionen/Verbote, Staatsformen und Staatsreligion bleiben erhalten; Kriege werden verhandelbar, enden aber nicht automatisch. Dauer, Truppenzahlen und Meldungsradius stehen als `RFCMP_ARABIAN_JIHAD_*`, Unterdrückungsheer und Eroberungsfrist als `RFCMP_ISLAM_*` in `GlobalDefines.xml`. Offene Gründerentscheidungen, Mobilisierungsfrist, Ereigniszeitablauf, Kriegssperren und Eroberungsgeschichte werden gespeichert und auf allen Multiplayer-Peers geführt; die Laufzeitprüfung im Multiplayer bleibt separat.
+
+Wenn **Arabiens eigener Dschihad endet**, zerfällt sein Kalifat in neue Nachfolgezivilisationen: **Abbasiden** im Irak, in Persien und Arabien; **Fatimiden** in Ägypten, der Levante und im östlichen Nordafrika; sowie **Umayyaden** im westlichen Nordafrika und auf der Iberischen Halbinsel. Städte außerhalb dieser Regionen gehören zur geografisch nächstgelegenen Reichsregion; dabei wird auch der Übergang über den linken und rechten Kartenrand berücksichtigt. Dies sind geografische Annäherungen, keine Nachbildung ihrer genauen historischen Grenzen oder Daten. Nur arabische Städte werden aufgeteilt. Ein Reich entsteht nur, wenn es mindestens eine Stadt erhält. Ist nur eine Region vertreten, wird Arabien zu diesem einzelnen Nachfolgereich.
+
+Ein menschlicher arabischer Spieler wählt, welches verfügbare Reich er weiterregiert. Die KI behält die Abbasiden, sofern deren Region vertreten ist, andernfalls das bevölkerungsreichere verbleibende Reich. Das gewählte Reich behält die Spielerverbindung und diplomatische Identität. Jedes andere Reich wird in einem reservierten neuen Platz zur unabhängigen Zivilisation, erbt bekannte Technologien, Staatsformen, Staatsreligion und bestehende Kriege gegen andere Länder und beginnt im Frieden mit den übrigen Nachfolgern. Gold und jede Einheitenklasse werden ungefähr nach regionaler Bevölkerung aufgeteilt; Transporte behalten ihre Ladung. Die Truppen werden ohne verbleibende Bewegung in eigene Städte oder Häfen verlegt. Die Teilung gewährt keine neuen Armeen oder Eroberungsbelohnungen. Jedes Reich erhält eine bestehende Hauptstadt nahe seinem historischen Zentrum. Die regionalen Stabilitätsdaten werden angepasst; die Stabilität beginnt bei +5. Nachfolger verfolgen normale Siegbedingungen statt Arabiens historischer Ziele. Die menschliche Entscheidung bleibt beim Speichern erhalten und wird auf jedem Mehrspieler-Client einmalig aufgelöst; das Laufzeitverhalten im Mehrspielermodus ist noch ungeprüft.
+
+Die kanonische Teilung verursacht weder Stabilitätsabzüge für verlorene Städte noch Stabilitätsboni für Eroberungen. Die Zähler für fremdes Land und fehlende Heimatstädte werden bis zur nächsten regulären Neuberechnung zurückgesetzt.
+
 ### Religion
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
@@ -355,10 +386,22 @@ Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
 | **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
 | **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
-| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. |
+| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. Erlaubt die Ausbildung von Missionaren aller Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
-Unter Toleranz erhöht sich die eingehende Handelsverbreitung je fehlender Religion und Route nach allen Kultur- und Heilige-Stadt-Abzügen um **5 Prozentpunkte** (maximal **17%**). Auch eine sonst auf null gesenkte Chance beträgt damit 5%; Inlandsrouten zählen ebenfalls. Staatsatheismus und andere Verbreitungsverbote bleiben wirksam.
+Unter Toleranz erhöht sich die eingehende Handelsverbreitung je fehlender Religion und Route nach allen Kultur- und Heilige-Stadt-Abzügen um **5 Prozentpunkte** (vor Rivalit?t und Infrastruktur-Effizienz). Auch eine sonst auf null gesenkte Chance beträgt vor diesen Faktoren damit 5%; Inlandsrouten zählen ebenfalls. Staatsatheismus und andere Verbreitungsverbote bleiben wirksam.
+
+Missionare können nur für die eigene Staatsreligion ausgebildet werden, außer unter **Toleranz**. Ohne Staatsreligion und ohne Toleranz können keine Missionare ausgebildet werden. Das gilt auch für laufende Bauaufträge.
+
+Bei **Gründung des Christentums** erhalten auch die **zwei nächsten geeigneten Städte an der Mittelmeerküste** sofort diese Religion. Die Gründungsstadt ist ausgeschlossen. Die Auswahl prüft angrenzendes Mittelmeerwasser ohne Schwarzes und Rotes Meer und beachtet Staatsatheismus, Stadtverbote und Verbote fremder Religionen. Gibt es weniger als zwei geeignete Städte, werden entsprechend weniger konvertiert. Es gilt die normale christlich-jüdische Ersetzungsregel.
+
+**Christentum und Islam** multiplizieren die nach Kultur- und Heilige-Stadt-Abzügen verbleibende Grundchance der Handelsverbreitung mit **1,5**. Danach erhalten sie **+10 Prozentpunkte nur in religionslosen Städten**; Christentum erhält diesen additiven Bonus auch in Städten mit ausschließlich Judentum. Der additive Bonus kann eine Nullchance anheben, der Multiplikator nicht. Toleranz addiert seinen separaten Bonus von +5 Prozentpunkten nach der Multiplikation. Enthält die empfangende Stadt die jeweils andere Religion, reduziert christlich-islamische Rivalität die resultierende Handelschance auf **25%** und die Missionarschance auf **50%** ihres normalen Werts. Danach wird die Handelschance mit der Infrastruktur-Effizienz multipliziert und abgerundet; eine gültige Route bleibt erforderlich. Diese Regeln gelten weltweit, unabhängig von Zivilisation oder Region.
+
+Erfolgreiche christliche Verbreitung durch Handel oder Missionare in eine zuvor ausschließlich jüdische Stadt entfernt mit **50%** Chance das Judentum. Die jüdische Heilige Stadt ist ausgenommen. Diese Ersetzung verbannt das Judentum nicht.
+
+**Religion vertreiben:** Ein Missionar kann in einer eigenen Stadt mit seiner Religion verbraucht werden, um alle anderen Religionen zu entfernen und ihre normalen Religionsgebäude zu zerstören. Eine Heilige Stadt behält ihren Status und einzigartigen Tempel; das heilige Symbol wird ausgegraut. Die Religion gilt als nicht vorhanden und der Tempel hat keine Wirkung, einschließlich Einnahmen, Spezialisten und Große-Persönlichkeiten-Punkten. Erneute Verbreitung stellt den vollen Status und die Tempelwirkung wieder her; zerstörte normale Gebäude müssen neu gebaut werden.
+
+Vertriebene Religionen einschließlich heiliger Religionen sind bis zum Besitzerwechsel für Handel, Missionare, Ereignisse und Skripte gesperrt. Beim Wechsel der Staatsreligion werden sofort alle Verbote für die neue Religion in allen eigenen Städten aufgehoben, ohne die Religion automatisch zu verbreiten. Verbote und ruhender Heilige-Stadt-Status bleiben beim Speichern und Laden erhalten; ein Besitzerwechsel allein reaktiviert die Religion nicht. Ohne entfernbare Religion ist die Aktion nicht verfügbar.
 
 Befriedung durch Gottesstaat: Fehlte die eigene Staatsreligion bei der Eroberung, beendet ihre Verbreitung einmalig die Eroberungsunruhe, gibt +1 Bevölkerung und stellt nach Möglichkeit ein dabei zerstörtes Gebäude wieder her. Gottesstaat muss bei Eroberung und Konvertierung aktiv und die Staatsreligion dieselbe sein. Jede Rückeroberung prüft den Anspruch neu; er bleibt beim Speichern erhalten.
 
@@ -489,13 +532,12 @@ Verzögerung neu und dient daher als Planungshilfe.
 
 ### Unruhen vor dem Gebietswechsel
 
-**Drei Runden vor dem frühestmöglichen ersten Gebietswechsel** erhalten Städte
-im Kerngebiet und auf Ausnahmefeldern der neuen Zivilisation drei Runden Unruhen
-über den Besatzungszähler. Eine bereits länger andauernde Besatzung bleibt
-erhalten. Bei einer zweistufigen Gründung werden die Unruhen bis zum um zwei
-Runden verzögerten Gebietswechsel verlängert, auch wenn die neue Zivilisation
-bereits ihre Starteinheiten besitzt. Die Vorwarnung hängt nicht von einer
-wechselnden Prognose des Gründungswegs ab.
+**Eine Runde vor dem Erscheinen der Zivilisation** erhalten Städte in ihrem
+Kerngebiet und auf Ausnahmefeldern drei Runden Unruhen über den Besatzungszähler.
+Bei der üblichen zweistufigen Gründung deckt dies die drei Runden direkt vor
+dem Städteübertritt ab, einschließlich der zwei Runden nach Erscheinen der
+Starteinheiten. Eine bereits länger andauernde Besatzung bleibt erhalten; bei
+einem späteren Übertritt werden die Unruhen bis zur vorgesehenen Runde verlängert.
 
 Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen
 dynamischen Namen der Zivilisation, etwa **„Die [Völker] erheben sich!“**.

@@ -147,7 +147,19 @@ is not saved, and does not change normal-game autosave settings or `--observe-on
 It does not call RFC's existing `setAIAutoPlay`, which deletes that player's
 possessions. While explicitly enabled, all civilizations use their AI paths
 and the game can continue without a surviving human civilization.
-AI simulations use an **interface-only black progress screen** with a centered
+Pass `--reveal-map` to `testing\run-test.cmd` to watch the AI on a fully
+revealed map with the normal HUD, minimap and scoreboard. For example:
+`testing\run-test.cmd --mode balance --turns 220 --seed 1 --reveal-map`.
+The camera looks directly down with twice the default view span. This uses
+a wider field of view at the default physical zoom to retain normal map detail
+instead of triggering distance-based detail reduction or globe view. Camera
+settings are temporary and restored when observation ends.
+This changes spectator display only; AI visibility remains unchanged. It
+requires AI control (omit `--observe-only`) and adds rendering overhead, so
+leave it off for comparable performance measurements. The setting is recorded
+in run metadata and is not saved in checkpoints.
+
+By default, AI simulations use an **interface-only black progress screen** with a centered
 green progress bar on a white track. Map rendering, normal HUD/minimap/scoreboard
 refreshes, and spectator reveal overrides are disabled. No zoom setup runs.
 Movement display, combat presentation, enemy glow and mission-animation delays
@@ -199,8 +211,9 @@ saves, so reopening a checkpoint normally does not enable AI control.
 
 For 3000 BC and 800 BC observer runs, America is selected as the observer civilization. It
 does not spawn during the first 150 turns (its ordinary spawn is turn 346).
-If the setup screen retains Egypt or China, the observer transfers the active and human
-slots to America before RFC initialization, leaving Egypt controlled by AI.
+If the setup screen retains Egypt or China, or Persia in the 800 BC start, the observer
+transfers the active and human slots to America before RFC initialization, leaving the
+previously selected civilization controlled by AI.
 For 3000 BC the observer restores Egypt's playable flag because
 RFC uses it to identify the early scenario. Other civilizations retain their
 ordinary participation and spawn rules. The 600 AD observer remains China.
@@ -398,11 +411,41 @@ only at snapshot boundaries, so sparse sampling can miss short-lived changes.
 | Civilization population, cities, land, gold/rate, research/rate, era, tech count, power, army composition, civics, religion and stability | Yes | Yes |
 | Basic city population, food, imports/exports, yields, happiness, health and slaves | Yes | Yes |
 | War, city founding/conquest/razing, technologies, religion, victory and observed civic/alive/religion changes | Yes | Yes |
-| Exact known-tech lists, unit positions/damage/XP/promotions | No | Yes |
+| Arabian combat units: positions, damage, movement, roles, groups, missions, targets and cached AI decisions (every turn) | Yes | Yes |
+| Exact known-tech lists, all-unit positions/damage/XP/promotions | No | Yes |
 | Buildings, specialists, production target/progress, occupation and city/tile culture | No | Yes |
 | Routes with infrastructure efficiency, profit and net food; slave revolt chance | No | Yes |
 | Initial terrain/features/resources/improvements/routes/owners and subsequent changes | No | Yes |
 | Global food conservation and city export-cap checks | No | Yes |
+
+`arabian_army_state` events capture every combat unit each turn after Arabia
+has a city, even with `--record-interval` greater than one. They include group
+heads/sizes, activity, mission queues (`type, data1, data2, flags`), mission
+plot/unit targets, area AI/target city (`x, y, owner`), and head-group war plans
+(`team, at_war, plan`). Metadata maps AI/activity/war-plan IDs to names; mission
+IDs use the existing `infos.mission` dictionary. Missing targets use `-1`.
+
+The DLL caches the last successful branch in attack, city-assault, reserve,
+counter and city-defense movement; no AI predicates are repeated for logging.
+`decision_fresh` distinguishes this turn's decisions from old ones; followers
+and units continuing queued missions may have no fresh decision.
+`AI_update:entered` and `other_return` indicate an uncovered branch, not a
+specific explanation. `city_target_result` distinguishes a selector that was
+not attempted, no reachable city, no approach tile, already at the chosen
+approach tile, and a queued advance; `selected_city_target` gives its coordinates.
+These fields describe `AI_targetCity`, not barbarian/minor-city selectors.
+`decision_markers` counts diagnostic markers this turn
+(including entry), not moves. Stack readiness uses `-1` when not evaluated;
+ignore cached readiness when the decision is stale. `unchanged_position_turns`
+counts consecutive equal end-turn positions, which can also include legitimate
+guarding or moving away and back. These diagnostics are transient, excluded
+from saves, and disabled in performance mode and ordinary games.
+
+The 2026-10-19 40-game batch exposed an inherited ten-unit iteration cap in
+`CvSelectionGroup::canMoveThrough`: groups above ten members rejected paths
+through intermediate tiles and repeatedly chose safety or staging. The cap is
+removed; every member still has to pass the normal movement restrictions.
+The correction needs confirmation in a subsequent user-operated recording.
 
 Diagnostics are detailed observations, **not a replacement save format**:
 they do not serialize every engine field, mission queue, plot culture or

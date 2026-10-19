@@ -22,6 +22,13 @@ public:
 	CyPlayer(CvPlayer* pPlayer);		// Call from C++
 	CvPlayer* getPlayer() { return m_pPlayer;	}	// Call from C++
 	bool isNone() { return (m_pPlayer==NULL); }
+    int getIslamFoundingDecision();
+    bool hasArabianJihadTriggered();
+    int getCaliphatePartitionDecision();
+    bool isCaliphatePartitionInProgress();
+    int getCaliphateRealmMask();
+    void resolveCaliphatePartition(int iDecision, int iRealm);
+    void resolveIslamFounding(int iDecision, bool bJoin);
 
 	int startingPlotRange();
 	bool startingPlotWithinRange(CyPlot *pPlot, int /*PlayerTypes*/ ePlayer, int iRange, int iPass);
@@ -30,6 +37,7 @@ public:
 
 	CyCity* initCity(int x, int y);
 	void acquireCity(CyCity* pCity, bool bConquest, bool bTrade);
+	void acquireArabianBirthCity(CyCity* pCity);
 	void killCities();
 
 	std::wstring getNewCityName();

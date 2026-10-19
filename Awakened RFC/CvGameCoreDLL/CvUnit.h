@@ -201,6 +201,8 @@ public:
 
 	bool canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestVisible = false) const;					// Exposed to Python
 	bool spread(ReligionTypes eReligion);
+	bool canPurgeReligions(bool bTestVisible = false) const;
+	bool purgeReligions();
 
 	bool canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorporation, bool bTestVisible = false) const;					// Exposed to Python
 	bool spreadCorporation(CorporationTypes eCorporation);

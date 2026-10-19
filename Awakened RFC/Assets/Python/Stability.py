@@ -812,6 +812,10 @@ class Stability:
 
         def onCityAcquired(self, owner, playerType, city, bConquest, bTrade):
 
+                # Canonical partition is neither a defeat nor a conquest gain.
+                if bTrade and not bConquest and gc.getPlayer(owner).isCaliphatePartitionInProgress():
+                        return
+
                 iGameTurn = gc.getGame().getGameTurn()
                 if (owner < con.iNumPlayers):
                         iTotalCityLostModifier = 0                        

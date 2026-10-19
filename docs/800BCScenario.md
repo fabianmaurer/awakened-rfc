@@ -13,9 +13,11 @@ The map, forces and expansion rules are unchanged by this audit.
 | Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Militia | State Religion |
 | Greece | Greek City-States | Ariphron | Monarchy | Slavery | Warrior Society | Ancestor Cult |
 | Persia | Iranian Tribes | Persian tribal chiefs | Tribal System | Slavery | Militia | State Religion |
-| Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Militia | State Religion |
+| Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Militia | Ancestor Cult |
 | Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | State Religion |
 | Japan | Peoples of the Japanese Islands | Japanese clan elders | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
+
+Carthage uses Ancestor Cult rather than State Religion in this start.
 
 All nine use Despotism in the legitimacy column (shown as Divine Kingship for
 Egypt). These are gameplay approximations of local institutions, not claims of

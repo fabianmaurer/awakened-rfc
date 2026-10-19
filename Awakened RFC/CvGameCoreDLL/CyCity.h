@@ -461,6 +461,8 @@ public:
 	void setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue);
 	int getNumFreeBuilding(int /*BuildingTypes*/ iIndex);
 	bool isHasReligion(int /*ReligionTypes*/ iIndex);
+	bool isReligionBanned(int iReligion);
+	bool removeReligionByInquisition(int iReligion);
 	void setHasReligion(int /*ReligionTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows);
 	bool isHasCorporation(int /*CorporationTypes*/ iIndex);
 	void setHasCorporation(int /*CorporationTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows);

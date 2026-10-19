@@ -259,6 +259,8 @@ class Victory:
                 return scriptDict['lGoals'][i][j]
 
         def setGoal( self, i, j, iNewValue ):
+                import Caliphate
+                if Caliphate.realmOf(i) >= 0: return
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 scriptDict['lGoals'][i][j] = iNewValue
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )

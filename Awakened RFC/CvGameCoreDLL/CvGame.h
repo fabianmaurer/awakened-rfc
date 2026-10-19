@@ -240,6 +240,8 @@ public:
 
 	bool isObserverAutoPlay() const { return m_bObserverAutoPlay; }
 	void setObserverAutoPlay(bool enabled);
+	void setObserverRevealMap(bool enabled);
+	bool isObserverMapRevealed(TeamTypes team) const { return m_bObserverRevealMap && team == getActiveTeam(); }
 	int getAIAutoPlay();																				// Exposed to Python
 	DllExport void setAIAutoPlay(int iNewValue);																// Exposed to Python
 	void setAIAutoPlayCatapult(int iNewValue); //Rhye
@@ -392,7 +394,7 @@ public:
 	void setReligionSlotTaken(ReligionTypes eReligion, bool bTaken);
 
 	CvCity* getHolyCity(ReligionTypes eIndex);																	// Exposed to Python
-	void setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce);	// Exposed to Python
+	void setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce, bool bSpreadReligion = true);	// Exposed to Python
 
 	int getCorporationGameTurnFounded(CorporationTypes eIndex);												// Exposed to Python
 	bool isCorporationFounded(CorporationTypes eIndex);																// Exposed to Python
@@ -586,6 +588,7 @@ protected:
 	int m_iAIAutoPlay;
 	bool m_bObserverAutoPlay; // Process-local test control; deliberately not serialized.
 	bool m_bObserverNoAutosaves;
+	bool m_bObserverRevealMap; // Presentation only; never serialized.
 	int m_iCircumnavigated; //Rhye
 
 	unsigned int m_uiInitialTime;

@@ -2137,6 +2137,9 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		}
 		break;
 
+	case COMMAND_PURGE_RELIGIONS:
+		return canPurgeReligions(bTestVisible);
+
 	case COMMAND_HOTKEY:
 		if (isGroupHead())
 		{
@@ -2227,6 +2230,11 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 
 		case COMMAND_UNLOAD_ALL:
 			unloadAll();
+			bCycle = true;
+			break;
+
+		case COMMAND_PURGE_RELIGIONS:
+			purgeReligions();
 			bCycle = true;
 			break;
 
@@ -5465,7 +5473,7 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 
 	if (GET_PLAYER(pCity->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return false;
 
-	if (pCity->isHasReligion(eReligion))
+	if (pCity->isHasReligion(eReligion) || pCity->isReligionBanned(eReligion))
 	{
 		return false;
 	}
@@ -5519,9 +5527,11 @@ bool CvUnit::spread(ReligionTypes eReligion)
 
 		iSpreadProb += (((GC.getNumReligionInfos() - pCity->getReligionCount()) * (100 - iSpreadProb)) / GC.getNumReligionInfos());
 
+		iSpreadProb = iSpreadProb * pCity->getReligionRivalryPercent(eReligion, true) / 100;
+
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Religion") < iSpreadProb)
 		{
-			pCity->setHasReligion(eReligion, true, true, false);
+			pCity->spreadReligion(eReligion, false);
 			bSuccess = true;
 		}
 		else
@@ -5545,6 +5555,38 @@ bool CvUnit::spread(ReligionTypes eReligion)
 	return true;
 }
 
+
+bool CvUnit::canPurgeReligions(bool bTestVisible) const
+{
+    ReligionTypes eMissionaryReligion = NO_RELIGION;
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (m_pUnitInfo->getReligionSpreads(i) > 0)
+        {
+            eMissionaryReligion = (ReligionTypes)i;
+            break;
+        }
+    if (eMissionaryReligion == NO_RELIGION) return false;
+    if (bTestVisible) return true;
+    CvCity* pCity = plot()->getPlotCity();
+    if (pCity == NULL || pCity->getOwnerINLINE() != getOwnerINLINE() || !canMove() || isCargo() || isDelayedDeath()) return false;
+    if (!pCity->isHasReligion(eMissionaryReligion) ||
+        GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return false;
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (i != eMissionaryReligion && pCity->isHasReligion((ReligionTypes)i)) return true;
+    return false;
+}
+
+bool CvUnit::purgeReligions()
+{
+    if (!canPurgeReligions()) return false;
+    CvCity* pCity = plot()->getPlotCity();
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (m_pUnitInfo->getReligionSpreads(i) <= 0)
+            pCity->removeReligionByInquisition((ReligionTypes)i);
+    // Command execution is synchronized by the regular unit-command message.
+    kill(true);
+    return true;
+}
 
 bool CvUnit::canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorporation, bool bTestVisible) const
 {
@@ -8920,7 +8962,7 @@ bool CvUnit::isNeverInvisible() const
 
 bool CvUnit::isInvisible(TeamTypes eTeam, bool bDebug, bool bCheckCargo) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return false;
 	}
@@ -10145,6 +10187,13 @@ int CvUnit::getExperience() const
 
 void CvUnit::setExperience(int iNewValue, int iMax)
 {
+	// Slave units cannot gain experience, including direct grants and upgrades.
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if (eCannonFodder != NO_PROMOTION && isHasPromotion(eCannonFodder))
+	{
+		iNewValue = 0;
+	}
+
 	if ((getExperience() != iNewValue) && (getExperience() < ((iMax == -1) ? MAX_INT : iMax)))
 	{
 		m_iExperience = std::min(((iMax == -1) ? MAX_INT : iMax), iNewValue);
@@ -10159,7 +10208,9 @@ void CvUnit::setExperience(int iNewValue, int iMax)
 
 void CvUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInBorders, bool bUpdateGlobal)
 {
-	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")))
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")) ||
+		(eCannonFodder != NO_PROMOTION && isHasPromotion(eCannonFodder)))
 	{
 		return;
 	}

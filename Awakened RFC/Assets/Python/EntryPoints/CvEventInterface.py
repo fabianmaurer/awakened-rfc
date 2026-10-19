@@ -42,3 +42,13 @@ def recordLaborEvaluation(argsList):
     player, current, best, flat_scores = argsList
     import GameObserver
     GameObserver.record_labor_evaluation(player, current, best, flat_scores)
+
+
+def showCaliphateChoice(iPlayer):
+    import Caliphate
+    Caliphate.showChoice(iPlayer)
+
+
+def onCaliphatePartition():
+    import Caliphate
+    Caliphate.onPartition()

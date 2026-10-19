@@ -550,6 +550,11 @@ void CyGame::setObserverAutoPlay(bool enabled)
 	if (m_pGame) m_pGame->setObserverAutoPlay(enabled);
 }
 
+void CyGame::setObserverRevealMap(bool enabled)
+{
+	if (m_pGame) m_pGame->setObserverRevealMap(enabled);
+}
+
 bool CyGame::isObserverAutoPlay() const
 {
 	return m_pGame && m_pGame->isObserverAutoPlay();

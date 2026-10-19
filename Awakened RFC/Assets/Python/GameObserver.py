@@ -74,9 +74,12 @@ def json_text(value):
 class Observer:
     def __init__(self):
         global CURRENT
+        if CURRENT is not None:
+            CURRENT.restore_camera()
         CURRENT = self
         self.enabled = False
         self.started = False
+        self.reveal_map = False
         self.events = []
         self.previous = {}
         self.births = {}
@@ -85,9 +88,11 @@ class Observer:
         self.last_snapshot = 0
         self.civic_exposure = {}
         self.labor_evaluations = {}
+        self.arabian_positions = {}
         self.checkpoints_seen = set()
         self.camera_pending = False
         self.camera_elapsed = 0.0
+        self.camera_original = None
         self.performance = {}
         self.performance_stack = []
         self.performance_boundary = None
@@ -116,6 +121,8 @@ class Observer:
                 raise ValueError('Invalid observer mode')
             self.output = os.path.abspath(get('OutputDirectory'))
             self.autoplay = parser.getboolean('Observer', 'Autoplay')
+            self.reveal_map = (parser.has_option('Observer', 'RevealMap') and
+                               parser.getboolean('Observer', 'RevealMap'))
             self.unattended = (parser.has_option('Observer', 'Unattended') and
                                parser.getboolean('Observer', 'Unattended'))
             self.limit = int(get('Turns'))
@@ -221,6 +228,7 @@ class Observer:
         error = traceback.format_exc()
         print('Awakened RFC observer disabled: ' + phase + '\n' + error)
         self.enabled = False
+        self.restore_camera()
         if self.output and os.path.isdir(self.output):
             try:
                 self.status('failed', {'phase': phase, 'traceback': error})
@@ -260,10 +268,12 @@ class Observer:
                     self.gc.getPlayer(0).setPlayable(True)
                 actual_player = game.getActivePlayer()
                 setup_player = actual_player
+                setup_slots = {'3000bc': (0, 2), '800bc': (0, 2, 5)}.get(self.scenario, ())
                 if (self.scenario in ('3000bc', '800bc') and self.autoplay and
-                        actual_player in (0, 2) and expected_player == 26):
+                        actual_player in setup_slots and expected_player == 26):
                     # The executable can retain an earlier slot despite the WB
-                    # selector restriction. Transfer control before RFC setup;
+                    # selector restriction, including Persia in the 800 BC start.
+                    # Transfer control before RFC setup;
                     # neither operation creates/deletes cities or units.
                     if self.gc.getPlayer(26).getCivilizationType() != self.gc.getInfoTypeForString('CIVILIZATION_AMERICA'):
                         raise ValueError('Observer America slot mismatch')
@@ -322,6 +332,8 @@ class Observer:
                 self.game.getMapRand().init(self.seed)
             if self.autoplay:
                 self.game.setObserverAutoPlay(True)
+                if self.reveal_map:
+                    self.game.setObserverRevealMap(True)
             self.start_time = time.clock()
         except:
             self.fail('prepare')
@@ -337,11 +349,11 @@ class Observer:
                 if not native_path or not os.path.isfile(native_path):
                     raise ValueError('Native performance timings were not activated; rebuild/sync the observer DLL')
                 self.started = True
-                self.camera_pending = False
+                self.camera_pending = self.reveal_map and self.autoplay
                 self.performance_boundary = time.clock()
                 self.write({'kind': 'performance_metadata', 'mode': self.mode,
                             'scenario': self.scenario, 'start_turn': game.getGameTurn(),
-                            'seed': self.seed, 'runtime_fingerprint': self.fingerprint,
+                            'seed': self.seed, 'reveal_map': self.reveal_map, 'runtime_fingerprint': self.fingerprint,
                             'seed_applied_at': 'CvGame.init before scenario initialization; no GameStart reseed',
                             'rng_state_before_rfc_setup': self.initial_rng_state,
                             'timer': 'Windows Python time.clock wall seconds',
@@ -352,12 +364,22 @@ class Observer:
                         'handicap': gc.getHandicapInfo(game.getHandicapType()).getType(),
                         'options': [gc.getGameOptionInfo(i).getType() for i in range(gc.getNumGameOptionInfos()) if game.isOption(i)]}
             infos = {}
-            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era'):
+            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era', 'Mission'):
                 count = getattr(gc, 'getNum' + category + 'Infos')()
                 getter = getattr(gc, 'get' + category + 'Info')
                 infos[category.lower()] = [getter(i).getType() for i in range(count)]
+            import CvPythonExtensions as extensions
+            enum_names = {}
+            for category, prefix in (('UnitAITypes', 'UNITAI_'), ('ActivityTypes', 'ACTIVITY_'),
+                                     ('MissionAITypes', 'MISSIONAI_'), ('AreaAITypes', 'AREAAI_'),
+                                     ('WarPlanTypes', 'WARPLAN_')):
+                enum = getattr(extensions, category)
+                enum_names[category] = dict([(str(int(getattr(enum, name))), name)
+                                            for name in dir(enum) if name.startswith(prefix)])
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
+                        'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
+                        'army_recording_version': 1,
                         'seed_applied_at': 'GameStart, before RFC setup (map and initial placement already loaded)',
                         'mod_version': self.version, 'runtime_fingerprint': self.fingerprint,
                         'scenario': self.loaded_scenario, 'map_script': self.map_script,
@@ -375,7 +397,7 @@ class Observer:
                 self.write({'kind': 'initial_map', 'plots': plots})
                 self.map_previous = plots
             self.started = True
-            self.camera_pending = False
+            self.camera_pending = self.reveal_map and self.autoplay
             self.observe_players(False)
             self.snapshot('initial')
             self.checkpoint('initial')
@@ -392,8 +414,13 @@ class Observer:
     def setup_camera(self, args):
         # Called by the main interface refresh; the engine's optional Update
         # event is disabled by the stock Python callback defines.
-        # Smaller zoom values move inward (CvCameraControls).
+        if self.camera_original is not None and (not self.enabled or
+                not self.game.isObserverAutoPlay()):
+            self.restore_camera()
         if not self.enabled or not self.started or not self.camera_pending:
+            return
+        if not self.reveal_map or not self.game.isObserverAutoPlay():
+            self.camera_pending = False
             return
         self.camera_elapsed += 0.25
         if self.camera_elapsed < 1.0:
@@ -401,15 +428,50 @@ class Observer:
         self.camera_pending = False
         try:
             from CvPythonExtensions import CyCamera
+            import math
             camera = CyCamera()
-            before = camera.GetZoom()
-            camera.SetZoom(0.5)
-            self.status('camera', {'requested_zoom': 0.5,
-                                   'previous_zoom': before,
+            names = ('FIELD_OF_VIEW', 'CAMERA_UPPER_PITCH', 'CAMERA_LOWER_PITCH')
+            defines = dict([(name, self.gc.getDefineFLOAT(name)) for name in names])
+            self.camera_original = (defines, camera.GetZoom(),
+                                    camera.GetBasePitch(), camera.GetBaseTurn())
+            # Doubling tan(FOV/2) gives the framing of twice the distance.
+            # Keep the default physical zoom so distance-based detail culling
+            # and globe-view transitions do not hide units/cities/features.
+            field_of_view = math.degrees(2.0 * math.atan(
+                2.0 * math.tan(math.radians(defines['FIELD_OF_VIEW']) / 2.0)))
+            self.gc.setDefineFLOAT('FIELD_OF_VIEW', field_of_view)
+            self.gc.setDefineFLOAT('CAMERA_UPPER_PITCH', -90.0)
+            self.gc.setDefineFLOAT('CAMERA_LOWER_PITCH', -90.0)
+            camera.ResetZoom()
+            camera.SetBaseTurn(0.0)
+            # Base pitch is an offset from the zoom-dependent pitch, which
+            # the limits above already fix at -90 degrees. Keep it neutral
+            # to avoid tilting past overhead and inverting the map.
+            camera.SetBasePitch(0.0)
+            self.status('camera', {'view': 'overhead', 'distance_equivalent': 2.0,
+                                   'field_of_view': field_of_view,
                                    'reported_zoom': camera.GetZoom()})
         except:
             # A presentation failure must not discard a valid recording.
             self.events.append({'event': 'observer_camera_error', 'traceback': traceback.format_exc()})
+            self.restore_camera()
+
+    def restore_camera(self):
+        if self.camera_original is None:
+            return
+        try:
+            from CvPythonExtensions import CyCamera
+            defines, zoom, pitch, turn = self.camera_original
+            for name, value in defines.items():
+                self.gc.setDefineFLOAT(name, value)
+            camera = CyCamera()
+            camera.SetZoom(zoom)
+            camera.SetBasePitch(pitch)
+            camera.SetBaseTurn(turn)
+            self.camera_original = None
+        except:
+            self.events.append({'event': 'observer_camera_restore_error',
+                                'traceback': traceback.format_exc()})
 
     def units(self, player):
         unit, iterator = player.firstUnit(False)
@@ -591,6 +653,38 @@ class Observer:
         self.civic_exposure = {}
         self.events = []
 
+    def observe_arabian_army(self):
+        # Every boundary, independent of snapshot interval; no path/odds/RNG evaluation.
+        if not self.autoplay or self.mode == 'performance':
+            return
+        import Consts
+        player = self.gc.getPlayer(Consts.iArabia)
+        if not player.isAlive() or player.getNumCities() == 0:
+            return
+        units = []
+        positions = {}
+        for unit in self.units(player):
+            if unit.baseCombatStr() <= 0:
+                continue
+            state = unit.getObserverArmyState()
+            position = (unit.getX(), unit.getY())
+            previous = self.arabian_positions.get(unit.getID())
+            unchanged = 0
+            if previous and previous[0] == position:
+                unchanged = previous[1] + 1
+            positions[unit.getID()] = (position, unchanged)
+            state.update({'id': unit.getID(), 'created_turn': unit.getGameTurnCreated(),
+                          'type': self.gc.getUnitInfo(unit.getUnitType()).getType(),
+                          'ai': int(unit.getUnitAIType()), 'x': position[0], 'y': position[1],
+                          'damage': unit.getDamage(), 'moves_left': unit.movesLeft(),
+                          'cargo': unit.isCargo(), 'plot_owner': unit.plot().getOwner(),
+                          'unchanged_position_turns': unchanged})
+            units.append(state)
+        self.arabian_positions = positions
+        self.events.append({'event': 'arabian_army_state', 'player': Consts.iArabia,
+                            'turn': self.game.getGameTurn(), 'year': self.game.getGameTurnYear(),
+                            'units': units})
+
     def observe_roman_campaign(self):
         if not self.autoplay or self.mode == 'performance':
             return
@@ -651,6 +745,7 @@ class Observer:
                 self.performance_boundary = time.clock()
                 self.status('heartbeat', {'turns_recorded': self.turns, 'turn': self.game.getGameTurn()})
                 if self.turns >= self.limit:
+                    self.restore_camera()
                     self.game.setObserverAutoPlay(False)
                     self.status('complete', {'turns': self.turns, 'errors': self.error_count,
                                             'elapsed_seconds': time.clock() - self.start_time})
@@ -658,6 +753,7 @@ class Observer:
                 return
             self.observe_players(True)
             self.observe_roman_campaign()
+            self.observe_arabian_army()
             if self.turns % self.record_interval == 0 or self.turns >= self.limit:
                 self.snapshot('turn')
             if self.checkpoint_interval > 0 and self.turns % self.checkpoint_interval == 0:
@@ -665,6 +761,7 @@ class Observer:
             self.status('heartbeat', {'turns_recorded': self.turns, 'turn': self.game.getGameTurn()})
             if self.turns >= self.limit:
                 self.checkpoint('final')
+                self.restore_camera()
                 self.status('complete', {'turns': self.turns, 'errors': self.error_count,
                                         'elapsed_seconds': time.clock() - self.start_time})
                 self.enabled = False

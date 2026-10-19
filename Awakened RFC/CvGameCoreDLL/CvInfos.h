@@ -4009,6 +4009,7 @@ public:
 
 	int getChar() const;								// Exposed to Python
 	void setChar(int i);			
+	int getDormantHolyCityChar() const; // Exposed to Python
 	int getHolyCityChar() const;				// Exposed to Python
 	void setHolyCityChar(int i);			
 	int getTechPrereq() const;					// Exposed to Python

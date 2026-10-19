@@ -1297,74 +1297,13 @@ void CvPlayerAI::AI_conquerCity(CvCity* pCity)
                             iRazeValue += GC.getLeaderHeadInfo(getPersonalityType()).getRazeCityProb();
 						}
 					}
-					//Rhye - moved down
-					/*//Rhye - start
-					int iX = pCity->getX_INLINE();
-					int iY = pCity->getY_INLINE();
-					if ((iX == 58 && iY == 39) || //Carthage
-						(iX == 76 && iY == 40) || //Babylon
-						(iX == 76 && iY == 42) || //Niniveh
-						(iX == 77 && iY == 42) || //Niniveh
-						(iX == 77 && iY == 38) || //Ur
-						(iX == 71 && iY == 43) || //Gordium
-						(iX == 73 && iY == 43) || //Hattusas
-						(iX == 77 && iY == 44) || //Artaxata
-						(iX == 69 && iY == 15) || //Zimbabwe
-						(iX == 71 && iY == 17)) //Quelimane
-						iRazeValue += 60;
-					//Rhye - end
-					
-					if (iRazeValue > 0)
-					{
-					    for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-					    {
-                            if (hasTrait((TraitTypes)iI))
-                            {
-                                iRazeValue *= (100 - (GC.getTraitInfo((TraitTypes)iI).getUpkeepModifier()));
-                                iRazeValue /= 100;
-							}
-						}
 
-                        if (GC.getGameINLINE().getSorenRandNum(100, "AI Raze City") < iRazeValue)
-						{
-							bRaze = true;
-							pCity->doTask(TASK_RAZE);
-						}
-					}*/
 				}
 			}
 		}
 		//Rhye - moved here
 
 		//Rhye - start
-		int iX = pCity->getX_INLINE();
-		int iY = pCity->getY_INLINE();
-		if ((iX == 58 && iY == 39) || //Carthage
-			(iX == 76 && iY == 40) || //Babylon
-			(iX == 62 && iY == 42) || //Pompeii
-			(iX == 76 && iY == 42) || //Niniveh
-			(iX == 77 && iY == 42) || //Niniveh
-			(iX == 77 && iY == 38) || //Ur
-			(iX == 71 && iY == 43) || //Gordium
-			(iX == 73 && iY == 43) || //Hattusas
-			(iX == 77 && iY == 44) || //Artaxata
-			(iX == 69 && iY == 15) || //Zimbabwe
-			(iX == 71 && iY == 17)) { //Quelimane
-			iRazeValue += 60;
-			if (pCity->hasActiveWorldWonder())
-				iRazeValue -= 30;
-			}
-		else if ((iX == 73 && iY == 40) || //Sur
-			(iX == 59 && iY == 50) || //Mainz
-			(iX == 54 && iY == 38)) { //Russadir
-			iRazeValue += 20;
-			if (pCity->hasActiveWorldWonder())
-				iRazeValue -= 10;
-			}
-		else if ((iX == 68 && iY == 45)) { //Byzantium
-				iRazeValue -= 30;
-			}
-
 		if (getID() == NATIVE || isBarbarian()) {
 				iRazeValue *= 2;
 				iRazeValue += 30;
@@ -3363,6 +3302,20 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 		{
 			iValue *= 3;
 			if (pCampaign == pCity) iValue += 100;
+		}
+	}
+
+	// Recruitment makes developed first conquests especially valuable during jihad.
+	// Use the same population tiers as the reward; recaptures grant no troops.
+	if (AI_isArabianJihad() && pCity->getTeam() != getTeam())
+	{
+		const int iPlot = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+		if (std::find(m_aiArabianJihadConquests.begin(), m_aiArabianJihadConquests.end(), iPlot) == m_aiArabianJihadConquests.end())
+		{
+			const int iUnitsPerPackage = std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_SWORDSMEN")) +
+				std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS")) +
+				std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_CATAPULTS"));
+			iValue += 4 * iUnitsPerPackage * getArabianJihadRecruitmentPackages(pCity->getPopulation());
 		}
 	}
 
@@ -11653,7 +11606,8 @@ void CvPlayerAI::AI_setEspionageWeight(int iNewValue)
 
 int CvPlayerAI::AI_getAttackOddsChange() const
 {
-	return m_iAttackOddsChange;
+	// Event zeal changes AI risk assessment, never actual combat strength.
+	return m_iAttackOddsChange + (AI_isArabianJihad() ? 15 : 0);
 }
 
 
@@ -12125,6 +12079,11 @@ void CvPlayerAI::AI_doCounter()
 	}
 }
 
+
+bool CvPlayerAI::AI_isArabianJihad() const
+{
+	return !isHuman() && isArabianJihadActive();
+}
 
 bool CvPlayerAI::AI_isRomanCampaign() const
 {

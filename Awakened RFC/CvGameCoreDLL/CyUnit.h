@@ -2,6 +2,7 @@
 
 #ifndef CyUnit_h
 #define CyUnit_h
+#include <boost/python/dict.hpp>
 //
 // Python wrapper class for CvUnit
 // 
@@ -22,6 +23,7 @@ public:
 	DllExport CyUnit(CvUnit* pUnit);		// Call from C++
 	CvUnit* getUnit() { return m_pUnit;	};	// Call from C++
 	const CvUnit* getUnit() const { return m_pUnit;	};	// Call from C++
+	python::dict getObserverArmyState();
 	bool isNone() { return (m_pUnit==NULL); }
 	void convert(CyUnit* pUnit);
 	void kill(bool bDelay, int /*PlayerTypes*/ ePlayer);

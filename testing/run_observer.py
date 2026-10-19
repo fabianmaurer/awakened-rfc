@@ -85,6 +85,7 @@ def main():
     parser.add_argument('--turns', type=int)
     parser.add_argument('--seed', type=int, default=1, help='First seed; incremented for each game')
     parser.add_argument('--observe-only', action='store_true', help='Record a human-controlled game; do not enable AI control')
+    parser.add_argument('--reveal-map', action='store_true', help='Show the fully revealed map and normal HUD from directly above, with twice the default view span and normal map detail')
     parser.add_argument('--manual-start', action='store_true', help='Leave scenario setup to the user instead of confirming it automatically')
     parser.add_argument('--exe', type=Path, default=DEFAULT_EXE)
     parser.add_argument('--output-dir', type=Path, default=TESTING / 'runs')
@@ -94,6 +95,8 @@ def main():
     parser.add_argument('--stall-timeout', type=int, default=600)
     args = parser.parse_args()
     args.scenario = args.scenario or tuple(SCENARIOS)[args.start if args.start is not None else 0]
+    if args.reveal_map and args.observe_only:
+        parser.error('--reveal-map requires AI control; omit --observe-only')
     unattended = not args.observe_only and not args.manual_start
     scenario = SCENARIOS[args.scenario]
     if os.name != 'nt':
@@ -173,7 +176,7 @@ def main():
         env['AWAKENED_RFC_OBSERVER_TOKEN'] = token
         settings = configparser.RawConfigParser()
         settings['Observer'] = {'Mode': mode, 'Autoplay': str(not args.observe_only),
-                                'Scenario': args.scenario,
+                                'RevealMap': str(int(args.reveal_map)), 'Scenario': args.scenario,
                                 'Turns': str(turns), 'Seed': str(seed), 'CheckpointInterval': str(interval),
                                 'RecordInterval': str(args.record_interval), 'Unattended': str(unattended),
                                 'OutputDirectory': str(run), 'Token': token, 'ProcessId': '0',
@@ -195,7 +198,7 @@ def main():
         (run / 'launch.json').write_text(json.dumps({'seed': seed, 'mode': mode, 'turns': turns,
                                                    'scenario': args.scenario,
                                                    'autoplay': not args.observe_only, 'version': version,
-                                                   'unattended': unattended,
+                                                   'unattended': unattended, 'reveal_map': args.reveal_map,
                                                    'jobs': args.jobs,
                                                    'record_interval': args.record_interval,
                                                    'runtime_fingerprint': runtime_hash, 'command': command}, indent=2))

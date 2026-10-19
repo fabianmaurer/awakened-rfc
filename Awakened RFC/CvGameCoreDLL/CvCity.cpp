@@ -106,6 +106,7 @@ CvCity::CvCity()
 
 	m_pabWorkingPlot = NULL;
 	m_pabHasReligion = NULL;
+	m_pabReligionBanned = NULL;
 	m_pabHasCorporation = NULL;
 
 	m_paTradeCities = NULL;
@@ -480,6 +481,7 @@ void CvCity::uninit()
 
 	SAFE_DELETE_ARRAY(m_pabWorkingPlot);
 	SAFE_DELETE_ARRAY(m_pabHasReligion);
+	SAFE_DELETE_ARRAY(m_pabReligionBanned);
 	SAFE_DELETE_ARRAY(m_pabHasCorporation);
 
 	SAFE_DELETE_ARRAY(m_paTradeCities);
@@ -757,11 +759,13 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 		m_paiReligionInfluence = new int[GC.getNumReligionInfos()];
 		m_paiStateReligionHappiness = new int[GC.getNumReligionInfos()];
 		m_pabHasReligion = new bool[GC.getNumReligionInfos()];
+		m_pabReligionBanned = new bool[GC.getNumReligionInfos()];
 		for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
 		{
 			m_paiReligionInfluence[iI] = 0;
 			m_paiStateReligionHappiness[iI] = 0;
 			m_pabHasReligion[iI] = false;
+			m_pabReligionBanned[iI] = false;
 		}
 
 		m_pabHasCorporation = new bool[GC.getNumCorporationInfos()];
@@ -2093,7 +2097,7 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 	//Rhye - end
 
 	//Rhye - start (embassy)
-	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS)
+	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_EMBASSY_BUILDINGS)
 	{
 		if (getOwnerINLINE() >= NUM_MAJOR_PLAYERS)
 			return false;
@@ -2187,7 +2191,7 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 
 		if (GC.getBuildingInfo(eBuilding).getHolyCity() != NO_RELIGION)
 		{
-			if (!isHolyCity(((ReligionTypes)(GC.getBuildingInfo(eBuilding).getHolyCity()))))
+			if (!isHolyCity(((ReligionTypes)(GC.getBuildingInfo(eBuilding).getHolyCity()))) || isShrineSuppressed(eBuilding))
 			{
 				return false;
 			}
@@ -4009,7 +4013,7 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	int iI, iJ;
 
 	const bool bReligious = GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION || GC.getBuildingInfo(eBuilding).getPrereqReligion() != NO_RELIGION;
-	const bool bEffects = bCivicTransition || !bReligious || !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
+	const bool bEffects = bCivicTransition || (!isShrineSuppressed(eBuilding) && (!bReligious || !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))));
 
 	if ((!(GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eBuilding)) || bObsolete) && bEffects)
 	{
@@ -5293,7 +5297,7 @@ int CvCity::getNumActiveBuilding(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex != NO_BUILDING, "BuildingType eIndex is expected to not be NO_BUILDING");
 
-	if (GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eIndex))
+	if (GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eIndex) || isShrineSuppressed(eIndex))
 	{
 		return 0;
 	}
@@ -9026,6 +9030,8 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 
 	iCommerce = 0;
 
+	if (isShrineSuppressed(eBuilding)) return 0;
+
 	// Even obsolete-safe culture and shrine income are disabled by atheism.
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) && (GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION || GC.getBuildingInfo(eBuilding).getPrereqReligion() != NO_RELIGION)) return 0;
 
@@ -11218,6 +11224,76 @@ void CvCity::setGodStateConquest(ReligionTypes eReligion, const std::vector<Buil
 }
 
 
+bool CvCity::isReligionBanned(ReligionTypes eReligion) const
+{
+    FAssert(eReligion >= 0 && eReligion < GC.getNumReligionInfos());
+    return m_pabReligionBanned[eReligion];
+}
+
+void CvCity::clearReligionBan(ReligionTypes eReligion)
+{
+    FAssert(eReligion >= 0 && eReligion < GC.getNumReligionInfos());
+    if (m_pabReligionBanned[eReligion])
+    {
+        m_pabReligionBanned[eReligion] = false;
+        setInfoDirty(true);
+        if (getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+            gDLL->getInterfaceIFace()->setDirty(SelectionButtons_DIRTY_BIT, true);
+    }
+}
+
+bool CvCity::isShrineSuppressed(BuildingTypes eBuilding) const
+{
+    ReligionTypes eReligion = (ReligionTypes)GC.getBuildingInfo(eBuilding).getHolyCity();
+    return eReligion != NO_RELIGION && !isHasReligion(eReligion);
+}
+
+bool CvCity::removeReligionByInquisition(ReligionTypes eReligion)
+{
+    if (!isHasReligion(eReligion)) return false;
+    // Shrines retain their identity; ordinary religious buildings are destroyed.
+    for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+    {
+        BuildingTypes eBuilding = (BuildingTypes)i;
+        const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+        if (kBuilding.getHolyCity() == NO_RELIGION &&
+            (kBuilding.getReligionType() == eReligion || kBuilding.getPrereqReligion() == eReligion))
+        {
+            setNumRealBuilding(eBuilding, 0);
+            setNumFreeBuilding(eBuilding, 0);
+        }
+    }
+    m_pabReligionBanned[eReligion] = true;
+    setHasReligion(eReligion, false, true, true);
+    return true;
+}
+
+int CvCity::getReligionRivalryPercent(ReligionTypes eReligion, bool bMissionary) const
+{
+    const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+    const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+    if ((eReligion == eChristianity && isHasReligion(eIslam)) ||
+        (eReligion == eIslam && isHasReligion(eChristianity)))
+        return std::max(0, std::min(100, GC.getDefineINT(bMissionary ?
+            "RFCMP_RELIGION_RIVALRY_MISSIONARY_PERCENT" : "RFCMP_RELIGION_RIVALRY_TRADE_PERCENT")));
+    return 100;
+}
+
+void CvCity::spreadReligion(ReligionTypes eReligion, bool bArrows)
+{
+    // Only successful trade/missionary spread can replace Judaism, never city
+    // transfers, founding, or scripted restoration of existing religions.
+    if (isHasReligion(eReligion) || isReligionBanned(eReligion) ||
+        GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return;
+    const ReligionTypes eJudaism = (ReligionTypes)GC.getInfoTypeForString("RELIGION_JUDAISM");
+    const bool bReplaceJudaism = eReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") &&
+        getReligionCount() == 1 && isHasReligion(eJudaism) && !isHolyCity(eJudaism);
+    setHasReligion(eReligion, true, true, bArrows);
+    if (isHasReligion(eReligion) && bReplaceJudaism && GC.getGameINLINE().getSorenRandNum(100, "Christianity replaces Judaism") <
+        GC.getDefineINT("RFCMP_CHRISTIANITY_REPLACE_JUDAISM_PERCENT"))
+        setHasReligion(eJudaism, false, true, bArrows);
+}
+
 void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows, bool bPreserve)
 {
 	// Block spread from missionaries, events and Python alike. Ownership transfers
@@ -11227,6 +11303,8 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumReligionInfos(), "eIndex expected to be < GC.getNumReligionInfos()");
 
+	if (bNewValue && !bPreserve && isReligionBanned(eIndex)) return;
+
 	if (isHasReligion(eIndex) != bNewValue)
 	{
 		for (int iVoteSource = 0; iVoteSource < GC.getNumVoteSourceInfos(); ++iVoteSource)
@@ -11234,7 +11312,25 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 			processVoteSourceBonus((VoteSourceTypes)iVoteSource, false);
 		}
 
+        // Cached shrine yields, specialists, GP points and global effects must
+        // follow religious presence, without changing wonder ownership/counts.
+        std::vector<int> aiOldShrineActivity(GC.getNumBuildingInfos(), 0);
+        for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+            if (GC.getBuildingInfo((BuildingTypes)i).getHolyCity() == eIndex)
+                aiOldShrineActivity[i] = getNumActiveBuilding((BuildingTypes)i);
+
 		m_pabHasReligion[eIndex] = bNewValue;
+
+        for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+        {
+            BuildingTypes eBuilding = (BuildingTypes)i;
+            if (GC.getBuildingInfo(eBuilding).getHolyCity() == eIndex)
+            {
+                int iChange = getNumActiveBuilding(eBuilding) - aiOldShrineActivity[i];
+                if (iChange != 0) processBuilding(eBuilding, iChange, false, true);
+            }
+        }
+        updateBuildingCommerce();
 
 		for (int iVoteSource = 0; iVoteSource < GC.getNumVoteSourceInfos(); ++iVoteSource)
 		{
@@ -11302,7 +11398,8 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 				{
 					if (GET_PLAYER(getOwnerINLINE()).getHasReligionCount(eIndex) == 1)
 					{
-						if (GET_PLAYER(getOwnerINLINE()).canConvert(eIndex) && (GET_PLAYER(getOwnerINLINE()).getStateReligion() == NO_RELIGION))
+						if (GET_PLAYER(getOwnerINLINE()).canConvert(eIndex) && (GET_PLAYER(getOwnerINLINE()).getStateReligion() == NO_RELIGION) &&
+							!(eIndex == GC.getInfoTypeForString("RELIGION_ISLAM") && GET_PLAYER(getOwnerINLINE()).getIslamFoundingDecision() >= 0))
 						{
 							CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_CHANGERELIGION);
 							if (NULL != pInfo)
@@ -12795,7 +12892,7 @@ int CvCity::calculateTradeCultureTimes100(int iRouteValue) const
     return (int)(iNumerator / (std::max(1, getPopulation()) * 10)) * 10;
 }
 // Influence is exchanged in both directions per route. Small amounts are discarded.
-static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
+static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue, int iReligionValue, int iEfficiency)
 {
     int iPopulation = std::max(1, pTarget->getPopulation());
     // Measure cultural identity before this route adds culture.
@@ -12814,7 +12911,7 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
     if (GET_PLAYER(eSource).isCivic(eAtheism) || GET_PLAYER(pTarget->getOwnerINLINE()).isCivic(eAtheism)) return;
     const int iToleranceBonus = GET_PLAYER(pTarget->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) ?
         std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_TOLERANCE_BONUS_PERCENT")) : 0;
-    int iChance = iValue * GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR") / (iPopulation * std::max(1, GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR")));
+    int iChance = iReligionValue * GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_NUMERATOR") / (iPopulation * std::max(1, GC.getDefineINT("RFCMP_TRADE_RELIGION_PERCENT_DENOMINATOR")));
     int iMaxChance = std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_MAX_CHANCE_PERCENT"));
     iChance = std::min(iMaxChance, iChance);
     int iCultureStart = std::max(0, std::min(99, GC.getDefineINT("RFCMP_TRADE_RELIGION_OWNER_CULTURE_START_PERCENT")));
@@ -12827,20 +12924,40 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue)
         int iPenalty = (int)((iMaxChance * iExcess + iRange - 1) / iRange);
         iChance = std::max(0, iChance - iPenalty);
     }
-    if (iChance <= 0 && iToleranceBonus <= 0) return;
     for (int j = 0; j < GC.getNumReligionInfos(); j++)
     {
         ReligionTypes eReligion = (ReligionTypes)j;
-        if (!pSource->isHasReligion(eReligion) || pTarget->isHasReligion(eReligion)) continue;
+        if (!pSource->isHasReligion(eReligion) || pTarget->isHasReligion(eReligion) || pTarget->isReligionBanned(eReligion)) continue;
         if (GET_PLAYER(pTarget->getOwnerINLINE()).isNoNonStateReligionSpread() && GET_PLAYER(pTarget->getOwnerINLINE()).getStateReligion() != eReligion) continue;
         int iReligionChance = iChance;
-        if (pTarget->isHolyCity() && !pTarget->isHolyCity(eReligion))
+        // A dormant holy city has no religious resistance of its own.
+        bool bActiveHolyCity = false;
+        for (int iHoly = 0; iHoly < GC.getNumReligionInfos(); ++iHoly)
+            if (pTarget->isHolyCity((ReligionTypes)iHoly) && pTarget->isHasReligion((ReligionTypes)iHoly))
+                bActiveHolyCity = true;
+        if (bActiveHolyCity && !pTarget->isHolyCity(eReligion))
             iReligionChance = std::max(0, iReligionChance - GC.getDefineINT("RFCMP_TRADE_RELIGION_HOLY_CITY_PENALTY_PERCENT"));
-        // Openness permits incoming religions even when cultural/holy-city
-        // resistance would otherwise reduce trade spread to zero.
-        iReligionChance = std::min(100, iReligionChance + iToleranceBonus);
+        int iReligionMultiplier = 100;
+        int iReligionBonus = iToleranceBonus;
+        const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+        const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+        const ReligionTypes eJudaism = (ReligionTypes)GC.getInfoTypeForString("RELIGION_JUDAISM");
+        if (eReligion == eChristianity || eReligion == eIslam)
+        {
+            iReligionMultiplier = std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_EVANGELICAL_MULTIPLIER_PERCENT"));
+            if (pTarget->getReligionCount() == 0 || (eReligion == eChristianity &&
+                pTarget->getReligionCount() == 1 && pTarget->isHasReligion(eJudaism)))
+                iReligionBonus += std::max(0, GC.getDefineINT("RFCMP_TRADE_RELIGION_UNAFFILIATED_BONUS_PERCENT"));
+        }
+        // Multiply the resisted base first. Only the eligible-city flat bonus
+        // and Tolerance can lift zero chances. Retain fractions until the final
+        // rivalry/infrastructure calculation; invalid routes never reach here.
+        __int64 iChanceTimes100 = std::min((__int64)10000,
+            (__int64)iReligionChance * iReligionMultiplier + (__int64)100 * iReligionBonus);
+        iReligionChance = (int)(iChanceTimes100 *
+            pTarget->getReligionRivalryPercent(eReligion, false) * iEfficiency / 1000000);
         if (iReligionChance > 0 && GC.getGameINLINE().getSorenRandNum(100, "Trade religion spread") < iReligionChance)
-            pTarget->setHasReligion(eReligion, true, true, true);
+            pTarget->spreadReligion(eReligion, true);
     }
 }
 
@@ -12857,9 +12974,14 @@ void CvCity::doTradeInfluence()
         if (pPartner == NULL) continue;
         bool bConnected = reachable[GC.getMapINLINE().plotNum(pPartner->getX_INLINE(), pPartner->getY_INLINE())];
         int iValue = calculateTradeYield(YIELD_COMMERCE, calculateInfrastructureTradeProfit(pPartner, bConnected, roads[GC.getMapINLINE().plotNum(pPartner->getX_INLINE(), pPartner->getY_INLINE())]));
-        if (iValue <= 0) continue;
-        applyTradeInfluence(pPartner, this, iValue);
-        applyTradeInfluence(this, pPartner, iValue);
+        int iEfficiency = tradeInfrastructureEfficiency(this, pPartner, bConnected, roads[GC.getMapINLINE().plotNum(pPartner->getX_INLINE(), pPartner->getY_INLINE())]);
+        if (iEfficiency <= 0) continue;
+        // Use the route value at full efficiency for religion; culture continues
+        // to use its actual yield. Apply infrastructure after spread bonuses.
+        int iFullProfit = std::max(1, (int)((__int64)getBaseTradeProfit(pPartner) * totalTradeModifier(pPartner) / 10000));
+        int iReligionValue = calculateTradeYield(YIELD_COMMERCE, iFullProfit);
+        applyTradeInfluence(pPartner, this, iValue, iReligionValue, iEfficiency);
+        applyTradeInfluence(this, pPartner, iValue, iReligionValue, iEfficiency);
     }
 }
 
@@ -13165,6 +13287,7 @@ void CvCity::read(FDataStreamBase* pStream)
 
 	pStream->Read(NUM_CITY_PLOTS, m_pabWorkingPlot);
 	pStream->Read(GC.getNumReligionInfos(), m_pabHasReligion);
+	pStream->Read(GC.getNumReligionInfos(), m_pabReligionBanned);
 	pStream->Read(GC.getNumCorporationInfos(), m_pabHasCorporation);
 
 	for (iI=0;iI<GC.getDefineINT("MAX_TRADE_ROUTES");iI++)
@@ -13450,6 +13573,7 @@ void CvCity::write(FDataStreamBase* pStream)
 
 	pStream->Write(NUM_CITY_PLOTS, m_pabWorkingPlot);
 	pStream->Write(GC.getNumReligionInfos(), m_pabHasReligion);
+	pStream->Write(GC.getNumReligionInfos(), m_pabReligionBanned);
 	pStream->Write(GC.getNumCorporationInfos(), m_pabHasCorporation);
 
 	for (iI=0;iI<GC.getDefineINT("MAX_TRADE_ROUTES");iI++)

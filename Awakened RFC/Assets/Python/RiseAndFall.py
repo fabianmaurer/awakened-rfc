@@ -429,9 +429,9 @@ class RiseAndFall:
                                                 if (not (x == tCapitals[iHuman] and y == tCapitals[iHuman])):
                                                         flipText += (pCurrent.getPlotCity().getName() + "\n")
                 #exceptions
-                if (len(tExceptions[iNewCiv])):
-                        for j in range(len(tExceptions[iNewCiv])):
-                                pCurrent = gc.getMap().plot( tExceptions[iNewCiv][j][0], tExceptions[iNewCiv][j][1] )
+                if (len(con.getBirthFlipExceptions(iNewCiv))):
+                        for j in range(len(con.getBirthFlipExceptions(iNewCiv))):
+                                pCurrent = gc.getMap().plot( con.getBirthFlipExceptions(iNewCiv)[j][0], con.getBirthFlipExceptions(iNewCiv)[j][1] )
                                 if (pCurrent.isCity()):
                                         if (pCurrent.getPlotCity().getOwner() == iHuman):
                                                 if (not pCurrent.getPlotCity().isCapital()):
@@ -449,6 +449,7 @@ class RiseAndFall:
                 tTopLeft = self.getTempTopLeft()
                 tBottomRight = self.getTempBottomRight()
                 iNewCivFlip = self.getNewCivFlip()
+                tTopLeft, tBottomRight = con.getBirthFlipArea(iNewCivFlip, tTopLeft, tBottomRight)
 
                 humanCityList = []
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
@@ -461,9 +462,9 @@ class RiseAndFall:
                                                 if (not (x == tCapitals[iHuman] and y == tCapitals[iHuman])):
                                                         humanCityList.append(city)
                 #exceptions
-                if (len(tExceptions[iNewCivFlip])):
-                        for j in range(len(tExceptions[self.getNewCivFlip()])):
-                                pCurrent = gc.getMap().plot( tExceptions[iNewCivFlip][j][0], tExceptions[iNewCivFlip][j][1] )
+                if (len(con.getBirthFlipExceptions(iNewCivFlip))):
+                        for j in range(len(con.getBirthFlipExceptions(self.getNewCivFlip()))):
+                                pCurrent = gc.getMap().plot( con.getBirthFlipExceptions(iNewCivFlip)[j][0], con.getBirthFlipExceptions(iNewCivFlip)[j][1] )
                                 if (pCurrent.isCity()):
                                         city = pCurrent.getPlotCity()
                                         if (city.getOwner() == iHuman):
@@ -481,7 +482,7 @@ class RiseAndFall:
                                         utils.cultureManager((city.getX(),city.getY()), 100, iNewCivFlip, iHuman, False, False, False)
                                         utils.flipUnitsInCityBefore((city.getX(),city.getY()), iNewCivFlip, iHuman)
                                         self.setTempFlippingCity((city.getX(),city.getY()))
-                                        utils.flipCity((city.getX(), city.getY()), 0, 0, iNewCivFlip, [iHuman])                                        
+                                        utils.flipCity((city.getX(), city.getY()), 0, 0, iNewCivFlip, [iHuman], iNewCivFlip == iArabia)
                                         utils.flipUnitsInCityAfter(self.getTempFlippingCity(), iNewCivFlip)
 
                                         #iEra = gc.getPlayer(iNewCivFlip).getCurrentEra()
@@ -863,11 +864,13 @@ class RiseAndFall:
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iBarbarian, False, True) #remaining barbs in the region now belong to the new civ   
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iIndependent, False, False) #remaining independents in the region now belong to the new civ   
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iIndependent2, False, False) #remaining independents in the region now belong to the new civ   
-                                iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iArabia, tCoreAreasTL[iArabia], (82, 36))
-                                self.convertSurroundingPlotCulture(iArabia, tNormalAreasTL[iArabia], (82, 36))
-                                utils.flipUnitsInArea(tNormalAreasTL[iArabia], (82, 36), iArabia, iBarbarian, False, True) #remaining barbs in the region now belong to the new civ   
-                                utils.flipUnitsInArea(tNormalAreasTL[iArabia], (82, 36), iArabia, iIndependent, False, False) #remaining independents in the region now belong to the new civ   
-                                utils.flipUnitsInArea(tNormalAreasTL[iArabia], (82, 36), iArabia, iIndependent2, False, False) #remaining independents in the region now belong to the new civ
+                                tArabianCityTL, tArabianCityBR = con.getBirthFlipArea(iArabia, tCoreAreasTL[iArabia], (82, 36))
+                                tArabianPlotTL, tArabianPlotBR = con.getBirthFlipArea(iArabia, tNormalAreasTL[iArabia], (82, 36))
+                                iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iArabia, tArabianCityTL, tArabianCityBR)
+                                self.convertSurroundingPlotCulture(iArabia, tArabianPlotTL, tArabianPlotBR)
+                                utils.flipUnitsInArea(tArabianPlotTL, tArabianPlotBR, iArabia, iBarbarian, False, True) #remaining barbs in the region now belong to the new civ   
+                                utils.flipUnitsInArea(tArabianPlotTL, tArabianPlotBR, iArabia, iIndependent, False, False) #remaining independents in the region now belong to the new civ   
+                                utils.flipUnitsInArea(tArabianPlotTL, tArabianPlotBR, iArabia, iIndependent2, False, False) #remaining independents in the region now belong to the new civ
                                 #teamArabia.setHasTech(con.iDivineRight, True, iArabia, False, False)
 
                 #kill the remaining barbs in the region: it's necessary to do this more than once to protect those civs
@@ -973,6 +976,8 @@ class RiseAndFall:
 
 
         def switchLateLeaders(self, iPlayer, iLeaderIndex):
+                import Caliphate
+                if Caliphate.realmOf(iPlayer) >= 0: return
                 if (tLateLeaders[iPlayer][iLeaderIndex] != gc.getPlayer(iPlayer).getLeader()):
                         iThreshold = tLateLeaders[iPlayer][iLeaderIndex+2]
                         if (gc.getPlayer(iPlayer).getCurrentEra() >= tLateLeaders[iPlayer][iLeaderIndex+3]):
@@ -1689,6 +1694,7 @@ class RiseAndFall:
                             
                                     
         def startFlipUnrest(self, iCiv, tTopLeft, tBottomRight, iTurns=3, bNotify=True):
+                tTopLeft, tBottomRight = con.getBirthFlipArea(iCiv, tTopLeft, tBottomRight)
                 lNotifiedPlayers = []
                 for x in range(tTopLeft[0], tBottomRight[0] + 1):
                         for y in range(tTopLeft[1], tBottomRight[1] + 1):
@@ -1702,9 +1708,9 @@ class RiseAndFall:
                                                 CyInterface().addMessage(iOwner, True, con.iDuration, CyTranslator().getText("TXT_KEY_RNF_FLIP_UNREST", (gc.getPlayer(iCiv).getCivilizationDescriptionKey(),)), "", 0, "", ColorTypes(con.iGreen), city.getX(), city.getY(), True, True)
                                                 lNotifiedPlayers.append(iOwner)
 
-                if (len(tExceptions[iCiv])):
-                        for j in range(len(tExceptions[iCiv])):
-                                pCurrent = gc.getMap().plot(tExceptions[iCiv][j][0], tExceptions[iCiv][j][1])
+                if (len(con.getBirthFlipExceptions(iCiv))):
+                        for j in range(len(con.getBirthFlipExceptions(iCiv))):
+                                pCurrent = gc.getMap().plot(con.getBirthFlipExceptions(iCiv)[j][0], con.getBirthFlipExceptions(iCiv)[j][1])
                                 if (pCurrent.isCity() and pCurrent.getPlotCity().getOwner() != iCiv):
                                         city = pCurrent.getPlotCity()
                                         if (city.getOccupationTimer() < iTurns):
@@ -1715,10 +1721,10 @@ class RiseAndFall:
                                                 lNotifiedPlayers.append(iOwner)
 
         def checkFlipUnrest(self, iGameTurn, iCiv):
-                # Warn before the earliest possible flip, without predicting whether
-                # capital ownership will force a free-region or foreign-border birth.
+                # Start one turn before appearance: the usual two-phase birth
+                # then flips cities after three continuous turns of unrest.
                 iBirthTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv)
-                iWarningTurn = iBirthTurn - 3
+                iWarningTurn = iBirthTurn - 1
                 if iGameTurn < iWarningTurn:
                         return
                 iFlipsDelay = self.getFlipsDelay(iCiv)
@@ -1744,10 +1750,10 @@ class RiseAndFall:
                                 self.processAfrica()
                     
                         tCapital = tCapitals[iCiv]
-                        tTopLeft = tCoreAreasTL[iCiv]
-                        tBottomRight = tCoreAreasBR[iCiv]
+                        tTopLeft, tBottomRight = con.getBirthFlipArea(iCiv)
                         tBroaderTopLeft = tBroaderAreasTL[iCiv]
-                        tBroaderBottomRight = tBroaderAreasBR[iCiv]                    
+                        tBroaderBottomRight = tBroaderAreasBR[iCiv]
+                        tBroaderTopLeft, tBroaderBottomRight = con.getBirthFlipArea(iCiv, tBroaderTopLeft, tBroaderBottomRight)                    
                         if (self.getFlipsDelay(iCiv) == 0): #city hasn't already been founded)
                             
                                 #this may fix the -1 bug
@@ -1951,9 +1957,10 @@ class RiseAndFall:
 ##                                        if (unit.getUnitType() == iSettler):
 ##                                                break
 ##                                unit.found()                                
-                                utils.flipUnitsInArea((tCapital[0]-3, tCapital[1]-3), (tCapital[0]+3, tCapital[1]+3), iCiv, iBarbarian, True, True) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
-                                utils.flipUnitsInArea((tCapital[0]-3, tCapital[1]-3), (tCapital[0]+3, tCapital[1]+3), iCiv, iIndependent, True, False) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
-                                utils.flipUnitsInArea((tCapital[0]-3, tCapital[1]-3), (tCapital[0]+3, tCapital[1]+3), iCiv, iIndependent2, True, False) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
+                                tUnitTL, tUnitBR = con.getBirthFlipArea(iCiv, (tCapital[0]-3, tCapital[1]-3), (tCapital[0]+3, tCapital[1]+3))
+                                utils.flipUnitsInArea(tUnitTL, tUnitBR, iCiv, iBarbarian, True, True) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
+                                utils.flipUnitsInArea(tUnitTL, tUnitBR, iCiv, iIndependent, True, False) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
+                                utils.flipUnitsInArea(tUnitTL, tUnitBR, iCiv, iIndependent2, True, False) #This is mostly for the AI. During Human player spawn, that area should be already cleaned                        
                                 utils.setPlagueCountdown(iCiv, -con.iImmunity)
                                 utils.clearPlague(iCiv)
                                 #gc.getPlayer(iCiv).changeAnarchyTurns(1)
@@ -2054,6 +2061,7 @@ class RiseAndFall:
 
                                                 
         def convertSurroundingCities(self, iCiv, tTopLeft, tBottomRight):
+                tTopLeft, tBottomRight = con.getBirthFlipArea(iCiv, tTopLeft, tBottomRight)
                 iConvertedCitiesCount = 0
                 iNumHumanCities = 0
                 cityList = []
@@ -2068,9 +2076,9 @@ class RiseAndFall:
                                                 cityList.append(pCurrent.getPlotCity())
 
                 #Exceptions
-                if (len(tExceptions[iCiv])):
-                        for j in range(len(tExceptions[iCiv])):
-                                pCurrent = gc.getMap().plot( tExceptions[iCiv][j][0], tExceptions[iCiv][j][1] )
+                if (len(con.getBirthFlipExceptions(iCiv))):
+                        for j in range(len(con.getBirthFlipExceptions(iCiv))):
+                                pCurrent = gc.getMap().plot( con.getBirthFlipExceptions(iCiv)[j][0], con.getBirthFlipExceptions(iCiv)[j][1] )
                                 if ( pCurrent.isCity()):
                                         if (pCurrent.getPlotCity().getOwner() != iCiv):
                                                 print ("append", pCurrent)
@@ -2128,7 +2136,7 @@ class RiseAndFall:
                                         
                                         utils.flipUnitsInCityBefore((loopX,loopY), iCiv, iOwner)
                                         self.setTempFlippingCity((loopX,loopY)) #necessary for the (688379128, 0) bug
-                                        utils.flipCity((loopX,loopY), 0, 0, iCiv, [iOwner])                                                
+                                        utils.flipCity((loopX,loopY), 0, 0, iCiv, [iOwner], iCiv == iArabia)
                                         #print ("cityList[i].getXY", cityList[i].getX(), cityList[i].getY()) 
                                         utils.flipUnitsInCityAfter(self.getTempFlippingCity(), iCiv)
 
@@ -2161,6 +2169,7 @@ class RiseAndFall:
 
 
         def convertSurroundingPlotCulture(self, iCiv, tTopLeft, tBottomRight):
+                tTopLeft, tBottomRight = con.getBirthFlipArea(iCiv, tTopLeft, tBottomRight)
                 
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
                         for y in range(tTopLeft[1], tBottomRight[1]+1):
@@ -2168,9 +2177,9 @@ class RiseAndFall:
                                 if (not pCurrent.isCity()):
                                         utils.convertPlotCulture(pCurrent, iCiv, 100, False)
 
-                if (len(tExceptions[iCiv])):
-                        for j in range(len(tExceptions[iCiv])):
-                                pCurrent = gc.getMap().plot( tExceptions[iCiv][j][0], tExceptions[iCiv][j][1] )
+                if (len(con.getBirthFlipExceptions(iCiv))):
+                        for j in range(len(con.getBirthFlipExceptions(iCiv))):
+                                pCurrent = gc.getMap().plot( con.getBirthFlipExceptions(iCiv)[j][0], con.getBirthFlipExceptions(iCiv)[j][1] )
                                 if (not pCurrent.isCity()):
                                         utils.convertPlotCulture(pCurrent, iCiv, 100, False)
 
@@ -2656,13 +2665,14 @@ class RiseAndFall:
 
         def initMinorBetrayal( self, iCiv ):
                 iHuman = utils.getHumanID()
-                dummy, plotList = utils.squareSearch( tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], utils.outerInvasion, [] )
+                tFlipTL, tFlipBR = con.getBirthFlipArea(iCiv)
+                dummy, plotList = utils.squareSearch(tFlipTL, tFlipBR, utils.outerInvasion, [])
                 rndNum = utils.getFakeRandNum(len(plotList), 'searching a free plot abroad human players borders') #RFCMP
                 if (len(plotList)):
                         result = plotList[rndNum]
                         if (result):
                                 self.createAdditionalUnits(iCiv, result)
-                                self.unitsBetrayal(iCiv, iHuman, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], result)
+                                self.unitsBetrayal(iCiv, iHuman, tFlipTL, tFlipBR, result)
 
 
 
@@ -2867,9 +2877,12 @@ class RiseAndFall:
                                 pVikings.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_EXPLORE_SEA, DirectionTypes.DIRECTION_SOUTH)        
                 if (iCiv == iArabia):
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 3)
-                        utils.makeUnit(con.iLongbowman, iCiv, tPlot, 4)
-                        utils.makeUnit(con.iSwordsman, iCiv, tPlot, 2)
-                        utils.makeUnit(con.iArabiaCamelarcher, iCiv, tPlot, 5)                
+                        # A larger opening army with dedicated city attackers and siege.
+                        utils.makeUnit(con.iLongbowman, iCiv, tPlot, 6)
+                        utils.makeUnit(con.iArabiaCamelarcher, iCiv, tPlot, 8)
+                        for iUnit, iCount in ((con.iSwordsman, 6), (con.iCatapult, 4)):
+                                for i in range(iCount):
+                                        pArabia.initUnit(iUnit, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
                 if (iCiv == iKhmer):
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 2)
                         utils.makeUnit(con.iArcher, iCiv, tPlot, 2)
@@ -3103,9 +3116,12 @@ class RiseAndFall:
                         
                         
                 utils.makeUnit(con.iSettler, iArabia, tCapitals[iArabia], 3)
-                utils.makeUnit(con.iLongbowman, iArabia, tCapitals[iArabia], 4)
-                utils.makeUnit(con.iSwordsman, iArabia, tCapitals[iArabia], 2)
-                utils.makeUnit(con.iArabiaCamelarcher, iArabia, tCapitals[iArabia], 5)
+                # A larger opening army with dedicated city attackers and siege.
+                utils.makeUnit(con.iLongbowman, iArabia, tCapitals[iArabia], 6)
+                utils.makeUnit(con.iArabiaCamelarcher, iArabia, tCapitals[iArabia], 8)
+                for iUnit, iCount in ((con.iSwordsman, 6), (con.iCatapult, 4)):
+                        for i in range(iCount):
+                                pArabia.initUnit(iUnit, tCapitals[iArabia][0], tCapitals[iArabia][1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
                 utils.makeUnit(con.iWorker, iArabia, tCapitals[iArabia], 2)
 
                 #RFCMP

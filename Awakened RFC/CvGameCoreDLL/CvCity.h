@@ -838,6 +838,12 @@ public:
 	void setNumFreeBuilding(BuildingTypes eIndex, int iNewValue);
 
 	bool isHasReligion(ReligionTypes eIndex) const;
+	bool isReligionBanned(ReligionTypes eReligion) const;
+	void clearReligionBan(ReligionTypes eReligion);
+	bool isShrineSuppressed(BuildingTypes eBuilding) const;
+	bool removeReligionByInquisition(ReligionTypes eReligion);
+	int getReligionRivalryPercent(ReligionTypes eReligion, bool bMissionary) const;
+	void spreadReligion(ReligionTypes eReligion, bool bArrows);
 	void setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true, bool bPreserve = false);
 	void setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings);
 
@@ -1147,6 +1153,7 @@ protected:
 
 	bool* m_pabWorkingPlot;
 	bool* m_pabHasReligion;
+	bool* m_pabReligionBanned;
 	bool* m_pabHasCorporation;
 
 	IDInfo* m_paTradeCities;

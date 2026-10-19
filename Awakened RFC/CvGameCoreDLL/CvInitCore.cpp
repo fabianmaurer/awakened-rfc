@@ -447,6 +447,11 @@ void CvInitCore::closeInactiveSlots()
 	for (int i = 0; i < MAX_CIV_PLAYERS; i++)
 	{
 		PlayerTypes eID = (PlayerTypes)i;
+        if ((eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) && getCiv(eID) == NO_CIVILIZATION)
+        {
+            setSlotStatus(eID, SS_CLOSED);
+            continue;
+        }
 		if (getSlotStatus(eID) == SS_OPEN)
 		{
 			if (/*getPitboss() ||*/ getHotseat() || getPbem()) //RFCMP
@@ -1740,6 +1745,7 @@ void CvInitCore::setReady(PlayerTypes eID, bool bReady)
 
 bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 {
+    if (eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) return false;
 	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getPlayableCiv");
 	if ( checkBounds(eID, 0, MAX_PLAYERS) )
 	{

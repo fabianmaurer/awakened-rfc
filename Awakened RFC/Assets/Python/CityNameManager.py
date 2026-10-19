@@ -1926,6 +1926,9 @@ tCityMap = (
     
 
 
+# Successor slots retain the Arabian city-name vocabulary.
+tCityMap = tCityMap[:27] + (tCityMap[12], tCityMap[12]) + tCityMap[27:]
+
 class CityNameManager:
 
         def assignName(self, city):

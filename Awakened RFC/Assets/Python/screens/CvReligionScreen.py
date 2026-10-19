@@ -316,7 +316,10 @@ class CvReligionScreen:
 			lHolyCity = pLoopCity.getHolyCity()
 			if lHolyCity:
 				for iI in range(len(lHolyCity)):
-					szCityName += u"%c" %(gc.getReligionInfo(lHolyCity[iI]).getHolyCityChar())
+					szHolySymbol = u"%c" % gc.getReligionInfo(lHolyCity[iI]).getHolyCityChar()
+					if not pLoopCity.GetCy().isHasReligion(lHolyCity[iI]):
+						szHolySymbol = u"%c" % gc.getReligionInfo(lHolyCity[iI]).getDormantHolyCityChar()
+					szCityName += szHolySymbol
 	
 			lReligions = pLoopCity.getReligions()
 			if lReligions:

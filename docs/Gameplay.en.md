@@ -180,11 +180,11 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   domestic routes. Each receiving city's population weakens the influence.
   Culture per route and direction is `floor(5 × route commerce / receiving population) / 10`:
   half the unrounded former rate, rounded down to one decimal place.
-  religion spread is `floor(2.5 × route commerce / receiving population)` percent
-  per religion present in the partner city, capped at **12%** per route.
+  religion spread is `floor(5 × route commerce at full infrastructure efficiency / receiving population)` percent
+  per religion present in the partner city, capped at **12%** per route before penalties and bonuses.
   The receiving city's owner-culture share adds a linear penalty: zero at
-  **75%**, rising to the full **12 percentage points at 100%**, which blocks
-  trade spread entirely without Tolerance. The share uses stored city culture before that route's
+  **75%**, rising to the full **12 percentage points at 100%**, which reduces
+  the base trade spread chance to zero before additive bonuses. The share uses stored city culture before that route's
   cultural exchange. A holy city subtracts another **3 percentage points** for
   religions for which it is not holy; multiple holy religions do not stack this
   penalty. Final chances are rounded down and cannot fall below zero. These
@@ -200,8 +200,8 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   historical founding rules remain; State Atheism continues to block missionary
   spread and prevents both sending and receiving religions through trade.
 - Example before cultural and holy-city resistance: a six-commerce route into a size-two city produces **1.5 culture per
-  turn** and a **7% spread chance** for each eligible partner religion. The same
-  route into a size-ten city gives 0.3 culture and a 1% religion chance.
+  turn** and a **12% spread chance** for each eligible partner religion. The same
+  route into a size-ten city gives 0.3 culture and a 3% religion chance.
 - From **Currency**, select a civilization on the Foreign Advisor's Relations
   page to **impose or lift a trade embargo**. It immediately blocks routes
   between both civilizations, remains saved, and leaves military access intact.
@@ -337,6 +337,37 @@ Tribal System and Conscription's production bonuses include workers, settlers,
 and missionaries. Conscription's food conversion is limited to military land units;
 it does not grant an additional drafting ability.
 
+### Islamic expansion event
+
+Arabia's birth-flip zone also includes eastern Egypt and Sinai (x=69–72, y=31–37), subject to the normal capital and human-player flip rules. This does not expand its stability core.
+
+Arabia starts with **6 Longbowmen, 6 Swordsmen, 8 Camel Archers and 4 Catapults**, in both normal births and the 600 AD start. Swordsmen and Catapults start with city-assault roles.
+
+When Islam is first founded in **any Arabian city**, Arabia automatically joins the Islamic cause. Mecca is not required. If another country founds Islam, it chooses between **joining** and **suppression**. Joining adopts **Islam, Monarchy, Theocracy (Legitimacy), and Holy State** without additional anarchy, converts all owned cities, and expels their other religions using the normal expulsion rules. Economy and Military civics are unchanged. The full expansion event below applies to the joining country, regardless of civilization. This replaces Arabia's former permanent conquest-conversion power.
+
+AI founders join with an **85%** chance when unaffiliated, **25%** when following another religion, and **100%** when already Islamic. Human founders outside Arabia receive an owner-addressed decision; its effects are synchronized.
+
+Suppression expels Islam from the founder's cities and raises a barbarian army of **10 units** near its holy city: **2 Longbowmen, 3 Swordsmen, 3 Camel Archers and 2 Catapults**. The army cannot move that turn. Arabia instead adopts the Islamic cause and converts its cities, receiving **population-scaled recruitment packages (see below) for each newly converted city**, including its subsequent birth flips during the rally. If Arabia has not established a city, this rally waits until it does. Arabia has **20 turns from the rally** to conquer Islam's holy city militarily. It receives no full-event benefits before that capture; a timely capture starts the full event with its normal duration. Failure retains the converted cities, adopted civics and troops but grants no full event. During the rally, Arabia automatically declares total war on the holy city's current non-Islamic owner, overriding temporary peace treaties while respecting permanent peace and vassal relationships. Ownership is checked every turn, including changes before Arabia appears. If another country holding the holy city is Islamic, that country receives the full event instead and Arabia's rally ends. AI targeting prioritizes the holy city while its owner is at war with Arabia. This does not grant the full event's wars against met civilizations or peace-lock rules.
+
+The event lasts **300 calendar years plus 10 turns**. The calendar duration is converted once into an expiry turn, then the extra turns are added (normally AD 620 to AD 1020, 40 turns). During the event:
+
+- During the event, the participating country's AI prioritizes military production, targets garrisons of two defenders in its capital and one in other quiet cities, advances with smaller assault groups, and accepts riskier attacks. City targeting also values the population-scaled recruitment reward: each expected recruit adds four target-value points, favoring developed first conquests. Previously rewarded city locations receive no recruitment weighting; normal distance and attack considerations still apply. These AI preferences end immediately with the event.
+- Every military conquest by the participating country, and Arabian birth flips during its own event, is converted to Islam. All other religions are expelled and banned using the normal expulsion rules; ordinary religious buildings are destroyed and holy cities retain dormant shrines. Holy State's normal conversion-pacification benefit still applies when eligible.
+- Each military conquest during the event also establishes immediate control of the city tile and its eight neighboring tiles. Their foreign plot culture is reset and transferred to the conqueror, with **20 extra culture per tile**. Other city centers are excluded; stored city culture is unchanged. This also applies to recaptures, but not peaceful transfers or suppression-rally conversions.
+- Each city's first acquisition through an Arabian military conquest or birth flip grants **one recruitment package plus another per four population**: `1 + floor(population / 4)` packages, each containing **2 Swordsmen, 1 Camel Archer, and 1 Catapult**, even without their normal training prerequisites. Population is measured before conquest losses and Holy State's population reward. Sizes 1–3 grant 4 units, 4–7 grant 8, and 8–11 grant 12. The same scaling applies to newly converted cities during Arabia's suppression rally, using their population before conversion. Reinforcements have no movement remaining that turn. Recaptures grant no further troops; the saved history uses city locations, including conquests before the event. Other gifts, trades and peaceful transfers grant no event rewards.
+If another civilization has already received the full jihad event, Arabia's birth flips are restricted to the Arabian Peninsula. The extra territory in Egypt, Sinai and the Levant, including Jerusalem, is excluded. This also applies to culture, units, advance warnings and map hints; an expired event still counts.
+
+- Arabia receives **one Settler** when it militarily captures Cairo during the event. The bonus is granted once, regardless of the city's current name; peaceful transfers and repeated captures grant no additional Settler. It cannot move on its arrival turn.
+- The participating country immediately declares total war on all met non-Islamic countries, and checks for new contacts each turn. A team with any living Islamic member is exempt. The event overrides ordinary peace treaties, while scenario-level permanent peace and the participating country's own master/vassal relationships remain respected. Event wars, including newly involved defensive-pact/master/vassal belligerents, cannot be ended through peace, third-party mediation, capitulation or scripted peace until expiry.
+
+Start and end announcements name the participating country and are addressed to nearby players: its team, event enemies, and countries with a city within 16 map-distance units of Islam's holy city or a participating city. Expiry stops forced conversion, recruitment and war declarations, and removes the event peace locks. Existing units, city religions/bans, adopted civics and state religion remain; ongoing wars become negotiable rather than ending automatically. Duration, troop counts and message radius use `RFCMP_ARABIAN_JIHAD_*`; suppression armies and the conquest deadline use `RFCMP_ISLAM_*` in `GlobalDefines.xml`. Pending founding decisions, the rally deadline, event timing, war locks and conquest history are saved and shared by multiplayer peers; runtime multiplayer validation remains separate.
+
+When **Arabia's own jihad expires**, its caliphate divides into new successor civilizations: **Abbasids** in Iraq, Persia and Arabia; **Fatimids** in Egypt, the Levant and eastern North Africa; and **Umayyads** in western North Africa and Iberia. Cities outside these regions join the geographically nearest realm region, including across the world's wraparound boundary. These are approximate geographic realms, not a recreation of their exact historical borders or dates. Only Arabian cities are divided, and a realm appears only if it receives at least one city. With only one represented region, Arabia becomes that single successor realm.
+
+Human Arabia chooses which eligible realm to continue governing. AI Arabia keeps the Abbasids when represented, otherwise the more populous remaining realm. The chosen realm retains the player's connection and diplomatic identity. Each other realm becomes an independent civilization in a reserved new slot, inherits known technologies, civics, state religion and existing foreign wars, and starts at peace with its siblings. Gold and each unit class are divided approximately by regional population; transports retain their cargo, and forces redeploy to their realm's cities or ports with no movement remaining. The partition grants no new army or conquest rewards. Each realm chooses an existing capital near its historical center. Regional stability data is updated and stability starts at +5. Successors use standard victories rather than Arabia's historical goals. A human decision remains pending across saves and is resolved once on every multiplayer peer; multiplayer runtime behavior remains unverified.
+
+The canonical partition causes neither city-loss stability penalties nor conquest stability rewards. Foreign-land and missing-homeland-city counters are cleared until the next regular recount.
+
 ### Religion
 
 | Civic | Required technology | Upkeep | Effects |
@@ -344,11 +375,23 @@ it does not grant an additional drafting ability.
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. |
 | **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
 | **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
-| **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. |
+| **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
 
-Tolerance adds **5 percentage points** to incoming trade spread for each missing religion and route after all culture and holy-city penalties (up to **17%**). A chance otherwise reduced to zero becomes 5%; domestic routes also qualify. State Atheism and other spread restrictions still apply.
+Tolerance adds **5 percentage points** to incoming trade spread for each missing religion and route after all culture and holy-city penalties (before rivalry and infrastructure efficiency). A chance otherwise reduced to zero becomes 5% before these factors; domestic routes also qualify. State Atheism and other spread restrictions still apply.
+
+Missionaries can only be trained for your state religion, unless you adopt **Tolerance**. Without either a state religion or Tolerance, no missionaries can be trained. This also applies to production already in progress.
+
+When **Christianity is founded**, the **two closest eligible Mediterranean coastal cities** also immediately receive it. The founding city is excluded. Selection uses actual adjacent Mediterranean water, excluding the Black Sea and Red Sea, and respects State Atheism, city bans and non-state-religion spread restrictions. Fewer than two cities are converted if insufficient eligible cities exist. These conversions use the normal Christian/Jewish replacement rule.
+
+**Christianity and Islam** multiply the base trade-spread chance remaining after cultural and holy-city penalties by **1.5**. They then receive **+10 percentage points only in cities without religion**; Christianity also receives this flat bonus in cities containing only Judaism. The flat bonus can raise a zero chance, while the multiplier cannot. Tolerance adds its separate +5 percentage points after multiplication. If the receiving city contains the other religion, Christian-Islamic rivalry reduces the resulting trade chance to **25%** and missionary success to **50%** of its normal value. Trade chances are then multiplied by infrastructure efficiency and rounded down; a valid route is required. These rules apply worldwide, without civilization or region restrictions.
+
+Successful Christian spread through trade or a missionary into a previously exclusively Jewish city has a **50%** chance to remove Judaism. The Jewish holy city is exempt. This replacement does not ban Judaism.
+
+**Expel Religion:** A missionary in an owned city containing its religion can be consumed to remove all other religions and destroy their ordinary religious buildings. A holy city retains its holy status and unique shrine, with a grey holy-city symbol. The religion counts as absent and the shrine has no effects, including income, specialists and Great Person points. Spreading the religion there again restores full holy-city status and shrine effects; destroyed ordinary buildings must be rebuilt.
+
+Expelled religions, including holy religions, are banned from trade, missionaries, events and scripted spread until the city changes owner. Adopting a new state religion immediately lifts all bans for that religion in all owned cities, without automatically spreading it. Bans and dormant holy-city status survive saving and loading; changing owner alone does not reactivate the religion. An action with no removable religions is unavailable.
 
 Holy State pacification: If your state religion was absent at conquest, spreading it once ends occupation, adds +1 population and restores one building destroyed in that conquest if it can currently be built. Holy State must be active at conquest and conversion, with the same state religion. Each recapture checks eligibility anew; pending rewards survive saving.
 
@@ -474,12 +517,11 @@ so it is an aid to planning rather than a guarantee of a flip.
 
 ### Pre-flip unrest
 
-**Three turns before the earliest possible initial flip**, cities in the
-spawning civilization's core area and exception tiles receive three turns of
-unrest using the city's occupation timer. An existing longer occupation is
-preserved. For a two-phase birth, unrest is extended until the flip two turns
-later, even if the new civilization already has its starting units. The warning
-no longer depends on a changing prediction of which birth path will be used.
+**One turn before the civilization appears**, cities in its core area and
+exception tiles receive three turns of unrest using the occupation timer. For
+the usual two-phase birth, this covers the three turns directly before the city
+flip, including the two turns after starting units appear. An existing longer
+occupation is preserved; a later flip extends unrest until the scheduled turn.
 
 Affected human owners receive a message using the civilization's early dynamic
 name, for example **“The [people] are rising up!”** This warning accompanies the inherited flip
