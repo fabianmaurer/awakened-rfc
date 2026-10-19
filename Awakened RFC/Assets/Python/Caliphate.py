@@ -82,7 +82,7 @@ def showChoice(iPlayer):
     popup.setHeaderString(CyTranslator().getText("TXT_KEY_CALIPHATE_PARTITION_TITLE", ()))
     popup.setBodyString(CyTranslator().getText("TXT_KEY_CALIPHATE_PARTITION_BODY", ()))
     for realm in realms:
-        popup.addButton(CyTranslator().getText("TXT_KEY_CIV_" + REALMS[realm] + "_DESC", ()))
+        popup.addButton(CyTranslator().getText("TXT_KEY_CALIPHATE_REGION_" + REALMS[realm], ()))
     popup.launch(False, PopupStates.POPUPSTATE_IMMEDIATE)
 
 

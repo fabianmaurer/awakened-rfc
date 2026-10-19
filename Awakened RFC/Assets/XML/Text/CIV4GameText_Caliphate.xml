@@ -146,19 +146,43 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CALIPHATE_PARTITION_TITLE</Tag>
-        <English>The division of the Caliphate</English>
-        <French>Le partage du califat</French>
-        <German>Die Teilung des Kalifats</German>
-        <Italian>La divisione del califfato</Italian>
-        <Spanish>La divisi&#243;n del califato</Spanish>
+        <English>The Legacy of the Caliphate</English>
+        <French>L'h&#233;ritage du califat</French>
+        <German>Das Erbe des Kalifats</German>
+        <Italian>L'eredit&#224; del califfato</Italian>
+        <Spanish>El legado del califato</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CALIPHATE_PARTITION_BODY</Tag>
-        <English>The jihad has ended. The caliphate divides into regional successor realms. Choose the realm you will govern. Only realms with cities are available. Cities follow their region; armies and treasury are divided by population. Each realm inherits the existing technologies, government, religion and foreign wars. The realms begin at peace with one another.</English>
-        <French>Le djihad est termin&#233;. Le califat se divise en royaumes r&#233;gionaux. Choisissez celui que vous gouvernerez. Seuls les royaumes poss&#233;dant des villes sont disponibles. Les villes suivent leur r&#233;gion ; les arm&#233;es et le tr&#233;sor sont partag&#233;s selon la population. Chaque royaume h&#233;rite des technologies, du gouvernement, de la religion et des guerres ext&#233;rieures existantes. Les royaumes commencent en paix entre eux.</French>
-        <German>Der Dschihad ist beendet. Das Kalifat zerf&#228;llt in regionale Nachfolgereiche. W&#228;hlt, welches Reich Ihr regieren werdet. Nur Reiche mit St&#228;dten stehen zur Wahl. Die St&#228;dte folgen ihrer Region; Armeen und Staatskasse werden nach Bev&#246;lkerung aufgeteilt. Jedes Reich erbt bestehende Technologien, Staatsformen, Religion und Kriege gegen andere L&#228;nder. Die Reiche beginnen im Frieden miteinander.</German>
-        <Italian>Il jihad &#232; terminato. Il califfato si divide in regni regionali. Scegli quale governare. Sono disponibili solo i regni con citt&#224;. Le citt&#224; seguono la propria regione; gli eserciti e il tesoro sono divisi in base alla popolazione. Ogni regno eredita le tecnologie, il governo, la religione e le guerre esterne esistenti. I regni iniziano in pace tra loro.</Italian>
-        <Spanish>La yihad ha terminado. El califato se divide en reinos regionales. Elige cu&#225;l gobernar. Solo est&#225;n disponibles los reinos con ciudades. Las ciudades siguen su regi&#243;n; los ej&#233;rcitos y el tesoro se reparten seg&#250;n la poblaci&#243;n. Cada reino hereda las tecnolog&#237;as, el gobierno, la religi&#243;n y las guerras exteriores existentes. Los reinos comienzan en paz entre s&#237;.</Spanish>
+        <English>The great conquests are over. From the banks of the Nile to the cities of Persia, regional rulers reach for power. The caliphate is breaking apart, yet its legacy lives on.[NEWLINE][NEWLINE]In which region will you carry on the legacy of the caliphate?</English>
+        <French>Les grandes conqu&#234;tes sont termin&#233;es. Des rives du Nil aux villes de Perse, les souverains r&#233;gionaux cherchent &#224; s'emparer du pouvoir. Le califat se disloque, mais son h&#233;ritage demeure.[NEWLINE][NEWLINE]Dans quelle r&#233;gion perp&#233;tuerez-vous l'h&#233;ritage du califat ?</French>
+        <German>Die gro&#223;en Eroberungen sind vor&#252;ber. Von den Ufern des Nils bis zu den St&#228;dten Persiens greifen regionale Herrscher nach der Macht. Das Kalifat zerf&#228;llt &#8211; doch sein Erbe lebt weiter.[NEWLINE][NEWLINE]In welcher Region wollt Ihr das Erbe des Kalifats fortf&#252;hren?</German>
+        <Italian>Le grandi conquiste sono terminate. Dalle rive del Nilo alle citt&#224; della Persia, i sovrani regionali cercano di impadronirsi del potere. Il califfato si disgrega, ma la sua eredit&#224; sopravvive.[NEWLINE][NEWLINE]In quale regione porterete avanti l'eredit&#224; del califfato?</Italian>
+        <Spanish>Las grandes conquistas han terminado. Desde las orillas del Nilo hasta las ciudades de Persia, los gobernantes regionales aspiran al poder. El califato se desmorona, pero su legado perdura.[NEWLINE][NEWLINE]&#191;En qu&#233; regi&#243;n continuar&#233;is el legado del califato?</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_ABBASID</Tag>
+        <English>Arabia, Iraq and Persia</English>
+        <French>Arabie, Irak et Perse</French>
+        <German>Arabien, Irak und Persien</German>
+        <Italian>Arabia, Iraq e Persia</Italian>
+        <Spanish>Arabia, Irak y Persia</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_FATIMID</Tag>
+        <English>Egypt, the Levant and eastern North Africa</English>
+        <French>&#201;gypte, Levant et est de l'Afrique du Nord</French>
+        <German>&#196;gypten, Levante und &#246;stliches Nordafrika</German>
+        <Italian>Egitto, Levante e Nordafrica orientale</Italian>
+        <Spanish>Egipto, Levante y este del norte de &#193;frica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_UMAYYAD</Tag>
+        <English>Western North Africa and the Iberian Peninsula</English>
+        <French>Ouest de l'Afrique du Nord et p&#233;ninsule Ib&#233;rique</French>
+        <German>Westliches Nordafrika und die Iberische Halbinsel</German>
+        <Italian>Nordafrica occidentale e penisola iberica</Italian>
+        <Spanish>Noroeste de &#193;frica y pen&#237;nsula ib&#233;rica</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_CALIPHATE_PARTITION_ANNOUNCE</Tag>

@@ -162,6 +162,40 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         if (!weights[0]) chosen = weights[1] >= weights[2] ? 1 : 2;
     }
     if (chosen < 0 || chosen > 2 || !weights[chosen]) return;
+
+    // Each successor's city limit rewards expansion into multiple regions.
+    // Release the most distant cities of realms exceeding their own limit.
+    int cityCounts[3] = { 0, 0, 0 };
+    int realmCount = 0;
+    for (uint i = 0; i < cities.size(); ++i) ++cityCounts[cities[i].realm];
+    for (int r = 0; r < 3; ++r) if (cityCounts[r]) ++realmCount;
+    const int cityLimit = 2 + 2 * realmCount; // 4, 6 or 8 per successor.
+    std::vector<PartitionCity> independentCities;
+    while (cityCounts[0] > cityLimit || cityCounts[1] > cityLimit || cityCounts[2] > cityLimit)
+    {
+        int farthest = -1, distance = -1;
+        for (uint i = 0; i < cities.size(); ++i)
+        {
+            const int realm = cities[i].realm;
+            if (cityCounts[realm] <= cityLimit) continue;
+            CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(cities[i].plot);
+            int d = plotDistance(plot->getX_INLINE(), plot->getY_INLINE(), capitalX[realm], capitalY[realm]);
+            if (d > distance || (d == distance && cities[i].plot > cities[farthest].plot))
+            { farthest = i; distance = d; }
+        }
+        --cityCounts[cities[farthest].realm];
+        independentCities.push_back(cities[farthest]);
+        cities.erase(cities.begin() + farthest);
+    }
+    // Treasury, troops and ports follow the cities the successors actually keep.
+    total = 0;
+    for (int r = 0; r < 3; ++r) { weights[r] = 0; coastal[r] = false; }
+    for (uint i = 0; i < cities.size(); ++i)
+    {
+        weights[cities[i].realm] += cities[i].population;
+        coastal[cities[i].realm] = coastal[cities[i].realm] || cities[i].coastal;
+        total += cities[i].population;
+    }
     // Consume before transfers, Python callbacks, or save opportunities.
     m_iCaliphatePartitionDecision = -1;
     m_bCaliphatePartitioned = true;
@@ -286,6 +320,26 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
             plot->setCulture(getID(), 0, false, false);
         }
     }
+    // Release surplus cities after regional culture has been divided, so their
+    // city plots cannot be reassigned to a successor by that division.
+    m_bCaliphatePartitionInProgress = true;
+    for (uint i = 0; i < independentCities.size(); ++i)
+    {
+        CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(independentCities[i].plot);
+        PlayerTypes owner = GET_PLAYER((PlayerTypes)INDEPENDENT).getNumCities() <=
+            GET_PLAYER((PlayerTypes)INDEPENDENT2).getNumCities() ? (PlayerTypes)INDEPENDENT : (PlayerTypes)INDEPENDENT2;
+        CvCity* city = plot->getPlotCity();
+        const int culture = city->getCultureTimes100(getID());
+        GET_PLAYER(owner).acquireCity(city, false, true, false);
+        city = plot->getPlotCity();
+        city->setCultureTimes100(owner, city->getCultureTimes100(owner) + culture, false, false);
+        city->setCultureTimes100(getID(), 0, false, false);
+        PlayerTypes regionalOwner = owners[independentCities[i].realm];
+        const int plotCulture = plot->getCulture(regionalOwner);
+        plot->changeCulture(owner, plotCulture, false);
+        plot->setCulture(regionalOwner, 0, false, false);
+    }
+    m_bCaliphatePartitionInProgress = false;
     const BuildingTypes palace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_PALACE");
     for (int r = 0; r < 3; ++r)
     {

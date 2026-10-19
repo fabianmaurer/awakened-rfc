@@ -48,8 +48,8 @@ Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. 
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
   Boni; Theokratie mit Toleranz erhält einen Malus. Die Summe ist begrenzt.
 - **Vorwarnungen vor Gebietswechseln:** Feld-Tooltips zeigen zukünftige
-  Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten drei
-  Runden vor dem Wechsel Unruhen.
+  Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten ab dem
+  Erscheinen der Zivilisation Unruhen bis zum Wechsel.
 - **Dynamische Ländernamen:** Deutsche und englische Namen reagieren auf
   Staatsformen, Religion, Reichsgröße sowie Vasallen- und Kolonialverhältnisse.
 - **Einheitliche Produktionskosten:** Die individuellen Produktionskosten-
@@ -373,7 +373,7 @@ Hat eine andere Zivilisation das vollständige Jihad-Ereignis bereits erhalten, 
 
 Start- und Endmeldungen nennen das teilnehmende Land und gehen gezielt an dessen Team, Ereignisgegner sowie Länder mit einer Stadt innerhalb von 16 Kartenentfernungseinheiten zur heiligen Stadt des Islam oder einer teilnehmenden Stadt. Am Ende entfallen automatische Konvertierung, Rekrutierung, Kriegserklärungen und die Ereignis-Friedenssperren. Bestehende Einheiten, Religionen/Verbote, Staatsformen und Staatsreligion bleiben erhalten; Kriege werden verhandelbar, enden aber nicht automatisch. Dauer, Truppenzahlen und Meldungsradius stehen als `RFCMP_ARABIAN_JIHAD_*`, Unterdrückungsheer und Eroberungsfrist als `RFCMP_ISLAM_*` in `GlobalDefines.xml`. Offene Gründerentscheidungen, Mobilisierungsfrist, Ereigniszeitablauf, Kriegssperren und Eroberungsgeschichte werden gespeichert und auf allen Multiplayer-Peers geführt; die Laufzeitprüfung im Multiplayer bleibt separat.
 
-Wenn **Arabiens eigener Dschihad endet**, zerfällt sein Kalifat in neue Nachfolgezivilisationen: **Abbasiden** im Irak, in Persien und Arabien; **Fatimiden** in Ägypten, der Levante und im östlichen Nordafrika; sowie **Umayyaden** im westlichen Nordafrika und auf der Iberischen Halbinsel. Städte außerhalb dieser Regionen gehören zur geografisch nächstgelegenen Reichsregion; dabei wird auch der Übergang über den linken und rechten Kartenrand berücksichtigt. Dies sind geografische Annäherungen, keine Nachbildung ihrer genauen historischen Grenzen oder Daten. Nur arabische Städte werden aufgeteilt. Ein Reich entsteht nur, wenn es mindestens eine Stadt erhält. Ist nur eine Region vertreten, wird Arabien zu diesem einzelnen Nachfolgereich.
+Wenn **Arabiens eigener Dschihad endet**, zerfällt sein Kalifat in neue Nachfolgezivilisationen: **Abbasiden** im Irak, in Persien und Arabien; **Fatimiden** in Ägypten, der Levante und im östlichen Nordafrika; sowie **Umayyaden** im westlichen Nordafrika und auf der Iberischen Halbinsel. Städte außerhalb dieser Regionen gehören zur geografisch nächstgelegenen Reichsregion; dabei wird auch der Übergang über den linken und rechten Kartenrand berücksichtigt. Dies sind geografische Annäherungen, keine Nachbildung ihrer genauen historischen Grenzen oder Daten. Nur arabische Städte werden aufgeteilt. Ein Reich entsteht nur, wenn es mindestens eine Stadt erhält. Ist nur eine Region vertreten, wird Arabien zu diesem einzelnen Nachfolgereich. Jedes Nachfolgereich erhält beim Zerfall höchstens **4 Städte bei einem erscheinenden Reich, jeweils 6 bei zwei und jeweils 8 bei drei Reichen**. Überzählige Städte werden unabhängig. Bevorzugt bleiben Städte nahe den historischen Reichszentren erhalten; jedes erscheinende Reich behält mindestens eine Stadt. Die Grenze gilt nur für die Aufteilung beim Zerfall.
 
 Ein menschlicher arabischer Spieler wählt, welches verfügbare Reich er weiterregiert. Die KI behält die Abbasiden, sofern deren Region vertreten ist, andernfalls das bevölkerungsreichere verbleibende Reich. Das gewählte Reich behält die Spielerverbindung und diplomatische Identität. Jedes andere Reich wird in einem reservierten neuen Platz zur unabhängigen Zivilisation, erbt bekannte Technologien, Staatsformen, Staatsreligion und bestehende Kriege gegen andere Länder und beginnt im Frieden mit den übrigen Nachfolgern. Gold und jede Einheitenklasse werden ungefähr nach regionaler Bevölkerung aufgeteilt; Transporte behalten ihre Ladung. Die Truppen werden ohne verbleibende Bewegung in eigene Städte oder Häfen verlegt. Die Teilung gewährt keine neuen Armeen oder Eroberungsbelohnungen. Jedes Reich erhält eine bestehende Hauptstadt nahe seinem historischen Zentrum. Die regionalen Stabilitätsdaten werden angepasst; die Stabilität beginnt bei +5. Nachfolger verfolgen normale Siegbedingungen statt Arabiens historischer Ziele. Die menschliche Entscheidung bleibt beim Speichern erhalten und wird auf jedem Mehrspieler-Client einmalig aufgelöst; das Laufzeitverhalten im Mehrspielermodus ist noch ungeprüft.
 
@@ -532,11 +532,10 @@ Verzögerung neu und dient daher als Planungshilfe.
 
 ### Unruhen vor dem Gebietswechsel
 
-**Eine Runde vor dem Erscheinen der Zivilisation** erhalten Städte in ihrem
-Kerngebiet und auf Ausnahmefeldern drei Runden Unruhen über den Besatzungszähler.
-Bei der üblichen zweistufigen Gründung deckt dies die drei Runden direkt vor
-dem Städteübertritt ab, einschließlich der zwei Runden nach Erscheinen der
-Starteinheiten. Eine bereits länger andauernde Besatzung bleibt erhalten; bei
+**Beim Erscheinen der Zivilisation** erhalten Städte in ihrem Kerngebiet und
+auf Ausnahmefeldern drei Runden Unruhen über den Besatzungszähler. Bei der
+üblichen zweistufigen Gründung bleiben die Unruhen dadurch bis zum
+Städteübertritt aktiv. Eine bereits länger andauernde Besatzung bleibt erhalten; bei
 einem späteren Übertritt werden die Unruhen bis zur vorgesehenen Runde verlängert.
 
 Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen

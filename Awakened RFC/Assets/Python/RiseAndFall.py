@@ -1721,10 +1721,10 @@ class RiseAndFall:
                                                 lNotifiedPlayers.append(iOwner)
 
         def checkFlipUnrest(self, iGameTurn, iCiv):
-                # Start one turn before appearance: the usual two-phase birth
-                # then flips cities after three continuous turns of unrest.
+                # Start on appearance so the three-turn occupation timer
+                # remains active through the usual second-phase city flip.
                 iBirthTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv)
-                iWarningTurn = iBirthTurn - 1
+                iWarningTurn = iBirthTurn
                 if iGameTurn < iWarningTurn:
                         return
                 iFlipsDelay = self.getFlipsDelay(iCiv)

@@ -49,7 +49,7 @@ These additional requirements apply equally to human players and AI. Regions ref
   Theocracy with Tolerance incurs a small penalty. The total is bounded.
 - **Spawn warnings:** tile tooltips identify pending civilizations whose core
   flip areas or additional exception tiles include that tile. Cities receive
-  unrest three turns before a flip.
+  unrest from the civilization's appearance until the flip.
 - **Dynamic country names:** English and German names respond to civic choices,
   religion, empire size, and existing vassal/colonial relationships.
 - **Production consistency:** major civilizations no longer have their original
@@ -362,7 +362,7 @@ If another civilization has already received the full jihad event, Arabia's birt
 
 Start and end announcements name the participating country and are addressed to nearby players: its team, event enemies, and countries with a city within 16 map-distance units of Islam's holy city or a participating city. Expiry stops forced conversion, recruitment and war declarations, and removes the event peace locks. Existing units, city religions/bans, adopted civics and state religion remain; ongoing wars become negotiable rather than ending automatically. Duration, troop counts and message radius use `RFCMP_ARABIAN_JIHAD_*`; suppression armies and the conquest deadline use `RFCMP_ISLAM_*` in `GlobalDefines.xml`. Pending founding decisions, the rally deadline, event timing, war locks and conquest history are saved and shared by multiplayer peers; runtime multiplayer validation remains separate.
 
-When **Arabia's own jihad expires**, its caliphate divides into new successor civilizations: **Abbasids** in Iraq, Persia and Arabia; **Fatimids** in Egypt, the Levant and eastern North Africa; and **Umayyads** in western North Africa and Iberia. Cities outside these regions join the geographically nearest realm region, including across the world's wraparound boundary. These are approximate geographic realms, not a recreation of their exact historical borders or dates. Only Arabian cities are divided, and a realm appears only if it receives at least one city. With only one represented region, Arabia becomes that single successor realm.
+When **Arabia's own jihad expires**, its caliphate divides into new successor civilizations: **Abbasids** in Iraq, Persia and Arabia; **Fatimids** in Egypt, the Levant and eastern North Africa; and **Umayyads** in western North Africa and Iberia. Cities outside these regions join the geographically nearest realm region, including across the world's wraparound boundary. These are approximate geographic realms, not a recreation of their exact historical borders or dates. Only Arabian cities are divided, and a realm appears only if it receives at least one city. With only one represented region, Arabia becomes that single successor realm. Each successor realm receives at most **4 cities if one realm appears, 6 each if two appear, and 8 each if three appear** at partition. Surplus cities become independent. Cities near the historical realm centers are retained preferentially, and each appearing realm keeps at least one city. This limit applies only to the partition.
 
 Human Arabia chooses which eligible realm to continue governing. AI Arabia keeps the Abbasids when represented, otherwise the more populous remaining realm. The chosen realm retains the player's connection and diplomatic identity. Each other realm becomes an independent civilization in a reserved new slot, inherits known technologies, civics, state religion and existing foreign wars, and starts at peace with its siblings. Gold and each unit class are divided approximately by regional population; transports retain their cargo, and forces redeploy to their realm's cities or ports with no movement remaining. The partition grants no new army or conquest rewards. Each realm chooses an existing capital near its historical center. Regional stability data is updated and stability starts at +5. Successors use standard victories rather than Arabia's historical goals. A human decision remains pending across saves and is resolved once on every multiplayer peer; multiplayer runtime behavior remains unverified.
 
@@ -517,10 +517,9 @@ so it is an aid to planning rather than a guarantee of a flip.
 
 ### Pre-flip unrest
 
-**One turn before the civilization appears**, cities in its core area and
-exception tiles receive three turns of unrest using the occupation timer. For
-the usual two-phase birth, this covers the three turns directly before the city
-flip, including the two turns after starting units appear. An existing longer
+**When the civilization appears**, cities in its core area and exception tiles
+receive three turns of unrest using the occupation timer. For the usual
+two-phase birth, this keeps unrest active until the city flip. An existing longer
 occupation is preserved; a later flip extends unrest until the scheduled turn.
 
 Affected human owners receive a message using the civilization's early dynamic
