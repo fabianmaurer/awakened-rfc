@@ -80,6 +80,29 @@ China bildet Nahkampf- und Schießpulvereinheiten mit **1,5-facher Geschwindigke
 aus; die Maya haben **40% geringere Forschungskosten bis zum Ende des Mittelalters**;
 Persien erhält **+2 Stabilität je eroberter Stadt**.
 
+## Wissen durch Eroberungen
+
+Alle Forschungskosten erhalten zusätzlich den globalen Faktor **1,1**
+(`RFCMP_GLOBAL_RESEARCH_COST_PERCENT = 110` in `GlobalDefines.xml`).
+Wer eine militärisch eroberte Stadt behält, erhält Wissen für eine gleichverteilt
+zufällig gewählte Technologie: Der frühere Besitzer muss sie kennen, das eigene
+Team darf sie noch nicht kennen und der Eroberer muss sie bereits erforschen können.
+Unabhängige, kleinere Fraktionen und Barbaren geben keine Wissensbelohnung;
+kleinere Fraktionen und Barbaren erhalten selbst keine.
+
+Verglichen mit der Epoche des früheren Besitzers gibt eine Technologie seiner
+**aktuellen Epoche 5% + 2 Prozentpunkte je Bevölkerung**, eine Technologie der
+**vorherigen Epoche 10% + 4 Prozentpunkte je Bevölkerung**, eine **noch ältere
+Technologie den vollständigen Abschluss**. Es zählt die Bevölkerung vor
+Eroberungsverlusten. Prozente beziehen sich auf die gesamten eigenen
+Forschungskosten; der Gewinn endet beim Abschluss, Überschüsse verfallen.
+
+Jeder Stadtstandort kann jedem Team nur einmal Wissen geben, auch nach
+Zerstörung und Neugründung. Niederbrennen, Umsiedeln, Schenkungen, Handel und
+friedliche Besitzerwechsel geben kein Wissen. Menschen und KI folgen denselben
+Regeln. Offene Belohnungen und die Standortgeschichte werden gespeichert;
+Mehrspieler-Laufzeitverhalten bleibt ungeprüft.
+
 ## Technologieabhängiges Wachstum
 
 Alle Zivilisationen haben einen **Wachstumsmalus von 30% auf den positiven

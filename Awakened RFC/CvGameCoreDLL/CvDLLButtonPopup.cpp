@@ -320,6 +320,7 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			CvCity* pCity = GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCity(info.getData1());
 			if (NULL != pCity)
 			{
+				CvMessageControl::getInstance().sendDoTask(info.getData1(), TASK_KEEP_CONQUEST_RESEARCH, -1, -1, false, false, false, false);
 				pCity->chooseProduction();
 				CvEventReporter::getInstance().cityAcquiredAndKept(GC.getGameINLINE().getActivePlayer(), pCity);
 			}

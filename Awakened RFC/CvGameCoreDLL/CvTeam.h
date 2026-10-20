@@ -84,6 +84,7 @@ public:
 	int countNumAIUnitsByArea(CvArea* pArea, UnitAITypes eUnitAI) const;								// Exposed to Python
 	int countEnemyDangerByArea(CvArea* pArea) const;																		// Exposed to Python
 
+	bool claimConquestResearch(int iPlot);
 	int getResearchCost(TechTypes eTech) const;																// Exposed to Python
 	int getResearchLeft(TechTypes eTech) const;																// Exposed to Python
 
@@ -441,6 +442,7 @@ protected:
 	int** m_ppaaiImprovementYieldChange;
 
 	std::vector<BonusTypes> m_aeRevealedBonuses;
+	std::vector<int> m_aiConquestResearchPlots;
 
 	void doWarWeariness();
 

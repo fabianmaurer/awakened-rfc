@@ -157,6 +157,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 	// Uninit class
 	uninit();
 
+	m_aiConquestResearchPlots.clear();
 	m_iNumMembers = 0;
 	m_iAliveCount = 0;
 	m_iEverAliveCount = 0;
@@ -2578,6 +2579,13 @@ int CvTeam::countEnemyDangerByArea(CvArea* pArea) const
 }
 
 
+bool CvTeam::claimConquestResearch(int iPlot)
+{
+	if (std::find(m_aiConquestResearchPlots.begin(), m_aiConquestResearchPlots.end(), iPlot) != m_aiConquestResearchPlots.end()) return false;
+	m_aiConquestResearchPlots.push_back(iPlot);
+	return true;
+}
+
 int CvTeam::getResearchCost(TechTypes eTech) const
 {
 	int iCost;
@@ -2746,6 +2754,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * 135 + 99) / 100));
 	}
 
+	iCost = (int)std::min((__int64)MAX_INT, ((__int64)iCost * GC.getDefineINT("RFCMP_GLOBAL_RESEARCH_COST_PERCENT")) / 100);
 	return std::max(1, iCost);
 }
 
@@ -6349,6 +6358,14 @@ void CvTeam::read(FDataStreamBase* pStream)
 	uint uiFlag=0;
 	pStream->Read(&uiFlag);	// flags for expansion
 
+	int iConquestCount;
+	pStream->Read(&iConquestCount);
+	for (int iConquest = 0; iConquest < iConquestCount; ++iConquest)
+	{
+		int iPlot;
+		pStream->Read(&iPlot);
+		m_aiConquestResearchPlots.push_back(iPlot);
+	}
 	pStream->Read(&m_iNumMembers);
 	pStream->Read(&m_iAliveCount);
 	pStream->Read(&m_iEverAliveCount);
@@ -6451,6 +6468,9 @@ void CvTeam::write(FDataStreamBase* pStream)
 	uint uiFlag = 1;
 	pStream->Write(uiFlag);		// flag for expansion
 
+	pStream->Write((int)m_aiConquestResearchPlots.size());
+	for (std::vector<int>::const_iterator it = m_aiConquestResearchPlots.begin(); it != m_aiConquestResearchPlots.end(); ++it)
+		pStream->Write(*it);
 	pStream->Write(m_iNumMembers);
 	pStream->Write(m_iAliveCount);
 	pStream->Write(m_iEverAliveCount);

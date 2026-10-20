@@ -1781,6 +1781,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	if (bConquest && !bTrade) pNewCity->prepareConquestResearch(eOldOwner, iPopulation);
+
 	// Arm only after ownership transfer has restored religions and occupation.
 	pNewCity->setGodStateConquest(eGodStateReligion, aeGodStateDestroyedBuildings);
 	// Only a military capture within the rally window unlocks the full event.
@@ -1892,6 +1894,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				}
 				else
 				{
+					pNewCity->grantConquestResearch();
 					pNewCity->chooseProduction();
 					CvEventReporter::getInstance().cityAcquiredAndKept(getID(), pNewCity);
 				}

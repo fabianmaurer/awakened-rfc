@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_CONQUEST_RESEARCH</Tag>
+    <English>Captured knowledge in %s1_City: %D2_Research[ICON_RESEARCH] towards [COLOR_HIGHLIGHT_TEXT]%s3_Tech[COLOR_REVERT].</English>
+    <French>Connaissances acquises &#224; %s1_City : %D2_Research[ICON_RESEARCH] pour [COLOR_HIGHLIGHT_TEXT]%s3_Tech[COLOR_REVERT].</French>
+    <German>Erobertes Wissen in %s1_City: %D2_Research[ICON_RESEARCH] f&#252;r die Technologie [COLOR_HIGHLIGHT_TEXT]%s3_Tech[COLOR_REVERT].</German>
+    <Italian>Conoscenze acquisite a %s1_City: %D2_Research[ICON_RESEARCH] verso [COLOR_HIGHLIGHT_TEXT]%s3_Tech[COLOR_REVERT].</Italian>
+    <Spanish>Conocimientos capturados en %s1_City: %D2_Research[ICON_RESEARCH] hacia [COLOR_HIGHLIGHT_TEXT]%s3_Tech[COLOR_REVERT].</Spanish>
+  </TEXT>
+</Civ4GameText>

@@ -77,6 +77,26 @@ Named unique powers apply independently of the shared cost baseline. China's
 melee and gunpowder units train at **1.5x speed**; Maya have **40% lower research
 costs through the Medieval era**; Persia gains **+2 stability per conquered city**.
 
+## Knowledge from conquest
+
+All research costs receive an additional global **1.1× multiplier**
+(`RFCMP_GLOBAL_RESEARCH_COST_PERCENT = 110` in `GlobalDefines.xml`).
+Keeping a militarily conquered city grants knowledge toward one uniformly random
+technology known by its previous owner, unknown to the conquering team, and
+currently researchable by the conqueror. Independent, minor and Barbarian cities
+grant no knowledge; minor and Barbarian conquerors receive none either.
+
+Relative to the previous owner's era, a technology from the **current era grants
+5% + 2 percentage points per population**, one from the **previous era grants
+10% + 4 percentage points per population**, and an **older technology is completed
+in full**. Use population before conquest losses. Percentages use the conqueror's
+total research cost; rewards stop at completion and excess progress is discarded.
+
+Each city location can reward each team only once, including after razing and
+resettlement. Razing, relocation, gifts, trades and peaceful transfers grant no
+knowledge. Humans and AI follow the same rules. Pending rewards and location
+history are saved; in-game multiplayer behavior remains unverified.
+
 ## Technology-based growth
 
 All civilizations have a **30% penalty to positive food surplus used for growth**,

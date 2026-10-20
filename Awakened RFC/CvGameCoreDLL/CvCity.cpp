@@ -586,6 +586,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iDefenseDamage = 0;
 	m_iLastDefenseDamage = 0;
 	m_iOccupationTimer = 0;
+	m_eConquestResearchTech = NO_TECH;
+	m_iConquestResearchPercent = 0;
 	m_eGodStateConquestReligion = NO_RELIGION;
 	m_aeGodStateDestroyedBuildings.clear();
 	m_iCultureUpdateTimer = 0;
@@ -1302,6 +1304,10 @@ void CvCity::doTask(TaskTypes eTask, int iData1, int iData2, bool bOption, bool 
 {
 	switch (eTask)
 	{
+	case TASK_KEEP_CONQUEST_RESEARCH:
+		grantConquestResearch();
+		break;
+
 	case TASK_RAZE:
 		GET_PLAYER(getOwnerINLINE()).raze(this);
 		break;
@@ -11217,6 +11223,48 @@ bool CvCity::isHasReligion(ReligionTypes eIndex) const
 }
 
 
+// Prepared before conquest side effects; applied only after a synchronized keep.
+void CvCity::prepareConquestResearch(PlayerTypes eOldOwner, int iPopulation)
+{
+	const CvPlayer& kOldOwner = GET_PLAYER(eOldOwner);
+	const CvPlayer& kOwner = GET_PLAYER(getOwnerINLINE());
+	if (kOldOwner.isBarbarian() || kOldOwner.isMinorCiv() ||
+		kOldOwner.getID() == INDEPENDENT || kOldOwner.getID() == INDEPENDENT2 ||
+		kOwner.isBarbarian() || kOwner.isMinorCiv() || kOwner.getTeam() == kOldOwner.getTeam()) return;
+	std::vector<TechTypes> aeEligible;
+	for (int i = 0; i < GC.getNumTechInfos(); ++i)
+	{
+		TechTypes eTech = (TechTypes)i;
+		if (GET_TEAM(kOldOwner.getTeam()).isHasTech(eTech) &&
+			!GET_TEAM(getTeam()).isHasTech(eTech) && kOwner.canResearch(eTech))
+			aeEligible.push_back(eTech);
+	}
+	if (aeEligible.empty()) return;
+	m_eConquestResearchTech = aeEligible[GC.getGameINLINE().getSorenRandNum((int)aeEligible.size(), "Conquest research")];
+	const int iEraGap = kOldOwner.getCurrentEra() - GC.getTechInfo(m_eConquestResearchTech).getEra();
+	m_iConquestResearchPercent = (iEraGap >= 2) ? 100 :
+		((iEraGap == 1) ? 10 + 4 * iPopulation : 5 + 2 * iPopulation);
+}
+
+void CvCity::grantConquestResearch()
+{
+	const TechTypes eTech = m_eConquestResearchTech;
+	const int iPercent = std::min(100, m_iConquestResearchPercent);
+	// Consume before applying effects, including any callbacks on tech completion.
+	m_eConquestResearchTech = NO_TECH;
+	m_iConquestResearchPercent = 0;
+	CvTeam& kTeam = GET_TEAM(getTeam());
+	if (eTech == NO_TECH || kTeam.isHasTech(eTech) || !GET_PLAYER(getOwnerINLINE()).canResearch(eTech)) return;
+	if (!kTeam.claimConquestResearch(GC.getMapINLINE().plotNum(getX_INLINE(), getY_INLINE()))) return;
+	const int iResearch = std::min(kTeam.getResearchLeft(eTech),
+		(int)(((__int64)kTeam.getResearchCost(eTech) * iPercent) / 100));
+	if (iResearch <= 0) return;
+	kTeam.changeResearchProgress(eTech, iResearch, getOwnerINLINE());
+	CvWString szMessage = gDLL->getText("TXT_KEY_RFCMP_CONQUEST_RESEARCH", getNameKey(), iResearch, GC.getTechInfo(eTech).getTextKeyWide());
+	gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szMessage, NULL,
+		MESSAGE_TYPE_MINOR_EVENT, GC.getTechInfo(eTech).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), getX_INLINE(), getY_INLINE(), true, true);
+}
+
 void CvCity::setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings)
 {
 	m_eGodStateConquestReligion = eReligion;
@@ -13199,6 +13247,8 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iDefenseDamage);
 	pStream->Read(&m_iLastDefenseDamage);
 	pStream->Read(&m_iOccupationTimer);
+	pStream->Read((int*)&m_eConquestResearchTech);
+	pStream->Read(&m_iConquestResearchPercent);
 	pStream->Read((int*)&m_eGodStateConquestReligion);
 	int iDestroyedBuildings;
 	pStream->Read(&iDestroyedBuildings);
@@ -13490,6 +13540,8 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iDefenseDamage);
 	pStream->Write(m_iLastDefenseDamage);
 	pStream->Write(m_iOccupationTimer);
+	pStream->Write((int)m_eConquestResearchTech);
+	pStream->Write(m_iConquestResearchPercent);
 	pStream->Write((int)m_eGodStateConquestReligion);
 	pStream->Write((int)m_aeGodStateDestroyedBuildings.size());
 	for (std::vector<BuildingTypes>::const_iterator it = m_aeGodStateDestroyedBuildings.begin(); it != m_aeGodStateDestroyedBuildings.end(); ++it)

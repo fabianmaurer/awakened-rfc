@@ -845,6 +845,8 @@ public:
 	int getReligionRivalryPercent(ReligionTypes eReligion, bool bMissionary) const;
 	void spreadReligion(ReligionTypes eReligion, bool bArrows);
 	void setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true, bool bPreserve = false);
+	void prepareConquestResearch(PlayerTypes eOldOwner, int iPopulation);
+	void grantConquestResearch();
 	void setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings);
 
 	bool isHasCorporation(CorporationTypes eIndex) const;
@@ -1070,6 +1072,8 @@ protected:
 	int m_iDefenseDamage;
 	int m_iLastDefenseDamage;
 	int m_iOccupationTimer;
+	TechTypes m_eConquestResearchTech;
+	int m_iConquestResearchPercent;
 	ReligionTypes m_eGodStateConquestReligion;
 	std::vector<BuildingTypes> m_aeGodStateDestroyedBuildings;
 	int m_iCultureUpdateTimer;
