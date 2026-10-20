@@ -38,10 +38,13 @@ reach and the workable city radius are unchanged.
 ## India and the Huna invasion
 
 Around **AD 500**, one barbarian Huna army enters Punjab east of the mountains:
-**eight horse archers, four swordsmen and two spearmen**. India receives a warning
+**seven horse archers, three swordsmen and two spearmen** (12 units). India receives a warning
 three turns earlier (around AD 450). Three horse archers are assigned to pillage;
 the other cavalry and the swordsmen are assigned to attack cities, supported by
-spearmen. All eight horse archers receive **Flanking I and II**, raising their
+spearmen. The assault troops continue selecting reachable Indian cities after
+conquest, advancing in groups of at least three while retaining a city defender
+and their normal healing and attack-odds checks. This behavior applies only to
+the Huna invasion. All seven horse archers receive **Flanking I and II**, raising their
 withdrawal chance from 20% to **50%**.
 
 The force enters together on an empty, passable land tile between `(87, 39)` and

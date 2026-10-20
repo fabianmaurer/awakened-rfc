@@ -2326,6 +2326,8 @@ void CvUnitAI::AI_attackCityMove()
 	OBSERVER_PERFORMANCE("unitAI.AI_attackCityMove");
 	PROFILE_FUNC();
 	const bool bArabianJihad = GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad();
+	const bool bHunaInvasion = isBarbarian() && getScriptData() == "RFCMP_HUNA_INVASION"
+		&& GET_PLAYER((PlayerTypes)INDIA).isAlive() && GET_PLAYER((PlayerTypes)INDIA).getNumCities() > 0;
 
 	bool bIgnoreFaster = false;
 	if (GET_PLAYER(getOwnerINLINE()).AI_isDoStrategy(AI_STRATEGY_FASTMOVERS))
@@ -2347,7 +2349,7 @@ void CvUnitAI::AI_attackCityMove()
     }
 
     AreaAITypes eAreaAIType = area()->getAreaAIType(getTeam());
-    bool bLandWar = !isBarbarian() && ((eAreaAIType == AREAAI_OFFENSIVE) || (eAreaAIType == AREAAI_DEFENSIVE) || (eAreaAIType == AREAAI_MASSING));
+    bool bLandWar = bHunaInvasion || (!isBarbarian() && ((eAreaAIType == AREAAI_OFFENSIVE) || (eAreaAIType == AREAAI_DEFENSIVE) || (eAreaAIType == AREAAI_MASSING)));
 
 	if (plot()->isCity())
 	{
@@ -2377,7 +2379,8 @@ void CvUnitAI::AI_attackCityMove()
 		}
 	}
 
-	if (AI_guardCity(false, false, 1))
+	// Keep a defender behind without turning the whole invasion into a garrison.
+	if ((!bHunaInvasion || plot()->plotCount(PUF_canDefend, -1, -1, getOwnerINLINE()) <= getGroup()->getNumUnits()) && AI_guardCity(false, false, 1))
 	{
 		AI_recordObserverDecision("AI_attackCityMove:AI_guardCity(false, false, 1)");
 		return;
@@ -2434,7 +2437,7 @@ void CvUnitAI::AI_attackCityMove()
 	}
 
 	bool bHuntBarbs = false;
-	if (area()->getCitiesPerPlayer(BARBARIAN_PLAYER) > 0)
+	if (!bHunaInvasion && area()->getCitiesPerPlayer(BARBARIAN_PLAYER) > 0)
 	{
 		if ((area()->getAreaAIType(getTeam()) != AREAAI_OFFENSIVE) && (area()->getAreaAIType(getTeam()) != AREAAI_DEFENSIVE))
 		{
@@ -2483,7 +2486,7 @@ void CvUnitAI::AI_attackCityMove()
 	}
 
 	// Smaller event armies advance instead of waiting for a large stack.
-	const int iRequiredStack = bHuntBarbs ? 3 : AI_stackOfDoomExtra();
+	const int iRequiredStack = (bHuntBarbs || bHunaInvasion) ? 3 : AI_stackOfDoomExtra();
 	bool bReadyToAttack = getGroup()->getNumUnits() >= (bArabianJihad ? std::min(4, iRequiredStack) : iRequiredStack);
 	if (GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance && getOwnerINLINE() == ARABIA)
 	{
@@ -2573,7 +2576,7 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (!bReadyToAttack && !noDefensiveBonus())
 	{
-		if (AI_guardCity(false, false))
+		if ((!bHunaInvasion || plot()->plotCount(PUF_canDefend, -1, -1, getOwnerINLINE()) <= getGroup()->getNumUnits()) && AI_guardCity(false, false))
 		{
 			AI_recordObserverDecision("AI_attackCityMove:AI_guardCity(false, false)");
 			return;
@@ -2615,7 +2618,7 @@ void CvUnitAI::AI_attackCityMove()
 		//Rhye - end
 		else if (bLandWar)
 		{
-			if (AI_targetCity())
+			if (AI_targetCity(0, bHunaInvasion ? (PlayerTypes)INDIA : NO_PLAYER))
 			{
 				AI_recordObserverDecision("AI_attackCityMove:AI_targetCity()");
 				return;
@@ -10999,7 +11002,7 @@ bool CvUnitAI::AI_exploreRange(int iRange)
 
 
 // Returns true if a mission was pushed...
-bool CvUnitAI::AI_targetCity(int iFlags)
+bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer)
 {
 	PROFILE_FUNC();
 	AI_recordObserverCityTarget("no_reachable_city");
@@ -11020,7 +11023,7 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 
 	pTargetCity = area()->getTargetCity(getOwnerINLINE());
 
-	if (pTargetCity != NULL)
+	if (pTargetCity != NULL && (eTargetPlayer == NO_PLAYER || pTargetCity->getOwnerINLINE() == eTargetPlayer))
 	{
 		if (AI_potentialEnemy(pTargetCity->getTeam(), pTargetCity->plot()))
 		{
@@ -11035,6 +11038,7 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 	{
 		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
+			if (eTargetPlayer != NO_PLAYER && iI != eTargetPlayer) continue;
 			if (GET_PLAYER((PlayerTypes)iI).isAlive())
 			{
 				for (pLoopCity = GET_PLAYER((PlayerTypes)iI).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iI).nextCity(&iLoop))

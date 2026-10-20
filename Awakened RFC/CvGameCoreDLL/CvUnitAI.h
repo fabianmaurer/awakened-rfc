@@ -163,7 +163,7 @@ protected:
 	bool AI_goody(int iRange);
 	bool AI_explore();
 	bool AI_exploreRange(int iRange);
-	bool AI_targetCity(int iFlags = 0);
+	bool AI_targetCity(int iFlags = 0, PlayerTypes eTargetPlayer = NO_PLAYER);
 	bool AI_targetBarbCity();
 	bool AI_targetMinorCity(int iMinorCiv); //Rhye
 	bool AI_bombardCity();

@@ -378,9 +378,9 @@ class Barbs:
                 tSpawn = lPlots[utils.getFakeRandNum(len(lPlots), 'Huna invasion')]
                 # One shared entry point keeps the invasion together. Three
                 # cavalry pillage; the rest of the force can assault cities.
-                lArmy = ((con.iHorseArcher, 5, UnitAITypes.UNITAI_ATTACK_CITY),
+                lArmy = ((con.iHorseArcher, 4, UnitAITypes.UNITAI_ATTACK_CITY),
                          (con.iHorseArcher, 3, UnitAITypes.UNITAI_PILLAGE),
-                         (con.iSwordsman, 4, UnitAITypes.UNITAI_ATTACK_CITY),
+                         (con.iSwordsman, 3, UnitAITypes.UNITAI_ATTACK_CITY),
                          (con.iSpearman, 2, UnitAITypes.UNITAI_COUNTER))
                 import GameObserver
                 iFlanking1 = gc.getInfoTypeForString("PROMOTION_FLANKING1")
@@ -388,6 +388,7 @@ class Barbs:
                 for iUnit, iCount, iAI in lArmy:
                         for i in range(iCount):
                                 unit = pBarbarian.initUnit(iUnit, tSpawn[0], tSpawn[1], iAI, DirectionTypes.DIRECTION_SOUTH)
+                                unit.setScriptData("RFCMP_HUNA_INVASION")
                                 if (iUnit == con.iHorseArcher):
                                         unit.setHasPromotion(iFlanking1, True)
                                         unit.setHasPromotion(iFlanking2, True)

@@ -41,11 +41,15 @@ unverändert.
 ## Indien und die Huna-Invasion
 
 Um **500 n. Chr.** erscheint einmalig ein barbarisches Huna-Heer an der
-punjabischen Grenze östlich der Berge: **acht berittene Bogenschützen, vier
-Schwertkämpfer und zwei Speerkämpfer**. Indien erhält drei Runden zuvor (um 450 n.
+punjabischen Grenze östlich der Berge: **sieben berittene Bogenschützen, drei
+Schwertkämpfer und zwei Speerkämpfer** (12 Einheiten). Indien erhält drei Runden zuvor (um 450 n.
 Chr.) eine Warnung. Drei Reiter sollen plündern; die übrigen Reiter und die
 Schwertkämpfer sollen mit Unterstützung der Speerkämpfer Städte angreifen.
-Alle acht berittenen Bogenschützen erhalten **Flanke I und II**; ihre
+Die Angriffstruppen wählen auch nach einer Eroberung weitere erreichbare indische
+Städte als Ziele. Sie rücken in Gruppen ab drei Einheiten vor, lassen einen
+Stadtverteidiger zurück und behalten ihre normalen Heilungs- und Angriffschancenprüfungen.
+Dieses Verhalten gilt nur für die Huna-Invasion.
+Alle sieben berittenen Bogenschützen erhalten **Flanke I und II**; ihre
 Rückzugschance steigt damit von 20% auf **50%**. Das Heer erscheint gemeinsam
 auf einem freien, passierbaren Landfeld zwischen `(87, 39)` und `(89, 41)`,
 auch direkt neben Städten. Bevorzugt wird unbeanspruchtes oder barbarisches Land,
