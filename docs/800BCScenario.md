@@ -7,17 +7,28 @@ The map, forces and expansion rules are unchanged by this audit.
 
 | Slot | Starting country identity | Displayed ruler | Government | Labor | Military | Religion |
 | --- | --- | --- | --- | --- | --- | --- |
-| Egypt | Pharaonic Egypt | Pharaoh Shoshenq III | Pharaonic Kingship | Slavery | Militia | State Religion |
+| Egypt | Pharaonic Egypt | Pharaoh Shoshenq III | Pharaonic Kingship | Slavery | Warrior Society | State Religion |
 | India | Kuru and Panchala | Kesin Dalbhya | Monarchy | Self-sufficiency | Warrior Society | State Religion |
-| China | Zhou Kingdom | Xuan of Zhou | Monarchy | Self-sufficiency | Militia | Ancestor Cult |
-| Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Militia | State Religion |
-| Greece | Greek City-States | Ariphron | Monarchy | Slavery | Warrior Society | Ancestor Cult |
-| Persia | Iranian Tribes | Persian tribal chiefs | Tribal System | Slavery | Militia | State Religion |
-| Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Militia | Ancestor Cult |
-| Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | State Religion |
+| China | Zhou Kingdom | Xuan of Zhou | Monarchy | Self-sufficiency | Warrior Society | Ancestor Cult |
+| Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Warrior Society | State Religion |
+| Greece | Greek City-States | Ariphron | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
+| Persia | Iranian Tribes | Persian tribal chiefs | Tribal System | Slavery | Warrior Society | Ancestor Cult |
+| Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
+| Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | Ancestor Cult |
 | Japan | Peoples of the Japanese Islands | Japanese clan elders | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
 
-Carthage uses Ancestor Cult rather than State Religion in this start.
+Carthage, Persia and Rome use Ancestor Cult rather than State Religion in this
+start. For Persia and Rome this represents local and clan cults before their
+later imperial religious institutions; it is a broad pagan-religion abstraction,
+not a claim that ancestor worship was their only religious practice.
+
+Review on 2026-10-20 retained the other eighth-century BC institutional choices:
+Egyptian and Babylonian kingship, late Vedic and Zhou monarchy, hereditary early
+Greek leadership, traditional Carthaginian kingship, and the early tribal
+Persian, Roman and Japanese starts. Slavery represents an available institution,
+not the labor status of the entire population. Naval Warfare represents Greek
+and Phoenician seafaring, not the later Athenian naval empire. No classical
+republics, medieval feudal retinues or modern institutions are imposed.
 
 All nine use Despotism in the legitimacy column (shown as Divine Kingship for
 Egypt). These are gameplay approximations of local institutions, not claims of
@@ -27,7 +38,7 @@ unified Greek kingdom. Kuru and Panchala represent the wider late Vedic north
 Indian slot, whose existing cities extend beyond those kingdoms.
 
 India, China, Greece and Carthage receive Monarchy alongside their existing
-scenario technologies. No Republic, Plutocracy, Serfdom or Knighthood is requested
+scenario technologies. No Republic, Plutocracy, Serfdom or Feudal Retinues is requested
 for an 800 BC start. The original technology packages, including their broader
 historical simplifications, are otherwise retained. Egypt still has its unique
 early access to Slavery. Later civilizations keep the normal spawn profiles.

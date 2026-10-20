@@ -8,14 +8,20 @@ gc = CyGlobalContext()
 
 l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
+,
+0 # Xiongnu
 ]
 l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
+,
+0 # Xiongnu
 ]
-l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, -1
+,
+-1 # Xiongnu
 ]
 
 # initialise player variables to player IDs from WBS
@@ -49,27 +55,28 @@ iTurkey = 25
 iAmerica = 26
 iCaliphateSlot1 = 27
 iCaliphateSlot2 = 28
-iNumPlayers = 29
-iNumMajorPlayers = 29
-iNumActivePlayers = 29
-iIndependent = 29
-iIndependent2 = 30
-iNative = 31
-iCeltia = 32
-iNumTotalPlayers = 33
-iBarbarian = 33
-iNumTotalPlayersB = 34
+iXiongnu = 29
+iNumPlayers = 30
+iNumMajorPlayers = 30
+iNumActivePlayers = 30
+iIndependent = 30
+iIndependent2 = 31
+iNative = 32
+iCeltia = 33
+iNumTotalPlayers = 34
+iBarbarian = 34
+iNumTotalPlayersB = 35
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
-                [iIndia, iChina, iPersia, iJapan, iKhmer, iRussia, iMongolia], #Asian
+                [iIndia, iChina, iPersia, iJapan, iKhmer, iRussia, iMongolia, iXiongnu], #Asian
                 [iEgypt, iBabylonia, iPersia, iArabia, iTurkey], #MiddleEastern
                 [iEgypt, iGreece, iCarthage, iRome], #Mediterranean
                 [iEgypt, iCarthage, iEthiopia, iMali], #African
                 [iMaya, iInca, iAztecs, iAmerica]] #American
 
 lCivStabilityGroups = [[iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
-                [iIndia, iChina, iJapan, iKhmer, iMongolia], #Asian
+                [iIndia, iChina, iJapan, iKhmer, iMongolia, iXiongnu], #Asian
                 [iBabylonia, iPersia, iArabia, iTurkey], #MiddleEastern
                 [iEgypt, iGreece, iCarthage, iRome, iEthiopia, iMali], #Mediterranean
                 [iMaya, iInca, iAztecs, iAmerica]] #American
@@ -78,7 +85,7 @@ lCivStabilityGroups = [[iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, 
 lCivBioOldWorld = [iEgypt, iIndia, iChina, iBabylonia, iGreece, iPersia, iCarthage, iRome, iJapan, \
                    iEthiopia, iVikings, iArabia, iKhmer, iSpain, iFrance, iEngland, iGermany, iRussia, \
                    iNetherlands, iMali, iTurkey, iPortugal, iMongolia, iAmerica, \
-                   iIndependent, iIndependent2, iCeltia, iBarbarian]
+                   iIndependent, iIndependent2, iCeltia, iXiongnu, iBarbarian]
 lCivBioNewWorld = [iMaya, iInca, iAztecs] #, iNative]
 
 
@@ -108,7 +115,7 @@ iLime = 100
 lNeighbours = [
 [iBabylonia, iGreece, iPersia, iCarthage, iRome, iEthiopia, iArabia, iTurkey], #Egypt
 [iChina, iPersia, iKhmer, iMongolia], #India
-[iIndia, iJapan, iKhmer, iMongolia], #China
+[iIndia, iJapan, iKhmer, iMongolia, iXiongnu], #China
 [iEgypt, iGreece, iPersia, iTurkey, iMongolia], #Babylonia
 [iPersia, iCarthage, iRome, iGermany, iRussia, iTurkey], #Greece
 [iIndia, iBabylonia, iGreece, iTurkey, iMongolia], #Persia
@@ -129,12 +136,14 @@ lNeighbours = [
 [iEgypt, iCarthage, iEthiopia], #Mali
 [iCarthage, iRome, iSpain, iFrance], #Portugal
 [iSpain, iAztecs, iAmerica], #Inca
-[iIndia, iChina, iPersia, iJapan, iRussia, iTurkey], #Mongolia
+[iIndia, iChina, iPersia, iJapan, iRussia, iTurkey, iXiongnu], #Mongolia
 [iSpain, iInca, iAmerica], #Aztec
 [iBabylonia, iGreece, iPersia, iRussia, iMongolia], #Turkey
 [iJapan, iSpain, iFrance, iEngland, iRussia, iInca, iAztecs] #America
 ,
 [], []
+,
+[iChina, iMongolia] # Xiongnu
 ]
 
 #for stability hit on spawn
@@ -168,6 +177,8 @@ lOlderNeighbours = [
 [iSpain, iFrance, iEngland, iNetherlands, iPortugal, iAztecs, iMaya] #America
 ,
 [], []
+,
+[] # Xiongnu
 ]
 
 # civ birth dates
@@ -200,7 +211,7 @@ tBirth = (
 241, #1195AD
 249, #1280AD (1071AD)
 346, #1775AD #332 for 1733AD
--10000, -10000, 0,
+-10000, -10000, 127, 0,
 0,
 0,
 0,
@@ -236,6 +247,8 @@ tYear = (
 ("1280 ", "TXT_KEY_AD"),
 ("1775 ", "TXT_KEY_AD"),
 1020, 1020
+,
+("210 ", "TXT_KEY_BC") # Xiongnu
 )
 
 tGoals = (
@@ -268,6 +281,8 @@ tGoals = (
 ("TXT_KEY_UHV_AME1", "TXT_KEY_UHV_AME2", "TXT_KEY_UHV_AME3")
 ,
 ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"), ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3")
+,
+("", "", "") # Xiongnu
 )
 
 
@@ -381,6 +396,8 @@ tCapitals = (
 (27, 46) #tWashington
 ,
 (75, 33), (75, 33)
+,
+(99, 51) # Xiongnu
 ) 
 
 #for minor civs
@@ -414,6 +431,8 @@ tReserveCapitals = (
 (), 
 
 (), ()
+,
+() # Xiongnu
 )
 
 # Extra Arabian birth-flip tiles: eastern Egypt and Sinai. These do not change
@@ -453,6 +472,8 @@ tCoreAreasTL = (
 (26, 42) #America
 ,
 (73, 30), (73, 30)
+,
+(96, 50) # Xiongnu
 ) 
 
 tCoreAreasBR = (
@@ -485,6 +506,8 @@ tCoreAreasBR = (
 (31, 48) #America
 ,
 (81, 39), (81, 39)
+,
+(103, 54) # Xiongnu
 ) 
 
 
@@ -517,6 +540,8 @@ tExceptions = (  #for RiseAndFall
 ((68, 48), (68, 49), (73, 40), (73, 41), (73, 42), (71, 42), (70, 42), (74, 42), (75, 42), (80, 47), (80, 48), (80, 49)), #Turkey
 ((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43)),
 ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles, ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles
+,
+() # Xiongnu
 ) #America
 
 
@@ -545,11 +570,21 @@ def getBirthFlipExceptions(iCiv):
         return tExceptions[iCiv]
 
 
+def isMongolianBirthReplaced():
+        import cPickle as pickle
+        data = gc.getGame().getScriptData()
+        if not data:
+                return False
+        return pickle.loads(data).get('bMongoliaReplaced', False)
+
+
 def getBirthFlipMask(argsList):
         # DLL tooltip callback: use the same rectangles and added tiles as RiseAndFall.
         iX, iY, iGameTurn = argsList
         iMask = 0
         for iCiv in range(iNumMajorPlayers):
+                if iCiv == iMongolia and isMongolianBirthReplaced():
+                        continue
                 if tBirth[iCiv] <= 0 or iGameTurn > tBirth[iCiv] + 5:
                         continue
                 tTL, tBR = getBirthFlipArea(iCiv)
@@ -591,6 +626,8 @@ tNormalAreasTL = (
 (11, 43) #America
 ,
 (73, 30), (73, 30)
+,
+(94, 48) # Xiongnu
 ) 
 
 tNormalAreasBR = (
@@ -623,6 +660,8 @@ tNormalAreasBR = (
 (31, 49) #America
 ,
 (82, 38), (82, 38)
+,
+(105, 55) # Xiongnu
 ) 
 
 
@@ -655,6 +694,8 @@ tNormalAreasSubtract = (  #for resurrection and stability
 (), #Turkey
 (),
 ((81, 38), (82, 38), (82, 37)), ((81, 38), (82, 38), (82, 37))
+,
+() # Xiongnu
 ) #America
 
 
@@ -691,6 +732,8 @@ tBroaderAreasTL = (
 (10, 42) #America
 ,
 (64, 30), (64, 30)
+,
+(96, 50) # Xiongnu
 )
 
 tBroaderAreasBR = (
@@ -722,6 +765,8 @@ tBroaderAreasBR = (
 (86, 49), #Turkey
 (37, 56),
 (85, 44), (85, 44)
+,
+(103, 54) # Xiongnu
 ) #America
 
 
@@ -755,7 +800,7 @@ tHire = (
 30, #Aztec
 50, #Turkey
 50, #America
-50, 50, 100,
+50, 50, 100, 100,
 100,
 100,
 100,
@@ -794,6 +839,8 @@ lEnemyCivsOnSpawn = [
 [iIndependent,iIndependent2] #America
 ,
 [], []
+,
+[] # Xiongnu
 ]
 
 
@@ -826,7 +873,7 @@ tAggressionLevel = (
 1, #Aztec
 2, #Turkey
 2, #America
-2, 2, 0) #Barbs
+2, 2, 2, 0) #Barbs
 
 
 #war during rise of new civs
@@ -858,7 +905,7 @@ tAIStopBirthThreshold = (
     50, #Aztec
     70, #Turkey
     50, #America
-    80, 80, 100,
+    80, 80, 80, 100,
     100,
     100,
     100,
@@ -896,7 +943,7 @@ tResurrectionProb = (
 100, #America
 #    100, #Holland
 #    100, #Portugal
-0, 0, 100) #Barbs 
+0, 0, 0, 100) #Barbs
 
 
 #Congresses.
@@ -928,7 +975,7 @@ tPatienceThreshold = (
 30, #Aztec
 35, #Turkey
 30, #America
-30, 30, 100) #Barbs
+30, 30, 30, 100) #Barbs
 
 
 #RnF Colonists
@@ -961,6 +1008,8 @@ tMaxColonists = (
 0, #Turkey
 0,
 0, 0
+,
+0 # Xiongnu
 ) #America
 
 
@@ -1540,6 +1589,7 @@ iImmunity = 20
 
 
 #leaders
+iModu = 57
 iLeaderBarbarian = 0
 iAlexander = 1
 iAsoka = 2
@@ -1627,6 +1677,8 @@ tLeaders = (
 (iMehmed, iSuleiman),
 (iFranklin_Roosevelt, iWashington, iLincoln),
 (iSaladin,), (iSaladin,)
+,
+(iModu,) # Xiongnu
 )
 
 tEarlyLeaders = (
@@ -1658,6 +1710,8 @@ tEarlyLeaders = (
 (iMehmed),
 (iWashington),
 iSaladin, iSaladin
+,
+iModu # Xiongnu
 )
 
 #RFCMP
@@ -1697,6 +1751,8 @@ tRomanLateLeaders,
 (iSuleiman, i1500AD, 10, 3),
 (iLincoln, i1800AD, 15, 5, iFranklin_Roosevelt, i1900AD, 15, 5),
 (iSaladin,), (iSaladin,)
+,
+(iModu,) # Xiongnu
 )
 
 
@@ -1728,7 +1784,7 @@ tIsActiveOnLateStart = (
 1,
 1,
 1,
-False, False, 1,
+False, False, False, 1,
 1,
 1,
 1)

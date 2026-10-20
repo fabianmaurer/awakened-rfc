@@ -132,12 +132,12 @@ class Barbs:
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i550AD):
                         self.spawnUnits( iCeltia, (50, 49), (61, 65), con.iGalley, 1, iGameTurn, 25, 0, utils.outerSeaSpawn, 2)
                         
-                #mongolia
-                if (iGameTurn >= con.i210BC and iGameTurn < con.i300AD):
+                # Northern steppe raids are replaced by the living Xiongnu state.
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn >= con.i210BC and iGameTurn < con.i300AD):
                         self.spawnUnits( iBarbarian, (94, 48), (107, 54), con.iHorseArcher, 2 + iHandicap*2, iGameTurn, 8, 0, utils.outerInvasion, 0)
-                if (iGameTurn >= con.i300AD and iGameTurn <= con.i900AD):
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn >= con.i300AD and iGameTurn <= con.i900AD):
                         self.spawnUnits( iBarbarian, (91, 50), (107, 54), con.iHorseArcher, 3 + iHandicap*2, iGameTurn, 7, 0, utils.outerInvasion, 0)
-                if (iGameTurn > con.i900AD and iGameTurn <= con.i1100AD):
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn > con.i900AD and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (94, 48), (107, 54), con.iHorseArcher, 2 + iHandicap, iGameTurn, 6, 0, utils.outerInvasion, 0)
                         
                 #tibet

@@ -1,7 +1,7 @@
 # Starting civics
 
 Every playable civilization has a starting profile for the five new civic columns,
-including Byzantium in the 600 AD scenario. Profiles apply to both human and AI
+plus the non-playable Byzantine Empire in the 600 AD scenario. Profiles apply to both human and AI
 players at scenario initialization and at a later civilization's initial spawn.
 They do not overwrite civic choices every turn or when loading a save.
 
@@ -51,9 +51,63 @@ The other eight initial 800 BC players also have explicit profiles now. India,
 China, Greece and Carthage receive Monarchy so their intended governments are
 available at initialization. India and China use Self-sufficiency instead of
 an unavailable medieval labor civic; Japan uses tribal government,
-Self-sufficiency, Warrior Society and Ancestor Cult. Persia and Rome use tribal government. The existing ancient technology packages
+Self-sufficiency, Warrior Society and Ancestor Cult. Persia and Rome use tribal government and Ancestor Cult for their early local cults. The existing ancient technology packages
 are otherwise retained. Later births use their normal profiles.
 See [800BCScenario.md](800BCScenario.md) for the complete audit and ruler names.
+
+## 600 AD scenario (turn 181)
+
+The five initial polities have explicit scenario profiles. Later births retain
+normal birth profiles. Every choice is available with the existing scenario
+technologies; no technologies or civic prerequisites are changed.
+
+| Civilization | Government | Legitimacy | Labor | Military | Religion |
+| --- | --- | --- | --- | --- | --- |
+| China | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
+| Japan | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
+| Vikings | Monarchy | Despotism | Slavery | Naval Warfare | Ancestor Cult |
+| Arabia | Tribal System | Despotism | Slavery | Warrior Society | Ancestor Cult |
+| Byzantium | Monarchy | Despotism | Slavery | Naval Warfare | State Religion |
+
+These are approximations within the existing five-column system:
+
+- **China:** Sui imperial government and dependent agricultural labor, with
+  official religious patronage. State Religion replaces Ancestor Cult to allow
+  court-sponsored religion; it does not erase ancestral rites or force a
+  particular faith. [University of Washington: Sui Buddhist patronage](https://depts.washington.edu/silkroad/exhibit/sui/ps084830.html).
+- **Japan:** Asuka court monarchy, hereditary dependent labor and clan warriors,
+  before medieval samurai institutions. State Religion allows the court's
+  Buddhist patronage alongside indigenous cults. Serfdom is a broad labor
+  abstraction, not a claim that European manorialism existed in Japan in 600.
+  [Metropolitan Museum: Asuka and Nara periods](https://www.metmuseum.org/essays/asuka-and-nara-periods-538-794).
+- **Vikings:** early Scandinavian kingship, thrall labor and pagan cults.
+  Slavery replaces the unavailable Serfdom preference. Naval Warfare represents
+  maritime mobility; this early start does not imply that the later Viking Age
+  or unified Scandinavian kingdoms already existed.
+  [National Museum of Denmark: thralls](https://en.natmus.dk/historical-knowledge/denmark/prehistoric-period-until-1050-ad/the-viking-age/power-and-aristocracy/slaves-and-thralls/).
+- **Arabia:** pre-Islamic tribal authority and local cults. Starting with
+  Theocracy and God State would anticipate the Islamic polity: Muhammad's first
+  revelations date to 610 and the hijra to 622. The existing Islamic-cause event
+  later adopts Islam, Monarchy, Theocracy and God State automatically for Arabia;
+  it directly sets those civics, so Ancestor Cult does not block the transition.
+  [Metropolitan Museum: birth of Islam](https://www.metmuseum.org/essays/the-birth-of-islam).
+- **Byzantium:** imperial authority with an official Christian church, rather
+  than clerical government. Slavery is an explicit legal labor choice, replacing
+  an unavailable Serfdom preference; it does not imply that all peasants were
+  slaves. Naval Warfare represents the Mediterranean imperial fleets and removes
+  Warrior Society's siege penalty. It cannot fully represent the professional
+  late Roman land army: Professional Army requires Military Tradition, which
+  would grant much later technology. No such technology is added.
+  [Cambridge: Byzantine slavery](https://www.cambridge.org/core/books/abs/cambridge-world-history-of-slavery/slavery-in-the-byzantine-empire/6BC93914928532A51E2D9BE5EF40771F).
+
+China and Japan retain the basic Warrior Society military approximation because
+neither has Feudalism; neither is assigned the later Feudal Retinues civic.
+State Religion enables religious affiliation but does not itself select a faith;
+existing religion founding, spread and conversion rules remain in effect.
+The original scenario's advanced starting armies and early settler starts remain
+intentional gameplay simplifications.
+
+## Other starts and normal birth preferences
 
 The 1453 start (turn 271) uses late-medieval scenario profiles through the same
 `getProfile` accessor as the selection preview. The Mamluk, Delhi, Hafsid,
@@ -64,34 +118,34 @@ provides the technologies needed for these profiles. See `1453ADScenario.md`.
 
 | Civilization | Government | Legitimacy | Labor | Military | Religion |
 | --- | --- | --- | --- | --- | --- |
-| Egypt | Tribal System | Despotism | Slavery | Militia | State Religion |
-| India | Monarchy | Despotism | Serfdom | Militia | State Religion |
-| China | Monarchy | Despotism | Serfdom | Militia | Ancestor Cult |
-| Babylonia | Monarchy | Despotism | Slavery | Militia | State Religion |
-| Greece | Republic | Despotism | Slavery | Militia | Ancestor Cult |
-| Persia | Monarchy | Despotism | Slavery | Militia | State Religion |
-| Carthage | Republic | Plutocracy | Slavery | Militia | State Religion |
-| Rome | Republic | Despotism | Slavery | Militia | State Religion |
-| Japan | Monarchy | Despotism | Serfdom | Knighthood | Ancestor Cult |
-| Ethiopia | Monarchy | Despotism | Serfdom | Militia | State Religion |
+| Egypt | Tribal System | Despotism | Slavery | Warrior Society | State Religion |
+| India | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
+| China | Monarchy | Despotism | Serfdom | Warrior Society | Ancestor Cult |
+| Babylonia | Monarchy | Despotism | Slavery | Warrior Society | State Religion |
+| Greece | Republic | Despotism | Slavery | Naval Warfare | Ancestor Cult |
+| Persia | Monarchy | Despotism | Slavery | Warrior Society | State Religion |
+| Carthage | Republic | Plutocracy | Slavery | Naval Warfare | State Religion |
+| Rome | Republic | Despotism | Slavery | Warrior Society | State Religion |
+| Japan | Monarchy | Despotism | Serfdom | Feudal Retinues | Ancestor Cult |
+| Ethiopia | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
 | Maya | Monarchy | Theocracy | Slavery | Warrior Society | State Religion |
-| Vikings | Monarchy | Despotism | Serfdom | Warrior Society | Ancestor Cult |
-| Arabia | Monarchy | Theocracy | Serfdom | Militia | Holy State |
-| Khmer | Monarchy | Despotism | Serfdom | Militia | State Religion |
-| Spain | Monarchy | Despotism | Serfdom | Knighthood | State Religion |
-| France | Monarchy | Despotism | Serfdom | Knighthood | State Religion |
-| England | Monarchy | Despotism | Serfdom | Knighthood | State Religion |
-| Germany | Monarchy | Despotism | Serfdom | Knighthood | State Religion |
-| Russia | Monarchy | Despotism | Serfdom | Militia | State Religion |
-| Netherlands | Republic | Plutocracy | Market Economy | Militia | Tolerance |
-| Mali | Monarchy | Theocracy | Slavery | Militia | State Religion |
-| Portugal | Monarchy | Theocracy | Serfdom | Knighthood | State Religion |
-| Inca | Monarchy | Theocracy | Serfdom | Militia | State Religion |
-| Mongolia | Monarchy | Despotism | Serfdom | Knighthood | Ancestor Cult |
+| Vikings | Monarchy | Despotism | Serfdom | Naval Warfare | Ancestor Cult |
+| Arabia | Monarchy | Theocracy | Serfdom | Warrior Society | Holy State |
+| Khmer | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
+| Spain | Monarchy | Despotism | Serfdom | Feudal Retinues | State Religion |
+| France | Monarchy | Despotism | Serfdom | Feudal Retinues | State Religion |
+| England | Monarchy | Despotism | Serfdom | Feudal Retinues | State Religion |
+| Germany | Monarchy | Despotism | Serfdom | Feudal Retinues | State Religion |
+| Russia | Monarchy | Despotism | Serfdom | Warrior Society | State Religion |
+| Netherlands | Republic | Plutocracy | Market Economy | Naval Warfare | Tolerance |
+| Mali | Monarchy | Theocracy | Slavery | Warrior Society | State Religion |
+| Portugal | Monarchy | Theocracy | Serfdom | Naval Warfare | State Religion |
+| Inca | Monarchy | Theocracy | Serfdom | Warrior Society | State Religion |
+| Mongolia | Monarchy | Despotism | Serfdom | Feudal Retinues | Ancestor Cult |
 | Aztecs | Monarchy | Theocracy | Slavery | Warrior Society | State Religion |
-| Turkey | Monarchy | Theocracy | Serfdom | Knighthood | State Religion |
+| Turkey | Monarchy | Theocracy | Serfdom | Feudal Retinues | State Religion |
 | America | Republic | Rule Of Law | Market Economy | Professional Army | Tolerance |
-| Byzantium | Monarchy | Theocracy | Serfdom | Militia | Holy State |
+| Byzantium | Monarchy | Theocracy | Serfdom | Warrior Society | Holy State |
 
 ## Fallbacks
 
@@ -103,7 +157,7 @@ sequence is selected. All five columns are initialized; no anarchy is introduced
 | Government | Monarchy, then Tribal System |
 | Legitimacy | Despotism |
 | Labor | Slavery, then Self-sufficiency |
-| Military | Militia, then Warrior Society |
+| Military | Warrior Society |
 | Religion | State Religion, then Ancestor Cult |
 
 Minor factions use Tribal System, Despotism, Self-sufficiency, Warrior Society,

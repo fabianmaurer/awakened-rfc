@@ -39,12 +39,13 @@
 #define AMERICA					(26)
 #define CALIPHATE_SLOT_1 (27)
 #define CALIPHATE_SLOT_2 (28)
-#define NUM_MAJOR_PLAYERS		(29)
-#define INDEPENDENT				(29)
-#define INDEPENDENT2			(30)
-#define NATIVE					(31)
-#define CELTIA					(32)
-#define BARBARIAN				(33)
+#define XIONGNU (29)
+#define NUM_MAJOR_PLAYERS		(30)
+#define INDEPENDENT				(30)
+#define INDEPENDENT2			(31)
+#define NATIVE					(32)
+#define CELTIA					(33)
+#define BARBARIAN				(34)
 
 
 #define MEDITATION				(1)
@@ -178,24 +179,24 @@
 
 
 extern int startingTurn[];
-extern char loadingTime[42][4];
-extern char loadingTime600AD[42][4];
-extern char startingYear[42][6];
-extern bool startingEra[42];
-extern char startingYear600AD[42][6];
-extern bool startingEra600AD[42];
+extern char loadingTime[43][4];
+extern char loadingTime600AD[43][4];
+extern char startingYear[43][6];
+extern bool startingEra[43];
+extern char startingYear600AD[43][6];
+extern bool startingEra600AD[43];
 //extern int militaryBonus[2][18];
-extern char uniquePower[42][2][16];
-extern char uniqueGoals[42][3][18];
-extern char rating[42][6][15];
+extern char uniquePower[43][2][16];
+extern char uniqueGoals[43][3][18];
+extern char rating[43][6][15];
 
-extern int turnPlayed[34];
-extern int civSpreadFactor[34][7];
-extern int borders[29][29];
+extern int turnPlayed[35];
+extern int civSpreadFactor[35][7];
+extern int borders[30][30];
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots);
-extern wchar civDynamicNames[29][22][19]; //(dynamic civ names - not jdog's)
-extern int civDynamicNamesFlag[29];
-extern int civDynamicNamesEraThreshold[29];
+extern wchar civDynamicNames[30][22][19]; //(dynamic civ names - not jdog's)
+extern int civDynamicNamesFlag[30];
+extern int civDynamicNamesEraThreshold[30];
 extern int settlersMaps[][68][124];
 
 

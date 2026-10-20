@@ -7020,7 +7020,8 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	if (kBuilding.isAreaBorderObstacle())
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_BORDER_OBSTACLE"));
+		szBuffer.append(gDLL->getText("TXT_KEY_GREAT_WALL_BORDER_DAMAGE",
+			std::max(0, GC.getDefineINT("RFCMP_GREAT_WALL_CROSSING_DAMAGE"))));
 	}
 
 	for (iI = 0; iI < GC.getNumVoteSourceInfos(); ++iI)

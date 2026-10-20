@@ -1926,8 +1926,9 @@ tCityMap = (
     
 
 
-# Successor slots retain the Arabian city-name vocabulary.
-tCityMap = tCityMap[:27] + (tCityMap[12], tCityMap[12]) + tCityMap[27:]
+# Successors share Arabia's location names; Xiongnu share Mongolia's.
+tCityMap = tCityMap[:27] + (tCityMap[iArabia], tCityMap[iArabia],
+        tCityMap[iMongolia]) + tCityMap[27:]
 
 class CityNameManager:
 
@@ -1944,6 +1945,12 @@ class CityNameManager:
 
         def renameCities(self, city, iNewOwner):
                 """Renames a city depending on its owner"""
+
+                # Reuse the matching vocabulary for conquered cities as well.
+                if iNewOwner in (con.iCaliphateSlot1, con.iCaliphateSlot2):
+                        iNewOwner = iArabia
+                elif iNewOwner == con.iXiongnu:
+                        iNewOwner = iMongolia
 
                 sName = city.getName()
 

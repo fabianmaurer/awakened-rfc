@@ -347,6 +347,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iX = INVALID_PLOT_COORD;
 	m_iY = INVALID_PLOT_COORD;
 	m_iLastMoveTurn = 0;
+	m_iLastHunPillageHealTurn = -1;
 	m_iReconX = INVALID_PLOT_COORD;
 	m_iReconY = INVALID_PLOT_COORD;
 	m_iGameTurnCreated = 0;
@@ -498,6 +499,7 @@ void CvUnit::convert(CvUnit* pUnit)
 
 	setGameTurnCreated(pUnit->getGameTurnCreated());
 	setDamage(pUnit->getDamage());
+	m_iLastHunPillageHealTurn = pUnit->m_iLastHunPillageHealTurn;
 	setMoves(pUnit->getMoves());
 
 	setLevel(pUnit->getLevel());
@@ -2334,16 +2336,7 @@ bool CvUnit::canEnterArea(TeamTypes eTeam, const CvArea* pArea, bool bIgnoreRigh
 		return false;
 	}
 
-	if (isBarbarian() && DOMAIN_LAND == getDomainType())
-	{
-		if (eTeam != NO_TEAM && eTeam != getTeam())
-		{
-			if (pArea && pArea->isBorderObstacle(eTeam))
-			{
-				return false;
-			}
-		}
-	}
+	// The Great Wall damages entering barbarians in move(), rather than excluding them.
 
 	return true;
 }
@@ -2909,6 +2902,19 @@ void CvUnit::move(CvPlot* pPlot, bool bShow)
 	FAssert(canMoveOrAttackInto(pPlot) || isMadeAttack());
 
 	CvPlot* pOldPlot = plot();
+
+	// Apply only on an actual border crossing, before city capture can change ownership.
+	// The area flag retains the Great Wall's original continent/team coverage.
+	if (isBarbarian() && getDomainType() == DOMAIN_LAND && !pPlot->isWater() &&
+		pOldPlot != NULL && pPlot->getTeam() != NO_TEAM &&
+		pPlot->getTeam() != getTeam() && pOldPlot->getTeam() != pPlot->getTeam() &&
+		pPlot->area()->isBorderObstacle(pPlot->getTeam()))
+	{
+		int iDamage = std::max(0, GC.getDefineINT("RFCMP_GREAT_WALL_CROSSING_DAMAGE"));
+		int iNewDamage = std::min(maxHitPoints() - 1, getDamage() + iDamage);
+		if (iNewDamage > getDamage())
+			setDamage(iNewDamage, pPlot->getOwnerINLINE());
+	}
 
 	changeMoves(pPlot->movementCost(this, plot()));
 
@@ -4760,6 +4766,18 @@ bool CvUnit::pillage()
 	{
 		eTempRoute = pPlot->getRouteType();
 		pPlot->setRouteType(NO_ROUTE, true); // XXX downgrade rail???
+	}
+
+	// Huns - Power of the Steppe: recover through raiding, once per unit per turn.
+	// Require a real improvement change in territory of a team formally at war.
+	if (eTempImprovement != NO_IMPROVEMENT && pPlot->getImprovementType() != eTempImprovement &&
+		pPlot->isOwned() && GET_TEAM(getTeam()).isAtWar(pPlot->getTeam()) &&
+		getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_XIONGNU") &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") && getDamage() > 0 &&
+		m_iLastHunPillageHealTurn != GC.getGameINLINE().getGameTurn())
+	{
+		m_iLastHunPillageHealTurn = GC.getGameINLINE().getGameTurn();
+		changeDamage(-25);
 	}
 
 	changeMoves(GC.getMOVE_DENOMINATOR());
@@ -11811,6 +11829,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iX);
 	pStream->Read(&m_iY);
 	pStream->Read(&m_iLastMoveTurn);
+	pStream->Read(&m_iLastHunPillageHealTurn);
 	pStream->Read(&m_iReconX);
 	pStream->Read(&m_iReconY);
 	pStream->Read(&m_iGameTurnCreated);
@@ -11920,6 +11939,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iX);
 	pStream->Write(m_iY);
 	pStream->Write(m_iLastMoveTurn);
+	pStream->Write(m_iLastHunPillageHealTurn);
 	pStream->Write(m_iReconX);
 	pStream->Write(m_iReconY);
 	pStream->Write(m_iGameTurnCreated);

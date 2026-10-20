@@ -68,6 +68,8 @@ BeginTeam
 EndTeam
 BeginTeam
 EndTeam
+BeginTeam
+EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
@@ -288,11 +290,18 @@ BeginPlayer
 	PlayableCiv=0
 	Handicap=HANDICAP_PRINCE
 EndPlayer
+BeginPlayer
+	LeaderType=LEADER_MODU
+	CivType=CIVILIZATION_XIONGNU
+	Team=29
+	PlayableCiv=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=29                 
+	Team=30
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -301,7 +310,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=30                 
+	Team=31
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -310,7 +319,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=31                 
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -318,7 +327,7 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=32                 
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -22205,11 +22214,11 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitType=UNIT_ARCHER, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -27743,16 +27752,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=30
+		UnitType=UNIT_ARCHER, UnitOwner=31
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=30
+		CityOwner=31
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
-		Player30Culture=10
+		Player31Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -32352,11 +32361,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=29
+		UnitType=UNIT_ARCHER, UnitOwner=30
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=29
+		CityOwner=30
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity

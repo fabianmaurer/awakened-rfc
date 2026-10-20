@@ -781,6 +781,7 @@ protected:
 	int m_iX;
 	int m_iY;
 	int m_iLastMoveTurn;
+	int m_iLastHunPillageHealTurn;
 	int m_iReconX;
 	int m_iReconY;
 	int m_iGameTurnCreated;

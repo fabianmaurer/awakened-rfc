@@ -1729,4 +1729,5 @@
     <Define><DefineName>RFCMP_GROWTH_BASE_PENALTY_TIMES100</DefineName><iDefineIntVal>3000</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_GROWTH_TECH_REDUCTION_TIMES100</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_GLOBAL_RESEARCH_COST_PERCENT</DefineName><iDefineIntVal>110</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_GREAT_WALL_CROSSING_DAMAGE</DefineName><iDefineIntVal>20</iDefineIntVal></Define>
 </Civ4Defines>

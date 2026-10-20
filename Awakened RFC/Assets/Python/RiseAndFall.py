@@ -927,6 +927,10 @@ class RiseAndFall:
                 #debug
                 #self.collapseMotherland()
 
+                # Chinese reunification is independent of the global dead-civ threshold.
+                if iGameTurn % 5 == 0 and not pChina.isAlive():
+                        self.resurrection(iGameTurn, iChina)
+
                 #resurrection of civs
                 iNumDeadCivs1 = 11 #5 in vanilla, 8 in warlords (that includes native and celt)
                 iNumDeadCivs2 = 9 #3 in vanilla, 6 in Warlords: here we must count natives and celts as dead too
@@ -1433,16 +1437,23 @@ class RiseAndFall:
                 return (city.angryPopulation(0) > 0 or city.getOccupationTimer() > 0 or
                         (iDistance >= 8 and owner.getNumCities() >= 4))
 
-        def resurrection(self, iGameTurn):
+        def resurrection(self, iGameTurn, iOnlyCiv=None):
                 #return
                 iMinNumCities = 2
-                iRndnum = utils.getFakeRandNum(iNumPlayers, 'starting count')
+                candidates = [iOnlyCiv]
+                if iOnlyCiv is None:
+                        iRndnum = utils.getFakeRandNum(iNumPlayers, 'starting count')
+                        candidates = [j % iNumPlayers for j in range(iRndnum, iRndnum + iNumPlayers)]
                 cityList = []
                 bDeadCivFound = False
-                for j in range(iRndnum, iRndnum + iNumPlayers):
-                        iDeadCiv = j % iNumPlayers
+                for iDeadCiv in candidates:
+                        if iDeadCiv == iMongolia and con.isMongolianBirthReplaced():
+                                continue
                         cityList = []
-                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + 50 and iGameTurn > utils.getLastTurnAlive(iDeadCiv) + 20):
+                        bCooldownExpired = iGameTurn > utils.getLastTurnAlive(iDeadCiv) + 20
+                        if iDeadCiv == iChina:
+                                bCooldownExpired = iGameTurn >= utils.getLastTurnAlive(iDeadCiv) + 10
+                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + 50 and bCooldownExpired):
                                 if (utils.getFakeRandNum(100, 'roll') >= con.tResurrectionProb[iDeadCiv]):
                                         #print("skip")
                                         continue
@@ -1494,6 +1505,8 @@ class RiseAndFall:
                                         gc.getTeam(gc.getPlayer(iOtherCiv).getTeam()).freeVassal(iDeadCiv)
                                                        
                         iNewUnits = 2
+                        if iDeadCiv == iChina:
+                                iNewUnits = 3
                         if (self.getLatestRebellionTurn(iDeadCiv) > 0):
                                 iNewUnits = 4
                         self.setLatestRebellionTurn(iDeadCiv, iGameTurn)
@@ -1536,6 +1549,8 @@ class RiseAndFall:
                                                 tCoords = self.getTempFlippingCity()
                                                 utils.flipUnitsInCityAfter(tCoords, iOwner)
                                                 utils.flipUnitsInArea((tCoords[0]-2, tCoords[1]-2), (tCoords[0]+2, tCoords[1]+2), iDeadCiv, iOwner, True, False)
+                                                if iDeadCiv == iChina:
+                                                        utils.createGarrisons(tCoords, iDeadCiv, iNewUnits)
                                         else:
                                                 utils.cultureManager((cityList[k].getX(),cityList[k].getY()), 50, iDeadCiv, iOwner, False, True, True)
                                                 utils.pushOutGarrisons((cityList[k].getX(),cityList[k].getY()), iOwner)
@@ -1721,6 +1736,8 @@ class RiseAndFall:
                                                 lNotifiedPlayers.append(iOwner)
 
         def checkFlipUnrest(self, iGameTurn, iCiv):
+                if iCiv == iMongolia and con.isMongolianBirthReplaced():
+                        return
                 # Start on appearance so the three-turn occupation timer
                 # remains active through the usual second-phase city flip.
                 iBirthTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv)
@@ -1741,8 +1758,28 @@ class RiseAndFall:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
+                if iCiv == iMongolia and con.isMongolianBirthReplaced():
+                        return
                 iHuman = utils.getHumanID()
                 if (iCurrentTurn == iBirthYear-1 + self.getSpawnDelay(iCiv) + self.getFlipsDelay(iCiv)):
+                        if (iCiv == iMongolia and not pMongolia.isAlive() and
+                            self.getFlipsDelay(iCiv) == 0 and gc.getPlayer(con.iXiongnu).isAlive()):
+                                # Resolve once, before any Mongolian territory flips or unrest.
+                                scriptDict = pickle.loads(gc.getGame().getScriptData())
+                                scriptDict['bMongoliaReplaced'] = True
+                                gc.getGame().setScriptData(pickle.dumps(scriptDict))
+                                player = gc.getPlayer(con.iXiongnu)
+                                tPlot = con.tCapitals[con.iXiongnu]
+                                if player.getNumCities() > 0:
+                                        capital = player.getCapitalCity()
+                                        tPlot = (capital.getX(), capital.getY())
+                                else:
+                                        for unit in PyPlayer(con.iXiongnu).getUnitList():
+                                                if unit.getDomainType() == DomainTypes.DOMAIN_LAND and not unit.plot().isWater():
+                                                        tPlot = (unit.getX(), unit.getY())
+                                                        break
+                                self.createMongolianArmy(con.iXiongnu, tPlot)
+                                return
 
                         if (iCurrentTurn >= con.tBirth[iVikings]-1 and iCurrentTurn <= con.tBirth[iTurkey]-1):
                                 self.processConstantinople()
@@ -2792,9 +2829,36 @@ class RiseAndFall:
                         utils.makeUnit(con.iCannon, iCiv, tPlot, 3)
 
 
+        def createMongolianArmy(self, iCiv, tPlot):
+                # Share the combat force between the normal birth and its Xiongnu replacement.
+                utils.makeUnit(con.iLongbowman, iCiv, tPlot, 3)
+                utils.makeUnit(con.iCrossbowman, iCiv, tPlot, 2)
+                utils.makeUnit(con.iHorseArcher, iCiv, tPlot, 2)
+                utils.makeUnit(con.iMongolKeshik, iCiv, tPlot, 4)
+                player = gc.getPlayer(iCiv)
+                for i in range(2):
+                        player.initUnit(con.iMongolKeshik, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
+                utils.makeUnit(con.iCatapult, iCiv, tPlot, 2)
+
         def createStartingUnits( self, iCiv, tPlot ):
                 self.assignTechs(iCiv)
                 StartingCivics.apply(iCiv)
+
+                if iCiv == con.iXiongnu:
+                        player = gc.getPlayer(iCiv)
+                        utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
+                        utils.makeUnit(con.iSpearman, iCiv, tPlot, 2)
+                        for i in range(2):
+                                player.initUnit(con.iArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
+                                player.initUnit(con.iHorseArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_PILLAGE, DirectionTypes.DIRECTION_SOUTH)
+                                player.initUnit(con.iHorseArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
+                        player.AI_changeAttitudeExtra(iChina, -4)
+                        pChina.AI_changeAttitudeExtra(iCiv, -2)
+                        team = gc.getTeam(player.getTeam())
+                        if pChina.isAlive():
+                                team.meet(pChina.getTeam(), True)
+                                if team.canDeclareWar(pChina.getTeam()):
+                                        team.declareWar(pChina.getTeam(), False, -1)
 
                 if (iCiv == iGreece):
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
@@ -2966,13 +3030,7 @@ class RiseAndFall:
                         utils.makeUnit(con.iArcher, iCiv, tPlot, 3)
                 if (iCiv == iMongolia):
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 5)
-                        utils.makeUnit(con.iLongbowman, iCiv, tPlot, 3)
-                        utils.makeUnit(con.iCrossbowman, iCiv, tPlot, 2)
-                        utils.makeUnit(con.iHorseArcher, iCiv, tPlot, 2) 
-                        utils.makeUnit(con.iMongolKeshik, iCiv, tPlot, 4)
-                        pMongolia.initUnit(con.iMongolKeshik, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
-                        pMongolia.initUnit(con.iMongolKeshik, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
-                        utils.makeUnit(con.iCatapult, iCiv, tPlot, 2)
+                        self.createMongolianArmy(iCiv, tPlot)
                 if (iCiv == iAztecs):
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 2)
                         utils.makeUnit(con.iAztecJaguar, iCiv, tPlot, 4)
@@ -3031,6 +3089,8 @@ class RiseAndFall:
 
                                 
         def createStartingWorkers( self, iCiv, tPlot ):
+                if iCiv == con.iXiongnu:
+                        utils.makeUnit(con.iWorker, iCiv, tPlot, 1)
                 if (iCiv == iGreece):
                         utils.makeUnit(con.iWorker, iCiv, tPlot, 2)
                 if (iCiv == iPersia):
@@ -3726,6 +3786,13 @@ class RiseAndFall:
 
                 
         def assignTechs( self, iCiv ):
+                if iCiv == con.iXiongnu:
+                        team = gc.getTeam(gc.getPlayer(iCiv).getTeam())
+                        for tech in (con.iAgriculture, con.iTheWheel, con.iHunting, con.iArchery,
+                                     con.iMining, con.iBronzeWorking, con.iAnimalHusbandry,
+                                     con.iHorsebackRiding, con.iPottery, con.iWriting):
+                                team.setHasTech(tech, True, iCiv, False, False)
+
                 #popup = Popup.PyPopup()
                 #popup.setBodyString( 'assigning techs to civ #%d' %(iCiv))
                 #popup.launch()            

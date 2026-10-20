@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_GREAT_WALL_BORDER_DAMAGE</Tag>
+    <English>Barbarian land units take %D1_Damage HP damage when crossing into your territory on this continent, retaining at least 1 HP. Entry is allowed; movement within your borders causes no further damage.</English>
+    <French>Les unit&#233;s terrestres barbares subissent %D1_Damage PV de d&#233;g&#226;ts en entrant sur votre territoire sur ce continent, en conservant au moins 1 PV. Elles peuvent entrer ; les d&#233;placements &#224; l&#8217;int&#233;rieur de vos fronti&#232;res ne causent aucun d&#233;g&#226;t suppl&#233;mentaire.</French>
+    <German>Barbarische Landeinheiten erleiden beim Grenz&#252;bertritt in euer Gebiet auf diesem Kontinent %D1_Damage TP Schaden und behalten mindestens 1 TP. Sie d&#252;rfen eintreten; Bewegung innerhalb eurer Grenzen verursacht keinen weiteren Schaden.</German>
+    <Italian>Le unit&#224; terrestri barbare subiscono %D1_Damage PF di danno entrando nel vostro territorio su questo continente e conservano almeno 1 PF. Possono entrare; muoversi all&#8217;interno dei confini non causa altri danni.</Italian>
+    <Spanish>Las unidades terrestres b&#225;rbaras sufren %D1_Damage PV de da&#241;o al entrar en vuestro territorio en este continente y conservan al menos 1 PV. Pueden entrar; moverse dentro de las fronteras no causa m&#225;s da&#241;o.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GREAT_WALL_STRATEGY</Tag>
+    <English>The Great Wall weakens barbarian land units as they cross into your territory on its continent, but does not block them. Keep defenders ready to defeat the wounded invaders. Leaving and entering again causes another hit.</English>
+    <French>La Grande Muraille affaiblit les unit&#233;s terrestres barbares lorsqu&#8217;elles entrent sur votre territoire sur son continent, sans les bloquer. Gardez des d&#233;fenseurs pour vaincre les envahisseurs bless&#233;s. Sortir puis entrer &#224; nouveau inflige de nouveaux d&#233;g&#226;ts.</French>
+    <German>Die Gro&#223;e Mauer schw&#228;cht barbarische Landeinheiten beim Grenz&#252;bertritt in euer Gebiet auf ihrem Kontinent, h&#228;lt sie aber nicht auf. Haltet Verteidiger gegen die verwundeten Eindringlinge bereit. Verlassen und erneutes Betreten verursacht erneut Schaden.</German>
+    <Italian>La Grande Muraglia indebolisce le unit&#224; terrestri barbare che entrano nel vostro territorio sul suo continente, senza bloccarle. Tenete pronti i difensori per sconfiggere gli invasori feriti. Uscire e rientrare causa altri danni.</Italian>
+    <Spanish>La Gran Muralla debilita a las unidades terrestres b&#225;rbaras cuando entran en vuestro territorio en su continente, pero no las bloquea. Mantened defensores para derrotar a los invasores heridos. Salir y volver a entrar causa otro impacto.</Spanish>
+  </TEXT>
+</Civ4GameText>

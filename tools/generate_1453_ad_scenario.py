@@ -31,8 +31,8 @@ CITY_DATA = """
 0|73,38|Al-Quds|4
 0|74,41|Dimashq|7
 1|90,40|Delhi|8
-30|94,40|Jaunpur|5
-30|96,39|Gaur|5
+31|94,40|Jaunpur|5
+31|96,39|Gaur|5
 1|88,42|Lahore|4
 2|102,47|Beijing|10
 2|107,43|Nanjing|10
@@ -61,7 +61,7 @@ CITY_DATA = """
 11|61,62|Nidaros|3
 11|65,62|Stockholm|4
 12|75,33|Makkah|4
-29|76,30|Sana'a|3
+30|76,30|Sana'a|3
 13|102,32|Chaktomuk|4
 13|102,34|Angkor|3
 14|52,43|Toledo|5
@@ -81,19 +81,19 @@ CITY_DATA = """
 18|75,55|Vladimir|3
 19|57,53|Brugge|7
 20|51,29|Niani|5
-31|53,31|Timbuktu|5
-31|56,31|Gao|4
+32|53,31|Timbuktu|5
+32|56,31|Gao|4
 20|54,29|Djenne|4
 21|49,43|Lisboa|6
 21|49,45|Porto|4
 22|28,22|Qusqu|7
-31|24,25|Chan Chan|6
-31|25,23|Cajamarca|4
+32|24,25|Chan Chan|6
+32|25,23|Cajamarca|4
 22|27,24|Huamanga|4
 22|30,18|Hatun Qulla|4
-31|26,29|Tumipampa|4
-31|30,15|Tupiza|3
-31|29,11|Copiapo|2
+32|26,29|Tumipampa|4
+32|30,15|Tupiza|3
+32|29,11|Copiapo|2
 23|99,51|Qaraqorum|4
 23|96,53|Qobdo|2
 24|18,37|Tenochtitlan|10
@@ -104,36 +104,36 @@ CITY_DATA = """
 25|70,43|Bursa|5
 25|66,46|Edirne|4
 25|65,44|Thessaloniki|4
-29|52,41|Gharnata|5
-29|52,60|Inbhir Nis|3
-29|67,53|Krakow|5
-29|72,57|Novgorod|5
-29|78,40|Baghdad|5
-29|82,38|Shiraz|5
-29|81,45|Tabriz|6
-29|75,44|Trapezous|4
-30|98,36|Ava|5
-30|100,32|Ayutthaya|6
-30|106,33|Thang Long|5
-30|109,46|Hanseong|6
-30|88,36|Dabhol|4
-30|91,33|Vijayanagara|8
-30|87,40|Multan|4
-31|61,16|Mbanza Kongo|4
-31|74,14|Kilwa|5
-31|68,15|Great Zimbabwe|4
-29|49,56|Dublin|3
-30|62,42|Napoli|6
-30|60,40|Palermo|5
-29|65,49|Buda|5
-29|76,46|Tbilisi|3
-30|52,37|Fes|6
-30|54,38|Tlemcen|4
-30|82,34|Masqat|3
-30|96,43|Lhasa|3
-30|93,29|Colombo|3
-30|100,30|Melaka|5
-30|106,25|Surabaya|4
+30|52,41|Gharnata|5
+30|52,60|Inbhir Nis|3
+30|67,53|Krakow|5
+30|72,57|Novgorod|5
+30|78,40|Baghdad|5
+30|82,38|Shiraz|5
+30|81,45|Tabriz|6
+30|75,44|Trapezous|4
+31|98,36|Ava|5
+31|100,32|Ayutthaya|6
+31|106,33|Thang Long|5
+31|109,46|Hanseong|6
+31|88,36|Dabhol|4
+31|91,33|Vijayanagara|8
+31|87,40|Multan|4
+32|61,16|Mbanza Kongo|4
+32|74,14|Kilwa|5
+32|68,15|Great Zimbabwe|4
+30|49,56|Dublin|3
+31|62,42|Napoli|6
+31|60,40|Palermo|5
+30|65,49|Buda|5
+30|76,46|Tbilisi|3
+31|52,37|Fes|6
+31|54,38|Tlemcen|4
+31|82,34|Masqat|3
+31|96,43|Lhasa|3
+31|93,29|Colombo|3
+31|100,30|Melaka|5
+31|106,25|Surabaya|4
 """
 
 # Independent slots group unrelated polities. Their cities need local faiths,
@@ -353,7 +353,7 @@ def main():
     for owner, _, name, _ in cities:
         if name not in CITY_RELIGIONS and owner not in RELIGIONS and name not in NO_GAME_RELIGION_CITIES:
             raise ValueError('Missing city religion assignment: ' + name)
-    if {owner for owner, _, _, _ in cities if owner < 29} != set(ACTIVE):
+    if {owner for owner, _, _, _ in cities if owner < 30} != set(ACTIVE):
         raise ValueError('Every populated major must be selectable, and every selectable major needs a city')
     for index, (_, (x, y), name, _) in enumerate(cities):
         for _, (xx, yy), other, _ in cities[index + 1:]:

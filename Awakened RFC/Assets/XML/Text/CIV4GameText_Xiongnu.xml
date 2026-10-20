@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_CIV_XIONGNU_DESC</Tag>
+    <English>Hunnic Confederation</English>
+    <French>Conf&#233;d&#233;ration hunnique</French>
+    <German>Hunnenkonf&#246;deration</German>
+    <Italian>Confederazione unna</Italian>
+    <Spanish>Confederaci&#243;n huna</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO</Tag>
+    <English>Hunnic Confederation</English>
+    <French>Conf&#233;d&#233;ration hunnique</French>
+    <German>Hunnenkonf&#246;deration</German>
+    <Italian>Confederazione unna</Italian>
+    <Spanish>Confederaci&#243;n huna</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIV_XIONGNU_SHORT_DESC</Tag>
+    <English>Huns</English>
+    <French>Huns</French>
+    <German>Hunnen</German>
+    <Italian>Unni</Italian>
+    <Spanish>Hunos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIV_XIONGNU_ADJECTIVE</Tag>
+    <English>Hunnic</English>
+    <French>hunnique</French>
+    <German>hunnisch</German>
+    <Italian>unno</Italian>
+    <Spanish>huno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_MODU</Tag>
+    <English>Modu Chanyu</English>
+    <French>Modu Chanyu</French>
+    <German>Modu Chanyu</German>
+    <Italian>Modu Chanyu</Italian>
+    <Spanish>Modu Chanyu</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CITY_NAME_LONGCHENG</Tag>
+    <English>Longcheng</English>
+    <French>Longcheng</French>
+    <German>Longcheng</German>
+    <Italian>Longcheng</Italian>
+    <Spanish>Longcheng</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CITY_NAME_XIONGNU_COURT</Tag>
+    <English>Chanyu Court</English>
+    <French>Cour du chanyu</French>
+    <German>Hof des Chanyu</German>
+    <Italian>Corte del chanyu</Italian>
+    <Spanish>Corte del chanyu</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIV_XIONGNU_PEDIA</Tag>
+    <English>In this mod, the Huns represent the early steppe confederation north of China. They appear around 210 BC with a cavalry army, a small steppe homeland and no advanced siege technology. Their Power of the Steppe lets damaged mounted units heal up to 25 HP by pillaging an enemy improvement, once per unit per turn during war. Roads do not grant healing. If they survive until the scheduled Mongolian appearance, Mongolia is permanently replaced by a one-time Hunnic army matching the Mongolian starting combat force. This grants no settlers, workers or technologies. If the Huns have fallen, Mongolia appears normally.</English>
+    <French>In this mod, the Huns represent the early steppe confederation north of China. They appear around 210 BC with a cavalry army, a small steppe homeland and no advanced siege technology. Their Power of the Steppe lets damaged mounted units heal up to 25 HP by pillaging an enemy improvement, once per unit per turn during war. Roads do not grant healing. If they survive until the scheduled Mongolian appearance, Mongolia is permanently replaced by a one-time Hunnic army matching the Mongolian starting combat force. This grants no settlers, workers or technologies. If the Huns have fallen, Mongolia appears normally.</French>
+    <German>In this mod, the Huns represent the early steppe confederation north of China. They appear around 210 BC with a cavalry army, a small steppe homeland and no advanced siege technology. Their Power of the Steppe lets damaged mounted units heal up to 25 HP by pillaging an enemy improvement, once per unit per turn during war. Roads do not grant healing. If they survive until the scheduled Mongolian appearance, Mongolia is permanently replaced by a one-time Hunnic army matching the Mongolian starting combat force. This grants no settlers, workers or technologies. If the Huns have fallen, Mongolia appears normally.</German>
+    <Italian>In this mod, the Huns represent the early steppe confederation north of China. They appear around 210 BC with a cavalry army, a small steppe homeland and no advanced siege technology. Their Power of the Steppe lets damaged mounted units heal up to 25 HP by pillaging an enemy improvement, once per unit per turn during war. Roads do not grant healing. If they survive until the scheduled Mongolian appearance, Mongolia is permanently replaced by a one-time Hunnic army matching the Mongolian starting combat force. This grants no settlers, workers or technologies. If the Huns have fallen, Mongolia appears normally.</Italian>
+    <Spanish>In this mod, the Huns represent the early steppe confederation north of China. They appear around 210 BC with a cavalry army, a small steppe homeland and no advanced siege technology. Their Power of the Steppe lets damaged mounted units heal up to 25 HP by pillaging an enemy improvement, once per unit per turn during war. Roads do not grant healing. If they survive until the scheduled Mongolian appearance, Mongolia is permanently replaced by a one-time Hunnic army matching the Mongolian starting combat force. This grants no settlers, workers or technologies. If the Huns have fallen, Mongolia appears normally.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_MODU_PEDIA</Tag>
+    <English>Modu Chanyu leads the Huns. His forces favour mobile warfare on the northern Chinese frontier. Existing Mongolian artwork represents this leader.</English>
+    <French>Modu Chanyu leads the Huns. His forces favour mobile warfare on the northern Chinese frontier. Existing Mongolian artwork represents this leader.</French>
+    <German>Modu Chanyu leads the Huns. His forces favour mobile warfare on the northern Chinese frontier. Existing Mongolian artwork represents this leader.</German>
+    <Italian>Modu Chanyu leads the Huns. His forces favour mobile warfare on the northern Chinese frontier. Existing Mongolian artwork represents this leader.</Italian>
+    <Spanish>Modu Chanyu leads the Huns. His forces favour mobile warfare on the northern Chinese frontier. Existing Mongolian artwork represents this leader.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_HUN</Tag>
+    <English>The Power of the Steppe:</English>
+    <French>Le pouvoir de la steppe :</French>
+    <German>Die Macht der Steppe:</German>
+    <Italian>Il potere della steppa:</Italian>
+    <Spanish>El poder de la estepa:</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_HUN2</Tag>
+    <English>Mounted units heal up to 25 HP when destroying or downgrading an improvement in enemy-owned territory during war, once per unit per turn. Roads and railroads grant no healing. No extra movement or attacks.</English>
+    <French>Les unit&#233;s mont&#233;es r&#233;cup&#232;rent jusqu&#8217;&#224; 25 PV en d&#233;truisant ou en d&#233;gradant un am&#233;nagement en territoire ennemi pendant une guerre, une fois par unit&#233; et par tour. Les routes et voies ferr&#233;es ne soignent pas. Aucun mouvement ni aucune attaque suppl&#233;mentaire.</French>
+    <German>Berittene Einheiten heilen beim Zerst&#246;ren oder Herabstufen einer Modernisierung in feindlichem Gebiet w&#228;hrend eines Krieges bis zu 25 TP, einmal je Einheit und Runde. Stra&#223;en und Eisenbahnen heilen nicht. Keine zus&#228;tzliche Bewegung oder Angriffe.</German>
+    <Italian>Le unit&#224; a cavallo recuperano fino a 25 PF distruggendo o degradando un miglioramento in territorio nemico durante una guerra, una volta per unit&#224; e per turno. Strade e ferrovie non curano. Nessun movimento o attacco aggiuntivo.</Italian>
+    <Spanish>Las unidades montadas recuperan hasta 25 PV al destruir o degradar una mejora en territorio enemigo durante una guerra, una vez por unidad y turno. Las carreteras y v&#237;as f&#233;rreas no curan. Sin movimientos ni ataques adicionales.</Spanish>
+  </TEXT>
+</Civ4GameText>

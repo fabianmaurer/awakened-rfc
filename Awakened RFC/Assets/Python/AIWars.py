@@ -1901,7 +1901,13 @@ tWarsMap = (
 
 
       
-  
+# Reserved successors share Arabia's targets; Xiongnu focus on the northern frontier.
+tWarsMap += (tWarsMap[con.iArabia], tWarsMap[con.iArabia],
+        tuple(tuple(int(98 <= x <= 107 and 43 <= 67-y <= 49) * 8 +
+                    int(94 <= x <= 105 and 50 <= 67-y <= 55) * 4
+                    for x in range(124)) for y in range(68)))
+
+
 class AIWars:
 
         def getAttackingCivsArray( self, iCiv ):

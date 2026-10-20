@@ -25804,7 +25804,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_GREAT_WALL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_GREAT_WALL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_GREAT_WALL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_GREAT_WALL_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_GREAT_WALL</ArtDefineTag>
 			<MovieDefineTag>ART_DEF_MOVIE_GREAT_WALL</MovieDefineTag>

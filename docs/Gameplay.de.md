@@ -80,6 +80,67 @@ China bildet Nahkampf- und Schießpulvereinheiten mit **1,5-facher Geschwindigke
 aus; die Maya haben **40% geringere Forschungskosten bis zum Ende des Mittelalters**;
 Persien erhält **+2 Stabilität je eroberter Stadt**.
 
+## Große Mauer
+
+Die Große Mauer verhindert das Betreten der Grenzen durch Barbaren nicht mehr.
+Barbarische Landeinheiten erleiden beim Überqueren einer Grenze in geschütztes
+Gebiet **20 Trefferpunkte Schaden**, behalten aber mindestens **einen Trefferpunkt**.
+Der Schutz gilt wie bisher für das Gebiet des Teams auf dem Kontinent der Mauer.
+Bewegungen innerhalb desselben Teamgebiets verursachen keinen weiteren Schaden;
+erneutes Verlassen und Betreten zählt als neuer Grenzübertritt. Bau der Mauer,
+Grenzverschiebungen und direkt im Gebiet erzeugte Einheiten lösen allein keinen
+Schaden aus. Reguläre Zivilisationen wie die Hunnen sind davon nicht betroffen.
+Der Schaden ist über `RFCMP_GREAT_WALL_CROSSING_DAMAGE` einstellbar.
+
+## China und die Hunnen
+
+Die **Hunnenkonföderation unter Modu Chanyu** erscheint um **210 v. Chr.**
+bei `(99, 51)`, am späteren mongolischen Hauptstadtstandort. Ihr kleines
+Gründungsgebiet liegt auf der Steppe zwischen `(96, 50)` und `(103, 54)`;
+chinesische Kernstädte werden bei dieser Gründung nicht automatisch übernommen.
+Die Fraktion ist ein zusätzlicher KI-Gegner und nicht zur Spielerauswahl vorgesehen.
+
+Die Hunnen verwenden die ortsabhängige Stadtnamenkarte und die
+Eroberungsumbenennungen der Mongolen. Die arabischen Nachfolgestaaten verwenden
+entsprechend die arabische Stadtnamenkarte und deren Eroberungsumbenennungen.
+
+Sie beginnt mit **vier berittenen Bogenschützen, zwei Speerkämpfern, zwei
+Bogenschützen, einem Siedler und einem Arbeiter**. Ihre Starttechnologien
+ermöglichen klassische Reiterei und einfache Wirtschaft, aber keine
+Belagerungswaffen. Zwei Reiter plündern bevorzugt, zwei dienen als Stadtangreifer.
+Bei der Gründung beginnt ein Krieg mit einem lebenden China, sofern die normalen
+Diplomatieregeln dies zulassen; spätere Friedensschlüsse bleiben möglich.
+Die Hunnen sind China gegenüber besonders feindselig. Regelmäßige kostenlose
+Verstärkungswellen gibt es nicht; weitere Truppen entstehen durch Produktion.
+Solange die Hunnen leben, entfallen die überlappenden nördlichen barbarischen
+Reiterwellen. Leben die Hunnen beim vorgesehenen ersten Erscheinen der Mongolen
+noch, entfällt die mongolische Gründung dauerhaft, einschließlich Gebietswechseln
+und Gründungsunruhen. Stattdessen erhalten die Hunnen **einmalig dieselbe
+Kampfarmee wie beim mongolischen Start**: sechs Keshiks, zwei berittene
+Bogenschützen, drei Langbogenschützen, zwei Armbrustschützen und zwei Katapulte.
+Sie erscheint bei ihrer Hauptstadt, bei einem stadtlosen Restheer möglichst bei
+einer überlebenden Landeinheit. Siedler, Arbeiter und zusätzliche Technologien
+werden dabei nicht vergeben. Die Entscheidung bleibt auch nach Laden der Partie
+und einem späteren Untergang der Hunnen bestehen; die Mongolen erhalten dann
+auch keinen regulären Respawn. Sind die Hunnen bereits untergegangen, erscheinen
+die Mongolen nach den normalen Regeln. In späteren Szenarien bereits bestehende
+Mongolen bleiben bestehen. Die Hunnen selbst erhalten keinen regulären Respawn.
+
+**Einzigartige Fähigkeit – Macht der Steppe:** Eine verwundete berittene Einheit
+der Hunnen heilt beim Plündern einer Modernisierung bis zu **25 Trefferpunkte**,
+höchstens einmal je Einheit und Spielrunde. Das Feld muss einer gegnerischen
+Fraktion gehören, mit der Krieg herrscht. Nur tatsächlich zerstörte oder
+herabgestufte Modernisierungen zählen; Straßen und Eisenbahnen geben keine
+Heilung. Bewegungskosten und Angriffsmöglichkeiten bleiben unverändert. Die
+Rundenbegrenzung bleibt beim Speichern, Laden und Aufwerten einer Einheit erhalten.
+
+Der zusätzliche Kriegs- und Grenzdruck kann über die bestehenden Regeln
+Abspaltungen oder einen Zusammenbruch Chinas auslösen. Historische Daten
+erzwingen keinen Zusammenbruch. Chinas einzigartige **1,5-fache
+Ausbildungsgeschwindigkeit für Nahkampf- und Schießpulvereinheiten** bleibt aktiv.
+Die neuen Fraktionsdaten gelten für neue Partien; Spielbalance und
+Mehrspielerverhalten sind noch nicht im Spiel validiert.
+
 ## Wissen durch Eroberungen
 
 Alle Forschungskosten erhalten zusätzlich den globalen Faktor **1,1**
@@ -584,6 +645,18 @@ Unter -40 entfällt diese zusätzliche Bedingung.
 
 Die regionalen Grenzen, Mindestzahl beanspruchbarer Städte und Regeln für
 unabhängige oder barbarische Städte bleiben bestehen.
+
+China kann bereits **zehn Runden nach seiner letzten lebenden Runde**
+wiederkehren. Dafür erfolgt **alle fünf Runden** eine eigene Prüfung, unabhängig
+von der weltweiten Zahl untergegangener Zivilisationen. Die normale Sperre bis
+mehr als 50 Runden nach der ursprünglichen Gründung sowie mindestens zwei
+geeignete Städte im Rückkehrgebiet bleiben erforderlich. Alle oben beschriebenen
+Schutzregeln für stabile Eroberer gelten weiterhin.
+
+Ein zurückkehrendes China erhält die normale Startstabilität **+10** sowie drei
+zusätzliche Garnisonseinheiten je zurückgewonnener Stadt, bei wiederholten
+Rückkehrereignissen vier. Dies gilt auch für Städte unabhängiger Fraktionen oder
+Barbaren. Die Rückkehr stellt nicht automatisch das frühere Gesamtreich wieder her.
 
 ## Kulturaufstände
 

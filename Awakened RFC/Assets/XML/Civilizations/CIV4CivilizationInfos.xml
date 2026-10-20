@@ -4754,5 +4754,53 @@
 			<CivilizationSelectionSound>AS3D_ARABIA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_ARABIA_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
+		<CivilizationInfo>
+			<Type>CIVILIZATION_XIONGNU</Type>
+			<Description>TXT_KEY_CIV_XIONGNU_DESC</Description>
+			<ShortDescription>TXT_KEY_CIV_XIONGNU_SHORT_DESC</ShortDescription>
+			<Adjective>TXT_KEY_CIV_XIONGNU_ADJECTIVE</Adjective>
+			<Civilopedia>TXT_KEY_CIV_XIONGNU_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_GOLD_AND_BLACK</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_MONGOL</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_ASIAN</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_ASIAN</UnitArtStyleType>
+			<bPlayable>0</bPlayable>
+			<bAIPlayable>0</bAIPlayable>
+			<Cities>
+				<City>TXT_KEY_CITY_NAME_LONGCHENG</City>
+				<City>TXT_KEY_CITY_NAME_XIONGNU_COURT</City>
+			</Cities>
+			<Buildings/>
+			<Units/>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders>
+				<Leader><LeaderName>LEADER_MODU</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+			</Leaders>
+			<DerivativeCiv>CIVILIZATION_CHINA</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_MONGOL_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_MONGOL_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
