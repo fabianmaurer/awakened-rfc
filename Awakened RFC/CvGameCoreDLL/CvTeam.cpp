@@ -1602,6 +1602,12 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 		AI_setWarPlan(eTeam, NO_WARPLAN);
 		GET_TEAM(eTeam).AI_setWarPlan(getID(), NO_WARPLAN);
 
+		// Restore wartime fort claims before the normal peace-time unit relocation.
+		for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+		{
+			GC.getMapINLINE().plotByIndexINLINE(iI)->restoreFortCultureAfterPeace(getID(), eTeam);
+		}
+
 		if (bBumpUnits)
 		{
 			GC.getMapINLINE().verifyUnitValidPlot();

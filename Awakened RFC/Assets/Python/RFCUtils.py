@@ -436,14 +436,17 @@ class RFCUtils:
 
                                                         
         #RiseAndFall
-        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers):
+        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers, bProtectForts=False):
                 """Deletes, recreates units in 0,67 and moves them to the previous tile.
                 If there are units belonging to others in that plot and the new owner is barbarian, the units aren't recreated.
                 Settlers aren't created.
-                If bSkipPlotCity is True, units in a city won't flip. This is to avoid converting barbarian units that would capture a city before the flip delay"""
+                If bSkipPlotCity is True, units in a city won't flip. This is to avoid converting barbarian units that would capture a city before the flip delay.
+                Births use bProtectForts to preserve major-civilization garrisons."""
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
                         for y in range(tTopLeft[1], tBottomRight[1]+1):
                                 killPlot = gc.getMap().plot(x,y)
+                                if bProtectForts and killPlot.getFortGarrisonOwner() != -1:
+                                        continue
                                 iNumUnitsInAPlot = killPlot.getNumUnits()
                                 if (iNumUnitsInAPlot):
                                         bRevealedZero = False

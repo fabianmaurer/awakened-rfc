@@ -182,6 +182,8 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	m_bLayoutStateWorked = false;
 	
 	m_eOwner = NO_PLAYER;
+	m_eFortOccupier = NO_PLAYER;
+	m_eFortCapturedFromTeam = NO_TEAM;
 	m_ePlotType = PLOT_OCEAN;
 	m_eTerrainType = NO_TERRAIN;
 	m_eFeatureType = NO_FEATURE;
@@ -2953,9 +2955,89 @@ int CvPlot::getNumCultureRangeCities(PlayerTypes ePlayer) const
 }
 
 
+PlayerTypes CvPlot::getFortGarrisonOwner(bool bIgnorePeace) const
+{
+	if (isCity() || getImprovementType() == NO_IMPROVEMENT ||
+		!GC.getImprovementInfo(getImprovementType()).isActsAsCity())
+	{
+		return NO_PLAYER;
+	}
+
+	// Wartime claims end with peace. Remaining troops must not immediately
+	// reclaim the plot, even if open borders lets them stay here.
+	if (!bIgnorePeace && m_eFortOccupier != NO_PLAYER && m_eFortCapturedFromTeam != NO_TEAM &&
+		!GET_TEAM(GET_PLAYER((PlayerTypes)m_eFortOccupier).getTeam()).isAtWar((TeamTypes)m_eFortCapturedFromTeam))
+	{
+		return NO_PLAYER;
+	}
+
+	PlayerTypes eGarrisonOwner = NO_PLAYER;
+	for (CLLNode<IDInfo>* pNode = headUnitNode(); pNode != NULL; pNode = nextUnitNode(pNode))
+	{
+		CvUnit* pUnit = ::getUnit(pNode->m_data);
+		if (pUnit == NULL || pUnit->getOwnerINLINE() >= NUM_MAJOR_PLAYERS ||
+			pUnit->getDomainType() != DOMAIN_LAND || !pUnit->canFight() ||
+			pUnit->isCargo() || pUnit->isDelayedDeath())
+		{
+			continue;
+		}
+
+		// Friendly visitors do not take a fort from its existing garrison.
+		if (pUnit->getOwnerINLINE() == getOwnerINLINE())
+		{
+			return getOwnerINLINE();
+		}
+		// Stable tie-break for mixed garrisons on previously unowned forts.
+		if (eGarrisonOwner == NO_PLAYER || pUnit->getOwnerINLINE() < eGarrisonOwner)
+		{
+			eGarrisonOwner = pUnit->getOwnerINLINE();
+		}
+	}
+	return eGarrisonOwner;
+}
+
+
+void CvPlot::updateFortOwnership()
+{
+	if (!isCity() && getImprovementType() != NO_IMPROVEMENT &&
+		GC.getImprovementInfo(getImprovementType()).isActsAsCity())
+	{
+		// Movement may still be updating units; do not relocate them recursively.
+		if (getFortGarrisonOwner(true) == NO_PLAYER)
+		{
+			m_eFortOccupier = NO_PLAYER;
+			m_eFortCapturedFromTeam = NO_TEAM;
+		}
+		updateCulture(false, true);
+	}
+}
+
+
+void CvPlot::restoreFortCultureAfterPeace(TeamTypes eFirstTeam, TeamTypes eSecondTeam)
+{
+	if (m_eFortOccupier == NO_PLAYER || m_eFortCapturedFromTeam == NO_TEAM)
+	{
+		return;
+	}
+	TeamTypes eOccupierTeam = GET_PLAYER((PlayerTypes)m_eFortOccupier).getTeam();
+	if ((eOccupierTeam == eFirstTeam && m_eFortCapturedFromTeam == eSecondTeam) ||
+		(eOccupierTeam == eSecondTeam && m_eFortCapturedFromTeam == eFirstTeam))
+	{
+		// CvTeam::makePeace relocates invalid units after all forts are restored.
+		updateFortOwnership();
+	}
+}
+
+
 PlayerTypes CvPlot::calculateCulturalOwner() const
 {
 	PROFILE("CvPlot::calculateCulturalOwner()")
+
+	PlayerTypes eGarrisonOwner = getFortGarrisonOwner();
+	if (eGarrisonOwner != NO_PLAYER)
+	{
+		return eGarrisonOwner;
+	}
 
 	CvCity* pLoopCity;
 	CvCity* pBestCity;
@@ -4714,6 +4796,13 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 {
 	PROFILE_FUNC();
 
+	// Also cover explicit Python ownership changes during civilization births.
+	PlayerTypes eGarrisonOwner = getFortGarrisonOwner();
+	if (eGarrisonOwner != NO_PLAYER)
+	{
+		eNewValue = eGarrisonOwner;
+	}
+
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pOldCity;
 	CvCity* pNewCity;
@@ -4725,6 +4814,13 @@ void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotG
 
 	if (getOwnerINLINE() != eNewValue)
 	{
+		if (eGarrisonOwner != NO_PLAYER && isOwned() &&
+			GET_TEAM(GET_PLAYER(eGarrisonOwner).getTeam()).isAtWar(getTeam()))
+		{
+			m_eFortOccupier = eGarrisonOwner;
+			m_eFortCapturedFromTeam = getTeam();
+		}
+
 		const bool bCultureUpdate = observerPerformanceInScope("CvCity::doPlotCulture");
 		OBSERVER_PERFORMANCE(bCultureUpdate ? "culture.ownerChange" : "plot.ownerChange");
         if (bCultureUpdate)
@@ -5552,6 +5648,8 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 
 		updatePlotGroupBonus(false);
 		m_eImprovementType = eNewValue;
+		m_eFortOccupier = NO_PLAYER;
+		m_eFortCapturedFromTeam = NO_TEAM;
 		updatePlotGroupBonus(true);
 
 		if (getImprovementType() == NO_IMPROVEMENT)
@@ -5600,6 +5698,13 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 					pLoopCity->updateFeatureHappiness();
 				}
 			}
+		}
+
+		// Removing a fort releases its military claim back to ordinary culture.
+		if ((NO_IMPROVEMENT != eOldImprovement && GC.getImprovementInfo(eOldImprovement).isActsAsCity()) ||
+			(NO_IMPROVEMENT != eNewValue && GC.getImprovementInfo(eNewValue).isActsAsCity()))
+		{
+			updateCulture(false, true);
 		}
 
 		// Building or removing a fort will now force a plotgroup update to verify resource connections.
@@ -8919,6 +9024,8 @@ void CvPlot::read(FDataStreamBase* pStream)
 	// m_bLayoutStateWorked not saved
 
 	pStream->Read(&m_eOwner);
+	pStream->Read(&m_eFortOccupier);
+	pStream->Read(&m_eFortCapturedFromTeam);
 	pStream->Read(&m_ePlotType);
 	pStream->Read(&m_eTerrainType);
 	pStream->Read(&m_eFeatureType);
@@ -9139,6 +9246,8 @@ void CvPlot::write(FDataStreamBase* pStream)
 	// m_bLayoutStateWorked not saved
 
 	pStream->Write(m_eOwner);
+	pStream->Write(m_eFortOccupier);
+	pStream->Write(m_eFortCapturedFromTeam);
 	pStream->Write(m_ePlotType);
 	pStream->Write(m_eTerrainType);
 	pStream->Write(m_eFeatureType);

@@ -78,6 +78,7 @@ public:
 	bool isWithinCultureRange(int /*PlayerTypes*/ ePlayer);
 	int getNumCultureRangeCities(int /*PlayerTypes*/ ePlayer);										
 	int /*PlayerTypes*/ calculateCulturalOwner();
+	int /*PlayerTypes*/ getFortGarrisonOwner();
 
 	bool isOwned();
 	bool isBarbarian();

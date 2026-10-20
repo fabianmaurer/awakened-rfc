@@ -9992,6 +9992,17 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		gDLL->getEntityIFace()->updateEnemyGlow(getUnitEntity());
 	}
 
+	// Ownership changes must follow movement bookkeeping (including cargo and
+	// outside-unit counts), rather than running inside addUnit/removeUnit.
+	if (pOldPlot != NULL)
+	{
+		pOldPlot->updateFortOwnership();
+	}
+	if (pNewPlot != NULL)
+	{
+		pNewPlot->updateFortOwnership();
+	}
+
 	// report event to Python, along with some other key state
 	CvEventReporter::getInstance().unitSetXY(pNewPlot, this);
 }
@@ -11328,6 +11339,11 @@ void CvUnit::setTransportUnit(CvUnit* pTransportUnit)
 			m_transportUnit.reset();
 
 			getGroup()->setActivityType(ACTIVITY_AWAKE);
+		}
+
+		if (plot() != NULL)
+		{
+			plot()->updateFortOwnership();
 		}
 
 #ifdef _DEBUG

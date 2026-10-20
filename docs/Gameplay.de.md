@@ -602,6 +602,32 @@ Hintergründe und Verhalten in Spielständen stehen in
 
 ## Neue Zivilisationen und Gebietswechsel
 
+### Garnisonen in Festungen
+
+Eine Festung mit mindestens einer kampffähigen Landeinheit einer regulären
+Zivilisation gehört dem Spieler dieser Garnison, unabhängig von der Feldkultur.
+Das gilt auch in neutralem Gebiet. Unabhängige und Barbaren beanspruchen auf
+diese Weise keine Festungen; zivile Einheiten und transportierte Truppen zählen
+nicht als Garnison. Teilen sich befreundete Truppen eine Festung, behält der
+bisherige Besitzer die Kontrolle, solange seine Garnison dort bleibt.
+
+Eine im Krieg eroberte Festung fällt beim Friedensschluss mit dem vorherigen
+Besitzer an den normalen kulturellen Feldbesitzer zurück. Truppen ohne
+Aufenthaltsrecht werden dabei wie üblich aus fremdem Gebiet versetzt. Auch
+bei offenen Grenzen beansprucht die verbliebene Garnison die Festung nicht
+sofort erneut; die militärische Beanspruchung wird erst nach vollständigem
+Abzug aller geeigneten Garnisonseinheiten wieder freigegeben. In neutralem
+Gebiet beanspruchte Festungen und friedliche Garnisonen behalten ihre bisherige
+Regel. Der Kriegsbesatzungsstatus wird gespeichert.
+
+Mit dem Abzug der letzten geeigneten Garnison oder dem Entfernen der Festung
+bestimmt wieder die normale Feldkultur den Besitzer. Die Garnison schützt nur
+das Festungsfeld, nicht die umliegenden Felder. Beim Erscheinen einer neuen
+Zivilisation bleiben besetzte Festungen und ihre Garnisonen vom automatischen
+Übertritt, der Startgebietsbereinigung und dem Truppenverrat ausgenommen.
+Liegt der vorgesehene Startpunkt auf einer fremden besetzten Festung, erscheint
+die neue Armee stattdessen auf dem nächsten freien Landfeld derselben Landmasse.
+
 ### Feld-Tooltips
 
 Beim Überfahren eines Feldes erscheinen die **Grundnamen** zukünftiger
