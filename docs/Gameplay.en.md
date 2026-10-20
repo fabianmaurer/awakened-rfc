@@ -11,6 +11,30 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+## Cultural border expansion
+
+Cities begin with their center and eight neighboring tiles. Further culture
+expands coverage **one tile per individual culture threshold**, rather than a
+whole ring at each culture level. Nearby tiles come first; water, hills, peaks
+and features cost more, while rivers and resources revealed when the city is
+founded cost less. The order and cumulative costs are fixed at founding and
+preserved in saves. Large culture grants can cross several tile thresholds at
+once. Rival ownership still depends on competing plot culture.
+
+Expansion follows a connected path from the city through passable tiles within
+its maximum cultural reach. Mountains and other impassable tiles can be claimed
+at the edge, including in the starting nine tiles, but cannot carry culture
+across a barrier. Tiles beyond a barrier require a passable route around it;
+unreachable tiles are excluded from the acquisition order. Coastal expansion
+remains possible. The next-tile marker follows this reachable order.
+
+The culture bar and tooltip show the next tile threshold. A purple circle in
+your city screen marks that tile; it disappears during occupation or once all
+tiles are covered. Culture levels still
+control cultural defense and victory requirements. Occupation suspends coverage;
+recovery restores the coverage earned by the city's current culture. The maximum
+reach and the workable city radius are unchanged.
+
 ## India and the Huna invasion
 
 Around **AD 500**, one barbarian Huna army enters Punjab east of the mountains:

@@ -1515,6 +1515,11 @@ int /*CultureLevelTypes*/ CyCity::getCultureLevel()
 	return m_pCity ? m_pCity->getCultureLevel() : NO_CULTURELEVEL;
 }
 
+int CyCity::getNextCoveredPlotCost()
+{
+	return m_pCity ? m_pCity->getNextCoveredPlotCost() : -1;
+}
+
 int CyCity::getCultureThreshold()
 {
 	return m_pCity ? m_pCity->getCultureThreshold() : -1;

@@ -117,6 +117,17 @@ void CvGame::updateColoredPlots()
 					}
 				}
 			}
+			// Preview only the local player's next cultural acquisition.
+			if (pHeadSelectedCity->getOwnerINLINE() == getActivePlayer())
+			{
+				CvPlot* pNextCulturePlot = pHeadSelectedCity->getNextCulturePlot();
+				if (pNextCulturePlot != NULL && pNextCulturePlot->isRevealed(getActiveTeam(), false))
+				{
+					NiColorA color(GC.getColorInfo((ColorTypes)GC.getInfoTypeForString("COLOR_CULTURE_STORED")).getColor());
+					color.a = 0.9f;
+					gDLL->getEngineIFace()->addColoredPlot(pNextCulturePlot->getX_INLINE(), pNextCulturePlot->getY_INLINE(), color, PLOT_STYLE_CIRCLE, PLOT_LANDSCAPE_LAYER_BASE);
+				}
+			}
 		}
 		else
 		{

@@ -332,6 +332,7 @@ public:
 	int /*PlayerTypes*/getOriginalOwner();
 	int /*CultureLevelTypes*/ getCultureLevel();
 	int getCultureThreshold();
+	int getNextCoveredPlotCost();
 	int getSeaPlotYield(int /*YieldTypes*/ eIndex);
 	int getRiverPlotYield(int /*YieldTypes*/ eIndex);
 

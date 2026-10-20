@@ -3147,7 +3147,9 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 
 			if (pLoopPlot != NULL)
 			{
-				if (pLoopPlot->isOwned())
+				// Filling a border hole must not propagate ownership through peaks
+				// or another impassable barrier into an unreachable pocket.
+				if (pLoopPlot->isOwned() && !pLoopPlot->isImpassable())
 				{
 					if (eBestPlayer == NO_PLAYER)
 					{

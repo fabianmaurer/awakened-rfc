@@ -591,6 +591,12 @@ public:
 	static int getCultureThreshold(CultureLevelTypes eLevel);
 	void setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups);
 	void updateCultureLevel(bool bUpdatePlotGroups);
+	int getNextCoveredPlotCost() const;
+	CvPlot* getNextCulturePlot() const;
+	bool needsCultureForWorkablePlots() const;
+	bool isCultureCovered(const CvPlot* pPlot) const;
+	void initCulturePlots();
+	void updateCoveredPlots(bool bUpdatePlotGroups);
 
 	int getSeaPlotYield(YieldTypes eIndex) const;																// Exposed to Python
 	void changeSeaPlotYield(YieldTypes eIndex, int iChange);
@@ -1097,6 +1103,9 @@ protected:
 	PlayerTypes m_ePreviousOwner;
 	PlayerTypes m_eOriginalOwner;
 	CultureLevelTypes m_eCultureLevel;
+	std::vector<int> m_aiCulturePlots;
+	std::vector<int> m_aiCulturePlotCosts;
+	int m_iCoveredPlots;
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;

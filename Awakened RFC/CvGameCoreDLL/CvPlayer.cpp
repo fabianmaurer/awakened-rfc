@@ -1369,7 +1369,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	if (bConquest)
 	{
-		iRange = pOldCity->getCultureLevel();
+		iRange = GC.getNumCultureLevelInfos() - 1;
 
 		for (iDX = -(iRange); iDX <= iRange; iDX++)
 		{
@@ -1379,7 +1379,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				{
 					pLoopPlot = plotXY(pOldCity->getX_INLINE(),pOldCity-> getY_INLINE(), iDX, iDY);
 
-					if (pLoopPlot != NULL)
+					if (pOldCity->isCultureCovered(pLoopPlot))
 					{
 						if (pLoopPlot->getOwnerINLINE() == pOldCity->getOwnerINLINE())	
 						{

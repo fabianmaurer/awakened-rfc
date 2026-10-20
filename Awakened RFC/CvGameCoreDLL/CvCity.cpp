@@ -611,6 +611,9 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_ePreviousOwner = NO_PLAYER;
 	m_eOriginalOwner = eOwner;
 	m_eCultureLevel = NO_CULTURELEVEL;
+	m_aiCulturePlots.clear();
+	m_aiCulturePlotCosts.clear();
+	m_iCoveredPlots = 0;
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
@@ -7961,81 +7964,20 @@ int CvCity::getCultureThreshold(CultureLevelTypes eLevel)
 
 void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups)
 {
-	CvPlot* pLoopPlot;
 	CvWString szBuffer;
-	CultureLevelTypes eOldValue;
-	int iCultureRange;
-	int iDX, iDY;
-	int iI;
-
-	eOldValue = getCultureLevel();
+	CultureLevelTypes eOldValue = getCultureLevel();
+	m_eCultureLevel = eNewValue;
+	updateCoveredPlots(bUpdatePlotGroups);
 
 	if (eOldValue != eNewValue)
 	{
-		m_eCultureLevel = eNewValue;
-
-		if (eOldValue != NO_CULTURELEVEL)
-		{
-			for (iDX = -eOldValue; iDX <= eOldValue; iDX++)
-			{
-				for (iDY = -eOldValue; iDY <= eOldValue; iDY++)
-				{
-					iCultureRange = cultureDistance(iDX, iDY);
-
-					if (iCultureRange > getCultureLevel())
-					{
-						if (iCultureRange <= eOldValue)
-						{
-							FAssert(iCultureRange <= GC.getNumCultureLevelInfos());
-
-							pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-
-							if (pLoopPlot != NULL)
-							{
-								pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), iCultureRange, -1, bUpdatePlotGroups);
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (getCultureLevel() != NO_CULTURELEVEL)
-		{
-			for (iDX = -getCultureLevel(); iDX <= getCultureLevel(); iDX++)
-			{
-				for (iDY = -getCultureLevel(); iDY <= getCultureLevel(); iDY++)
-				{
-					iCultureRange = cultureDistance(iDX, iDY);
-
-					if (iCultureRange > eOldValue)
-					{
-						if (iCultureRange <= getCultureLevel())
-						{
-							FAssert(iCultureRange <= GC.getNumCultureLevelInfos());
-
-							pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-
-							if (pLoopPlot != NULL)
-							{
-								pLoopPlot->changeCultureRangeCities(getOwnerINLINE(), iCultureRange, 1, bUpdatePlotGroups);
-							}
-						}
-					}
-				}
-			}
-		}
-
 		if (GC.getGameINLINE().isFinalInitialized())
 		{
 			if ((getCultureLevel() > eOldValue) && (getCultureLevel() > 1))
 			{
-				szBuffer = gDLL->getText("TXT_KEY_MISC_BORDERS_EXPANDED", getNameKey());
-				gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CULTUREEXPANDS", MESSAGE_TYPE_MINOR_EVENT, GC.getCommerceInfo(COMMERCE_CULTURE).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), getX_INLINE(), getY_INLINE(), true, true);
-
 				if (getCultureLevel() == (GC.getNumCultureLevelInfos() - 1))
 				{
-					for (iI = 0; iI < MAX_PLAYERS; iI++)
+					for (int iI = 0; iI < MAX_PLAYERS; iI++)
 					{
 						if (GET_PLAYER((PlayerTypes)iI).isAlive())
 						{
@@ -8053,22 +7995,165 @@ void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups
 					}
 				}
 
-				// ONEVENT - Culture growth
-				CvEventReporter::getInstance().cultureExpansion(this, getOwnerINLINE());
-				
-				//Stop Build Culture
-				if (isProductionProcess())
+			}
+		}
+	}
+}
+
+
+// Each city retains its own ordered footprint, independently of culture levels.
+void CvCity::initCulturePlots()
+{
+	std::vector<std::pair<int, int> > aPlots;
+	const int iRadius = GC.getNumCultureLevelInfos() - 1;
+	for (int iDX = -iRadius; iDX <= iRadius; ++iDX)
+	{
+		for (int iDY = -iRadius; iDY <= iRadius; ++iDY)
+		{
+			CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+			int iRange = cultureDistance(iDX, iDY);
+			if (pPlot == NULL || iRange > iRadius) continue;
+			int iIndex = GC.getMapINLINE().plotNumINLINE(pPlot->getX_INLINE(), pPlot->getY_INLINE());
+			bool bDuplicate = false;
+			for (int i = 0; i < (int)aPlots.size(); ++i)
+			{
+				if (aPlots[i].second == iIndex) bDuplicate = true;
+			}
+			if (bDuplicate) continue;
+
+			int iTerrainCost = 0;
+			if (pPlot->isWater()) iTerrainCost += 10;
+			if (pPlot->isHills()) iTerrainCost += 5;
+			if (pPlot->isPeak()) iTerrainCost += 30;
+			if (pPlot->getFeatureType() != NO_FEATURE) iTerrainCost += 5;
+			if (pPlot->isRiver()) iTerrainCost -= 5;
+			// Use only revealed bonuses; hidden resources must not affect borders.
+			if (pPlot->getBonusType(getTeam()) != NO_BONUS) iTerrainCost -= 5;
+			aPlots.push_back(std::make_pair(iRange * 1000 + iTerrainCost, iIndex));
+		}
+	}
+	// Explicit index tie-breaks keep acquisition deterministic on every peer.
+	std::sort(aPlots.begin(), aPlots.end());
+	std::vector<bool> abAvailable(aPlots.size(), false);
+	std::vector<bool> abAdded(aPlots.size(), false);
+	// All starting neighbors are covered, including peaks. Only passable
+	// neighbors may subsequently carry culture outward from that inner ring.
+	for (int i = 0; i < (int)aPlots.size(); ++i)
+	{
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(aPlots[i].second);
+		abAvailable[i] = stepDistance(getX_INLINE(), getY_INLINE(), pPlot->getX_INLINE(), pPlot->getY_INLINE()) <= 1;
+	}
+	int iCumulativeCost = 0;
+	const int iSpeedCost = std::max(1, GC.getGameINLINE().getCultureThreshold((CultureLevelTypes)2));
+	while (true)
+	{
+		// Choose the cheapest tile on the reachable frontier, not across a wall.
+		int i = 0;
+		while (i < (int)aPlots.size() && (!abAvailable[i] || abAdded[i])) ++i;
+		if (i == (int)aPlots.size()) break;
+		abAdded[i] = true;
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(aPlots[i].second);
+		int iRange = cultureDistance(dxWrap(pPlot->getX_INLINE() - getX_INLINE()), dyWrap(pPlot->getY_INLINE() - getY_INLINE()));
+		if (iRange > 1)
+		{
+			int iTerrainCost = aPlots[i].first - iRange * 1000;
+			int iTileCost = std::max(5, 10 * (iRange - 1) * (iRange - 1) + iTerrainCost);
+			iCumulativeCost += std::max(1, iTileCost * iSpeedCost / 10);
+		}
+		m_aiCulturePlots.push_back(aPlots[i].second);
+		m_aiCulturePlotCosts.push_back(iCumulativeCost);
+		if (!pPlot->isImpassable())
+		{
+			for (int j = 0; j < (int)aPlots.size(); ++j)
+			{
+				if (abAdded[j] || abAvailable[j]) continue;
+				CvPlot* pNextPlot = GC.getMapINLINE().plotByIndexINLINE(aPlots[j].second);
+				if (stepDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pNextPlot->getX_INLINE(), pNextPlot->getY_INLINE()) <= 1)
 				{
-					if (GC.getProcessInfo(getProductionProcess()).getProductionToCommerceModifier(COMMERCE_CULTURE) > 0)
-					{
-						popOrder(0, false, true);						
-					}
+					abAvailable[j] = true;
 				}
 			}
 		}
 	}
 }
 
+int CvCity::getNextCoveredPlotCost() const
+{
+	int iNextPlot = m_iCoveredPlots;
+	while (iNextPlot < (int)m_aiCulturePlotCosts.size() && m_aiCulturePlotCosts[iNextPlot] <= getCulture(getOwnerINLINE())) ++iNextPlot;
+	if (iNextPlot < (int)m_aiCulturePlotCosts.size())
+	{
+		return std::max(1, m_aiCulturePlotCosts[iNextPlot]);
+	}
+	return std::max(getCultureThreshold(), (getCultureTimes100(getOwnerINLINE()) + 99) / 100);
+}
+
+CvPlot* CvCity::getNextCulturePlot() const
+{
+	if (isOccupation() || getCultureUpdateTimer() > 0) return NULL;
+	// Match the next threshold shown by the culture bar, including queued grants.
+	int iNextPlot = m_iCoveredPlots;
+	while (iNextPlot < (int)m_aiCulturePlotCosts.size() && m_aiCulturePlotCosts[iNextPlot] <= getCulture(getOwnerINLINE())) ++iNextPlot;
+	return iNextPlot < (int)m_aiCulturePlots.size() ? GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[iNextPlot]) : NULL;
+}
+
+bool CvCity::needsCultureForWorkablePlots() const
+{
+	// A detour may put an outer tile ahead of a remaining workable tile.
+	for (int i = m_iCoveredPlots; i < (int)m_aiCulturePlots.size(); ++i)
+	{
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[i]);
+		if (!pPlot->isImpassable() && getCityPlotIndex(pPlot) >= 0) return true;
+	}
+	return false;
+}
+
+bool CvCity::isCultureCovered(const CvPlot* pPlot) const
+{
+	if (pPlot == NULL) return false;
+	int iIndex = GC.getMapINLINE().plotNumINLINE(pPlot->getX_INLINE(), pPlot->getY_INLINE());
+	return std::find(m_aiCulturePlots.begin(), m_aiCulturePlots.begin() + m_iCoveredPlots, iIndex) != m_aiCulturePlots.begin() + m_iCoveredPlots;
+}
+
+void CvCity::updateCoveredPlots(bool bUpdatePlotGroups)
+{
+	if (m_aiCulturePlots.empty() && getCultureLevel() != NO_CULTURELEVEL) initCulturePlots();
+	int iNewCount = 0;
+	if (getCultureLevel() > 0)
+	{
+		while (iNewCount < (int)m_aiCulturePlots.size() &&
+			getCulture(getOwnerINLINE()) >= m_aiCulturePlotCosts[iNewCount]) ++iNewCount;
+	}
+	const int iOldCount = m_iCoveredPlots;
+	m_iCoveredPlots = iNewCount;
+	if (iOldCount != iNewCount && gDLL->getInterfaceIFace()->getHeadSelectedCity() == this)
+	{
+		gDLL->getInterfaceIFace()->setDirty(ColoredPlots_DIRTY_BIT, true);
+	}
+	bool bExpanded = false;
+	for (int i = std::min(iOldCount, iNewCount); i < std::max(iOldCount, iNewCount); ++i)
+	{
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[i]);
+		int iRange = cultureDistance(dxWrap(pPlot->getX_INLINE() - getX_INLINE()), dyWrap(pPlot->getY_INLINE() - getY_INLINE()));
+		if (iNewCount > iOldCount)
+		{
+			if (m_aiCulturePlotCosts[i] > 0 && !pPlot->isWithinCultureRange(getOwnerINLINE())) bExpanded = true;
+			// Newly covered tiles need culture immediately, including scripted grants.
+			if (pPlot->getCulture(getOwnerINLINE()) == 0) pPlot->setCulture(getOwnerINLINE(), 1, false, false);
+		}
+		pPlot->changeCultureRangeCities(getOwnerINLINE(), iRange, iNewCount > iOldCount ? 1 : -1, bUpdatePlotGroups);
+	}
+	if (bExpanded && GC.getGameINLINE().isFinalInitialized())
+	{
+		CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_BORDERS_EXPANDED", getNameKey());
+		gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CULTUREEXPANDS", MESSAGE_TYPE_MINOR_EVENT, GC.getCommerceInfo(COMMERCE_CULTURE).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), getX_INLINE(), getY_INLINE(), true, true);
+		CvEventReporter::getInstance().cultureExpansion(this, getOwnerINLINE());
+		if (isProductionProcess() && GC.getProcessInfo(getProductionProcess()).getProductionToCommerceModifier(COMMERCE_CULTURE) > 0)
+		{
+			popOrder(0, false, true);
+		}
+	}
+}
 
 void CvCity::updateCultureLevel(bool bUpdatePlotGroups)
 {
@@ -12612,71 +12697,33 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 {
 	OBSERVER_PERFORMANCE("CvCity::doPlotCulture");
 	ObserverPerformanceScope modeScope(bUpdate ? "culture.immediate" : "culture.normal");
-	CvPlot* pLoopPlot;
-	int iDX, iDY;
-	int iCultureRange;
-	CultureLevelTypes eCultureLevel = (CultureLevelTypes)0;
-
-	//Rhye - start
-//Speed: Modified by Kael 04/19/2007
-//	CyCity* pyCity = new CyCity(this);
-//	CyArgsList argsList;
-//	argsList.add(gDLL->getPythonIFace()->makePythonObject(pyCity));	// pass in city class
-//	argsList.add(bUpdate);
-//	long lResult=0;
-//	gDLL->getPythonIFace()->callFunction(PYGameModule, "doPlotCulture", argsList.makeFunctionArgs(), &lResult);
-//	delete pyCity;	// python fxn must not hold on to this pointer
-//	if (lResult == 1)
-//	{
-//		return;
-//	}
-//Speed: End Modify
-	//Rhye - end
-
 	FAssert(NO_PLAYER != ePlayer);
+	if (getCultureTimes100(ePlayer) <= 0) return;
 
-	if (getOwnerINLINE() == ePlayer)
+	const int iFreeCultureRate = GC.getDefineINT("CITY_FREE_CULTURE_GROWTH_FACTOR");
+	CultureLevelTypes ePressureLevel = getCultureLevel();
+	if (ePlayer != getOwnerINLINE())
 	{
-		eCultureLevel = getCultureLevel();
-	}
-	else
-	{
-		for (int iI = (GC.getNumCultureLevelInfos() - 1); iI > 0; iI--)
+		ePressureLevel = (CultureLevelTypes)0;
+		for (int iLevel = GC.getNumCultureLevelInfos() - 1; iLevel > 0; --iLevel)
 		{
-			if (getCultureTimes100(ePlayer) >= 100 * GC.getGameINLINE().getCultureThreshold((CultureLevelTypes)iI))
+			if (getCulture(ePlayer) >= GC.getGameINLINE().getCultureThreshold((CultureLevelTypes)iLevel))
 			{
-				eCultureLevel = (CultureLevelTypes)iI;
+				ePressureLevel = (CultureLevelTypes)iLevel;
 				break;
 			}
 		}
 	}
-
-	int iFreeCultureRate = GC.getDefineINT("CITY_FREE_CULTURE_GROWTH_FACTOR");
-	if (getCultureTimes100(ePlayer) > 0)
+	// Culture pressure follows this city's actual coverage, never an entire ring.
+	for (int i = 0; i < m_iCoveredPlots; ++i)
 	{
-		if (eCultureLevel != NO_CULTURELEVEL)
+		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[i]);
+		if (pLoopPlot->isPotentialCityWorkForArea(area()))
 		{
-			for (iDX = -eCultureLevel; iDX <= eCultureLevel; iDX++)
-			{
-				for (iDY = -eCultureLevel; iDY <= eCultureLevel; iDY++)
-				{
-					iCultureRange = cultureDistance(iDX, iDY);
-
-					if (iCultureRange <= eCultureLevel)
-					{
-						pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-
-						if (pLoopPlot != NULL)
-						{
-							if (pLoopPlot->isPotentialCityWorkForArea(area()))
-							{
-								modeScope.addWork();
-								pLoopPlot->changeCulture(ePlayer, (((eCultureLevel - iCultureRange) * iFreeCultureRate) + iCultureRate + 1), (bUpdate || !(pLoopPlot->isOwned())));
-							}
-						}
-					}
-				}
-			}
+			int iRange = cultureDistance(dxWrap(pLoopPlot->getX_INLINE() - getX_INLINE()), dyWrap(pLoopPlot->getY_INLINE() - getY_INLINE()));
+			if (ePlayer != getOwnerINLINE() && iRange > ePressureLevel) continue;
+			modeScope.addWork();
+			pLoopPlot->changeCulture(ePlayer, std::max(0, ePressureLevel - iRange) * iFreeCultureRate + iCultureRate + 1, bUpdate || !pLoopPlot->isOwned());
 		}
 	}
 }
@@ -13454,13 +13501,28 @@ void CvCity::read(FDataStreamBase* pStream)
         }
     }
 
+	if (uiFlag & 16)
+	{
+		int iCount;
+		pStream->Read(&iCount);
+		pStream->Read(&m_iCoveredPlots);
+		for (int i = 0; i < iCount; ++i)
+		{
+			int iPlot, iCost;
+			pStream->Read(&iPlot);
+			pStream->Read(&iCost);
+			m_aiCulturePlots.push_back(iPlot);
+			m_aiCulturePlotCosts.push_back(iCost);
+		}
+	}
+
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=15;
+	uint uiFlag=31;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -13701,6 +13763,14 @@ void CvCity::write(FDataStreamBase* pStream)
     pStream->Write((int)m_aiSlaveRefugeeUnhappinessExpiryTurns.size());
     for (unsigned int i = 0; i < m_aiSlaveRefugeeUnhappinessExpiryTurns.size(); ++i)
         pStream->Write(m_aiSlaveRefugeeUnhappinessExpiryTurns[i]);
+
+	pStream->Write((int)m_aiCulturePlots.size());
+	pStream->Write(m_iCoveredPlots);
+	for (int i = 0; i < (int)m_aiCulturePlots.size(); ++i)
+	{
+		pStream->Write(m_aiCulturePlots[i]);
+		pStream->Write(m_aiCulturePlotCosts[i]);
+	}
 
 }
 

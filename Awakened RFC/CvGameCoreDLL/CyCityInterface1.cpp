@@ -320,6 +320,7 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getOriginalOwner", &CyCity::getOriginalOwner, "int /*PlayerTypes*/ ()")
 		.def("getCultureLevel", &CyCity::getCultureLevel, "int /*CultureLevelTypes*/ ()")
 		.def("getCultureThreshold", &CyCity::getCultureThreshold)
+		.def("getNextCoveredPlotCost", &CyCity::getNextCoveredPlotCost)
 		.def("getSeaPlotYield", &CyCity::getSeaPlotYield, "int (int /*YieldTypes*/) - total YieldType for water plots")
 		.def("getRiverPlotYield", &CyCity::getRiverPlotYield, "int (int /*YieldTypes*/) - total YieldType for river plots")
 

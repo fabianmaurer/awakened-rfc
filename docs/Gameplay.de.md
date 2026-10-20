@@ -11,6 +11,33 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+## Kulturelle Grenzerweiterung
+
+Städte beginnen mit ihrem Stadtfeld und den acht Nachbarfeldern. Weitere Kultur
+erweitert das Gebiet **um ein Feld je eigener Kulturschwelle**, statt bei jeder
+Kulturstufe einen ganzen Ring hinzuzufügen. Nahe Felder kommen zuerst; Wasser,
+Hügel, Berge und Geländemerkmale kosten mehr, Flüsse und bei der Stadtgründung
+sichtbare Ressourcen weniger. Reihenfolge und kumulierte Kosten werden bei der
+Gründung festgelegt und mitgespeichert. Große Kulturzuwächse können mehrere
+Feldschwellen auf einmal überschreiten. Bei fremdem Besitz entscheidet weiterhin
+die konkurrierende Feldkultur.
+
+Die Erweiterung folgt einem zusammenhängenden Weg von der Stadt über passierbare
+Felder innerhalb ihrer maximalen Kulturreichweite. Berge und andere unpassierbare
+Felder können am Rand zum Gebiet gehören, auch unter den neun Startfeldern,
+tragen die Kultur aber nicht über eine Barriere hinweg. Felder dahinter benötigen
+einen passierbaren Umweg; unerreichbare Felder werden aus der Erwerbsreihenfolge
+ausgeschlossen. Küstenausdehnung bleibt möglich. Die Markierung des nächsten
+Feldes folgt dieser erreichbaren Reihenfolge.
+
+Kulturbalken und Tooltip zeigen die Schwelle für das nächste Feld. Ein violetter
+Kreis im eigenen Stadtbildschirm markiert dieses Feld; während einer Besatzung
+oder nach vollständiger Gebietsabdeckung wird er ausgeblendet. Kulturstufen
+bestimmen weiterhin Kulturverteidigung und Siegbedingungen. Besatzung setzt die
+Gebietsabdeckung aus; danach gilt wieder die durch die aktuelle Stadtkultur
+erreichte Abdeckung. Maximale Reichweite und bearbeitbarer Stadtradius bleiben
+unverändert.
+
 ## Indien und die Huna-Invasion
 
 Um **500 n. Chr.** erscheint einmalig ein barbarisches Huna-Heer an der

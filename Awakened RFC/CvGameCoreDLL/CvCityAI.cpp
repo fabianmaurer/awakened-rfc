@@ -979,7 +979,7 @@ void CvCityAI::AI_chooseProduction()
 	
 	
     // if we need to pop borders, then do that immediately if we have drama and can do it
-	if ((iTargetCulturePerTurn > 0) && (getCultureLevel() <= (CultureLevelTypes) 1))
+	if ((iTargetCulturePerTurn > 0) && (needsCultureForWorkablePlots()))
 	{
         if (AI_chooseProcess(COMMERCE_CULTURE))
         {
@@ -5231,7 +5231,7 @@ int CvCityAI::AI_processValue(ProcessTypes eProcess, CommerceTypes eCommerceType
 	}
 
 	// if we own less than 50%, or we need to pop borders
-	if ((plot()->calculateCulturePercent(getOwnerINLINE()) < 50) || (getCultureLevel() <= (CultureLevelTypes) 1))
+	if ((plot()->calculateCulturePercent(getOwnerINLINE()) < 50) || (needsCultureForWorkablePlots()))
 	{
 		iValue += GC.getProcessInfo(eProcess).getProductionToCommerceModifier(COMMERCE_CULTURE);
 	}
@@ -8159,7 +8159,7 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 			}
 			if (iI == COMMERCE_CULTURE)
 			{
-				if (getCultureLevel() <= (CultureLevelTypes) 1)
+				if (needsCultureForWorkablePlots())
 				{
 					iCommerceValue += (15 * aiCommerceYieldsTimes100[iI]) / 100;
 				}
@@ -9404,7 +9404,7 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 	}
 	
     // if we need to pop borders, then do that immediately if we have drama and can do it
-	if ((getCultureLevel() <= (CultureLevelTypes)1) && ((getCommerceRate(COMMERCE_CULTURE) < 2) || (iCulturePressure > 0)))
+	if ((needsCultureForWorkablePlots()) && ((getCommerceRate(COMMERCE_CULTURE) < 2) || (iCulturePressure > 0)))
 	{
         if (AI_chooseProcess(COMMERCE_CULTURE))
         {

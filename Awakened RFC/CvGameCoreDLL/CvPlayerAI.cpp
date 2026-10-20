@@ -1561,7 +1561,7 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 			
 			iWeight += (100 - pCity->plot()->calculateCulturePercent(getID()));
 			
-			if (pCity->getCultureLevel() <= (CultureLevelTypes) 1)
+			if (pCity->needsCultureForWorkablePlots())
 			{
 				iWeight = std::max(iWeight, 800);				
 			}

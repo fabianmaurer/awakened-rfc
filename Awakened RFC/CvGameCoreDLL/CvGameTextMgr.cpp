@@ -3247,7 +3247,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 	if (pCity->getCultureLevel() != NO_CULTURELEVEL)
 	{
-		szString.append(gDLL->getText("TXT_KEY_CITY_BAR_CULTURE", pCity->getCulture(pCity->getOwnerINLINE()), pCity->getCultureThreshold(), GC.getCultureLevelInfo(pCity->getCultureLevel()).getTextKeyWide()));
+		szString.append(gDLL->getText("TXT_KEY_CITY_BAR_CULTURE", pCity->getCulture(pCity->getOwnerINLINE()), pCity->getNextCoveredPlotCost(), GC.getCultureLevelInfo(pCity->getCultureLevel()).getTextKeyWide()));
 	}
 
 	if (pCity->getGreatPeopleProgress() > 0)
