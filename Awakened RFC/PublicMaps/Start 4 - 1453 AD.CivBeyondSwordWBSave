@@ -47725,7 +47725,7 @@ BeginPlot
 	RiverWEDirection=1
 	isWOfRiver
 	RiverNSDirection=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	Player23Culture=40
 	ImprovementType=IMPROVEMENT_PASTURE
@@ -48182,7 +48182,7 @@ EndPlot
 BeginPlot
 	x=99,y=50
 	TerrainType=TERRAIN_PLAINS
-	PlotType=2
+	PlotType=1
 	Player23Culture=40
 	ImprovementType=IMPROVEMENT_HAMLET
 	RouteType=ROUTE_ROAD
@@ -48800,6 +48800,7 @@ BeginPlot
 	ImprovementType=IMPROVEMENT_FARM
 	RouteType=ROUTE_ROAD
 	TeamReveal=0,1,2,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,23,25,
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=100,y=52

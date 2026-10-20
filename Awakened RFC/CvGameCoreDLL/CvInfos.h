@@ -1303,6 +1303,7 @@ public:
 	bool isDivineKingshipVariant(int iCivilization) const;
 	bool isRomanRepublicVariant(int iCivilization) const;
 	bool isRomanLegionsVariant(int iCivilization) const;
+	bool isHordeVariant(int iCivilization) const;
 	int getCivilizationUpkeep(int iCivilization) const;
 
 	int getCivicOptionType() const;				// Exposed to Python					

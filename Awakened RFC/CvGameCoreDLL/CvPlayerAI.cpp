@@ -10467,6 +10467,28 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 				(bWarPlan ? 1500 : 2500);
 		}
 	}
+	if (kCivic.isHordeVariant(getCivilizationType()))
+	{
+		int iMounted = 0, iMilitary = 0, iUnitLoop;
+		for (CvUnit* pUnit = firstUnit(&iUnitLoop); pUnit != NULL; pUnit = nextUnit(&iUnitLoop))
+		{
+			if (pUnit->getDomainType() != DOMAIN_LAND || !pUnit->canFight()) continue;
+			++iMilitary;
+			if (pUnit->getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED")) ++iMounted;
+		}
+		const int iMountedShare = std::max(40, (100 * iMounted) / std::max(1, iMilitary));
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			iValue += (50 * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent * iMountedShare) / (bWarPlan ? 150000 : 250000);
+			iValue += (3 * (bWarPlan ? 8 : 5) * iWarmongerPercent * iMountedShare) / 10000;
+		}
+		iValue += (50 * getNumCities()) / (bWarPlan ? 10 : 50);
+		iValue += iMounted * (bWarPlan ? 2 : 1); // Raiding income.
+		// Remove the active penalty when estimating the common research baseline.
+		int iResearch = calculateBaseNetResearch();
+		if (isHorde()) iResearch = (iResearch * 4) / 3;
+		iValue -= iResearch / 4;
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE"))
 	{
 		const int iCoastalCities = countNumCoastalCities();
@@ -10606,7 +10628,8 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		}
 		iExperienceShare = (100 * iMelee) / std::max(1, iMilitary);
 	}
-	iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
+	if (!kCivic.isHordeVariant(getCivilizationType()))
+		iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);
 	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 ); 

@@ -11,6 +11,27 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+## India and the Huna invasion
+
+Around **AD 500**, one barbarian Huna army enters Punjab east of the mountains:
+**eight horse archers, four swordsmen and two spearmen**. India receives a warning
+three turns earlier (around AD 450). Three horse archers are assigned to pillage;
+the other cavalry and the swordsmen are assigned to attack cities, supported by
+spearmen. All eight horse archers receive **Flanking I and II**, raising their
+withdrawal chance from 20% to **50%**.
+
+The force enters together on an empty, passable land tile between `(87, 39)` and
+`(89, 41)`. Unclaimed or barbarian land is preferred, followed by Indian territory
+(including interior tiles), then another state's territory in the same corridor.
+The army may spawn next to cities, but never on a city or a tile with existing
+units. If no eligible entry tile exists, the
+invasion is skipped. It only occurs while India
+is alive with cities, has no recurring reinforcements, and does not force city
+transfers or collapse. The earlier Indian barbarian elephant waves end before
+the warning. India retains its no-anarchy unique power. The Hunas are separate
+from China's Xiongnu faction. In-game balance and multiplayer behavior remain
+unverified.
+
 ## Historical wonder requirements
 
 These additional requirements apply equally to human players and AI. Regions refer to the RFC Earth map and do not depend on civilization or ownership. Existing technology, resource and building requirements still apply. Religion must be present in the city; it need not be the state religion. Civic requirements also apply to queued construction; completed wonders retain their effects after civic changes.
@@ -348,10 +369,27 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
+| **Horde** (replaces Warrior Society for the Huns and Mongolia) | Horseback Riding | Medium | +50% mounted-unit production; newly trained mounted units start with +3 experience; +100% gold from pillaging improvements; -50% war weariness; **-25% research output**. |
 | **Naval Warfare** | Sailing | Low | +50% production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. |
 | **Feudal Retinues** | Feudalism | Medium | +5% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +30%. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
 | **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
+
+Horde uses Warrior Society's existing slot, keeping five military choices for
+each civilization. The Huns and Mongolia start with Horde when its technology
+is available. It replaces the melee experience bonus and siege combat penalty;
+unique powers remain separate. The research penalty multiplies research output
+by 75%, after normal research modifiers, with integer rounding.
+
+The Huns start with two workers instead of one. Their homeland's sheep tile
+`(98, 51)` becomes grassland, `(99, 50)` becomes a plains hill and `(100, 51)`
+receives sheep. These permanent terrain changes apply to all four scenarios
+and also benefit later Mongolia. Modu's unit-building preference rises from
+35 to 50, his main war random threshold falls from 50 to 35 and his nearby
+enemy power threshold rises from 120% to 140%. Their starting army consists of
+**eight horse archers, four spearmen and two archers** (14 combat units, up from
+eight). Six horse archers are assigned to city attacks and two to pillaging.
+They also retain their starting settler and two workers.
 
 Tribal System and Conscription's production bonuses include workers, settlers,
 and missionaries. Conscription's food conversion is limited to military land units;

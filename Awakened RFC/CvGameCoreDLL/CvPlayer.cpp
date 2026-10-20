@@ -7590,7 +7590,9 @@ int CvPlayer::calculateBaseNetResearch(TechTypes eTech) const
 		eResearchTech = getCurrentResearch();
 	}
 
-	return (((GC.getDefineINT("BASE_RESEARCH_RATE") + getCommerceRate(COMMERCE_RESEARCH)) * calculateResearchModifier(eResearchTech)) / 100);
+	int iResearch = ((GC.getDefineINT("BASE_RESEARCH_RATE") + getCommerceRate(COMMERCE_RESEARCH)) * calculateResearchModifier(eResearchTech)) / 100;
+	if (isHorde()) iResearch = (iResearch * 75) / 100;
+	return iResearch;
 }
 
 
@@ -7953,6 +7955,12 @@ bool CvPlayer::isRomanLegions() const
 		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"));
 }
 
+bool CvPlayer::isHorde() const
+{
+	const CivicTypes eCivic = (CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY");
+	return GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()) && isCivic(eCivic);
+}
+
 bool CvPlayer::isRomanLogisticsUnit(UnitTypes eUnit) const
 {
 	if (eUnit == NO_UNIT || getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ROME")) return false;
@@ -8293,6 +8301,9 @@ void CvPlayer::convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopu
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
 	PROFILE_FUNC();
+
+	if (GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()))
+		return GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_HORSEBACK_RIDING"));
 
 	if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())))
 	{
@@ -17411,6 +17422,8 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 	changeLargestCityHappiness(GC.getCivicInfo(eCivic).getLargestCityHappiness() * iChange);
 	changeExtraHappiness(GC.getCivicInfo(eCivic).getCivicHappiness() * iChange);
 	changeWarWearinessModifier(GC.getCivicInfo(eCivic).getWarWearinessModifier() * iChange);
+	if (GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()))
+		changeWarWearinessModifier(-50 * iChange);
 	changeFreeSpecialist(GC.getCivicInfo(eCivic).getFreeSpecialist() * iChange);
 	changeTradeRoutes(GC.getCivicInfo(eCivic).getTradeRoutes() * iChange);
 	changeNoForeignTradeCount(GC.getCivicInfo(eCivic).isNoForeignTrade() * iChange);
@@ -23973,7 +23986,9 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		szForm = L"ATHEOCRACY";
 
 	CvWString szNameKey = civDynamicNames[iPlayer][0];
-	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
+	// Legacy major-player keys end in two digits; the Hun base key does not.
+	if (iPlayer != XIONGNU)
+		szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
 	szNameKey += L"_";
 	szNameKey += szForm;
 	return szNameKey;

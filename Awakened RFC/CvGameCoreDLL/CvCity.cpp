@@ -2582,11 +2582,14 @@ int CvCity::getProductionExperience(UnitTypes eUnit)
     // remain consistent; other sources of experience are unaffected.
     CivicTypes eWarriorSociety = (CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY");
     if (GET_PLAYER(getOwnerINLINE()).isCivic(eWarriorSociety) &&
-        (eUnit == NO_UNIT || GC.getUnitInfo(eUnit).getUnitCombatType() != GC.getInfoTypeForString("UNITCOMBAT_MELEE")))
+        (GET_PLAYER(getOwnerINLINE()).isHorde() || eUnit == NO_UNIT || GC.getUnitInfo(eUnit).getUnitCombatType() != GC.getInfoTypeForString("UNITCOMBAT_MELEE")))
         iExperience -= GC.getCivicInfo(eWarriorSociety).getFreeExperience();
 
 	if (eUnit != NO_UNIT)
 	{
+		if (GET_PLAYER(getOwnerINLINE()).isHorde() &&
+			GC.getUnitInfo(eUnit).getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED"))
+			iExperience += 3;
 		if (GC.getUnitInfo(eUnit).getDomainType() == DOMAIN_SEA &&
 			GC.getUnitInfo(eUnit).isMilitaryProduction() && GC.getUnitInfo(eUnit).getCombat() > 0 &&
 			GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE")))
@@ -3345,6 +3348,9 @@ int CvCity::getMilitaryCivicProductionModifier(UnitTypes eUnit, CivicTypes eCivi
 		(kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE") ||
 		 kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE") ||
 		 GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(eUnit)))
+		return 50;
+	if (GC.getCivicInfo(eCivic).isHordeVariant(GET_PLAYER(getOwnerINLINE()).getCivilizationType()) &&
+		kUnit.getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED"))
 		return 50;
 	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE") && kUnit.getDomainType() == DOMAIN_SEA)
 		return 50;

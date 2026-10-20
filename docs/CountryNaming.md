@@ -1,7 +1,7 @@
 # Dynamic country names
 
 Theocracy combined with State Atheism selects a bespoke **ATHEOCRACY** name
-for each of the 27 major civilizations, regardless of government or era. These
+for each of the 28 naming civilizations, including the Huns, regardless of government or era. These
 are deliberately fictional enforced creeds of reason, such as the Roman
 **Pontificate of Reason**, German **Holy Empire of Reason**, and Egyptian
 **Order of the Godless Sun**. This combination overrides the usual independent
@@ -19,6 +19,15 @@ identities are mixed with plausible alternate histories; this is a roleplaying
 catalogue, not a reconstruction of each state's dates, borders, or dynasty.
 Existing vassal and colonial names retain priority. The new names are stored as
 translation keys, using the existing RFC name setter and save format.
+
+The Huns use the same government, religion and economy rules under code `XIO`.
+Examples include **The Huns / Die Hunnen** under Tribal
+System, **Realm of the Chanyu / Reich des Chanyu** under ordinary monarchy,
+**Hunnic Empire / Hunnenreich** above six cities, and **Hunnic Federation /
+Hunnischer Bund** under a republic. Other possibilities include **Union of the
+Steppe**, **League of the Steppe Routes**, and **Sacred Realm of the Eternal Sky**.
+These include alternate-history names; no dynasty or territorial change is
+forced. The unsuffixed legacy base key is preserved when constructing Hun keys.
 
 Egypt's Tribal System variant is Pharaonic Kingship, and its Despotism variant
 is Divine Kingship, without date or religion gates. Independent Egypt using

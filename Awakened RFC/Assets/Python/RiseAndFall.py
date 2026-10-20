@@ -2869,10 +2869,11 @@ class RiseAndFall:
                 if iCiv == con.iXiongnu:
                         player = gc.getPlayer(iCiv)
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
-                        utils.makeUnit(con.iSpearman, iCiv, tPlot, 2)
+                        utils.makeUnit(con.iSpearman, iCiv, tPlot, 4)
                         for i in range(2):
                                 player.initUnit(con.iArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
                                 player.initUnit(con.iHorseArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_PILLAGE, DirectionTypes.DIRECTION_SOUTH)
+                        for i in range(6):
                                 player.initUnit(con.iHorseArcher, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
                         player.AI_changeAttitudeExtra(iChina, -4)
                         pChina.AI_changeAttitudeExtra(iCiv, -2)
@@ -3112,7 +3113,7 @@ class RiseAndFall:
                                 
         def createStartingWorkers( self, iCiv, tPlot ):
                 if iCiv == con.iXiongnu:
-                        utils.makeUnit(con.iWorker, iCiv, tPlot, 1)
+                        utils.makeUnit(con.iWorker, iCiv, tPlot, 2)
                 if (iCiv == iGreece):
                         utils.makeUnit(con.iWorker, iCiv, tPlot, 2)
                 if (iCiv == iPersia):

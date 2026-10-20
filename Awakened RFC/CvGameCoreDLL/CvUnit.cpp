@@ -4738,6 +4738,7 @@ bool CvUnit::pillage()
 			delete pyUnit;	// python fxn must not hold on to this pointer 
 
 			iPillageGold = (int)lPillageGold;
+			if (GET_PLAYER(getOwnerINLINE()).isHorde()) iPillageGold *= 2;
 
 			//Rhye - start UP (Viking)
 			if (getOwnerINLINE() == VIKING)
@@ -8027,7 +8028,7 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) &&
-		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
+		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && !GET_PLAYER(getOwnerINLINE()).isHorde() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{
 		iExtraModifier -= 20;
 	}

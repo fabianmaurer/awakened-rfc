@@ -4521,6 +4521,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
 	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(GC.getGameINLINE().getActiveCivilizationType());
 	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const bool bHorde = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isHordeVariant(GC.getGameINLINE().getActiveCivilizationType());
 	// Widget tooltips omit bPlayerContext, but can still show the active faith.
 	const PlayerTypes eReligionPlayer = GC.getGameINLINE().getActivePlayer();
 	const ReligionTypes eHelpReligion = eReligionPlayer == NO_PLAYER ? NO_RELIGION : GET_PLAYER(eReligionPlayer).getStateReligion();
@@ -4546,6 +4547,18 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		PlayerTypes eActive = GC.getGameINLINE().getActivePlayer();
 		szHelpText.append(GC.getCivicInfo(eCivic).getCivilizationDescription(
 			eActive == NO_PLAYER ? NO_CIVILIZATION : GET_PLAYER(eActive).getCivilizationType()).c_str());
+	}
+
+	if (bHorde)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_HORDE_EFFECT"));
+		if (!bPlayerContext || !GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canDoCivics(eCivic))
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REQUIRES", GC.getTechInfo((TechTypes)GC.getInfoTypeForString("TECH_HORSEBACK_RIDING")).getTextKeyWide()));
+		}
+		return;
 	}
 
 	if (!bCivilopediaText)

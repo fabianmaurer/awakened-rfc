@@ -4537,6 +4537,198 @@
     <Spanish>United States of America</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_XIO_TRIBAL</Tag>
+    <English>The Huns</English>
+    <French>The Huns</French>
+    <German>Die Hunnen</German>
+    <Italian>The Huns</Italian>
+    <Spanish>The Huns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_KINGDOM</Tag>
+    <English>Realm of the Chanyu</English>
+    <French>Realm of the Chanyu</French>
+    <German>Reich des Chanyu</German>
+    <Italian>Realm of the Chanyu</Italian>
+    <Spanish>Realm of the Chanyu</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_EMPIRE</Tag>
+    <English>Hunnic Empire</English>
+    <French>Hunnic Empire</French>
+    <German>Hunnenreich</German>
+    <Italian>Hunnic Empire</Italian>
+    <Spanish>Hunnic Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_CONSTITUTIONAL</Tag>
+    <English>Realm of the Chanyu</English>
+    <French>Realm of the Chanyu</French>
+    <German>Reich des Chanyu</German>
+    <Italian>Realm of the Chanyu</Italian>
+    <Spanish>Realm of the Chanyu</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_REPUBLIC</Tag>
+    <English>Hunnic Federation</English>
+    <French>Hunnic Federation</French>
+    <German>Hunnischer Bund</German>
+    <Italian>Hunnic Federation</Italian>
+    <Spanish>Hunnic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_DEMOCRACY</Tag>
+    <English>Union of the Steppe</English>
+    <French>Union of the Steppe</French>
+    <German>Union der Steppe</German>
+    <Italian>Union of the Steppe</Italian>
+    <Spanish>Union of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Steppe Routes</English>
+    <French>League of the Steppe Routes</French>
+    <German>Bund der Steppenwege</German>
+    <Italian>League of the Steppe Routes</Italian>
+    <Spanish>League of the Steppe Routes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_SOCIALIST_REPUBLIC</Tag>
+    <English>Hunnic People's Republic</English>
+    <French>Hunnic People's Republic</French>
+    <German>Hunnische Volksrepublik</German>
+    <Italian>Hunnic People's Republic</Italian>
+    <Spanish>Hunnic People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_SOCIALIST_DEMOCRACY</Tag>
+    <English>Union of the Steppe</English>
+    <French>Union of the Steppe</French>
+    <German>Union der Steppe</German>
+    <Italian>Union of the Steppe</Italian>
+    <Spanish>Union of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_PEOPLES_STATE</Tag>
+    <English>Hunnic People's Republic</English>
+    <French>Hunnic People's Republic</French>
+    <German>Hunnische Volksrepublik</German>
+    <Italian>Hunnic People's Republic</Italian>
+    <Spanish>Hunnic People's Republic</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_DICTATORSHIP</Tag>
+    <English>Hunnic State</English>
+    <French>Hunnic State</French>
+    <German>Hunnischer Staat</German>
+    <Italian>Hunnic State</Italian>
+    <Spanish>Hunnic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_MILITARY</Tag>
+    <English>Hunnic State</English>
+    <French>Hunnic State</French>
+    <German>Hunnischer Staat</German>
+    <Italian>Hunnic State</Italian>
+    <Spanish>Hunnic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_NATIONAL_STATE</Tag>
+    <English>Hunnic State</English>
+    <French>Hunnic State</French>
+    <German>Hunnischer Staat</German>
+    <Italian>Hunnic State</Italian>
+    <Spanish>Hunnic State</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_NATIONAL_REPUBLIC</Tag>
+    <English>Hunnic Federation</English>
+    <French>Hunnic Federation</French>
+    <German>Hunnischer Bund</German>
+    <Italian>Hunnic Federation</Italian>
+    <Spanish>Hunnic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_THEOCRACY</Tag>
+    <English>Sacred Realm of the Eternal Sky</English>
+    <French>Sacred Realm of the Eternal Sky</French>
+    <German>Heiliges Reich des Ewigen Himmels</German>
+    <Italian>Sacred Realm of the Eternal Sky</Italian>
+    <Spanish>Sacred Realm of the Eternal Sky</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_HOLY_KINGDOM</Tag>
+    <English>Sacred Realm of the Eternal Sky</English>
+    <French>Sacred Realm of the Eternal Sky</French>
+    <German>Heiliges Reich des Ewigen Himmels</German>
+    <Italian>Sacred Realm of the Eternal Sky</Italian>
+    <Spanish>Sacred Realm of the Eternal Sky</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_THEOCRATIC_REPUBLIC</Tag>
+    <English>Hunnic Federation</English>
+    <French>Hunnic Federation</French>
+    <German>Hunnischer Bund</German>
+    <Italian>Hunnic Federation</Italian>
+    <Spanish>Hunnic Federation</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of the Huns</English>
+    <French>Islamic Republic of the Huns</French>
+    <German>Islamische Republik der Hunnen</German>
+    <Italian>Islamic Republic of the Huns</Italian>
+    <Spanish>Islamic Republic of the Huns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_CALIPHATE</Tag>
+    <English>Caliphate of the Huns</English>
+    <French>Caliphate of the Huns</French>
+    <German>Kalifat der Hunnen</German>
+    <Italian>Caliphate of the Huns</Italian>
+    <Spanish>Caliphate of the Huns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_SULTANATE</Tag>
+    <English>Sultanate of the Huns</English>
+    <French>Sultanate of the Huns</French>
+    <German>Sultanat der Hunnen</German>
+    <Italian>Sultanate of the Huns</Italian>
+    <Spanish>Sultanate of the Huns</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_SECULAR_REPUBLIC</Tag>
+    <English>Union of the Steppe</English>
+    <French>Union of the Steppe</French>
+    <German>Union der Steppe</German>
+    <Italian>Union of the Steppe</Italian>
+    <Spanish>Union of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_ROYAL_PLANNED</Tag>
+    <English>Realm of the Royal Herds</English>
+    <French>Realm of the Royal Herds</French>
+    <German>Reich der k&#246;niglichen Herden</German>
+    <Italian>Realm of the Royal Herds</Italian>
+    <Spanish>Realm of the Royal Herds</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_PLUTOCRATIC_PLANNED</Tag>
+    <English>Steppe Provisioning Syndicate</English>
+    <French>Steppe Provisioning Syndicate</French>
+    <German>Versorgungssyndikat der Steppe</German>
+    <Italian>Steppe Provisioning Syndicate</Italian>
+    <Spanish>Steppe Provisioning Syndicate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_XIO_ATHEOCRACY</Tag>
+    <English>Rational Order of the Steppe</English>
+    <French>Rational Order of the Steppe</French>
+    <German>Vernunftorden der Steppe</German>
+    <Italian>Rational Order of the Steppe</Italian>
+    <Spanish>Rational Order of the Steppe</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_EGY_ROYAL_PLANNED</Tag>
     <English>Realm of the Royal Granaries</English>
     <French>Realm of the Royal Granaries</French>

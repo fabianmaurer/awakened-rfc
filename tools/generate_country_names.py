@@ -41,6 +41,7 @@ COUNTRIES = [
     ('AZT', 'Mexico', 'Mexiko'),
     ('TUR', 'Turkey', 'Türkei'),
     ('AME', 'America', 'Amerika'),
+    ('XIO', 'the Huns', 'der Hunnen'),
 ]
 FORMS = (
     'TRIBAL', 'KINGDOM', 'EMPIRE', 'CONSTITUTIONAL', 'REPUBLIC',

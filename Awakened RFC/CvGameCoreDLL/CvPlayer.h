@@ -62,6 +62,7 @@ public:
     void adoptIslamicCause();
 	bool isRomanRepublic() const;
 	bool isRomanLegions() const;
+	bool isHorde() const;
 	bool isRomanLogisticsUnit(UnitTypes eUnit) const;
 	int getRomanCargoBonus(UnitTypes eUnit) const;
 	int getRomanProvinceStage(int iX, int iY) const;

@@ -144,8 +144,10 @@ class Barbs:
                 if (iGameTurn >= con.i350BC and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (92, 41), (99, 45), con.iSwordsman, 1 + iHandicap, iGameTurn, 10-iHandicap, 3, utils.outerInvasion, 0)
 
-                #elephants in india pre-khmer
-                if (iGameTurn >= con.i210BC and iGameTurn <= con.i700AD):
+                self.checkHunaInvasion(iGameTurn)
+
+                # Early Indian elephant raids end before the Huna invasion warning.
+                if (iGameTurn >= con.i210BC and iGameTurn < con.i450AD):
                         self.spawnUnits( iBarbarian, (86, 31), (100, 41), con.iWarElephant, 1, iGameTurn, 6-iHandicap, 4, utils.outerInvasion, 0)
        
                         
@@ -332,6 +334,70 @@ class Barbs:
                 self.foundCity(iBarbarian, lKazan, "Kazan", iGameTurn, 2, con.iHorseArcher, 1)
                 self.foundCity(iNative, lKongo, "Mbanza Kongo", iGameTurn, 1, con.iZuluImpi, 1)
 
+
+
+        def checkHunaInvasion(self, iGameTurn):
+                # One finite late-Gupta invasion, separate from China's Xiongnu.
+                if (iGameTurn != con.i450AD and iGameTurn != con.i500AD):
+                        return
+                pIndia = gc.getPlayer(con.iIndia)
+                if (not pIndia.isAlive() or pIndia.getNumCities() == 0):
+                        return
+                if (iGameTurn == con.i450AD):
+                        CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                                CyTranslator().getText("TXT_KEY_HUNA_INVASION_WARNING", ()),
+                                "", 0, "", ColorTypes(con.iOrange), 88, 40, True, True)
+                        return
+
+                # Punjab side of the mountains: prefer unclaimed land, then
+                # Indian territory, then foreign-controlled approach tiles.
+                # Adjacent cities and Indian interior territory do not block
+                # entry; the entry tile itself must have no city or units.
+                lOpen = []
+                lIndian = []
+                lForeign = []
+                for x in range(87, 90):
+                        for y in range(39, 42):
+                                plot = gc.getMap().plot(x, y)
+                                if (plot.isWater() or plot.isPeak() or plot.isImpassable()
+                                    or plot.isCity() or plot.isUnit()):
+                                        continue
+                                if (plot.getTerrainType() == con.iMarsh or plot.getFeatureType() == con.iJungle):
+                                        continue
+                                if (plot.area().getID() != pIndia.getCapitalCity().plot().area().getID()):
+                                        continue
+                                if (not plot.isOwned() or plot.getOwner() == iBarbarian):
+                                        lOpen.append((x, y))
+                                elif (plot.getOwner() == con.iIndia):
+                                        lIndian.append((x, y))
+                                elif (plot.getOwner() != con.iIndia):
+                                        lForeign.append((x, y))
+                lPlots = lOpen or lIndian or lForeign
+                if (not lPlots):
+                        return
+                tSpawn = lPlots[utils.getFakeRandNum(len(lPlots), 'Huna invasion')]
+                # One shared entry point keeps the invasion together. Three
+                # cavalry pillage; the rest of the force can assault cities.
+                lArmy = ((con.iHorseArcher, 5, UnitAITypes.UNITAI_ATTACK_CITY),
+                         (con.iHorseArcher, 3, UnitAITypes.UNITAI_PILLAGE),
+                         (con.iSwordsman, 4, UnitAITypes.UNITAI_ATTACK_CITY),
+                         (con.iSpearman, 2, UnitAITypes.UNITAI_COUNTER))
+                import GameObserver
+                iFlanking1 = gc.getInfoTypeForString("PROMOTION_FLANKING1")
+                iFlanking2 = gc.getInfoTypeForString("PROMOTION_FLANKING2")
+                for iUnit, iCount, iAI in lArmy:
+                        for i in range(iCount):
+                                unit = pBarbarian.initUnit(iUnit, tSpawn[0], tSpawn[1], iAI, DirectionTypes.DIRECTION_SOUTH)
+                                if (iUnit == con.iHorseArcher):
+                                        unit.setHasPromotion(iFlanking1, True)
+                                        unit.setHasPromotion(iFlanking2, True)
+                        GameObserver.record_mechanic('scripted_spawn', iBarbarian,
+                                {'unit': iUnit, 'count': iCount,
+                                 'x': tSpawn[0], 'y': tSpawn[1],
+                                 'region': [87, 39, 89, 41], 'period': 0})
+                CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                        CyTranslator().getText("TXT_KEY_HUNA_INVASION_ARRIVAL", ()),
+                        "", 0, "", ColorTypes(con.iOrange), tSpawn[0], tSpawn[1], True, True)
 
 
         def getCity(self, tCoords): #by LOQ

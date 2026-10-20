@@ -11,6 +11,28 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+## Indien und die Huna-Invasion
+
+Um **500 n. Chr.** erscheint einmalig ein barbarisches Huna-Heer an der
+punjabischen Grenze östlich der Berge: **acht berittene Bogenschützen, vier
+Schwertkämpfer und zwei Speerkämpfer**. Indien erhält drei Runden zuvor (um 450 n.
+Chr.) eine Warnung. Drei Reiter sollen plündern; die übrigen Reiter und die
+Schwertkämpfer sollen mit Unterstützung der Speerkämpfer Städte angreifen.
+Alle acht berittenen Bogenschützen erhalten **Flanke I und II**; ihre
+Rückzugschance steigt damit von 20% auf **50%**. Das Heer erscheint gemeinsam
+auf einem freien, passierbaren Landfeld zwischen `(87, 39)` und `(89, 41)`,
+auch direkt neben Städten. Bevorzugt wird unbeanspruchtes oder barbarisches Land,
+danach indisches Gebiet einschließlich des Landesinneren, zuletzt das Gebiet
+anderer Staaten im selben Zugangskorridor. Das Eintrittsfeld selbst darf keine
+Stadt und keine vorhandenen Einheiten enthalten. Ohne geeignetes Eintrittsfeld
+entfällt die Invasion. Sie
+setzt ein lebendes Indien mit Städten voraus, erhält keine wiederkehrenden
+Verstärkungen und erzwingt weder Stadtübergaben noch einen Zusammenbruch. Die
+früheren barbarischen Elefantenwellen in Indien enden vor der Warnung. Indiens
+einzigartige Fähigkeit ohne Revolutionsanarchie bleibt erhalten. Die Hunas sind
+von der gegen China gerichteten Hunnenkonföderation getrennt. Spielbalance und
+Mehrspieler-Verhalten sind im Spiel noch ungeprüft.
+
 ## Historische Wunderbedingungen
 
 Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. Regionen beziehen sich auf die RFC-Weltkarte und sind unabhängig von Zivilisation und Besitzer. Bestehende Technologie-, Ressourcen- und Gebäudevoraussetzungen gelten weiterhin. Religionen müssen in der Stadt vorhanden sein; sie müssen keine Staatsreligion sein. Staatsformbedingungen gelten auch für laufende Bauaufträge; fertige Wunder behalten ihre Wirkung nach einem Staatsformwechsel.
@@ -104,13 +126,19 @@ Die Hunnen verwenden die ortsabhängige Stadtnamenkarte und die
 Eroberungsumbenennungen der Mongolen. Die arabischen Nachfolgestaaten verwenden
 entsprechend die arabische Stadtnamenkarte und deren Eroberungsumbenennungen.
 
-Sie beginnt mit **vier berittenen Bogenschützen, zwei Speerkämpfern, zwei
-Bogenschützen, einem Siedler und einem Arbeiter**. Ihre Starttechnologien
+Sie beginnt mit **acht berittenen Bogenschützen, vier Speerkämpfern, zwei
+Bogenschützen, einem Siedler und zwei Arbeitern**. Ihre Starttechnologien
 ermöglichen klassische Reiterei und einfache Wirtschaft, aber keine
-Belagerungswaffen. Zwei Reiter plündern bevorzugt, zwei dienen als Stadtangreifer.
+Belagerungswaffen. Zwei Reiter plündern bevorzugt, sechs dienen als Stadtangreifer.
 Bei der Gründung beginnt ein Krieg mit einem lebenden China, sofern die normalen
 Diplomatieregeln dies zulassen; spätere Friedensschlüsse bleiben möglich.
-Die Hunnen sind China gegenüber besonders feindselig. Regelmäßige kostenlose
+Die Hunnen sind China gegenüber besonders feindselig. Modus
+Einheitenbaupräferenz steigt von 35 auf 50, sein Hauptkriegs-Zufallsschwellenwert
+sinkt von 50 auf 35 und die akzeptierte gegnerische Stärke für nahe Kriege
+steigt von 120% auf 140%. Bei `(98, 51)` wird die Schafweide zu Grasland,
+`(99, 50)` wird ein Ebenenhügel und `(100, 51)` erhält Schafe. Diese dauerhaften
+Kartenänderungen gelten in allen vier Szenarien und helfen später auch der Mongolei.
+Regelmäßige kostenlose
 Verstärkungswellen gibt es nicht; weitere Truppen entstehen durch Produktion.
 Solange die Hunnen leben, entfallen die überlappenden nördlichen barbarischen
 Reiterwellen. Leben die Hunnen beim vorgesehenen ersten Erscheinen der Mongolen
@@ -423,10 +451,18 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
+| **Horde** (ersetzt die Kriegergesellschaft für Hunnen und Mongolei) | Reiterei | Mittel | +50% Produktion für berittene Einheiten; neu ausgebildete berittene Einheiten erhalten +3 Erfahrung; +100% Gold beim Plündern von Modernisierungen; -50% Kriegsmüdigkeit; **-25% Forschungsleistung**. |
 | **Seekriegsführung** | Segeln | Niedrig | +50% Produktion und +2 Erfahrung für neu gebaute militärische Schiffe, einschließlich Transportschiffen. Arbeitsboote erhalten keinen dieser Boni. |
 | **Heeresfolge** | Feudalismus | Mittel | +5% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +30%. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
+
+Die Horde belegt den bisherigen Platz der Kriegergesellschaft; jede
+Zivilisation behält fünf Militärstaatsformen. Hunnen und Mongolei beginnen mit
+der Horde, sofern Reiterei verfügbar ist. Nahkampferfahrung und der
+Belagerungsmalus der Kriegergesellschaft entfallen; einzigartige Fähigkeiten
+bleiben separat aktiv. Die Forschungsleistung wird nach den normalen
+Forschungsmodifikatoren mit 75% multipliziert und ganzzahlig abgerundet.
 
 Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche

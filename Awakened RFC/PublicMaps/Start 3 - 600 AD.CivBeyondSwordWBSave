@@ -37580,7 +37580,7 @@ BeginPlot
 	RiverWEDirection=1
 	isWOfRiver
 	RiverNSDirection=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -37955,7 +37955,7 @@ EndPlot
 BeginPlot
 	x=99,y=50
 	TerrainType=TERRAIN_PLAINS
-	PlotType=2
+	PlotType=1
 EndPlot
 BeginPlot
 	x=99,y=51
@@ -38386,6 +38386,7 @@ BeginPlot
 	RiverWEDirection=3
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=100,y=52

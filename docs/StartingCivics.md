@@ -141,7 +141,7 @@ provides the technologies needed for these profiles. See `1453ADScenario.md`.
 | Mali | Monarchy | Theocracy | Slavery | Warrior Society | State Religion |
 | Portugal | Monarchy | Theocracy | Serfdom | Naval Warfare | State Religion |
 | Inca | Monarchy | Theocracy | Serfdom | Warrior Society | State Religion |
-| Mongolia | Monarchy | Despotism | Serfdom | Feudal Retinues | Ancestor Cult |
+| Mongolia | Monarchy | Despotism | Serfdom | Horde | Ancestor Cult |
 | Aztecs | Monarchy | Theocracy | Slavery | Warrior Society | State Religion |
 | Turkey | Monarchy | Theocracy | Serfdom | Feudal Retinues | State Religion |
 | America | Republic | Rule Of Law | Market Economy | Professional Army | Tolerance |

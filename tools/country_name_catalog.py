@@ -280,6 +280,16 @@ Atlantic Commonwealth | Atlantisches Commonwealth
 United American Communes | Vereinigte Amerikanische Kommunen
 American Union | Amerikanische Union
 State of Deseret | Staat Deseret
+XIO
+The Huns | Die Hunnen
+Realm of the Chanyu | Reich des Chanyu
+Hunnic Empire | Hunnenreich
+Hunnic Federation | Hunnischer Bund
+Union of the Steppe | Union der Steppe
+League of the Steppe Routes | Bund der Steppenwege
+Hunnic People's Republic | Hunnische Volksrepublik
+Hunnic State | Hunnischer Staat
+Sacred Realm of the Eternal Sky | Heiliges Reich des Ewigen Himmels
 """
 
 
@@ -319,6 +329,9 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    ('XIO', 'ROYAL_PLANNED'): ('Realm of the Royal Herds', 'Reich der königlichen Herden'),
+    ('XIO', 'PLUTOCRATIC_PLANNED'): ('Steppe Provisioning Syndicate', 'Versorgungssyndikat der Steppe'),
+    ('XIO', 'ATHEOCRACY'): ('Rational Order of the Steppe', 'Vernunftorden der Steppe'),
     # Alternate-history crown economies. Period/religious/constitutional names
     # retain priority in the DLL. The Inca keep their established imperial title.
     ('EGY', 'ROYAL_PLANNED'): ('Realm of the Royal Granaries', 'Reich der königlichen Speicher'),
