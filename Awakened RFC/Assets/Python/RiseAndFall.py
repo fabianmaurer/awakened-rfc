@@ -1166,18 +1166,24 @@ class RiseAndFall:
                                                 lNumCitiesNew[iCiv] = pCiv.getNumCities()
                                                 iPreviousCities = self.getNumCities(iCiv)
                                                 iLostCities = iPreviousCities - lNumCitiesNew[iCiv]
-                                                iStability = utils.getStability(iCiv)
+                                                # Late-start Byzantium uses the Celtia minor slot,
+                                                # which has no entry in the major-civ stability array.
+                                                iStability = None
+                                                bUnstable = True
+                                                if (iCiv < con.iNumMajorPlayers):
+                                                        iStability = utils.getStability(iCiv)
+                                                        bUnstable = iStability < -20
                                                 if (lNumCitiesNew[iCiv] > 0 and lNumCitiesNew[iCiv]*2 <= iPreviousCities):
                                                         import GameObserver
                                                         GameObserver.record_mechanic('collapse_check', iCiv,
                                                                 {'reason': 'city_count_halved', 'cities': lNumCitiesNew[iCiv],
                                                                  'reference_cities': iPreviousCities, 'lost_cities': iLostCities,
                                                                  'stability': iStability,
-                                                                 'threshold_met': bool(iLostCities >= 2 and iStability < -20)})
+                                                                 'threshold_met': bool(iLostCities >= 2 and bUnstable)})
                                                 # Losing one of two cities is a setback, not the
                                                 # automatic end of an otherwise viable country.
                                                 # Counts are compared across the 18-turn checks.
-                                                if (lNumCitiesNew[iCiv] > 0 and iLostCities >= 2 and lNumCitiesNew[iCiv]*2 <= iPreviousCities and iStability < -20):
+                                                if (lNumCitiesNew[iCiv] > 0 and iLostCities >= 2 and lNumCitiesNew[iCiv]*2 <= iPreviousCities and bUnstable):
                                                         print ("COLLAPSE GENERIC", pCiv.getCivilizationAdjective(0), lNumCitiesNew[iCiv]*2, "<=", self.getNumCities(iCiv))
                                                         if (gc.getPlayer(iCiv).isHuman() == 0):
                                                                 bVassal = False

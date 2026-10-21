@@ -44,11 +44,13 @@ def recordLaborEvaluation(argsList):
     GameObserver.record_labor_evaluation(player, current, best, flat_scores)
 
 
-def showCaliphateChoice(iPlayer):
+def showCaliphateChoice(argsList):
+    iPlayer = argsList[0]
     import Caliphate
     Caliphate.showChoice(iPlayer)
 
 
-def onCaliphatePartition():
+def onCaliphatePartition(argsList):
+    CvUtil.pyPrint('Caliphate: native callback entered')
     import Caliphate
     Caliphate.onPartition()

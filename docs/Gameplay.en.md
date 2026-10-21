@@ -569,6 +569,9 @@ every three turns, not a permanent gain or loss accumulated every turn.
 Actual happiness and economic performance continue to affect stability through
 the existing general systems.
 
+Anarchy applies a temporary stability penalty while it lasts, with no additional
+lasting stability deduction.
+
 The overhaul removes:
 
 - Fixed stability values assigned to individual civics.

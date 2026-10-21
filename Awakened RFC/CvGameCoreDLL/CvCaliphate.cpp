@@ -19,6 +19,14 @@ const char* realmLeaders[] = { "LEADER_ABBASID", "LEADER_FATIMID", "LEADER_UMAYY
 const int capitalX[] = { 78, 69, 51 };
 const int capitalY[] = { 40, 35, 44 };
 
+// Keep native partition progress when a crash prevents a Python traceback.
+// Numeric player/plot IDs also avoid encoding localized city names in the log.
+void logPartitionStage(const char* stage, PlayerTypes player, int subject = -1)
+{
+    gDLL->logMsg("Caliphate.log", CvString::format("turn=%d player=%d stage=%s subject=%d",
+        GC.getGameINLINE().getGameTurn(), (int)player, stage, subject).c_str(), false, true);
+}
+
 // Realm, west, south, east, north. Keep these anchors in sync with Caliphate.py.
 const int realmRegions[][5] = {
     { 0, 76, 37, 85, 46 }, // Iraq/Persia
@@ -162,6 +170,7 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         if (!weights[0]) chosen = weights[1] >= weights[2] ? 1 : 2;
     }
     if (chosen < 0 || chosen > 2 || !weights[chosen]) return;
+    logPartitionStage("begin", getID(), chosen);
 
     // Each successor's city limit rewards expansion into multiple regions.
     // Release the most distant cities of realms exceeding their own limit.
@@ -254,6 +263,7 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
             remainder -= share;
         }
     setGold(remainder);
+    logPartitionStage("successors_ready", getID());
 
     // Divide each unit class by population share using deterministic weighted
     // allocation. Prefer nearby realm cities on ties; transports retain cargo.
@@ -290,20 +300,24 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
     }
 
     // Political transfer, never conquest: no casualties, recruitment or loot.
+    logPartitionStage("units_transferred", getID());
     m_bCaliphatePartitionInProgress = true;
     for (uint i = 0; i < cities.size(); ++i)
     {
         CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(cities[i].plot);
         PlayerTypes owner = owners[cities[i].realm];
         if (owner == getID()) continue;
+        logPartitionStage("acquire_successor_city", owner, cities[i].plot);
         CvCity* city = plot->getPlotCity();
         const int culture = city->getCultureTimes100(getID());
         GET_PLAYER(owner).acquireCity(city, false, true, false);
         city = plot->getPlotCity();
         city->setCultureTimes100(owner, city->getCultureTimes100(owner) + culture, false, false);
         city->setCultureTimes100(getID(), 0, false, false);
+        logPartitionStage("successor_city_complete", owner, cities[i].plot);
     }
     m_bCaliphatePartitionInProgress = false;
+    logPartitionStage("divide_plot_culture", getID());
     for (int p = 0; p < GC.getMapINLINE().numPlotsINLINE(); ++p)
     {
         CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(p);
@@ -328,6 +342,7 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(independentCities[i].plot);
         PlayerTypes owner = GET_PLAYER((PlayerTypes)INDEPENDENT).getNumCities() <=
             GET_PLAYER((PlayerTypes)INDEPENDENT2).getNumCities() ? (PlayerTypes)INDEPENDENT : (PlayerTypes)INDEPENDENT2;
+        logPartitionStage("acquire_independent_city", owner, independentCities[i].plot);
         CvCity* city = plot->getPlotCity();
         const int culture = city->getCultureTimes100(getID());
         GET_PLAYER(owner).acquireCity(city, false, true, false);
@@ -338,12 +353,14 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         const int plotCulture = plot->getCulture(regionalOwner);
         plot->changeCulture(owner, plotCulture, false);
         plot->setCulture(regionalOwner, 0, false, false);
+        logPartitionStage("independent_city_complete", owner, independentCities[i].plot);
     }
     m_bCaliphatePartitionInProgress = false;
     const BuildingTypes palace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_PALACE");
     for (int r = 0; r < 3; ++r)
     {
         if (owners[r] == NO_PLAYER) continue;
+        logPartitionStage("assign_capital", owners[r], r);
         CvPlayer& successor = GET_PLAYER(owners[r]);
         CvCity* best = NULL;
         int distance = MAX_INT;
@@ -355,19 +372,29 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         }
         if (best != NULL) { best->setNumRealBuilding(palace, 1); successor.setCapitalCity(best); }
     }
+    logPartitionStage("update_cultural_owners", getID());
     for (int p = 0; p < GC.getMapINLINE().numPlotsINLINE(); ++p)
         GC.getMapINLINE().plotByIndexINLINE(p)->updateCulture(false, false);
     for (int r = 0; r < 3; ++r)
         if (owners[r] != NO_PLAYER)
         {
+            logPartitionStage("update_maintenance", owners[r]);
             GET_PLAYER(owners[r]).updateMaintenance();
+            logPartitionStage("update_plot_groups", owners[r]);
             GET_PLAYER(owners[r]).updatePlotGroups();
         }
+    logPartitionStage("update_visibility", getID());
     GC.getMapINLINE().updateVisibility();
+    logPartitionStage("python_partition_callback", getID());
     CyArgsList args;
+    // MakeFunctionArgs packages one Python argument list. Do not pass it an
+    // empty native array; give this notification its source player explicitly.
+    args.add((int)getID());
     gDLL->getPythonIFace()->callFunction("CvEventInterface", "onCaliphatePartition", args.makeFunctionArgs());
+    logPartitionStage("announce", getID());
     CvWString message = gDLL->getText("TXT_KEY_CALIPHATE_PARTITION_ANNOUNCE");
     for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
         if (GET_PLAYER((PlayerTypes)p).isAlive() && GET_TEAM(GET_PLAYER((PlayerTypes)p).getTeam()).isHasMet(getTeam()))
             gDLL->getInterfaceIFace()->addMessage((PlayerTypes)p, false, GC.getEVENT_MESSAGE_TIME(), message, "AS2D_REVOLTEND", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+    logPartitionStage("complete", getID());
 }

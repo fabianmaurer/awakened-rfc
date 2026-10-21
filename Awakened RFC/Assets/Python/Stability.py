@@ -760,14 +760,8 @@ class Stability:
                                 self.setCombatResultTempModifier(iPlayer, 0)
                                                         
                 if (pPlayer.getAnarchyTurns() != 0):
-                        iTempCivicsThreshold = self.getStability(iPlayer)
-                        if (self.getStability(iPlayer) > 24):
-                                #print("Stability: anarchy permanent", self.getStability(iPlayer) - self.getStability(iPlayer)/8, iPlayer)
-                                self.setStability(iPlayer, self.getStability(iPlayer) - self.getStability(iPlayer)/8)                                
-                        else:
-                                #print("Stability: anarchy permanent", 3, iPlayer)
-                                self.setStability(iPlayer, self.getStability(iPlayer)-3)
-                        self.setParameter(iPlayer, iParCivicsE, True, self.getStability(iPlayer) - iTempCivicsThreshold)
+                        # Anarchy affects the current base only, with no lasting
+                        # deduction from accumulated stability or civic events.
                         iNewBaseStability -= (self.getStability(iPlayer)+30)/2
                         self.setParameter(iPlayer, iParCivics1, True, -(self.getStability(iPlayer)+30)/2) 
                         #print("iNewBaseStability anarchy",iNewBaseStability, iPlayer)

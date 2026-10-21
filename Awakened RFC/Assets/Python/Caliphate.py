@@ -2,6 +2,7 @@ from CvPythonExtensions import *
 import Popup
 import Consts as con
 import copy
+import CvUtil
 
 POPUP_ID = 7627
 REALMS = ("ABBASID", "FATIMID", "UMAYYAD")
@@ -38,24 +39,28 @@ def realmAt(x, y):
     return bestRealm
 
 
-def configureRegions():
+def configureRegions(trace=False):
     gc = CyGlobalContext()
     bounds = (((73, 24), (104, 50)), ((61, 24), (75, 45)), ((44, 30), (60, 49)))
     cores = (((73, 30), (84, 45)), ((66, 30), (75, 43)), ((47, 33), (59, 47)))
     for iPlayer in (con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2):
+        if trace: CvUtil.pyPrint('Caliphate: reset region player=%d' % iPlayer)
         for name in tables:
             getattr(con, name)[iPlayer] = copy.deepcopy(defaults[name][iPlayer])
         realm = realmOf(iPlayer)
         if realm < 0: continue
+        if trace: CvUtil.pyPrint('Caliphate: region bounds player=%d realm=%d' % (iPlayer, realm))
         tl, br = bounds[realm]
         con.tCoreAreasTL[iPlayer], con.tCoreAreasBR[iPlayer] = cores[realm]
         con.tNormalAreasTL[iPlayer], con.tNormalAreasBR[iPlayer] = tl, br
         con.tBroaderAreasTL[iPlayer], con.tBroaderAreasBR[iPlayer] = tl, br
+        if trace: CvUtil.pyPrint('Caliphate: region exclusions player=%d' % iPlayer)
         con.tNormalAreasSubtract[iPlayer] = tuple((x, y) for x in range(tl[0], br[0] + 1)
                                                  for y in range(tl[1], br[1] + 1)
                                                  if realmAt(x, y) != realm)
         con.tExceptions[iPlayer] = ()
         con.tGoals[iPlayer] = ("TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3")
+        if trace: CvUtil.pyPrint('Caliphate: read capital player=%d' % iPlayer)
         capital = gc.getPlayer(iPlayer).getCapitalCity()
         if not capital.isNone():
             con.tCapitals[iPlayer] = (capital.getX(), capital.getY())
@@ -110,15 +115,18 @@ def onLoadGame(argsList):
 
 
 def onPartition():
+    CvUtil.pyPrint('Caliphate: Python partition entered')
     import RFCUtils
     import cPickle as pickle
     gc = CyGlobalContext()
-    configureRegions()
+    configureRegions(trace=True)
+    CvUtil.pyPrint('Caliphate: regions configured; read script data')
     utils = RFCUtils.RFCUtils()
     # The canonical transfer is not an economic collapse or a lost war.
     data = pickle.loads(gc.getGame().getScriptData())
     players = [p for p in (con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2) if realmOf(p) >= 0]
     for p in players:
+        CvUtil.pyPrint('Caliphate: reset script data player=%d' % p)
         for name in ("lGNPold", "lGNPnew", "lCombatResultTempModifier", "lPartialBaseStability"):
             data[name][p] = 0
         # These caches count foreign land and missing homeland cities, not
@@ -128,14 +136,18 @@ def onPartition():
         data["lNumCities"][p] = gc.getPlayer(p).getNumCities()
         data["lGoals"][p] = [-1, -1, -1]
         data["l2OutOf3"][p] = False
+    CvUtil.pyPrint('Caliphate: save script data')
     gc.getGame().setScriptData(pickle.dumps(data))
     for p in players:
+        CvUtil.pyPrint('Caliphate: reset stability player=%d' % p)
         utils.setStability(p, 5)
         utils.setBaseStabilityLastTurn(p, 5)
 
     import GameObserver
+    CvUtil.pyPrint('Caliphate: record partition')
     GameObserver.record_mechanic("caliphate_partition", con.iArabia,
                                 {"realms": [{"player": p, "civilization": REALMS[realmOf(p)],
                                              "cities": gc.getPlayer(p).getNumCities(),
                                              "population": gc.getPlayer(p).getTotalPopulation(),
                                              "units": gc.getPlayer(p).getNumUnits()} for p in players]})
+    CvUtil.pyPrint('Caliphate: Python partition complete')
