@@ -225,6 +225,14 @@
     <Spanish>Religion banned until city ownership changes or the owner adopts it as the new state religion.</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_RFCMP_TRADE_CIVIC_YIELD</Tag>
+    <English>%D1_Modifier%% [ICON_COMMERCE] from %s2_Civic (after route modifiers)</English>
+    <French>%D1_Modifier%% [ICON_COMMERCE] from %s2_Civic (after route modifiers)</French>
+    <German>%D1_Modifier%% [ICON_COMMERCE] durch %s2_Civic (nach Handelsroutenmodifikatoren)</German>
+    <Italian>%D1_Modifier%% [ICON_COMMERCE] from %s2_Civic (after route modifiers)</Italian>
+    <Spanish>%D1_Modifier%% [ICON_COMMERCE] from %s2_Civic (after route modifiers)</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_RFCMP_TRADE_CULTURE</Tag>
     <English>Cultural exchange per turn: %s1_Here here, %s2_There in the partner city</English>
     <French>Cultural exchange per turn: %s1_Here here, %s2_There in the partner city</French>

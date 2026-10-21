@@ -12,6 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUTPUT=ROOT/'Awakened RFC/Assets/XML/Text/CIV4GameText_TradePolicy.xml'
 LANGS=('English','French','German','Italian','Spanish')
 ENTRIES={
+ 'TXT_KEY_RFCMP_TRADE_CIVIC_YIELD':('%D1_Modifier%% [ICON_COMMERCE] from %s2_Civic (after route modifiers)','%D1_Modifier%% [ICON_COMMERCE] durch %s2_Civic (nach Handelsroutenmodifikatoren)'),
  'TXT_KEY_RFCMP_HOLY_CITY_DORMANT':('Dormant holy city: this religion is absent. Its shrine has no effects until the religion spreads here again.','Ruhende Heilige Stadt: Diese Religion ist nicht vorhanden. Ihr einzigartiger Tempel bleibt bis zur erneuten Verbreitung wirkungslos.'),
  'TXT_KEY_RFCMP_RELIGION_BANNED':('Religion banned until city ownership changes or the owner adopts it as the new state religion.','Religion verbannt bis zum Besitzerwechsel oder zur Annahme als neue Staatsreligion durch den Besitzer.'),
  'TXT_KEY_COMMAND_PURGE_RELIGIONS':('Expel Religion','Religion vertreiben'),

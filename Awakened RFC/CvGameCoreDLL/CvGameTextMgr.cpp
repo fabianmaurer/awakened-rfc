@@ -13734,6 +13734,20 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
             int iEfficiency = pCity->getTradeInfrastructureEfficiency(pOtherCity);
             szBuffer.append(NEWLINE);
             szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_EFFICIENCY", iEfficiency));
+            // Civic trade-yield bonuses multiply the completed route value;
+            // they are separate from the additive route modifiers above.
+            for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+            {
+                CivicTypes eCivic = GET_PLAYER(pCity->getOwnerINLINE()).getCivics((CivicOptionTypes)iOption);
+                if (eCivic == NO_CIVIC) continue;
+                int iCivicModifier = GC.getCivicInfo(eCivic).getTradeYieldModifier(YIELD_COMMERCE);
+                if (iCivicModifier != 0)
+                {
+                    szBuffer.append(NEWLINE);
+                    szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_CIVIC_YIELD", iCivicModifier,
+                        GC.getCivicInfo(eCivic).getTextKeyWide()));
+                }
+            }
             int iRouteValue = pCity->calculateTradeYield(YIELD_COMMERCE, pCity->calculateTradeProfit(pOtherCity));
             int iCultureHere = pCity->calculateTradeCultureTimes100(iRouteValue);
             int iCultureThere = pOtherCity->calculateTradeCultureTimes100(iRouteValue);
@@ -13741,7 +13755,7 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
             CvWString szCultureThere = CvWString::format(L"%d.%d", iCultureThere / 100, (iCultureThere % 100) / 10);
             szBuffer.append(NEWLINE);
             szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_CULTURE", szCultureHere.GetCString(), szCultureThere.GetCString()));
-            iProfit = pCity->calculateTradeProfit(pOtherCity);
+            iProfit = iRouteValue;
 
 			szBuffer.append(SEPARATOR);
 
