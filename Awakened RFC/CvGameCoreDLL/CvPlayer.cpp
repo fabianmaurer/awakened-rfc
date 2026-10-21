@@ -23849,6 +23849,10 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		szForm = L"NORSE_KINGDOMS";
 	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
 		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+	else if (iPlayer == KOREA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy))
+		szForm = iYear < -400 ? L"CHIEFDOMS" : iYear < -108 ? L"GOJOSEON" :
+			(iYear < 668 ? L"KINGDOMS" : iYear < 918 ? L"SILLA" :
+			 iYear < 1392 ? L"GORYEO" : iYear < 1897 ? L"JOSEON" : L"KINGDOM");
 	else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= -1046 && iYear < -256)
 		szForm = L"ZHOU";
 	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear >= -1500 && iYear < -600)
@@ -23997,11 +24001,30 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+    // Authored minor city states keep their WB identity, including the
+    // independent Andalusi cities in a reserved major-numbered slot.
+    if (isMinorCiv()) return;
     if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ABBASID") ||
         getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_FATIMID") ||
         getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_UMAYYAD")) return;
 	if (getID() >= NUM_MAJOR_PLAYERS || !GET_PLAYER((PlayerTypes)getID()).isAlive())
 		return;
+
+    // The 900 AD scenario uses these regional slots for contemporary emirates.
+    // Keep their authored identities rather than reviving ancient country names.
+    if (GC.getGameINLINE().getStartTurn() == 211)
+    {
+        if (getID() == EGYPT && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+        {
+            setCivDescription(L"TXT_KEY_RFCMP_900_TULUNID_DESC");
+            return;
+        }
+        if (getID() == CARTHAGE && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_CARTHAGE"))
+        {
+            setCivDescription(L"TXT_KEY_RFCMP_900_AGHLABID_DESC");
+            return;
+        }
+    }
 
 	//if ((GC.getGameINLINE().getGameTurn() == 0 && GET_PLAYER((PlayerTypes)EGYPT).isPlayable())
 	//	|| (GC.getGameINLINE().getGameTurn() == 181 && !GET_PLAYER((PlayerTypes)EGYPT).isPlayable())) //late start condition (to be changed in MP)

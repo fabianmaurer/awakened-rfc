@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_0</Tag>
+    <English>Harun ibn Khumarawayh</English>
+    <French>Harun ibn Khumarawayh</French>
+    <German>Harun ibn Khumarawayh</German>
+    <Italian>Harun ibn Khumarawayh</Italian>
+    <Spanish>Harun ibn Khumarawayh</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_2</Tag>
+    <English>Tang Zhaozong</English>
+    <French>Tang Zhaozong</French>
+    <German>Tang Zhaozong</German>
+    <Italian>Tang Zhaozong</Italian>
+    <Spanish>Tang Zhaozong</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_6</Tag>
+    <English>Ibrahim II ibn Ahmad</English>
+    <French>Ibrahim II ibn Ahmad</French>
+    <German>Ibrahim II ibn Ahmad</German>
+    <Italian>Ibrahim II ibn Ahmad</Italian>
+    <Spanish>Ibrahim II ibn Ahmad</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_8</Tag>
+    <English>Daigo</English>
+    <French>Daigo</French>
+    <German>Daigo</German>
+    <Italian>Daigo</Italian>
+    <Spanish>Daigo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_11</Tag>
+    <English>Harald Fairhair</English>
+    <French>Harald &#224; la Belle Chevelure</French>
+    <German>Harald Sch&#246;nhaar</German>
+    <Italian>Harald Bellachioma</Italian>
+    <Spanish>Harald Cabellera Hermosa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_12</Tag>
+    <English>al-Mu'tadid</English>
+    <French>al-Mu'tadid</French>
+    <German>al-Mu'tadid</German>
+    <Italian>al-Mu'tadid</Italian>
+    <Spanish>al-Mu'tadid</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_13</Tag>
+    <English>Yasovarman I</English>
+    <French>Yasovarman Ier</French>
+    <German>Yasovarman I.</German>
+    <Italian>Yasovarman I</Italian>
+    <Spanish>Yasovarman I</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_14</Tag>
+    <English>Alfonso III of Asturias</English>
+    <French>Alphonse III des Asturies</French>
+    <German>Alfons III. von Asturien</German>
+    <Italian>Alfonso III delle Asturie</Italian>
+    <Spanish>Alfonso III de Asturias</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_15</Tag>
+    <English>Charles III the Simple</English>
+    <French>Charles III le Simple</French>
+    <German>Karl III. der Einf&#228;ltige</German>
+    <Italian>Carlo III il Semplice</Italian>
+    <Spanish>Carlos III el Simple</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_16</Tag>
+    <English>Edward the Elder</English>
+    <French>&#201;douard l'Ancien</French>
+    <German>Eduard der &#196;ltere</German>
+    <Italian>Edoardo il Vecchio</Italian>
+    <Spanish>Eduardo el Viejo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_17</Tag>
+    <English>Louis the Child</English>
+    <French>Louis l'Enfant</French>
+    <German>Ludwig das Kind</German>
+    <Italian>Ludovico il Fanciullo</Italian>
+    <Spanish>Luis el Ni&#241;o</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_18</Tag>
+    <English>Oleg of Kiev</English>
+    <French>Oleg de Kiev</French>
+    <German>Oleg von Kiew</German>
+    <Italian>Oleg di Kiev</Italian>
+    <Spanish>Oleg de Kiev</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_27</Tag>
+    <English>Abd Allah ibn Muhammad</English>
+    <French>Abd Allah ibn Muhammad</French>
+    <German>Abd Allah ibn Muhammad</German>
+    <Italian>Abd Allah ibn Muhammad</Italian>
+    <Spanish>Abd Allah ibn Muhammad</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_28</Tag>
+    <English>Local Andalusi rulers</English>
+    <French>Seigneurs andalous locaux</French>
+    <German>Andalusische Regionalherren</German>
+    <Italian>Signori andalusi locali</Italian>
+    <Spanish>Se&#241;ores andalus&#237;es locales</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_LEADER_34</Tag>
+    <English>Leo VI the Wise</English>
+    <French>L&#233;on VI le Sage</French>
+    <German>Leo VI. der Weise</German>
+    <Italian>Leone VI il Saggio</Italian>
+    <Spanish>Le&#243;n VI el Sabio</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_ANDALUSI_DESC</Tag>
+    <English>Independent Andalusi rulers</English>
+    <French>Seigneurs andalous ind&#233;pendants</French>
+    <German>Unabh&#228;ngige andalusische Herrschaften</German>
+    <Italian>Signorie andaluse indipendenti</Italian>
+    <Spanish>Se&#241;or&#237;os andalus&#237;es independientes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_ANDALUSI_SHORT</Tag>
+    <English>Andalusi cities</English>
+    <French>Cit&#233;s andalouses</French>
+    <German>Andalusische St&#228;dte</German>
+    <Italian>Citt&#224; andaluse</Italian>
+    <Spanish>Ciudades andalus&#237;es</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_ANDALUSI_ADJ</Tag>
+    <English>Andalusi</English>
+    <French>andalou</French>
+    <German>andalusisch</German>
+    <Italian>andaluso</Italian>
+    <Spanish>andalus&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_CORDOBA_DESC</Tag>
+    <English>Emirate of C&#243;rdoba</English>
+    <French>&#201;mirat de Cordoue</French>
+    <German>Emirat C&#243;rdoba</German>
+    <Italian>Emirato di Cordova</Italian>
+    <Spanish>Emirato de C&#243;rdoba</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_CORDOBA_SHORT</Tag>
+    <English>C&#243;rdoba</English>
+    <French>Cordoue</French>
+    <German>C&#243;rdoba</German>
+    <Italian>Cordova</Italian>
+    <Spanish>C&#243;rdoba</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_TULUNID_DESC</Tag>
+    <English>Tulunid Emirate</English>
+    <French>&#201;mirat toulounide</French>
+    <German>Tulunidenemirat</German>
+    <Italian>Emirato tulunide</Italian>
+    <Spanish>Emirato tulun&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_TULUNID_SHORT</Tag>
+    <English>Tulunids</English>
+    <French>Toulounides</French>
+    <German>Tuluniden</German>
+    <Italian>Tulunidi</Italian>
+    <Spanish>Tulun&#237;es</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_AGHLABID_DESC</Tag>
+    <English>Aghlabid Emirate</English>
+    <French>&#201;mirat aghlabide</French>
+    <German>Aghlabidenemirat</German>
+    <Italian>Emirato aghlabide</Italian>
+    <Spanish>Emirato aglab&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_AGHLABID_SHORT</Tag>
+    <English>Aghlabids</English>
+    <French>Aghlabides</French>
+    <German>Aghlabiden</German>
+    <Italian>Aghlabidi</Italian>
+    <Spanish>Aglab&#237;es</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_TULUNID_ADJ</Tag>
+    <English>Tulunid</English>
+    <French>toulounide</French>
+    <German>tulunidisch</German>
+    <Italian>tulunide</Italian>
+    <Spanish>tulun&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_AGHLABID_ADJ</Tag>
+    <English>Aghlabid</English>
+    <French>aghlabide</French>
+    <German>aghlabidisch</German>
+    <Italian>aghlabide</Italian>
+    <Spanish>aglab&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_INTRO_0</Tag>
+    <English>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</English>
+    <French>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</French>
+    <German>900 n. Chr.: Harun ibn Khumarawayh regiert das autonome Tulunidenemirat von Al-Qata'i aus. &#196;gypten und S&#252;dsyrien tragen euren Staat, w&#228;hrend der Abbasidenkalif die n&#246;rdlichen Grenzgebiete zur&#252;ckgewonnen hat. Sichert Heer und Schatzkammer; die Anerkennung des Kalifen bedeutet keine direkte Herrschaft Bagdads &#252;ber euer Land.</German>
+    <Italian>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</Italian>
+    <Spanish>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_INTRO_6</Tag>
+    <English>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</English>
+    <French>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</French>
+    <German>900 n. Chr.: Ibrahim II. regiert das aghlabidische Ifriqiya aus der Region Kairouan. Zu eurem Reich geh&#246;ren Tripolis und Palermo, doch die Eroberung des byzantinischen Sizilien ist noch nicht abgeschlossen. Verteidigt eure afrikanischen St&#228;dte und sichert den Inselkrieg mit eurer Flotte. Das Fatimidenkalifat ist noch nicht gegr&#252;ndet.</German>
+    <Italian>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</Italian>
+    <Spanish>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_INTRO_12</Tag>
+    <English>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</English>
+    <French>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</French>
+    <German>900 n. Chr.: Al-Mu'tadid regiert das Abbasidenkalifat von Bagdad aus. Der Irak und die nordsyrischen Grenzgebiete bilden eure unmittelbare Machtbasis. Tuluniden und Aghlabiden regieren autonom; auch Iran und Arabien haben eigene Regionalm&#228;chte. Gewinnt Einfluss durch Diplomatie oder Eroberung zur&#252;ck.</German>
+    <Italian>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</Italian>
+    <Spanish>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_INTRO_27</Tag>
+    <English>900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.</English>
+    <French>900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.</French>
+    <German>900 n. Chr.: Abd Allah regiert das Umayyadenemirat von Cordoba aus. Provinzrivalen schw&#228;chen die Zentralgewalt, und im Norden Iberiens bestehen christliche Reiche. Festigt eure Stellung vom s&#252;dlichen Kernland aus. Cordoba ist noch ein Emirat; die historische Ausrufung des Kalifats liegt im Jahr 929.</German>
+    <Italian>900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.</Italian>
+    <Spanish>900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.</Spanish>
+  </TEXT>
+</Civ4GameText>

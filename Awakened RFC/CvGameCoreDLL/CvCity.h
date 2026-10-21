@@ -591,6 +591,7 @@ public:
 	static int getCultureThreshold(CultureLevelTypes eLevel);
 	void setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups);
 	void updateCultureLevel(bool bUpdatePlotGroups);
+	int getNextExpansionPlotIndex() const;
 	int getNextCoveredPlotCost() const;
 	CvPlot* getNextCulturePlot() const;
 	bool needsCultureForWorkablePlots() const;

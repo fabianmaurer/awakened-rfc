@@ -1,9 +1,10 @@
 # 800 BC starting institutions and identities
 
-The scenario starts on turn 87. Its nine initial major players include four
-settler starts (Persia, Carthage, Rome and Japan). They are intentional early
+The scenario starts on turn 87. Its ten initial major players include five
+settler starts (Persia, Carthage, Rome, Japan and Korea). They are intentional early
 starts, rather than proof that their later empires already existed in 800 BC.
-The map, forces and expansion rules are unchanged by this audit.
+Starting technologies and forces represent the early regional societies;
+settler counts and expansion rules remain unchanged.
 
 | Slot | Starting country identity | Displayed ruler | Government | Labor | Military | Religion |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -12,10 +13,11 @@ The map, forces and expansion rules are unchanged by this audit.
 | China | Zhou Kingdom | Xuan of Zhou | Monarchy | Self-sufficiency | Warrior Society | Ancestor Cult |
 | Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Warrior Society | State Religion |
 | Greece | Greek City-States | Ariphron | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
-| Persia | Iranian Tribes | Persian tribal chiefs | Tribal System | Slavery | Warrior Society | Ancestor Cult |
+| Persia | Iranian Tribes | Achaemenes | Tribal System | Slavery | Warrior Society | Ancestor Cult |
 | Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
 | Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | Ancestor Cult |
-| Japan | Peoples of the Japanese Islands | Japanese clan elders | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
+| Japan | Peoples of the Japanese Islands | Jimmu | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
+| Korea | Korean Chiefdoms | Dangun | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
 
 Carthage, Persia and Rome use Ancestor Cult rather than State Religion in this
 start. For Persia and Rome this represents local and clan cults before their
@@ -39,9 +41,98 @@ Indian slot, whose existing cities extend beyond those kingdoms.
 
 India, China, Greece and Carthage receive Monarchy alongside their existing
 scenario technologies. No Republic, Plutocracy, Serfdom or Feudal Retinues is requested
-for an 800 BC start. The original technology packages, including their broader
-historical simplifications, are otherwise retained. Egypt still has its unique
-early access to Slavery. Later civilizations keep the normal spawn profiles.
+for an 800 BC start. Greece additionally starts with Agriculture, Animal
+Husbandry, Iron Working and Archery, but must research Aesthetics. Athens starts
+without the Parthenon or Oracle: the Parthenon belongs to the fifth century BC,
+while the Oracle represents Delphi rather than Athens. Later civilizations
+keep the normal spawn profiles.
+
+The other technology packages were revised on 2026-10-21:
+
+| Civilization | Added technologies | Removed technologies |
+| --- | --- | --- |
+| Egypt | Bronze Working, Metal Casting, Mathematics, Calendar | None |
+| India | Bronze Working, The Wheel, Archery, Iron Working | Writing |
+| China | Bronze Working, Metal Casting, Sailing, Priesthood | None |
+| Babylonia | Animal Husbandry, Mathematics, Calendar, Fishing, Sailing, Metal Casting, Iron Working | None |
+| Persia | Agriculture, Iron Working | Writing, Monarchy, Monotheism |
+| Carthage | Agriculture, Iron Working | Horseback Riding |
+| Rome | Agriculture | Writing, Mathematics, Alphabet |
+| Japan | Hunting, Archery | Bronze Working, Metal Casting, Meditation, Priesthood, Masonry, Monarchy, Writing |
+
+Japan retains Agriculture as an early western-island farming abstraction, rather
+than assuming uniform development across the archipelago. The Wheel is retained
+solely as Pottery's game-tree prerequisite, not a claim of wheeled transport.
+India's Writing is
+left to research, reflecting its predominantly oral late Vedic tradition.
+Calendar recipients also have its Sailing and Mathematics prerequisites; the
+calendar and mathematics technologies represent broad practical knowledge.
+China also receives Priesthood to complete its existing Monarchy prerequisites.
+
+Starting-unit counts are preserved, with earlier troop types replacing later
+formations: China's catapult becomes a chariot; Greece's four phalanxes,
+Persia's six Immortals, Carthage's three Numidian cavalry and Rome's four
+Praetorians become spearmen. Carthage's trireme becomes a galley, and Japan's
+two swordsmen become warriors. Japan keeps its two archers and now has their
+required technology. Civilian units and existing ship assignments are retained.
+These replacements reduce some starting armies' strength; balance and
+multiplayer behavior remain unverified. Unique units remain available through
+the normal technology and resource requirements.
+
+## Korea across the scenarios
+
+Korea has a dedicated major-player slot, separate from China, Japan and the
+Xiongnu. The 800 BC start provides no city: one settler, one worker, three
+archers, two spearmen, a work boat and 80 gold begin near the Pyongyang site.
+Its technologies cover farming, fishing, coastal sailing, pottery, hunting,
+archery and bronze working. It has no starting Writing, Iron Working or wonder.
+
+| Scenario | Korean position |
+| --- | --- |
+| 3000 BC | Selectable future civilization; ordinary RFC birth around 800 BC, with one settler, one worker, three archers, two spearmen and a work boat. |
+| 800 BC | Korean Chiefdoms with one settler near Pyongyang and no pre-founded city; choose the capital site. |
+| 600 AD | Korean Kingdoms under Yeongyang, capital Pyongyang; Gyeongju aggregates the southern kingdoms. This is not a claim that Goguryeo ruled the whole peninsula. |
+| 900 AD | Silla under Hyogong, capital Gyeongju, with Pyongyang as the northern regional center. The slot aggregates the fragmented Korean states. |
+| 1453 AD | Joseon under Danjong, capital Hanseong, with Uiju guarding the northern frontier; Seowon and Hwacha are available. |
+
+The existing Korean art, leaderhead, Hwacha and Seowon are reused. Ruler labels
+and briefings distinguish the historical starts from the shared leaderhead.
+Country names progress through chiefdoms, Gojoseon, Korean Kingdoms, Silla,
+Goryeo and Joseon where the date and institutions fit; republican and other
+civic-driven names remain available. There is no additional cost modifier or
+new unique-power mechanic.
+
+The coastline is unchanged. Wheat at (109,46), copper at (110,47) and fish at
+(111,47) supplement the existing pigs, deer, rice, silk, dye and iron. These
+changes support two cities with different workable food and production tiles.
+The core covers (108,45) through (110,49); the wider normal region allows a
+small northern frontier without encouraging an automatic Chinese conquest.
+The medieval maps use Pyongyang and Gyeongju, while the Joseon map retains
+Hanseong and adds Uiju, respecting the compressed map's city spacing.
+`Korea.CITY_NAMES` supplies the authored city centers. Founding and acquisition
+names cover surrounding regions rather than individual tiles: Kaesong lies
+north of Hanseong, Jeonju to its south, and Chuncheon occupies the northeastern
+inland site formerly mislabeled Hamhung. Western border and northern approach
+names include Dandong, Uiju, Ji'an, Hyesan, Hoeryong and Rason. Across China
+and Manchuria, Korea reuses RFC's established geographic vocabulary and extends
+nearby named regions into gaps. Coverage includes (96,32) through (111,55) and
+(106,48) through (118,59), with Korean home-region overrides. These remain
+regional approximations on the compressed map. Existing city names are not
+retroactively rewritten; the rules apply to founding and acquisition.
+
+Historical goals are to control two core cities with no foreign core cities by
+1000 AD, build two Seowon by 1600 AD, and lose no city to conquest before 1900
+while remaining independent with two core cities in 1900. In the 1453 scenario,
+the already-expired first goal is failed rather than retroactively awarded.
+
+Bronze Age chiefdoms are a regional abstraction, not a securely dated unified
+Gojoseon kingdom in 800 BC. See the [National Museum of Korea](https://www.museum.go.kr/ENG/contents/E0201030400.do?schM=list&showHallId=760&showroomCode=DM0048)
+and [the Met's Korean history overview](https://resources.metmuseum.org/resources/metpublications/pdf/The_Arts_of_Korea_A_Resource_for_Educators.pdf).
+The [Silla catalogue](https://resources.metmuseum.org/resources/metpublications/pdf/Silla_Koreas_Golden_Kingdom.pdf)
+places Hyogong in the late Silla period, rather than Goryeo's later foundation.
+
+`tools/korea_scenarios.py` maintains the authored Korean positions and resource
+changes; both later scenario generators call it. No gameplay run was started.
 
 Profiles in `StartingCivics.py` drive both initialization and country-name
 previews. Zhou (-1046 to -256), Kuru/Panchala (-1500 to -600, small monarchies)
@@ -77,8 +168,10 @@ Normal later leaderhead replacements can replace the displayed ruler name.
 - Rome starts as Rome under Romulus, treating its settler start as the legendary
   founding of the city. This is an intentional naming convention for the 800 BC
   scenario; the scenario date and starting institutions remain unchanged.
-- Persia and Japan retain collective leadership labels because no individual
-  ruler can be securely assigned here to 800 BC. Cyrus and Tokugawa would be
-  substantially anachronistic.
+- Korea uses Dangun, Japan Jimmu and Persia Achaemenes as named early
+  representatives rather than collective leadership labels. Legendary traditions
+  and chronological flexibility are intentional; these choices do not assert
+  that the individuals ruled in precisely 800 BC. Dangun also names Korea
+  during the 3000 BC scenario's wait for its later birth.
 
 No gameplay or multiplayer test was run. New-game load validation is pending.

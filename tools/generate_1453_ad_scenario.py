@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
 TARGET = MOD / 'PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave'
 START_TURN = 271
-ACTIVE = tuple(i for i in range(26) if i != 3)
+ACTIVE = tuple(i for i in range(26) if i != 3) + (30,)
 CHRISTIAN = 'RELIGION_CHRISTIANITY'
 ISLAM = 'RELIGION_ISLAM'
 BUDDHISM = 'RELIGION_BUDDHISM'
@@ -21,7 +21,7 @@ RELIGIONS = {0: ISLAM, 1: ISLAM, 2: CONFUCIAN, 4: CHRISTIAN,
              9: CHRISTIAN, 11: CHRISTIAN, 12: ISLAM, 13: BUDDHISM,
              14: CHRISTIAN, 15: CHRISTIAN, 16: CHRISTIAN, 17: CHRISTIAN,
              18: CHRISTIAN, 19: CHRISTIAN, 20: ISLAM, 21: CHRISTIAN,
-             25: ISLAM}
+             25: ISLAM, 30: CONFUCIAN}
 
 # First city per major is the capital. Sizes are relative urban weights, not a
 # census conversion. The crowded RFC map requires regional aggregations.
@@ -31,8 +31,8 @@ CITY_DATA = """
 0|73,38|Al-Quds|4
 0|74,41|Dimashq|7
 1|90,40|Delhi|8
-31|94,40|Jaunpur|5
-31|96,39|Gaur|5
+32|94,40|Jaunpur|5
+32|96,39|Gaur|5
 1|88,42|Lahore|4
 2|102,47|Beijing|10
 2|107,43|Nanjing|10
@@ -61,7 +61,7 @@ CITY_DATA = """
 11|61,62|Nidaros|3
 11|65,62|Stockholm|4
 12|75,33|Makkah|4
-30|76,30|Sana'a|3
+31|76,30|Sana'a|3
 13|102,32|Chaktomuk|4
 13|102,34|Angkor|3
 14|52,43|Toledo|5
@@ -81,19 +81,19 @@ CITY_DATA = """
 18|75,55|Vladimir|3
 19|57,53|Brugge|7
 20|51,29|Niani|5
-32|53,31|Timbuktu|5
-32|56,31|Gao|4
+33|53,31|Timbuktu|5
+33|56,31|Gao|4
 20|54,29|Djenne|4
 21|49,43|Lisboa|6
 21|49,45|Porto|4
 22|28,22|Qusqu|7
-32|24,25|Chan Chan|6
-32|25,23|Cajamarca|4
+33|24,25|Chan Chan|6
+33|25,23|Cajamarca|4
 22|27,24|Huamanga|4
 22|30,18|Hatun Qulla|4
-32|26,29|Tumipampa|4
-32|30,15|Tupiza|3
-32|29,11|Copiapo|2
+33|26,29|Tumipampa|4
+33|30,15|Tupiza|3
+33|29,11|Copiapo|2
 23|99,51|Qaraqorum|4
 23|96,53|Qobdo|2
 24|18,37|Tenochtitlan|10
@@ -104,36 +104,37 @@ CITY_DATA = """
 25|70,43|Bursa|5
 25|66,46|Edirne|4
 25|65,44|Thessaloniki|4
-30|52,41|Gharnata|5
-30|52,60|Inbhir Nis|3
-30|67,53|Krakow|5
-30|72,57|Novgorod|5
-30|78,40|Baghdad|5
-30|82,38|Shiraz|5
-30|81,45|Tabriz|6
-30|75,44|Trapezous|4
-31|98,36|Ava|5
-31|100,32|Ayutthaya|6
-31|106,33|Thang Long|5
-31|109,46|Hanseong|6
-31|88,36|Dabhol|4
-31|91,33|Vijayanagara|8
-31|87,40|Multan|4
-32|61,16|Mbanza Kongo|4
-32|74,14|Kilwa|5
-32|68,15|Great Zimbabwe|4
-30|49,56|Dublin|3
-31|62,42|Napoli|6
-31|60,40|Palermo|5
-30|65,49|Buda|5
-30|76,46|Tbilisi|3
-31|52,37|Fes|6
-31|54,38|Tlemcen|4
-31|82,34|Masqat|3
-31|96,43|Lhasa|3
-31|93,29|Colombo|3
-31|100,30|Melaka|5
-31|106,25|Surabaya|4
+31|52,41|Gharnata|5
+31|52,60|Inbhir Nis|3
+31|67,53|Krakow|5
+31|72,57|Novgorod|5
+31|78,40|Baghdad|5
+31|82,38|Shiraz|5
+31|81,45|Tabriz|6
+31|75,44|Trapezous|4
+32|98,36|Ava|5
+32|100,32|Ayutthaya|6
+32|106,33|Thang Long|5
+30|109,46|Hanseong|7
+30|108,49|Uiju|4
+32|88,36|Dabhol|4
+32|91,33|Vijayanagara|8
+32|87,40|Multan|4
+33|61,16|Mbanza Kongo|4
+33|74,14|Kilwa|5
+33|68,15|Great Zimbabwe|4
+31|49,56|Dublin|3
+32|62,42|Napoli|6
+32|60,40|Palermo|5
+31|65,49|Buda|5
+31|76,46|Tbilisi|3
+32|52,37|Fes|6
+32|54,38|Tlemcen|4
+32|82,34|Masqat|3
+32|96,43|Lhasa|3
+32|93,29|Colombo|3
+32|100,30|Melaka|5
+32|106,25|Surabaya|4
 """
 
 # Independent slots group unrelated polities. Their cities need local faiths,
@@ -178,9 +179,10 @@ AMERICAN_TECHS = ('MYSTICISM POLYTHEISM PRIESTHOOD MONARCHY CODE_OF_LAWS '
                   'AGRICULTURE POTTERY WRITING MATHEMATICS CALENDAR '
                   'CURRENCY HUNTING MINING ARCHERY MASONRY BRONZE_WORKING '
                   'CONSTRUCTION FEUDALISM').split()
-GUNPOWDER = (0, 1, 2, 5, 8, 11, 14, 15, 16, 17, 18, 19, 21, 25)
+GUNPOWDER = (0, 1, 2, 5, 8, 11, 14, 15, 16, 17, 18, 19, 21, 25, 30)
 OPTICS = (2, 7, 11, 14, 15, 16, 19, 21)
 LEADERS = {
+    30: ('Danjong', 'Danjong'),
     0: ('Inal', 'Inal'), 1: ('Bahlul Lodi', 'Bahlul Lodi'),
     2: ('Jingtai', 'Jingtai'), 4: ('Demetrios Palaiologos', 'Demetrios Palaiologos'),
     5: ("Abu Sa'id Mirza", "Abu Sa'id Mirza"),
@@ -204,6 +206,8 @@ LEADERS = {
 # Briefings describe the authored position, including aggregated regional states.
 # Keep them short enough for the existing Dawn of Man panel.
 INTRODUCTIONS = {
+    30: ('1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.',
+         '1453 n. Chr.: Joseon unter Danjong. Sichert die Nordgrenze, entwickelt eure Kuestenstaedte und Seowon und schuetzt die Halbinsel mit Hwacha-Artillerie.'),
     0: (
         '1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.',
         '1453: Von Kairo aus beherrscht das Mamlukensultanat Ägypten und die Levante. Der Nil ernährt eure Städte, Verbindungen zum Mittelmeer und Roten Meer bringen Wohlstand. Die Osmanen haben Konstantinopel erobert. Sichert die Nordgrenze und bewahrt die Stärke eures Sultanats.'),
@@ -353,7 +357,7 @@ def main():
     for owner, _, name, _ in cities:
         if name not in CITY_RELIGIONS and owner not in RELIGIONS and name not in NO_GAME_RELIGION_CITIES:
             raise ValueError('Missing city religion assignment: ' + name)
-    if {owner for owner, _, _, _ in cities if owner < 30} != set(ACTIVE):
+    if {owner for owner, _, _, _ in cities if owner < 31} != set(ACTIVE):
         raise ValueError('Every populated major must be selectable, and every selectable major needs a city')
     for index, (_, (x, y), name, _) in enumerate(cities):
         for _, (xx, yy), other, _ in cities[index + 1:]:
@@ -580,6 +584,8 @@ def main():
             playable.add(owner)
     if playable != set(ACTIVE):
         raise ValueError('Generated selectable players do not match the 1453 starting roster')
+    from korea_scenarios import apply_korea
+    text = apply_korea(text)
     TARGET.write_text(text, encoding='utf-8')
     data = ('# Generated by tools/generate_1453_ad_scenario.py; Python 2.4.\n'
             'START_TURN = %r\nSTART_YEAR = 1453\nACTIVE_PLAYERS = %r\nCAPITALS = %r\n' %

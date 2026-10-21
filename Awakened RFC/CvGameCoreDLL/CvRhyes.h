@@ -40,12 +40,13 @@
 #define CALIPHATE_SLOT_1 (27)
 #define CALIPHATE_SLOT_2 (28)
 #define XIONGNU (29)
-#define NUM_MAJOR_PLAYERS		(30)
-#define INDEPENDENT				(30)
-#define INDEPENDENT2			(31)
-#define NATIVE					(32)
-#define CELTIA					(33)
-#define BARBARIAN				(34)
+#define KOREA (30)
+#define NUM_MAJOR_PLAYERS		(31)
+#define INDEPENDENT				(31)
+#define INDEPENDENT2			(32)
+#define NATIVE					(33)
+#define CELTIA					(34)
+#define BARBARIAN				(35)
 
 
 #define MEDITATION				(1)
@@ -190,13 +191,13 @@ extern char uniquePower[43][2][16];
 extern char uniqueGoals[43][3][18];
 extern char rating[43][6][15];
 
-extern int turnPlayed[35];
-extern int civSpreadFactor[35][7];
-extern int borders[30][30];
+extern int turnPlayed[36];
+extern int civSpreadFactor[36][7];
+extern int borders[31][31];
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots);
-extern wchar civDynamicNames[30][22][19]; //(dynamic civ names - not jdog's)
-extern int civDynamicNamesFlag[30];
-extern int civDynamicNamesEraThreshold[30];
+extern wchar civDynamicNames[31][22][19]; //(dynamic civ names - not jdog's)
+extern int civDynamicNamesFlag[31];
+extern int civDynamicNamesEraThreshold[31];
 extern int settlersMaps[][68][124];
 
 

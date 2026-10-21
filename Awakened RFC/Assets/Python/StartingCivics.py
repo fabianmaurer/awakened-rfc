@@ -4,6 +4,7 @@ from CvPythonExtensions import CyGlobalContext
 # Columns: Government, Legitimacy, Labor, Military, Religion.
 # These are preferences; unavailable choices use the fallbacks below.
 PROFILES = {
+    "CIVILIZATION_KOREA": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_EGYPT": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_INDIA": ("MONARCHY", "DESPOTISM", "SERFDOM", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_CHINA": ("MONARCHY", "DESPOTISM", "SERFDOM", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
@@ -39,6 +40,7 @@ DEFAULTS = ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY",
 # The nine civilizations present in the 800 BC start. Later births retain
 # their usual profiles; these choices are shared with the selection preview.
 PROFILES_800BC = {
+    "CIVILIZATION_KOREA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_EGYPT": ("TRIBAL_SYSTEM", "DESPOTISM", "SLAVERY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_INDIA": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_CHINA": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
@@ -70,9 +72,18 @@ FALLBACKS = (
 
 def getProfile(civType, startTurn):
     profile = PROFILES.get(civType, DEFAULTS)
+    if startTurn == 211 and civType in ("CIVILIZATION_EGYPT", "CIVILIZATION_CARTHAGE",
+                                       "CIVILIZATION_ABBASID", "CIVILIZATION_UMAYYAD"):
+        return ("MONARCHY", "DESPOTISM", "SERFDOM", "WARRIOR_SOCIETY", "STATE_RELIGION")
+    if civType == "CIVILIZATION_KOREA" and startTurn == 0:
+        return PROFILES_800BC[civType]
+    if civType == "CIVILIZATION_KOREA" and startTurn == 271:
+        return ("MONARCHY", "DESPOTISM", "SERFDOM", "WARRIOR_SOCIETY", "STATE_RELIGION")
     if startTurn == 87:
         return PROFILES_800BC.get(civType, profile)
-    if startTurn == 181:
+    if startTurn == 181 or startTurn == 211:
+        if startTurn == 211 and civType == "CIVILIZATION_ARABIA":
+            return profile
         return PROFILES_600AD.get(civType, profile)
     if startTurn == 271:
         # Institutions of the authored 1453 polities, rather than their ancient
@@ -103,6 +114,9 @@ def apply(iPlayer):
         return
     profile = getProfile(gc.getCivilizationInfo(civType).getType(),
                          gc.getGame().getStartTurn())
+    # Dedicated Andalusi minor player; leave the global independent cities alone.
+    if gc.getGame().getStartTurn() == 211 and iPlayer == 28 and player.isMinorCiv():
+        profile = getProfile("CIVILIZATION_UMAYYAD", 211)
     for iColumn in range(len(profile)):
         for name in (profile[iColumn],) + FALLBACKS[iColumn]:
             civic = gc.getInfoTypeForString("CIVIC_" + name)

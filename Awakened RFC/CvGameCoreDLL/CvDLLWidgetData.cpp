@@ -4366,7 +4366,13 @@ void CvDLLWidgetData::parseCivicHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 {
 	if (widgetDataStruct.m_iData2 != 0)
 	{
-		GAMETEXT.parseCivicInfo(szBuffer, (CivicTypes)widgetDataStruct.m_iData1);
+		// Diplomacy icons carry their player's identity; ordinary widgets keep
+		// the existing active-player context and Civilopedia click behavior.
+		const int iPlayer = -2 - widgetDataStruct.m_iData2;
+		if (widgetDataStruct.m_iData2 <= -2 && iPlayer >= 0 && iPlayer < MAX_PLAYERS)
+			GAMETEXT.parseCivicInfoForPlayer(szBuffer, (CivicTypes)widgetDataStruct.m_iData1, (PlayerTypes)iPlayer);
+		else
+			GAMETEXT.parseCivicInfo(szBuffer, (CivicTypes)widgetDataStruct.m_iData1);
 	}
 }
 

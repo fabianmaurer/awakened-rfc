@@ -70,6 +70,19 @@ BeginTeam
 EndTeam
 BeginTeam
 EndTeam
+BeginTeam
+	Tech=TECH_AGRICULTURE
+	Tech=TECH_FISHING
+	Tech=TECH_SAILING
+	Tech=TECH_THE_WHEEL
+	Tech=TECH_POTTERY
+	Tech=TECH_HUNTING
+	Tech=TECH_ARCHERY
+	Tech=TECH_MINING
+	Tech=TECH_BRONZE_WORKING
+	ContactWithTeam=2
+	ContactWithTeam=8
+EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
@@ -297,11 +310,23 @@ BeginPlayer
 	PlayableCiv=0
 	Handicap=HANDICAP_PRINCE
 EndPlayer
+BeginPlayer
+	CivType=CIVILIZATION_KOREA
+	LeaderType=LEADER_WANGKON
+	Team=30
+	PlayableCiv=1
+	Handicap=HANDICAP_PRINCE
+	MinorNationStatus=0
+	LeaderName=TXT_KEY_KOREA_LEADER_87
+	StartingX=109
+	StartingY=48
+	StartingGold=80
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=30
+	Team=31
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -310,7 +335,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=31
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -319,7 +344,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=32
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -327,7 +352,7 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=33
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -22214,11 +22239,11 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -24899,6 +24924,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=66,y=36
+	BonusType=BONUS_WHEAT
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 EndPlot
@@ -24928,11 +24954,11 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BeginUnit
-		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
+		UnitType=UNIT_SPEARMAN, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
+		UnitType=UNIT_SPEARMAN, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 EndPlot
@@ -25365,11 +25391,11 @@ BeginPlot
 		UnitAIType=UNITAI_ASSAULT_SEA
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
+		UnitType=UNIT_SPEARMAN, UnitOwner=4
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
+		UnitType=UNIT_SPEARMAN, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 	BeginUnit
@@ -25389,8 +25415,6 @@ BeginPlot
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_HARBOR
 		BuildingType=BUILDING_BARRACKS
-		BuildingType=BUILDING_PARTHENON
-		BuildingType=BUILDING_ORACLE
 		Player4Culture=24
 	EndCity
 EndPlot
@@ -27752,16 +27776,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=31
+		UnitType=UNIT_ARCHER, UnitOwner=32
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=31
+		CityOwner=32
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
-		Player31Culture=10
+		Player32Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -32361,11 +32385,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=30
+		UnitType=UNIT_ARCHER, UnitOwner=31
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=30
+		CityOwner=31
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity
@@ -39265,7 +39289,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_CATAPULT, UnitOwner=2
+		UnitType=UNIT_CHARIOT, UnitOwner=2
 		UnitAIType=UNITAI_ATTACK
 	EndUnit
 	BeginCity
@@ -41614,6 +41638,7 @@ BeginPlot
 	x=109,y=46
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=109,y=47
@@ -41628,6 +41653,39 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
+
+	BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=30
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_SETTLER, UnitOwner=30
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=30
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=30
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=30
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_SPEARMAN, UnitOwner=30
+		UnitAIType=UNITAI_COUNTER
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_SPEARMAN, UnitOwner=30
+		UnitAIType=UNITAI_COUNTER
+	EndUnit
 EndPlot
 BeginPlot
 	x=109,y=49
@@ -41997,11 +42055,17 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
+	BonusType=BONUS_COPPER
 EndPlot
 BeginPlot
 	x=110,y=48
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+
+	BeginUnit
+		UnitType=UNIT_WORKBOAT, UnitOwner=30
+		UnitAIType=UNITAI_WORKER_SEA
+	EndUnit
 EndPlot
 BeginPlot
 	x=110,y=49
@@ -42368,6 +42432,7 @@ BeginPlot
 	x=111,y=47
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=111,y=48

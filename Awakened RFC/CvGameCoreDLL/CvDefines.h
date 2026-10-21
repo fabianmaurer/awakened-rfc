@@ -24,7 +24,7 @@
 #define RANDPLOT_NOT_CITY											(0x00000040)
 
 #ifdef _USRDLL
-#define MAX_CIV_PLAYERS												(34) // Awakened RFC: caliphate successors and Xiongnu
+#define MAX_CIV_PLAYERS												(35) // Awakened RFC: caliphate successors, Xiongnu and Korea
 #else
 #define MAX_CIV_PLAYERS												(CvGlobals::getInstance().getMaxCivPlayers())
 #endif

@@ -18,6 +18,7 @@ import AIWars
 import Congresses
 import Consts as con
 import Scenario1453AD
+import Scenario900AD
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 import CvScreenEnums #Mercenaries, Rhye
@@ -139,6 +140,8 @@ class CvRFCEventHandler:
                 'Called at the start of the game'
                 self.data.setupScriptData()
                 self.rnf.setup()
+                import Korea
+                Korea.setup(self.vic)
                 self.rel.setup()
                 self.pla.setup()
                 self.sta.setup()
@@ -294,7 +297,7 @@ class CvRFCEventHandler:
                 'Religion Founded'
                 iReligion, iFounder = argsList
 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
         
                 self.vic.onReligionFounded(iReligion, iFounder)
@@ -457,7 +460,7 @@ class CvRFCEventHandler:
                 #print ("onTechAcquired", argsList)
                 iPlayer = argsList[2]
                 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
                 
                 if (gc.getGame().getGameTurn() > con.tBirth[iPlayer]):                    

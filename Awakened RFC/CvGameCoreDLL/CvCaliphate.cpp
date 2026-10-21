@@ -139,12 +139,27 @@ void CvPlayer::configureCaliphateSuccessor()
         if (getID() == ARABIA) memcpy(settlersMaps[ARABIA], originalArabia, sizeof(originalArabia));
         return;
     }
-    setCivDescription(GC.getCivilizationInfo(getCivilizationType()).getTextKeyWide());
-    GC.getInitCore().setCivShortDesc(getID(), GC.getCivilizationInfo(getCivilizationType()).getShortDescriptionKey());
+    // The authored 900 AD Umayyad state is still the emirate (caliphate: 929).
+    // Apply on initialization and reload, alongside the successor's regional AI.
+    const bool bCordoba = realm == 2 && getID() == CALIPHATE_SLOT_1 &&
+        GC.getGameINLINE().getStartTurn() == 211;
+    setCivDescription(bCordoba ? L"TXT_KEY_RFCMP_900_CORDOBA_DESC" :
+        GC.getCivilizationInfo(getCivilizationType()).getTextKeyWide());
+    GC.getInitCore().setCivShortDesc(getID(), bCordoba ? L"TXT_KEY_RFCMP_900_CORDOBA_SHORT" :
+        GC.getCivilizationInfo(getCivilizationType()).getShortDescriptionKey());
     GC.getInitCore().setCivAdjective(getID(), GC.getCivilizationInfo(getCivilizationType()).getAdjectiveKey());
     for (int y = 0; y < EARTH_Y; ++y)
         for (int x = 0; x < EARTH_X; ++x)
-            settlersMaps[getID()][EARTH_Y - 1 - y][x] = realmAt(x, y) == realm ? 300 : 20;
+        {
+            bool bHomeland = realmAt(x, y) == realm;
+            if (GC.getGameINLINE().getStartTurn() == 211)
+            {
+                if (realm == 0) bHomeland = x >= 74 && x <= 83 && y >= 31 && y <= 46 &&
+                    !(x <= 74 && y >= 38); // Tulunid southern Syria is autonomous.
+                if (realm == 2) bHomeland = x >= 49 && x <= 56 && y >= 40 && y <= 46;
+            }
+            settlersMaps[getID()][EARTH_Y - 1 - y][x] = bHomeland ? 300 : 20;
+        }
 }
 
 void CvPlayer::resolveCaliphatePartition(int decision, int chosen)

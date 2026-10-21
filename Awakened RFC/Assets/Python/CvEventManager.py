@@ -31,6 +31,14 @@ PyPlayer = PyHelpers.PyPlayer
 PyInfo = PyHelpers.PyInfo
 
 
+def _pyPrint(message):
+	# Civ4's Python 2.4 log stream implicitly encodes Unicode as ASCII.
+	# Encode localized names explicitly so logging cannot interrupt an event.
+	if isinstance(message, unicode):
+		message = message.encode("utf-8")
+	CvUtil.pyPrint(message)
+
+
 # globals
 ###################################################
 class CvEventManager:
@@ -215,7 +223,7 @@ class CvEventManager:
 		if (gc.getGame().getActivePlayer() != -1):
 			message = "DEBUG Event: %s (%s)" %(entry[0], gc.getActivePlayer().getName())
 			CyInterface().addImmediateMessage(message,"")
-			CvUtil.pyPrint(message)
+			_pyPrint(message)
 		return 0
 		
 #################### ON EVENTS ######################
@@ -298,11 +306,11 @@ class CvEventManager:
 		
 		print("Modder's net message!")
 		
-		CvUtil.pyPrint( 'onModNetMessage' )
+		_pyPrint( 'onModNetMessage' )
 
 	def onInit(self, argsList):
 		'Called when Civ starts up'
-		CvUtil.pyPrint( 'OnInit' )
+		_pyPrint( 'OnInit' )
 		
 	def onUpdate(self, argsList):
 		'Called every frame'
@@ -317,11 +325,11 @@ class CvEventManager:
 		
 	def onUnInit(self, argsList):
 		'Called when Civ shuts down'
-		CvUtil.pyPrint('OnUnInit')
+		_pyPrint('OnUnInit')
 	
 	def onPreSave(self, argsList):
 		"called before a game is actually saved"
-		CvUtil.pyPrint('OnPreSave')
+		_pyPrint('OnPreSave')
 	
 	def onSaveGame(self, argsList):
 		"return the string to be saved - Must be a string"
@@ -397,7 +405,7 @@ class CvEventManager:
 		iTeamX,iHasMetTeamY = argsList
 		if (not self.__LOG_CONTACT):
 			return
-		CvUtil.pyPrint('Team %d has met Team %d' %(iTeamX, iHasMetTeamY))
+		_pyPrint('Team %d has met Team %d' %(iTeamX, iHasMetTeamY))
 	
 	def onCombatResult(self, argsList):
 		'Combat Result'
@@ -409,7 +417,7 @@ class CvEventManager:
 		if (not self.__LOG_COMBAT):
 			return
 		if playerX and playerX and unitX and playerY:
-			CvUtil.pyPrint('Player %d Civilization %s Unit %s has defeated Player %d Civilization %s Unit %s' 
+			_pyPrint('Player %d Civilization %s Unit %s has defeated Player %d Civilization %s Unit %s'
 				%(playerX.getID(), playerX.getCivilizationName(), unitX.getDescription(), 
 				playerY.getID(), playerY.getCivilizationName(), unitY.getDescription()))
 
@@ -461,7 +469,7 @@ class CvEventManager:
 		iImprovement, iX, iY = argsList
 		if (not self.__LOG_IMPROVEMENT):
 			return
-		CvUtil.pyPrint('Improvement %s was built at %d, %d'
+		_pyPrint('Improvement %s was built at %d, %d'
 			%(PyInfo.ImprovementInfo(iImprovement).getDescription(), iX, iY))
 
 	def onImprovementDestroyed(self, argsList):
@@ -469,7 +477,7 @@ class CvEventManager:
 		iImprovement, iOwner, iX, iY = argsList
 		if (not self.__LOG_IMPROVEMENT):
 			return
-		CvUtil.pyPrint('Improvement %s was Destroyed at %d, %d'
+		_pyPrint('Improvement %s was Destroyed at %d, %d'
 			%(PyInfo.ImprovementInfo(iImprovement).getDescription(), iX, iY))
 
 	def onRouteBuilt(self, argsList):
@@ -477,7 +485,7 @@ class CvEventManager:
 		iRoute, iX, iY = argsList
 		if (not self.__LOG_IMPROVEMENT):
 			return
-		CvUtil.pyPrint('Route %s was built at %d, %d'
+		_pyPrint('Route %s was built at %d, %d'
 			%(gc.getRouteInfo(iRoute).getDescription(), iX, iY))
 
 	def onPlotRevealed(self, argsList):
@@ -494,13 +502,13 @@ class CvEventManager:
 	def onPlotPicked(self, argsList):
 		'Plot Picked'
 		pPlot = argsList[0]
-		CvUtil.pyPrint('Plot was picked at %d, %d'
+		_pyPrint('Plot was picked at %d, %d'
 			%(pPlot.getX(), pPlot.getY()))
 
 	def onNukeExplosion(self, argsList):
 		'Nuke Explosion'
 		pPlot, pNukeUnit = argsList
-		CvUtil.pyPrint('Nuke detonated at %d, %d'
+		_pyPrint('Nuke detonated at %d, %d'
 			%(pPlot.getX(), pPlot.getY()))
 
 	def onGotoPlotSet(self, argsList):
@@ -525,7 +533,7 @@ class CvEventManager:
 
 		if (not self.__LOG_BUILDING):
 			return
-		CvUtil.pyPrint('%s was finished by Player %d Civilization %s' 
+		_pyPrint('%s was finished by Player %d Civilization %s'
 			%(PyInfo.BuildingInfo(iBuildingType).getDescription(), pCity.getOwner(), gc.getPlayer(pCity.getOwner()).getCivilizationDescription(0)))
 	
 	def onProjectBuilt(self, argsList):
@@ -551,7 +559,7 @@ class CvEventManager:
 		if (not self.__LOG_PUSH_MISSION):
 			return
 		if pHeadUnit:
-			CvUtil.pyPrint("Selection Group pushed mission %d" %(eMission))
+			_pyPrint("Selection Group pushed mission %d" %(eMission))
 	
 	def onUnitMove(self, argsList):
 		'unit move'
@@ -561,7 +569,7 @@ class CvEventManager:
 		if (not self.__LOG_MOVEMENT):
 			return
 		if player and unitInfo:
-			CvUtil.pyPrint('Player %d Civilization %s unit %s is moving to %d, %d' 
+			_pyPrint('Player %d Civilization %s unit %s is moving to %d, %d'
 				%(player.getID(), player.getCivilizationName(), unitInfo.getDescription(), 
 				pUnit.getX(), pUnit.getY()))
 
@@ -590,7 +598,7 @@ class CvEventManager:
 		
 		if (not self.__LOG_UNITBUILD):
 			return
-		CvUtil.pyPrint('%s was finished by Player %d Civilization %s' 
+		_pyPrint('%s was finished by Player %d Civilization %s'
 			%(PyInfo.UnitInfo(unit.getUnitType()).getDescription(), player.getID(), player.getCivilizationName()))
 	
 	def onUnitKilled(self, argsList):
@@ -600,7 +608,7 @@ class CvEventManager:
 		attacker = PyPlayer(iAttacker)
 		if (not self.__LOG_UNITKILLED):
 			return
-		CvUtil.pyPrint('Player %d Civilization %s Unit %s was killed by Player %d' 
+		_pyPrint('Player %d Civilization %s Unit %s was killed by Player %d'
 			%(player.getID(), player.getCivilizationName(), PyInfo.UnitInfo(unit.getUnitType()).getDescription(), attacker.getID()))
 
 	def onUnitLost(self, argsList):
@@ -609,7 +617,7 @@ class CvEventManager:
 		player = PyPlayer(unit.getOwner())
 		if (not self.__LOG_UNITLOST):
 			return
-		CvUtil.pyPrint('%s was lost by Player %d Civilization %s' 
+		_pyPrint('%s was lost by Player %d Civilization %s'
 			%(PyInfo.UnitInfo(unit.getUnitType()).getDescription(), player.getID(), player.getCivilizationName()))
 	
 	def onUnitPromoted(self, argsList):
@@ -618,7 +626,7 @@ class CvEventManager:
 		player = PyPlayer(pUnit.getOwner())
 		if (not self.__LOG_UNITPROMOTED):
 			return
-		CvUtil.pyPrint('Unit Promotion Event: %s - %s' %(player.getCivilizationName(), pUnit.getName(),))
+		_pyPrint('Unit Promotion Event: %s - %s' %(player.getCivilizationName(), pUnit.getName(),))
 	
 	def onUnitSelected(self, argsList):
 		'Unit Selected'
@@ -626,7 +634,7 @@ class CvEventManager:
 		player = PyPlayer(unit.getOwner())
 		if (not self.__LOG_UNITSELECTED):
 			return
-		CvUtil.pyPrint('%s was selected by Player %d Civilization %s' 
+		_pyPrint('%s was selected by Player %d Civilization %s'
 			%(PyInfo.UnitInfo(unit.getUnitType()).getDescription(), player.getID(), player.getCivilizationName()))
 	
 	def onUnitRename(self, argsList):
@@ -644,7 +652,7 @@ class CvEventManager:
 		
 		if (not self.__LOG_UNITPILLAGE):
 			return
-		CvUtil.pyPrint("Player %d's %s pillaged improvement %d and route %d at plot at (%d, %d)" 
+		_pyPrint("Player %d's %s pillaged improvement %d and route %d at plot at (%d, %d)"
 			%(iOwner, PyInfo.UnitInfo(pUnit.getUnitType()).getDescription(), iImprovement, iRoute, iPlotX, iPlotY))
 	
 	def onUnitSpreadReligionAttempt(self, argsList):
@@ -669,7 +677,7 @@ class CvEventManager:
 		iPlayer, pPlot, pUnit, iGoodyType = argsList
 		if (not self.__LOG_GOODYRECEIVED):
 			return
-		CvUtil.pyPrint('%s received a goody' %(gc.getPlayer(iPlayer).getCivilizationDescription(0)),)
+		_pyPrint('%s received a goody' %(gc.getPlayer(iPlayer).getCivilizationDescription(0)),)
 	
 	def onGreatPersonBorn(self, argsList):
 		'Unit Promoted'
@@ -679,7 +687,7 @@ class CvEventManager:
 			return
 		if (not self.__LOG_GREATPERSON):
 			return
-		CvUtil.pyPrint('A %s was born for %s in %s' %(pUnit.getName(), player.getCivilizationName(), pCity.getName()))
+		_pyPrint('A %s was born for %s in %s' %(pUnit.getName(), player.getCivilizationName(), pCity.getName()))
 	
 	def onTechAcquired(self, argsList):
 		'Tech Acquired'
@@ -698,7 +706,7 @@ class CvEventManager:
 				
 		if (not self.__LOG_TECH):
 			return
-		CvUtil.pyPrint('%s was finished by Team %d' 
+		_pyPrint('%s was finished by Team %d'
 			%(PyInfo.TechnologyInfo(iTechType).getDescription(), iTeam))
 	
 	def onTechSelected(self, argsList):
@@ -706,7 +714,7 @@ class CvEventManager:
 		iTechType, iPlayer = argsList
 		if (not self.__LOG_TECH):
 			return
-		CvUtil.pyPrint('%s was selected by Player %d' %(PyInfo.TechnologyInfo(iTechType).getDescription(), iPlayer))
+		_pyPrint('%s was selected by Player %d' %(PyInfo.TechnologyInfo(iTechType).getDescription(), iPlayer))
 	
 	def onReligionFounded(self, argsList):
 		'Religion Founded'
@@ -726,7 +734,7 @@ class CvEventManager:
 		
 		if (not self.__LOG_RELIGION):
 			return
-		CvUtil.pyPrint('Player %d Civilization %s has founded %s'
+		_pyPrint('Player %d Civilization %s has founded %s'
 			%(iFounder, player.getCivilizationName(), gc.getReligionInfo(iReligion).getDescription()))
 
 	def onReligionSpread(self, argsList):
@@ -735,7 +743,7 @@ class CvEventManager:
 		player = PyPlayer(iOwner)
 		if (not self.__LOG_RELIGIONSPREAD):
 			return
-		CvUtil.pyPrint('%s has spread to Player %d Civilization %s city of %s'
+		_pyPrint('%s has spread to Player %d Civilization %s city of %s'
 			%(gc.getReligionInfo(iReligion).getDescription(), iOwner, player.getCivilizationName(), pSpreadCity.getName()))
 
 	def onReligionRemove(self, argsList):
@@ -744,7 +752,7 @@ class CvEventManager:
 		player = PyPlayer(iOwner)
 		if (not self.__LOG_RELIGIONSPREAD):
 			return
-		CvUtil.pyPrint('%s has been removed from Player %d Civilization %s city of %s'
+		_pyPrint('%s has been removed from Player %d Civilization %s city of %s'
 			%(gc.getReligionInfo(iReligion).getDescription(), iOwner, player.getCivilizationName(), pRemoveCity.getName()))
 				
 	def onCorporationFounded(self, argsList):
@@ -754,7 +762,7 @@ class CvEventManager:
 		
 		if (not self.__LOG_RELIGION):
 			return
-		CvUtil.pyPrint('Player %d Civilization %s has founded %s'
+		_pyPrint('Player %d Civilization %s has founded %s'
 			%(iFounder, player.getCivilizationName(), gc.getCorporationInfo(iCorporation).getDescription()))
 
 	def onCorporationSpread(self, argsList):
@@ -763,7 +771,7 @@ class CvEventManager:
 		player = PyPlayer(iOwner)
 		if (not self.__LOG_RELIGIONSPREAD):
 			return
-		CvUtil.pyPrint('%s has spread to Player %d Civilization %s city of %s'
+		_pyPrint('%s has spread to Player %d Civilization %s city of %s'
 			%(gc.getCorporationInfo(iCorporation).getDescription(), iOwner, player.getCivilizationName(), pSpreadCity.getName()))
 
 	def onCorporationRemove(self, argsList):
@@ -772,7 +780,7 @@ class CvEventManager:
 		player = PyPlayer(iOwner)
 		if (not self.__LOG_RELIGIONSPREAD):
 			return
-		CvUtil.pyPrint('%s has been removed from Player %d Civilization %s city of %s'
+		_pyPrint('%s has been removed from Player %d Civilization %s city of %s'
 			%(gc.getReligionInfo(iReligion).getDescription(), iOwner, player.getCivilizationName(), pRemoveCity.getName()))
 				
 	def onGoldenAge(self, argsList):
@@ -781,7 +789,7 @@ class CvEventManager:
 		player = PyPlayer(iPlayer)
 		if (not self.__LOG_GOLDENAGE):
 			return
-		CvUtil.pyPrint('Player %d Civilization %s has begun a golden age'
+		_pyPrint('Player %d Civilization %s has begun a golden age'
 			%(iPlayer, player.getCivilizationName()))
 
 	def onEndGoldenAge(self, argsList):
@@ -790,7 +798,7 @@ class CvEventManager:
 		player = PyPlayer(iPlayer)
 		if (not self.__LOG_ENDGOLDENAGE):
 			return
-		CvUtil.pyPrint('Player %d Civilization %s golden age has ended'
+		_pyPrint('Player %d Civilization %s golden age has ended'
 			%(iPlayer, player.getCivilizationName()))
 
 	def onChangeWar(self, argsList):
@@ -804,7 +812,7 @@ class CvEventManager:
 			strStatus = "declared war"
 		else:
 			strStatus = "declared peace"
-		CvUtil.pyPrint('Team %d has %s on Team %d'
+		_pyPrint('Team %d has %s on Team %d'
 			%(iTeam, strStatus, iRivalTeam))
 	
 	def onChat(self, argsList):
@@ -815,7 +823,7 @@ class CvEventManager:
 		'Set Player Alive Event'
 		iPlayerID = argsList[0]
 		bNewValue = argsList[1]
-		CvUtil.pyPrint("Player %d's alive status set to: %d" %(iPlayerID, int(bNewValue)))
+		_pyPrint("Player %d's alive status set to: %d" %(iPlayerID, int(bNewValue)))
 		
 	def onPlayerChangeStateReligion(self, argsList):
 		'Player changes his state religion'
@@ -830,7 +838,7 @@ class CvEventManager:
 		city = argsList[0]
 		#if (city.getOwner() == gc.getGame().getActivePlayer()):
  		#	self.__eventEditCityNameBegin(city, False)	    #Rhye
-		CvUtil.pyPrint('City Built Event: %s' %(city.getName()))
+		_pyPrint('City Built Event: %s' %(city.getName()))
 		
 	def onCityRazed(self, argsList):
 		'City Razed'
@@ -846,7 +854,7 @@ class CvEventManager:
                 #Rhye - end bugfix
 		
 		razor = PyPlayer(iPlayer)
-		CvUtil.pyPrint('Player %d Civilization %s City %s was razed by Player %d' 
+		_pyPrint('Player %d Civilization %s City %s was razed by Player %d'
 			%(owner.getID(), owner.getCivilizationName(), city.getName(), razor.getID()))
 		
 		# Partisans!
@@ -859,17 +867,17 @@ class CvEventManager:
 						if iEvent != -1 and gc.getGame().isEventActive(iEvent) and owner.getEventTriggerWeight(iEvent) < 0:
 							triggerData = owner.initTriggeredData(iEvent, true, -1, city.getX(), city.getY(), iPlayer, city.getID(), -1, -1, -1, -1)
 			
-		CvUtil.pyPrint("City Razed Event: %s" %(city.getName(),))
+		_pyPrint("City Razed Event: %s" %(city.getName(),))
 	
 	def onCityAcquired(self, argsList):
 		'City Acquired'
 		iPreviousOwner,iNewOwner,pCity,bConquest,bTrade = argsList
-		CvUtil.pyPrint('City Acquired Event: %s' %(pCity.getName()))
+		_pyPrint('City Acquired Event: %s' %(pCity.getName()))
 	
 	def onCityAcquiredAndKept(self, argsList):
 		'City Acquired and Kept'
 		iOwner,pCity = argsList
-		CvUtil.pyPrint('City Acquired and Kept Event: %s' %(pCity.getName()))
+		_pyPrint('City Acquired and Kept Event: %s' %(pCity.getName()))
 	
 	def onCityLost(self, argsList):
 		'City Lost'
@@ -877,20 +885,20 @@ class CvEventManager:
 		player = PyPlayer(city.getOwner())
 		if (not self.__LOG_CITYLOST):
 			return
-		CvUtil.pyPrint('City %s was lost by Player %d Civilization %s' 
+		_pyPrint('City %s was lost by Player %d Civilization %s'
 			%(city.getName(), player.getID(), player.getCivilizationName()))
 	
 	def onCultureExpansion(self, argsList):
 		'City Culture Expansion'
 		pCity = argsList[0]
 		iPlayer = argsList[1]
-		CvUtil.pyPrint("City %s's culture has expanded" %(pCity.getName(),))
+		_pyPrint("City %s's culture has expanded" %(pCity.getName(),))
 	
 	def onCityGrowth(self, argsList):
 		'City Population Growth'
 		pCity = argsList[0]
 		iPlayer = argsList[1]
-		CvUtil.pyPrint("%s has grown" %(pCity.getName(),))
+		_pyPrint("%s has grown" %(pCity.getName(),))
 	
 	def onCityDoTurn(self, argsList):
 		'City Production'
@@ -905,7 +913,7 @@ class CvEventManager:
 		iUnitType = argsList[1]
 		if (not self.__LOG_CITYBUILDING):
 			return
-		CvUtil.pyPrint("%s has begun building a %s" %(pCity.getName(),gc.getUnitInfo(iUnitType).getDescription()))
+		_pyPrint("%s has begun building a %s" %(pCity.getName(),gc.getUnitInfo(iUnitType).getDescription()))
 	
 	def onCityBuildingBuilding(self, argsList):
 		'City begins building a Building'
@@ -913,7 +921,7 @@ class CvEventManager:
 		iBuildingType = argsList[1]
 		if (not self.__LOG_CITYBUILDING):
 			return
-		CvUtil.pyPrint("%s has begun building a %s" %(pCity.getName(),gc.getBuildingInfo(iBuildingType).getDescription()))
+		_pyPrint("%s has begun building a %s" %(pCity.getName(),gc.getBuildingInfo(iBuildingType).getDescription()))
 	
 	def onCityRename(self, argsList):
 		'City is renamed'
@@ -931,7 +939,7 @@ class CvEventManager:
 		iTeam, iVictory = argsList
 		if (iVictory >= 0 and iVictory < gc.getNumVictoryInfos()):
 			victoryInfo = gc.getVictoryInfo(int(iVictory))
-			CvUtil.pyPrint("Victory!  Team %d achieves a %s victory"
+			_pyPrint("Victory!  Team %d achieves a %s victory"
 				%(iTeam, victoryInfo.getDescription()))
 	
 	def onVassalState(self, argsList):
@@ -939,10 +947,10 @@ class CvEventManager:
 		iMaster, iVassal, bVassal = argsList
 		
 		if (bVassal):
-			CvUtil.pyPrint("Team %d becomes a Vassal State of Team %d"
+			_pyPrint("Team %d becomes a Vassal State of Team %d"
 				%(iVassal, iMaster))
 		else:
-			CvUtil.pyPrint("Team %d revolts and is no longer a Vassal State of Team %d"
+			_pyPrint("Team %d revolts and is no longer a Vassal State of Team %d"
 				%(iVassal, iMaster))
 	
 	def onGameUpdate(self, argsList):

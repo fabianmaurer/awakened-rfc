@@ -45,7 +45,7 @@ def configureRegions(trace=False):
     gc = CyGlobalContext()
     bounds = (((73, 24), (104, 50)), ((61, 24), (75, 45)), ((44, 30), (60, 49)))
     cores = (((73, 30), (84, 45)), ((66, 30), (75, 43)), ((47, 33), (59, 47)))
-    for iPlayer in (con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2):
+    for iPlayer in (con.iEgypt, con.iCarthage, con.iSpain, con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2):
         if trace: CvUtil.pyPrint('Caliphate: reset region player=%d' % iPlayer)
         for name in tables:
             getattr(con, name)[iPlayer] = copy.deepcopy(defaults[name][iPlayer])
@@ -67,6 +67,10 @@ def configureRegions(trace=False):
         if not capital.isNone():
             con.tCapitals[iPlayer] = (capital.getX(), capital.getY())
             con.tReserveCapitals[iPlayer] = con.tCapitals[iPlayer]
+
+    import Scenario900AD
+    if Scenario900AD.isScenario():
+        Scenario900AD.configureRegions()
 
 
 def beginChoice():

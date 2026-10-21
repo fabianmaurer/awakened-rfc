@@ -28,9 +28,11 @@ across a barrier. Tiles beyond a barrier require a passable route around it;
 unreachable tiles are excluded from the acquisition order. Coastal expansion
 remains possible. The next-tile marker follows this reachable order.
 
-The culture bar and tooltip show the next tile threshold. A purple circle in
-your city screen marks that tile; it disappears during occupation or once all
-tiles are covered. Culture levels still
+The culture bar and tooltip show the next threshold for a tile outside your
+current territory. A purple circle in your city screen marks that tile, skipping
+tiles already owned through other cities. Each city still develops its own
+overlapping coverage at the original thresholds. The marker disappears during
+occupation or when no further tile outside your territory remains. Culture levels still
 control cultural defense and victory requirements. Occupation suspends coverage;
 recovery restores the coverage earned by the city's current culture. The maximum
 reach and the workable city radius are unchanged.
@@ -372,7 +374,7 @@ Normal idle citizens remain available under Self-sufficiency as a population fal
 
 ### Conquest aftermath
 
-Conquering a large city while using **Slavery** creates a regional slave market. Other Slavery states can buy a slave unit, while other states can buy a captive's freedom: the freed person adds population, former-owner culture, and 20 turns of happiness. A large city conquered without Slavery instead sends refugees: non-Slavery states can accept them for free, while Slavery states can force them into 20 turns of labour for one temporary slave specialist and one temporary unhappiness. Only major civilizations with a city on the same continent receive an offer.
+Conquering a large city while using **Slavery** creates a regional slave market. Other Slavery states can buy a slave unit, while other states can buy a captive's freedom: the freed person adds population, former-owner culture, and 20 turns of happiness. A large city conquered without Slavery instead sends refugees: non-Slavery states can accept them for free, while Slavery states can force them into 20 turns of labour for one temporary slave specialist and one temporary unhappiness. The former owner always receives refugees instead of a slave-market offer and cannot reject them; the same Slavery-dependent refugee effects apply. Only major civilizations with a destination city within 12 tiles of the conquered city (Civ4 map distance) receive an offer. Water and continent boundaries do not restrict eligibility. The usual largest/smallest destination preference applies only among cities within this radius.
 
 Under Slavery, conquest removes **two population** instead of one and creates one slave unit per population lost. Cities remain at least size one; recaptures are exempt.
 
@@ -410,7 +412,7 @@ by 75%, after normal research modifiers, with integer rounding.
 
 The Huns start with two workers instead of one. Their homeland's sheep tile
 `(98, 51)` becomes grassland, `(99, 50)` becomes a plains hill and `(100, 51)`
-receives sheep. These permanent terrain changes apply to all four scenarios
+receives sheep. These permanent terrain changes apply to all five scenarios
 and also benefit later Mongolia. Modu's unit-building preference rises from
 35 to 50, his main war random threshold falls from 50 to 35 and his nearby
 enemy power threshold rises from 120% to 140%. Their starting army consists of
@@ -506,7 +508,7 @@ scenario initialization or their initial spawn, after starting technologies and
 before scripted starting units. Unavailable civics use explicit fallbacks;
 no extra technologies or anarchy are introduced.
 
-Profiles cover all four scenarios and do not override subsequent player choices.
+Profiles cover all five scenarios and do not override subsequent player choices.
 Existing civilizations in saved games keep their current civics. See
 [StartingCivics.md](StartingCivics.md) for all profiles and fallback rules.
 
@@ -728,6 +730,14 @@ See [CountryNames.csv](CountryNames.csv) for the catalogue and
 names are provided; French, Italian, and Spanish use English fallbacks for the
 new country-name entries.
 
+## Korea
+
+Korea is playable alongside China and Japan. It spawns around 800 BC in the
+3000 BC game, starts as Korean Chiefdoms in 800 BC, and has established regional
+starts in 600 AD, 900 AD and 1453 AD. Food, copper and coastal fish support a
+compact peninsula economy. Its existing Hwacha and Seowon remain available.
+See [the Korean starts and historical goals](800BCScenario.md#korea-across-the-scenarios).
+
 ## Installation and multiplayer
 
 1. Copy the **`Awakened RFC`** folder into Beyond the Sword's **`Mods`** directory.
@@ -736,7 +746,7 @@ new country-name entries.
 3. Load Awakened RFC from the game's mod menu, or use
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>). The launcher currently
    points to the standard Steam installation path; adjust it for other locations.
-4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, or **1453 AD**.
+4. Choose an included scenario: **3000 BC**, **800 BC**, **600 AD**, **900 AD**, or **1453 AD**.
 
 All multiplayer peers need the same mod assets, Python files, XML, and DLL.
 Gameplay code uses synchronized game state and election randomness; multiplayer
@@ -767,10 +777,24 @@ Research ends at +15%. A very expensive AI/automation branch unlocks six new
 city buildings. Welfare-state policies are not implemented yet.
 See [rules, costs and implementation details](ModernEra.md).
 
+### 900 AD settler start
+
+France, Spain, Germany, Russia, England and the Vikings start together with
+settlers and their medieval armies, without predefined cities. Spain starts in
+Asturias in the north, providing a base for expansion south. Other regions use
+an adapted 600 AD world. Later civilizations retain their normal births.
+The Abbasids, Tulunids, Aghlabids and Umayyad Emirate of Córdoba are established,
+selectable states with cities, capitals and armies appropriate to 900 AD.
+The Fatimid caliphate does not yet exist; its historical foundation was in 909.
+Seville, Badajoz, Toledo and Zaragoza represent autonomous Muslim city rulers.
+Spain starts at war with their dedicated minor-state team, leaving unrelated
+independent cities elsewhere outside that starting war.
+See the [starting forces and setup notes](900ADScenario.md).
+
 ### 1453 AD start
 
 The 1453 scenario begins immediately after the Ottoman capture of Constantinople,
-with 96 cities and all 25 established major civilization slots selectable.
+with 109 cities and all 26 established major civilization slots selectable.
 Period names and profiles represent the Mamluks, Ming, Muscovy, Italian states,
 the Ottomans and their contemporaries. America keeps its usual future spawn.
 See the [roster, map abstractions and setup notes](1453ADScenario.md).

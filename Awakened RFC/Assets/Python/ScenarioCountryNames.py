@@ -1,5 +1,5 @@
 # Country-name previews for the authored scenario selection screen (Python 2.4).
-from CvPythonExtensions import CyGlobalContext
+from CvPythonExtensions import CyGlobalContext, CyTranslator
 import Consts as con
 import StartingCivics
 import os
@@ -13,6 +13,7 @@ def descriptions(description, filename):
             "start 1 - 3000 bc.civbeyondswordwbsave",
             "start 2 - 800 bc.civbeyondswordwbsave",
             "start 3 - 600 ad.civbeyondswordwbsave",
+            "start 3b - 900 ad.civbeyondswordwbsave",
             "start 4 - 1453 ad.civbeyondswordwbsave"):
         return names
     cityCounts = {}
@@ -22,6 +23,12 @@ def descriptions(description, filename):
             cityCounts[owner] = cityCounts.get(owner, 0) + 1
     for iPlayer in range(con.iNumMajorPlayers):
         player = description.playersDesc[iPlayer]
+        if description.gameDesc.gameTurn == 211 and iPlayer in (con.iEgypt, con.iCarthage):
+            dynasty = "AGHLABID"
+            if iPlayer == con.iEgypt:
+                dynasty = "TULUNID"
+            names[iPlayer] = CyTranslator().getText("TXT_KEY_RFCMP_900_" + dynasty + "_DESC", ())
+            continue
         if player.civType not in StartingCivics.PROFILES or player.isMinorNationCiv:
             continue
         profile = StartingCivics.getProfile(player.civType, description.gameDesc.gameTurn)
@@ -35,6 +42,6 @@ def descriptions(description, filename):
         # name until the live map supplies the actual owned land count.
         names[iPlayer] = gc.getCountryNamePreview(
             iPlayer, civics, religion, cityCounts.get(iPlayer, 0),
-            {0: -3000, 87: -800, 181: 600, 271: 1453}[description.gameDesc.gameTurn],
+            {0: -3000, 87: -800, 181: 600, 211: 900, 271: 1453}[description.gameDesc.gameTurn],
             0)
     return names

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_900_DESC</Tag>
+    <English>900 AD: European settler start. France, Spain, Germany, Russia, England and the Vikings begin together without cities, with their medieval settlers and armies. The rest of the world is adapted from the 600 AD scenario.</English>
+    <French>900 apr. J.-C. : d&#233;part des colons europ&#233;ens. La France, l'Espagne, l'Allemagne, la Russie, l'Angleterre et les Vikings commencent ensemble sans villes, avec leurs colons et arm&#233;es du Moyen &#194;ge. Le reste du monde est adapt&#233; du sc&#233;nario de 600.</French>
+    <German>900 n. Chr.: Europ&#228;ischer Siedlerstart. Frankreich, Spanien, Deutschland, Russland, England und die Wikinger beginnen gleichzeitig ohne St&#228;dte mit ihren mittelalterlichen Siedlern und Armeen. Die &#252;brige Welt basiert auf dem Szenario von 600 n. Chr.</German>
+    <Italian>900 d.C.: partenza dei coloni europei. Francia, Spagna, Germania, Russia, Inghilterra e Vichinghi iniziano insieme senza citt&#224;, con i loro coloni ed eserciti medievali. Il resto del mondo deriva dallo scenario del 600 d.C.</Italian>
+    <Spanish>900 d. C.: inicio de los colonos europeos. Francia, Espa&#241;a, Alemania, Rusia, Inglaterra y los vikingos comienzan juntos sin ciudades, con sus colonos y ej&#233;rcitos medievales. El resto del mundo se adapta del escenario de 600 d. C.</Spanish>
+  </TEXT>
+</Civ4GameText>

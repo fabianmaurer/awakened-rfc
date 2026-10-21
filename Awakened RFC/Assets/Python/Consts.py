@@ -9,19 +9,26 @@ gc = CyGlobalContext()
 l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
 ,
-0 # Xiongnu
+0,
+0 # Korea
+ # Xiongnu
 ]
 l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
 ,
-0 # Xiongnu
+0,
+0 # Korea
+ # Xiongnu
 ]
-l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0]
 
 lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, -1
 ,
--1 # Xiongnu
+-1,
+-1 # Korea
+ # Xiongnu
 ]
 
 # initialise player variables to player IDs from WBS
@@ -56,16 +63,17 @@ iAmerica = 26
 iCaliphateSlot1 = 27
 iCaliphateSlot2 = 28
 iXiongnu = 29
-iNumPlayers = 30
-iNumMajorPlayers = 30
-iNumActivePlayers = 30
-iIndependent = 30
-iIndependent2 = 31
-iNative = 32
-iCeltia = 33
-iNumTotalPlayers = 34
-iBarbarian = 34
-iNumTotalPlayersB = 35
+iKorea = 30
+iNumPlayers = 31
+iNumMajorPlayers = 31
+iNumActivePlayers = 31
+iIndependent = 31
+iIndependent2 = 32
+iNative = 33
+iCeltia = 34
+iNumTotalPlayers = 35
+iBarbarian = 35
+iNumTotalPlayersB = 36
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
@@ -143,7 +151,9 @@ lNeighbours = [
 ,
 [], []
 ,
-[iChina, iMongolia] # Xiongnu
+[iChina, iMongolia],
+[iChina, iJapan, iMongolia] # Korea
+ # Xiongnu
 ]
 
 #for stability hit on spawn
@@ -178,7 +188,9 @@ lOlderNeighbours = [
 ,
 [], []
 ,
-[] # Xiongnu
+[],
+[iChina] # Korea
+ # Xiongnu
 ]
 
 # civ birth dates
@@ -211,7 +223,8 @@ tBirth = (
 241, #1195AD
 249, #1280AD (1071AD)
 346, #1775AD #332 for 1733AD
--10000, -10000, 127, 0,
+-10000, -10000, 127, 87,
+0,
 0,
 0,
 0,
@@ -248,7 +261,9 @@ tYear = (
 ("1775 ", "TXT_KEY_AD"),
 1020, 1020
 ,
-("210 ", "TXT_KEY_BC") # Xiongnu
+("210 ", "TXT_KEY_BC"),
+("800 ", "TXT_KEY_BC") # Korea
+ # Xiongnu
 )
 
 tGoals = (
@@ -282,7 +297,9 @@ tGoals = (
 ,
 ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"), ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3")
 ,
-("", "", "") # Xiongnu
+("", "", ""),
+("TXT_KEY_UHV_KOR1", "TXT_KEY_UHV_KOR2", "TXT_KEY_UHV_KOR3") # Korea
+ # Xiongnu
 )
 
 
@@ -397,7 +414,9 @@ tCapitals = (
 ,
 (75, 33), (75, 33)
 ,
-(99, 51) # Xiongnu
+(99, 51),
+(109, 48) # Korea
+ # Xiongnu
 ) 
 
 #for minor civs
@@ -432,7 +451,9 @@ tReserveCapitals = (
 
 (), ()
 ,
-() # Xiongnu
+(),
+(109, 46) # Korea
+ # Xiongnu
 )
 
 # Extra Arabian birth-flip tiles: eastern Egypt and Sinai. These do not change
@@ -473,7 +494,9 @@ tCoreAreasTL = (
 ,
 (73, 30), (73, 30)
 ,
-(96, 50) # Xiongnu
+(96, 50),
+(108, 45) # Korea
+ # Xiongnu
 ) 
 
 tCoreAreasBR = (
@@ -507,7 +530,9 @@ tCoreAreasBR = (
 ,
 (81, 39), (81, 39)
 ,
-(103, 54) # Xiongnu
+(103, 54),
+(110, 49) # Korea
+ # Xiongnu
 ) 
 
 
@@ -541,7 +566,9 @@ tExceptions = (  #for RiseAndFall
 ((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43)),
 ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles, ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles
 ,
-() # Xiongnu
+(),
+() # Korea
+ # Xiongnu
 ) #America
 
 
@@ -627,7 +654,9 @@ tNormalAreasTL = (
 ,
 (73, 30), (73, 30)
 ,
-(94, 48) # Xiongnu
+(94, 48),
+(107, 44) # Korea
+ # Xiongnu
 ) 
 
 tNormalAreasBR = (
@@ -661,7 +690,9 @@ tNormalAreasBR = (
 ,
 (82, 38), (82, 38)
 ,
-(105, 55) # Xiongnu
+(105, 55),
+(111, 50) # Korea
+ # Xiongnu
 ) 
 
 
@@ -695,7 +726,9 @@ tNormalAreasSubtract = (  #for resurrection and stability
 (),
 ((81, 38), (82, 38), (82, 37)), ((81, 38), (82, 38), (82, 37))
 ,
-() # Xiongnu
+(),
+() # Korea
+ # Xiongnu
 ) #America
 
 
@@ -733,7 +766,9 @@ tBroaderAreasTL = (
 ,
 (64, 30), (64, 30)
 ,
-(96, 50) # Xiongnu
+(96, 50),
+(107, 44) # Korea
+ # Xiongnu
 )
 
 tBroaderAreasBR = (
@@ -766,7 +801,9 @@ tBroaderAreasBR = (
 (37, 56),
 (85, 44), (85, 44)
 ,
-(103, 54) # Xiongnu
+(103, 54),
+(111, 50) # Korea
+ # Xiongnu
 ) #America
 
 
@@ -800,7 +837,8 @@ tHire = (
 30, #Aztec
 50, #Turkey
 50, #America
-50, 50, 100, 100,
+50, 50, 100, 30,
+100,
 100,
 100,
 100,
@@ -840,7 +878,9 @@ lEnemyCivsOnSpawn = [
 ,
 [], []
 ,
-[] # Xiongnu
+[],
+[] # Korea
+ # Xiongnu
 ]
 
 
@@ -873,7 +913,8 @@ tAggressionLevel = (
 1, #Aztec
 2, #Turkey
 2, #America
-2, 2, 2, 0) #Barbs
+2, 2, 2, 0,
+0) #Barbs
 
 
 #war during rise of new civs
@@ -905,7 +946,8 @@ tAIStopBirthThreshold = (
     50, #Aztec
     70, #Turkey
     50, #America
-    80, 80, 80, 100,
+    80, 80, 80, 30,
+100,
     100,
     100,
     100,
@@ -943,7 +985,8 @@ tResurrectionProb = (
 100, #America
 #    100, #Holland
 #    100, #Portugal
-0, 0, 0, 100) #Barbs
+0, 0, 0, 100,
+100) #Barbs
 
 
 #Congresses.
@@ -975,7 +1018,8 @@ tPatienceThreshold = (
 30, #Aztec
 35, #Turkey
 30, #America
-30, 30, 30, 100) #Barbs
+30, 30, 30, 35,
+100) #Barbs
 
 
 #RnF Colonists
@@ -1009,7 +1053,9 @@ tMaxColonists = (
 0,
 0, 0
 ,
-0 # Xiongnu
+0,
+0 # Korea
+ # Xiongnu
 ) #America
 
 
@@ -1678,7 +1724,9 @@ tLeaders = (
 (iFranklin_Roosevelt, iWashington, iLincoln),
 (iSaladin,), (iSaladin,)
 ,
-(iModu,) # Xiongnu
+(iModu,),
+(iWangkon,) # Korea
+ # Xiongnu
 )
 
 tEarlyLeaders = (
@@ -1711,7 +1759,9 @@ tEarlyLeaders = (
 (iWashington),
 iSaladin, iSaladin
 ,
-iModu # Xiongnu
+iModu,
+iWangkon # Korea
+ # Xiongnu
 )
 
 #RFCMP
@@ -1752,7 +1802,9 @@ tRomanLateLeaders,
 (iLincoln, i1800AD, 15, 5, iFranklin_Roosevelt, i1900AD, 15, 5),
 (iSaladin,), (iSaladin,)
 ,
-(iModu,) # Xiongnu
+(iModu,),
+(iWangkon,) # Korea
+ # Xiongnu
 )
 
 
@@ -1787,6 +1839,7 @@ tIsActiveOnLateStart = (
 False, False, False, 1,
 1,
 1,
+1,
 1)
 
 # Mutable per-player regional tables also follow successor identities after a split.
@@ -1794,3 +1847,10 @@ for _table in ("tCapitals", "tReserveCapitals", "tCoreAreasTL", "tCoreAreasBR",
                "tNormalAreasTL", "tNormalAreasBR", "tNormalAreasSubtract",
                "tBroaderAreasTL", "tBroaderAreasBR", "tExceptions", "tGoals"):
         globals()[_table] = list(globals()[_table])
+
+# Korea shares East Asian diplomacy and Old World disease contact.
+lCivGroups[1].append(iKorea)
+lCivBioOldWorld.append(iKorea)
+lNeighbours[iChina].append(iKorea)
+lNeighbours[iJapan].append(iKorea)
+lCivStabilityGroups[1].append(iKorea)

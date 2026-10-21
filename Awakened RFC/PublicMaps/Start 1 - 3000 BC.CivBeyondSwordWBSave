@@ -76,6 +76,8 @@ BeginTeam
 EndTeam
 BeginTeam
 EndTeam
+BeginTeam
+EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
@@ -294,11 +296,23 @@ BeginPlayer
 	PlayableCiv=0
 	Handicap=HANDICAP_PRINCE
 EndPlayer
+BeginPlayer
+	CivType=CIVILIZATION_KOREA
+	LeaderType=LEADER_WANGKON
+	Team=30
+	PlayableCiv=1
+	Handicap=HANDICAP_PRINCE
+	MinorNationStatus=0
+	LeaderName=TXT_KEY_KOREA_LEADER_0
+	StartingX=109
+	StartingY=48
+	StartingGold=80
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=30
+	Team=31
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -307,7 +321,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=31
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -316,7 +330,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=32
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -324,7 +338,7 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=33
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -24875,6 +24889,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=66,y=36
+	BonusType=BONUS_WHEAT
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 EndPlot
@@ -41258,6 +41273,7 @@ BeginPlot
 	x=109,y=46
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=109,y=47
@@ -41641,6 +41657,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
+	BonusType=BONUS_COPPER
 EndPlot
 BeginPlot
 	x=110,y=48
@@ -42012,6 +42029,7 @@ BeginPlot
 	x=111,y=47
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=111,y=48

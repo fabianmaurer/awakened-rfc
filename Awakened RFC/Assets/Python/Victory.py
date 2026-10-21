@@ -1326,6 +1326,10 @@ class Victory:
                                                 self.setGoal(iAmerica, 2, 0)                                                
 
 
+                if iPlayer == con.iKorea:
+                        import Korea
+                        Korea.checkGoals(self)
+
                 #generic checks
                 pPlayer = gc.getPlayer(iPlayer)
                 if (pPlayer.isAlive() and iPlayer < iNumMajorPlayers):
@@ -1527,6 +1531,9 @@ class Victory:
 
 
         def onCityAcquired(self, owner, playerType, bConquest):
+                if (gc.getGame().isVictoryValid(7) and owner == con.iKorea and bConquest and
+                    gc.getGame().getGameTurnYear() < 1900 and self.getGoal(con.iKorea, 2) == -1):
+                        self.setGoal(con.iKorea, 2, 0)
 
                 if (not gc.getGame().isVictoryValid(7)): #7 == historical
                         return

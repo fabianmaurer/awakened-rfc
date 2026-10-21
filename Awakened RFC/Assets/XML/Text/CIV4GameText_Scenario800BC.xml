@@ -42,11 +42,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_800BC_LEADER_5</Tag>
-        <English>Persian tribal chiefs</English>
-        <French>Chefs des tribus perses</French>
-        <German>Persische Stammesf&#252;rsten</German>
-        <Italian>Capi delle trib&#249; persiane</Italian>
-        <Spanish>Jefes tribales persas</Spanish>
+        <English>Achaemenes</English>
+        <French>Ach&#233;m&#233;n&#232;s</French>
+        <German>Achaimenes</German>
+        <Italian>Achemene</Italian>
+        <Spanish>Aqu&#233;menes</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_800BC_LEADER_6</Tag>
@@ -66,10 +66,10 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_800BC_LEADER_8</Tag>
-        <English>Japanese clan elders</English>
-        <French>Anciens des clans japonais</French>
-        <German>Japanische Clan&#228;lteste</German>
-        <Italian>Anziani dei clan giapponesi</Italian>
-        <Spanish>Ancianos de los clanes japoneses</Spanish>
+        <English>Jimmu</English>
+        <French>Jimmu</French>
+        <German>Jimmu</German>
+        <Italian>Jimmu</Italian>
+        <Spanish>Jimmu</Spanish>
     </TEXT>
 </Civ4GameText>

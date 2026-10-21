@@ -1266,6 +1266,18 @@ class CvMainInterface:
 		global g_NumProjectInfos
 		global g_NumProcessInfos
 		global g_NumActionInfos
+
+		# A Python reload can leave the native screen alive while these module
+		# caches return to zero. Restore them before hiding/rebuilding widgets.
+		if g_NumHurryInfos == 0 or g_NumBuildingClassInfos == 0:
+			g_NumEmphasizeInfos = gc.getNumEmphasizeInfos()
+			g_NumCityTabTypes = CityTabTypes.NUM_CITYTAB_TYPES
+			g_NumHurryInfos = gc.getNumHurryInfos()
+			g_NumUnitClassInfos = gc.getNumUnitClassInfos()
+			g_NumBuildingClassInfos = gc.getNumBuildingClassInfos()
+			g_NumProjectInfos = gc.getNumProjectInfos()
+			g_NumProcessInfos = gc.getNumProcessInfos()
+			g_NumActionInfos = gc.getNumActionInfos()
 		
 		# Find out our resolution
 		xResolution = screen.getXResolution()

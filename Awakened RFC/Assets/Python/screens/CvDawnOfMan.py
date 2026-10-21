@@ -4,6 +4,7 @@
 import math #Rhye
 import Consts as con
 import Scenario1453AD
+import Scenario900AD
 import CvUtil
 from CvPythonExtensions import *
 
@@ -137,7 +138,9 @@ class CvDawnOfMan:
 
 		#year = CyGameTextMgr().getTimeStr(gc.getGame().getGameTurn(), false)
 		#RFCMP
-		if Scenario1453AD.isScenario():
+		if Scenario900AD.isScenario():
+                        year = "900 " + CyTranslator().getText("TXT_KEY_AD", ())
+                elif Scenario1453AD.isScenario():
                         year = "1453 " + CyTranslator().getText("TXT_KEY_AD", ())
                 elif (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and CyGame().getActiveTeam() <= con.iArabia):  #late start condition
                         year = "600 " + CyTranslator().getText("TXT_KEY_AD", ())
@@ -147,6 +150,8 @@ class CvDawnOfMan:
                         year = con.tYear[CyGame().getActiveTeam()][0] + CyTranslator().getText(con.tYear[CyGame().getActiveTeam()][1], ())
 		
 		bodyString = localText.getText("TXT_KEY_RHYES_DAWN_OF_MAN_TEXT", (year, self.player.getCivilizationAdjectiveKey(), self.player.getNameKey()))
+		if Scenario900AD.isScenario() and self.player.getID() in (con.iEgypt, con.iCarthage, con.iArabia, con.iCaliphateSlot1):
+			bodyString = localText.getText("TXT_KEY_RFCMP_900_INTRO_" + str(self.player.getID()), ())
 		if Scenario1453AD.isScenario() and self.player.getID() in Scenario1453AD.ACTIVE_PLAYERS:
 			bodyString = localText.getText("TXT_KEY_RFCMP_1453_INTRO_" + str(self.player.getID()), ())
 
@@ -159,6 +164,8 @@ class CvDawnOfMan:
 		self.iTurnsRemaining = -1
 
 ##Rhye - end		
+		if self.player.getID() == con.iKorea:
+			bodyString = localText.getText("TXT_KEY_KOREA_INTRO_" + str(gc.getGame().getStartTurn()), ())
 		screen.addMultilineText( "BodyText", bodyString, self.X_TEXT_PANEL + self.iMarginSpace, self.Y_TEXT_PANEL + self.iMarginSpace + self.iTEXT_PANEL_MARGIN, self.W_TEXT_PANEL - (self.iMarginSpace * 2), self.H_TEXT_PANEL - (self.iMarginSpace * 2) - 75, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 		screen.setButtonGFC("Exit", self.EXIT_TEXT, "", self.X_EXIT, self.Y_EXIT, self.W_EXIT, self.H_EXIT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD )

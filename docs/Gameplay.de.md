@@ -30,9 +30,12 @@ einen passierbaren Umweg; unerreichbare Felder werden aus der Erwerbsreihenfolge
 ausgeschlossen. Küstenausdehnung bleibt möglich. Die Markierung des nächsten
 Feldes folgt dieser erreichbaren Reihenfolge.
 
-Kulturbalken und Tooltip zeigen die Schwelle für das nächste Feld. Ein violetter
-Kreis im eigenen Stadtbildschirm markiert dieses Feld; während einer Besatzung
-oder nach vollständiger Gebietsabdeckung wird er ausgeblendet. Kulturstufen
+Kulturbalken und Tooltip zeigen die nächste Schwelle für ein Feld außerhalb des
+eigenen Gebiets. Ein violetter Kreis im Stadtbildschirm markiert dieses Feld und
+überspringt bereits durch andere Städte besessene Felder. Jede Stadt entwickelt
+ihre überlappende Abdeckung weiterhin zu den ursprünglichen Schwellen. Während
+einer Besatzung oder wenn kein weiteres Feld außerhalb des eigenen Gebiets
+verbleibt, wird die Markierung ausgeblendet. Kulturstufen
 bestimmen weiterhin Kulturverteidigung und Siegbedingungen. Besatzung setzt die
 Gebietsabdeckung aus; danach gilt wieder die durch die aktuelle Stadtkultur
 erreichte Abdeckung. Maximale Reichweite und bearbeitbarer Stadtradius bleiben
@@ -168,7 +171,7 @@ Einheitenbaupräferenz steigt von 35 auf 50, sein Hauptkriegs-Zufallsschwellenwe
 sinkt von 50 auf 35 und die akzeptierte gegnerische Stärke für nahe Kriege
 steigt von 120% auf 140%. Bei `(98, 51)` wird die Schafweide zu Grasland,
 `(99, 50)` wird ein Ebenenhügel und `(100, 51)` erhält Schafe. Diese dauerhaften
-Kartenänderungen gelten in allen vier Szenarien und helfen später auch der Mongolei.
+Kartenänderungen gelten in allen fünf Szenarien und helfen später auch der Mongolei.
 Regelmäßige kostenlose
 Verstärkungswellen gibt es nicht; weitere Truppen entstehen durch Produktion.
 Solange die Hunnen leben, entfallen die überlappenden nördlichen barbarischen
@@ -455,7 +458,7 @@ als Möglichkeit für überschüssige Bevölkerung verfügbar.
 
 ### Folgen großer Eroberungen
 
-Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Angebote erhalten nur große Zivilisationen mit einer Stadt auf demselben Kontinent.
+Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Der frühere Besitzer erhält immer Flüchtlinge statt eines Sklavenmarktangebots und kann sie nicht ablehnen; dabei gelten dieselben von der Sklaverei abhängigen Flüchtlingseffekte. Angebote erhalten nur große Zivilisationen mit einer Zielstadt in höchstens 12 Feldern Entfernung von der eroberten Stadt (Civ4-Kartenentfernung). Wasser und Kontinentgrenzen schränken die Teilnahme nicht ein. Die bisherige Bevorzugung der größten beziehungsweise kleinsten Zielstadt gilt nur innerhalb dieses Radius.
 
 Unter Sklaverei kostet eine Eroberung **zwei Bevölkerungspunkte** statt einem und erzeugt eine Sklaveneinheit je verlorenem Bevölkerungspunkt. Städte behalten mindestens Größe eins; Rückeroberungen sind ausgenommen.
 
@@ -587,7 +590,7 @@ vor der Erzeugung der Start-Einheiten durch Skripte. Nicht verfügbare Staatsfor
 werden durch festgelegte Alternativen ersetzt; zusätzliche Technologien oder
 Anarchie entstehen dadurch nicht.
 
-Die Profile gelten für alle vier Szenarien und überschreiben keine späteren
+Die Profile gelten für alle fünf Szenarien und überschreiben keine späteren
 Spielerentscheidungen. Bereits vorhandene Zivilisationen in Spielständen behalten
 ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 [StartingCivics.md](StartingCivics.md).
@@ -868,6 +871,15 @@ Die tatsächliche Häufigkeit hängt von den jeweils erfüllten Voraussetzungen
 und den anderen verfügbaren Ereignissen ab. Die allgemeine Ereignischance
 pro Runde sowie Voraussetzungen und Einmaligkeitsregeln bleiben unverändert.
 
+## Korea
+
+Korea ist neben China und Japan spielbar. Im Spiel ab 3000 v. Chr. entsteht
+es um 800 v. Chr.; im Start 800 v. Chr. beginnt es als Stammesgebiet. Die
+Szenarien 600, 900 und 1453 n. Chr. bieten bereits bestehende koreanische
+Regionalstaaten. Nahrung, Kupfer und Fisch tragen eine kompakte Wirtschaft
+auf der Halbinsel. Hwacha und Seowon bleiben die besonderen Einheiten und
+Gebäude. Siehe [Startpositionen und historische Ziele](800BCScenario.md#korea-across-the-scenarios).
+
 ## Installation und Mehrspieler
 
 1. Den Ordner **`Awakened RFC`** in das **`Mods`**-Verzeichnis von Beyond the Sword kopieren.
@@ -877,7 +889,7 @@ pro Runde sowie Voraussetzungen und Einmaligkeitsregeln bleiben unverändert.
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **1453 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.**, **900 n. Chr.** oder **1453 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
@@ -910,10 +922,25 @@ Forschung endet bei +15 %. Ein sehr teurer KI- und Automatisierungsbaum eröffne
 sechs neue Stadtgebäude. Ein Sozialstaatssystem ist noch nicht umgesetzt.
 Siehe [Regeln, Kosten und technische Umsetzung](ModernEra.md).
 
+### Siedlerstart 900 n. Chr.
+
+Frankreich, Spanien, Deutschland, Russland, England und die Wikinger beginnen
+gleichzeitig mit Siedlern und ihren mittelalterlichen Armeen, ohne vorgegebene
+Städte. Die übrige Welt basiert auf einer angepassten Karte von 600 n. Chr.
+Spanien beginnt im nördlichen Asturien als Ausgangspunkt für die Expansion nach Süden.
+Spätere Zivilisationen behalten ihre regulären Gründungstermine.
+Abbasiden, Tuluniden, Aghlabiden und das Umayyadenemirat Córdoba beginnen als
+bestehende, spielbare Staaten mit Städten, Hauptstädten und Armeen für 900 n. Chr.
+Das historisch erst 909 gegründete Fatimidenkalifat besteht noch nicht.
+Sevilla, Badajoz, Toledo und Zaragoza stellen autonome muslimische Stadtherren dar.
+Spanien beginnt mit ihrem eigenen Kleinstaaten-Team im Krieg; andere unabhängige
+Städte außerhalb Iberiens sind von diesem Startkrieg nicht betroffen.
+Siehe [Starteinheiten und Einrichtung](900ADScenario.md).
+
 ### Start 1453 n. Chr.
 
 Das Szenario von 1453 beginnt unmittelbar nach der osmanischen Eroberung
-Konstantinopels. Es umfasst 96 Städte und 25 bestehende, sofort spielbare
+Konstantinopels. Es umfasst 109 Städte und 26 bestehende, sofort spielbare
 Hauptzivilisationen. Namen und Startprofile bilden unter anderem das
 Mamlukensultanat, Ming-China, Moskau, die italienischen Staaten und das
 Osmanische Sultanat ab. Amerika behält seinen späteren Gründungszeitpunkt.

@@ -10,6 +10,7 @@ gc = CyGlobalContext()
 SLAVE_REVOLT_POPUP = 7624
 CAPTURE_AFTERMATH_POPUP = 7625
 CAPTURE_AFTERMATH_MINIMUM_POPULATION = 4
+CAPTURE_AFTERMATH_MAX_DISTANCE = 12
 CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
 
 class Slavery:
@@ -58,8 +59,9 @@ class Slavery:
 	def _refugeeCulture(self, city):
 		return min(200, max(50, (city.getPopulation() + 1) * 10))
 
-	def _continentCity(self, player, area, bLargest):
-		candidates = [city for city in self._cities(player) if city.plot().getArea() == area]
+	def _nearbyCity(self, player, x, y, bLargest):
+		candidates = [city for city in self._cities(player)
+			if plotDistance(x, y, city.getX(), city.getY()) <= CAPTURE_AFTERMATH_MAX_DISTANCE]
 		if not candidates: return None
 		if bLargest:
 			candidates.sort(key=lambda city: (-city.getPopulation(), city.getID()))
@@ -76,7 +78,7 @@ class Slavery:
 		if iOldOwner == iNewOwner: return
 
 		bSlaveMarket = self._hasSlavery(gc.getPlayer(iNewOwner))
-		area = city.plot().getArea()
+		x, y = city.getX(), city.getY()
 		cityName = city.getName()
 		price = self._capturePrice(city)
 		culture = self._refugeeCulture(city)
@@ -84,9 +86,12 @@ class Slavery:
 			if iPlayer == iNewOwner: continue
 			player = gc.getPlayer(iPlayer)
 			if not player.isAlive() or player.getNumCities() <= 0: continue
-			target = self._continentCity(player, area, bSlaveMarket and self._hasSlavery(player))
+			# The former owner's survivors are mandatory refugees, even when
+			# the conqueror sells captives to the other civilizations.
+			bPlayerSlaveMarket = bSlaveMarket and iPlayer != iOldOwner
+			target = self._nearbyCity(player, x, y, bPlayerSlaveMarket and self._hasSlavery(player))
 			if target is None: continue
-			data = (iOldOwner, cityName, bSlaveMarket, target.getID(), price, culture)
+			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), price, culture)
 			self._offerCaptureAftermath(iPlayer, data)
 
 	def _offerCaptureAftermath(self, iPlayer, data):
@@ -95,7 +100,7 @@ class Slavery:
 		bSlavery = self._hasSlavery(player)
 		if not player.isHuman():
 			# The AI only spends a meaningful reserve on a slave-market purchase;
-			# accepting refugees is free and always useful in its continental city.
+			# accepting refugees is free and always useful in its nearby city.
 			bAccept = not bSlaveMarket or player.getGold() >= price * 2
 			self._resolveCaptureAftermath(iPlayer, data, bAccept)
 			return
@@ -117,13 +122,18 @@ class Slavery:
 				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BUY_FREEDOM", (price,)))
 		else:
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_TITLE", ()))
-			if bSlavery:
+			if iPlayer == iOldOwner:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_OWN_CITY", (cityName,)))
+			elif bSlavery:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_SLAVERY", (cityName,)))
-				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", (player.getCity(iCity).getName(), CAPTURE_AFTERMATH_REFUGEE_TURNS)))
 			else:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_FREE", (cityName,)))
+			if bSlavery:
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", (player.getCity(iCity).getName(), CAPTURE_AFTERMATH_REFUGEE_TURNS)))
+			else:
 				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", (player.getCity(iCity).getName(),)))
-		popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
+		if iPlayer != iOldOwner:
+			popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
 		popup.launch(False)
 
 	def captureEventApply(self, iPlayer, netUserData, popupReturn):
@@ -137,8 +147,9 @@ class Slavery:
 		self._resolveCaptureAftermath(iPlayer, data, iButton == 0)
 
 	def _resolveCaptureAftermath(self, iPlayer, data, bAccept):
-		if not bAccept: return
 		iOldOwner, cityName, bSlaveMarket, iCity, price, culture = data
+		# Enforce mandatory arrivals on every peer, independently of the UI.
+		if not bAccept and iPlayer != iOldOwner: return
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive(): return
 		city = player.getCity(iCity)

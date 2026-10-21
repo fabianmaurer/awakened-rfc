@@ -8077,10 +8077,24 @@ void CvCity::initCulturePlots()
 	}
 }
 
+int CvCity::getNextExpansionPlotIndex() const
+{
+	// Keep overlapping coverage in the city's queue, but preview a territorial gain.
+	// Both the marker and culture bar must use the same effective next threshold.
+	int iNextPlot = m_iCoveredPlots;
+	while (iNextPlot < (int)m_aiCulturePlots.size())
+	{
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[iNextPlot]);
+		if (m_aiCulturePlotCosts[iNextPlot] > getCulture(getOwnerINLINE()) &&
+			pPlot->getOwnerINLINE() != getOwnerINLINE()) break;
+		++iNextPlot;
+	}
+	return iNextPlot;
+}
+
 int CvCity::getNextCoveredPlotCost() const
 {
-	int iNextPlot = m_iCoveredPlots;
-	while (iNextPlot < (int)m_aiCulturePlotCosts.size() && m_aiCulturePlotCosts[iNextPlot] <= getCulture(getOwnerINLINE())) ++iNextPlot;
+	int iNextPlot = getNextExpansionPlotIndex();
 	if (iNextPlot < (int)m_aiCulturePlotCosts.size())
 	{
 		return std::max(1, m_aiCulturePlotCosts[iNextPlot]);
@@ -8091,9 +8105,7 @@ int CvCity::getNextCoveredPlotCost() const
 CvPlot* CvCity::getNextCulturePlot() const
 {
 	if (isOccupation() || getCultureUpdateTimer() > 0) return NULL;
-	// Match the next threshold shown by the culture bar, including queued grants.
-	int iNextPlot = m_iCoveredPlots;
-	while (iNextPlot < (int)m_aiCulturePlotCosts.size() && m_aiCulturePlotCosts[iNextPlot] <= getCulture(getOwnerINLINE())) ++iNextPlot;
+	int iNextPlot = getNextExpansionPlotIndex();
 	return iNextPlot < (int)m_aiCulturePlots.size() ? GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[iNextPlot]) : NULL;
 }
 

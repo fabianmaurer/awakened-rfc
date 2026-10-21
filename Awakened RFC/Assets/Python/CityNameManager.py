@@ -5,6 +5,7 @@ import CvUtil
 import PyHelpers
 import Popup
 import Consts as con
+import Korea
 
 # globals
 gc = CyGlobalContext()
@@ -1930,6 +1931,9 @@ tCityMap = (
 tCityMap = tCityMap[:27] + (tCityMap[iArabia], tCityMap[iArabia],
         tCityMap[iMongolia]) + tCityMap[27:]
 
+# Korean home regions and continuous geographic coverage in China/Manchuria.
+tCityMap = tCityMap[:30] + (Korea.cityNameMap(tCityMap[iChina]),) + tCityMap[30:]
+
 class CityNameManager:
 
         def assignName(self, city):
@@ -1945,6 +1949,10 @@ class CityNameManager:
 
         def renameCities(self, city, iNewOwner):
                 """Renames a city depending on its owner"""
+
+                if iNewOwner == con.iKorea:
+                        self.assignName(city)
+                        return
 
                 # Reuse the matching vocabulary for conquered cities as well.
                 if iNewOwner in (con.iCaliphateSlot1, con.iCaliphateSlot2):

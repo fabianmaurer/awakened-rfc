@@ -11,6 +11,7 @@ import RFCUtils
 import Consts as con
 import StartingCivics
 import Scenario1453AD
+import Scenario900AD
 import CityNameManager 
 
 
@@ -562,6 +563,9 @@ class RiseAndFall:
 #####################################  
 
         def setup(self):
+                if Scenario900AD.isScenario():
+                        Scenario900AD.setup(self)
+                        return
                 if Scenario1453AD.isScenario():
                         Scenario1453AD.setup(self)
                         return
@@ -732,9 +736,12 @@ class RiseAndFall:
 
         def setEarlyLeaders(self):
                 for i in range(iNumActivePlayers):
-                        # Keep the localized, authored 800 BC ruler names.
+                        # Keep localized, authored scenario ruler names.
                         # setLeader also resets LeaderName to the leaderhead.
                         if gc.getGame().getStartTurn() == 87 and i <= iJapan:
+                                continue
+                        if (Scenario900AD.isScenario() and
+                            (i in Scenario900AD.ACTIVE_PLAYERS or i == con.iCaliphateSlot2)):
                                 continue
                         if (tEarlyLeaders[i] != tLeaders[i][0]):
                                 if (not gc.getPlayer(i).isHuman()):
@@ -770,6 +777,8 @@ class RiseAndFall:
                                 utils.updateMinorTechs(iIndependent, iBarbarian)
                         if (pIndependent2.isAlive()):                                  
                                 utils.updateMinorTechs(iIndependent2, iBarbarian)
+                        if (Scenario900AD.isScenario() and gc.getPlayer(con.iCaliphateSlot2).isAlive()):
+                                utils.updateMinorTechs(con.iCaliphateSlot2, iBarbarian)
 
                 #Colonists
                 if (iGameTurn == con.i850BC):
@@ -828,6 +837,8 @@ class RiseAndFall:
                         
                 if Scenario1453AD.isScenario():
                         iFirstSpawn = iAmerica
+                elif Scenario900AD.isScenario():
+                        iFirstSpawn = iNetherlands
                 elif (gc.getGame().getStartTurn() == 0):
                         iFirstSpawn = iGreece
                 elif (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)                          
@@ -1769,6 +1780,8 @@ class RiseAndFall:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
+                if iCiv == con.iKorea and gc.getGame().getStartTurn() >= con.tBirth[con.iKorea]:
+                        return # Korea is already authored in the later starts.
                 if iCiv == iMongolia and con.isMongolianBirthReplaced():
                         return
                 iHuman = utils.getHumanID()
@@ -2877,6 +2890,14 @@ class RiseAndFall:
                 self.assignTechs(iCiv)
                 StartingCivics.apply(iCiv)
 
+                if iCiv == con.iKorea:
+                        utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
+                        utils.makeUnit(con.iArcher, iCiv, tPlot, 3)
+                        utils.makeUnit(con.iSpearman, iCiv, tPlot, 2)
+                        tSeaPlot = self.findSeaPlots(tPlot, 1, iCiv)
+                        if tSeaPlot:
+                                utils.makeUnit(con.iWorkBoat, iCiv, tSeaPlot, 1)
+
                 if iCiv == con.iXiongnu:
                         player = gc.getPlayer(iCiv)
                         utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
@@ -2993,7 +3014,10 @@ class RiseAndFall:
                                 utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
                                 utils.makeUnit(con.iArcher, iCiv, tPlot, 1)
                 if (iCiv == iSpain):
-                        utils.makeUnit(con.iSettler, iCiv, tPlot, 3)
+                        iSettlers = 3
+                        if Scenario900AD.isScenario():
+                                iSettlers = 1
+                        utils.makeUnit(con.iSettler, iCiv, tPlot, iSettlers)
                         utils.makeUnit(con.iLongbowman, iCiv, tPlot, 4)
                         utils.makeUnit(con.iSwordsman, iCiv, tPlot, 2)
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
@@ -3123,6 +3147,8 @@ class RiseAndFall:
 
                                 
         def createStartingWorkers( self, iCiv, tPlot ):
+                if iCiv == con.iKorea:
+                        utils.makeUnit(con.iWorker, iCiv, tPlot, 1)
                 if iCiv == con.iXiongnu:
                         utils.makeUnit(con.iWorker, iCiv, tPlot, 2)
                 if (iCiv == iGreece):
@@ -3172,7 +3198,7 @@ class RiseAndFall:
                 if (iCiv == iAmerica):
                         utils.makeUnit(con.iWorker, iCiv, tPlot, 4)
 
-        def create600ADstartingUnits( self ):
+        def create600ADstartingUnits( self, bArabia=True ):
 
                 utils.makeUnit(iSettler, iChina, tCapitals[iChina], 3)
                 utils.makeUnit(con.iSwordsman, iChina, tCapitals[iChina], 2)
@@ -3209,14 +3235,15 @@ class RiseAndFall:
                         #utils.makeUnit(con.iArcher, iVikings, tSeaPlot, 1)
                         
                         
-                utils.makeUnit(con.iSettler, iArabia, tCapitals[iArabia], 3)
-                # A larger opening army with dedicated city attackers and siege.
-                utils.makeUnit(con.iLongbowman, iArabia, tCapitals[iArabia], 6)
-                utils.makeUnit(con.iArabiaCamelarcher, iArabia, tCapitals[iArabia], 8)
-                for iUnit, iCount in ((con.iSwordsman, 6), (con.iCatapult, 4)):
-                        for i in range(iCount):
-                                pArabia.initUnit(iUnit, tCapitals[iArabia][0], tCapitals[iArabia][1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
-                utils.makeUnit(con.iWorker, iArabia, tCapitals[iArabia], 2)
+                if bArabia:
+                        utils.makeUnit(con.iSettler, iArabia, tCapitals[iArabia], 3)
+                        # A larger opening army with dedicated city attackers and siege.
+                        utils.makeUnit(con.iLongbowman, iArabia, tCapitals[iArabia], 6)
+                        utils.makeUnit(con.iArabiaCamelarcher, iArabia, tCapitals[iArabia], 8)
+                        for iUnit, iCount in ((con.iSwordsman, 6), (con.iCatapult, 4)):
+                                for i in range(iCount):
+                                        pArabia.initUnit(iUnit, tCapitals[iArabia][0], tCapitals[iArabia][1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
+                        utils.makeUnit(con.iWorker, iArabia, tCapitals[iArabia], 2)
 
                 #RFCMP
 ##                if ( pKhmer.isHuman() ):
@@ -3265,9 +3292,11 @@ class RiseAndFall:
 
         def create800BCstartingUnits( self ): #RFCMP
 
+                # Early regional starting forces; normal unique-unit rules still apply.
+
                 utils.makeUnit(con.iSettler, iPersia, tCapitals[iPersia], 2)
                 utils.makeUnit(con.iArcher, iPersia, tCapitals[iPersia], 4)
-                utils.makeUnit(con.iPersiaImmortal, iPersia, tCapitals[iPersia], 6)
+                utils.makeUnit(con.iSpearman, iPersia, tCapitals[iPersia], 6)
                 utils.makeUnit(con.iChariot, iPersia, tCapitals[iPersia], 4)
                 utils.makeUnit(con.iWorker, iPersia, tCapitals[iPersia], 2)
 
@@ -3275,7 +3304,7 @@ class RiseAndFall:
                 utils.makeUnit(con.iArcher, iCarthage, tCapitals[iCarthage], 3)
                 utils.makeUnit(con.iSpearman, iCarthage, tCapitals[iCarthage], 1)
                 pCarthage.initUnit(con.iSpearman, tCapitals[iCarthage][0], tCapitals[iCarthage][1], UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
-                utils.makeUnit(con.iCarthageNumidianCavalry, iCarthage, tCapitals[iCarthage], 3)
+                utils.makeUnit(con.iSpearman, iCarthage, tCapitals[iCarthage], 3)
                 utils.makeUnit(con.iWorker, iCarthage, tCapitals[iCarthage], 2)
                 tSeaPlot = self.findSeaPlots(tCapitals[iCarthage], 1, iCarthage)
                 if (tSeaPlot):                                
@@ -3284,11 +3313,11 @@ class RiseAndFall:
                         utils.makeUnit(con.iSettler, iCarthage, tSeaPlot, 1)
                         utils.makeUnit(con.iArcher, iCarthage, tSeaPlot, 1)
                         pCarthage.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ASSAULT_SEA, DirectionTypes.DIRECTION_SOUTH)
-                        pCarthage.initUnit(con.iTrireme, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ESCORT_SEA, DirectionTypes.DIRECTION_SOUTH)
+                        pCarthage.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ESCORT_SEA, DirectionTypes.DIRECTION_SOUTH)
 
                 utils.makeUnit(con.iSettler, iRome, tCapitals[iRome], 3)
                 utils.makeUnit(con.iArcher, iRome, tCapitals[iRome], 3)
-                utils.makeUnit(con.iRomePraetorian, iRome, tCapitals[iRome], 4)
+                utils.makeUnit(con.iSpearman, iRome, tCapitals[iRome], 4)
                 utils.makeUnit(con.iWorker, iRome, tCapitals[iRome], 2)
                 tSeaPlot = self.findSeaPlots(tCapitals[iRome], 1, iRome)
                 if (tSeaPlot):                                
@@ -3298,7 +3327,7 @@ class RiseAndFall:
 
                 utils.makeUnit(con.iSettler, iJapan, tCapitals[iJapan], 2)
                 utils.makeUnit(con.iArcher, iJapan, tCapitals[iJapan], 2)
-                utils.makeUnit(con.iSwordsman, iJapan, tCapitals[iJapan], 2)
+                utils.makeUnit(con.iWarrior, iJapan, tCapitals[iJapan], 2)
                 utils.makeUnit(con.iWorker, iJapan, tCapitals[iJapan], 2)
                 tSeaPlot = self.findSeaPlots(tCapitals[iJapan], 1, iJapan)
                 if (tSeaPlot):                                
@@ -3681,7 +3710,11 @@ class RiseAndFall:
                 teamEgypt.setHasTech(con.iMasonry, True, iCiv, False, False)
                 teamEgypt.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 teamEgypt.setHasTech(con.iTheWheel, True, iCiv, False, False)
-                #teamEgypt.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
+                teamEgypt.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
+                teamEgypt.setHasTech(con.iMetalCasting, True, iCiv, False, False)
+                teamEgypt.setHasTech(con.iMathematics, True, iCiv, False, False)
+                teamEgypt.setHasTech(con.iCalendar, True, iCiv, False, False)
+
                 iCiv = iIndia
                 teamIndia.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iMining, True, iCiv, False, False)
@@ -3691,14 +3724,17 @@ class RiseAndFall:
                 teamIndia.setHasTech(con.iPriesthood, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iAgriculture, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iPottery, True, iCiv, False, False)
-                teamIndia.setHasTech(con.iWriting, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamIndia.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
-                #teamIndia.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
+                teamIndia.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
+                teamIndia.setHasTech(con.iTheWheel, True, iCiv, False, False)
+                teamIndia.setHasTech(con.iArchery, True, iCiv, False, False)
+                teamIndia.setHasTech(con.iIronWorking, True, iCiv, False, False)
+
                 iCiv = iChina
                 teamChina.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamChina.setHasTech(con.iMining, True, iCiv, False, False)
-                #teamChina.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
+                teamChina.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
                 teamChina.setHasTech(con.iMysticism, True, iCiv, False, False)
                 teamChina.setHasTech(con.iPolytheism, True, iCiv, False, False)
                 teamChina.setHasTech(con.iFishing, True, iCiv, False, False)
@@ -3711,6 +3747,10 @@ class RiseAndFall:
                 teamChina.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 teamChina.setHasTech(con.iMathematics, True, iCiv, False, False)
                 teamChina.setHasTech(con.iCalendar, True, iCiv, False, False)
+                teamChina.setHasTech(con.iMetalCasting, True, iCiv, False, False)
+                teamChina.setHasTech(con.iSailing, True, iCiv, False, False)
+                teamChina.setHasTech(con.iPriesthood, True, iCiv, False, False)
+
                 iCiv = iBabylonia
                 teamBabylonia.setHasTech(con.iMining, True, iCiv, False, False)
                 teamBabylonia.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
@@ -3726,6 +3766,14 @@ class RiseAndFall:
                 teamBabylonia.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamBabylonia.setHasTech(con.iMasonry, True, iCiv, False, False)
                 teamBabylonia.setHasTech(con.iAgriculture, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iMathematics, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iCalendar, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iFishing, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iSailing, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iMetalCasting, True, iCiv, False, False)
+                teamBabylonia.setHasTech(con.iIronWorking, True, iCiv, False, False)
+
                 iCiv = iGreece
                 teamGreece.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iMining, True, iCiv, False, False)
@@ -3740,9 +3788,12 @@ class RiseAndFall:
                 teamGreece.setHasTech(con.iPottery, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iWriting, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iAlphabet, True, iCiv, False, False)
-                teamGreece.setHasTech(con.iAesthetics, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamGreece.setHasTech(con.iMasonry, True, iCiv, False, False)
+                teamGreece.setHasTech(con.iAgriculture, True, iCiv, False, False)
+                teamGreece.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
+                teamGreece.setHasTech(con.iIronWorking, True, iCiv, False, False)
+                teamGreece.setHasTech(con.iArchery, True, iCiv, False, False)
                 iCiv = iPersia
                 teamPersia.setHasTech(con.iMining, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
@@ -3753,15 +3804,15 @@ class RiseAndFall:
                 teamPersia.setHasTech(con.iMasonry, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iFishing, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iSailing, True, iCiv, False, False)
-                teamPersia.setHasTech(con.iMonotheism, True, iCiv, False, False)
-                teamPersia.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iPottery, True, iCiv, False, False)
-                teamPersia.setHasTech(con.iWriting, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
                 teamPersia.setHasTech(con.iHorsebackRiding, True, iCiv, False, False)
+                teamPersia.setHasTech(con.iAgriculture, True, iCiv, False, False)
+                teamPersia.setHasTech(con.iIronWorking, True, iCiv, False, False)
+
                 iCiv = iCarthage
                 teamCarthage.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iMining, True, iCiv, False, False)
@@ -3780,7 +3831,9 @@ class RiseAndFall:
                 teamCarthage.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
-                teamCarthage.setHasTech(con.iHorsebackRiding, True, iCiv, False, False)
+                teamCarthage.setHasTech(con.iAgriculture, True, iCiv, False, False)
+                teamCarthage.setHasTech(con.iIronWorking, True, iCiv, False, False)
+
                 iCiv = iRome
                 teamRome.setHasTech(con.iMining, True, iCiv, False, False)
                 teamRome.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
@@ -3794,32 +3847,28 @@ class RiseAndFall:
                 teamRome.setHasTech(con.iSailing, True, iCiv, False, False)
                 teamRome.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 teamRome.setHasTech(con.iPottery, True, iCiv, False, False)
-                teamRome.setHasTech(con.iWriting, True, iCiv, False, False)
-                teamRome.setHasTech(con.iMathematics, True, iCiv, False, False)
                 #teamRome.setHasTech(con.iCodeOfLaws, True, iCiv, False, False) founds Confucianism
-                teamRome.setHasTech(con.iAlphabet, True, iCiv, False, False)
                 teamRome.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamRome.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamRome.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
+                teamRome.setHasTech(con.iAgriculture, True, iCiv, False, False)
+
                 iCiv = iJapan
                 teamJapan.setHasTech(con.iMining, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iBronzeWorking, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iMetalCasting, True, iCiv, False, False)
                 teamJapan.setHasTech(con.iMysticism, True, iCiv, False, False)
                 teamJapan.setHasTech(con.iPolytheism, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iMeditation, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iPriesthood, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iMasonry, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iMonarchy, True, iCiv, False, False)
                 teamJapan.setHasTech(con.iFishing, True, iCiv, False, False)
+                # Required by Pottery in the game tree, retained as an abstraction.
                 teamJapan.setHasTech(con.iTheWheel, True, iCiv, False, False)
                 teamJapan.setHasTech(con.iPottery, True, iCiv, False, False)
                 teamJapan.setHasTech(con.iAgriculture, True, iCiv, False, False)
-                teamJapan.setHasTech(con.iWriting, True, iCiv, False, False)
+                teamJapan.setHasTech(con.iHunting, True, iCiv, False, False)
+                teamJapan.setHasTech(con.iArchery, True, iCiv, False, False)
 
-
-                
         def assignTechs( self, iCiv ):
+                if iCiv == con.iKorea:
+                        import Korea
+                        Korea.grantTechs()
                 if iCiv == con.iXiongnu:
                         team = gc.getTeam(gc.getPlayer(iCiv).getTeam())
                         for tech in (con.iAgriculture, con.iTheWheel, con.iHunting, con.iArchery,

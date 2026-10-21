@@ -87,6 +87,9 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         self.addEventHandler("BeginPlayerTurn", Caliphate.onBeginPlayerTurn)
         self.addEventHandler("OnLoad", Caliphate.onLoadGame)
         self.addEventHandler("GameStart", Caliphate.onLoadGame)
+        import Korea
+        self.addEventHandler("OnLoad", Korea.configureRegions)
+        self.addEventHandler("GameStart", Korea.configureRegions)
         if REPORTING_ENABLED:
             self.observer.install_after(self)
         
