@@ -35,6 +35,9 @@
 # Per-machine compiler and install paths
 /Awakened RFC/CvGameCoreDLL/Makefile.settings
 
+# Machine-specific instructions (shared guidance stays in tracked Markdown)
+*.local.md
+
 # Per-workspace editor settings
 /.vscode/
 

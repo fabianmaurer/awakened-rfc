@@ -269,8 +269,8 @@ The Release DLL compiled successfully through the legacy VC7.1 toolchain.
 Localization and civic-reference audits cover all loaded text XML; Python
 syntax and whitespace were reviewed. No gameplay tests were run. In-game
 loading, citizen-assignment behavior, balance and multiplayer validation remain
-user-operated checks. Clear the text cache by holding Shift on the next launch
-and inspect a non-English menu and the changed civic/election text.
+user-operated checks. Inspect a non-English menu and the changed civic/election
+text.
 
 The built DLL is x86, with linker version 7.10 and imports of `MSVCR71.dll`,
 `msvcp71.dll`, `python24.dll` and `boost_python-vc71-mt-1_32.dll`; no modern VC

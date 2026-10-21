@@ -742,8 +742,6 @@ All multiplayer peers need the same mod assets, Python files, XML, and DLL.
 Gameplay code uses synchronized game state and election randomness; multiplayer
 runtime validation of the overhaul is still pending.
 
-After text changes, hold **Shift while launching** to rebuild the text cache.
-
 Start a new game when adopting changes to XML civic modifiers, since old saves
 can retain cached player/city bonuses. The new stability combinations take effect
 at the next base-stability recalculation in an existing save. Removed crisis

@@ -1,5 +1,12 @@
 # Awakened RFC build notes
 
+## Local environment instructions
+
+Read `AGENTS.local.md` at the repository root when it exists for machine-specific
+paths and build commands. Keep such details in ignored `*.local.md` files or
+existing ignored configuration files; tracked instructions must use portable
+commands or clearly marked path placeholders.
+
 ## Lean working workflow
 
 - Keep work proportional to the request. Implement the agreed change and necessary integration; defer unrelated cleanup, redesign and tooling.
@@ -17,9 +24,8 @@
 The full title is **Awakened Rhye's and Fall of Civilization**. The mod folder
 and matching configuration file are `Awakened RFC` and `Awakened RFC.ini`.
 Scenario `ModPath` values and launch arguments must use `Mods\Awakened RFC`.
-The repository is `git@github.com:fabianmaurer/awakened-rfc.git`. The local
-workspace root is still `C:\Code\rfc-mp-plus`; do not confuse that existing
-checkout path with the renamed mod directory. Internal `RFCMP` XML keys,
+The repository is `git@github.com:fabianmaurer/awakened-rfc.git`. The checkout
+directory may have a different name from the mod directory. Internal `RFCMP` XML keys,
 defines and asset subdirectories remain valid identifiers.
 
 ## Save compatibility
@@ -42,7 +48,7 @@ The local build expects the following prerequisites under `Awakened RFC/CvGameCo
 - `legacy-toolchain/lib`: legacy CRT libraries (`libc.lib`, `libcd.lib`, `libcmt.lib`, `libcmtd.lib`, `msvcrt.lib`, `msvcrtd.lib`, `oldnames.lib`, `oldnamesd.lib`).
 - `Boost-1.32.0/libs`: DoC/Civ4 VC7.1 Boost.Python 1.32 import libraries and matching runtime DLLs.
 - `Python24`: Python 2.4 headers and import library.
-- Windows SDK 10.0.26100.0 x86 headers/libraries and `rc.exe`.
+- Windows SDK x86 headers/libraries and `rc.exe`, matching the SDK version used by `Makefile`.
 - Visual Studio 2022 MSBuild is only the project launcher; it invokes the legacy NMake/jom toolchain configured in `Makefile.settings`.
 
 These paths are machine-specific and are recorded in the local `Makefile.settings`. Create it by copying `Makefile.settings.example`, then update `TOOLKIT`, `PSDK`, `RC`, and `CIV4_MOD_INSTALL_PATH`. The local settings file is ignored by Git so another checkout does not inherit this machine's paths. The SDK include/library paths and compatibility adjustments are in `Makefile` and should be retained.
@@ -54,13 +60,12 @@ explicitly requested. Python, XML, map and documentation edits alone do not
 require a DLL build. Use the existing local prerequisites and settings; revisit
 toolchain setup only if something is missing, a build fails, or setup changes.
 
-Open PowerShell in `Awakened RFC/CvGameCoreDLL`, then run:
+Open PowerShell in `Awakened RFC/CvGameCoreDLL` with MSBuild and NMake available
+on `PATH`, then run the command below. See `AGENTS.local.md`, when present,
+for this machine's launcher paths and environment setup.
 
 ```powershell
-$vc = 'C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64'
-$msbuild = 'C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe'
-$env:Path = "$vc;$env:Path"
-& $msbuild 'CvGameCoreDLL.vcxproj' /p:Configuration=Release /p:Platform=Win32 /verbosity:minimal /m:1
+MSBuild.exe 'CvGameCoreDLL.vcxproj' /p:Configuration=Release /p:Platform=Win32 /verbosity:minimal /m:1
 ```
 
 This invokes `nmake` for source/dependency preparation and `bin\jom build` for the actual VC7.1 compile/link. `Makefile` is configured with `YOURMOD=..`, so a successful build creates `Release\CvGameCoreDLL.dll` and copies it to `Assets\CvGameCoreDLL.dll` in this mod tree. `CIV4_MOD_INSTALL_PATH` in `Makefile.settings` points to the installed Awakened RFC folder; after each successful build, the Makefile compares the built DLL to the installed one and copies it only when the contents differ. Keep Civ4 closed during builds so the installed DLL can be replaced. Check the MSBuild exit code and `legacy-toolchain\legacy-build.log` if output was redirected.
@@ -119,7 +124,7 @@ not execution. This applies to single runs and batches.
 - For a new key, provide real translations where available. If a translation is not ready, copy the English wording into the other language elements; never omit an element.
 - Dynamic font symbols passed through `gDLL->getText` use Civ4's `%F` placeholders (for example `%D1_Change%F2_HappyOrUn` for a signed amount and happiness/unhappiness symbol). Do not use printf's `%c`; follow the matching original game text entry. Fixed symbols can use `[ICON_HAPPY]`, `[ICON_UNHAPPY]`, etc.
 - Preserve the encoding declared in each XML file when reading it. Original RFC text includes ISO-8859-1 files with literal accented characters; reading these as UTF-8 with replacement destroys the characters permanently. New/converted XML should declare UTF-8 and preferably use numeric character references (for example `&#228;` for ä). Never save lossy `?`, U+FFFD, or mojibake in translated words. `tools/inspect_text_encoding.py` reports suspicious German text; restore damaged original entries from the original mod by key and language rather than guessing lost accents.
-- When the user performs an in-game localization check, hold Shift during launch to clear/rebuild the text cache, then check the affected text/language. Check non-English menus when investigating language availability or menu-label problems. Do not launch Civ IV or require a menu check for every text edit; these checks do not block completion of ordinary text changes.
+- When the user performs an in-game localization check, check the affected text/language. Check non-English menus when investigating language availability or menu-label problems. Do not launch Civ IV or require a menu check for every text edit; these checks do not block completion of ordinary text changes.
 - For localized edits, check changed or added `<TEXT>` entries for all five required language elements and correct encoding, and confirm the edited XML files parse. If a generator rewrites whole files, check all entries in those generated files. Do not audit unrelated localization files routinely. Reserve a full localization audit for broad localization changes, suspected global language/menu problems, or an explicit user request.
 
 ## Related files

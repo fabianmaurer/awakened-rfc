@@ -883,9 +883,6 @@ Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
 die Überarbeitung muss noch im Mehrspielerbetrieb validiert werden.
 
-Nach Textänderungen beim Start **Shift gedrückt halten**, um den Textcache neu
-aufzubauen.
-
 Nach Änderungen an XML-Staatsformen-Modifikatoren ein neues Spiel beginnen,
 da alte Spielstände gespeicherte Spieler- und Stadtboni behalten können.
 Die neuen Stabilitätskombinationen greifen in bestehenden Spielständen bei der

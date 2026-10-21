@@ -130,7 +130,7 @@ culture and espionage, distinct from gold income.
 3. Choose **3000 BC**, **800 BC**, **600 AD** or **840 AD**. All multiplayer peers need identical
    mod files and DLLs.
 
-Hold **Shift while launching** after text changes. Start a new game after changes
+Start a new game after changes
 to civic XML modifiers. Multiplayer runtime validation of the overhaul is pending.
 
 ## Details and development

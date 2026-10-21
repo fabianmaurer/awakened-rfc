@@ -1,6 +1,6 @@
 # Copy this file to Makefile.settings and update machine-specific paths.
 TOOLKIT=C:\PATH\TO\Microsoft Visual C++ Toolkit 2003
 PSDK=C:\Program Files (x86)\Windows Kits\10
-RC="C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\rc.exe"
+RC="C:\PATH\TO\Windows Kits\10\bin\SDK_VERSION\x86\rc.exe"
 CUSTOM_LDFLAGS=psapi.lib
 CIV4_MOD_INSTALL_PATH=C:\PATH\TO\Beyond the Sword\Mods\Awakened RFC
