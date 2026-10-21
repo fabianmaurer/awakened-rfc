@@ -36,4 +36,4 @@ def build(name, width, height, religion_y, destination_y):
 
 if __name__ == "__main__":
     build("GameFont.tga", 22, 21, 135, 156)
-    build("GameFont_75.tga", 17, 17, 90, 107)
+    build("GameFont_75.tga", 17, 17, 107, 124)
