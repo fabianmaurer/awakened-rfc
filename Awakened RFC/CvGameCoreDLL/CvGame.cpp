@@ -32,6 +32,7 @@
 #include "CvSelectionGroup.h"
 #include "CvUnit.h"
 
+#if ARFC_ENABLE_REPORTING
 // Bind early benchmark seeding to the same private config/token/PID as Python.
 // Ordinary and multiplayer initialization never consume this override.
 static bool observerPerformanceSeed(unsigned int& seed, std::string& marker)
@@ -207,6 +208,7 @@ ObserverPerformanceScope::~ObserverPerformanceScope()
     if (!g_observerPerformance) observerPerformanceFlush();
 }
 
+#endif
 // interface uses
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
@@ -293,6 +295,7 @@ void CvGame::init(HandicapTypes eHandicap)
 	m_voteSelections.init();
 	m_votesTriggered.init();
 
+#if ARFC_ENABLE_REPORTING
 	unsigned int benchmarkSeed = 0;
 	std::string seedMarker;
 	bool benchmarkSeeded = false;
@@ -303,8 +306,10 @@ void CvGame::init(HandicapTypes eHandicap)
 		GC.getInitCore().setMapRandSeed(benchmarkSeed);
 		GC.getInitCore().setSyncRandSeed(benchmarkSeed);
 	}
+#endif
 	m_mapRand.init(GC.getInitCore().getMapRandSeed() % 73637381);
 	m_sorenRand.init(GC.getInitCore().getSyncRandSeed() % 52319761);
+#if ARFC_ENABLE_REPORTING
 	if (benchmarkSeeded)
 	{
 		FILE* marker = fopen(seedMarker.c_str(), "w");
@@ -315,6 +320,8 @@ void CvGame::init(HandicapTypes eHandicap)
 			fclose(marker);
 		}
 	}
+
+#endif
 
 	//--------------------------------
 	// Init non-saved data
@@ -561,7 +568,7 @@ void CvGame::regenerateMap()
 
 	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 
-	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
+	if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave(true);
 
 	if (NO_PLAYER != getActivePlayer())
 	{
@@ -650,9 +657,11 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iInitTech = 0;
 	m_iInitWonders = 0;
 	m_iAIAutoPlay = 0;
+#if ARFC_ENABLE_REPORTING
 	m_bObserverAutoPlay = false;
 	m_bObserverNoAutosaves = false;
 	m_bObserverRevealMap = false;
+#endif
 	m_iCircumnavigated = -1; //Rhye
 
 	m_uiInitialTime = 0;
@@ -2327,7 +2336,7 @@ void CvGame::update()
 
 		if (getTurnSlice() == 0)
 		{
-			if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
+			if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave(true);
 		}
 
 		if (getNumGameTurnActive() == 0)
@@ -4362,6 +4371,7 @@ int CvGame::getAIAutoPlay()
 }
 
 
+#if ARFC_ENABLE_REPORTING
 void CvGame::setObserverAutoPlay(bool enabled)
 {
 	// Preserve every civilization and its units. Never enable in multiplayer.
@@ -4387,7 +4397,9 @@ void CvGame::setObserverAutoPlay(bool enabled)
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
 }
+#endif
 
+#if ARFC_ENABLE_REPORTING
 void CvGame::setObserverRevealMap(bool enabled)
 {
 	if (isGameMultiPlayer() || (enabled && !isObserverAutoPlay()) || m_bObserverRevealMap == enabled) return;
@@ -4403,6 +4415,7 @@ void CvGame::setObserverRevealMap(bool enabled)
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
 }
+#endif
 
 void CvGame::setAIAutoPlay(int iNewValue)
 {
@@ -6476,7 +6489,7 @@ void CvGame::doTurn()
 
 	stopProfilingDLL();
 
-	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave();
+	if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave();
 }
 
 

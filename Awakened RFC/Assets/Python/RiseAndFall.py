@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Main Scenario
 
 from CvPythonExtensions import *
@@ -1140,11 +1141,13 @@ class RiseAndFall:
                                                                                 iLostCities = iLostCities + 1                                                
                                         iStability = utils.getStability(iCiv)
                                         if (iNumCities > 0 and iLostCities*2 > iNumCities):
-                                                import GameObserver
-                                                GameObserver.record_mechanic('collapse_check', iCiv,
-                                                        {'reason': 'barbarian_city_losses', 'cities': iNumCities,
-                                                         'barbarian_original_cities': iLostCities, 'stability': iStability,
-                                                         'threshold_met': bool(iLostCities >= 2 and iStability < -20)})
+                                                if REPORTING_ENABLED:
+                                                    import GameObserver
+                                                if REPORTING_ENABLED:
+                                                    GameObserver.record_mechanic('collapse_check', iCiv,
+                                                            {'reason': 'barbarian_city_losses', 'cities': iNumCities,
+                                                             'barbarian_original_cities': iLostCities, 'stability': iStability,
+                                                             'threshold_met': bool(iLostCities >= 2 and iStability < -20)})
                                         # An old lost outpost must not destroy a viable state.
                                         # Require several losses and existing instability as well
                                         # as the original barbarian-held-city threshold.
@@ -1174,12 +1177,14 @@ class RiseAndFall:
                                                         iStability = utils.getStability(iCiv)
                                                         bUnstable = iStability < -20
                                                 if (lNumCitiesNew[iCiv] > 0 and lNumCitiesNew[iCiv]*2 <= iPreviousCities):
-                                                        import GameObserver
-                                                        GameObserver.record_mechanic('collapse_check', iCiv,
-                                                                {'reason': 'city_count_halved', 'cities': lNumCitiesNew[iCiv],
-                                                                 'reference_cities': iPreviousCities, 'lost_cities': iLostCities,
-                                                                 'stability': iStability,
-                                                                 'threshold_met': bool(iLostCities >= 2 and bUnstable)})
+                                                        if REPORTING_ENABLED:
+                                                            import GameObserver
+                                                        if REPORTING_ENABLED:
+                                                            GameObserver.record_mechanic('collapse_check', iCiv,
+                                                                    {'reason': 'city_count_halved', 'cities': lNumCitiesNew[iCiv],
+                                                                     'reference_cities': iPreviousCities, 'lost_cities': iLostCities,
+                                                                     'stability': iStability,
+                                                                     'threshold_met': bool(iLostCities >= 2 and bUnstable)})
                                                 # Losing one of two cities is a setback, not the
                                                 # automatic end of an otherwise viable country.
                                                 # Counts are compared across the 18-turn checks.

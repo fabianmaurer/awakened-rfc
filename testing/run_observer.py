@@ -25,6 +25,12 @@ SCENARIOS = {'3000bc': SCENARIO,
 
 
 def fingerprint(mod):
+    dll = mod / 'Assets/CvGameCoreDLL.dll'
+    if not dll.is_file() or b'AWAKENED_RFC_REPORTING=1' not in dll.read_bytes():
+        raise ValueError('Observer runs require a development DLL built with ARFC_ENABLE_REPORTING=1: ' + str(mod))
+    for name in ('GameObserver.py', 'ObserverStartup.py'):
+        if not (mod / 'Assets/Python' / name).is_file():
+            raise ValueError('Missing development reporting module: ' + name)
     digest = hashlib.sha256()
     manifest = {}
     files = [mod / 'Awakened RFC.ini']

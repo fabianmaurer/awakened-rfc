@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
@@ -613,8 +614,9 @@ class CvMainInterface:
 
 	# Will update the screen (every 250 MS)
 	def updateScreen(self):
-		import GameObserver
-		if GameObserver.CURRENT is not None:
+		if REPORTING_ENABLED:
+			import GameObserver
+		if REPORTING_ENABLED and GameObserver.CURRENT is not None:
 			GameObserver.CURRENT.setup_camera(())
 		
 		global g_szTimeText
@@ -627,38 +629,39 @@ class CvMainInterface:
 		yResolution = screen.getYResolution()
 		self.m_iNumPlotListButtons = (xResolution - (iMultiListXL+iMultiListXR) - 68) / 34
 
-		# Centered spectator progress bar; refresh only when its values change.
-		observer = GameObserver.CURRENT
-		if observer and observer.enabled and observer.started and observer.autoplay and not observer.reveal_map:
-			screen.setRenderInterfaceOnly(True)
-			progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
-			if getattr(self, 'observerProgressDisplay', None) != progress:
-				if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
-					screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
-					screen.setPanelColor("ObserverSimulationBackground", 0, 0, 0)
-					self.observerSimulationSize = (xResolution, yResolution)
-				width = min(800, xResolution - 80)
-				screen.addStackedBarGFC("ObserverProgressBar", (xResolution - width) / 2, yResolution / 2 - 18, width, 36, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
-				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_GREEN"))
-				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_WHITE"))
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, min(1.0, float(observer.turns) / max(1, observer.limit)))
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
-				self.observerProgressDisplay = progress
-			screen.show("ObserverSimulationBackground")
-			screen.moveToFront("ObserverSimulationBackground")
-			screen.show("ObserverProgressBar")
-			screen.moveToFront("ObserverProgressBar")
-			return
-		else:
-			if getattr(self, 'observerSimulationSize', None) is not None:
-				screen.setRenderInterfaceOnly(False)
-				screen.hide("ObserverSimulationBackground")
-				self.observerSimulationSize = None
-			screen.hide("ObserverProgressBar")
-			self.observerProgressDisplay = None
-		screen.hide("ObserverProgressOverlay")
+		if REPORTING_ENABLED:
+			# Centered spectator progress bar; refresh only when its values change.
+			observer = GameObserver.CURRENT
+			if observer and observer.enabled and observer.started and observer.autoplay and not observer.reveal_map:
+				screen.setRenderInterfaceOnly(True)
+				progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
+				if getattr(self, 'observerProgressDisplay', None) != progress:
+					if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
+						screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
+						screen.setPanelColor("ObserverSimulationBackground", 0, 0, 0)
+						self.observerSimulationSize = (xResolution, yResolution)
+					width = min(800, xResolution - 80)
+					screen.addStackedBarGFC("ObserverProgressBar", (xResolution - width) / 2, yResolution / 2 - 18, width, 36, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
+					screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_GREEN"))
+					screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_WHITE"))
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, min(1.0, float(observer.turns) / max(1, observer.limit)))
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
+					self.observerProgressDisplay = progress
+				screen.show("ObserverSimulationBackground")
+				screen.moveToFront("ObserverSimulationBackground")
+				screen.show("ObserverProgressBar")
+				screen.moveToFront("ObserverProgressBar")
+				return
+			else:
+				if getattr(self, 'observerSimulationSize', None) is not None:
+					screen.setRenderInterfaceOnly(False)
+					screen.hide("ObserverSimulationBackground")
+					self.observerSimulationSize = None
+				screen.hide("ObserverProgressBar")
+				self.observerProgressDisplay = None
+			screen.hide("ObserverProgressOverlay")
 		
 		# This should recreate the minimap on load games and returns if already exists -JW
 		screen.initMinimap( xResolution - 210, xResolution - 9, yResolution - 131, yResolution - 9, -0.1 )
@@ -740,8 +743,11 @@ class CvMainInterface:
 
 	# Will redraw the interface
 	def redraw( self ):
-		import GameObserver
-		observer = GameObserver.CURRENT
+		if REPORTING_ENABLED:
+			import GameObserver
+		observer = None
+		if REPORTING_ENABLED:
+			observer = GameObserver.CURRENT
 		if gc.getGame().isObserverAutoPlay() and not (observer and observer.reveal_map):
 			return
 
@@ -1850,8 +1856,11 @@ class CvMainInterface:
 			g_szTimeText = localText.getText("TXT_KEY_TIME_TURN", (CyGame().getElapsedGameTurns(), )) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 		
 		# Observer progress is measured in completed simulated turns, not snapshots.
-		import GameObserver
-		observer = GameObserver.CURRENT
+		if REPORTING_ENABLED:
+			import GameObserver
+		observer = None
+		if REPORTING_ENABLED:
+			observer = GameObserver.CURRENT
 		if observer and observer.enabled and observer.started and observer.autoplay:
 			g_szTimeText = localText.getText("TXT_KEY_OBSERVER_RUN_PROGRESS", (observer.turns, observer.limit)) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 			if CyUserProfile().isClockOn():

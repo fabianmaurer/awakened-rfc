@@ -648,6 +648,7 @@ bool CyPlayer::isRomanCampaignExclusive()
 	return m_pPlayer ? GET_PLAYER(m_pPlayer->getID()).AI_isRomanCampaignExclusive() : false;
 }
 
+#if ARFC_ENABLE_REPORTING
 python::tuple CyPlayer::getRomanCampaignReadiness()
 {
 	python::list details;
@@ -658,6 +659,7 @@ python::tuple CyPlayer::getRomanCampaignReadiness()
 		kPlayer.AI_getRomanCampaignReadinessReason().c_str(), details,
 		GC.getGameINLINE().isObserverAutoPlay(), g_observerPerformance, kPlayer.AI_isRomanCampaign());
 }
+#endif
 
 bool CyPlayer::isCivic(int /*CivicTypes*/ eCivic)
 {

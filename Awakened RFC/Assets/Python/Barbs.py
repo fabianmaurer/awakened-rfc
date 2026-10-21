@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Barbarian units and cities
 
 from CvPythonExtensions import *
@@ -382,7 +383,8 @@ class Barbs:
                          (con.iHorseArcher, 3, UnitAITypes.UNITAI_PILLAGE),
                          (con.iSwordsman, 3, UnitAITypes.UNITAI_ATTACK_CITY),
                          (con.iSpearman, 2, UnitAITypes.UNITAI_COUNTER))
-                import GameObserver
+                if REPORTING_ENABLED:
+                    import GameObserver
                 iFlanking1 = gc.getInfoTypeForString("PROMOTION_FLANKING1")
                 iFlanking2 = gc.getInfoTypeForString("PROMOTION_FLANKING2")
                 for iUnit, iCount, iAI in lArmy:
@@ -392,10 +394,11 @@ class Barbs:
                                 if (iUnit == con.iHorseArcher):
                                         unit.setHasPromotion(iFlanking1, True)
                                         unit.setHasPromotion(iFlanking2, True)
-                        GameObserver.record_mechanic('scripted_spawn', iBarbarian,
-                                {'unit': iUnit, 'count': iCount,
-                                 'x': tSpawn[0], 'y': tSpawn[1],
-                                 'region': [87, 39, 89, 41], 'period': 0})
+                        if REPORTING_ENABLED:
+                            GameObserver.record_mechanic('scripted_spawn', iBarbarian,
+                                    {'unit': iUnit, 'count': iCount,
+                                     'x': tSpawn[0], 'y': tSpawn[1],
+                                     'region': [87, 39, 89, 41], 'period': 0})
                 CyInterface().addMessage(con.iIndia, True, con.iDuration,
                         CyTranslator().getText("TXT_KEY_HUNA_INVASION_ARRIVAL", ()),
                         "", 0, "", ColorTypes(con.iOrange), tSpawn[0], tSpawn[1], True, True)
@@ -471,12 +474,14 @@ class Barbs:
                                         self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack)
                                         # Observe successful scripted groups without another
                                         # spawn search, unit creation or RNG draw.
-                                        import GameObserver
-                                        GameObserver.record_mechanic('scripted_spawn', iCiv,
-                                                {'unit': iUnitType, 'count': iNumUnits,
-                                                 'x': result[0], 'y': result[1],
-                                                 'region': [tTopLeft[0], tTopLeft[1], tBottomRight[0], tBottomRight[1]],
-                                                 'period': iPeriod})
+                                        if REPORTING_ENABLED:
+                                            import GameObserver
+                                        if REPORTING_ENABLED:
+                                            GameObserver.record_mechanic('scripted_spawn', iCiv,
+                                                    {'unit': iUnitType, 'count': iNumUnits,
+                                                     'x': result[0], 'y': result[1],
+                                                     'region': [tTopLeft[0], tTopLeft[1], tBottomRight[0], tBottomRight[1]],
+                                                     'period': iPeriod})
                                 
 
 

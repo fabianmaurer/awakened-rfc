@@ -16,6 +16,8 @@ MOD = ROOT / 'Awakened RFC'
 SKIP_DIRS = {'__pycache__', '.git', '.svn', '.vs', '_rollback-backup'}
 SKIP_SUFFIXES = {'.pyc', '.pyo', '.pdb', '.obj', '.pch', '.ilk', '.idb',
                  '.log', '.tmp', '.bak', '.orig', '.rej'}
+REPORTING_FILES = {'Assets/Python/GameObserver.py', 'Assets/Python/ObserverStartup.py',
+                   'Assets/XML/Text/CIV4GameText_Observer.xml'}
 INSTALL = """Awakened Rhye's and Fall of Civilization
 ======================================
 
@@ -29,7 +31,7 @@ Requires Civilization IV: Beyond the Sword, patched to 3.19.
 4. Choose one of the included scenarios: 3000 BC, 800 BC, 600 AD or 1453 AD.
 
 When updating, replace the previous Awakened RFC folder rather than merging
-files. Hold Shift while launching to refresh the game's cache. Changes are
+files. Changes are
 intended for new games; compatibility with older saves is not guaranteed.
 All multiplayer participants must use the same release.
 
@@ -41,13 +43,19 @@ Asset credits and licenses are retained inside the mod's Assets folder.
 """
 
 
-def runtime_files():
+def runtime_files(include_reporting=False):
     """Allowlist runtime roots so new development folders cannot leak in."""
     config = MOD / 'Awakened RFC.ini'
     required = (config, MOD / 'Assets/CvGameCoreDLL.dll')
     for path in required:
         if not path.is_file() or path.stat().st_size == 0:
             raise ValueError('Missing or empty runtime file: ' + str(path))
+    dll = (MOD / 'Assets/CvGameCoreDLL.dll').read_bytes()
+    expected = b'AWAKENED_RFC_REPORTING=' + (b'1' if include_reporting else b'0')
+    other = b'AWAKENED_RFC_REPORTING=' + (b'0' if include_reporting else b'1')
+    if expected not in dll or other in dll:
+        raise ValueError('DLL reporting mode does not match package mode; rebuild with '
+                         'ARFC_ENABLE_REPORTING=' + ('1' if include_reporting else '0'))
     for folder in ('Assets', 'PublicMaps'):
         if not (MOD / folder).is_dir():
             raise ValueError('Missing runtime directory: ' + str(MOD / folder))
@@ -57,6 +65,8 @@ def runtime_files():
     for folder in ('Assets', 'PublicMaps'):
         for path in (MOD / folder).rglob('*'):
             relative = path.relative_to(MOD)
+            if not include_reporting and relative.as_posix() in REPORTING_FILES:
+                continue
             if (not path.is_file() or any(p.startswith('.') or p in SKIP_DIRS
                                          for p in relative.parts)
                     or path.suffix.lower() in SKIP_SUFFIXES
@@ -73,6 +83,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--version', help='Optional filename label, e.g. v0.1.0')
+    parser.add_argument('--include-reporting', action='store_true',
+                        help='Development package; requires ARFC_ENABLE_REPORTING=1 DLL')
     parser.add_argument('--output-dir', type=Path, default=ROOT / 'dist',
                         help='Destination directory (default: workspace/dist)')
     args = parser.parse_args()
@@ -82,10 +94,11 @@ def main():
     if output_dir.is_relative_to(MOD.resolve()):
         parser.error('--output-dir must be outside the mod folder')
     try:
-        paths = runtime_files()
+        paths = runtime_files(args.include_reporting)
     except ValueError as error:
         parser.error(str(error))
-    name = 'Awakened-RFC' + ('-' + args.version if args.version else '') + '.zip'
+    name = ('Awakened-RFC' + ('-' + args.version if args.version else '')
+            + ('-reporting' if args.include_reporting else '') + '.zip')
     output_dir.mkdir(parents=True, exist_ok=True)
     destination = output_dir / name
     # Finish the new archive before replacing any previous package.
@@ -103,7 +116,8 @@ def main():
     size = destination.stat().st_size / (1024 * 1024)
     print('Created: ' + str(destination))
     print(f'{len(paths)} mod files + INSTALL.txt; {size:.1f} MiB compressed')
-    print('Uses the existing compiled DLL. Ready to attach to a GitHub release.')
+    print('Development reporting package.' if args.include_reporting else
+          'Uses the existing compiled gameplay DLL. Ready to attach to a GitHub release.')
 
 
 if __name__ == '__main__':

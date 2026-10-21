@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Utilities
 
 from CvPythonExtensions import *
@@ -891,13 +892,16 @@ class RFCUtils:
 
 
         def pickFragmentation(self, iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities, reason='unspecified'):
-                import GameObserver
-                citiesBefore = gc.getPlayer(iPlayer).getNumCities()
-                stabilityBefore = self.getStability(iPlayer)
+                if REPORTING_ENABLED:
+                    import GameObserver
+                if REPORTING_ENABLED:
+                    citiesBefore = gc.getPlayer(iPlayer).getNumCities()
+                    stabilityBefore = self.getStability(iPlayer)
                 if (not bAssignCities and self.tryMonarchyInheritance(iPlayer)):
-                        GameObserver.record_mechanic('collapse_trigger', iPlayer,
-                                {'reason': reason, 'outcome': 'inheritance', 'cities_before': citiesBefore, 'stability_before': stabilityBefore,
-                                 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
+                        if REPORTING_ENABLED:
+                            GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                                    {'reason': reason, 'outcome': 'inheritance', 'cities_before': citiesBefore, 'stability_before': stabilityBefore,
+                                     'cities_after': gc.getPlayer(iPlayer).getNumCities()})
                         return
                 if (iPlayer == con.iAztecs or \
                     iPlayer == con.iInca or \
@@ -910,9 +914,10 @@ class RFCUtils:
                                 self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
                 else:
                         self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
-                GameObserver.record_mechanic('collapse_trigger', iPlayer,
-                        {'reason': reason, 'outcome': 'fragmentation', 'partial': bool(bAssignCities), 'stability_before': stabilityBefore,
-                         'cities_before': citiesBefore, 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
+                if REPORTING_ENABLED:
+                    GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                            {'reason': reason, 'outcome': 'fragmentation', 'partial': bool(bAssignCities), 'stability_before': stabilityBefore,
+                             'cities_before': citiesBefore, 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
 
 
                 

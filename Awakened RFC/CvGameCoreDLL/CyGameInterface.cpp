@@ -131,9 +131,12 @@ void CyGamePythonInterface()
 
 		.def("getAIAutoPlay", &CyGame::getAIAutoPlay)
 		.def("setAIAutoPlay", &CyGame::setAIAutoPlay)
+#if ARFC_ENABLE_REPORTING
 		.def("setObserverAutoPlay", &CyGame::setObserverAutoPlay)
 		.def("setObserverRevealMap", &CyGame::setObserverRevealMap)
 		.def("saveObserverCheckpoint", &CyGame::saveObserverCheckpoint)
+#endif
+		.def("isReportingEnabled", &CyGame::isReportingEnabled)
 		.def("isObserverAutoPlay", &CyGame::isObserverAutoPlay)
 
 		.def("isScoreDirty", &CyGame::isScoreDirty, "bool ()")

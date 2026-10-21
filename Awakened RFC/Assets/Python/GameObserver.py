@@ -1,3 +1,7 @@
+from Reporting import ENABLED as REPORTING_ENABLED
+if not REPORTING_ENABLED:
+    raise ImportError("Reporting requires a DLL built with ARFC_ENABLE_REPORTING=1")
+
 # Optional developer instrumentation. Compatible with Civilization IV Python 2.4.
 # No XML lookups, files, RNG calls or event hooks when the launcher is absent.
 import os

@@ -168,7 +168,9 @@ public:
 	bool isCivic(int /*CivicTypes*/ eCivic);
 	bool isRomanProvince(int iX, int iY);
 	bool isRomanCampaignExclusive();
+#if ARFC_ENABLE_REPORTING
 	python::tuple getRomanCampaignReadiness();
+#endif
 	bool canDoCivics(int /*CivicTypes*/ eCivic);
 	bool canRevolution(int /*CivicTypes**/ paeNewCivics);
 	void revolution(int /*CivicTypes**/ paeNewCivics, bool bForce);

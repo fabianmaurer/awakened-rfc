@@ -536,6 +536,7 @@ int CyGame::getInitWonders() const
 	return (NULL != m_pGame ? m_pGame->getInitWonders() : 0);
 }
 
+#if ARFC_ENABLE_REPORTING
 void CyGame::saveObserverCheckpoint(std::string path)
 {
 	if (m_pGame && !m_pGame->isGameMultiPlayer())
@@ -555,6 +556,7 @@ void CyGame::setObserverRevealMap(bool enabled)
 	if (m_pGame) m_pGame->setObserverRevealMap(enabled);
 }
 
+#endif
 bool CyGame::isObserverAutoPlay() const
 {
 	return m_pGame && m_pGame->isObserverAutoPlay();
@@ -1221,4 +1223,9 @@ void CyGame::doControl(int iControl)
 	{
 		m_pGame->doControl((ControlTypes) iControl);
 	}
+}
+
+bool CyGame::isReportingEnabled() const
+{
+    return ARFC_ENABLE_REPORTING != 0;
 }

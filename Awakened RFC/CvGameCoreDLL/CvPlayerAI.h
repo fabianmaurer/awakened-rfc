@@ -37,8 +37,10 @@ public:
 	bool AI_isRomanCampaign() const;
 	bool AI_isRomanCampaignExclusive() const;
 	bool AI_isRomanCampaignPreparing() const;
+#if ARFC_ENABLE_REPORTING
 	int AI_getRomanCampaignReadiness(int iIndex) const;
 	const CvString& AI_getRomanCampaignReadinessReason() const;
+#endif
 	CvCity* AI_romanCampaignTarget() const;
 	int AI_romanCampaignRoute(const CvCity* pTarget, CvCity*& pPort) const;
 	CvCity* AI_romanCampaignPort(const CvCity* pTarget) const;
@@ -368,9 +370,11 @@ protected:
 	int m_iExtraGoldTarget;
 	int m_iRomanCampaignStallTurns;
 	bool m_bRomanCampaignPreparing;
+#if ARFC_ENABLE_REPORTING
 	mutable int m_iRomanCampaignReadinessTurn;
 	mutable CvString m_szRomanCampaignReadinessReason;
 	mutable std::vector<int> m_aiRomanCampaignReadiness;
+#endif
 	
 	mutable int m_iStrategyHash;
 	mutable int m_iStrategyHashCacheTurn;
@@ -419,9 +423,17 @@ protected:
 	void AI_doCounter();
 	void AI_doMilitary();
 	void AI_doRomanCampaign();
+#if ARFC_ENABLE_REPORTING
 	void AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget = NULL, const CvCity* pPort = NULL,
 		int iRequiredAttackers = -1, int iRequiredSiege = -1, int iAttackers = -1, int iSiege = -1,
 		int iCargo = -1, int iEscorts = -1, int iAttackStrength = -1, int iDefenseStrength = -1) const;
+#endif
+#if !ARFC_ENABLE_REPORTING
+	void AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget = NULL, const CvCity* pPort = NULL,
+		int iRequiredAttackers = -1, int iRequiredSiege = -1, int iAttackers = -1, int iSiege = -1,
+		int iCargo = -1, int iEscorts = -1, int iAttackStrength = -1, int iDefenseStrength = -1) const {}
+#endif
+
 	void AI_doResearch();
 	void AI_doCivics();
 	void AI_doReligion();

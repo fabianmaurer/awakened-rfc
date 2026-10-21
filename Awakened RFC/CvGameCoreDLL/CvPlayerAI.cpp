@@ -182,9 +182,11 @@ void CvPlayerAI::AI_reset(bool bConstructor)
 	m_iExtraGoldTarget = 0;
 	m_iRomanCampaignStallTurns = 0;
 	m_bRomanCampaignPreparing = false;
+#if ARFC_ENABLE_REPORTING
 	m_iRomanCampaignReadinessTurn = -1;
 	m_szRomanCampaignReadinessReason = "not_evaluated";
 	m_aiRomanCampaignReadiness.assign(13, -1);
+#endif
 
 	for (iI = 0; iI < NUM_UNITAI_TYPES; iI++)
 	{
@@ -10269,10 +10271,13 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 	int iValue;
 	int iBestValue;
 	int iI;
+#if ARFC_ENABLE_REPORTING
 	// Observe existing evaluations only. Never re-score a civic for logging.
 	const bool bRecordLabor = GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
 		eCivicOption == GC.getInfoTypeForString("CIVICOPTION_LABOR") && getNumCities() > 0;
 	std::vector<int> laborScores;
+
+#endif
 
 	iBestValue = MIN_INT;
 	eBestCivic = NO_CIVIC;
@@ -10284,11 +10289,14 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			if (canDoCivics((CivicTypes)iI))
 			{
 				iValue = AI_civicValue((CivicTypes)iI);
+#if ARFC_ENABLE_REPORTING
 				if (bRecordLabor)
 				{
 					laborScores.push_back(iI);
 					laborScores.push_back(iValue);
 				}
+#endif
+
 
 				if (isCivic((CivicTypes)iI))
 				{
@@ -10304,7 +10312,9 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 					}
 				}
 
+#if ARFC_ENABLE_REPORTING
 				if (bRecordLabor) laborScores.push_back(iValue);
+#endif
 				if (iValue > iBestValue)
 				{
 					iBestValue = iValue;
@@ -10314,6 +10324,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 		}
 	}
 
+#if ARFC_ENABLE_REPORTING
 	if (bRecordLabor && !laborScores.empty())
 	{
 		CyArgsList args;
@@ -10325,6 +10336,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordLaborEvaluation", args.makeFunctionArgs()))
 			gDLL->logMsg("PythonErr.log", "Awakened RFC: labor evaluation recording callback could not be loaded or called.", false, false);
 	}
+#endif
 	return eBestCivic;
 }
 
@@ -12237,6 +12249,7 @@ CvCity* CvPlayerAI::AI_romanCampaignTarget() const
 }
 
 
+#if ARFC_ENABLE_REPORTING
 int CvPlayerAI::AI_getRomanCampaignReadiness(int iIndex) const
 {
 	if (iIndex == 13) return m_iRomanCampaignReadinessTurn;
@@ -12265,6 +12278,7 @@ void CvPlayerAI::AI_recordRomanCampaign(const char* szReason, const CvCity* pTar
 	m_iRomanCampaignReadinessTurn = GC.getGameINLINE().getGameTurn();
 }
 
+#endif
 void CvPlayerAI::AI_doRomanCampaign()
 {
 	CvTeamAI& kTeam = GET_TEAM(getTeam());
@@ -14368,9 +14382,11 @@ void CvPlayerAI::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iRomanCampaignStallTurns);
 	pStream->Read(&m_bRomanCampaignPreparing);
 	// Diagnostic caches are transient and never restored from saves.
+#if ARFC_ENABLE_REPORTING
 	m_iRomanCampaignReadinessTurn = -1;
 	m_szRomanCampaignReadinessReason = "not_evaluated";
 	m_aiRomanCampaignReadiness.assign(13, -1);
+#endif
 
 	pStream->Read(&m_iStrategyHash);
 	pStream->Read(&m_iStrategyHashCacheTurn);

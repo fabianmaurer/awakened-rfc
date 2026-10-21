@@ -1,4 +1,5 @@
 # Copy this file to Makefile.settings and update machine-specific paths.
+# Reporting is excluded by default. Set ARFC_ENABLE_REPORTING=1 only for development.
 TOOLKIT=C:\PATH\TO\Microsoft Visual C++ Toolkit 2003
 PSDK=C:\Program Files (x86)\Windows Kits\10
 RC="C:\PATH\TO\Windows Kits\10\bin\SDK_VERSION\x86\rc.exe"

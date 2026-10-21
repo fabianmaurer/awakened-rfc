@@ -138,10 +138,13 @@ public:
 	int getInitTech() const;
 	int getInitWonders() const;
 
+#if ARFC_ENABLE_REPORTING
 	void saveObserverCheckpoint(std::string path);
 	void setObserverAutoPlay(bool enabled);
 	void setObserverRevealMap(bool enabled);
+#endif
 	bool isObserverAutoPlay() const;
+	bool isReportingEnabled() const;
 	int getAIAutoPlay() const;
 	void setAIAutoPlay(int iNewValue);
 

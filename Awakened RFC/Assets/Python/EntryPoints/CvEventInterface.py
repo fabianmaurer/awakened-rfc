@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Sid Meier's Civilization 4
 # Copyright Firaxis Games 2005
 #
@@ -39,9 +40,10 @@ def canRomanCampaign(argsList):
 
 
 def recordLaborEvaluation(argsList):
-    player, current, best, flat_scores = argsList
-    import GameObserver
-    GameObserver.record_labor_evaluation(player, current, best, flat_scores)
+    if REPORTING_ENABLED:
+        player, current, best, flat_scores = argsList
+        import GameObserver
+        GameObserver.record_labor_evaluation(player, current, best, flat_scores)
 
 
 def showCaliphateChoice(argsList):
@@ -51,6 +53,6 @@ def showCaliphateChoice(argsList):
 
 
 def onCaliphatePartition(argsList):
-    CvUtil.pyPrint('Caliphate: native callback entered')
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: native callback entered')
     import Caliphate
     Caliphate.onPartition()

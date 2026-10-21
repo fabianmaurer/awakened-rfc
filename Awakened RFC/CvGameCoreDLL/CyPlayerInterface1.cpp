@@ -155,7 +155,9 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 
 		.def("isRomanProvince", &CyPlayer::isRomanProvince, "bool (int x, int y)")
 		.def("isRomanCampaignExclusive", &CyPlayer::isRomanCampaignExclusive, "bool ()")
+#if ARFC_ENABLE_REPORTING
 		.def("getRomanCampaignReadiness", &CyPlayer::getRomanCampaignReadiness, "tuple () - read-only cached campaign decision")
+#endif
 		.def("isCivic", &CyPlayer::isCivic, "bool (int (CivicTypes) eCivic)")
 		.def("canDoCivics", &CyPlayer::canDoCivics, "bool (int (CivicTypes) eCivic)")
 		.def("canRevolution", &CyPlayer::canRevolution, "bool (int (CivicTypes*) paeNewCivics)")

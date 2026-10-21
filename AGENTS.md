@@ -91,6 +91,14 @@ Static review on 2026-10-18: checked all added event/decision paths for recipien
 
 ## Optional AI observer
 
+Keep optional reporting out of normal builds. Native reporting is guarded by
+`ARFC_ENABLE_REPORTING`, defaulting to zero; opt in through the legacy Makefile
+with `ARFC_ENABLE_REPORTING=1`. Python hooks use `Reporting.ENABLED`, which reads the
+DLL capability. Guard reporting imports and payload construction as well as
+callbacks. Preserve gameplay callbacks independently of these guards. Normal
+release packaging must omit reporting implementations and reject a development
+DLL; see `testing/README.md` for the explicit development workflow.
+
 When investigating performance, flag small mechanic changes only when the
 investigation reveals a concrete opportunity relevant to the measured bottleneck.
 Do not perform a separate mechanics audit routinely. Explain any gameplay

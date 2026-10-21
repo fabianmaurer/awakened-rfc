@@ -238,10 +238,17 @@ public:
 	int getInitWonders() const;																		// Exposed to Python
 	DllExport void initScoreCalculation();
 
+#if ARFC_ENABLE_REPORTING
 	bool isObserverAutoPlay() const { return m_bObserverAutoPlay; }
+	bool isObserverNoAutosaves() const { return m_bObserverNoAutosaves; }
 	void setObserverAutoPlay(bool enabled);
 	void setObserverRevealMap(bool enabled);
 	bool isObserverMapRevealed(TeamTypes team) const { return m_bObserverRevealMap && team == getActiveTeam(); }
+#else
+    bool isObserverAutoPlay() const { return false; }
+    bool isObserverNoAutosaves() const { return false; }
+    bool isObserverMapRevealed(TeamTypes) const { return false; }
+#endif
 	int getAIAutoPlay();																				// Exposed to Python
 	DllExport void setAIAutoPlay(int iNewValue);																// Exposed to Python
 	void setAIAutoPlayCatapult(int iNewValue); //Rhye
@@ -586,9 +593,11 @@ protected:
 	int m_iInitTech;
 	int m_iInitWonders;
 	int m_iAIAutoPlay;
+#if ARFC_ENABLE_REPORTING
 	bool m_bObserverAutoPlay; // Process-local test control; deliberately not serialized.
 	bool m_bObserverNoAutosaves;
 	bool m_bObserverRevealMap; // Presentation only; never serialized.
+#endif
 	int m_iCircumnavigated; //Rhye
 
 	unsigned int m_uiInitialTime;

@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
@@ -56,8 +57,9 @@ def initWBEditor(argsList):
 	
 def getGameData():
 	"after reading a save file, return game/player data as a tuple"
-	import ObserverStartup
-	ObserverStartup.configure_players(WBDesc, lastFileRead)
+	if REPORTING_ENABLED:
+		import ObserverStartup
+		ObserverStartup.configure_players(WBDesc, lastFileRead)
 	t=()
 	gameTurn = WBDesc.gameDesc.gameTurn
 	maxTurns = WBDesc.gameDesc.maxTurns
@@ -121,8 +123,9 @@ def isRandomMap():
 def getPlayerData():
 	"after reading a save file, return player data as a tuple, terminated by -1"
 	# Observer-only setup; ordinary scenario loading retains Firaxis behavior.
-	import ObserverStartup
-	ObserverStartup.configure_players(WBDesc, lastFileRead)
+	if REPORTING_ENABLED:
+		import ObserverStartup
+		ObserverStartup.configure_players(WBDesc, lastFileRead)
 	t=()
 	for i in range(gc.getMAX_CIV_PLAYERS()):
 		leaderType = CvUtil.findInfoTypeNum(gc.getLeaderHeadInfo, gc.getNumLeaderHeadInfos(), WBDesc.playersDesc[i].leaderType)

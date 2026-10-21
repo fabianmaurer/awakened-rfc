@@ -3,6 +3,8 @@
 #ifndef CvGameCoreDLL_h
 #define CvGameCoreDLL_h
 
+#include "Reporting.h"
+
 //
 // includes (pch) for gamecore dll files
 // Author - Mustafa Thamer

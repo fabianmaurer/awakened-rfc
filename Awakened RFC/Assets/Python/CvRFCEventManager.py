@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 ## This file is part of Rhye's and Fall of Civilization.
 ## This file was originally taken from CivPath mod.
 ##  modified by eN
@@ -71,9 +72,11 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
-        import GameObserver
-        self.observer = GameObserver.Observer()
-        self.observer.install_before(self)
+        self.observer = None
+        if REPORTING_ENABLED:
+            import GameObserver
+            self.observer = GameObserver.Observer()
+            self.observer.install_before(self)
         CvRFCEventHandler.CvRFCEventHandler(self)
         self.rnf = RiseAndFall.RiseAndFall()
         self.cong = Congresses.Congresses()
@@ -84,7 +87,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         self.addEventHandler("BeginPlayerTurn", Caliphate.onBeginPlayerTurn)
         self.addEventHandler("OnLoad", Caliphate.onLoadGame)
         self.addEventHandler("GameStart", Caliphate.onLoadGame)
-        self.observer.install_after(self)
+        if REPORTING_ENABLED:
+            self.observer.install_after(self)
         
 
     def addEventHandler(self, eventType, eventHandler):
@@ -138,9 +142,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
                 try:
                     eventHandler(argsList[:len(argsList) - 6])
                 except:
-                    self.observer.exception(eventType)
+                    if REPORTING_ENABLED:
+                        self.observer.exception(eventType)
                     raise
-            if self.observer.enabled:
+            if REPORTING_ENABLED and self.observer.enabled:
                 self.observer.event(eventType, argsList[:len(argsList) - 6])
 
     def _handleConsumableEvent(self, eventType, argsList):

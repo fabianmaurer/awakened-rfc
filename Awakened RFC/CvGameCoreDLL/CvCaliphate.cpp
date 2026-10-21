@@ -19,6 +19,7 @@ const char* realmLeaders[] = { "LEADER_ABBASID", "LEADER_FATIMID", "LEADER_UMAYY
 const int capitalX[] = { 78, 69, 51 };
 const int capitalY[] = { 40, 35, 44 };
 
+#if ARFC_ENABLE_REPORTING
 // Keep native partition progress when a crash prevents a Python traceback.
 // Numeric player/plot IDs also avoid encoding localized city names in the log.
 void logPartitionStage(const char* stage, PlayerTypes player, int subject = -1)
@@ -26,6 +27,11 @@ void logPartitionStage(const char* stage, PlayerTypes player, int subject = -1)
     gDLL->logMsg("Caliphate.log", CvString::format("turn=%d player=%d stage=%s subject=%d",
         GC.getGameINLINE().getGameTurn(), (int)player, stage, subject).c_str(), false, true);
 }
+
+#endif
+#if !ARFC_ENABLE_REPORTING
+inline void logPartitionStage(const char*, PlayerTypes, int = -1) {}
+#endif
 
 // Realm, west, south, east, north. Keep these anchors in sync with Caliphate.py.
 const int realmRegions[][5] = {

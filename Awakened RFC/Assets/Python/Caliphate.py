@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 from CvPythonExtensions import *
 import Popup
 import Consts as con
@@ -40,6 +41,7 @@ def realmAt(x, y):
 
 
 def configureRegions(trace=False):
+    trace = trace and REPORTING_ENABLED
     gc = CyGlobalContext()
     bounds = (((73, 24), (104, 50)), ((61, 24), (75, 45)), ((44, 30), (60, 49)))
     cores = (((73, 30), (84, 45)), ((66, 30), (75, 43)), ((47, 33), (59, 47)))
@@ -115,18 +117,18 @@ def onLoadGame(argsList):
 
 
 def onPartition():
-    CvUtil.pyPrint('Caliphate: Python partition entered')
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: Python partition entered')
     import RFCUtils
     import cPickle as pickle
     gc = CyGlobalContext()
-    configureRegions(trace=True)
-    CvUtil.pyPrint('Caliphate: regions configured; read script data')
+    configureRegions(trace=REPORTING_ENABLED)
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: regions configured; read script data')
     utils = RFCUtils.RFCUtils()
     # The canonical transfer is not an economic collapse or a lost war.
     data = pickle.loads(gc.getGame().getScriptData())
     players = [p for p in (con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2) if realmOf(p) >= 0]
     for p in players:
-        CvUtil.pyPrint('Caliphate: reset script data player=%d' % p)
+        if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: reset script data player=%d' % p)
         for name in ("lGNPold", "lGNPnew", "lCombatResultTempModifier", "lPartialBaseStability"):
             data[name][p] = 0
         # These caches count foreign land and missing homeland cities, not
@@ -136,18 +138,20 @@ def onPartition():
         data["lNumCities"][p] = gc.getPlayer(p).getNumCities()
         data["lGoals"][p] = [-1, -1, -1]
         data["l2OutOf3"][p] = False
-    CvUtil.pyPrint('Caliphate: save script data')
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: save script data')
     gc.getGame().setScriptData(pickle.dumps(data))
     for p in players:
-        CvUtil.pyPrint('Caliphate: reset stability player=%d' % p)
+        if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: reset stability player=%d' % p)
         utils.setStability(p, 5)
         utils.setBaseStabilityLastTurn(p, 5)
 
-    import GameObserver
-    CvUtil.pyPrint('Caliphate: record partition')
-    GameObserver.record_mechanic("caliphate_partition", con.iArabia,
-                                {"realms": [{"player": p, "civilization": REALMS[realmOf(p)],
-                                             "cities": gc.getPlayer(p).getNumCities(),
-                                             "population": gc.getPlayer(p).getTotalPopulation(),
-                                             "units": gc.getPlayer(p).getNumUnits()} for p in players]})
-    CvUtil.pyPrint('Caliphate: Python partition complete')
+    if REPORTING_ENABLED:
+        import GameObserver
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: record partition')
+    if REPORTING_ENABLED:
+        GameObserver.record_mechanic("caliphate_partition", con.iArabia,
+                                    {"realms": [{"player": p, "civilization": REALMS[realmOf(p)],
+                                                 "cities": gc.getPlayer(p).getNumCities(),
+                                                 "population": gc.getPlayer(p).getTotalPopulation(),
+                                                 "units": gc.getPlayer(p).getNumUnits()} for p in players]})
+    if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: Python partition complete')

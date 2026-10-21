@@ -6,6 +6,19 @@ Python command examples below assume the repository root as the working director
 Existing recordings are preserved under `testing/runs/`. Game-side observer
 hooks remain in the mod source because Civ4 loads them from there.
 
+Reporting is excluded from normal DLL builds and release packages. Before using
+an observer launcher, build the DLL with `ARFC_ENABLE_REPORTING=1` in the build
+environment (or ignored `Makefile.settings`) and synchronize the development
+Python files. The launcher refuses a DLL without reporting support. Existing
+token/PID authorization and multiplayer restrictions still apply.
+
+For ordinary builds, unset the environment flag or set `ARFC_ENABLE_REPORTING=0`.
+Gameplay and reporting objects/PCHs use separate directories under `temp_files`;
+switching modes does not reuse objects from the other mode. The final DLL still
+uses the standard output/install paths. Development packages require
+`python tools/package_release.py --include-reporting` and receive a `-reporting`
+filename suffix; normal packaging rejects a reporting-enabled DLL.
+
 ## Working with the assistant
 
 1. Describe the test you want: purpose, mode, game count, duration and any

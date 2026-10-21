@@ -140,3 +140,12 @@ void stopProfilingDLL()
 		gDLL->ProfilerEnd();
 	}
 }
+// Packaging checks this exported tag before distributing a prebuilt DLL.
+extern "C" __declspec(dllexport) const char* getReportingBuildTag()
+{
+#if ARFC_ENABLE_REPORTING
+    return "AWAKENED_RFC_REPORTING=1";
+#else
+    return "AWAKENED_RFC_REPORTING=0";
+#endif
+}
