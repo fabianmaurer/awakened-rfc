@@ -127,6 +127,20 @@ Named unique powers apply independently of the shared cost baseline. China's
 melee and gunpowder units train at **1.5x speed**; Maya have **40% lower research
 costs through the Medieval era**; Persia gains **+2 stability per conquered city**.
 
+## Independent city development
+
+The AD 190–550 barbarian camel raids enter on the lower Mesopotamian approaches between `(77, 35)` and `(81, 41)`, shifting pressure toward Babylon and Susa and away from Jerusalem. Group size and spawn schedule are unchanged; entry tiles still require no culture, city or unit. This reduces nearby spawn pressure without preventing barbarian attacks or razing.
+
+The two Independent factions use normal unit and building production costs, replacing the former 2x unit and 1.5x building penalties. Their cities retain their full culture output, including above four culture per turn; the former 15% accumulation rule is removed.
+
+Independent cities establish a local improvement economy before expanding their garrison: with at least one defender and no immediate danger, a needed local worker takes priority over additional defenders and culture buildings. A worker already in production is not interrupted by a distant defensive war. The normal garrison target is two viable land defenders, one more under immediate threat and one more at population six. Defenders below two-thirds of the best trainable city defender's base strength do not satisfy it. Walls take priority over further culture buildings once the basic garrison is ready. All units and buildings still require ordinary production and prerequisites; the AI grants no free improvements or permanent border protection. The 800 BC scenario now provides both Independent factions with basic ancient technologies, including Agriculture and Masonry, so these priorities can actually build farms and Walls. Gameplay balance and multiplayer behavior remain unverified.
+
+## Religious shrines
+
+All seven religious shrines grant **two free Priests**, replacing their three assignable Priest slots. Their former per-city gold income and shrine cap are replaced by **one raw commerce per five followers worldwide**. A city's contribution to each religion it contains is `population / number of religions present`; contributions retain their fractional shares and are summed worldwide before dividing by five and rounding down. Thus a population-12 city with three religions contributes four followers to each. This is commerce allocated by the owner's sliders, not direct gold. Existing culture, Great Person points and religious functions remain. Expulsion and State Atheism still suppress shrine effects.
+
+Jerusalem automatically receives the Jewish shrine, Solomon's Temple, on the first turn at or after **957 BC**, if the city exists and contains Judaism. The date follows the traditional completion chronology in [Getty's First Temple record](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039). Later scenarios apply the grant at setup. If Jerusalem is absent or lacks Judaism, the grant waits; it is never duplicated if the shrine has already been created elsewhere, nor automatically rebuilt after destruction. The grant is synchronized game state and saved. In-game and multiplayer validation remain pending.
+
 ## Knowledge from conquest
 
 All research costs receive an additional global **1.1× multiplier**
@@ -391,6 +405,12 @@ Maceman; modern slave infantry becomes a Marine. The remaining armed slaves
 disband. Converted units keep experience, promotions, damage and spent
 movement, but lose Cannon Fodder and the slave upkeep discount.
 
+AI captives normally seek a safe city for employment under Slavery, preferring
+short travel and low revolt risk (at most 10% after settlement). When nearby
+threats or a local land war require troops, they buy the latest unlocked slave
+weapons if affordable, retaining 20 gold unless immediately threatened. Otherwise
+they retreat to safety. Armed slaves needed for combat remain in military service.
+
 A land attacker under Slavery also has a **50% chance to capture one slave** after killing a weaker non-animal land defender. Strength is compared at the start of combat, including defensive bonuses. The attacker must start at full health and take no damage except from defender first strikes. Withdrawals and collateral kills do not qualify. The slave appears on the attacker's tile and receives the defeated civilization's origin promotion where available.
 
 ### Military
@@ -426,9 +446,9 @@ it does not grant an additional drafting ability.
 
 ### Islamic expansion event
 
-Arabia's birth-flip zone also includes eastern Egypt and Sinai (x=69–72, y=31–37), subject to the normal capital and human-player flip rules. This does not expand its stability core.
+Arabia's birth flips are confined to the Arabian Peninsula (x=73-82, y=30-37, intersected with the normal birth area). Egypt, Sinai, the Levant and Iraq must be conquered. This applies to city, culture and unit flips, warnings and map hints without changing the stability core. AI Arabia retains its extra 60 war-target points per Egyptian-region city.
 
-Arabia starts with **6 Longbowmen, 6 Swordsmen, 8 Camel Archers and 4 Catapults**, in both normal births and the 600 AD start. Swordsmen and Catapults start with city-assault roles.
+Arabia starts with **two Settlers, two defending Longbowmen, and one field army of three Swordsmen, two Camel Archers, two Catapults and one Spearman**, in normal births including the 600 AD scenario. Existing later-scenario positions are unchanged.
 
 When Islam is first founded in **any Arabian city**, Arabia automatically joins the Islamic cause. Mecca is not required. If another country founds Islam, it chooses between **joining** and **suppression**. Joining adopts **Islam, Monarchy, Theocracy (Legitimacy), and Holy State** without additional anarchy, converts all owned cities, and expels their other religions using the normal expulsion rules. Economy and Military civics are unchanged. The full expansion event below applies to the joining country, regardless of civilization. This replaces Arabia's former permanent conquest-conversion power.
 
@@ -441,8 +461,22 @@ The event lasts **300 calendar years plus 10 turns**. The calendar duration is c
 - During the event, the participating country's AI prioritizes military production, targets garrisons of two defenders in its capital and one in other quiet cities, advances with smaller assault groups, and accepts riskier attacks. City targeting also values the population-scaled recruitment reward: each expected recruit adds four target-value points, favoring developed first conquests. Previously rewarded city locations receive no recruitment weighting; normal distance and attack considerations still apply. These AI preferences end immediately with the event.
 - Every military conquest by the participating country, and Arabian birth flips during its own event, is converted to Islam. All other religions are expelled and banned using the normal expulsion rules; ordinary religious buildings are destroyed and holy cities retain dormant shrines. Holy State's normal conversion-pacification benefit still applies when eligible.
 - Each military conquest during the event also establishes immediate control of the city tile and its eight neighboring tiles. Their foreign plot culture is reset and transferred to the conqueror, with **20 extra culture per tile**. Other city centers are excluded; stored city culture is unchanged. This also applies to recaptures, but not peaceful transfers or suppression-rally conversions.
-- Each city's first acquisition through an Arabian military conquest or birth flip grants **one recruitment package plus another per four population**: `1 + floor(population / 4)` packages, each containing **2 Swordsmen, 1 Camel Archer, and 1 Catapult**, even without their normal training prerequisites. Population is measured before conquest losses and Holy State's population reward. Sizes 1–3 grant 4 units, 4–7 grant 8, and 8–11 grant 12. The same scaling applies to newly converted cities during Arabia's suppression rally, using their population before conversion. Reinforcements have no movement remaining that turn. Recaptures grant no further troops; the saved history uses city locations, including conquests before the event. Other gifts, trades and peaceful transfers grant no event rewards.
-If another civilization has already received the full jihad event, Arabia's birth flips are restricted to the Arabian Peninsula. The extra territory in Egypt, Sinai and the Levant, including Jerusalem, is excluded. This also applies to culture, units, advance warnings and map hints; an expired event still counts.
+- Each city's first acquisition through the participating country's military conquest, or an Arabian birth flip grants **one recruitment package plus another per four population**: `1 + floor(population / 4)` packages, each containing **2 Swordsmen, 1 Camel Archer, and 1 Catapult**, even without their normal training prerequisites. Population is measured before conquest losses and Holy State's population reward. Sizes 1–3 grant 4 units, 4–7 grant 8, and 8–11 grant 12. The same scaling applies to newly converted cities during Arabia's suppression rally, using their population before conversion. Reinforcements have no movement remaining that turn. Recaptures grant no further troops; the saved history uses city locations, including conquests before the event. Other gifts, trades and peaceful transfers grant no event rewards.
+
+
+The **full jihad event, for any recipient civilization**, provides three named campaign armies. The suppression rally alone grants none:
+
+| Unlock | General | AI campaign priority |
+| --- | --- | --- |
+| Full event begins | Khalid ibn al-Walid | Levant, then Iraq |
+| First distinct military conquest during the event | Amr ibn al-As | Egypt, then North Africa |
+| Third distinct military conquest during the event | Sa'd ibn Abi Waqqas | Iraq, then Persia |
+
+Khalid's minimum army is **3 Swordsmen, 2 Camel Archers, 2 Catapults and 1 Spearman**. Amr receives **one additional Swordsman and one additional Catapult**, giving a minimum of **10 units**; Sa'd receives one fewer Catapult, giving a minimum of **7 units** (3 Swordsmen, 2 Camel Archers, 1 Catapult and 1 Spearman). These fixed adjustments apply after population scaling; restoring one Swordsman to Sa'd adds one unit to the previous three-army allocation. The initial army reuses eligible starting troops at the capital and fills shortages. Later armies incorporate the unlocking capture's normal population-scaled recruitment, topping up each unit type to the minimum instead of also awarding a separate capture army. They assemble in an owned city nearest their regional front. Each general immediately attaches to a Swordsman, granting the normal Warlord promotion and standard shared Great General XP to eligible friendly units on that tile. Campaign troops cannot move on arrival.
+
+Only first military captures of previously unacquired city locations during the active event count. Birth flips, gifts, trades, recaptures and pre-event conquests do not advance the unlocks. Each general arrives once. AI armies pursue reachable, revealed enemy cities in their assigned regions, then help elsewhere when no regional target is reachable. Campaigns do not declare additional wars. Routine garrison selection never detaches an attached jihad general. Campaign armies supply at most one dedicated local guard, or two under immediate local threat, and retain at least four troops in the field group. Detached guards leave their campaign and become city-defense units, so later armies count them toward the same local limit. A smaller army may hold together to defend an otherwise undefended city in a local emergency; it is not split into further guards. Different campaign armies do not automatically merge; nearby unassigned reinforcements can join, and conquest recruits inherit the nearest surviving campaign on their landmass. Orders persist after a general dies, without a replacement reward, and end when the event expires. Amr prioritizes Thebes and Kem Kasir, then other northern Egyptian cities, then the Mediterranean coast westward into Libya and Tunisia. These reachable, revealed enemy targets take precedence over generic staging and opportunistic movement; Nubia and inland Africa are secondary once no such target is reachable. Local defense, healing and assaults at the ordered target remain available. Egyptian conquest recruits prefer his surviving field campaign on the same landmass, falling back to the nearest campaign if none remains. Amr also receives one separate Longbowman and one separate Spearman as city-defense escorts, beyond his field-army allocation. AI escorts follow his campaign and settle in Egyptian cities needing a garrison; they have no campaign assignment and do not merge into his army. Human recipients control the same extra units freely. Escorts revert to ordinary city-defense behavior when the campaign is gone or the event ends. Unlocks and assignments are saved. Human recipients receive the same armies, attached generals and XP with free movement control. In-game balance and multiplayer validation remain pending.
+
+These are compressed early-conquest campaigns, not exact dated reenactments. The peninsula-first approach follows the broad expansion from Arabia into Byzantine and Sasanian lands described by [the Metropolitan Museum of Art](https://www.metmuseum.org/essays/the-birth-of-islam).
 
 - Arabia receives **one Settler** when it militarily captures Cairo during the event. The bonus is granted once, regardless of the city's current name; peaceful transfers and repeated captures grant no additional Settler. It cannot move on its arrival turn.
 - The participating country immediately declares total war on all met non-Islamic countries, and checks for new contacts each turn. A team with any living Islamic member is exempt. The event overrides ordinary peace treaties, while scenario-level permanent peace and the participating country's own master/vassal relationships remain respected. Event wars, including newly involved defensive-pact/master/vassal belligerents, cannot be ended through peace, third-party mediation, capitulation or scripted peace until expiry.
@@ -732,8 +766,9 @@ new country-name entries.
 
 ## Korea
 
-Korea is playable alongside China and Japan. It spawns around 800 BC in the
-3000 BC game, starts as Korean Chiefdoms in 800 BC, and has established regional
+Korea is playable from the 800 BC scenario onward, starting as Korean
+Chiefdoms. In the 3000 BC scenario it is not selectable and spawns around
+800 BC as an AI civilization. It has established regional
 starts in 600 AD, 900 AD and 1453 AD. Food, copper and coastal fish support a
 compact peninsula economy. Its existing Hwacha and Seowon remain available.
 See [the Korean starts and historical goals](800BCScenario.md#korea-across-the-scenarios).

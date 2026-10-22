@@ -50,3 +50,4 @@
 # Process-bound observer configuration and recorded games
 /testing/observer.local.ini
 /testing/runs/
+/testing/bin/

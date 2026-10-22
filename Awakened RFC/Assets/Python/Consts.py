@@ -456,11 +456,6 @@ tReserveCapitals = (
  # Xiongnu
 )
 
-# Extra Arabian birth-flip tiles: eastern Egypt and Sinai. These do not change
-# the stability core; existing exception tiles are excluded to avoid duplicates.
-tArabianEgyptFlipTiles = tuple((x, y) for x in range(69, 73) for y in range(31, 38)
-                              if (x, y) not in ((71, 36), (72, 37)))
-
 #core areas (for RiseAndFall and Victory)
 
 tCoreAreasTL = (
@@ -549,7 +544,7 @@ tExceptions = (  #for RiseAndFall
 (), #Ethiopia
 (), #Maya
 ((59, 55), (60, 55), (62, 55), (59, 56), (62, 56), (63, 56)), #Vikings
-((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles,  #Arabia
+((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)),  #Arabia
 (), #Khmer
 (), #Spain
 ((51, 50), (52, 49), (52, 50), (53, 47), (53, 48), (53, 49), (53, 50), (53, 51), (55, 46), (56, 46), (57, 46), (56, 45), (57, 45), (58, 48), (58, 49), (58, 50)), #France
@@ -564,7 +559,7 @@ tExceptions = (  #for RiseAndFall
 (), #Aztecs
 ((68, 48), (68, 49), (73, 40), (73, 41), (73, 42), (71, 42), (70, 42), (74, 42), (75, 42), (80, 47), (80, 48), (80, 49)), #Turkey
 ((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43)),
-((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles, ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)) + tArabianEgyptFlipTiles
+((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)), ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37))
 ,
 (),
 () # Korea
@@ -574,12 +569,8 @@ tExceptions = (  #for RiseAndFall
 
 
 def isArabianBirthRestricted(iCiv):
-        if iCiv != iArabia:
-                return False
-        for iPlayer in range(iNumMajorPlayers):
-                if iPlayer != iArabia and gc.getPlayer(iPlayer).hasArabianJihadTriggered():
-                        return True
-        return False
+        # Birth unites the peninsula; the jihad campaigns conquer other regions.
+        return iCiv == iArabia
 
 
 def getBirthFlipArea(iCiv, tTL=None, tBR=None):

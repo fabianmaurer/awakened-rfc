@@ -512,6 +512,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iSpecialistPopulation = 0;
 	m_iNumGreatPeople = 0;
 	m_iBaseGreatPeopleRate = 0;
+    m_iShrineCommerce = 0;
 	m_iGreatPeopleRateModifier = 0;
 	m_iGreatPeopleProgress = 0;
 	m_iNumWorldWonders = 0;
@@ -5547,6 +5548,7 @@ void CvCity::setPopulation(int iNewValue)
 	if (iOldPopulation != iNewValue)
 	{
 		m_iPopulation = iNewValue;
+        GC.getGameINLINE().invalidateShrinePopulation();
 
 		FAssert(getPopulation() >= 0);
 
@@ -5599,6 +5601,7 @@ void CvCity::setPopulation(int iNewValue)
 		}
 
 		//updateGenericBuildings();
+        GC.getGameINLINE().updateShrineCommerce();
 	}
 }
 
@@ -9163,13 +9166,6 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 					}
 				}
 
-				if (GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce() != NO_RELIGION)
-				{
-				//Rhye - start (max commerce from a shrine)
-				//iCommerce += (GC.getReligionInfo((ReligionTypes)(GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce())).getGlobalReligionCommerce(eIndex) * GC.getGameINLINE().countReligionLevels((ReligionTypes)(GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce())));
-				iCommerce += std::min(MAX_COM_SHRINE, (GC.getReligionInfo((ReligionTypes)(GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce())).getGlobalReligionCommerce(eIndex) * GC.getGameINLINE().countReligionLevels((ReligionTypes)(GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce()))));
-				//Rhye - end
-				}
 
 				if (GC.getBuildingInfo(eBuilding).getGlobalCorporationCommerce() != NO_CORPORATION)
 				{
@@ -9192,8 +9188,31 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 }
 
 
+void CvCity::updateShrineCommerce()
+{
+    int iNewCommerce = 0;
+    if (!GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")))
+    {
+        for (int i = 0; i < GC.getGameINLINE().getShrineBuildingCount(); ++i)
+        {
+            const BuildingTypes eBuilding = GC.getGameINLINE().getShrineBuilding(i);
+            const ReligionTypes eReligion = (ReligionTypes)GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce();
+            if (eReligion != NO_RELIGION && getNumActiveBuilding(eBuilding) > 0)
+                iNewCommerce += getNumActiveBuilding(eBuilding) * GC.getGameINLINE().getShrinePopulationCommerce(eReligion);
+        }
+    }
+    if (iNewCommerce != m_iShrineCommerce)
+    {
+        const int iChange = iNewCommerce - m_iShrineCommerce;
+        m_iShrineCommerce = iNewCommerce;
+        changeBaseYieldRate(YIELD_COMMERCE, iChange);
+        GET_PLAYER(getOwnerINLINE()).AI_makeAssignWorkDirty();
+    }
+}
+
 void CvCity::updateBuildingCommerce()
 {
+    updateShrineCommerce();
 	int iNewBuildingCommerce;
 	int iI, iJ;
 
@@ -11471,6 +11490,7 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
                 aiOldShrineActivity[i] = getNumActiveBuilding((BuildingTypes)i);
 
 		m_pabHasReligion[eIndex] = bNewValue;
+        GC.getGameINLINE().invalidateShrinePopulation();
 
         for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
         {
@@ -12649,27 +12669,14 @@ void CvCity::doCulture()
 
 	//Rhye - start switch
 	//changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE), false, true);
-	// Major civilizations accumulate their unmodified culture output.
-	if (getOwnerINLINE() < NUM_MAJOR_PLAYERS || getCommerceRate(COMMERCE_CULTURE) <= 4)
+	// Independent cities also retain their actual culture output. They must
+    // be able to develop borders instead of losing culture as output improves.
+	if (getOwnerINLINE() < NUM_MAJOR_PLAYERS || getOwnerINLINE() == INDEPENDENT ||
+        getOwnerINLINE() == INDEPENDENT2 || getCommerceRate(COMMERCE_CULTURE) <= 4)
 		changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE), false, true);
 	else {
 		switch (getOwnerINLINE())
 	{
-			case INDEPENDENT:
-			case INDEPENDENT2:
-				if (GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4) { //late start condition (RFCMP)
-					if (getX_INLINE() == 57 && getY_INLINE() == 46) //Marseilles
-						if (getCulture(getOwnerINLINE()) < 1)
-							changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *15 /100, false, true);
-					else if (getX_INLINE() == 60 && getY_INLINE() == 44) //Rome
-						if (getCulture(getOwnerINLINE()) < 50)
-							changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *15 /100, false, true);
-					else
-						changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *15 /100, false, true);
-				}
-				else
-					changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *15 /100, false, true);
-				break;
 			case NATIVE:
 				if (hasActiveWorldWonder()) {
 					if (getCulture(getOwnerINLINE()) < 50) 
@@ -13242,6 +13249,8 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iSpecialistPopulation);
 	pStream->Read(&m_iNumGreatPeople);
 	pStream->Read(&m_iBaseGreatPeopleRate);
+    pStream->Read(&m_iShrineCommerce);
+    GC.getGameINLINE().invalidateShrinePopulation();
 	pStream->Read(&m_iGreatPeopleRateModifier);
 	pStream->Read(&m_iGreatPeopleProgress);
 	pStream->Read(&m_iNumWorldWonders);
@@ -13550,6 +13559,7 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iSpecialistPopulation);
 	pStream->Write(m_iNumGreatPeople);
 	pStream->Write(m_iBaseGreatPeopleRate);
+    pStream->Write(m_iShrineCommerce);
 	pStream->Write(m_iGreatPeopleRateModifier);
 	pStream->Write(m_iGreatPeopleProgress);
 	pStream->Write(m_iNumWorldWonders);

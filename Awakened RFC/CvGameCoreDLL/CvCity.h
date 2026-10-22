@@ -666,6 +666,7 @@ public:
 
 	int getBuildingCommerce(CommerceTypes eIndex) const;																				// Exposed to Python
 	int getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+    void updateShrineCommerce();
 	void updateBuildingCommerce();
 
 	int getSpecialistCommerce(CommerceTypes eIndex) const;											// Exposed to Python
@@ -1006,6 +1007,7 @@ protected:
 	int m_iSpecialistPopulation;
 	int m_iNumGreatPeople;
 	int m_iBaseGreatPeopleRate;
+    int m_iShrineCommerce;
 	int m_iGreatPeopleRateModifier;
 	int m_iGreatPeopleProgress;
 	int m_iNumWorldWonders;

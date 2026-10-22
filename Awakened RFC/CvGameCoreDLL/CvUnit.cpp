@@ -413,6 +413,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_pUnitInfo = (NO_UNIT != m_eUnitType) ? &GC.getUnitInfo(m_eUnitType) : NULL;
 	m_iBaseCombat = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCombat() : 0;
 	m_eLeaderUnitType = NO_UNIT;
+    m_iJihadCampaign = -1;
 	m_iCargoCapacity = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCargoSpace() : 0;
 
 	m_combatUnit.reset();
@@ -509,6 +510,8 @@ void CvUnit::convert(CvUnit* pUnit)
 
 	setName(pUnit->getNameNoDesc());
 	setLeaderUnitType(pUnit->getLeaderUnitType());
+    if (getOwnerINLINE() == pUnit->getOwnerINLINE())
+        m_iJihadCampaign = pUnit->getJihadCampaign();
 
 	CvUnit* pTransportUnit = pUnit->getTransportUnit();
 	if (pTransportUnit != NULL)
@@ -9366,10 +9369,30 @@ CvSelectionGroup* CvUnit::getGroup() const
 }
 
 
+int CvUnit::getJihadGroupCampaign() const
+{
+    if (!GET_PLAYER(getOwnerINLINE()).isArabianJihadActive()) return -1;
+    if (m_iJihadCampaign >= 0) return m_iJihadCampaign;
+    CvSelectionGroup* pGroup = getGroup();
+    if (pGroup == NULL) return -1;
+    for (CLLNode<IDInfo>* pNode = pGroup->headUnitNode(); pNode != NULL; pNode = pGroup->nextUnitNode(pNode))
+    {
+        CvUnit* pUnit = ::getUnit(pNode->m_data);
+        if (pUnit != NULL && pUnit->getJihadCampaign() >= 0) return pUnit->getJihadCampaign();
+    }
+    return -1;
+}
+
 bool CvUnit::canJoinGroup(const CvPlot* pPlot, CvSelectionGroup* pSelectionGroup) const
 {
 	CvUnit* pHeadUnit;
 	
+    if (!isHuman() && pSelectionGroup->getHeadUnit() != NULL)
+    {
+        const int iOurs = getJihadGroupCampaign();
+        const int iTheirs = pSelectionGroup->getHeadUnit()->getJihadGroupCampaign();
+        if (iOurs >= 0 && iTheirs >= 0 && iOurs != iTheirs) return false;
+    }
 	// do not allow someone to join a group that is about to be split apart
 	// this prevents a case of a never-ending turn
 	if (pSelectionGroup->AI_isForceSeparate())
@@ -9445,6 +9468,10 @@ void CvUnit::joinGroup(CvSelectionGroup* pSelectionGroup, bool bRemoveSelected, 
 
 		if ((pNewSelectionGroup == NULL) || canJoinGroup(pPlot, pNewSelectionGroup))
 		{
+            // Local reinforcements inherit the campaign they actually join.
+            if (!isHuman() && pNewSelectionGroup != NULL && pNewSelectionGroup->getHeadUnit() != NULL &&
+                getJihadGroupCampaign() < 0)
+                m_iJihadCampaign = pNewSelectionGroup->getHeadUnit()->getJihadGroupCampaign();
 			if (pOldSelectionGroup != NULL)
 			{
 				bool bWasHead = false;
@@ -11922,6 +11949,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	FAssert(NO_UNIT != m_eUnitType);
 	m_pUnitInfo = (NO_UNIT != m_eUnitType) ? &GC.getUnitInfo(m_eUnitType) : NULL;
 	pStream->Read((int*)&m_eLeaderUnitType);
+    pStream->Read(&m_iJihadCampaign);
 
 	pStream->Read((int*)&m_combatUnit.eOwner);
 	pStream->Read(&m_combatUnit.iID);
@@ -12022,6 +12050,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_eCapturingPlayer);
 	pStream->Write(m_eUnitType);
 	pStream->Write(m_eLeaderUnitType);
+    pStream->Write(m_iJihadCampaign);
 
 	pStream->Write(m_combatUnit.eOwner);
 	pStream->Write(m_combatUnit.iID);

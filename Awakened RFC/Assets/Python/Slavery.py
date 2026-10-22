@@ -3,6 +3,7 @@
 
 from CvPythonExtensions import *
 import Popup
+import CvUtil
 import Consts as con
 
 gc = CyGlobalContext()
@@ -217,6 +218,7 @@ class Slavery:
 			iDecision = self.nextDecisionID
 			self.nextDecisionID += 1
 			self.pending[iDecision] = (iPlayer, city.getID())
+			CvUtil.pyPrint("Slave revolt queued: owner=%d decision=%d city=%d slaves=%d" % (iPlayer, iDecision, city.getID(), self._slaveCount(city)))
 			if gc.getGame().getActivePlayer() != iPlayer: return
 			popup = Popup.PyPopup(SLAVE_REVOLT_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
 			popup.setUserData((iPlayer, iDecision))
@@ -233,8 +235,11 @@ class Slavery:
 				self._free(city)
 
 	def eventApply(self, iPlayer, netUserData, popupReturn):
+		CvUtil.pyPrint("Slave revolt response: player=%d data=%s button=%d" % (iPlayer, str(netUserData), popupReturn.getButtonClicked()))
 		iOwner, iDecision = netUserData
-		if iPlayer != iOwner or not self.pending.has_key(iDecision): return
+		if iPlayer != iOwner or not self.pending.has_key(iDecision):
+			CvUtil.pyPrint("Slave revolt response rejected: wrong owner or missing decision")
+			return
 		iPendingOwner, iCity = self.pending[iDecision]
 		if iPlayer != iPendingOwner: return
 		iButton = popupReturn.getButtonClicked()
@@ -245,7 +250,9 @@ class Slavery:
 		if not player.isAlive(): return
 		city = player.getCity(iCity)
 		if city.isNone() or city.getOwner() != iPlayer: return
-		if self._slaveCount(city) <= 0: return
+		if self._slaveCount(city) <= 0:
+			CvUtil.pyPrint("Slave revolt response rejected: city no longer has slaves")
+			return
 		if iButton == 0:
 			self._free(city)
 		else:

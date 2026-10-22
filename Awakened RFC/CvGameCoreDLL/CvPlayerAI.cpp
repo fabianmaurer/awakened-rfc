@@ -403,6 +403,15 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 		return;
 	}
 	
+	// Old captives may be grouped under a soldier; give them their own update.
+	UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+	int iLoop;
+	for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+	{
+		if (pUnit->getUnitType() == eSlave && pUnit->getGroup()->getNumUnits() > 1)
+			pUnit->joinGroup(NULL);
+	}
+
 //	if (AI_isDoStrategy(AI_STRATEGY_CRUSH))
 //	{
 //		AI_convertUnitAITypesForCrush();		
@@ -489,7 +498,10 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 				bool bKilled = false;
 				if (!bNoDisband)
 				{
-					if (pLoopUnit->canFight())
+					// Slaves always have zero XP; keep them for employment/equipment.
+					SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+					if (pLoopUnit->canFight() && (eSlave == NO_SPECIALIST ||
+						!GC.getUnitInfo(pLoopUnit->getUnitType()).getGreatPeoples(eSlave)))
 					{
 						int iExp = pLoopUnit->getExperience();
 						CvCity* pPlotCity = pLoopUnit->plot()->getPlotCity();

@@ -3092,13 +3092,26 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 
 	CLLNode<IDInfo>* pUnitNode;
 	CvUnit* pLoopUnit;
+	std::vector<IDInfo> aMovingUnits;
 
 	pUnitNode = headUnitNode();
 
 	while (pUnitNode != NULL)
 	{
-		pLoopUnit = ::getUnit(pUnitNode->m_data);
-		pUnitNode = nextUnitNode(pUnitNode);
+        aMovingUnits.push_back(pUnitNode->m_data);
+        pUnitNode = nextUnitNode(pUnitNode);
+    }
+
+    // Moving into a city can invoke conquest/event callbacks which remove or
+    // regroup other units. A cached next list node may then be freed. Resolve
+    // stable IDs afresh and leave removed/regrouped units to their new owners.
+    // Pending-death units must still complete the movement operation which
+    // owns their delayed cleanup. Skipping them leaves a movable group whose
+    // mission retries forever without consuming moves (Viking ship, turn 176).
+    for (int iUnit = 0; iUnit < (int)aMovingUnits.size(); ++iUnit)
+    {
+        pLoopUnit = ::getUnit(aMovingUnits[iUnit]);
+        if (pLoopUnit == NULL || pLoopUnit->getGroup() != this) continue;
 
 		if ((pLoopUnit->canMove() && ((bCombat && (!(pLoopUnit->isNoCapture()) || !(pPlot->isEnemyCity(*pLoopUnit)))) ? pLoopUnit->canMoveOrAttackInto(pPlot) : pLoopUnit->canMoveInto(pPlot))) || (pLoopUnit == pCombatUnit))
 		{
@@ -3114,11 +3127,14 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 	//execute move
 	if(bEndMove || !canAllMove())
 	{
-		pUnitNode = headUnitNode();
-		while(pUnitNode != NULL)
-		{
-			pLoopUnit = ::getUnit(pUnitNode->m_data);
-			pUnitNode = nextUnitNode(pUnitNode);
+        // Animation callbacks must not invalidate a live list traversal either.
+        aMovingUnits.clear();
+        for (pUnitNode = headUnitNode(); pUnitNode != NULL; pUnitNode = nextUnitNode(pUnitNode))
+            aMovingUnits.push_back(pUnitNode->m_data);
+        for (int iUnit = 0; iUnit < (int)aMovingUnits.size(); ++iUnit)
+        {
+            pLoopUnit = ::getUnit(aMovingUnits[iUnit]);
+            if (pLoopUnit == NULL || pLoopUnit->getGroup() != this) continue;
 
 			pLoopUnit->ExecuteMove(((float)(GC.getMissionInfo(MISSION_MOVE_TO).getTime() * gDLL->getMillisecsPerTurn())) / 1000.0f, false);
 		}

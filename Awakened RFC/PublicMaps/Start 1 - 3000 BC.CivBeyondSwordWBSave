@@ -300,7 +300,7 @@ BeginPlayer
 	CivType=CIVILIZATION_KOREA
 	LeaderType=LEADER_WANGKON
 	Team=30
-	PlayableCiv=1
+	PlayableCiv=0
 	Handicap=HANDICAP_PRINCE
 	MinorNationStatus=0
 	LeaderName=TXT_KEY_KOREA_LEADER_0

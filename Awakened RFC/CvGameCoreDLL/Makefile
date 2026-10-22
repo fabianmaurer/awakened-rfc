@@ -162,9 +162,18 @@ CUSTOM_LDFLAGS =
 FILE_DEPENDS = $(TEMP_TARGET_FILES)\depends
 
 #### CFLAGS ####
+!IF "$(ARFC_ENABLE_REPORTING)" == "1"
+# Embed compiler symbols in each object: VC7.1 /Zi cannot share its PDB
+# safely across jom workers. The linker emits the final matching PDB.
+REPORTING_SYMBOL_CFLAGS=/Z7
+REPORTING_SYMBOL_LDFLAGS=/DEBUG /MAP:"$(TEMP_TARGET_FILES)\CvGameCoreDLL.map"
+!ELSE
+REPORTING_SYMBOL_CFLAGS=
+REPORTING_SYMBOL_LDFLAGS=
+!ENDIF
 GLOBAL_CFLAGS=/DARFC_ENABLE_REPORTING=$(ARFC_ENABLE_REPORTING) /GR /Gy /W3 /EHsc /Gd /Gm- /Fd"$(Target_PDB)" $(CUSTOM_CFLAGS) $(PROJECT_CFLAGS) /D_MOD_FRACTRADE
 Debug_CFLAGS=/MD /Zi /Od /RTC1 $(Debug_DEFINES) $(GLOBAL_CFLAGS)
-Release_CFLAGS= /MD /O2 /Oy /Oi /G7 $(Release_DEFINES) $(GLOBAL_CFLAGS)
+Release_CFLAGS= /MD /O2 /Oy /Oi /G7 $(Release_DEFINES) $(GLOBAL_CFLAGS) $(REPORTING_SYMBOL_CFLAGS)
 Final_Release_CFLAGS= /MD /O2 /Oy /Oi /G7 /arch:SSE2 /GL $(Release_DEFINES) $(GLOBAL_CFLAGS)
 
 PRECOMPILE_CFLAGS1 = /Yu"
@@ -173,7 +182,7 @@ PRECOMPILE_CFLAGS2 = CvGameCoreDLL.h" /Fp"$(Target_PCH)"
 #### LDFLAGS ####
 GLOBAL_LDFLAGS=/DLL /NOLOGO /SUBSYSTEM:WINDOWS /LARGEADDRESSAWARE /TLBID:1 /PDB:"$(Target_PDB)" $(CUSTOM_LDFLAGS) $(PROJECT_LDFLAGS)
 Debug_LDFLAGS=/INCREMENTAL /DEBUG /IMPLIB:"$(Target_STATICLIB)" $(GLOBAL_LDFLAGS)
-Release_LDFLAGS=/INCREMENTAL:NO /OPT:REF /OPT:ICF $(GLOBAL_LDFLAGS)
+Release_LDFLAGS=/INCREMENTAL:NO /OPT:REF /OPT:ICF $(GLOBAL_LDFLAGS) $(REPORTING_SYMBOL_LDFLAGS)
 Final_Release_LDFLAGS=/LTCG /INCREMENTAL:NO /OPT:REF /OPT:ICF $(GLOBAL_LDFLAGS)
 Final_Profile_LDFLAGS=/LTCG /DEBUG /IMPLIB:"$(Target_STATICLIB)" $(GLOBAL_LDFLAGS)
 
@@ -245,11 +254,18 @@ LDFLAGS = $(Final_Release_LDFLAGS)
 #### Targets ####
 #################
 
+
 .PHONY: all clean build precompile Make_Dir fastdep source_list
 
 all: Precompile build
 
 dll: all
+
+# External 32-bit stack capture for Civ4, even when the launcher uses Python x64.
+observer_dump_writer:
+	@IF NOT EXIST "..\..\testing\bin" MKDIR "..\..\testing\bin"
+	@$(CPP) /nologo /O1 /GS- /c $(GLOBAL_INCS) /Fo"..\..\testing\bin\observer_dump32.obj" "..\..\testing\observer_dump32.cpp"
+	@$(LD) /NOLOGO /MACHINE:X86 /SUBSYSTEM:CONSOLE /ENTRY:observerDumpMain /NODEFAULTLIB /OUT:"..\..\testing\bin\observer_dump32.exe" "..\..\testing\bin\observer_dump32.obj" /LIBPATH:"$(PSDK)/Lib/10.0.26100.0/um/x86" kernel32.lib shell32.lib
 
 clean:
 	@IF EXIST "$(TEMP_TARGET_FILES)" RMDIR /s /q "$(TEMP_TARGET_FILES)"

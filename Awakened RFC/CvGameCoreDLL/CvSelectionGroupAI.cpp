@@ -774,6 +774,9 @@ CvUnit* CvSelectionGroupAI::AI_ejectBestDefender(CvPlot* pDefendPlot)
 		pLoopUnit = ::getUnit(pEntityNode->m_data);
 		pEntityNode = nextUnitNode(pEntityNode);
 		
+        // An attached jihad general remains with the field army. Emergency
+        // defense holds the group together rather than ejecting its commander.
+        if (pLoopUnit->getLeaderUnitType() != NO_UNIT && pLoopUnit->getJihadGroupCampaign() >= 0) continue;
 		if (!pLoopUnit->noDefensiveBonus())
 		{
 			int iValue = pLoopUnit->currEffectiveStr(pDefendPlot, NULL) * 100;

@@ -50,6 +50,11 @@ int CyPlayer::getIslamFoundingDecision()
     return m_pPlayer ? m_pPlayer->getIslamFoundingDecision() : -1;
 }
 
+bool CyPlayer::isArabianJihadActive()
+{
+    return m_pPlayer && m_pPlayer->isArabianJihadActive();
+}
+
 bool CyPlayer::hasArabianJihadTriggered()
 {
     return m_pPlayer && m_pPlayer->hasArabianJihadTriggered();

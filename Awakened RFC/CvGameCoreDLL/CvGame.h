@@ -124,6 +124,9 @@ public:
 	int countKnownTechNumTeams(TechTypes eTech);														// Exposed to Python
 	int getNumFreeBonuses(BuildingTypes eBuilding);													// Exposed to Python
 
+    int getShrinePopulationCommerce(ReligionTypes eReligion);
+    void invalidateShrinePopulation() { m_bShrinePopulationDirty = true; }
+    void updateShrineCommerce();
 	int countReligionLevels(ReligionTypes eReligion);							// Exposed to Python 
 	int calculateReligionPercent(ReligionTypes eReligion) const;				// Exposed to Python
 	int countCorporationLevels(CorporationTypes eCorporation);							// Exposed to Python 
@@ -671,6 +674,8 @@ protected:
 	std::vector<EventTriggerTypes> m_aeInactiveTriggers;
 
 	// CACHE: cache frequently used values
+    bool m_bShrinePopulationDirty;
+    std::vector<int> m_aiShrinePopulationCommerce;
 	int		m_iShrineBuildingCount;
 	int*	m_aiShrineBuilding;
 	int*	m_aiShrineReligion;

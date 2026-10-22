@@ -105,7 +105,7 @@ class CvRFCEventHandler:
                 eventManager.addEventHandler("buildingBuilt",self.onBuildingBuilt) #Victory
                 eventManager.addEventHandler("projectBuilt",self.onProjectBuilt) #Victory
                 eventManager.addEventHandler("BeginPlayerTurn", self.onBeginPlayerTurn) 
-                #eventManager.addEventHandler("EndPlayerTurn", self.onEndPlayerTurn)
+                eventManager.addEventHandler("EndPlayerTurn", self.onEndPlayerTurn)
                 eventManager.addEventHandler("EndGameTurn", self.onEndGameTurn) #Stability
                 eventManager.addEventHandler("kbdEvent",self.onKbdEvent) 
                 eventManager.addEventHandler("techAcquired",self.onTechAcquired) #Stability
@@ -409,7 +409,6 @@ class CvRFCEventHandler:
                         self.rnf.deleteMode(iPlayer)
                         
                 self.pla.checkPlayerTurn(iGameTurn, iPlayer)
-                self.slave.checkPlayerTurn(iPlayer)
 
                 if (gc.getPlayer(iPlayer).isAlive()):
                         self.vic.checkPlayerTurn(iGameTurn, iPlayer)
@@ -426,9 +425,9 @@ class CvRFCEventHandler:
         def onEndPlayerTurn(self, argsList):
 
                 iGameTurn, iPlayer = argsList
-                #print ("END PLAYER", iPlayer)
-                
-                'Called at the end of a players turn'
+                # CvPlayer.doTurn fires this after city updates, before input
+                # resumes. Expired slaves must not create a stale decision.
+                self.slave.checkPlayerTurn(iPlayer)
 
 
         def onEndGameTurn(self, argsList):

@@ -60,6 +60,9 @@ public:
 	void write(FDataStreamBase* pStream);
 
 protected:
+    CvCity* AI_jihadCampaignTarget(bool bEgyptCoastOnly = false);
+    bool AI_jihadEgyptEscort();
+    bool AI_jihadCampaignGarrison();
 
 	CvString m_szObserverCityTarget;
 	int m_iObserverCityTargetX;
@@ -80,6 +83,8 @@ protected:
 	void AI_workerMove();
 	void AI_barbAttackMove();
 	void AI_attackMove();
+	bool AI_slaveMove();
+	bool AI_slaveMilitaryNeeded() const;
 	void AI_attackCityMove();
 	void AI_attackCityLemmingMove();
 	void AI_collateralMove();
@@ -163,7 +168,7 @@ protected:
 	bool AI_goody(int iRange);
 	bool AI_explore();
 	bool AI_exploreRange(int iRange);
-	bool AI_targetCity(int iFlags = 0, PlayerTypes eTargetPlayer = NO_PLAYER);
+	bool AI_targetCity(int iFlags = 0, PlayerTypes eTargetPlayer = NO_PLAYER, CvCity* pOrderedCity = NULL);
 	bool AI_targetBarbCity();
 	bool AI_targetMinorCity(int iMinorCiv); //Rhye
 	bool AI_bombardCity();

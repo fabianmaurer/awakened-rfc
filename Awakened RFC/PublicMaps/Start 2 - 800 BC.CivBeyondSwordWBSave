@@ -83,9 +83,31 @@ BeginTeam
 	ContactWithTeam=2
 	ContactWithTeam=8
 EndTeam
-BeginTeam                 
+BeginTeam
+	Tech=TECH_AGRICULTURE
+	Tech=TECH_ANIMAL_HUSBANDRY
+	Tech=TECH_ARCHERY
+	Tech=TECH_BRONZE_WORKING
+	Tech=TECH_FISHING
+	Tech=TECH_HUNTING
+	Tech=TECH_MASONRY
+	Tech=TECH_MINING
+	Tech=TECH_MYSTICISM
+	Tech=TECH_POTTERY
+	Tech=TECH_THE_WHEEL
 EndTeam
-BeginTeam                 
+BeginTeam
+	Tech=TECH_AGRICULTURE
+	Tech=TECH_ANIMAL_HUSBANDRY
+	Tech=TECH_ARCHERY
+	Tech=TECH_BRONZE_WORKING
+	Tech=TECH_FISHING
+	Tech=TECH_HUNTING
+	Tech=TECH_MASONRY
+	Tech=TECH_MINING
+	Tech=TECH_MYSTICISM
+	Tech=TECH_POTTERY
+	Tech=TECH_THE_WHEEL
 EndTeam
 BeginTeam                 
 EndTeam

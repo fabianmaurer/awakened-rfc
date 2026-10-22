@@ -221,7 +221,9 @@ class Barbs:
                 #if (iGameTurn >= con.i850BC and iGameTurn <= con.i190AD):
                 #        self.spawnUnits( iBarbarian, (73, 30), (82, 36), con.iCamelArcher, 1, iGameTurn, 12-iHandicap, 3, utils.outerInvasion, 0)
                 if (iGameTurn >= con.i190AD and iGameTurn <= con.i550AD):
-                        self.spawnUnits( iBarbarian, (73, 30), (82, 36), con.iCamelArcher, 2, iGameTurn, 9-iHandicap, 7, utils.outerInvasion, 0)
+                        # Keep late-antique raids near lower Mesopotamia rather than
+                        # the short desert approach to independent Jerusalem.
+                        self.spawnUnits( iBarbarian, (77, 35), (81, 41), con.iCamelArcher, 2, iGameTurn, 9-iHandicap, 7, utils.outerInvasion, 0)
 
                 #African natives
                 if (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4):  #late start condition (RFCMP)

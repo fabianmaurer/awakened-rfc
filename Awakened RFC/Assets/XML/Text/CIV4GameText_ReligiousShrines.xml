@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_SHRINE_POPULATION_COMMERCE</Tag>
+    <English>+1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>+1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>+1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>+1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>+1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_JEWISH_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_CHRISTIAN_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_ISLAMIC_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_HINDU_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_BUDDHIST_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_CONFUCIAN_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_TAOIST_SHRINE_STRATEGY</Tag>
+    <English>Provides 2 free Priests. +1[ICON_COMMERCE] for every 5 followers of this religion worldwide. Each city's population is divided equally among its religions. Shares are summed before rounding down.</English>
+    <French>Fournit 2 pr&#234;tres gratuits. +1[ICON_COMMERCE] pour 5 fid&#232;les de cette religion dans le monde. La population de chaque ville est divis&#233;e &#224; parts &#233;gales entre ses religions. Les parts sont additionn&#233;es avant arrondi &#224; l'entier inf&#233;rieur.</French>
+    <German>Gew&#228;hrt 2 kostenlose Priester. +1[ICON_COMMERCE] je 5 Anh&#228;nger dieser Religion weltweit. Die Bev&#246;lkerung jeder Stadt wird gleichm&#228;&#223;ig auf ihre Religionen verteilt. Die Anteile werden vor dem Abrunden addiert.</German>
+    <Italian>Fornisce 2 sacerdoti gratuiti. +1[ICON_COMMERCE] ogni 5 fedeli di questa religione nel mondo. La popolazione di ogni citt&#224; viene divisa equamente tra le sue religioni. Le quote vengono sommate prima di arrotondare per difetto.</Italian>
+    <Spanish>Proporciona 2 sacerdotes gratuitos. +1[ICON_COMMERCE] por cada 5 fieles de esta religi&#243;n en el mundo. La poblaci&#243;n de cada ciudad se divide por igual entre sus religiones. Las partes se suman antes de redondear hacia abajo.</Spanish>
+  </TEXT>
+</Civ4GameText>

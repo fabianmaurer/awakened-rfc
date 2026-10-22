@@ -2090,6 +2090,7 @@ class AIWars:
                 tCiv = gc.getTeam(pCiv.getTeam())
                 iGameTurn = gc.getGame().getGameTurn()
                 bPunicCampaign = (iCiv == con.iCarthage and iGameTurn >= con.tBirth[con.iCarthage] + 20 and iGameTurn <= con.i300AD)
+                bArabianCampaign = (iCiv == con.iArabia)
                 lTargetCivs = []
                 #lTargetCivs = con.l0ArrayTotal
 
@@ -2133,6 +2134,11 @@ class AIWars:
                                                         if ((49 <= i <= 55 and 40 <= j <= 45) or
                                                             (57 <= i <= 63 and 40 <= j <= 44)):
                                                                 lTargetCivs[iOwner] += 60
+                                                # Egypt must be conquered rather than inherited at birth.
+                                                # Prefer its cities regardless of their current owner.
+                                                if (bArabianCampaign and 65 <= i <= 72 and 30 <= j <= 37 and
+                                                    gc.getMap().plot(i, j).isCity()):
+                                                        lTargetCivs[iOwner] += 60
                                                 
                 #there are other routines for this
                 #RFCMP

@@ -2995,11 +2995,12 @@ class RiseAndFall:
                                 pVikings.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_EXPLORE_SEA, DirectionTypes.DIRECTION_SOUTH)           
                                 pVikings.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_EXPLORE_SEA, DirectionTypes.DIRECTION_SOUTH)        
                 if (iCiv == iArabia):
-                        utils.makeUnit(con.iSettler, iCiv, tPlot, 3)
-                        # A larger opening army with dedicated city attackers and siege.
-                        utils.makeUnit(con.iLongbowman, iCiv, tPlot, 6)
-                        utils.makeUnit(con.iArabiaCamelarcher, iCiv, tPlot, 8)
-                        for iUnit, iCount in ((con.iSwordsman, 6), (con.iCatapult, 4)):
+                        utils.makeUnit(con.iSettler, iCiv, tPlot, 2)
+                        for i in range(2):
+                                pArabia.initUnit(con.iLongbowman, tPlot[0], tPlot[1], UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
+                        # One field army; the full jihad event supplies its general
+                        # and unlocks further armies through military conquests.
+                        for iUnit, iCount in ((con.iSwordsman, 3), (con.iArabiaCamelarcher, 2), (con.iCatapult, 2), (con.iSpearman, 1)):
                                 for i in range(iCount):
                                         pArabia.initUnit(iUnit, tPlot[0], tPlot[1], UnitAITypes.UNITAI_ATTACK_CITY, DirectionTypes.DIRECTION_SOUTH)
                 if (iCiv == iKhmer):

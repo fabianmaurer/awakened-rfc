@@ -138,7 +138,7 @@ each new game window, and Enter is held for 200 ms for DirectInput polling.
 After bringing the game forward it waits for keyboard focus to settle before
 pressing the key. `setup-input.log` records focus waits and each confirmation;
 the launcher prefers an already focused game window, restores minimized game
-windows, and retries foreground activation through the Windows input queue.
+windows asynchronously, and makes one ordinary foreground activation attempt.
 if Windows refuses focus, select the game window to allow startup to continue.
 It stops sending input
 as soon as GameStart begins, before RFC initialization. Native error dialogs
@@ -203,6 +203,90 @@ checkpoint saves are written before completion. It never terminates a game
 that was already running.
 
 ## Activation and safety
+
+### Native crash evidence
+
+Every batch starts an independent emergency-stop helper before launching Civ4.
+Press **Ctrl+Alt+Shift+F10** to stop that batch without focusing the game or
+launcher. The helper terminates only games assigned to the batch's private Windows
+job. If debugger cleanup cannot finish, it also stops that exact launcher after
+five seconds. Closing the launcher also terminates its job's games. The launcher
+refuses to start games if the job or emergency hotkey cannot be initialized.
+An external stop request can also be made by creating an empty `STOP` file in
+the batch directory. After a stall timeout, diagnostics and shutdown have a
+15-second independent deadline so a blocked dump writer cannot trap the desktop.
+The default no-progress timeout is 60 seconds, reset by each heartbeat; use
+`--stall-timeout` to override it. The separate startup timeout remains five minutes.
+Emergency hotkey/`STOP` requests attempt `hang-emergency.dmp` for the game with
+the oldest heartbeat before minimizing the windows, so minimization does not
+alter the captured game-thread state. Capture runs
+in a separate process with a three-second limit, then shutdown proceeds even if
+capture failed. This preserves evidence when stopping before the normal timeout.
+Flushed recordings are preserved, but emergency termination can interrupt the
+final compression; the analyzer accepts the original `turns.jsonl`.
+
+Setup makes one ordinary foreground activation attempt per game. It never joins
+another application's input queue or repeatedly takes focus back. If Windows
+declines activation, select the game's setup window yourself. Foreground handling
+ends as soon as GameStart begins. Hotkey termination has been confirmed in a
+user-operated run; the updated x86 stack writer still needs runtime validation.
+
+Crash and hang capture use `testing/bin/observer_dump32.exe`, an external x86
+writer, even when the launcher runs under Python x64. A dump from the x64 writer
+can retain only the WOW64 side of a thread and omit its actual game stack.
+The launcher refuses to start if the native writer is missing. Build it from
+`Awakened RFC/CvGameCoreDLL` using the existing legacy environment/settings:
+
+```powershell
+$env:TARGET = 'Release'
+nmake observer_dump_writer
+```
+
+This builds only the diagnostic helper, not the game DLL. Its source is
+`testing/observer_dump32.cpp`; its generated binary is ignored by Git and imports
+only Windows system DLLs. Normal mod launches do not use it.
+
+Balance and diagnostics launches automatically debug only their own child game.
+The game starts normally; capture attaches after authenticated `started.json`
+confirms GameStart. Starting Civ4 under a debugger can cause an early exit before
+scenario setup, so startup itself is not captured. `crash-capture.json` records
+whether attachment succeeded. An attachment failure is reported but does not
+stop the test.
+The final capture status also records received debug-event counts; successful
+attachment alone is not proof that exception events were received. Process and
+exception events are flushed to `debug-events.jsonl`. After an abnormal exit
+without a captured dump, the launcher waits up to two minutes for Windows to
+finish its per-PID dump in `%LOCALAPPDATA%/CrashDumps` and copies it into the run
+as `crash-windows.dmp`. This fallback uses existing Windows dump configuration;
+it does not enable WER or change the registry. Missing dumps are recorded explicitly.
+Stall timeouts after GameStart save `hang-1.dmp` and `hang-2.dmp` with companion
+JSON files before terminating the child. The samples are separated by at least
+two seconds and contain live thread stacks/registers, allowing a busy loop or
+blocked thread to be located even when no exception occurs. Capture failures
+are recorded explicitly. This also works in performance mode without attaching
+a debugger; the extra work occurs only after a stall timeout.
+The launcher saves `crash-*.json` and `crash-*.dmp` inside the affected game folder
+on serious native faults and unhandled exceptions. JSON identifies the exception
+code/address, faulting thread, loaded module bases and last flushed heartbeat;
+access-violation parameters identify read/write/execute and the accessed address.
+First-chance evidence is captured before Civ4's handler runs: a handled fault can
+therefore leave evidence even when the game completes. `unhandled` reports mark
+exceptions that reached the debugger after application handlers failed. Capture
+does not suppress application exceptions or change gameplay decisions.
+
+Each batch preserves its exact `CvGameCoreDLL.dll` in `crash-build/`, along with
+matching PDB/map files when available and the native source diff. Reporting Release
+builds now generate optimized VC7.1 debug symbols; rebuild once after this change.
+Keep the batch folder for analysis after subsequent DLL rebuilds. In WinDbg, add
+`crash-build/` to the symbol/image paths, open the dump and select the JSON's
+`thread_id` before inspecting its stack/registers.
+These dumps save thread contexts without an exception stream, so use that thread
+selection rather than `.ecxr`. No debugger install, registry change or administrator
+access is needed to capture them. Capture errors are reported explicitly.
+
+Performance mode does not attach a debugger, to avoid debug-event overhead in
+measurements. Dumps and fault capture remain unverified in a user-operated game;
+implementing this support does not start a run.
 
 Copy `testing/observer.example.ini` to `testing/observer.local.ini` for optional launcher
 defaults. That file alone cannot activate instrumentation. The launcher
@@ -432,7 +516,12 @@ only at snapshot boundaries, so sparse sampling can miss short-lived changes.
 | Global food conservation and city export-cap checks | No | Yes |
 
 `arabian_army_state` events capture every combat unit each turn after Arabia
-has a city, even with `--record-interval` greater than one. They include group
+has a city, and for any other nation while its full jihad event is active,
+even with `--record-interval` greater than one. Each event identifies its player.
+Army recording version 2 adds the unit's `campaign`, effective `group_campaign`,
+`attached_general` flag and Unicode `general_name`; metadata maps campaign IDs
+to names. A campaign ID of -1 means unassigned. Observation does not run AI or
+pathfinding evaluations. The records also include group
 heads/sizes, activity, mission queues (`type, data1, data2, flags`), mission
 plot/unit targets, area AI/target city (`x, y, owner`), and head-group war plans
 (`team, at_war, plan`). Metadata maps AI/activity/war-plan IDs to names; mission

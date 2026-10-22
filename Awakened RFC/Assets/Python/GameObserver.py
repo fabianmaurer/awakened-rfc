@@ -92,7 +92,7 @@ class Observer:
         self.last_snapshot = 0
         self.civic_exposure = {}
         self.labor_evaluations = {}
-        self.arabian_positions = {}
+        self.jihad_positions = {}
         self.checkpoints_seen = set()
         self.camera_pending = False
         self.camera_elapsed = 0.0
@@ -383,7 +383,10 @@ class Observer:
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
-                        'army_recording_version': 1,
+                        'army_recording_version': 2,
+                        'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
+                                                 '1': 'Amr: Egypt / North Africa',
+                                                 '2': "Sa'd: Iraq / Persia"},
                         'seed_applied_at': 'GameStart, before RFC setup (map and initial placement already loaded)',
                         'mod_version': self.version, 'runtime_fingerprint': self.fingerprint,
                         'scenario': self.loaded_scenario, 'map_script': self.map_script,
@@ -658,36 +661,41 @@ class Observer:
         self.events = []
 
     def observe_arabian_army(self):
-        # Every boundary, independent of snapshot interval; no path/odds/RNG evaluation.
+        # Every boundary; observation reads state without evaluating AI or RNG.
         if not self.autoplay or self.mode == 'performance':
             return
         import Consts
-        player = self.gc.getPlayer(Consts.iArabia)
-        if not player.isAlive() or player.getNumCities() == 0:
-            return
-        units = []
         positions = {}
-        for unit in self.units(player):
-            if unit.baseCombatStr() <= 0:
+        for iPlayer in range(self.gc.getMAX_PLAYERS()):
+            player = self.gc.getPlayer(iPlayer)
+            if not player.isAlive() or player.getNumCities() == 0:
                 continue
-            state = unit.getObserverArmyState()
-            position = (unit.getX(), unit.getY())
-            previous = self.arabian_positions.get(unit.getID())
-            unchanged = 0
-            if previous and previous[0] == position:
-                unchanged = previous[1] + 1
-            positions[unit.getID()] = (position, unchanged)
-            state.update({'id': unit.getID(), 'created_turn': unit.getGameTurnCreated(),
-                          'type': self.gc.getUnitInfo(unit.getUnitType()).getType(),
-                          'ai': int(unit.getUnitAIType()), 'x': position[0], 'y': position[1],
-                          'damage': unit.getDamage(), 'moves_left': unit.movesLeft(),
-                          'cargo': unit.isCargo(), 'plot_owner': unit.plot().getOwner(),
-                          'unchanged_position_turns': unchanged})
-            units.append(state)
-        self.arabian_positions = positions
-        self.events.append({'event': 'arabian_army_state', 'player': Consts.iArabia,
-                            'turn': self.game.getGameTurn(), 'year': self.game.getGameTurnYear(),
-                            'units': units})
+            if iPlayer != Consts.iArabia and not player.isArabianJihadActive():
+                continue
+            units = []
+            for unit in self.units(player):
+                if unit.baseCombatStr() <= 0:
+                    continue
+                state = unit.getObserverArmyState()
+                position = (unit.getX(), unit.getY())
+                key = (iPlayer, unit.getID())
+                previous = self.jihad_positions.get(key)
+                unchanged = 0
+                if previous and previous[0] == position:
+                    unchanged = previous[1] + 1
+                positions[key] = (position, unchanged)
+                state.update({'id': unit.getID(), 'created_turn': unit.getGameTurnCreated(),
+                              'type': self.gc.getUnitInfo(unit.getUnitType()).getType(),
+                              'ai': int(unit.getUnitAIType()), 'x': position[0], 'y': position[1],
+                              'damage': unit.getDamage(), 'moves_left': unit.movesLeft(),
+                              'cargo': unit.isCargo(), 'plot_owner': unit.plot().getOwner(),
+                              'unchanged_position_turns': unchanged})
+                units.append(state)
+            # Retain the existing event name for recording-reader compatibility.
+            self.events.append({'event': 'arabian_army_state', 'player': iPlayer,
+                                'turn': self.game.getGameTurn(), 'year': self.game.getGameTurnYear(),
+                                'units': units})
+        self.jihad_positions = positions
 
     def observe_roman_campaign(self):
         if not self.autoplay or self.mode == 'performance':

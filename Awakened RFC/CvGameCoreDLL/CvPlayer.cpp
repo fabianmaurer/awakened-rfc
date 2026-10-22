@@ -492,6 +492,8 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
     m_bArabianJihadTriggered = false;
     m_bArabianJihadCairoSettlerGranted = false;
     m_aiArabianJihadConquests.clear();
+    m_iJihadCampaignsCreated = 0;
+    m_iJihadMilitaryConquests = 0;
     for (int iJihadTeam = 0; iJihadTeam < MAX_TEAMS; ++iJihadTeam) m_abArabianJihadEnemies[iJihadTeam] = false;
 	m_iPopRushHurryCount = 0;
 	m_iInflationModifier = 0;
@@ -1793,7 +1795,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	if (bArabianBirth && m_bIslamSuppressionRally && m_iIslamHolyCityDeadline >= 0 &&
 		GC.getGameINLINE().getGameTurn() <= m_iIslamHolyCityDeadline)
 		convertIslamicCity(pNewCity, !pNewCity->isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM")));
-	if (bConquest || bArabianBirth) applyArabianJihadConquest(pNewCity, iPopulation);
+	if (bConquest || bArabianBirth) applyArabianJihadConquest(pNewCity, iPopulation, bConquest && !bTrade);
 	if (bConquest && isArabianJihadActive())
 	{
 		// Cairo's Arabian naming tiles: reward its military capture once.
@@ -6432,12 +6434,8 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 			iProductionNeeded /= 100;
 			break;
 		case INDEPENDENT:
-			iProductionNeeded *= 200;
-			iProductionNeeded /= 100;
-			break;
 		case INDEPENDENT2:
-			iProductionNeeded *= 200;
-			iProductionNeeded /= 100;
+			// Independent city-states use normal production costs.
 			break;
 		case NATIVE:
 			iProductionNeeded *= 150;
@@ -6670,12 +6668,8 @@ int CvPlayer::getProductionNeeded(BuildingTypes eBuilding) const
 				iProductionNeeded /= 100;
 				break;
 			case INDEPENDENT:
-				iProductionNeeded *= 150;
-				iProductionNeeded /= 100;
-				break;
 			case INDEPENDENT2:
-				iProductionNeeded *= 150;
-				iProductionNeeded /= 100;
+				// Independent city-states use normal production costs.
 				break;
 			case NATIVE:
 				iProductionNeeded *= 150;
@@ -8131,6 +8125,7 @@ void CvPlayer::startArabianJihad()
     int iCityLoop;
     for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))
         convertIslamicCity(pCity, false);
+    createJihadCampaign(0);
     doArabianJihad();
     announceArabianJihad(true);
 }
@@ -8253,14 +8248,156 @@ void CvPlayer::doArabianJihad()
     }
 }
 
-void CvPlayer::applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation)
+void CvPlayer::applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation, bool bMilitary)
 {
     // Track first conquests even before the event, preventing recapture rewards.
     const int iPlot = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
     const bool bFirstConquest = std::find(m_aiArabianJihadConquests.begin(), m_aiArabianJihadConquests.end(), iPlot) == m_aiArabianJihadConquests.end();
     if (bFirstConquest) m_aiArabianJihadConquests.push_back(iPlot);
     if (!isArabianJihadActive()) return;
-    convertIslamicCity(pCity, bFirstConquest, iRecruitPopulation);
+    if (bFirstConquest && bMilitary) ++m_iJihadMilitaryConquests;
+    const bool bUnlock = bFirstConquest && bMilitary &&
+        ((m_iJihadCampaignsCreated == 1 && m_iJihadMilitaryConquests >= 1) ||
+         (m_iJihadCampaignsCreated == 2 && m_iJihadMilitaryConquests >= 3));
+    // The campaign army incorporates this capture's ordinary recruitment reward.
+    convertIslamicCity(pCity, bFirstConquest && !bUnlock, iRecruitPopulation);
+    if (bUnlock) createJihadCampaign(m_iJihadCampaignsCreated, getArabianJihadRecruitmentPackages(iRecruitPopulation));
+}
+
+int CvPlayer::nearestJihadCampaign(const CvPlot* pPlot) const
+{
+    if (!isArabianJihadActive() || m_iJihadCampaignsCreated == 0) return -1;
+    int iBest = -1;
+    int iBestDistance = MAX_INT;
+    int iLoop;
+    for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+    {
+        if (pUnit->isDelayedDeath() || pUnit->getJihadCampaign() < 0 || pUnit->getArea() != pPlot->getArea()) continue;
+        // Egyptian captures sustain the surviving western field campaign,
+        // even when Khalid or Sa'd happens to be closer to the city.
+        if (65 <= pPlot->getX_INLINE() && pPlot->getX_INLINE() <= 72 &&
+            30 <= pPlot->getY_INLINE() && pPlot->getY_INLINE() <= 37 &&
+            pUnit->getJihadCampaign() == 1 && pUnit->canDefend() &&
+            !pUnit->isCargo() && pUnit->AI_getUnitAIType() == UNITAI_ATTACK_CITY) return 1;
+        const int iDistance = plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pUnit->getX_INLINE(), pUnit->getY_INLINE());
+        if (iDistance < iBestDistance)
+        {
+            iBestDistance = iDistance;
+            iBest = pUnit->getJihadCampaign();
+        }
+    }
+    return iBest;
+}
+
+void CvPlayer::createJihadCampaign(int iCampaign, int iRecruitPackages)
+{
+    // This belongs to the event recipient, never to a civilization or player slot.
+    if (!isArabianJihadActive() || iCampaign != m_iJihadCampaignsCreated || iCampaign >= 3) return;
+    CvCity* pStage = getCapitalCity();
+    if (pStage == NULL) return;
+    if (iCampaign > 0)
+    {
+        const int iTargetX = iCampaign == 1 ? 70 : 82;
+        const int iTargetY = iCampaign == 1 ? 35 : 39;
+        int iBestDistance = MAX_INT;
+        int iCityLoop;
+        for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))
+        {
+            if (pCity->plot()->isVisibleEnemyUnit(getID())) continue;
+            const int iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), iTargetX, iTargetY);
+            if (iDistance < iBestDistance)
+            {
+                pStage = pCity;
+                iBestDistance = iDistance;
+            }
+        }
+    }
+    const UnitTypes eGeneral = (UnitTypes)GC.getInfoTypeForString("UNIT_GREAT_GENERAL");
+    if (eGeneral == NO_UNIT) return;
+    const wchar* aszNames[] = { L"Khalid ibn al-Walid", L"Amr ibn al-As", L"Sa'd ibn Abi Waqqas" };
+    const char* aszUnits[] = { "UNIT_SWORDSMAN", "UNIT_ARABIA_CAMELARCHER", "UNIT_CATAPULT", "UNIT_SPEARMAN" };
+    const char* aszCounts[] = { "RFCMP_ARABIAN_JIHAD_SWORDSMEN", "RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS", "RFCMP_ARABIAN_JIHAD_CATAPULTS" };
+    const int aiMinimum[] = { 3, 2, 2, 1 };
+    // Egypt keeps its extra infantry and siege; restore one Swordsman to Sa'd
+    // so the eastern campaign receives a small additional reinforcement.
+    const int aiCampaignAdjustment[3][4] = {
+        { 0, 0, 0, 0 }, { 1, 0, 1, 0 }, { 0, 0, -1, 0 }
+    };
+    std::vector<CvUnit*> apArmy;
+    for (int iType = 0; iType < 4; ++iType)
+    {
+        const UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString(aszUnits[iType]);
+        if (eUnit == NO_UNIT) return;
+        const int iBaseWanted = iType == 3 ? aiMinimum[iType] :
+            std::max(aiMinimum[iType], iRecruitPackages * std::max(0, GC.getDefineINT(aszCounts[iType])));
+        const int iWanted = iBaseWanted + aiCampaignAdjustment[iCampaign][iType];
+        int iFound = 0;
+        // The opening campaign reuses the starting army; later arrivals incorporate
+        // the recruitment suppressed on their unlocking capture, then top it up.
+        if (iCampaign == 0)
+        {
+            for (CLLNode<IDInfo>* pNode = pStage->plot()->headUnitNode(); pNode != NULL; pNode = pStage->plot()->nextUnitNode(pNode))
+            {
+                CvUnit* pUnit = ::getUnit(pNode->m_data);
+                if (iFound < iWanted && pUnit != NULL && pUnit->getOwnerINLINE() == getID() &&
+                    pUnit->getUnitType() == eUnit && pUnit->getJihadCampaign() < 0 &&
+                    pUnit->getLeaderUnitType() == NO_UNIT && !pUnit->isDelayedDeath() &&
+                    pUnit->AI_getUnitAIType() != UNITAI_CITY_DEFENSE)
+                {
+                    apArmy.push_back(pUnit);
+                    ++iFound;
+                }
+            }
+        }
+        while (iFound < iWanted)
+        {
+            CvUnit* pUnit = initUnit(eUnit, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_ATTACK_CITY);
+            if (pUnit == NULL) return;
+            apArmy.push_back(pUnit);
+            ++iFound;
+        }
+    }
+    CvUnit* pLeader = apArmy[0];
+    CvUnit* pGeneral = initUnit(eGeneral, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_GENERAL);
+    if (pGeneral == NULL) return;
+    pGeneral->setName(aszNames[iCampaign]);
+    // Normal attachment grants the Warlord promotion, graphics, name and the
+    // standard shared Great General XP exactly once, including for humans.
+    if (!pGeneral->lead(pLeader->getID()))
+    {
+        pGeneral->kill(false);
+        return;
+    }
+    ++m_iJihadCampaignsCreated;
+    for (int i = 0; i < (int)apArmy.size(); ++i)
+    {
+        CvUnit* pUnit = apArmy[i];
+        pUnit->setJihadCampaign(iCampaign);
+        pUnit->AI_setUnitAIType(UNITAI_ATTACK_CITY);
+        if (pUnit != pLeader) pUnit->joinGroup(pLeader->getGroup());
+        pUnit->finishMoves();
+    }
+    if (iCampaign == 1)
+    {
+        // Separate city-defense escorts follow Amr, then remain in Egyptian
+        // conquests. They never join the field campaign or absorb its general.
+        const char* aszEscorts[] = { "UNIT_LONGBOWMAN", "UNIT_SPEARMAN" };
+        for (int iEscort = 0; iEscort < 2; ++iEscort)
+        {
+            const UnitTypes eEscort = (UnitTypes)GC.getInfoTypeForString(aszEscorts[iEscort]);
+            if (eEscort == NO_UNIT) continue;
+            CvUnit* pEscort = initUnit(eEscort, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_CITY_DEFENSE);
+            if (pEscort != NULL)
+            {
+                pEscort->setScriptData("RFCMP_JIHAD_EGYPT_ESCORT");
+                pEscort->finishMoves();
+            }
+        }
+    }
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_JIHAD_CAMPAIGN_ARRIVAL", aszNames[iCampaign], pStage->getNameKey()),
+        "AS2D_UNIT_GREATPEOPLE", MESSAGE_TYPE_MAJOR_EVENT, GC.getUnitInfo(eGeneral).getButton(),
+        (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), pStage->getX_INLINE(), pStage->getY_INLINE(), true, true);
 }
 
 int CvPlayer::getArabianJihadRecruitmentPackages(int iPopulation) const
@@ -8285,6 +8422,7 @@ void CvPlayer::convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopu
 
     if (!bRecruit) return;
     const int iPackages = getArabianJihadRecruitmentPackages(iRecruitPopulation);
+    const int iCampaign = nearestJihadCampaign(pCity->plot());
     const char* aszUnits[] = { "UNIT_SWORDSMAN", "UNIT_ARABIA_CAMELARCHER", "UNIT_CATAPULT" };
     const char* aszCounts[] = { "RFCMP_ARABIAN_JIHAD_SWORDSMEN", "RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS", "RFCMP_ARABIAN_JIHAD_CATAPULTS" };
     for (int i = 0; i < 3; ++i)
@@ -8293,7 +8431,12 @@ void CvPlayer::convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopu
         for (int j = 0; j < iPackages * std::max(0, GC.getDefineINT(aszCounts[i])); ++j)
         {
             CvUnit* pUnit = initUnit(eUnit, pCity->getX_INLINE(), pCity->getY_INLINE(), i == 1 ? UNITAI_ATTACK : UNITAI_ATTACK_CITY);
-            if (pUnit != NULL) pUnit->finishMoves();
+            if (pUnit != NULL)
+            {
+                pUnit->setJihadCampaign(iCampaign);
+                if (pUnit->getJihadCampaign() >= 0) pUnit->AI_setUnitAIType(UNITAI_ATTACK_CITY);
+                pUnit->finishMoves();
+            }
         }
     }
 }
@@ -18158,6 +18301,8 @@ void CvPlayer::read(FDataStreamBase* pStream)
     pStream->Read(&m_iIslamHolyCityDeadline);
     pStream->Read(&m_bArabianJihadTriggered);
     pStream->Read(&m_bArabianJihadCairoSettlerGranted);
+    pStream->Read(&m_iJihadCampaignsCreated);
+    pStream->Read(&m_iJihadMilitaryConquests);
     pStream->Read(MAX_TEAMS, m_abArabianJihadEnemies);
     int iJihadConquests;
     pStream->Read(&iJihadConquests);
@@ -18606,6 +18751,8 @@ void CvPlayer::write(FDataStreamBase* pStream)
     pStream->Write(m_iIslamHolyCityDeadline);
     pStream->Write(m_bArabianJihadTriggered);
     pStream->Write(m_bArabianJihadCairoSettlerGranted);
+    pStream->Write(m_iJihadCampaignsCreated);
+    pStream->Write(m_iJihadMilitaryConquests);
     pStream->Write(MAX_TEAMS, m_abArabianJihadEnemies);
     pStream->Write((int)m_aiArabianJihadConquests.size());
     for (int i = 0; i < (int)m_aiArabianJihadConquests.size(); ++i) pStream->Write(m_aiArabianJihadConquests[i]);

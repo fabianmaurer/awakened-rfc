@@ -97,7 +97,7 @@ def apply_korea(text):
             return match[0]
         block = match[1]
         for key, value in [('CivType', 'CIVILIZATION_KOREA'), ('LeaderType', 'LEADER_WANGKON'),
-                           ('Team', 30), ('PlayableCiv', 1), ('MinorNationStatus', 0),
+                           ('Team', 30), ('PlayableCiv', int(turn != 0)), ('MinorNationStatus', 0),
                            ('LeaderName', 'TXT_KEY_KOREA_LEADER_' + str(turn)),
                            ('StartingX', capital[0]), ('StartingY', capital[1]),
                            ('StartingGold', 80 if turn <= 87 else 200 if turn < 271 else 400)]:

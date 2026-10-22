@@ -14248,13 +14248,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -14966,13 +14966,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -15684,13 +15684,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -16402,13 +16402,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -17120,13 +17120,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -17838,13 +17838,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -18556,13 +18556,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>

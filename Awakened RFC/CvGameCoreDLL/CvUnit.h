@@ -659,6 +659,9 @@ public:
 
 	DllExport const UnitTypes getLeaderUnitType() const;
 	void setLeaderUnitType(UnitTypes leaderUnitType);
+    int getJihadCampaign() const { return m_iJihadCampaign; }
+    void setJihadCampaign(int iCampaign) { m_iJihadCampaign = iCampaign; }
+    int getJihadGroupCampaign() const;
 
 	DllExport CvUnit* getCombatUnit() const;
 	void setCombatUnit(CvUnit* pUnit, bool bAttacking = false);
@@ -834,6 +837,7 @@ protected:
 	int m_iBaseCombat;
 	DirectionTypes m_eFacingDirection;
 	int m_iImmobileTimer;
+    int m_iJihadCampaign;
 
 	bool m_bMadeAttack;
 	bool m_bMadeInterception;

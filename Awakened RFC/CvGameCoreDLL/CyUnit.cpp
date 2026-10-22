@@ -26,7 +26,8 @@
 python::dict CyUnit::getObserverArmyState()
 {
 	python::dict data;
-	if (m_pUnit == NULL || !GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance || m_pUnit->getOwnerINLINE() != ARABIA) return data;
+	if (m_pUnit == NULL || !GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance) return data;
+    if (m_pUnit->getOwnerINLINE() != ARABIA && !GET_PLAYER(m_pUnit->getOwnerINLINE()).isArabianJihadActive()) return data;
 	// CvPlayer stores units as CvUnitAI (m_units); no AI evaluation is invoked.
 	const CvUnitAI* unit = static_cast<const CvUnitAI*>(m_pUnit);
 	CvSelectionGroup* group = m_pUnit->getGroup();
@@ -57,6 +58,11 @@ python::dict CyUnit::getObserverArmyState()
 	CvCity* target = m_pUnit->area()->getTargetCity(m_pUnit->getOwnerINLINE());
 	data["area_target"] = python::make_tuple(target ? target->getX_INLINE() : -1, target ? target->getY_INLINE() : -1, target ? (int)target->getOwnerINLINE() : -1);
 	data["jihad_active"] = GET_PLAYER(m_pUnit->getOwnerINLINE()).isArabianJihadActive();
+    data["campaign"] = unit->getJihadCampaign();
+    data["group_campaign"] = unit->getJihadGroupCampaign();
+    data["attached_general"] = unit->getLeaderUnitType() != NO_UNIT;
+    data["general_name"] = unit->getLeaderUnitType() != NO_UNIT ?
+        std::wstring(unit->getNameNoDesc().GetCString()) : std::wstring();
 	if (m_pUnit->isGroupHead())
 	{
 		python::list plans;

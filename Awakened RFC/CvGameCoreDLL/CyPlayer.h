@@ -24,6 +24,7 @@ public:
 	bool isNone() { return (m_pPlayer==NULL); }
     int getIslamFoundingDecision();
     bool hasArabianJihadTriggered();
+    bool isArabianJihadActive();
     int getCaliphatePartitionDecision();
     bool isCaliphatePartitionInProgress();
     int getCaliphateRealmMask();

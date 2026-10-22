@@ -818,6 +818,8 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 
 	m_iNumSessions = 1;
 
+    m_bShrinePopulationDirty = true;
+    m_aiShrinePopulationCommerce.clear();
 	m_iShrineBuildingCount = 0;
 	m_iNumCultureVictoryCities = 0;
 	m_eCultureVictoryCultureLevel = NO_CULTURELEVEL;
@@ -3494,6 +3496,53 @@ int CvGame::getNumFreeBonuses(BuildingTypes eBuilding)
 	}
 }
 
+
+int CvGame::getShrinePopulationCommerce(ReligionTypes eReligion)
+{
+    if (eReligion == NO_RELIGION) return 0;
+    if (m_bShrinePopulationDirty || (int)m_aiShrinePopulationCommerce.size() != GC.getNumReligionInfos())
+    {
+        // Exact shares for every possible religion count: LCM(1..7) = 420.
+        // Sum before dividing by five, so small mixed cities are not rounded away.
+        int iScale = 1;
+        for (int n = 2; n <= GC.getNumReligionInfos(); ++n)
+        {
+            int a = iScale, b = n;
+            while (b != 0) { const int r = a % b; a = b; b = r; }
+            iScale = iScale / a * n;
+        }
+        std::vector<__int64> aiPopulation(GC.getNumReligionInfos(), 0);
+        for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+        {
+            int iLoop;
+            for (CvCity* pCity = GET_PLAYER((PlayerTypes)iPlayer).firstCity(&iLoop); pCity != NULL;
+                 pCity = GET_PLAYER((PlayerTypes)iPlayer).nextCity(&iLoop))
+            {
+                const int iReligions = pCity->getReligionCount();
+                if (iReligions == 0) continue;
+                const __int64 iShare = (__int64)pCity->getPopulation() * (iScale / iReligions);
+                for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
+                    if (pCity->isHasReligion((ReligionTypes)iReligion)) aiPopulation[iReligion] += iShare;
+            }
+        }
+        m_aiShrinePopulationCommerce.assign(GC.getNumReligionInfos(), 0);
+        for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
+            m_aiShrinePopulationCommerce[iReligion] = (int)(aiPopulation[iReligion] / ((__int64)iScale * 5));
+        m_bShrinePopulationDirty = false;
+    }
+    return m_aiShrinePopulationCommerce[eReligion];
+}
+
+void CvGame::updateShrineCommerce()
+{
+    if (getShrineBuildingCount() == 0) return;
+    for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+    {
+        int iLoop;
+        for (CvCity* pCity = GET_PLAYER((PlayerTypes)iPlayer).firstCity(&iLoop); pCity != NULL;
+             pCity = GET_PLAYER((PlayerTypes)iPlayer).nextCity(&iLoop)) pCity->updateShrineCommerce();
+    }
+}
 
 int CvGame::countReligionLevels(ReligionTypes eReligion)
 {

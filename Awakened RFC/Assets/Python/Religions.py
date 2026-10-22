@@ -98,10 +98,37 @@ class Religions:
 
         def setup(self):
                 self.setSeed()
+                scriptDict = pickle.loads(gc.getGame().getScriptData())
+                scriptDict['bFirstTempleGranted'] = False
+                gc.getGame().setScriptData(pickle.dumps(scriptDict))
+                self.grantFirstTemple()
                 
 
        	
+        def grantFirstTemple(self):
+                # Traditional completion of Solomon's Temple, c. 957 BC.
+                # Later scenarios receive the grant at setup; no rebuilt reward.
+                game = gc.getGame()
+                if game.getGameTurnYear() < -957:
+                        return
+                scriptDict = pickle.loads(game.getScriptData())
+                if scriptDict.get('bFirstTempleGranted', False):
+                        return
+                iShrine = gc.getInfoTypeForString("BUILDING_JEWISH_SHRINE")
+                iClass = gc.getBuildingInfo(iShrine).getBuildingClassType()
+                if game.getBuildingClassCreatedCount(iClass) > 0:
+                        scriptDict['bFirstTempleGranted'] = True
+                        game.setScriptData(pickle.dumps(scriptDict))
+                        return
+                city = gc.getMap().plot(tJerusalem[0], tJerusalem[1]).getPlotCity()
+                if city.isNone() or not city.isHasReligion(iJudaism):
+                        return
+                scriptDict['bFirstTempleGranted'] = True
+                game.setScriptData(pickle.dumps(scriptDict))
+                city.setNumRealBuilding(iShrine, 1)
+
         def checkTurn(self, iGameTurn):
+                self.grantFirstTemple()
 
                 #print ("JUDAISM", i2085BC + 48*self.getSeed()/100)
                 #popup = Popup.PyPopup() 

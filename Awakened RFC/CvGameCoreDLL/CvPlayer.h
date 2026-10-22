@@ -51,7 +51,9 @@ public:
     bool isArabianJihadEnemy(TeamTypes eTeam) const;
     void startArabianJihad();
     void doArabianJihad();
-    void applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation);
+    void applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation, bool bMilitary);
+    void createJihadCampaign(int iCampaign, int iRecruitPackages = 0);
+    int nearestJihadCampaign(const CvPlot* pPlot) const;
     void announceArabianJihad(bool bStarting) const;
     void prepareIslamFounding();
     void processIslamFounding();
@@ -1196,6 +1198,8 @@ protected:
     bool m_bArabianJihadCairoSettlerGranted;
     bool m_abArabianJihadEnemies[MAX_TEAMS];
     std::vector<int> m_aiArabianJihadConquests;
+    int m_iJihadCampaignsCreated;
+    int m_iJihadMilitaryConquests;
 
 	uint m_uiStartTime;  // XXX save these?
 

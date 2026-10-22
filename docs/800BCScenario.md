@@ -79,6 +79,10 @@ These replacements reduce some starting armies' strength; balance and
 multiplayer behavior remain unverified. Unique units remain available through
 the normal technology and resource requirements.
 
+## Independent starting technologies
+
+Both Independent teams start with Agriculture, Animal Husbandry, Archery, Bronze Working, Fishing, Hunting, Masonry, Mining, Mysticism, Pottery and The Wheel. Their former empty technology lists prevented normal development: in the recorded 800 BC balance run `20261022-090848-c4a3c0`, Jerusalem learned Agriculture only in AD 110 and still lacked Masonry when barbarians razed it in AD 320. Workers and Walls still have to be produced normally; none are added free by this correction.
+
 ## Korea across the scenarios
 
 Korea has a dedicated major-player slot, separate from China, Japan and the
@@ -89,7 +93,7 @@ archery and bronze working. It has no starting Writing, Iron Working or wonder.
 
 | Scenario | Korean position |
 | --- | --- |
-| 3000 BC | Selectable future civilization; ordinary RFC birth around 800 BC, with one settler, one worker, three archers, two spearmen and a work boat. |
+| 3000 BC | Not selectable; AI civilization with ordinary RFC birth around 800 BC, with one settler, one worker, three archers, two spearmen and a work boat. |
 | 800 BC | Korean Chiefdoms with one settler near Pyongyang and no pre-founded city; choose the capital site. |
 | 600 AD | Korean Kingdoms under Yeongyang, capital Pyongyang; Gyeongju aggregates the southern kingdoms. This is not a claim that Goguryeo ruled the whole peninsula. |
 | 900 AD | Silla under Hyogong, capital Gyeongju, with Pyongyang as the northern regional center. The slot aggregates the fragmented Korean states. |
@@ -172,6 +176,6 @@ Normal later leaderhead replacements can replace the displayed ruler name.
   representatives rather than collective leadership labels. Legendary traditions
   and chronological flexibility are intentional; these choices do not assert
   that the individuals ruled in precisely 800 BC. Dangun also names Korea
-  during the 3000 BC scenario's wait for its later birth.
+  in the 3000 BC scenario before its later AI birth.
 
 No gameplay or multiplayer test was run. New-game load validation is pending.

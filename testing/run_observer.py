@@ -14,6 +14,8 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from observer_startup import SetupConfirmation
+from observer_crashes import CrashCapture, collect_windows_dump, capture_hang, native_dump_writer
+from observer_safety import BatchSafety
 
 TESTING = Path(__file__).resolve().parent
 ROOT = TESTING.parent
@@ -98,7 +100,8 @@ def main():
     parser.add_argument('--checkpoint-interval', type=int, help='Turns between saves; 0 disables saves')
     parser.add_argument('--record-interval', type=int, default=1, help='Turns between state snapshots (events are collected every turn)')
     parser.add_argument('--startup-timeout', type=int, default=300)
-    parser.add_argument('--stall-timeout', type=int, default=600)
+    parser.add_argument('--stall-timeout', type=int, default=60,
+                        help='Seconds without recorded progress before capturing stacks and stopping (default: 60)')
     args = parser.parse_args()
     args.scenario = args.scenario or tuple(SCENARIOS)[args.start if args.start is not None else 0]
     if args.reveal_map and args.observe_only:
@@ -128,6 +131,8 @@ def main():
         parser.error('Seeds must fit unsigned 32-bit values; timeouts must be positive')
     if not args.exe.is_file():
         parser.error('Game executable not found: ' + str(args.exe))
+    if not native_dump_writer().is_file():
+        parser.error('Missing x86 dump writer. Build observer_dump_writer with the legacy Makefile before running tests.')
     if game_running():
         parser.error('Close Civ4 before starting a batch; existing games are never terminated')
     installed = args.exe.resolve().parent / 'Mods/Awakened RFC'
@@ -162,11 +167,29 @@ def main():
         time.strftime('%Y%m%d-%H%M%S'), secrets.token_hex(3))
     batch = output_root / batch_name
     batch.mkdir(parents=True)
+    # Keep the exact native image and matching symbols even after later rebuilds.
+    evidence = batch / 'crash-build'
+    evidence.mkdir()
+    shutil.copy2(installed / 'Assets/CvGameCoreDLL.dll', evidence / 'CvGameCoreDLL.dll')
+    native = ROOT / 'Awakened RFC/CvGameCoreDLL'
+    symbol_dir = native / 'temp_files/reporting/Release'
+    built = symbol_dir / 'CvGameCoreDLL.dll'
+    if built.is_file() and hashlib.sha256(built.read_bytes()).digest() == installed_files['Assets/CvGameCoreDLL.dll']:
+        for name in ('CvGameCoreDLL.pdb', 'CvGameCoreDLL.map'):
+            if (symbol_dir / name).is_file():
+                shutil.copy2(symbol_dir / name, evidence / name)
+    if not (evidence / 'CvGameCoreDLL.pdb').is_file():
+        print('Crash capture: matching DLL symbols are unavailable; rebuild the reporting DLL for source-level stacks.', flush=True)
+    source_diff = subprocess.run(['git', 'diff', 'HEAD', '--', 'Awakened RFC/CvGameCoreDLL'],
+                                 cwd=ROOT, capture_output=True, check=True).stdout
+    (evidence / 'native-source.patch').write_bytes(source_diff)
     print('Batch: ' + str(batch), flush=True)
     results = []
     results_lock = threading.Lock()
     setup_lock = threading.Lock()
     stopping = threading.Event()
+    safety = BatchSafety(batch)
+    print('Emergency stop: Ctrl+Alt+Shift+F10 (works without game or console focus).', flush=True)
 
     def run_one(index, release_setup):
         seed = args.seed + index
@@ -206,9 +229,13 @@ def main():
                                                    'autoplay': not args.observe_only, 'version': version,
                                                    'unattended': unattended, 'reveal_map': args.reveal_map,
                                                    'jobs': args.jobs,
+                                                   'crash_capture': mode != 'performance',
                                                    'record_interval': args.record_interval,
                                                    'runtime_fingerprint': runtime_hash, 'command': command}, indent=2))
+        # Debug-event handling adds overhead; keep performance measurements untouched.
+        capture = None
         process = subprocess.Popen(command, cwd=args.exe.parent, env=env)
+        safety.assign(process)
         started = False
         last_progress = time.monotonic()
         heartbeat = None
@@ -220,6 +247,12 @@ def main():
             instruction = 'Scenario setup will be confirmed automatically.' if unattended else 'Confirm scenario setup if Civ4 displays it.'
             print('Game %d/%d, seed %d. %s' % (index+1, args.games, seed, instruction), flush=True)
             while process.poll() is None:
+                if capture:
+                    capture.pump(timeout=20)
+                if (batch / 'emergency-stop.json').exists():
+                    stopping.set()
+                if safety.helper.poll() is not None:
+                    raise RuntimeError('Emergency stop helper exited; stopping the batch')
                 if stopping.is_set():
                     outcome.update(status='cancelled')
                     break
@@ -242,6 +275,16 @@ def main():
                         break
                 if not started and (run / 'started.json').is_file():
                     started = True
+                    if mode != 'performance':
+                        try:
+                            candidate = CrashCapture(run)
+                            candidate.attach(process.pid)
+                            capture = candidate
+                            capture_status = {'attached': True, 'pid': process.pid}
+                        except OSError as error:
+                            capture_status = {'attached': False, 'pid': process.pid, 'error': str(error)}
+                            print('Crash capture unavailable; continuing test: ' + str(error), flush=True)
+                        (run / 'crash-capture.json').write_text(json.dumps(capture_status, indent=2), encoding='utf-8')
                     release_setup()
                     last_progress = time.monotonic()
                 current = read_status(run / 'heartbeat.json')
@@ -251,10 +294,26 @@ def main():
                 timeout = args.stall_timeout if started else args.startup_timeout
                 if time.monotonic() - last_progress > timeout:
                     outcome.update(status='stalled' if started else 'startup_timeout', last_heartbeat=heartbeat)
+                    safety.arm_cleanup_timeout()
+                    # A hung game raises no exception. Save two live thread-stack
+                    # samples before termination so loops and waits can be located.
+                    if started:
+                        capture_hang(run, process.pid, 'hang-1')
+                        sample_at = time.monotonic() + 2
+                        while process.poll() is None and time.monotonic() < sample_at:
+                            if capture:
+                                capture.pump(timeout=20)
+                            else:
+                                time.sleep(0.05)
+                        if process.poll() is None:
+                            capture_hang(run, process.pid, 'hang-2')
                     break
                 # Respond promptly between setup screens; retain the normal
                 # polling interval once the simulation is running.
-                time.sleep(0.05 if startup is not None and not started else 1)
+                # Pumping debug events also provides a bounded wait. Sleeping here
+                # would suspend the game for each loader/debug-output event.
+                if not capture:
+                    time.sleep(0.05 if startup is not None and not started else 1)
             else:
                 complete = read_status(run / 'complete.json')
                 if complete is not None:
@@ -270,11 +329,24 @@ def main():
             # Recorded turns/checkpoints have already been flushed to disk.
             if process.poll() is None:
                 process.terminate()
-                try:
-                    process.wait(timeout=30)
-                except subprocess.TimeoutExpired:
-                    process.kill()
-                    process.wait(timeout=10)
+                deadline = time.monotonic() + 30
+                while process.poll() is None and time.monotonic() < deadline:
+                    if capture:
+                        capture.pump(timeout=20)
+                    else:
+                        time.sleep(0.05)
+                if process.poll() is None:
+                    raise RuntimeError('Launcher-owned Civ4 did not exit after termination: %d' % process.pid)
+            if capture:
+                (run / 'crash-capture.json').write_text(json.dumps({
+                    'attached': True, 'pid': process.pid, 'debug_events': capture.event_counts,
+                    'saw_process_event': 3 in capture.event_counts,
+                    'saw_exit_event': capture.exited}, indent=2), encoding='utf-8')
+            if outcome['status'] == 'exited' and outcome.get('exit_code', 0) != 0 and not any(run.glob('crash-*.dmp')):
+                collect_windows_dump(run, process.pid, args.exe)
+            outcome['crash_reports'] = [p.name for p in sorted(run.glob('crash-*.json'))
+                                        if p.name != 'crash-capture.json']
+            outcome['hang_reports'] = [p.name for p in sorted(run.glob('hang-*.json'))]
             activation.unlink(missing_ok=True)
             try:
                 compress_recording(run)
@@ -329,6 +401,8 @@ def main():
         stopping.set()
         raise
     finally:
+        # Stop children before waiting for possibly blocked worker cleanup.
+        safety.close()
         executor.shutdown(wait=True, cancel_futures=True)
     analyzer = 'analyze_performance.py' if mode == 'performance' else 'analyze_observer.py'
     print('Finished. Analyse with: python testing/' + analyzer + ' "' + str(batch) + '"')
