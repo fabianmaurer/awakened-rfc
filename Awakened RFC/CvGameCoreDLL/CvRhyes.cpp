@@ -27,7 +27,7 @@ int startingTurn[32] = {
 203,
 205,
 207,
-213,
+297, // Netherlands: 1580 AD, nearest turn to the 1581 Act of Abjuration
 220,
 234,
 236,

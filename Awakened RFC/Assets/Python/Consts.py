@@ -222,7 +222,7 @@ tBirth = (
 203, #829AD
 205, #843AD
 207, #860AD
-213, #922AD
+297, #1580AD - nearest turn to the 1581 Act of Abjuration
 220, #989AD
 234, #1128AD
 236, #1150AD
@@ -261,7 +261,7 @@ tYear = (
 ("820 ", "TXT_KEY_AD"),
 ("840 ", "TXT_KEY_AD"),
 ("860 ", "TXT_KEY_AD"),
-("920 ", "TXT_KEY_AD"),
+("1580 ", "TXT_KEY_AD"),
 ("980 ", "TXT_KEY_AD"),
 ("1130 ", "TXT_KEY_AD"),
 ("1150 ", "TXT_KEY_AD"),

@@ -75,7 +75,7 @@ FALLBACKS = (
 def getProfile(civType, startTurn):
     profile = PROFILES.get(civType, DEFAULTS)
     if startTurn == 211 and civType in ("CIVILIZATION_EGYPT", "CIVILIZATION_CARTHAGE",
-                                       "CIVILIZATION_ABBASID", "CIVILIZATION_UMAYYAD"):
+                                       "CIVILIZATION_ABBASID", "CIVILIZATION_FATIMID", "CIVILIZATION_UMAYYAD"):
         return ("MONARCHY", "DESPOTISM", "SERFDOM", "WARRIOR_SOCIETY", "STATE_RELIGION")
     if civType == "CIVILIZATION_KOREA" and startTurn == 0:
         return PROFILES_800BC[civType]

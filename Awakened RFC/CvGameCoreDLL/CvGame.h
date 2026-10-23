@@ -487,6 +487,7 @@ public:
 	void doPapalFounding();
 	void doPapalLifecycle();
 	void notifyPapalRomeLost(PlayerTypes eOwner);
+	void announcePapalCouncil(const char* szEvent);
 	bool canPapalSurviveWithoutCities(PlayerTypes ePlayer) const;
 	int getPapalDevotionPercent(PlayerTypes ePlayer) const;
 	void resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoice);
@@ -723,6 +724,7 @@ protected:
 	bool m_abCrusadeHolyStates[MAX_PLAYERS];
 	int m_iPapalPlayer;
 	int m_iPapalRetryTurn;
+	int m_iPapalFirstCouncilTurn;
 	int m_iPapalRomeDeadline;
 	int m_iPapalDevotionFadeStart;
 	int m_iPapalDecisionSerial;

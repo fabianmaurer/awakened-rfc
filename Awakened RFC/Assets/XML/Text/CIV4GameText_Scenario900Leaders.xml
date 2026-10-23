@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
     <Tag>TXT_KEY_RFCMP_900_LEADER_0</Tag>
-    <English>Harun ibn Khumarawayh</English>
-    <French>Harun ibn Khumarawayh</French>
-    <German>Harun ibn Khumarawayh</German>
-    <Italian>Harun ibn Khumarawayh</Italian>
-    <Spanish>Harun ibn Khumarawayh</Spanish>
+    <English>Abd Allah al-Mahdi</English>
+    <French>Abd Allah al-Mahdi</French>
+    <German>Abd Allah al-Mahdi</German>
+    <Italian>Abd Allah al-Mahdi</Italian>
+    <Spanish>Abd Allah al-Mahdi</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_900_LEADER_2</Tag>
@@ -210,27 +210,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_900_INTRO_0</Tag>
-    <English>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</English>
-    <French>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</French>
-    <German>900 n. Chr.: Harun ibn Khumarawayh regiert das autonome Tulunidenemirat von Al-Qata'i aus. &#196;gypten und S&#252;dsyrien tragen euren Staat, w&#228;hrend der Abbasidenkalif die n&#246;rdlichen Grenzgebiete zur&#252;ckgewonnen hat. Sichert Heer und Schatzkammer; die Anerkennung des Kalifen bedeutet keine direkte Herrschaft Bagdads &#252;ber euer Land.</German>
-    <Italian>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</Italian>
-    <Spanish>900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.</Spanish>
-  </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_RFCMP_900_INTRO_6</Tag>
-    <English>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</English>
-    <French>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</French>
-    <German>900 n. Chr.: Ibrahim II. regiert das aghlabidische Ifriqiya aus der Region Kairouan. Zu eurem Reich geh&#246;ren Tripolis und Palermo, doch die Eroberung des byzantinischen Sizilien ist noch nicht abgeschlossen. Verteidigt eure afrikanischen St&#228;dte und sichert den Inselkrieg mit eurer Flotte. Das Fatimidenkalifat ist noch nicht gegr&#252;ndet.</German>
-    <Italian>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</Italian>
-    <Spanish>900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.</Spanish>
+    <English>900 AD: This scenario brings the Fatimid rise forward, combining Egypt, southern Syria, Ifriqiya and Muslim Sicily under Abd Allah al-Mahdi. Your capital is Al-Qata'i. Defend your wide realm and sustain the Sicilian campaign against Byzantium.</English>
+    <French>900 AD: This scenario brings the Fatimid rise forward, combining Egypt, southern Syria, Ifriqiya and Muslim Sicily under Abd Allah al-Mahdi. Your capital is Al-Qata'i. Defend your wide realm and sustain the Sicilian campaign against Byzantium.</French>
+    <German>900 n. Chr.: Dieses Szenario zieht den Aufstieg der Fatimiden vor. Abd Allah al-Mahdi herrscht von Al-Qata'i aus &#252;ber &#196;gypten, S&#252;dsyrien, Ifriqiya und das muslimische Sizilien. Verteidigt euer weites Reich und sichert den Feldzug gegen Byzanz auf Sizilien.</German>
+    <Italian>900 AD: This scenario brings the Fatimid rise forward, combining Egypt, southern Syria, Ifriqiya and Muslim Sicily under Abd Allah al-Mahdi. Your capital is Al-Qata'i. Defend your wide realm and sustain the Sicilian campaign against Byzantium.</Italian>
+    <Spanish>900 AD: This scenario brings the Fatimid rise forward, combining Egypt, southern Syria, Ifriqiya and Muslim Sicily under Abd Allah al-Mahdi. Your capital is Al-Qata'i. Defend your wide realm and sustain the Sicilian campaign against Byzantium.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_900_INTRO_12</Tag>
-    <English>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</English>
-    <French>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</French>
-    <German>900 n. Chr.: Al-Mu'tadid regiert das Abbasidenkalifat von Bagdad aus. Der Irak und die nordsyrischen Grenzgebiete bilden eure unmittelbare Machtbasis. Tuluniden und Aghlabiden regieren autonom; auch Iran und Arabien haben eigene Regionalm&#228;chte. Gewinnt Einfluss durch Diplomatie oder Eroberung zur&#252;ck.</German>
-    <Italian>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</Italian>
-    <Spanish>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.</Spanish>
+    <English>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and northern Syria form your direct power base. In this scenario the Fatimids already unite Egypt and Ifriqiya. Restore influence through diplomacy or conquest.</English>
+    <French>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and northern Syria form your direct power base. In this scenario the Fatimids already unite Egypt and Ifriqiya. Restore influence through diplomacy or conquest.</French>
+    <German>900 n. Chr.: Al-Mu'tadid regiert das Abbasidenkalifat von Bagdad aus. Irak und Nordsyrien bilden eure Machtbasis. In diesem Szenario vereinen die Fatimiden bereits &#196;gypten und Ifriqiya. Gewinnt durch Diplomatie oder Eroberung Einfluss zur&#252;ck.</German>
+    <Italian>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and northern Syria form your direct power base. In this scenario the Fatimids already unite Egypt and Ifriqiya. Restore influence through diplomacy or conquest.</Italian>
+    <Spanish>900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and northern Syria form your direct power base. In this scenario the Fatimids already unite Egypt and Ifriqiya. Restore influence through diplomacy or conquest.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_900_INTRO_27</Tag>

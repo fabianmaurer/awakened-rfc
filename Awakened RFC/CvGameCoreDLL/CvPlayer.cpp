@@ -6495,7 +6495,8 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 			break;
 		case INDEPENDENT:
 		case INDEPENDENT2:
-			// Independent city-states use normal production costs.
+		case BARBARIAN:
+			// Independent and Barbarian cities use normal production costs.
 			break;
 		case NATIVE:
 			iProductionNeeded *= 150;
@@ -6503,10 +6504,6 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 			break;
 		case CELTIA:
 			iProductionNeeded *= 150;
-			iProductionNeeded /= 100;
-			break;
-		case BARBARIAN:
-			iProductionNeeded *= 140;
 			iProductionNeeded /= 100;
 			break;
 		default:
@@ -12199,6 +12196,8 @@ PlayerColorTypes CvPlayer::getPlayerColor() const
 			strcmp(szType, "CIVILIZATION_ABBASID") == 0 ||
 			strcmp(szType, "CIVILIZATION_FATIMID") == 0 ||
 			strcmp(szType, "CIVILIZATION_UMAYYAD") == 0 ||
+			strcmp(szType, "CIVILIZATION_INDEPENDENT") == 0 ||
+			strcmp(szType, "CIVILIZATION_INDEPENDENT2") == 0 ||
 			strcmp(szType, "CIVILIZATION_KOREA") == 0)
 			return (PlayerColorTypes)kCiv.getDefaultPlayerColor();
 	}
@@ -24121,9 +24120,7 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
 		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
 	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
-		szForm = iYear >= 1400 ? L"CASTILE_ARAGON" :
-			(iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
-			 L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS");
+		szForm = iYear < 910 ? L"ASTURIAS" : iYear < 1230 ? L"LEON" : L"CASTILE";
 	else if (iPlayer == ENGLAND && bChristianMonarchy && iYear < 927)
 		szForm = L"ANGLO_SAXON";
 	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)

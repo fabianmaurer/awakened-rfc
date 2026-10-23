@@ -3010,6 +3010,9 @@ class CvMainInterface:
                                                                                                         if (ePlayer < con.iNumMajorPlayers): #in case byzantium is major
                                                                                                                 szTempBuffer = u"<color=%s>%d/3</color>" %(utils.getGoalsColor(ePlayer), utils.countAchievedGoals(ePlayer))
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
+                                                                                                        elif gc.getGame().isPapalState(ePlayer):
+                                                                                                                # The dedicated Papal slot has no historical goals.
+                                                                                                                szBuffer += " - " + localText.getText("TXT_KEY_AP_NO_UHV_SCORE", ())
                                                                                                 #Rhye - end victory
 
                                                                                                 #Rhye - start stability
@@ -3047,6 +3050,14 @@ class CvMainInterface:
                                                                                                                         #if (gc.getPlayer(ePlayer).isHuman()):
                                                                                                                         #        szTempBuffer = szTempBuffer + " (" + localText.getText("TXT_KEY_STABILITY_VERYSOLID", ()) + ")"
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
+                                                                                                        elif gc.getGame().isPapalState(ePlayer):
+                                                                                                                # Papal survival depends on retaining or recovering Rome.
+                                                                                                                pRome = CyMap().plot(60, 44).getPlotCity()
+                                                                                                                bHoldsRome = not pRome.isNone() and pRome.getOwner() == ePlayer
+                                                                                                                iSymbol = CyGame().getSymbolID(FontSymbols.POWER_CHAR) + 3
+                                                                                                                if bHoldsRome:
+                                                                                                                        iSymbol += 2
+                                                                                                                szBuffer += " - " + unichr(iSymbol)
                                                                                                 #Rhye - end stability
 
                                                                                 else:
@@ -3075,7 +3086,7 @@ class CvMainInterface:
 				for iRow in range(len(scoreRows)):
 					ePlayer, szBuffer, depth = scoreRows[iRow]
 					szName = "ScoreText" + str(ePlayer)
-					screen.setText(szName, "Background", szBuffer, CvUtil.FONT_LEFT_JUSTIFY, xResolution - 12 - iWidth + depth * 16, yCoord - ((iCount - 1 - iRow) * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1)
+					screen.setText(szName, "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 12 - depth * 16, yCoord - ((iCount - 1 - iRow) * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1)
 					screen.show(szName)
 
 				if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):

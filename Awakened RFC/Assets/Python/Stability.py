@@ -1064,6 +1064,8 @@ class Stability:
     
                 if (iGameTurn > con.i350BC and iGameTurn % 10 == 5):
                         for iPlayer in range(iNumPlayers):
+                                if utils.isIndependentMinor(iPlayer):
+                                        continue
                                 if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + 25 and not gc.getPlayer(iPlayer).isGoldenAge()):
                                         if (self.getStability(iPlayer) < -40): #civil war
                                                 print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))

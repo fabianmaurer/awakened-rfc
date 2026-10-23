@@ -186,7 +186,7 @@ void CvSelectionGroup::doTurn()
 
 		if (AI_isControlled())
 		{
-			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2) > 0)))
+			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0)))
 			{
 				setForceUpdate(true);
 			}
@@ -206,7 +206,7 @@ void CvSelectionGroup::doTurn()
 					}
 				}
 
-				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2) > 0)
+				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0)
 				{
 					clearMissionQueue();
 				}
@@ -504,7 +504,7 @@ void CvSelectionGroup::autoMission()
 					}
 				}
 
-				if (bVisibleHuman && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 1) > 0)
+				if (bVisibleHuman && GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 1, true, isWorkerGroup()) > 0)
 				{
 					clearMissionQueue();
 				}
@@ -2626,6 +2626,21 @@ void CvSelectionGroup::unloadAll()
 		}
 	}
 }
+
+bool CvSelectionGroup::isWorkerGroup() const
+{
+	for (CLLNode<IDInfo>* pNode = headUnitNode(); pNode != NULL; pNode = nextUnitNode(pNode))
+	{
+		CvUnit* pUnit = ::getUnit(pNode->m_data);
+		// Use the unit type, not temporary construction powers granted to soldiers.
+		if (pUnit->getUnitInfo().getWorkRate() > 0 || pUnit->AI_getUnitAIType() == UNITAI_WORKER_SEA)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 
 bool CvSelectionGroup::alwaysInvisible() const
 {

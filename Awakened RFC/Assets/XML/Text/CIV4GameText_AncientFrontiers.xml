@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_NUBIAN_RAIDERS</Tag>
+        <English>Nubian Raiders</English>
+        <French>Pillards nubiens</French>
+        <German>Nubische Pl&#252;nderer</German>
+        <Italian>Predoni nubiani</Italian>
+        <Spanish>Saqueadores nubios</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_LIBYAN_RAIDERS</Tag>
+        <English>Libyan Raiders</English>
+        <French>Pillards libyens</French>
+        <German>Libysche Pl&#252;nderer</German>
+        <Italian>Predoni libici</Italian>
+        <Spanish>Saqueadores libios</Spanish>
+    </TEXT>
+</Civ4GameText>

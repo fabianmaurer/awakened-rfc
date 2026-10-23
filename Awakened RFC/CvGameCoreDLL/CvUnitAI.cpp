@@ -1424,7 +1424,7 @@ void CvUnitAI::AI_workerMove()
 
     if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2))
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2, true, true))
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -4606,7 +4606,7 @@ void CvUnitAI::AI_workerSeaMove()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity())
 			{
@@ -6370,7 +6370,7 @@ void CvUnitAI::AI_networkAutomated()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -6449,7 +6449,7 @@ void CvUnitAI::AI_cityAutomated()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -15551,7 +15551,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 	int iBestValue = MAX_INT;
 	int iPass;
 	int iLoop;
-	int iCurrentDanger = GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot());
+	int iCurrentDanger = GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), -1, true, false, getGroup()->isWorkerGroup());
 
 	pCity = plot()->getPlotCity();
 
@@ -15593,7 +15593,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 							{
 								if (iPathTurns <= ((iPass == 2) ? 1 : iMaxPath))
 								{
-									if ((iPass > 0) || (getGroup()->canFight() || GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot()) < iCurrentDanger))
+									if ((iPass > 0) || (getGroup()->canFight() || GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot(), -1, true, false, getGroup()->isWorkerGroup()) < iCurrentDanger))
 									{
 										iValue = iPathTurns;
 										

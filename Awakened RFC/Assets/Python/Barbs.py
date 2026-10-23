@@ -90,20 +90,22 @@ iHandicapOld = 0
 
 class Barbs:
 
-        def makeUnit(self, iUnit, iPlayer, tCoords, iNum, iForceAttack):
+        def makeUnit(self, iUnit, iPlayer, tCoords, iNum, iForceAttack, sNameKey=None):
                 'Makes iNum units for player iPlayer of the type iUnit at tCoords.'
                 for i in range(iNum):
                         player = gc.getPlayer(iPlayer)
                         if (iForceAttack == 0):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
                         elif (iForceAttack == 1):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)                                  
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
                         elif (iForceAttack == 2):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK_SEA, DirectionTypes.DIRECTION_SOUTH)
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK_SEA, DirectionTypes.DIRECTION_SOUTH)
+                        elif (iForceAttack == 3):
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_PILLAGE, DirectionTypes.DIRECTION_SOUTH)
+                        if (sNameKey):
+                                unit.setName(CyTranslator().getText(sNameKey, ()))
 
 
-
-        	
         def checkTurn(self, iGameTurn):
             
                 #handicap level modifier
@@ -123,6 +125,16 @@ class Barbs:
                         self.spawnUnits( iBarbarian, (55, 10), (72, 29), con.iPanther, 1, iGameTurn, 4, 3, utils.outerInvasion, 0)
 
                         
+                # Small, staggered frontier raids for the 3000 BC Egyptian start.
+                # Give the first settlement twelve turns; stop before later armies.
+                if (gc.getGame().getStartTurn() == 0 and gc.getPlayer(con.iEgypt).isAlive()
+                    and gc.getPlayer(con.iEgypt).getNumCities() > 0
+                    and iGameTurn >= 12 and iGameTurn <= con.i850BC):
+                        # Nubians approach along the Nile; Libyans enter from the west.
+                        # Pillage AI and warriors keep these as light military pressure.
+                        self.spawnUnits(iBarbarian, (68, 30), (69, 31), con.iWarrior, 2, iGameTurn, 18, 12, utils.outerInvasion, 3, "TXT_KEY_UNIT_NUBIAN_RAIDERS")
+                        self.spawnUnits(iBarbarian, (65, 33), (67, 35), con.iWarrior, 1, iGameTurn, 28, 22, utils.outerInvasion, 3, "TXT_KEY_UNIT_LIBYAN_RAIDERS")
+
                 #celts
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i110BC):
                         self.spawnUnits( iCeltia, (49, 46), (65, 52), con.iCelticGallicWarrior, 1, iGameTurn, 7, 0, utils.outerInvasion, 0)
@@ -273,7 +285,7 @@ class Barbs:
                 self.foundCity(iIndependent2, lTyre, "Sur", iGameTurn, 1, con.iArcher, 1)
                 self.foundCity(iIndependent, lJerusalem, "Yerushalayim", iGameTurn, 2, con.iArcher, 3)                        
                 #self.foundCity(lBabylon, "Babel", iGameTurn, 1, con.iArcher, 1)
-                self.foundCity(iIndependent2, lSusa, "Shushan", iGameTurn, 1, con.iArcher, 1)
+                self.foundCity(iBarbarian, lSusa, "Shushan", iGameTurn, 1, con.iArcher, 1)
                 #self.foundCity(lKnossos, "Knossos", iGameTurn, 1, con.iWarrior, 0)                
                 self.foundCity(iBarbarian, lHattusas, "Hattusas", iGameTurn, 1, con.iChariot, 2)
                 self.foundCity(iIndependent, lSamarkand, "Afrasiyab", iGameTurn, 1, con.iArcher, 1)
@@ -466,14 +478,14 @@ class Barbs:
 
 
 
-        def spawnUnits(self, iCiv, tTopLeft, tBottomRight, iUnitType, iNumUnits, iTurn, iPeriod, iRest, function, iForceAttack):
+        def spawnUnits(self, iCiv, tTopLeft, tBottomRight, iUnitType, iNumUnits, iTurn, iPeriod, iRest, function, iForceAttack, sNameKey=None):
                 if (iTurn % iPeriod == iRest):
                         dummy, plotList = utils.squareSearch( tTopLeft, tBottomRight, function, [] )
                         if (len(plotList)):
                                 rndNum = utils.getFakeRandNum(len(plotList), 'Spawn units')
                                 result = plotList[rndNum]
                                 if (result):
-                                        self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack)
+                                        self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack, sNameKey)
                                         # Observe successful scripted groups without another
                                         # spawn search, unit creation or RNG draw.
                                         if REPORTING_ENABLED:

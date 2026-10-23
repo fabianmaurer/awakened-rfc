@@ -1139,6 +1139,8 @@ class RiseAndFall:
 
         def collapseByBarbs(self, iGameTurn):
                 for iCiv in range(iNumPlayers):
+                        if utils.isIndependentMinor(iCiv):
+                                continue
                         if (gc.getPlayer(iCiv).isHuman() == 0 and gc.getPlayer(iCiv).isAlive()):
                                 if (iGameTurn >= con.tBirth[iCiv] + 25):
                                         iNumCities = gc.getPlayer(iCiv).getNumCities()
@@ -1172,6 +1174,8 @@ class RiseAndFall:
                 #lNumCitiesNew = con.l0Array
                 lNumCitiesNew = con.l0ArrayTotal #for late start
                 for iCiv in range(iNumTotalPlayers):
+                        if utils.isIndependentMinor(iCiv):
+                                continue
                         if (iCiv < iNumActivePlayers or (iCiv == iCeltia and gc.getPlayer(con.iCeltia).getCivilizationType() == 4)): #late start condition (RFCMP)
                                 pCiv = gc.getPlayer(iCiv)
                                 teamCiv = gc.getTeam(pCiv.getTeam())
@@ -1218,6 +1222,8 @@ class RiseAndFall:
         def collapseMotherland(self, iGameTurn):
                 #collapses if completely out of broader areas
                 for iCiv in range(iNumPlayers):
+                        if utils.isIndependentMinor(iCiv):
+                                continue
                         pCiv = gc.getPlayer(iCiv)
                         teamCiv = gc.getTeam(pCiv.getTeam())
                         if (pCiv.isHuman() == 0 and pCiv.isAlive() and pCiv.getNumCities() > 0):
@@ -2727,6 +2733,12 @@ class RiseAndFall:
                                                                         teamLoopVassal.setAtWar(iCiv, True)
                                                                         teamCiv.setAtWar(iLoopVassal, True)
                                 
+
+
+                # Uruk's Independent faction begins at peace with Babylon.
+                # Apply after the random starting wars; later wars remain possible.
+                if (gc.getGame().getStartTurn() == 0):
+                        gc.getTeam(pBabylonia.getTeam()).makePeace(pIndependent.getTeam())
 
 
         def immuneMode(self, argsList): 

@@ -5689,6 +5689,30 @@
     <Spanish>Republic of Venice</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DN_SPA_ASTURIAS</Tag>
+    <English>Kingdom of Asturias</English>
+    <French>Kingdom of Asturias</French>
+    <German>K&#246;nigreich Asturien</German>
+    <Italian>Kingdom of Asturias</Italian>
+    <Spanish>Kingdom of Asturias</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_LEON</Tag>
+    <English>Kingdom of Le&#243;n</English>
+    <French>Kingdom of Le&#243;n</French>
+    <German>K&#246;nigreich Le&#243;n</German>
+    <Italian>Kingdom of Le&#243;n</Italian>
+    <Spanish>Kingdom of Le&#243;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_SPA_CASTILE</Tag>
+    <English>Crown of Castile</English>
+    <French>Crown of Castile</French>
+    <German>Krone Kastilien</German>
+    <Italian>Crown of Castile</Italian>
+    <Spanish>Crown of Castile</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DN_SPA_CASTILE_ARAGON</Tag>
     <English>Castile and Aragon</English>
     <French>Castile and Aragon</French>

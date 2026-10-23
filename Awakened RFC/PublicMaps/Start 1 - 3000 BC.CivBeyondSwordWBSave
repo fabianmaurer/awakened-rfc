@@ -318,7 +318,7 @@ BeginPlayer
 	Team=31
 	CivType=CIVILIZATION_NATIVE_AMERICA
 	LeaderType=LEADER_SITTING_BULL
-	PlayableCiv=1
+	PlayableCiv=0
 	MinorNationStatus=0
 	Handicap=HANDICAP_PRINCE
 	CivDesc=TXT_KEY_MISS_DESC
@@ -28806,6 +28806,7 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	ImprovementType=IMPROVEMENT_FARM
 EndPlot
 BeginPlot
 	x=76,y=39
@@ -29176,6 +29177,23 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	BeginCity
+		CityOwner=32
+		CityName=Uruk
+		CityPopulation=4
+		BuildingType=BUILDING_GRANARY
+		BuildingType=BUILDING_BARRACKS
+		BuildingType=BUILDING_WALLS
+		BuildingType=BUILDING_OBELISK
+	EndCity
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
 EndPlot
 BeginPlot
 	x=77,y=39
@@ -29563,6 +29581,7 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	ImprovementType=IMPROVEMENT_FARM
 EndPlot
 BeginPlot
 	x=78,y=40

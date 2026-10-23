@@ -156,6 +156,7 @@ void CvPlayer::configureCaliphateSuccessor()
             {
                 if (realm == 0) bHomeland = x >= 74 && x <= 83 && y >= 31 && y <= 46 &&
                     !(x <= 74 && y >= 38); // Tulunid southern Syria is autonomous.
+                if (realm == 1) bHomeland = x >= 56 && x <= 74 && y >= 33 && y <= 42;
                 if (realm == 2) bHomeland = x >= 49 && x <= 56 && y >= 40 && y <= 46;
             }
             settlersMaps[getID()][EARTH_Y - 1 - y][x] = bHomeland ? 300 : 20;

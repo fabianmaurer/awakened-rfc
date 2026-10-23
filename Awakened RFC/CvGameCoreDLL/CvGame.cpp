@@ -814,6 +814,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_votesTriggered.removeAll();
 	m_iPapalPlayer = NO_PLAYER;
 	m_iPapalRetryTurn = 0;
+	m_iPapalFirstCouncilTurn = -1;
 	m_iPapalRomeDeadline = -1;
 	m_iPapalDevotionFadeStart = -1;
 	m_iPapalDecisionSerial = 0;
@@ -8114,6 +8115,7 @@ int CvGame::calculateSyncChecksum()
     }
 	iValue += (m_iPapalPlayer + 1) * 269 + m_iPapalRetryTurn * 271 + m_iPapalDecisionSerial * 277 + m_bPapalPalaceEffects * 281;
 	iValue += (m_iPapalRefuser + 1) * 283;
+	iValue += (m_iPapalFirstCouncilTurn + 1) * 313;
 	iValue += (m_iPapalRomeDeadline + 1) * 307 + (m_iPapalDevotionFadeStart + 1) * 311;
 	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) iValue += m_aiPapalRefusalPenalties[iRefusal] * (iRefusal + 1) * 293;
 	for (std::map<int, PlayerTypes>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p) iValue += (p->first + 1) * (p->second + 1) * 283;
@@ -8745,6 +8747,7 @@ void CvGame::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_PLAYERS, m_abCrusadeHolyStates);
 	pStream->Read(&m_iPapalPlayer);
 	pStream->Read(&m_iPapalRetryTurn);
+	pStream->Read(&m_iPapalFirstCouncilTurn);
 	pStream->Read(&m_iPapalRomeDeadline);
 	pStream->Read(&m_iPapalDevotionFadeStart);
 	pStream->Read(&m_iPapalDecisionSerial);
@@ -8987,6 +8990,7 @@ void CvGame::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_PLAYERS, m_abCrusadeHolyStates);
 	pStream->Write(m_iPapalPlayer);
 	pStream->Write(m_iPapalRetryTurn);
+	pStream->Write(m_iPapalFirstCouncilTurn);
 	pStream->Write(m_iPapalRomeDeadline);
 	pStream->Write(m_iPapalDevotionFadeStart);
 	pStream->Write(m_iPapalDecisionSerial);
@@ -9719,6 +9723,33 @@ void CvGame::refreshPapalPalaceEffects()
 	gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
 }
 
+void CvGame::announcePapalCouncil(const char* szEvent)
+{
+    const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+    for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+    {
+        CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+        // Retain Christian affiliation under Tolerance, which hides state religion.
+        if (!kPlayer.isAlive() || kPlayer.getLastStateReligion() != eChristianity) continue;
+        const char* szTone = "CASUAL";
+        if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) ||
+            kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) szTone = "SCEPTICAL";
+        else if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"))) szTone = "DEVOUT";
+        else if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION"))) szTone = "RESPECTFUL";
+        const CvString szKey = CvString::format("TXT_KEY_AP_COUNCIL_%s_%s", szEvent, szTone);
+        const CvWString szText = gDLL->getText(szKey.c_str(), std::max(0, m_iPapalFirstCouncilTurn - getGameTurn()));
+        gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
+            szText, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+            (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), 60, 44);
+        if (kPlayer.isHuman())
+        {
+            // Informational only: addressed delivery, with no gameplay callback.
+            CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_TEXT);
+            if (pInfo) { pInfo->setText(szText); gDLL->getInterfaceIFace()->addPopup(pInfo, (PlayerTypes)i); }
+        }
+    }
+}
+
 void CvGame::notifyPapalRomeLost(PlayerTypes eOwner)
 {
 	if (!isPapalState(eOwner) || !GET_PLAYER(eOwner).isAlive() || m_iPapalRomeDeadline >= 0) return;
@@ -9781,15 +9812,12 @@ void CvGame::doPapalLifecycle()
 			pPlot->setCulture(ePope, 0, true, false);
 		}
 		kPope.setAlive(false); // Disband remaining units as in ordinary elimination.
-		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
-			if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
-				gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
-					gDLL->getText("TXT_KEY_AP_DISSOLVED"), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
-					(ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), 60, 44);
 #if ARFC_ENABLE_REPORTING
 		reportApostolicMechanic("papal_dissolved", ePope, m_iPapalRomeDeadline);
 #endif
 	}
+	announcePapalCouncil("DISSOLVED");
+	m_iPapalFirstCouncilTurn = -1;
 	// Death clears the identity, so a later eligible Rome event can restore it.
 	disablePapalPalaceEffects();
 	clearPapalRefusalPenalties();
@@ -9847,6 +9875,7 @@ void CvGame::resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoic
 				reportApostolicMechanic("papal_penalty_applied", ePlayer, i, 2, m_aiPapalRefusalPenalties[i], GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra(ePlayer));
 #endif
 			}
+		announcePapalCouncil("REFUSED");
 		m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
 	}
 }
@@ -9863,6 +9892,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 		addPlayer(ePope, (LeaderHeadTypes)GC.getInfoTypeForString("LEADER_INDEPENDENT"), (CivilizationTypes)GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT"));
 	}
 	m_iPapalPlayer = ePope;
+	GC.getInitCore().setLeaderName(ePope, L"TXT_KEY_AP_POPE");
 	// Papal identity applies to the new state and to an owner becoming Pope.
 	GC.getInitCore().setColor(ePope, (PlayerColorTypes)GC.getInfoTypeForString("PLAYERCOLOR_PAPAL"));
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
@@ -9907,14 +9937,13 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	pRome->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), 1);
 	m_bPapalCivicOverride = false;
 	refreshPapalPalaceEffects();
+	m_iPapalFirstCouncilTurn = std::max(getGameTurn() + 3, getStartTurn() + 10);
 	setVoteTimer((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), 0);
 #if ARFC_ENABLE_REPORTING
 	reportApostolicMechanic("papacy_founded", ePope, eOwner, bBecome, pRome->getOwnerINLINE(), isCouncilActive());
 #endif
 	m_papalDecisions.clear();
-	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
-		if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
-			gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_AP_PAPACY_ESTABLISHED"), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), 60, 44);
+	announcePapalCouncil("ESTABLISHED");
 }
 
 namespace
@@ -10441,10 +10470,10 @@ CvWString CvGame::getCouncilProposalText(const VoteSelectionSubData& kData) cons
 		bool abTargets[MAX_TEAMS]; getCrusadeTargets(kData.iCityId, abTargets);
 		szText += NEWLINE + gDLL->getText("TXT_KEY_AP_CRUSADE_TARGETS");
 		for (int t = 0; t < MAX_TEAMS; ++t) if (abTargets[t]) szText += L" " + CvWString(GET_TEAM((TeamTypes)t).getName()) + L";";
-		szText += NEWLINE + gDLL->getText("TXT_KEY_AP_CRUSADE_DURATION", crusadeDuration("AP_CRUSADE_BASE_TURNS"), crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS"));
 	}
 	else if (kData.ePlayer != NO_PLAYER) szText += L": " + CvWString(GET_TEAM(GET_PLAYER(kData.ePlayer).getTeam()).getName());
-	szText += NEWLINE + gDLL->getText(GC.getVoteInfo(kData.eVote).isForceWar() ? "TXT_KEY_AP_CRUSADE_EFFECT" :
+	if (!GC.getVoteInfo(kData.eVote).isForceWar())
+		szText += NEWLINE + gDLL->getText(
 		GC.getVoteInfo(kData.eVote).isForcePeace() ? "TXT_KEY_AP_TRUCE_EFFECT" :
 		GC.getVoteInfo(kData.eVote).isOpenBorders() ? "TXT_KEY_AP_PILGRIM_EFFECT" :
 		GC.getVoteInfo(kData.eVote).isDefensivePact() ? "TXT_KEY_AP_LEAGUE_EFFECT" :
@@ -11032,14 +11061,24 @@ void CvGame::doVoteResults()
 				}
 
 				if (isApostolicCouncil(eVoteSource))
-					szBuffer = pVoteTriggered->kVoteOption.szText + NEWLINE + gDLL->getText(bPassed ? "TXT_KEY_AP_RESULT_PASS" : "TXT_KEY_AP_RESULT_FAIL", getCouncilTally(pVoteTriggered->getID(), 0, false), getCouncilTally(pVoteTriggered->getID(), 2, false), getCouncilTally(pVoteTriggered->getID(), 1, false), getCouncilTally(pVoteTriggered->getID(), 4, false));
+				{
+					const int iTotal = std::max(1, getCouncilTally(pVoteTriggered->getID(), 4, false));
+					const CvWString szYes = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 0, false) + iTotal / 2) / iTotal);
+					const CvWString szNo = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 2, false) + iTotal / 2) / iTotal);
+					const CvWString szAbstain = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 1, false) + iTotal / 2) / iTotal);
+					szBuffer = gDLL->getText(bPassed ? "TXT_KEY_AP_RESULT_PASS" : "TXT_KEY_AP_RESULT_FAIL", szYes.GetCString(), szNo.GetCString(), szAbstain.GetCString());
+					// Keep the proposal title/target, without repeating its rules.
+					szBuffer += NEWLINE + pVoteTriggered->kVoteOption.szText.substr(0, pVoteTriggered->kVoteOption.szText.find(L'\n'));
+				}
 				else
 				szBuffer += NEWLINE + gDLL->getText((bPassed ? "TXT_KEY_POPUP_DIPLOMATIC_VOTING_SUCCEEDS" : "TXT_KEY_POPUP_DIPLOMATIC_VOTING_FAILURE"), GC.getVoteInfo(eVote).getTextKeyWide(), countVote(*pVoteTriggered, PLAYER_VOTE_YES), getVoteRequired(eVote, eVoteSource), countPossibleVote(eVote, eVoteSource));
 
+				if (!isApostolicCouncil(eVoteSource))
 				for (int iI = PLAYER_VOTE_NEVER; iI <= PLAYER_VOTE_YES; ++iI)
 				{
 					for (int iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
 					{
+						const int iVotes = GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource);
 						if (GET_PLAYER((PlayerTypes)iJ).isVotingMember(eVoteSource))
 						{
 							if (getPlayerVote(((PlayerTypes)iJ), pVoteTriggered->getID()) == (PlayerVoteTypes)iI)
@@ -11047,16 +11086,16 @@ void CvGame::doVoteResults()
 								switch ((PlayerVoteTypes)iI)
 								{
 								case PLAYER_VOTE_ABSTAIN:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_ABSTAINS", GET_PLAYER((PlayerTypes)iJ).getNameKey(), GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_ABSTAINS", GET_PLAYER((PlayerTypes)iJ).getNameKey(), iVotes);
 									break;
 								case PLAYER_VOTE_NEVER:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_VOTE_NEVER", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_VOTE_NEVER", iVotes);
 									break;
 								case PLAYER_VOTE_NO:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_NO", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_NO", iVotes);
 									break;
 								case PLAYER_VOTE_YES:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_YES", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_YES", iVotes);
 									break;
 								default:
 									FAssert(false);
@@ -11079,7 +11118,8 @@ void CvGame::doVoteResults()
 				CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
 				if (kPlayer.isHuman())
 				{
-					bool bShow = kPlayer.isVotingMember(pVoteTriggered->eVoteSource);
+					bool bShow = isApostolicCouncil(eVoteSource) ?
+						pVoteTriggered->aiCouncilWeight[iI] > 0 : kPlayer.isVotingMember(pVoteTriggered->eVoteSource);
 
 					if (bShow)
 					{
@@ -11133,6 +11173,7 @@ void CvGame::doVoteSelection()
 		VoteSourceTypes eVoteSource = (VoteSourceTypes)iI;
 		if (isApostolicCouncil(eVoteSource))
 		{
+			if (m_iPapalFirstCouncilTurn >= 0 && getGameTurn() < m_iPapalFirstCouncilTurn) continue;
 			if (getCouncilVoteId() >= 0) continue;
 			bool bPending = false;
 			int iSelection;

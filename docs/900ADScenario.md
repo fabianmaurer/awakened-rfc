@@ -22,7 +22,25 @@ coastal ship tile. All six receive workers and their existing starting armies;
 naval civilizations retain their starting ships. They do not receive a second
 birth package or automatic birth territory transfers.
 
-Spain represents Alfonso III's Asturias and starts its settlers, workers and
+Spain (Asturias), France, England and Germany each receive one Christian
+missionary with their cityless starting forces, reflecting their Christianity
+by 900 AD. Russia and the Vikings do not, since their conversions came later.
+
+Every starting nation receives explored regional map data once during scenario
+setup. European kingdoms know their homelands and neighboring regions; France,
+Asturias and Germany also know Mediterranean approaches, England the Channel and
+North Sea, the Vikings Scandinavia and nearby northern coasts, and Russia eastern
+Europe and the Black Sea. The Islamic states and Byzantium receive broader views
+of their Mediterranean or Near Eastern networks. China, Korea, Japan and Khmer
+receive regional Asian knowledge; Maya and Mississippians know their own American
+regions without revealing the Old World. Every existing city, including those of
+Independent factions, also reveals its surrounding four-tile hinterland. This is
+exploration knowledge, not permanent visibility of units or subsequent changes;
+it applies to new starts and is not reapplied when loading a save.
+
+Spain represents Alfonso III's Asturias. Its Christian monarchy is named Kingdom
+of Asturias until 910, Kingdom of León from 910 to 1230, and Crown of Castile from
+1230 to 1479, followed by the existing Spanish titles. It starts its settlers, workers and
 army in the northern Oviedo region at (51,46), rather than the normal Madrid-area
 birth tile (52,43). It receives one settler to establish its northern base,
 with subsequent expansion south through conquest. This is a scenario-specific starting position;
@@ -33,15 +51,16 @@ was at war with Asturias on the same date in 900.
 
 China, Japan and Khmer also start immediately. The Islamic states start with
 the established positions described below. Later civilizations,
-beginning with the Netherlands, retain their normal future births and starting
-gold. The selection rules for later joining follow the existing 600 AD scenario.
+including the Netherlands, retain their normal future births and starting
+gold. The Netherlands spawn in 1580 AD, the nearest game turn to the 1581 Act
+of Abjuration. The selection rules for later joining follow the existing 600 AD scenario.
 
 This is a settlement scenario, not a reconstruction of every state in 900 AD.
 Terrain, resources and most non-European cities come from the 600 AD map.
 Western and northern European starting regions are cleared of cities, units,
 culture and improvements, with the southern Iberian emirate described below;
 Italy and Byzantium remain settled. The Chinese core
-starts Chinese; Egypt and southern Syria start Tulunid. Makkah is the Islamic
+starts Chinese; Egypt, Ifriqiya and southern Syria start Fatimid. Makkah is the Islamic
 holy city, because the normal founding event predates this start. Existing
 leader portraits, unique powers and civilization slots are reused. Ancient historical
 victories whose early objectives have already expired are disabled as in the
@@ -51,8 +70,7 @@ other late starts.
 
 | Slot | German displayed name |
 | --- | --- |
-| Egypt / Tulunids | Harun ibn Khumarawayh |
-| Carthage / Aghlabids | Ibrahim II ibn Ahmad |
+| Egypt / Fatimids | Abd Allah al-Mahdi |
 | China | Tang Zhaozong |
 | Japan | Daigo |
 | Vikings | Harald Schönhaar |
@@ -78,46 +96,41 @@ initialization for human and AI players. Later leader changes follow normal rule
 | State | Playable slot | Ruler | Capital | Direct starting cities |
 | --- | --- | --- | --- | --- |
 | Abbasid caliphate | Arabia (12), `CIVILIZATION_ABBASID` | al-Mu'tadid | Baghdad | Baghdad, Al-Raqqa, Al-Mawsil, Al-Basra, Makkah |
-| Tulunid emirate | Egypt (0) | Harun ibn Khumarawayh | Al-Qata'i | Al-Qata'i, Al-Iskandariyya, Barqa, Al-Quds, Dimashq |
-| Aghlabid emirate | Carthage (6) | Ibrahim II ibn Ahmad | Raqqada | Raqqada, Tarabulus, Balarm |
+| Fatimid caliphate | Egypt (0), `CIVILIZATION_FATIMID` | Abd Allah al-Mahdi | Al-Qata'i | Al-Qata'i, Al-Iskandariyya, Barqa, Al-Quds, Dimashq, Raqqada, Tarabulus, Balarm |
 | Umayyad emirate | Successor slot (27), `CIVILIZATION_UMAYYAD` | Abd Allah ibn Muhammad | Cordoba | Cordoba |
 
-These states start with garrisons, field troops, workers, local roads, markets,
-granaries and walls; capitals also have palaces and libraries. The Tulunids,
-Aghlabids and Umayyads receive 200 gold each, the Abbasids 300. Each capital has
-three longbowmen, one spearman, two horse archers, two swordsmen and two workers;
-other authored cities have two longbowmen. All four use the existing medieval
-Arabian technology package and prefer monarchy, despotism, serfdom, warrior
-society and state religion. The original Arabian settlers and expansion army
-are not created in this scenario; the 600 AD start retains its existing forces.
-Each state has its own opening briefing (English and German; other languages
-currently use English). Names and selection labels have all five languages.
+These three states use the existing Arab successor civilizations, including
+camel archers, madrassas and regional settlement preferences. They start with
+garrisons, field troops, workers, roads, markets, granaries and walls; capitals
+also have palaces and libraries. The Fatimids receive the combined former
+Egyptian and Ifriqiyan forces, fleet and 400 gold. Raqqada retains its regional
+army and library; the single palace is at Al-Qata'i. The Abbasids receive 300
+gold and the Umayyads 200. All three use the medieval Arabian technology
+package and prefer monarchy, despotism, serfdom, warrior society and state religion.
+The Fatimids inherit Ifriqiya's starting war with Byzantium and its two galleys
+and trireme. The original Arabian expansion army is not created here.
 
-The Tulunids and Aghlabids acknowledge nominal Abbasid authority historically,
-but are separate, autonomous playable states here. They are not locked into
-Civ4's military vassal rules. The Aghlabids start at war with Byzantium, with two
-galleys and a trireme near Ifriqiya; the scenario does not grant them Taormina,
-which fell in 902. Raqqada and nearby Kairouan share one tile. Al-Qata'i and
-Fustat likewise share the inherited Egyptian urban tile; Cairo was not founded
-until 969. The inherited northern-Levant tile represents Damascus approximately;
-Al-Raqqa, Mosul and Basra also use nearby passable tiles on the compressed map.
-Population and force sizes are gameplay weights, not historical census totals.
+This deliberately brings the Fatimid rise forward: historically their caliphate
+was founded in Ifriqiya in 909 and conquered Egypt in 969. In this scenario,
+Abd Allah al-Mahdi already rules both regions, southern Syria and Muslim Sicily.
+The Tulunid and Aghlabid slots are combined into the Fatimid state in slot 0;
+Carthage's slot is inactive and cannot be selected. Al-Qata'i remains the capital
+because Cairo was not founded until 969. The Abbasids and the Umayyad Emirate of
+C?rdoba remain separate, independent states. No later dynastic transition is scripted.
 
 Fes (Idrisid Morocco), Tahert (the Rustamid imamate), Al-Ahsa (the Qarmatian base)
 and San'a (local Yemeni rule) are independent cities, not possessions of one of
-the four large states. They share RFC's independent-player slots, so their
+the three large states. They share RFC's independent-player slots, so their
 individual diplomacy is an abstraction. Al-Ahsa represents the regional revolt,
 not the Qarmatian capture of Hajar in 903. Persian and Central Asian cities remain
 independent rather than becoming a fictitious directly administered Abbasid
 empire. Makkah's assignment to the Abbasids represents caliphal authority and
 the holy city; local Hijazi government is not modeled separately.
 
-The Fatimid caliphate was founded in Ifriqiya in 909 and conquered Egypt in 969;
-it does not receive a state in 900. No automatic later dynastic transition or
-territorial reconquest is scripted. Later play can diverge from history.
-Regional stability areas and Abbasid/Umayyad settlement preferences reflect
-this start, rather than the broad regions used by the normal partition mechanic.
-Original regional civilization powers and portraits remain gameplay abstractions.
+Regional stability and settlement preferences cover the combined Fatimid
+holdings, the Abbasid core and Umayyad Iberia. Civilization powers and portraits
+remain gameplay abstractions. The historical sources below explain the earlier,
+more fragmented situation that this combined Fatimid setup simplifies.
 
 Sources for the dated political position:
 
@@ -147,7 +160,9 @@ The northern Asturian starting tile remains unoccupied and outside their culture
 The four cities share dedicated minor player/team 28, labeled Independent
 Andalusi rulers. Their personal names and dynasties above explain the historical
 position; the game uses one collective ruler and diplomacy slot, not four
-separate leaders. The slot is not selectable. Spain/team 14 starts at war with
+separate leaders. The slot is not selectable. Like other Independent minor
+factions, it is exempt from city-loss, homeland-loss and stability collapses;
+its cities must be conquered individually. Spain/team 14 starts at war with
 team 28; Córdoba is not automatically at war with them. The other independent
 players (30 and 31), including their North African and Asian cities, do not join
 that starting war. Other scenarios retain their original team setup.

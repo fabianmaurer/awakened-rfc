@@ -28,7 +28,16 @@ the city of Rome at (60,44), the Papal State founding event becomes eligible:
 
 A newly established Papal State receives Rome, its own player slot, a capital and
 two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
-Papal identity is separate from the Independent Crusader States.
+Papal identity is separate from the Independent Crusader States. The leader is
+named Pope. The dedicated Papal slot has no historical victory goals: its score
+row shows an unavailable-goals marker and a stability icon based on holding Rome
+(secure) or needing to recover it (endangered).
+
+Founding, refusal and dissolution are announced as events concerning the Council
+of Rome to all living Christian-affiliated nations, including those using Tolerance.
+Ancestor Worship receives casual wording, State Religion respectful wording,
+Holy State reverent wording, and Tolerance or State Atheism sceptical wording.
+Human recipients receive an informational popup and an event-log message.
 
 While Rome belongs to the Papal State, its eight adjacent non-city tiles remain
 Papal territory regardless of foreign culture or fort garrisons. Rome itself
@@ -67,10 +76,13 @@ including countries that choose to become the Papacy.
 Only nations with Christianity as their state religion participate in council votes.
 The Papal State chairs the council. The UN retains its existing rules.
 
-Councils occur about every 30 turns, scaled to game speed, with no overlapping
+The first council session opens at the later of three turns after founding or
+restoration and ten turns after the scenario starts.
+Later councils occur about every 30 turns, scaled to game speed, with no overlapping
 ballots. Capital distance from the Palace gives a courier delay of 1 turn below
 12 tiles, 2 below 24, and 3 beyond that. Ballots close 3 turns after the last
-scheduled delivery. Christian-population vote weights are fixed at opening;
+scheduled delivery. Christian-population vote weights are fixed at opening and used for both the
+result totals and the rounded Yes/No/Abstain percentages shown in the result popup;
 uncast ballots become abstentions. The main interface displays vote weights,
 nation counts, cast/total votes and green/charcoal/red/light-gray segments for
 Yes/Abstain/No/outstanding. All participating nations see the same live tally.
@@ -295,9 +307,15 @@ costs through the Medieval era**; Persia gains **+2 stability per conquered city
 
 ## Independent city development
 
+Workers, including automated workers and work boats, ignore nearby Barbarian and Independent borders and units when checking whether to interrupt orders, retreat or reject a route as dangerous. Independent civilizations are recognized in any player slot, including the 900 AD Andalusian minors. Major-civilization threats still interrupt work normally. Border-entry restrictions and enemy occupation still apply, and workers can still be captured.
+
+The 3000 BC start includes Independent Uruk at `(77, 38)`, population 4, with a Granary, Barracks, Walls, Monument and two defending Archers. Babylon keeps its start at `(76, 40)`; the mod's one-tile minimum city exclusion allows both cities to coexist. Uruk's Independent faction starts at peace with Babylon, overriding random initial wars; later wars remain possible, and Uruk must be acquired through normal gameplay. Shushan to the east is founded as a Barbarian city.
+
+In that start, early Egyptian frontier pressure consists of two Nubian Warriors every 18 turns (first on turn 12) along the southern Nile approach, and one Libyan Warrior every 28 turns (first on turn 22) west of Egypt, ending after 850 BC. These named Barbarian raiders use pillage AI and spawn only on empty, uncultured land; expansion can close their entry areas. Heroic Gesture and Great Mediator cannot make peace with Natives, Celts, Independents or Barbarians, including through their apply/click callbacks. In-game balance and multiplayer behavior remain unverified.
+
 The AD 190–550 barbarian camel raids enter on the lower Mesopotamian approaches between `(77, 35)` and `(81, 41)`, shifting pressure toward Babylon and Susa and away from Jerusalem. Group size and spawn schedule are unchanged; entry tiles still require no culture, city or unit. This reduces nearby spawn pressure without preventing barbarian attacks or razing.
 
-The two Independent factions use normal unit and building production costs, replacing the former 2x unit and 1.5x building penalties. Their cities retain their full culture output, including above four culture per turn; the former 15% accumulation rule is removed.
+The two Independent factions use normal unit and building production costs, replacing the former 2x unit and 1.5x building penalties. Barbarian cities likewise use normal unit costs (removing the 40% surcharge) and retain full culture output even above four culture per turn (removing the 30% accumulation rule); their building costs already use the normal baseline. Their cities retain their full culture output, including above four culture per turn; the former 15% accumulation rule is removed.
 
 Independent cities establish a local improvement economy before expanding their garrison: with at least one defender and no immediate danger, a needed local worker takes priority over additional defenders and culture buildings. A worker already in production is not interrupted by a distant defensive war. The normal garrison target is two viable land defenders, one more under immediate threat and one more at population six. Defenders below two-thirds of the best trainable city defender's base strength do not satisfy it. Walls take priority over further culture buildings once the basic garrison is ready. All units and buildings still require ordinary production and prerequisites; the AI grants no free improvements or permanent border protection. The 800 BC scenario now provides both Independent factions with basic ancient technologies, including Agriculture and Masonry, so these priorities can actually build farms and Walls. Gameplay balance and multiplayer behavior remain unverified.
 
@@ -396,9 +414,11 @@ queued orders. Rates are shared by all civilizations and players.
 Cities may select undiscovered cities as trade partners. When a route is
 selected, the partner city's tile becomes revealed to the route owner's team.
 
-- **Harbors can be built one land tile inland from an ocean coast**, including
-  unique replacements such as the Cothon. Their existing food bonus applies to
-  worked water tiles. This does not enable inland ship construction.
+- **Harbors require an owned, workable ocean tile in the city radius**, including
+  unique replacements such as the Cothon. Coast and ocean water qualify; lakes
+  do not. The tile must be available for this city to work, but does not need an
+  assigned citizen. Their existing food bonus applies to worked water tiles.
+  This permits qualifying inland cities without enabling inland ship construction.
 - Known cities can trade without roads or a Military access treaty. Normal
   route limits, war, city disorder, blockades and foreign-trade civic restrictions
   still apply. Infrastructure-free routes use **50% efficiency through distance 5**,

@@ -6,12 +6,12 @@ from xml.sax.saxutils import escape
 ROOT = Path(__file__).resolve().parents[1]
 MAPS = ROOT / 'Awakened RFC/PublicMaps'
 TARGET = MAPS / 'Start 3b - 900 AD.CivBeyondSwordWBSave'
-ACTIVE = (0, 2, 6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31)
+ACTIVE = (0, 2, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31)
 # English, French, German, Italian, Spanish. Contemporary representatives of
 # aggregated RFC slots, not claims to rule every region represented by a slot.
 LEADERS = {
     28: ('Local Andalusi rulers', 'Seigneurs andalous locaux', 'Andalusische Regionalherren', 'Signori andalusi locali', 'Se\u00f1ores andalus\u00edes locales'),
-    0: ('Harun ibn Khumarawayh',) * 5,
+    0: ('Abd Allah al-Mahdi',) * 5,
     6: ('Ibrahim II ibn Ahmad',) * 5,
     27: ('Abd Allah ibn Muhammad',) * 5,
     2: ('Tang Zhaozong',) * 5,
@@ -43,16 +43,16 @@ CORDOBA_TEXT = {
 }
 # Coordinates follow RFC's compressed terrain. The capital is listed explicitly;
 # do not let plot traversal choose Alexandria or Mecca as a new state's capital.
-CAPITALS = {0: (69, 35), 6: (58, 38), 12: (78, 40), 27: CORDOBA}
+CAPITALS = {0: (69, 35), 12: (78, 40), 27: CORDOBA}
 CITIES = {
     (69, 35): (0, "Al-Qata'i", 7),
     (67, 36): (0, 'Al-Iskandariyya', 5),
     (64, 36): (0, 'Barqa', 3),
     (73, 38): (0, 'Al-Quds', 4),
     (73, 41): (0, 'Dimashq', 5),
-    (58, 38): (6, 'Raqqada', 6),
-    (60, 37): (6, 'Tarabulus', 4),
-    (60, 40): (6, 'Balarm', 5),
+    (58, 38): (0, 'Raqqada', 6),
+    (60, 37): (0, 'Tarabulus', 4),
+    (60, 40): (0, 'Balarm', 5),
     (78, 40): (12, 'Baghdad', 9),
     (76, 42): (12, 'Al-Raqqa', 4),
     (79, 43): (12, 'Al-Mawsil', 4),
@@ -69,12 +69,10 @@ CITIES = {
     (76, 30): (33, "San'a", 3),          # Local Yemeni rule, not direct Abbasid rule
 }
 INTRODUCTIONS = {
-    0: ("900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.",
-        "900 n. Chr.: Harun ibn Khumarawayh regiert das autonome Tulunidenemirat von Al-Qata'i aus. \u00c4gypten und S\u00fcdsyrien tragen euren Staat, w\u00e4hrend der Abbasidenkalif die n\u00f6rdlichen Grenzgebiete zur\u00fcckgewonnen hat. Sichert Heer und Schatzkammer; die Anerkennung des Kalifen bedeutet keine direkte Herrschaft Bagdads \u00fcber euer Land."),
-    6: ("900 AD: Ibrahim II rules Aghlabid Ifriqiya from the Kairouan region. Your holdings include Tripoli and Palermo, but the conquest of Byzantine Sicily is unfinished. Defend your African cities and use your fleet to sustain the island campaign. The Fatimid caliphate has not yet been founded.",
-        "900 n. Chr.: Ibrahim II. regiert das aghlabidische Ifriqiya aus der Region Kairouan. Zu eurem Reich geh\u00f6ren Tripolis und Palermo, doch die Eroberung des byzantinischen Sizilien ist noch nicht abgeschlossen. Verteidigt eure afrikanischen St\u00e4dte und sichert den Inselkrieg mit eurer Flotte. Das Fatimidenkalifat ist noch nicht gegr\u00fcndet."),
-    12: ("900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and the northern Syrian frontier form your direct power base. The Tulunids and Aghlabids govern autonomously; Iran and Arabia contain other local powers. Restore influence through diplomacy or conquest rather than assuming direct rule over all former provinces.",
-         "900 n. Chr.: Al-Mu'tadid regiert das Abbasidenkalifat von Bagdad aus. Der Irak und die nordsyrischen Grenzgebiete bilden eure unmittelbare Machtbasis. Tuluniden und Aghlabiden regieren autonom; auch Iran und Arabien haben eigene Regionalm\u00e4chte. Gewinnt Einfluss durch Diplomatie oder Eroberung zur\u00fcck."),
+    0: ("900 AD: This scenario brings the Fatimid rise forward, combining Egypt, southern Syria, Ifriqiya and Muslim Sicily under Abd Allah al-Mahdi. Your capital is Al-Qata'i. Defend your wide realm and sustain the Sicilian campaign against Byzantium.",
+        "900 n. Chr.: Dieses Szenario zieht den Aufstieg der Fatimiden vor. Abd Allah al-Mahdi herrscht von Al-Qata'i aus \u00fcber \u00c4gypten, S\u00fcdsyrien, Ifriqiya und das muslimische Sizilien. Verteidigt euer weites Reich und sichert den Feldzug gegen Byzanz auf Sizilien."),
+    12: ("900 AD: Al-Mu'tadid governs the Abbasid caliphate from Baghdad. Iraq and northern Syria form your direct power base. In this scenario the Fatimids already unite Egypt and Ifriqiya. Restore influence through diplomacy or conquest.",
+         "900 n. Chr.: Al-Mu'tadid regiert das Abbasidenkalifat von Bagdad aus. Irak und Nordsyrien bilden eure Machtbasis. In diesem Szenario vereinen die Fatimiden bereits \u00c4gypten und Ifriqiya. Gewinnt durch Diplomatie oder Eroberung Einfluss zur\u00fcck."),
     27: ("900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.",
          "900 n. Chr.: Abd Allah regiert das Umayyadenemirat von Cordoba aus. Provinzrivalen schw\u00e4chen die Zentralgewalt, und im Norden Iberiens bestehen christliche Reiche. Festigt eure Stellung vom s\u00fcdlichen Kernland aus. Cordoba ist noch ein Emirat; die historische Ausrufung des Kalifats liegt im Jahr 929."),
 }
@@ -82,24 +80,27 @@ INTRODUCTIONS = {
 
 def city_and_units(pos, owner, name, population):
     capital = CAPITALS.get(owner) == pos
+    regional_center = capital or pos == (58, 38)
     lines = ['\tBeginCity', '\t\tCityOwner=' + str(owner),
              '\t\tCityName=' + name, '\t\tCityPopulation=' + str(population)]
     buildings = ['WALLS', 'GRANARY', 'MARKET']
     if capital:
-        buildings += ['PALACE', 'LIBRARY']
+        buildings += ['PALACE']
+    if regional_center:
+        buildings += ['LIBRARY']
     for building in buildings:
         lines.append('\t\tBuildingType=BUILDING_' + building)
     lines.append('\t\tReligionType=RELIGION_ISLAM')
     if pos == (73, 38):
         lines += ['\t\tReligionType=RELIGION_JUDAISM',
                   '\t\tHolyCityReligionType=RELIGION_JUDAISM']
-    if owner == 0:
+    if owner == 0 and pos not in ((58, 38), (60, 37), (60, 40)):
         lines.append('\t\tReligionType=RELIGION_CHRISTIANITY')
     if pos == (75, 33):
         lines.append('\t\tHolyCityReligionType=RELIGION_ISLAM')
     lines += ['\t\tPlayer' + str(owner) + 'Culture=1', '\tEndCity']
-    forces = [('LONGBOWMAN', 3 if capital else 2, 'CITY_DEFENSE')]
-    if capital:
+    forces = [('LONGBOWMAN', 3 if regional_center else 2, 'CITY_DEFENSE')]
+    if regional_center:
         forces += [('SPEARMAN', 1, 'CITY_DEFENSE'), ('HORSE_ARCHER', 2, 'ATTACK'),
                    ('SWORDSMAN', 2, 'ATTACK_CITY'), ('WORKER', 2, 'WORKER')]
     for kind, count, role in forces:
@@ -154,11 +155,9 @@ def main():
         if owner == 12:
             block = field(block, 'CivType', 'CIVILIZATION_ABBASID')
             block = field(block, 'LeaderType', 'LEADER_ABBASID')
-        if owner in (0, 6):
-            dynasty = 'TULUNID' if owner == 0 else 'AGHLABID'
-            block = field(block, 'CivDesc', 'TXT_KEY_RFCMP_900_' + dynasty + '_DESC')
-            block = field(block, 'CivShortDesc', 'TXT_KEY_RFCMP_900_' + dynasty + '_SHORT')
-            block = field(block, 'CivAdjective', 'TXT_KEY_RFCMP_900_' + dynasty + '_ADJ')
+        if owner == 0:
+            block = field(block, 'CivType', 'CIVILIZATION_FATIMID')
+            block = field(block, 'LeaderType', 'LEADER_FATIMID')
         if owner == CORDOBA_OWNER:
             for key, value in (('CivType', 'CIVILIZATION_UMAYYAD'),
                                ('LeaderType', 'LEADER_UMAYYAD'),
@@ -186,14 +185,14 @@ def main():
     def team(match):
         owner = next(teams)
         block = match[1]
-        # Autonomous emirs recognized Abbasid authority; no Civ4 vassal lock.
+        # The successor states are independent; no Civ4 vassal lock.
         if owner in CAPITALS:
             for other in CAPITALS:
                 if other != owner:
                     block += '\n\tContactWithTeam=' + str(other) + '\n'
-        # The Aghlabid conquest of Sicily was still in progress in 900.
-        if owner in (6, 35):
-            block += '\n\tAtWar=' + str(35 if owner == 6 else 6) + '\n'
+        # The combined Fatimid state inherits the unfinished Sicilian war.
+        if owner in (0, 35):
+            block += '\n\tAtWar=' + str(35 if owner == 0 else 0) + '\n'
         if owner in (14, 28):
             other = 28 if owner == 14 else 14
             block += '\n\tContactWithTeam=' + str(other) + '\n\tAtWar=' + str(other) + '\n'
@@ -236,7 +235,7 @@ def main():
                     break
         if (x, y) == (59, 39):
             for kind in ('GALLEY', 'GALLEY', 'TRIREME'):
-                block += ('\n\tBeginUnit\n\t\tUnitType=UNIT_' + kind + ', UnitOwner=6\n'
+                block += ('\n\tBeginUnit\n\t\tUnitType=UNIT_' + kind + ', UnitOwner=0\n'
                           '\t\tUnitAIType=UNITAI_' + ('ASSAULT_SEA' if kind == 'GALLEY' else 'ESCORT_SEA') + '\n\tEndUnit\n')
         return 'BeginPlot' + block + 'EndPlot'
 

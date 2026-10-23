@@ -33,6 +33,13 @@ tCol = (
 
 class RFCUtils:
 
+        def isIndependentMinor(self, iPlayer):
+                # Scenario-specific Independents can occupy a major-player slot.
+                player = gc.getPlayer(iPlayer)
+                return player.isMinorCiv() and player.getCivilizationType() in (
+                        gc.getInfoTypeForString("CIVILIZATION_INDEPENDENT"),
+                        gc.getInfoTypeForString("CIVILIZATION_INDEPENDENT2"))
+
         #Rise and fall, stability
         def getLastTurnAlive( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )

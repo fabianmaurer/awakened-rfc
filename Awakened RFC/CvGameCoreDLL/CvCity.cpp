@@ -12694,10 +12694,11 @@ void CvCity::doCulture()
 
 	//Rhye - start switch
 	//changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE), false, true);
-	// Independent cities also retain their actual culture output. They must
+	// Independent and Barbarian cities retain their actual culture output. They must
     // be able to develop borders instead of losing culture as output improves.
 	if (getOwnerINLINE() < NUM_MAJOR_PLAYERS || getOwnerINLINE() == INDEPENDENT ||
-        getOwnerINLINE() == INDEPENDENT2 || getCommerceRate(COMMERCE_CULTURE) <= 4)
+        getOwnerINLINE() == INDEPENDENT2 || getOwnerINLINE() == BARBARIAN ||
+        getCommerceRate(COMMERCE_CULTURE) <= 4)
 		changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE), false, true);
 	else {
 		switch (getOwnerINLINE())
@@ -12723,9 +12724,6 @@ void CvCity::doCulture()
 				}
 				else
 					changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *50 /100, false, true);
-				break;
-			case BARBARIAN:
-				changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *30 /100, false, true);
 				break;
 			default:
 				changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *40 /100, false, true);
@@ -14185,19 +14183,20 @@ bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
         break;
     }
 
-    // Harbors (including unique replacements) can serve an ocean coast
-    // through one intervening land tile. Other coastal requirements, such
-    // as ship construction, continue to use the normal isCoastal check.
+    // Harbors and unique replacements require owned ocean access that this
+    // city can actually work, including water two tiles from an inland city.
     if (GC.getBuildingInfo(eBuilding).getBuildingClassType() == GC.getInfoTypeForString("BUILDINGCLASS_HARBOR"))
     {
         int iMinWaterSize = std::max(GC.getMIN_WATER_SIZE_FOR_OCEAN(), GC.getBuildingInfo(eBuilding).getMinAreaSize());
-        for (int i = 0; i < NUM_DIRECTION_TYPES; ++i)
+        for (int i = 0; i < NUM_CITY_PLOTS; ++i)
         {
-            CvPlot* pCoast = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)i);
-            if (pCoast != NULL && !pCoast->isWater() && !pCoast->isImpassable() &&
-                pCoast->area() == area() && pCoast->isCoastalLand(iMinWaterSize))
+            CvPlot* pWater = plotCity(getX_INLINE(), getY_INLINE(), i);
+            if (pWater != NULL && pWater->isWater() && !pWater->isLake() &&
+                pWater->getOwnerINLINE() == getOwnerINLINE() &&
+                pWater->area()->getNumTiles() >= iMinWaterSize && canWork(pWater))
                 return true;
         }
+        return false;
     }
 	// if both the river and water flags are set, we require one of the two conditions, not both
 	if (GC.getBuildingInfo(eBuilding).isWater())

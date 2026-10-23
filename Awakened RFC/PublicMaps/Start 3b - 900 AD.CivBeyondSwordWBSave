@@ -10,31 +10,23 @@ BeginGame
 EndGame
 BeginTeam                 
 
-	ContactWithTeam=6
-
-	ContactWithTeam=12
-
-	ContactWithTeam=27
-EndTeam
-BeginTeam                 
-EndTeam
-BeginTeam                 
-EndTeam
-BeginTeam                 
-EndTeam
-BeginTeam                 
-EndTeam
-BeginTeam                 
-EndTeam
-BeginTeam                 
-
-	ContactWithTeam=0
-
 	ContactWithTeam=12
 
 	ContactWithTeam=27
 
 	AtWar=35
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam                 
 EndTeam
 BeginTeam                 
 EndTeam
@@ -82,8 +74,6 @@ BeginTeam
 
 	ContactWithTeam=0
 
-	ContactWithTeam=6
-
 	ContactWithTeam=27
 EndTeam
 BeginTeam                 
@@ -120,8 +110,6 @@ EndTeam
 BeginTeam
 
 	ContactWithTeam=0
-
-	ContactWithTeam=6
 
 	ContactWithTeam=12
 EndTeam
@@ -194,23 +182,20 @@ BeginTeam
 EndTeam
 BeginTeam                                                                                                                                                                          
 
-	AtWar=6
+	AtWar=0
 EndTeam
 BeginTeam
 EndTeam
 BeginTeam
 EndTeam
 BeginPlayer
-	LeaderType=LEADER_RAMESSES
-	CivType=CIVILIZATION_EGYPT                 
+	LeaderType=LEADER_FATIMID
+	CivType=CIVILIZATION_FATIMID
 	Team=0                 
 	PlayableCiv=1
 	Handicap=HANDICAP_PRINCE
 	LeaderName=TXT_KEY_RFCMP_900_LEADER_0
 	StateReligion=RELIGION_ISLAM
-	CivDesc=TXT_KEY_RFCMP_900_TULUNID_DESC
-	CivShortDesc=TXT_KEY_RFCMP_900_TULUNID_SHORT
-	CivAdjective=TXT_KEY_RFCMP_900_TULUNID_ADJ
 EndPlayer
 BeginPlayer
 	LeaderType=LEADER_ASOKA
@@ -252,13 +237,9 @@ BeginPlayer
 	LeaderType=LEADER_HANNIBAL
 	CivType=CIVILIZATION_CARTHAGE                 
 	Team=6                 
-	PlayableCiv=1
+	PlayableCiv=0
 	Handicap=HANDICAP_PRINCE
 	LeaderName=TXT_KEY_RFCMP_900_LEADER_6
-	StateReligion=RELIGION_ISLAM
-	CivDesc=TXT_KEY_RFCMP_900_AGHLABID_DESC
-	CivShortDesc=TXT_KEY_RFCMP_900_AGHLABID_SHORT
-	CivAdjective=TXT_KEY_RFCMP_900_AGHLABID_ADJ
 EndPlayer
 BeginPlayer
 	LeaderType=LEADER_AUGUSTUS
@@ -21957,7 +21938,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21966,7 +21947,7 @@ BeginPlot
 	PlotType=1
 	BonusType=BONUS_IRON
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21980,7 +21961,7 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=57,y=40
@@ -22334,7 +22315,7 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=58,y=38
@@ -22344,59 +22325,58 @@ BeginPlot
 	RouteType=ROUTE_ROAD
 
 	BeginCity
-		CityOwner=6
+		CityOwner=0
 		CityName=Raqqada
 		CityPopulation=6
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
-		BuildingType=BUILDING_PALACE
 		BuildingType=BUILDING_LIBRARY
 		ReligionType=RELIGION_ISLAM
-		Player6Culture=1
+		Player0Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=6
+		UnitType=UNIT_SPEARMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_HORSE_ARCHER, UnitOwner=6
+		UnitType=UNIT_HORSE_ARCHER, UnitOwner=0
 		UnitAIType=UNITAI_ATTACK
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_HORSE_ARCHER, UnitOwner=6
+		UnitType=UNIT_HORSE_ARCHER, UnitOwner=0
 		UnitAIType=UNITAI_ATTACK
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SWORDSMAN, UnitOwner=6
+		UnitType=UNIT_SWORDSMAN, UnitOwner=0
 		UnitAIType=UNITAI_ATTACK_CITY
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SWORDSMAN, UnitOwner=6
+		UnitType=UNIT_SWORDSMAN, UnitOwner=0
 		UnitAIType=UNITAI_ATTACK_CITY
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=6
+		UnitType=UNIT_WORKER, UnitOwner=0
 		UnitAIType=UNITAI_WORKER
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=6
+		UnitType=UNIT_WORKER, UnitOwner=0
 		UnitAIType=UNITAI_WORKER
 	EndUnit
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=58,y=39
@@ -22404,7 +22384,7 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=58,y=40
@@ -22760,7 +22740,7 @@ BeginPlot
 	PlotType=2
 	BonusType=BONUS_WHEAT
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -22769,7 +22749,7 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=59,y=38
@@ -22783,17 +22763,17 @@ BeginPlot
 	PlotType=3
 
 	BeginUnit
-		UnitType=UNIT_GALLEY, UnitOwner=6
+		UnitType=UNIT_GALLEY, UnitOwner=0
 		UnitAIType=UNITAI_ASSAULT_SEA
 	EndUnit
 
 	BeginUnit
-		UnitType=UNIT_GALLEY, UnitOwner=6
+		UnitType=UNIT_GALLEY, UnitOwner=0
 		UnitAIType=UNITAI_ASSAULT_SEA
 	EndUnit
 
 	BeginUnit
-		UnitType=UNIT_TRIREME, UnitOwner=6
+		UnitType=UNIT_TRIREME, UnitOwner=0
 		UnitAIType=UNITAI_ESCORT_SEA
 	EndUnit
 EndPlot
@@ -23164,7 +23144,7 @@ BeginPlot
 	PlotType=2
 	BonusType=BONUS_SHEEP
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -23173,25 +23153,25 @@ BeginPlot
 	PlotType=2
 
 	BeginCity
-		CityOwner=6
+		CityOwner=0
 		CityName=Tarabulus
 		CityPopulation=4
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player6Culture=1
+		Player0Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -23211,25 +23191,25 @@ BeginPlot
 	PlotType=2
 
 	BeginCity
-		CityOwner=6
+		CityOwner=0
 		CityName=Balarm
 		CityPopulation=5
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player6Culture=1
+		Player0Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=6
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=0
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -23662,7 +23642,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -23671,7 +23651,7 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 
-	Player6Culture=10
+	Player0Culture=10
 EndPlot
 BeginPlot
 	x=61,y=38
@@ -23688,7 +23668,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player6Culture=10
+	Player0Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot

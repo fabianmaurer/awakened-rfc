@@ -74,7 +74,7 @@ def apply_american_starts(text):
             block = field(block, 'PlayableCiv', 1)
             block = field(block, 'MinorNationStatus', 0)
         if owner == MISSISSIPPIANS:
-            for key, value in (('PlayableCiv', 1), ('MinorNationStatus', 0),
+            for key, value in (('PlayableCiv', int(turn != 0)), ('MinorNationStatus', 0),
                                ('CivDesc', 'TXT_KEY_MISS_DESC'),
                                ('CivShortDesc', 'TXT_KEY_MISS'),
                                ('CivAdjective', 'TXT_KEY_MISS_ADJ'),

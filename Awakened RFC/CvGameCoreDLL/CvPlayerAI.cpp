@@ -3395,17 +3395,32 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 }
 
 
+// Workers ignore these factions only when evaluating nearby danger.
+// Movement legality, combat and capture rules remain unchanged.
+static bool isIgnoredWorkerThreat(PlayerTypes eOwner)
+{
+	if (eOwner == NO_PLAYER) return false;
+	if (eOwner == BARBARIAN_PLAYER) return true;
+
+	// Scenarios can place Independent factions in additional player slots
+	// (for example, the Andalusian minors in 900 AD).
+	const CivilizationTypes eCiv = GET_PLAYER(eOwner).getCivilizationType();
+	return eCiv == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") ||
+		eCiv == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2");
+}
+
+
 int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
 {
     return AI_getPlotDanger(pPlot, iRange, bTestMoves, false);
 }
 
-bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
+bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
-    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true) > 0;
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true, bIgnoreWorkerThreats) > 0;
 }
 
-int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const
+int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger, bool bIgnoreWorkerThreats) const
 {
 	PROFILE_FUNC();
 
@@ -3437,7 +3452,8 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, boo
 				if (pLoopPlot->area() == pPlotArea)
 				{
 				    iDistance = stepDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
-				    if (atWar(pLoopPlot->getTeam(), getTeam()))
+				    if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopPlot->getOwnerINLINE())) &&
+                        atWar(pLoopPlot->getTeam(), getTeam()))
 				    {
 				        if (iDistance == 1)
 				        {
@@ -3458,7 +3474,8 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, boo
 						pLoopUnit = ::getUnit(pUnitNode->m_data);
 						pUnitNode = pLoopPlot->nextUnitNode(pUnitNode);
 
-						if (pLoopUnit->isEnemy(getTeam()))
+						if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopUnit->getOwnerINLINE())) &&
+                            pLoopUnit->isEnemy(getTeam()))
 						{
 							if (pLoopUnit->canAttack())
 							{
@@ -19052,7 +19069,7 @@ void CvPlayerAI::AI_invalidateCloseBordersAttitudeCache()
 	}
 }
 
-bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves) const
+bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
 	PROFILE_FUNC();
 
@@ -19076,7 +19093,8 @@ bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves)
 					for (CLLNode<IDInfo>* pUnitNode = pLoopPlot->headUnitNode(); pUnitNode != NULL; pUnitNode = pLoopPlot->nextUnitNode(pUnitNode))
 					{
 						CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
-						if (pLoopUnit->isEnemy(getTeam()) && pLoopUnit->canAttack() && !pLoopUnit->isInvisible(getTeam(), false))
+						if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopUnit->getOwnerINLINE())) &&
+                            pLoopUnit->isEnemy(getTeam()) && pLoopUnit->canAttack() && !pLoopUnit->isInvisible(getTeam(), false))
 						{
 							if (pLoopUnit->canMoveOrAttackInto(pPlot))
 							{
