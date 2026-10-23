@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Utilities
 
 from CvPythonExtensions import *
@@ -31,6 +32,13 @@ tCol = (
 '128,128,128')
 
 class RFCUtils:
+
+        def isIndependentMinor(self, iPlayer):
+                # Scenario-specific Independents can occupy a major-player slot.
+                player = gc.getPlayer(iPlayer)
+                return player.isMinorCiv() and player.getCivilizationType() in (
+                        gc.getInfoTypeForString("CIVILIZATION_INDEPENDENT"),
+                        gc.getInfoTypeForString("CIVILIZATION_INDEPENDENT2"))
 
         #Rise and fall, stability
         def getLastTurnAlive( self, iCiv ):
@@ -436,14 +444,19 @@ class RFCUtils:
 
                                                         
         #RiseAndFall
-        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers):
+        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers, bProtectForts=False, tPlotBounds=None):
                 """Deletes, recreates units in 0,67 and moves them to the previous tile.
                 If there are units belonging to others in that plot and the new owner is barbarian, the units aren't recreated.
                 Settlers aren't created.
-                If bSkipPlotCity is True, units in a city won't flip. This is to avoid converting barbarian units that would capture a city before the flip delay"""
+                If bSkipPlotCity is True, units in a city won't flip. This is to avoid converting barbarian units that would capture a city before the flip delay.
+                Births use bProtectForts to preserve major-civilization garrisons."""
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
                         for y in range(tTopLeft[1], tBottomRight[1]+1):
+                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                        continue
                                 killPlot = gc.getMap().plot(x,y)
+                                if bProtectForts and killPlot.getFortGarrisonOwner() != -1:
+                                        continue
                                 iNumUnitsInAPlot = killPlot.getNumUnits()
                                 if (iNumUnitsInAPlot):
                                         bRevealedZero = False
@@ -499,7 +512,7 @@ class RFCUtils:
 
 
         #Congresses, RiseAndFall
-        def flipCity(self, tCityPlot, bFlipType, bKillUnits, iNewOwner, iOldOwners):
+        def flipCity(self, tCityPlot, bFlipType, bKillUnits, iNewOwner, iOldOwners, bArabianBirth=False):
                 """Changes owner of city specified by tCityPlot.
                 bFlipType specifies if it's conquered or traded.
                 If bKillUnits != 0 all the units in the city will be killed.
@@ -525,6 +538,8 @@ class RFCUtils:
                                                 if (city.getPopulation() == 1):
                                                         city.setPopulation(2)
                                                 pNewOwner.acquireCity(city, True, False)
+                                        elif bArabianBirth:
+                                                pNewOwner.acquireArabianBirthCity(city)
                                         else: #trade
                                                 pNewOwner.acquireCity(city, False, True)
                                                 
@@ -533,7 +548,7 @@ class RFCUtils:
 
 
         #Congresses, RiseAndFall
-        def cultureManager(self, tCityPlot, iCulturePercent, iNewOwner, iOldOwner, bBarbarian2x2Decay, bBarbarian2x2Conversion, bAlwaysOwnPlots):
+        def cultureManager(self, tCityPlot, iCulturePercent, iNewOwner, iOldOwner, bBarbarian2x2Decay, bBarbarian2x2Conversion, bAlwaysOwnPlots, tPlotBounds=None):
                 """Converts the culture of the city and of the surrounding plots to the new owner of a city.
                 iCulturePercent determine the percentage that goes to the new owner.
                 If old owner is barbarian, all the culture is converted"""
@@ -556,6 +571,8 @@ class RFCUtils:
                         if (iNewOwner != con.iBarbarian and iNewOwner != con.iIndependent and iNewOwner != con.iIndependent2):
                                 for x in range(tCityPlot[0]-2, tCityPlot[0]+3):        # from x-2 to x+2
                                         for y in range(tCityPlot[1]-2, tCityPlot[1]+3):	# from y-2 to y+2                                
+                                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                                        continue
                                                 iPlotBarbCulture = gc.getMap().plot(x, y).getCulture(con.iBarbarian)
                                                 if (iPlotBarbCulture > 0):
                                                         if (gc.getMap().plot(x, y).getPlotCity().isNone() or (x==tCityPlot[0] and y==tCityPlot[1])):
@@ -584,6 +601,8 @@ class RFCUtils:
                 #plot                               
                 for x in range(tCityPlot[0]-1, tCityPlot[0]+2):        # from x-1 to x+1
                         for y in range(tCityPlot[1]-1, tCityPlot[1]+2):	# from y-1 to y+1
+                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                        continue
                                 pCurrent = gc.getMap().plot(x, y)
                                 
                                 iCurrentPlotCulture = pCurrent.getCulture(iOldOwner)
@@ -886,13 +905,16 @@ class RFCUtils:
 
 
         def pickFragmentation(self, iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities, reason='unspecified'):
-                import GameObserver
-                citiesBefore = gc.getPlayer(iPlayer).getNumCities()
-                stabilityBefore = self.getStability(iPlayer)
+                if REPORTING_ENABLED:
+                    import GameObserver
+                if REPORTING_ENABLED:
+                    citiesBefore = gc.getPlayer(iPlayer).getNumCities()
+                    stabilityBefore = self.getStability(iPlayer)
                 if (not bAssignCities and self.tryMonarchyInheritance(iPlayer)):
-                        GameObserver.record_mechanic('collapse_trigger', iPlayer,
-                                {'reason': reason, 'outcome': 'inheritance', 'cities_before': citiesBefore, 'stability_before': stabilityBefore,
-                                 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
+                        if REPORTING_ENABLED:
+                            GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                                    {'reason': reason, 'outcome': 'inheritance', 'cities_before': citiesBefore, 'stability_before': stabilityBefore,
+                                     'cities_after': gc.getPlayer(iPlayer).getNumCities()})
                         return
                 if (iPlayer == con.iAztecs or \
                     iPlayer == con.iInca or \
@@ -905,9 +927,10 @@ class RFCUtils:
                                 self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
                 else:
                         self.killAndFragmentCiv(iPlayer, iNewCiv1, iNewCiv2, iNewCiv3, bAssignCities)
-                GameObserver.record_mechanic('collapse_trigger', iPlayer,
-                        {'reason': reason, 'outcome': 'fragmentation', 'partial': bool(bAssignCities), 'stability_before': stabilityBefore,
-                         'cities_before': citiesBefore, 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
+                if REPORTING_ENABLED:
+                    GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                            {'reason': reason, 'outcome': 'fragmentation', 'partial': bool(bAssignCities), 'stability_before': stabilityBefore,
+                             'cities_before': citiesBefore, 'cities_after': gc.getPlayer(iPlayer).getNumCities()})
 
 
                 

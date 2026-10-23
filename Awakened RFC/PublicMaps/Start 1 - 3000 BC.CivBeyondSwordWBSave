@@ -70,13 +70,27 @@ BeginTeam
 EndTeam
 BeginTeam                 
 EndTeam
-BeginTeam                 
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 EndTeam
 BeginPlayer
 	LeaderType=LEADER_RAMESSES
@@ -267,11 +281,58 @@ BeginPlayer
 	PlayableCiv=0                
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
+BeginPlayer
+	LeaderType=NONE
+	CivType=NONE
+	Team=27
+	PlayableCiv=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	LeaderType=NONE
+	CivType=NONE
+	Team=28
+	PlayableCiv=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	LeaderType=LEADER_MODU
+	CivType=CIVILIZATION_XIONGNU
+	Team=29
+	PlayableCiv=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	CivType=CIVILIZATION_KOREA
+	LeaderType=LEADER_WANGKON
+	Team=30
+	PlayableCiv=0
+	Handicap=HANDICAP_PRINCE
+	MinorNationStatus=0
+	LeaderName=TXT_KEY_KOREA_LEADER_0
+	StartingX=109
+	StartingY=48
+	StartingGold=80
+EndPlayer
+BeginPlayer
+	Team=31
+	CivType=CIVILIZATION_NATIVE_AMERICA
+	LeaderType=LEADER_SITTING_BULL
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	CivDesc=TXT_KEY_MISS_DESC
+	CivShortDesc=TXT_KEY_MISS
+	CivAdjective=TXT_KEY_MISS_ADJ
+	LeaderName=TXT_KEY_MISS_LEADER
+	StartingX=23
+	StartingY=45
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=27                 
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -280,7 +341,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=28                 
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -289,7 +350,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=29                 
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -297,10 +358,24 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=30                 
+	Team=35
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=1
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
 EndPlayer
 
 BeginMap
@@ -24848,6 +24923,7 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=66,y=36
+	BonusType=BONUS_WHEAT
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 EndPlot
@@ -27591,8 +27667,8 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=73,y=39
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_PLAINS
+	BonusType=BONUS_WHEAT
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -27972,12 +28048,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=74,y=38
+	BonusType=BONUS_WINE
 	TerrainType=TERRAIN_PLAINS
-	PlotType=2
+	PlotType=1
 EndPlot
 BeginPlot
 	x=74,y=39
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -28729,6 +28806,7 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	ImprovementType=IMPROVEMENT_FARM
 EndPlot
 BeginPlot
 	x=76,y=39
@@ -29099,6 +29177,23 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	BeginCity
+		CityOwner=32
+		CityName=Uruk
+		CityPopulation=4
+		BuildingType=BUILDING_GRANARY
+		BuildingType=BUILDING_BARRACKS
+		BuildingType=BUILDING_WALLS
+		BuildingType=BUILDING_OBELISK
+	EndCity
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+	BeginUnit
+		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
 EndPlot
 BeginPlot
 	x=77,y=39
@@ -29486,6 +29581,7 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	ImprovementType=IMPROVEMENT_FARM
 EndPlot
 BeginPlot
 	x=78,y=40
@@ -37008,7 +37104,7 @@ BeginPlot
 	RiverWEDirection=1
 	isWOfRiver
 	RiverNSDirection=0
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
 BeginPlot
@@ -37382,7 +37478,7 @@ EndPlot
 BeginPlot
 	x=99,y=50
 	TerrainType=TERRAIN_PLAINS
-	PlotType=2
+	PlotType=1
 EndPlot
 BeginPlot
 	x=99,y=51
@@ -37789,6 +37885,7 @@ BeginPlot
 	RiverWEDirection=3
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=100,y=52
@@ -41229,6 +41326,7 @@ BeginPlot
 	x=109,y=46
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=109,y=47
@@ -41612,6 +41710,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
+	BonusType=BONUS_COPPER
 EndPlot
 BeginPlot
 	x=110,y=48
@@ -41983,6 +42082,7 @@ BeginPlot
 	x=111,y=47
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=111,y=48

@@ -217,6 +217,22 @@
     <Spanish>Mehmed II</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_30</Tag>
+    <English>Danjong</English>
+    <French>Danjong</French>
+    <German>Danjong</German>
+    <Italian>Danjong</Italian>
+    <Spanish>Danjong</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_31</Tag>
+    <English>Paramount Chief</English>
+    <French>Paramount Chief</French>
+    <German>Oberhaupt</German>
+    <Italian>Paramount Chief</Italian>
+    <Spanish>Paramount Chief</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_RFCMP_1453_INTRO_0</Tag>
     <English>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</English>
     <French>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</French>
@@ -415,5 +431,21 @@
     <German>1453: Konstantinopel geh&#246;rt euch. Eure osmanischen L&#228;nder verbinden nun den Balkan mit West- und Zentralanatolien, doch Morea, Trapezunt und das Mamlukenreich bestehen fort. Sichert die Meerengen, baut eure neue Hauptstadt aus und entscheidet, wo die n&#228;chste Grenze des Sultanats liegen soll.</German>
     <Italian>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</Italian>
     <Spanish>1453: Constantinople is yours. Your Ottoman lands now link the Balkans with western and central Anatolia, but Morea, Trebizond and the Mamluk realm remain separate. Secure the straits, rebuild your new capital and decide where the sultanate's next frontier should lie.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_30</Tag>
+    <English>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</English>
+    <French>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</French>
+    <German>1453 n. Chr.: Joseon unter Danjong. Sichert die Nordgrenze, entwickelt eure Kuestenstaedte und Seowon und schuetzt die Halbinsel mit Hwacha-Artillerie.</German>
+    <Italian>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</Italian>
+    <Spanish>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_31</Tag>
+    <English>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</English>
+    <French>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</French>
+    <German>Fuehrt die Mississippi-Haeuptlingstuemer Nordamerikas. Entwickelt eure Flussstaedte und verteidigt ihre Unabhaengigkeit.</German>
+    <Italian>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</Italian>
+    <Spanish>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</Spanish>
   </TEXT>
 </Civ4GameText>

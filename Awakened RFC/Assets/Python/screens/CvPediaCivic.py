@@ -129,6 +129,8 @@ class CvPediaCivic:
 		screen.attachLabel(panelName, "", "  ")
 		
 		iTech = gc.getCivicInfo(self.iCivic).getTechPrereq()
+		if (gc.getCivicInfo(self.iCivic).isHordeVariant(gc.getGame().getActiveCivilizationType())):
+			iTech = gc.getInfoTypeForString("TECH_HORSEBACK_RIDING")
 		if (iTech > -1 and not (gc.getGame().getActiveCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ROME") and self.iCivic == gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
 			screen.attachImageButton( panelName, "", gc.getTechInfo(iTech).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iTech, 1, False )
 			
@@ -156,6 +158,8 @@ class CvPediaCivic:
 				 self.X_TEXT, self.Y_TEXT, self.W_TEXT, self.H_TEXT, PanelStyles.PANEL_STYLE_BLUE50 )
  
 		szText = gc.getCivicInfo(self.iCivic).getCivilopedia()
+		if (gc.getCivicInfo(self.iCivic).isHordeVariant(gc.getGame().getActiveCivilizationType())):
+			szText = localText.getText("TXT_KEY_HORDE_PEDIA", ())
 		if (gc.getGame().getActivePlayer() >= 0 and
 			gc.getCivicInfo(self.iCivic).isPharaonicVariant(gc.getPlayer(gc.getGame().getActivePlayer()).getCivilizationType())):
 			szText = localText.getText("TXT_KEY_RFCMP_PHARAONISM_PEDIA", ())

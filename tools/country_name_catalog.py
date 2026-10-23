@@ -280,6 +280,16 @@ Atlantic Commonwealth | Atlantisches Commonwealth
 United American Communes | Vereinigte Amerikanische Kommunen
 American Union | Amerikanische Union
 State of Deseret | Staat Deseret
+XIO
+The Huns | Die Hunnen
+Realm of the Chanyu | Reich des Chanyu
+Hunnic Empire | Hunnenreich
+Hunnic Federation | Hunnischer Bund
+Union of the Steppe | Union der Steppe
+League of the Steppe Routes | Bund der Steppenwege
+Hunnic People's Republic | Hunnische Volksrepublik
+Hunnic State | Hunnischer Staat
+Sacred Realm of the Eternal Sky | Heiliges Reich des Ewigen Himmels
 """
 
 
@@ -319,6 +329,9 @@ ALIASES = {
 }
 
 SPECIAL_NAMES = {
+    ('XIO', 'ROYAL_PLANNED'): ('Realm of the Royal Herds', 'Reich der königlichen Herden'),
+    ('XIO', 'PLUTOCRATIC_PLANNED'): ('Steppe Provisioning Syndicate', 'Versorgungssyndikat der Steppe'),
+    ('XIO', 'ATHEOCRACY'): ('Rational Order of the Steppe', 'Vernunftorden der Steppe'),
     # Alternate-history crown economies. Period/religious/constitutional names
     # retain priority in the DLL. The Inca keep their established imperial title.
     ('EGY', 'ROYAL_PLANNED'): ('Realm of the Royal Granaries', 'Reich der königlichen Speicher'),
@@ -426,7 +439,7 @@ SPECIAL_NAMES = {
     ('FRA', 'CAROLINGIAN'): ('Carolingian Empire', 'Karolingerreich'),
     ('CHI', 'ZHOU'): ('Zhou Kingdom', 'Zhou-Reich'),
     ('IND', 'VEDIC_KINGDOMS'): ('Kuru and Panchala', 'Kuru und Panchala'),
-    ('ROM', 'LATIN_COMMUNITIES'): ('Latin Communities', 'Latinische Stammesgemeinden'),
+    ('ROM', 'LATIN_COMMUNITIES'): ('Rome', 'Rom'),
     ('EGY', 'PHARAONIC'): ('Pharaonic Egypt', 'Pharaonenreich'),
     ('EGY', 'TEMPLE_STATE'): ('Temple State of Egypt', 'Tempelstaat Ägypten'),
     ('ETH', 'ABYSSINIA'): ('Abyssinian Empire', 'Kaiserreich Abessinien'),
@@ -446,6 +459,9 @@ SPECIAL_NAMES = {
     ('AZT', 'TRIPLE_ALLIANCE'): ('Aztec Triple Alliance', 'Aztekischer Dreibund'),
     ('ROM', 'ITALIAN_STATES'): ('Italian City-States', 'Italienische Stadtstaaten'),
     ('ROM', 'VENICE'): ('Republic of Venice', 'Republik Venedig'),
+    ('SPA', 'ASTURIAS'): ('Kingdom of Asturias', 'Königreich Asturien'),
+    ('SPA', 'LEON'): ('Kingdom of León', 'Königreich León'),
+    ('SPA', 'CASTILE'): ('Crown of Castile', 'Krone Kastilien'),
     ('SPA', 'CASTILE_ARAGON'): ('Castile and Aragon', 'Kastilien und Aragon'),
     ('VIK', 'KALMAR'): ('Kalmar Union', 'Kalmarer Union'),
     ('MAY', 'MANI_TAYASAL'): ('Mani and Tayasal', 'Mani und Tayasal'),

@@ -27,7 +27,7 @@ SUMMARIES = {
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),
     'THEOCRATIC_LEGITIMACY': (
         '+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.',
-        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit anderer oder keiner Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, andere religi\xf6se Geb\xe4ude -2 Zufriedenheit.'),
+        '+15% Kampfst\xe4rke f\xfcr Landeinheiten gegen Barbaren und L\xe4nder mit fremder oder keiner Staatsreligion. Geb\xe4ude der Staatsreligion geben +1 Zufriedenheit, Geb\xe4ude fremder Religionen -2 Zufriedenheit.'),
     'PLUTOCRACY': (
         '+25% gold income and +50% trade-route commerce.',
         '+25% Goldeinnahmen und +50% Wirtschaftspunkte durch Handelsrouten.'),
@@ -42,10 +42,10 @@ SUMMARIES = {
         '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht. Kann keine Spezialisten zuweisen.'),
     'SLAVERY': (
         'Enables slave specialists. Enslave conquered peoples.',
-        'Erm\u00f6glicht Sklavenspezialisten. Versklavt eroberte V\u00f6lker.'),
+        'Schaltet Sklavenspezialisten frei. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
-        '+1 food from farms; workers build improvements 50% faster, and population can rush units.',
-        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller und Bev\u00f6lkerung kann Einheiten beschleunigen.'),
+        '+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.',
+        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev\u00f6lkerung opfern, um nur Einheiten zu beschleunigen, keine Geb\u00e4ude oder Projekte.'),
     'PLANNED_ECONOMY': (
         '+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.',
         '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.'),
@@ -66,17 +66,17 @@ SUMMARIES = {
         '+25% unit production. Food surplus contributes to land military unit production.',
         '+25% Einheitenproduktion. Nahrungs\xfcberschuss tr\xe4gt zur Produktion milit\xe4rischer Landeinheiten bei.'),
     'ANCESTOR_CULT': (
-        '+1 culture from monuments, including unique replacements.',
-        '+1 Kultur durch Monumente, einschließlich einzigartiger Ersatzgebäude.'),
+        '+1 culture from monuments, including unique replacements.[NEWLINE]+1 unhappiness from state religion.',
+        '+1 Kultur durch Monumente, einschlie\u00dflich einzigartiger Ersatzgeb\u00e4ude.[NEWLINE]+1 Unzufriedenheit durch die Staatsreligion.'),
     'STATE_RELIGION': (
-        '+1 happiness in cities with the state religion; +100% production for missionaries of any religion.',
-        '+1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare aller Religionen.'),
+        '+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.',
+        '+1 Zufriedenheit in St\xe4dten mit Staatsreligion; +100% Produktion f\xfcr Missionare und +25% Produktion f\xfcr Geb\xe4ude der Staatsreligion.'),
     'GOD_STATE': (
-        'Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.',
-        'Städte mit Staatsreligion erhalten +2 Zufriedenheit und +10% Produktion; Städte ohne sie erhalten -2 Zufriedenheit.'),
+        '+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.',
+        '+10% Produktion in St\xe4dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
     'TOLERANCE': (
-        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.',
-        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus.'),
+        'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of any religion.',
+        'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte. Erlaubt die Ausbildung von Missionaren aller Religionen.'),
     'STATE_ATHEISM': (
         '+10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects and religions cannot spread.',
         '+10% Forschung und +10% Produktion; -1 Zufriedenheit in allen St\xe4dten. Religi\xf6se Geb\xe4ude wirken nicht und Religionen verbreiten sich nicht.'),
@@ -96,13 +96,23 @@ def main():
         source = source.replace(info, replacement, 1)
     civic_path.write_bytes(source.encode('utf-8'))
 
+    output = ASSETS / 'XML/Text/CIV4GameText_CivicStrategies.xml'
+    previous = {}
+    if output.exists():
+        for entry in ET.parse(output).getroot():
+            parts = {c.tag.split('}')[-1]: c.text for c in entry}
+            previous[parts['Tag']] = parts
     root = ET.Element('Civ4GameText', {'xmlns': 'http://www.firaxis.com'})
     for civic, (english, german) in SUMMARIES.items():
         entry = ET.SubElement(root, 'TEXT')
         ET.SubElement(entry, 'Tag').text = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
         for language in ('English', 'French', 'German', 'Italian', 'Spanish'):
             key = 'TXT_KEY_RFCMP_CIVIC_' + civic + '_STRATEGY'
-            ET.SubElement(entry, language).text = ENTRIES.get(key, {}).get(language, german if language == 'German' else english)
+            existing = previous.get(key, {})
+            fallback = german if language == 'German' else english
+            if language not in ('English', 'German') and existing.get('English') == english:
+                fallback = existing.get(language, fallback)
+            ET.SubElement(entry, language).text = ENTRIES.get(key, {}).get(language, fallback)
     ET.indent(root, space='    ')
     output = ASSETS / 'XML/Text/CIV4GameText_CivicStrategies.xml'
     output.write_bytes(b'<?xml version="1.0" encoding="UTF-8"?>\n' +

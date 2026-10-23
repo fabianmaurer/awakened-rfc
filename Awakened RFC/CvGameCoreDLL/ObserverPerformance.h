@@ -1,6 +1,9 @@
 #ifndef OBSERVER_PERFORMANCE_H
 #define OBSERVER_PERFORMANCE_H
 
+#include "Reporting.h"
+
+#if ARFC_ENABLE_REPORTING
 // Process-local instrumentation, enabled only by authenticated observer autoplay.
 extern bool g_observerPerformance;
 void observerPerformanceStart();
@@ -24,4 +27,19 @@ private:
     ObserverPerformanceScope* m_parent;
 };
 #define OBSERVER_PERFORMANCE(name) ObserverPerformanceScope observerPerformanceScope(name)
+#else
+// Inline empty hooks disappear from optimized gameplay builds.
+#define g_observerPerformance false
+inline void observerPerformanceStart() {}
+inline void observerPerformanceFlush() {}
+inline void observerPerformanceCount(const char*, unsigned int = 1) {}
+inline bool observerPerformanceInScope(const char*) { return false; }
+class ObserverPerformanceScope
+{
+public:
+    ObserverPerformanceScope(const char*) {}
+    void addWork(unsigned int = 1) {}
+};
+#define OBSERVER_PERFORMANCE(name) ObserverPerformanceScope observerPerformanceScope(name)
+#endif
 #endif

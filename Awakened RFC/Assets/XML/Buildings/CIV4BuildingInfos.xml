@@ -14248,13 +14248,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -14966,13 +14966,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -15684,13 +15684,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -16402,13 +16402,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -17120,13 +17120,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -17838,13 +17838,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -18556,13 +18556,13 @@
 					<iReligionChange>1</iReligionChange>
 				</ReligionChange>
 			</ReligionChanges>
-			<SpecialistCounts>
-				<SpecialistCount>
-					<SpecialistType>SPECIALIST_PRIEST</SpecialistType>
-					<iSpecialistCount>3</iSpecialistCount>
-				</SpecialistCount>
-			</SpecialistCounts>
-			<FreeSpecialistCounts/>
+			<SpecialistCounts/>
+			<FreeSpecialistCounts>
+                <FreeSpecialistCount>
+                    <SpecialistType>SPECIALIST_PRIEST</SpecialistType>
+                    <iFreeSpecialistCount>2</iFreeSpecialistCount>
+                </FreeSpecialistCount>
+            </FreeSpecialistCounts>
 			<CommerceFlexibles/>
 			<CommerceChangeOriginalOwners>
 				<bCommerceChangeOriginalOwner>0</bCommerceChangeOriginalOwner>
@@ -21310,7 +21310,12 @@
 			<BuildingHappinessChanges/>
 			<PrereqBuildingClasses/>
 			<!-- Rhye -->
-			<BuildingClassNeededs/>
+			<BuildingClassNeededs>
+				<BuildingClassNeeded>
+					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
+					<bNeededInCity>1</bNeededInCity>
+				</BuildingClassNeeded>
+			</BuildingClassNeededs>
 			<SpecialistYieldChanges/>
 			<BonusYieldModifiers/>
 			<ImprovementFreeSpecialists/>
@@ -21545,7 +21550,7 @@
 			<bBorderObstacle>0</bBorderObstacle>
 			<bTeamShare>1</bTeamShare>
 			<bWater>0</bWater>
-			<bRiver>0</bRiver>
+			<bRiver>1</bRiver>
 			<bPower>0</bPower>
 			<bDirtyPower>0</bDirtyPower>
 			<bAreaCleanPower>0</bAreaCleanPower>
@@ -22238,7 +22243,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_HINDUISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -22431,7 +22436,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_CHRISTIANITY</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -22790,7 +22795,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_CHRISTIANITY</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -22977,7 +22982,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_ISLAM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -23158,7 +23163,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_CHRISTIANITY</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -23337,7 +23342,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_ISLAM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -23908,7 +23913,7 @@
 			<iHurryAngerModifier>0</iHurryAngerModifier>
 			<bBorderObstacle>0</bBorderObstacle>
 			<bTeamShare>1</bTeamShare>
-			<bWater>0</bWater>
+			<bWater>1</bWater>
 			<bRiver>0</bRiver>
 			<bPower>0</bPower>
 			<bDirtyPower>0</bDirtyPower>
@@ -23932,7 +23937,7 @@
 			<iHurryCostModifier>200</iHurryCostModifier>
 			<iAdvancedStartCost>-1</iAdvancedStartCost>
 			<iAdvancedStartCostIncrease>0</iAdvancedStartCostIncrease>
-			<iMinAreaSize>-1</iMinAreaSize>
+			<iMinAreaSize>10</iMinAreaSize>
 			<iConquestProb>100</iConquestProb>
 			<iCitiesPrereq>0</iCitiesPrereq>
 			<iTeamsPrereq>0</iTeamsPrereq>
@@ -24205,7 +24210,12 @@
 			<DomainProductionModifiers/>
 			<BuildingHappinessChanges/>
 			<PrereqBuildingClasses/>
-			<BuildingClassNeededs/>
+			<BuildingClassNeededs>
+				<BuildingClassNeeded>
+					<BuildingClassType>BUILDINGCLASS_COLOSSEUM</BuildingClassType>
+					<bNeededInCity>1</bNeededInCity>
+				</BuildingClassNeeded>
+			</BuildingClassNeededs>
 			<SpecialistYieldChanges/>
 			<BonusYieldModifiers/>
 			<ImprovementFreeSpecialists/>
@@ -24375,7 +24385,12 @@
 			<DomainProductionModifiers/>
 			<BuildingHappinessChanges/>
 			<PrereqBuildingClasses/>
-			<BuildingClassNeededs/>
+			<BuildingClassNeededs>
+				<BuildingClassNeeded>
+					<BuildingClassType>BUILDINGCLASS_THEATRE</BuildingClassType>
+					<bNeededInCity>1</bNeededInCity>
+				</BuildingClassNeeded>
+			</BuildingClassNeededs>
 			<SpecialistYieldChanges/>
 			<BonusYieldModifiers/>
 			<ImprovementFreeSpecialists/>
@@ -24545,7 +24560,12 @@
 			<DomainProductionModifiers/>
 			<BuildingHappinessChanges/>
 			<PrereqBuildingClasses/>
-			<BuildingClassNeededs/>
+			<BuildingClassNeededs>
+				<BuildingClassNeeded>
+					<BuildingClassType>BUILDINGCLASS_THEATRE</BuildingClassType>
+					<bNeededInCity>1</bNeededInCity>
+				</BuildingClassNeeded>
+			</BuildingClassNeededs>
 			<SpecialistYieldChanges/>
 			<BonusYieldModifiers/>
 			<ImprovementFreeSpecialists/>
@@ -24877,7 +24897,12 @@
 			<DomainProductionModifiers/>
 			<BuildingHappinessChanges/>
 			<PrereqBuildingClasses/>
-			<BuildingClassNeededs/>
+			<BuildingClassNeededs>
+				<BuildingClassNeeded>
+					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
+					<bNeededInCity>1</bNeededInCity>
+				</BuildingClassNeeded>
+			</BuildingClassNeededs>
 			<SpecialistYieldChanges/>
 			<BonusYieldModifiers/>
 			<ImprovementFreeSpecialists/>
@@ -25605,7 +25630,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_ISLAM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -25779,7 +25804,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_GREAT_WALL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_GREAT_WALL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_GREAT_WALL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_GREAT_WALL_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_GREAT_WALL</ArtDefineTag>
 			<MovieDefineTag>ART_DEF_MOVIE_GREAT_WALL</MovieDefineTag>
@@ -26330,7 +26355,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_CHRISTIANITY</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -26500,7 +26525,7 @@
 			<ReligionType>NONE</ReligionType>
 			<StateReligion>NONE</StateReligion>
 			<bStateReligion>0</bStateReligion>
-			<PrereqReligion>NONE</PrereqReligion>
+			<PrereqReligion>RELIGION_BUDDHISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<FoundsCorporation>NONE</FoundsCorporation>
 			<GlobalReligionCommerce>NONE</GlobalReligionCommerce>
@@ -28105,14 +28130,14 @@
 			<Type>BUILDING_APOSTOLIC_PALACE</Type>
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_APOSTOLIC_PALACE</Description>
-			<Civilopedia>TXT_KEY_BUILDING_APOSTOLIC_PALACE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_APOSTOLIC_PALACE_STRATEGY</Strategy>
+			<Civilopedia>TXT_KEY_AP_PEDIA</Civilopedia>
+			<Strategy>TXT_KEY_AP_STRATEGY</Strategy><Help>TXT_KEY_AP_UP_HELP</Help>
 			<Advisor>ADVISOR_RELIGION</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_APOSTOLIC_PALACE</ArtDefineTag>
 			<MovieDefineTag>ART_DEF_MOVIE_APOSTOLIC_PALACE</MovieDefineTag>
 			<HolyCity>NONE</HolyCity>
 			<ReligionType>NONE</ReligionType>
-			<StateReligion>NONE</StateReligion>
+			<StateReligion>RELIGION_CHRISTIANITY</StateReligion>
 			<bStateReligion>1</bStateReligion>
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
@@ -28161,7 +28186,7 @@
 			<bPrereqReligion>0</bPrereqReligion>
 			<bCenterInCity>0</bCenterInCity>
 			<iAIWeight>0</iAIWeight>
-			<iCost>400</iCost>
+			<iCost>-1</iCost>
 			<iHurryCostModifier>300</iHurryCostModifier>
 			<iAdvancedStartCost>-1</iAdvancedStartCost>
 			<iAdvancedStartCostIncrease>3</iAdvancedStartCostIncrease>

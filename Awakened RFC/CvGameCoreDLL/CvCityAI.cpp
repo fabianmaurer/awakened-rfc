@@ -785,8 +785,11 @@ void CvCityAI::AI_chooseProduction()
 			//if we are killing our growth to train this, then finish it.
 			else if (!bDanger && isFoodProduction())
 			{
-				if ((area()->getAreaAIType(getTeam()) != AREAAI_DEFENSIVE))
+				if (area()->getAreaAIType(getTeam()) != AREAAI_DEFENSIVE ||
+                    ((getOwnerINLINE() == INDEPENDENT || getOwnerINLINE() == INDEPENDENT2) &&
+                     getProductionUnitAI() == UNITAI_WORKER))
 				{
+                    // Finish a local worker despite a distant defensive war.
 					return;
 				}
 			}
@@ -888,7 +891,7 @@ void CvCityAI::AI_chooseProduction()
 	int iWaterPercent = AI_calculateWaterWorldPercent();
 	
 	int iBuildUnitProb = AI_buildUnitProb();
-	if (kPlayer.AI_isRomanCampaign() && !kPlayer.AI_isFinancialTrouble())
+	if ((kPlayer.AI_isRomanCampaign() || kPlayer.AI_isArabianJihad()) && !kPlayer.AI_isFinancialTrouble())
 		iBuildUnitProb = std::min(90, iBuildUnitProb + 25);
     
     int iExistingWorkers = kPlayer.AI_totalAreaUnitAIs(pArea, UNITAI_WORKER);
@@ -978,8 +981,55 @@ void CvCityAI::AI_chooseProduction()
 	}
 	
 	
+    // Independent factions share scattered cities, not a coherent empire.
+    // Meet local needs before empire-wide wars and worker totals dominate.
+    if ((getOwnerINLINE() == INDEPENDENT || getOwnerINLINE() == INDEPENDENT2) && !isOccupation())
+    {
+        const UnitTypes eBestGuard = AI_bestUnitAI(UNITAI_CITY_DEFENSE);
+        const int iGuardStrength = eBestGuard == NO_UNIT ? 0 : GC.getUnitInfo(eBestGuard).getCombat();
+        int iGuards = 0;
+        for (CLLNode<IDInfo>* pNode = plot()->headUnitNode(); pNode != NULL; pNode = plot()->nextUnitNode(pNode))
+        {
+            CvUnit* pGuard = ::getUnit(pNode->m_data);
+            if (pGuard->getOwnerINLINE() == getOwnerINLINE() && pGuard->getDomainType() == DOMAIN_LAND &&
+                !pGuard->isCargo() && pGuard->canDefend() && !pGuard->isDelayedDeath() &&
+                3 * pGuard->baseCombatStr() >= 2 * iGuardStrength) ++iGuards;
+        }
+        // Keep the city defended, but establish a local improvement economy
+        // before expanding its garrison or starting culture buildings in peace.
+        if (plot()->getNumDefenders(getOwnerINLINE()) == 0 && AI_chooseDefender()) return;
+        if (!bDanger && AI_getWorkersNeeded() > 0 && AI_getWorkersHave() == 0 &&
+            AI_chooseUnit(UNITAI_WORKER)) return;
+
+        // Replace obsolete garrisons through production as technology advances.
+        const int iWantedGuards = 2 + (bDanger ? 1 : 0) + (getPopulation() >= 6 ? 1 : 0);
+        if (iGuards < iWantedGuards)
+        {
+            if (eBestGuard != NO_UNIT && AI_chooseUnit(eBestGuard, UNITAI_CITY_DEFENSE)) return;
+            if (AI_chooseDefender()) return;
+        }
+
+        const BuildingClassTypes eWallClass = (BuildingClassTypes)GC.getInfoTypeForString("BUILDINGCLASS_WALLS");
+        const BuildingTypes eWalls = eWallClass == NO_BUILDINGCLASS ? NO_BUILDING :
+            (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(eWallClass);
+        // Fortify after the local economy and basic garrison are established,
+        // rather than letting repeated culture builds postpone Walls.
+        if (eWalls != NO_BUILDING && canConstruct(eWalls))
+        {
+            pushOrder(ORDER_CONSTRUCT, eWalls, -1, false, false, false);
+            return;
+        }
+        if (!bDanger)
+        {
+            // A remote war on the same landmass must not suppress local culture.
+            if ((getCommerceRate(COMMERCE_CULTURE) < 2 ||
+                (needsCultureForWorkablePlots() && getCommerceRate(COMMERCE_CULTURE) < 4)) &&
+                AI_chooseBuilding(BUILDINGFOCUS_CULTURE, 30)) return;
+        }
+    }
+
     // if we need to pop borders, then do that immediately if we have drama and can do it
-	if ((iTargetCulturePerTurn > 0) && (getCultureLevel() <= (CultureLevelTypes) 1))
+	if ((iTargetCulturePerTurn > 0) && (needsCultureForWorkablePlots()))
 	{
         if (AI_chooseProcess(COMMERCE_CULTURE))
         {
@@ -4296,6 +4346,8 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 					}
 					iTempValue += (kBuilding.getGlobalSeaPlotYieldChange(iI) * kOwner.countNumCoastalCities() * 8);
 					iTempValue += (kBuilding.getYieldChange(iI) * 6);
+                    if (iI == YIELD_COMMERCE && kBuilding.getGlobalReligionCommerce() != NO_RELIGION)
+                        iTempValue += GC.getGameINLINE().getShrinePopulationCommerce((ReligionTypes)kBuilding.getGlobalReligionCommerce()) * 6;
 					iTempValue += ((kBuilding.getYieldModifier(iI) * getBaseYieldRate((YieldTypes)iI)) / 10);
 					iTempValue += ((kBuilding.getPowerYieldModifier(iI) * getBaseYieldRate((YieldTypes)iI)) / ((bProvidesPower || isPower()) ? 12 : 15));
 					iTempValue += ((kBuilding.getAreaYieldModifier(iI) * iNumCitiesInArea) / 3);
@@ -4537,14 +4589,6 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 						iTempValue += (kBuilding.getStateReligionCommerce(iI) * kOwner.getHasReligionCount(eStateReligion) * 3);
 					}
 
-					if (kBuilding.getGlobalReligionCommerce() != NO_RELIGION)
-					{
-						iTempValue += (GC.getReligionInfo((ReligionTypes)(kBuilding.getGlobalReligionCommerce())).getGlobalReligionCommerce(iI) * GC.getGameINLINE().countReligionLevels((ReligionTypes)(kBuilding.getGlobalReligionCommerce())) * 2);
-						if (eStateReligion == (ReligionTypes)(kBuilding.getGlobalReligionCommerce()))
-						{
-						    iTempValue += 10;
-						}
-					}
 
 					CorporationTypes eCorporation = (CorporationTypes)kBuilding.getFoundsCorporation();
 					int iCorpValue = 0;
@@ -4872,7 +4916,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 //	}
 	
 	//Rhye - start (embassy)
-	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS)
+	if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_EMBASSY_BUILDINGS)
 	{
 		int iOtherCiv = (int)eBuilding - NUM_BUILDINGS_PLAGUE;
 		iValue += 5; //from 3 to 7 (max=35) //change to 4 in vanilla and warlords as there is no espionage points there
@@ -5231,7 +5275,7 @@ int CvCityAI::AI_processValue(ProcessTypes eProcess, CommerceTypes eCommerceType
 	}
 
 	// if we own less than 50%, or we need to pop borders
-	if ((plot()->calculateCulturePercent(getOwnerINLINE()) < 50) || (getCultureLevel() <= (CultureLevelTypes) 1))
+	if ((plot()->calculateCulturePercent(getOwnerINLINE()) < 50) || (needsCultureForWorkablePlots()))
 	{
 		iValue += GC.getProcessInfo(eProcess).getProductionToCommerceModifier(COMMERCE_CULTURE);
 	}
@@ -5300,9 +5344,9 @@ bool CvCityAI::AI_isAirDefended(int iExtra)
 int CvCityAI::AI_neededDefenders()
 {
 	PROFILE_FUNC();
-	// Early AI Rome accepts exposed provinces to keep its conquest army moving.
+	// Campaign AI accepts exposed quiet cities to keep its conquest army moving.
 	// Occupation and nearby threats retain ordinary reinforcement demands.
-	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() && !isOccupation() && !AI_isDanger())
+	if ((GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad() || GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing()) && !isOccupation() && !AI_isDanger())
 		return AI_minDefenders();
 	int iDefenders;
 	bool bOffenseWar = ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING));
@@ -5384,7 +5428,9 @@ int CvCityAI::AI_neededDefenders()
 
 int CvCityAI::AI_minDefenders()
 {
-	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign()) return isCapital() ? 2 : 1;
+	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad()) return isCapital() ? 2 : 1;
+	if (GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing() && !isOccupation() && !AI_isDanger())
+		return isCapital() ? 2 : 1;
 	int iDefenders = 1;
 	int iEra = GET_PLAYER(getOwnerINLINE()).getCurrentEra();
 	if (iEra > 0)
@@ -8159,7 +8205,7 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 			}
 			if (iI == COMMERCE_CULTURE)
 			{
-				if (getCultureLevel() <= (CultureLevelTypes) 1)
+				if (needsCultureForWorkablePlots())
 				{
 					iCommerceValue += (15 * aiCommerceYieldsTimes100[iI]) / 100;
 				}
@@ -9404,7 +9450,7 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 	}
 	
     // if we need to pop borders, then do that immediately if we have drama and can do it
-	if ((getCultureLevel() <= (CultureLevelTypes)1) && ((getCommerceRate(COMMERCE_CULTURE) < 2) || (iCulturePressure > 0)))
+	if ((needsCultureForWorkablePlots()) && ((getCommerceRate(COMMERCE_CULTURE) < 2) || (iCulturePressure > 0)))
 	{
         if (AI_chooseProcess(COMMERCE_CULTURE))
         {

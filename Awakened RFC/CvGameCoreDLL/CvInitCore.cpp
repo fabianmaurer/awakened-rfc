@@ -447,6 +447,11 @@ void CvInitCore::closeInactiveSlots()
 	for (int i = 0; i < MAX_CIV_PLAYERS; i++)
 	{
 		PlayerTypes eID = (PlayerTypes)i;
+        if ((eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) && getCiv(eID) == NO_CIVILIZATION)
+        {
+            setSlotStatus(eID, SS_CLOSED);
+            continue;
+        }
 		if (getSlotStatus(eID) == SS_OPEN)
 		{
 			if (/*getPitboss() ||*/ getHotseat() || getPbem()) //RFCMP
@@ -1776,9 +1781,16 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 			CvWString::size_type iSeparator = szMapName.find_last_of(L"\\/");
 			const wchar* szFileName = szMapName.GetCString() +
 				(iSeparator == CvWString::npos ? 0 : iSeparator + 1);
+			// Reserved successor slots are selectable only when explicitly
+			// authored as Cordoba in the 900 AD scenario.
+			if (eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2)
+				return eID == CALIPHATE_SLOT_1 && m_abPlayableCiv[eID] &&
+					getCiv(eID) == GC.getInfoTypeForString("CIVILIZATION_UMAYYAD") &&
+					wcsicmp(szFileName, L"Start 3b - 900 AD.CivBeyondSwordWBSave") == 0;
 			if (wcsicmp(szFileName, L"Start 4 - 1453 AD.CivBeyondSwordWBSave") == 0)
 				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
 		}
+		if (eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) return false;
 
 		// Authored scenarios can start with a civilization already established
 		// on its birth turn. Honor their

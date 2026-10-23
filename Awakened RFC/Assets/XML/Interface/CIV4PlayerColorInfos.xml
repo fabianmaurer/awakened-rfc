@@ -340,5 +340,35 @@
 			<TextColorType>COLOR_PLAYER_GREYISH_CYAN_TEXT</TextColorType>
 		</PlayerColorInfo>
 		<!-- Rhye - end -->
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_ABBASID</Type>
+			<ColorTypePrimary>COLOR_PLAYER_BLACK</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_GOLDENROD</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_GOLDENROD</TextColorType>
+		</PlayerColorInfo>
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_ARABIA</Type>
+			<ColorTypePrimary>COLOR_PLAYER_DARK_RED</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_GOLDENROD</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_DARK_RED_TEXT</TextColorType>
+		</PlayerColorInfo>
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_FATIMID</Type>
+			<ColorTypePrimary>COLOR_PLAYER_DARK_GREEN</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_WHITE</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_DARK_GREEN_TEXT</TextColorType>
+		</PlayerColorInfo>
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_UMAYYAD</Type>
+			<ColorTypePrimary>COLOR_PLAYER_WHITE</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_RED</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_WHITE_TEXT</TextColorType>
+		</PlayerColorInfo>
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_PAPAL</Type>
+			<ColorTypePrimary>COLOR_PLAYER_GOLDENROD</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_RED</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_YELLOW_TEXT</TextColorType>
+		</PlayerColorInfo>
 	</PlayerColorInfos>
 </Civ4PlayerColorInfos>

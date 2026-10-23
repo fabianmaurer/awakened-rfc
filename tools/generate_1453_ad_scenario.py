@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
 TARGET = MOD / 'PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave'
 START_TURN = 271
-ACTIVE = tuple(i for i in range(26) if i != 3)
+ACTIVE = tuple(i for i in range(26) if i != 3) + (30, 31)
 CHRISTIAN = 'RELIGION_CHRISTIANITY'
 ISLAM = 'RELIGION_ISLAM'
 BUDDHISM = 'RELIGION_BUDDHISM'
@@ -21,7 +21,7 @@ RELIGIONS = {0: ISLAM, 1: ISLAM, 2: CONFUCIAN, 4: CHRISTIAN,
              9: CHRISTIAN, 11: CHRISTIAN, 12: ISLAM, 13: BUDDHISM,
              14: CHRISTIAN, 15: CHRISTIAN, 16: CHRISTIAN, 17: CHRISTIAN,
              18: CHRISTIAN, 19: CHRISTIAN, 20: ISLAM, 21: CHRISTIAN,
-             25: ISLAM}
+             25: ISLAM, 30: CONFUCIAN}
 
 # First city per major is the capital. Sizes are relative urban weights, not a
 # census conversion. The crowded RFC map requires regional aggregations.
@@ -31,8 +31,8 @@ CITY_DATA = """
 0|73,38|Al-Quds|4
 0|74,41|Dimashq|7
 1|90,40|Delhi|8
-28|94,40|Jaunpur|5
-28|96,39|Gaur|5
+33|94,40|Jaunpur|5
+33|96,39|Gaur|5
 1|88,42|Lahore|4
 2|102,47|Beijing|10
 2|107,43|Nanjing|10
@@ -61,7 +61,7 @@ CITY_DATA = """
 11|61,62|Nidaros|3
 11|65,62|Stockholm|4
 12|75,33|Makkah|4
-27|76,30|Sana'a|3
+32|76,30|Sana'a|3
 13|102,32|Chaktomuk|4
 13|102,34|Angkor|3
 14|52,43|Toledo|5
@@ -81,19 +81,19 @@ CITY_DATA = """
 18|75,55|Vladimir|3
 19|57,53|Brugge|7
 20|51,29|Niani|5
-29|53,31|Timbuktu|5
-29|56,31|Gao|4
+34|53,31|Timbuktu|5
+34|56,31|Gao|4
 20|54,29|Djenne|4
 21|49,43|Lisboa|6
 21|49,45|Porto|4
 22|28,22|Qusqu|7
-29|24,25|Chan Chan|6
-29|25,23|Cajamarca|4
+34|24,25|Chan Chan|6
+34|25,23|Cajamarca|4
 22|27,24|Huamanga|4
 22|30,18|Hatun Qulla|4
-29|26,29|Tumipampa|4
-29|30,15|Tupiza|3
-29|29,11|Copiapo|2
+34|26,29|Tumipampa|4
+34|30,15|Tupiza|3
+34|29,11|Copiapo|2
 23|99,51|Qaraqorum|4
 23|96,53|Qobdo|2
 24|18,37|Tenochtitlan|10
@@ -104,36 +104,37 @@ CITY_DATA = """
 25|70,43|Bursa|5
 25|66,46|Edirne|4
 25|65,44|Thessaloniki|4
-27|52,41|Gharnata|5
-27|52,60|Inbhir Nis|3
-27|67,53|Krakow|5
-27|72,57|Novgorod|5
-27|78,40|Baghdad|5
-27|82,38|Shiraz|5
-27|81,45|Tabriz|6
-27|75,44|Trapezous|4
-28|98,36|Ava|5
-28|100,32|Ayutthaya|6
-28|106,33|Thang Long|5
-28|109,46|Hanseong|6
-28|88,36|Dabhol|4
-28|91,33|Vijayanagara|8
-28|87,40|Multan|4
-29|61,16|Mbanza Kongo|4
-29|74,14|Kilwa|5
-29|68,15|Great Zimbabwe|4
-27|49,56|Dublin|3
-28|62,42|Napoli|6
-28|60,40|Palermo|5
-27|65,49|Buda|5
-27|76,46|Tbilisi|3
-28|52,37|Fes|6
-28|54,38|Tlemcen|4
-28|82,34|Masqat|3
-28|96,43|Lhasa|3
-28|93,29|Colombo|3
-28|100,30|Melaka|5
-28|106,25|Surabaya|4
+32|52,41|Gharnata|5
+32|52,60|Inbhir Nis|3
+32|67,53|Krakow|5
+32|72,57|Novgorod|5
+32|78,40|Baghdad|5
+32|82,38|Shiraz|5
+32|81,45|Tabriz|6
+32|75,44|Trapezous|4
+33|98,36|Ava|5
+33|100,32|Ayutthaya|6
+33|106,33|Thang Long|5
+30|109,46|Hanseong|7
+30|108,49|Uiju|4
+33|88,36|Dabhol|4
+33|91,33|Vijayanagara|8
+33|87,40|Multan|4
+34|61,16|Mbanza Kongo|4
+34|74,14|Kilwa|5
+34|68,15|Great Zimbabwe|4
+32|49,56|Dublin|3
+33|62,42|Napoli|6
+33|60,40|Palermo|5
+32|65,49|Buda|5
+32|76,46|Tbilisi|3
+33|52,37|Fes|6
+33|54,38|Tlemcen|4
+33|82,34|Masqat|3
+33|96,43|Lhasa|3
+33|93,29|Colombo|3
+33|100,30|Melaka|5
+33|106,25|Surabaya|4
 """
 
 # Independent slots group unrelated polities. Their cities need local faiths,
@@ -178,9 +179,10 @@ AMERICAN_TECHS = ('MYSTICISM POLYTHEISM PRIESTHOOD MONARCHY CODE_OF_LAWS '
                   'AGRICULTURE POTTERY WRITING MATHEMATICS CALENDAR '
                   'CURRENCY HUNTING MINING ARCHERY MASONRY BRONZE_WORKING '
                   'CONSTRUCTION FEUDALISM').split()
-GUNPOWDER = (0, 1, 2, 5, 8, 11, 14, 15, 16, 17, 18, 19, 21, 25)
+GUNPOWDER = (0, 1, 2, 5, 8, 11, 14, 15, 16, 17, 18, 19, 21, 25, 30)
 OPTICS = (2, 7, 11, 14, 15, 16, 19, 21)
 LEADERS = {
+    30: ('Danjong', 'Danjong'),
     0: ('Inal', 'Inal'), 1: ('Bahlul Lodi', 'Bahlul Lodi'),
     2: ('Jingtai', 'Jingtai'), 4: ('Demetrios Palaiologos', 'Demetrios Palaiologos'),
     5: ("Abu Sa'id Mirza", "Abu Sa'id Mirza"),
@@ -204,6 +206,8 @@ LEADERS = {
 # Briefings describe the authored position, including aggregated regional states.
 # Keep them short enough for the existing Dawn of Man panel.
 INTRODUCTIONS = {
+    30: ('1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.',
+         '1453 n. Chr.: Joseon unter Danjong. Sichert die Nordgrenze, entwickelt eure Kuestenstaedte und Seowon und schuetzt die Halbinsel mit Hwacha-Artillerie.'),
     0: (
         '1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.',
         '1453: Von Kairo aus beherrscht das Mamlukensultanat Ägypten und die Levante. Der Nil ernährt eure Städte, Verbindungen zum Mittelmeer und Roten Meer bringen Wohlstand. Die Osmanen haben Konstantinopel erobert. Sichert die Nordgrenze und bewahrt die Stärke eures Sultanats.'),
@@ -282,6 +286,12 @@ INTRODUCTIONS = {
 }
 
 
+CITY_DATA += "31|25,44|Etowah|4\n31|22,43|Natchez|3\n"
+NO_GAME_RELIGION_CITIES = NO_GAME_RELIGION_CITIES | frozenset(("Etowah", "Natchez"))
+LEADERS[31] = ("Paramount Chief", "Oberhaupt")
+INTRODUCTIONS[31] = ("Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.",
+                     "Fuehrt die Mississippi-Haeuptlingstuemer Nordamerikas. Entwickelt eure Flussstaedte und verteidigt ihre Unabhaengigkeit.")
+
 def records():
     cities = []
     for line in CITY_DATA.strip().splitlines():
@@ -291,7 +301,7 @@ def records():
 
 
 def techs(owner):
-    result = list(AMERICAN_TECHS if owner in (10, 22, 24) else BASE_TECHS)
+    result = list(AMERICAN_TECHS if owner in (10, 22, 24, 31) else BASE_TECHS)
     if owner in GUNPOWDER:
         result.append('GUNPOWDER')
     if owner in OPTICS:
@@ -353,7 +363,7 @@ def main():
     for owner, _, name, _ in cities:
         if name not in CITY_RELIGIONS and owner not in RELIGIONS and name not in NO_GAME_RELIGION_CITIES:
             raise ValueError('Missing city religion assignment: ' + name)
-    if {owner for owner, _, _, _ in cities if owner < 27} != set(ACTIVE):
+    if {owner for owner, _, _, _ in cities if owner < 32} != set(ACTIVE):
         raise ValueError('Every populated major must be selectable, and every selectable major needs a city')
     for index, (_, (x, y), name, _) in enumerate(cities):
         for _, (xx, yy), other, _ in cities[index + 1:]:
@@ -410,7 +420,7 @@ def main():
             lines += ['\tTech=TECH_' + t for t in techs(owner)]
             # Continental diplomacy predates this start; no transatlantic contact.
             for other in capitals:
-                if other != owner and ((owner not in (10, 22, 24) and other not in (10, 22, 24))
+                if other != owner and ((owner not in (10, 22, 24, 31) and other not in (10, 22, 24, 31))
                                        or (owner in (10, 24) and other in (10, 24))):
                     lines.append('\tContactWithTeam=' + str(other))
         if owner in (15, 16):
@@ -468,12 +478,12 @@ def main():
                 block += '\t\tReligionType=' + faith + '\n'
             block += '\t\tHolyCityReligionType=' + faith + '\n'
         block += '\t\tPlayer%dCulture=%d\n\tEndCity\n' % (owner, 500 if capitals[owner] == pos else 200)
-        garrison = 'UNIT_ARCHER' if owner in (10, 22, 24) else 'UNIT_LONGBOWMAN'
+        garrison = 'UNIT_ARCHER' if owner in (10, 22, 24, 31) else 'UNIT_LONGBOWMAN'
         block += unit(owner, garrison, 'UNITAI_CITY_DEFENSE') * 2
         if capitals[owner] == pos:
             block += unit(owner, 'UNIT_WORKER', 'UNITAI_WORKER') * (3 if owner in ACTIVE else 1)
             if owner in ACTIVE:
-                army = 'UNIT_SPEARMAN' if owner in (10, 22, 24) else 'UNIT_KNIGHT'
+                army = 'UNIT_SPEARMAN' if owner in (10, 22, 24, 31) else 'UNIT_KNIGHT'
                 if owner == 8:
                     army = 'UNIT_JAPAN_SAMURAI'
                 block += unit(owner, army) * 2
@@ -548,7 +558,7 @@ def main():
         for owner in ACTIVE:
             local = any(max(min(abs(x - cx), 124 - abs(x - cx)), abs(y - cy)) <= 8
                         for o, (cx, cy), _, _ in cities if o == owner)
-            old_world = owner not in (10, 22, 24) and 42 <= x <= 118 and 20 <= y <= 65
+            old_world = owner not in (10, 22, 24, 31) and 42 <= x <= 118 and 20 <= y <= 65
             if local or old_world:
                 revealed.append(str(owner))
         if revealed:
@@ -580,6 +590,9 @@ def main():
             playable.add(owner)
     if playable != set(ACTIVE):
         raise ValueError('Generated selectable players do not match the 1453 starting roster')
+    from korea_scenarios import apply_korea
+    from american_scenarios import apply_american_starts
+    text = apply_american_starts(apply_korea(text))
     TARGET.write_text(text, encoding='utf-8')
     data = ('# Generated by tools/generate_1453_ad_scenario.py; Python 2.4.\n'
             'START_TURN = %r\nSTART_YEAR = 1453\nACTIVE_PLAYERS = %r\nCAPITALS = %r\n' %

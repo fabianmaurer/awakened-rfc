@@ -157,6 +157,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 	// Uninit class
 	uninit();
 
+	m_aiConquestResearchPlots.clear();
 	m_iNumMembers = 0;
 	m_iAliveCount = 0;
 	m_iEverAliveCount = 0;
@@ -998,6 +999,28 @@ void CvTeam::updateCommerce()
 }
 
 
+bool CvTeam::isArabianJihadWar(TeamTypes eTeam) const
+{
+    if (eTeam == NO_TEAM || eTeam == getID() || !isAtWar(eTeam)) return false;
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+        if (!kPlayer.isArabianJihadActive()) continue;
+        const TeamTypes eArabia = kPlayer.getTeam();
+        const bool bArabSide = getID() == eArabia || isVassal(eArabia) || GET_TEAM(eArabia).isVassal(getID());
+        const bool bOtherArabSide = eTeam == eArabia || GET_TEAM(eTeam).isVassal(eArabia) || GET_TEAM(eArabia).isVassal(eTeam);
+        if (!bArabSide && !bOtherArabSide) continue;
+        for (int j = 0; j < MAX_TEAMS; ++j)
+        {
+            const TeamTypes eEnemy = (TeamTypes)j;
+            if (!kPlayer.isArabianJihadEnemy(eEnemy)) continue;
+            if ((bArabSide && (eTeam == eEnemy || GET_TEAM(eTeam).isVassal(eEnemy) || GET_TEAM(eEnemy).isVassal(eTeam))) ||
+                (bOtherArabSide && (getID() == eEnemy || isVassal(eEnemy) || GET_TEAM(eEnemy).isVassal(getID())))) return true;
+        }
+    }
+    return false;
+}
+
 bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 {
 	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE))
@@ -1010,7 +1033,7 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 		return false;
 	}
 
-	if (isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
+	if (GC.getGameINLINE().isCrusadeWar(getID(), eTeam) || isArabianJihadWar(eTeam) || isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
 	{
 		return false;
 	}
@@ -1058,6 +1081,7 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 
 bool CvTeam::canDeclareWar(TeamTypes eTeam) const
 {
+	if (GC.getGameINLINE().hasCrusadeAccess(getID(), eTeam)) return false;
 	if (eTeam == getID())
 	{
 		return false;
@@ -1124,6 +1148,7 @@ bool CvTeam::canDeclareWar(TeamTypes eTeam) const
 
 void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 {
+	if (GC.getGameINLINE().hasCrusadeAccess(getID(), eTeam)) return;
 	PROFILE_FUNC();
 
 	CLLNode<TradeData>* pNode;
@@ -1538,6 +1563,8 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 {
+	if (GC.getGameINLINE().isCrusadeWar(getID(), eTeam) || (isArabianJihadWar(eTeam) && !GC.getGameINLINE().isCrusadePeaceOverride())) return;
+
 	CvWString szBuffer;
 	int iI;
 
@@ -1576,6 +1603,12 @@ void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 
 		AI_setWarPlan(eTeam, NO_WARPLAN);
 		GET_TEAM(eTeam).AI_setWarPlan(getID(), NO_WARPLAN);
+
+		// Restore wartime fort claims before the normal peace-time unit relocation.
+		for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+		{
+			GC.getMapINLINE().plotByIndexINLINE(iI)->restoreFortCultureAfterPeace(getID(), eTeam);
+		}
 
 		if (bBumpUnits)
 		{
@@ -2554,6 +2587,13 @@ int CvTeam::countEnemyDangerByArea(CvArea* pArea) const
 }
 
 
+bool CvTeam::claimConquestResearch(int iPlot)
+{
+	if (std::find(m_aiConquestResearchPlots.begin(), m_aiConquestResearchPlots.end(), iPlot) != m_aiConquestResearchPlots.end()) return false;
+	m_aiConquestResearchPlots.push_back(iPlot);
+	return true;
+}
+
 int CvTeam::getResearchCost(TechTypes eTech) const
 {
 	int iCost;
@@ -2722,6 +2762,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * 135 + 99) / 100));
 	}
 
+	iCost = (int)std::min((__int64)MAX_INT, ((__int64)iCost * GC.getDefineINT("RFCMP_GLOBAL_RESEARCH_COST_PERCENT")) / 100);
 	return std::max(1, iCost);
 }
 
@@ -3752,6 +3793,7 @@ bool CvTeam::isAtWar(TeamTypes eIndex) const
 
 void CvTeam::setAtWar(TeamTypes eIndex, bool bNewValue)
 {
+	if ((!bNewValue && GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) || (bNewValue && GC.getGameINLINE().hasCrusadeAccess(getID(), eIndex))) return;
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	m_abAtWar[eIndex] = bNewValue;
@@ -3910,6 +3952,7 @@ bool CvTeam::isForcePeace(TeamTypes eIndex) const
 
 void CvTeam::setForcePeace(TeamTypes eIndex, bool bNewValue)
 {
+	if (bNewValue && GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	m_abForcePeace[eIndex] = bNewValue;
@@ -3943,6 +3986,18 @@ bool CvTeam::isVassal(TeamTypes eIndex) const
 
 void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 {
+	if (bNewValue)
+	{
+		if (GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (GC.getGameINLINE().isCrusadeWar(getID(), (TeamTypes)t) && !GET_TEAM(eIndex).isAtWar((TeamTypes)t)) return;
+	}
+    if (bNewValue)
+    {
+        if (isArabianJihadWar(eIndex)) return;
+        for (int i = 0; i < MAX_TEAMS; ++i)
+            if (bCapitulated && isArabianJihadWar((TeamTypes)i) && !GET_TEAM(eIndex).isAtWar((TeamTypes)i)) return;
+    }
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	FAssertMsg(!bNewValue || !GET_TEAM(eIndex).isAVassal(), "can't become a vassal of a vassal")
@@ -6319,6 +6374,14 @@ void CvTeam::read(FDataStreamBase* pStream)
 	uint uiFlag=0;
 	pStream->Read(&uiFlag);	// flags for expansion
 
+	int iConquestCount;
+	pStream->Read(&iConquestCount);
+	for (int iConquest = 0; iConquest < iConquestCount; ++iConquest)
+	{
+		int iPlot;
+		pStream->Read(&iPlot);
+		m_aiConquestResearchPlots.push_back(iPlot);
+	}
 	pStream->Read(&m_iNumMembers);
 	pStream->Read(&m_iAliveCount);
 	pStream->Read(&m_iEverAliveCount);
@@ -6421,6 +6484,9 @@ void CvTeam::write(FDataStreamBase* pStream)
 	uint uiFlag = 1;
 	pStream->Write(uiFlag);		// flag for expansion
 
+	pStream->Write((int)m_aiConquestResearchPlots.size());
+	for (std::vector<int>::const_iterator it = m_aiConquestResearchPlots.begin(); it != m_aiConquestResearchPlots.end(); ++it)
+		pStream->Write(*it);
 	pStream->Write(m_iNumMembers);
 	pStream->Write(m_iAliveCount);
 	pStream->Write(m_iEverAliveCount);

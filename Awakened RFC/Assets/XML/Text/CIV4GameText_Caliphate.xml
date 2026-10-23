@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_CIV_ABBASID_DESC</Tag>
+        <English>Abbasid Caliphate</English>
+        <French>Califat abbasside</French>
+        <German>Abbasidenkalifat</German>
+        <Italian>Califfato abbaside</Italian>
+        <Spanish>Califato abas&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_ABBASID_SHORT_DESC</Tag>
+        <English>Abbasid Caliphate</English>
+        <French>Califat abbasside</French>
+        <German>Abbasidenkalifat</German>
+        <Italian>Califfato abbaside</Italian>
+        <Spanish>Califato abas&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_ABBASID_ADJECTIVE</Tag>
+        <English>Abbasid</English>
+        <French>abbasside</French>
+        <German>abbasidisch</German>
+        <Italian>abbaside</Italian>
+        <Spanish>abas&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_ABBASID_PEDIA</Tag>
+        <English>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</English>
+        <French>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</French>
+        <German>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</German>
+        <Italian>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Italian>
+        <Spanish>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_ABBASID</Tag>
+        <English>Abbasid Caliph</English>
+        <French>Calife abbasside</French>
+        <German>Abbasidenkalif</German>
+        <Italian>Califfo abbaside</Italian>
+        <Spanish>Califa abas&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_ABBASID_PEDIA</Tag>
+        <English>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</English>
+        <French>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</French>
+        <German>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</German>
+        <Italian>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Italian>
+        <Spanish>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_FATIMID_DESC</Tag>
+        <English>Fatimid Caliphate</English>
+        <French>Califat fatimide</French>
+        <German>Fatimidenkalifat</German>
+        <Italian>Califfato fatimide</Italian>
+        <Spanish>Califato fatim&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_FATIMID_SHORT_DESC</Tag>
+        <English>Fatimid Caliphate</English>
+        <French>Califat fatimide</French>
+        <German>Fatimidenkalifat</German>
+        <Italian>Califfato fatimide</Italian>
+        <Spanish>Califato fatim&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_FATIMID_ADJECTIVE</Tag>
+        <English>Fatimid</English>
+        <French>fatimide</French>
+        <German>fatimidisch</German>
+        <Italian>fatimide</Italian>
+        <Spanish>fatim&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_FATIMID_PEDIA</Tag>
+        <English>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</English>
+        <French>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</French>
+        <German>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</German>
+        <Italian>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Italian>
+        <Spanish>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_FATIMID</Tag>
+        <English>Fatimid Caliph</English>
+        <French>Calife fatimide</French>
+        <German>Fatimidenkalif</German>
+        <Italian>Califfo fatimide</Italian>
+        <Spanish>Califa fatim&#237;</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_FATIMID_PEDIA</Tag>
+        <English>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</English>
+        <French>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</French>
+        <German>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</German>
+        <Italian>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Italian>
+        <Spanish>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_UMAYYAD_DESC</Tag>
+        <English>Umayyad Caliphate</English>
+        <French>Califat omeyyade</French>
+        <German>Umayyadenkalifat</German>
+        <Italian>Califfato omayyade</Italian>
+        <Spanish>Califato omeya</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_UMAYYAD_SHORT_DESC</Tag>
+        <English>Umayyad Caliphate</English>
+        <French>Califat omeyyade</French>
+        <German>Umayyadenkalifat</German>
+        <Italian>Califfato omayyade</Italian>
+        <Spanish>Califato omeya</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_UMAYYAD_ADJECTIVE</Tag>
+        <English>Umayyad</English>
+        <French>omeyyade</French>
+        <German>umayyadisch</German>
+        <Italian>omayyade</Italian>
+        <Spanish>omeya</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CIV_UMAYYAD_PEDIA</Tag>
+        <English>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</English>
+        <French>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</French>
+        <German>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</German>
+        <Italian>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Italian>
+        <Spanish>A successor realm formed when the Arabian jihad ends. It inherits its regional cities and a population-weighted share of the former caliphate army, treasury, technology and government.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_UMAYYAD</Tag>
+        <English>Umayyad Caliph</English>
+        <French>Calife omeyyade</French>
+        <German>Umayyadenkalif</German>
+        <Italian>Califfo omayyade</Italian>
+        <Spanish>Califa omeya</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_LEADER_UMAYYAD_PEDIA</Tag>
+        <English>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</English>
+        <French>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</French>
+        <German>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</German>
+        <Italian>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Italian>
+        <Spanish>The caliph leads this dynastic successor realm after the partition of the Arabian Caliphate.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_PARTITION_TITLE</Tag>
+        <English>The Legacy of the Caliphate</English>
+        <French>L'h&#233;ritage du califat</French>
+        <German>Das Erbe des Kalifats</German>
+        <Italian>L'eredit&#224; del califfato</Italian>
+        <Spanish>El legado del califato</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_PARTITION_BODY</Tag>
+        <English>The great conquests are over. From the banks of the Nile to the cities of Persia, regional rulers reach for power. The caliphate is breaking apart, yet its legacy lives on.[NEWLINE][NEWLINE]In which region will you carry on the legacy of the caliphate?</English>
+        <French>Les grandes conqu&#234;tes sont termin&#233;es. Des rives du Nil aux villes de Perse, les souverains r&#233;gionaux cherchent &#224; s'emparer du pouvoir. Le califat se disloque, mais son h&#233;ritage demeure.[NEWLINE][NEWLINE]Dans quelle r&#233;gion perp&#233;tuerez-vous l'h&#233;ritage du califat ?</French>
+        <German>Die gro&#223;en Eroberungen sind vor&#252;ber. Von den Ufern des Nils bis zu den St&#228;dten Persiens greifen regionale Herrscher nach der Macht. Das Kalifat zerf&#228;llt &#8211; doch sein Erbe lebt weiter.[NEWLINE][NEWLINE]In welcher Region wollt Ihr das Erbe des Kalifats fortf&#252;hren?</German>
+        <Italian>Le grandi conquiste sono terminate. Dalle rive del Nilo alle citt&#224; della Persia, i sovrani regionali cercano di impadronirsi del potere. Il califfato si disgrega, ma la sua eredit&#224; sopravvive.[NEWLINE][NEWLINE]In quale regione porterete avanti l'eredit&#224; del califfato?</Italian>
+        <Spanish>Las grandes conquistas han terminado. Desde las orillas del Nilo hasta las ciudades de Persia, los gobernantes regionales aspiran al poder. El califato se desmorona, pero su legado perdura.[NEWLINE][NEWLINE]&#191;En qu&#233; regi&#243;n continuar&#233;is el legado del califato?</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_ABBASID</Tag>
+        <English>Arabia, Iraq and Persia</English>
+        <French>Arabie, Irak et Perse</French>
+        <German>Arabien, Irak und Persien</German>
+        <Italian>Arabia, Iraq e Persia</Italian>
+        <Spanish>Arabia, Irak y Persia</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_FATIMID</Tag>
+        <English>Egypt, the Levant and eastern North Africa</English>
+        <French>&#201;gypte, Levant et est de l'Afrique du Nord</French>
+        <German>&#196;gypten, Levante und &#246;stliches Nordafrika</German>
+        <Italian>Egitto, Levante e Nordafrica orientale</Italian>
+        <Spanish>Egipto, Levante y este del norte de &#193;frica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_REGION_UMAYYAD</Tag>
+        <English>Western North Africa and the Iberian Peninsula</English>
+        <French>Ouest de l'Afrique du Nord et p&#233;ninsule Ib&#233;rique</French>
+        <German>Westliches Nordafrika und die Iberische Halbinsel</German>
+        <Italian>Nordafrica occidentale e penisola iberica</Italian>
+        <Spanish>Noroeste de &#193;frica y pen&#237;nsula ib&#233;rica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_CALIPHATE_PARTITION_ANNOUNCE</Tag>
+        <English>The Arabian Caliphate has divided into regional successor realms.</English>
+        <French>Le califat arabe se divise en royaumes successeurs r&#233;gionaux.</French>
+        <German>Das arabische Kalifat hat sich in regionale Nachfolgereiche geteilt.</German>
+        <Italian>Il califfato arabo si divide in regni successori regionali.</Italian>
+        <Spanish>El califato &#225;rabe se divide en reinos sucesores regionales.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UP_CAL1</Tag>
+        <English>Successor realm</English>
+        <French>Successor realm</French>
+        <German>Successor realm</German>
+        <Italian>Successor realm</Italian>
+        <Spanish>Successor realm</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UP_CAL2</Tag>
+        <English>Inherits regional cities and a share of the caliphate army and treasury. The jihad and its recruitment bonuses have ended.</English>
+        <French>Inherits regional cities and a share of the caliphate army and treasury. The jihad and its recruitment bonuses have ended.</French>
+        <German>Inherits regional cities and a share of the caliphate army and treasury. The jihad and its recruitment bonuses have ended.</German>
+        <Italian>Inherits regional cities and a share of the caliphate army and treasury. The jihad and its recruitment bonuses have ended.</Italian>
+        <Spanish>Inherits regional cities and a share of the caliphate army and treasury. The jihad and its recruitment bonuses have ended.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UHV_CAL1</Tag>
+        <English>This successor realm has no separate historical victory goals.</English>
+        <French>This successor realm has no separate historical victory goals.</French>
+        <German>This successor realm has no separate historical victory goals.</German>
+        <Italian>This successor realm has no separate historical victory goals.</Italian>
+        <Spanish>This successor realm has no separate historical victory goals.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UHV_CAL2</Tag>
+        <English>Standard victory conditions remain available.</English>
+        <French>Standard victory conditions remain available.</French>
+        <German>Standard victory conditions remain available.</German>
+        <Italian>Standard victory conditions remain available.</Italian>
+        <Spanish>Standard victory conditions remain available.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UHV_CAL3</Tag>
+        <English>Build and defend your successor realm.</English>
+        <French>Build and defend your successor realm.</French>
+        <German>Build and defend your successor realm.</German>
+        <Italian>Build and defend your successor realm.</Italian>
+        <Spanish>Build and defend your successor realm.</Spanish>
+    </TEXT>
+</Civ4GameText>

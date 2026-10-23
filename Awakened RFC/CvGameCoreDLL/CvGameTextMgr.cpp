@@ -2816,46 +2816,17 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 	}
 	else
 	{
-		// RFC birth flip bounds. Keep these in the same order as tCoreAreasTL/BR
-		// in Assets/Python/Consts.py (player IDs are the array indexes).
-		static const int aiBirthTurns[27] = {0, 0, 0, 0, 50, 84, 86, 90, 97, 121, 145, 177, 183, 187, 193, 196, 203, 205, 207, 213, 220, 234, 236, 240, 241, 249, 346};
-		int iGameTurn = GC.getGameINLINE().getGameTurn();
-		static const int aiBirthFlipBounds[27][4] =
-		{
-			{66, 30, 70, 36}, // Egypt
-			{87, 33, 94, 40}, // India
-			{99, 43, 107, 47}, // China
-			{74, 38, 77, 42}, // Babylonia
-			{65, 39, 70, 44}, // Greece
-			{79, 37, 85, 44}, // Persia
-			{54, 37, 60, 39}, // Carthage
-			{59, 40, 63, 47}, // Rome
-			{111, 41, 116, 49}, // Japan
-			{69, 27, 73, 30}, // Ethiopia
-			{20, 35, 23, 37}, // Maya
-			{57, 57, 70, 65}, // Vikings
-			{73, 30, 81, 39}, // Arabia
-			{100, 32, 103, 36}, // Khmer
-			{49, 40, 55, 46}, // Spain
-			{54, 47, 57, 52}, // France
-			{50, 53, 54, 60}, // England
-			{59, 48, 66, 54}, // Germany
-			{67, 50, 74, 57}, // Russia
-			{56, 52, 58, 53}, // Netherlands
-			{49, 26, 57, 31}, // Mali
-			{44, 42, 50, 44}, // Portugal
-			{24, 18, 29, 24}, // Inca
-			{90, 48, 105, 58}, // Mongolia
-			{15, 36, 20, 41}, // Aztecs
-			{69, 43, 79, 49}, // Turkey
-			{26, 42, 31, 48} // America
-		};
-		for (int iCiv = 0; iCiv < 27; ++iCiv)
+		// Read the birth areas and exception tiles from the same data as RiseAndFall.
+		long lBirthFlipMask = 0;
+		CyArgsList argsList;
+		argsList.add(pPlot->getX_INLINE());
+		argsList.add(pPlot->getY_INLINE());
+		argsList.add(GC.getGameINLINE().getGameTurn());
+		gDLL->getPythonIFace()->callFunction(PYScreensModule, "getBirthFlipMask", argsList.makeFunctionArgs(), &lBirthFlipMask);
+		for (int iCiv = 0; iCiv < NUM_MAJOR_PLAYERS; ++iCiv)
 		{
 			if (iCiv != GC.getGameINLINE().getActivePlayer() && !GET_PLAYER((PlayerTypes)iCiv).isAlive() &&
-				aiBirthTurns[iCiv] > 0 && iGameTurn <= aiBirthTurns[iCiv] + 5 &&
-				pPlot->getX_INLINE() >= aiBirthFlipBounds[iCiv][0] && pPlot->getX_INLINE() <= aiBirthFlipBounds[iCiv][2] &&
-				pPlot->getY_INLINE() >= aiBirthFlipBounds[iCiv][1] && pPlot->getY_INLINE() <= aiBirthFlipBounds[iCiv][3])
+				(lBirthFlipMask & (1L << iCiv)) != 0)
 			{
 				szString.append(CvWString::format(SETCOLR L"%s\n" ENDCOLR, GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorR(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorG(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorB(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorA(), GC.getCivilizationInfo(GET_PLAYER((PlayerTypes)iCiv).getCivilizationType()).getShortDescription()));
 			}
@@ -3276,7 +3247,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 	if (pCity->getCultureLevel() != NO_CULTURELEVEL)
 	{
-		szString.append(gDLL->getText("TXT_KEY_CITY_BAR_CULTURE", pCity->getCulture(pCity->getOwnerINLINE()), pCity->getCultureThreshold(), GC.getCultureLevelInfo(pCity->getCultureLevel()).getTextKeyWide()));
+		szString.append(gDLL->getText("TXT_KEY_CITY_BAR_CULTURE", pCity->getCulture(pCity->getOwnerINLINE()), pCity->getNextCoveredPlotCost(), GC.getCultureLevelInfo(pCity->getCultureLevel()).getTextKeyWide()));
 	}
 
 	if (pCity->getGreatPeopleProgress() > 0)
@@ -4544,12 +4515,25 @@ void CvGameTextMgr::parsePromotionHelp(CvWStringBuffer &szBuffer, PromotionTypes
 //	Returns:			nothing
 void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivic, bool bCivilopediaText, bool bPlayerContext, bool bSkipName)
 {
+	parseCivicInfoForPlayer(szHelpText, eCivic, GC.getGameINLINE().getActivePlayer(), bCivilopediaText, bPlayerContext, bSkipName);
+}
+
+void CvGameTextMgr::parseCivicInfoForPlayer(CvWStringBuffer &szHelpText, CivicTypes eCivic, PlayerTypes ePlayer, bool bCivilopediaText, bool bPlayerContext, bool bSkipName)
+{
 	PROFILE_FUNC();
 
-	const bool bDivineKingship = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isDivineKingshipVariant(GC.getGameINLINE().getActiveCivilizationType());
-	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(GC.getGameINLINE().getActiveCivilizationType());
-	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(GC.getGameINLINE().getActiveCivilizationType());
-	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(GC.getGameINLINE().getActiveCivilizationType());
+	const CivilizationTypes eCivilization = ePlayer == NO_PLAYER ? NO_CIVILIZATION : GET_PLAYER(ePlayer).getCivilizationType();
+
+	const bool bDivineKingship = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isDivineKingshipVariant(eCivilization);
+	const bool bPharaonic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isPharaonicVariant(eCivilization);
+	const bool bRomanRepublic = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanRepublicVariant(eCivilization);
+	const bool bRomanLegions = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isRomanLegionsVariant(eCivilization);
+	const bool bHorde = eCivic != NO_CIVIC && GC.getCivicInfo(eCivic).isHordeVariant(eCivilization);
+	// Widget tooltips omit bPlayerContext, but still show the displayed player's faith.
+	const PlayerTypes eReligionPlayer = ePlayer;
+	const ReligionTypes eHelpReligion = eReligionPlayer == NO_PLAYER ? NO_RELIGION : GET_PLAYER(eReligionPlayer).getStateReligion();
+	const bool bReligionContext = eHelpReligion != NO_RELIGION;
+	const int iReligionSymbol = bReligionContext ? GC.getReligionInfo(eHelpReligion).getChar() : gDLL->getSymbolID(RELIGION_CHAR);
 	CvWString szFirstBuffer;
 	bool bFound;
 	bool bFirst;
@@ -4563,20 +4547,32 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	szHelpText.clear();
 
-	FAssert(GC.getGameINLINE().getActivePlayer() != NO_PLAYER || !bPlayerContext);
+	FAssert(ePlayer != NO_PLAYER || !bPlayerContext);
 
 	if (!bSkipName)
 	{
-		PlayerTypes eActive = GC.getGameINLINE().getActivePlayer();
+		PlayerTypes eActive = ePlayer;
 		szHelpText.append(GC.getCivicInfo(eCivic).getCivilizationDescription(
 			eActive == NO_PLAYER ? NO_CIVILIZATION : GET_PLAYER(eActive).getCivilizationType()).c_str());
 	}
 
+	if (bHorde)
+	{
+		szHelpText.append(NEWLINE);
+		szHelpText.append(gDLL->getText("TXT_KEY_HORDE_EFFECT"));
+		if (!bPlayerContext || !GET_PLAYER(ePlayer).canDoCivics(eCivic))
+		{
+			szHelpText.append(NEWLINE);
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REQUIRES", GC.getTechInfo((TechTypes)GC.getInfoTypeForString("TECH_HORSEBACK_RIDING")).getTextKeyWide()));
+		}
+		return;
+	}
+
 	if (!bCivilopediaText)
 	{
-		if (!bPlayerContext || !(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).canDoCivics(eCivic)))
+		if (!bPlayerContext || !(GET_PLAYER(ePlayer).canDoCivics(eCivic)))
 		{
-			if (!bPlayerContext || !(GET_TEAM(GC.getGameINLINE().getActiveTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
+			if (!bPlayerContext || !(GET_TEAM(GET_PLAYER(ePlayer).getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 			{
 				if (!bRomanRepublic && GC.getCivicInfo(eCivic).getTechPrereq() != NO_TECH)
 				{
@@ -4606,6 +4602,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		if (GC.getCivicInfo(eCivic).isSpecialistValid(iI))
 		{
+			// Slavery already explains the slave specialist unlock in its help.
+			if (eCivic == GC.getInfoTypeForString("CIVIC_SLAVERY") && iI == GC.getInfoTypeForString("SPECIALIST_SLAVE"))
+				continue;
 			szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_CIVIC_UNLIMTED").c_str());
 			CvWString szSpecialist;
 			szSpecialist.Format(L"<link=literal>%s</link>", GC.getSpecialistInfo((SpecialistTypes)iI).getDescription());
@@ -4637,10 +4636,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Great People Modifier...
 	if (GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_GREAT_PEOPLE_MOD_RELIGION", GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier(), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_GREAT_PEOPLE_MOD_RELIGION", GC.getCivicInfo(eCivic).getStateReligionGreatPeopleRateModifier(), GC.getReligionInfo(GET_PLAYER(ePlayer).getStateReligion()).getChar()));
 		}
 		else
 		{
@@ -4749,7 +4748,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		if (bPlayerContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_UNITS", (GC.getCivicInfo(eCivic).getBaseFreeUnits() + ((GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getTotalPopulation() * GC.getCivicInfo(eCivic).getFreeUnitsPopulationPercent()) / 100))));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_UNITS", (GC.getCivicInfo(eCivic).getBaseFreeUnits() + ((GET_PLAYER(ePlayer).getTotalPopulation() * GC.getCivicInfo(eCivic).getFreeUnitsPopulationPercent()) / 100))));
 		}
 		else
 		{
@@ -4764,7 +4763,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 		if (bPlayerContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_MILITARY_UNITS", (GC.getCivicInfo(eCivic).getBaseFreeMilitaryUnits() + ((GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getTotalPopulation() * GC.getCivicInfo(eCivic).getFreeMilitaryUnitsPopulationPercent()) / 100))));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_FREE_MILITARY_UNITS", (GC.getCivicInfo(eCivic).getBaseFreeMilitaryUnits() + ((GET_PLAYER(ePlayer).getTotalPopulation() * GC.getCivicInfo(eCivic).getFreeMilitaryUnitsPopulationPercent()) / 100))));
 		}
 		else
 		{
@@ -4893,10 +4892,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (GC.getCivicInfo(eCivic).getStateReligionHappiness() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_STATE_RELIGION_HAPPINESS", abs(GC.getCivicInfo(eCivic).getStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_STATE_RELIGION_HAPPINESS", abs(GC.getCivicInfo(eCivic).getStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR)), GC.getReligionInfo(GET_PLAYER(ePlayer).getStateReligion()).getChar()));
 		}
 		else
 		{
@@ -4907,7 +4906,7 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (GC.getCivicInfo(eCivic).getNonStateReligionHappiness() != 0)
 	{
-		if (GC.getCivicInfo(eCivic).isStateReligion())
+		if (!GC.getCivicInfo(eCivic).isStateReligion())
 		{
 			szHelpText.append(NEWLINE);
 			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_NO_STATE", abs(GC.getCivicInfo(eCivic).getNonStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getNonStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
@@ -4922,10 +4921,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Unit Production Modifier
 	if (GC.getCivicInfo(eCivic).getStateReligionUnitProductionModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_TRAIN_BONUS", GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionUnitProductionModifier()));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_TRAIN_BONUS", GC.getReligionInfo(GET_PLAYER(ePlayer).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionUnitProductionModifier()));
 		}
 		else
 		{
@@ -4937,10 +4936,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Building Production Modifier
 	if (GC.getCivicInfo(eCivic).getStateReligionBuildingProductionModifier() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_BUILDING_BONUS", GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionBuildingProductionModifier()));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_BUILDING_BONUS", GC.getReligionInfo(GET_PLAYER(ePlayer).getStateReligion()).getChar(), GC.getCivicInfo(eCivic).getStateReligionBuildingProductionModifier()));
 		}
 		else
 		{
@@ -4952,10 +4951,10 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	//	State Religion Free Experience
 	if (GC.getCivicInfo(eCivic).getStateReligionFreeExperience() != 0)
 	{
-		if (bPlayerContext && (GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion() != NO_RELIGION))
+		if (bReligionContext)
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_FREE_XP", GC.getCivicInfo(eCivic).getStateReligionFreeExperience(), GC.getReligionInfo(GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getStateReligion()).getChar()));
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_REL_FREE_XP", GC.getCivicInfo(eCivic).getStateReligionFreeExperience(), GC.getReligionInfo(GET_PLAYER(ePlayer).getStateReligion()).getChar()));
 		}
 		else
 		{
@@ -5052,9 +5051,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		if (!bDivineKingship && GC.getCivicInfo(eCivic).getBuildingHappinessChanges(iI) != 0)
 		{
-			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
+			if (bPlayerContext && NO_PLAYER != ePlayer)
 			{
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(eCivilization).getCivilizationBuildings(iI);
 				if (NO_BUILDING != eBuilding)
 				{
 					szHelpText.append(NEWLINE);
@@ -5070,9 +5069,9 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 		if (GC.getCivicInfo(eCivic).getBuildingHealthChanges(iI) != 0)
 		{
-			if (bPlayerContext && NO_PLAYER != GC.getGameINLINE().getActivePlayer())
+			if (bPlayerContext && NO_PLAYER != ePlayer)
 			{
-				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getCivilizationBuildings(iI);
+				BuildingTypes eBuilding = (BuildingTypes)GC.getCivilizationInfo(eCivilization).getCivilizationBuildings(iI);
 				if (NO_BUILDING != eBuilding)
 				{
 					szHelpText.append(NEWLINE);
@@ -5107,7 +5106,15 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		if (GC.getCivicInfo(eCivic).isHurry(iI))
 		{
-			szHelpText.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getHurryInfo((HurryTypes)iI).getDescription()));
+			if (eCivic == GC.getInfoTypeForString("CIVIC_SERFDOM") && iI == GC.getInfoTypeForString("HURRY_POPULATION"))
+			{
+				szHelpText.append(NEWLINE);
+				szHelpText.append(gDLL->getText("TXT_KEY_RFCMP_SERFDOM_HURRY_UNITS"));
+			}
+			else
+			{
+				szHelpText.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR), GC.getHurryInfo((HurryTypes)iI).getDescription()));
+			}
 		}
 	}
 
@@ -5139,6 +5146,16 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 	{
 		szHelpText.append(NEWLINE);
 		szHelpText.append(gDLL->getText(bRomanRepublic ? "TXT_KEY_ROMAN_REPUBLIC_EFFECT" : "TXT_KEY_ROMAN_LEGIONS_EFFECT"));
+	}
+	else if ((eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE") ||
+		eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION") ||
+		eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")))
+	{
+		szHelpText.append(NEWLINE);
+		const char* szKey = eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE") ? "TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE_WITH_RELIGION" :
+			(eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION") ? "TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_RELIGION_WITH_RELIGION" :
+			"TXT_KEY_RFCMP_CIVIC_EFFECT_THEOCRATIC_LEGITIMACY_WITH_RELIGION");
+		szHelpText.append(gDLL->getText(szKey, iReligionSymbol, iReligionSymbol));
 	}
 	else if (!CvWString(GC.getCivicInfo(eCivic).getHelp()).empty())
 	{
@@ -6906,7 +6923,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			}
 		}
 		//Rhye - start (embassy)
-		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_MAJOR_PLAYERS) {
+		if (eBuilding >= NUM_BUILDINGS_PLAGUE && eBuilding < NUM_BUILDINGS_PLAGUE + NUM_EMBASSY_BUILDINGS) {
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_EMBASSY_ABILITY"));
 		}
@@ -6930,8 +6947,8 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 
 	if (kBuilding.getGlobalReligionCommerce() != NO_RELIGION)
 	{
-		szFirstBuffer = gDLL->getText("TXT_KEY_BUILDING_PER_CITY_WITH", GC.getReligionInfo((ReligionTypes) kBuilding.getGlobalReligionCommerce()).getChar());
-		setCommerceChangeHelp(szBuffer, L"", L"", szFirstBuffer, GC.getReligionInfo((ReligionTypes) kBuilding.getGlobalReligionCommerce()).getGlobalReligionCommerceArray());
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_SHRINE_POPULATION_COMMERCE"));
 	}
 
 	if (NO_CORPORATION != kBuilding.getFoundsCorporation())
@@ -7023,7 +7040,8 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	if (kBuilding.isAreaBorderObstacle())
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_BORDER_OBSTACLE"));
+		szBuffer.append(gDLL->getText("TXT_KEY_GREAT_WALL_BORDER_DAMAGE",
+			std::max(0, GC.getDefineINT("RFCMP_GREAT_WALL_CROSSING_DAMAGE"))));
 	}
 
 	for (iI = 0; iI < GC.getNumVoteSourceInfos(); ++iI)
@@ -7706,6 +7724,37 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_FREE_START_ERA", GC.getEraInfo((EraTypes)kBuilding.getFreeStartEra()).getTextKeyWide()));
 		}
+	}
+
+	// Historical prerequisites also appear in the Civilopedia.
+	const char* szHistoricalRequirement = NULL;
+	switch (eBuilding)
+	{
+	case GREATLIGHTHOUSE:
+	case COLOSSUS: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MED_COAST"; break;
+	case PARTHENON:
+	case ARTEMIS:
+	case ZEUS:
+	case MAUSOLLOS: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MEDITERRANEAN"; break;
+	case CHICHENITZA: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MESOAMERICA"; break;
+	case GREATWALL: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_EAST_ASIA"; break;
+	case MOAI: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_PACIFIC"; break;
+	case PYRAMID: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_DESERT"; break;
+	case HANGINGGARDEN: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_RIVER"; break;
+	case KREMLIN: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_CAPITAL"; break;
+	case VERSAILLES: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_MONARCHY"; break;
+	case STATUEOFLIBERTY: szHistoricalRequirement = "TXT_KEY_WONDER_REQ_REPUBLIC"; break;
+	}
+	if (szHistoricalRequirement != NULL)
+	{
+		szBuffer.append(CvWString::format(L"%s%c%s", NEWLINE, gDLL->getSymbolID(BULLET_CHAR),
+			gDLL->getText(szHistoricalRequirement).GetCString()));
+	}
+
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_AP_LIFECYCLE_HELP"));
 	}
 
 	if (!CvWString(kBuilding.getHelp()).empty())
@@ -9420,6 +9469,17 @@ void CvGameTextMgr::setReligionHelpCity(CvWStringBuffer &szBuffer, ReligionTypes
 			}
 		}
 	}
+
+    if (pCity->isHolyCity(eReligion) && !pCity->isHasReligion(eReligion))
+    {
+        szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_HOLY_CITY_DORMANT"));
+        if (pCity->isReligionBanned(eReligion))
+        {
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_RELIGION_BANNED"));
+        }
+        return;
+    }
 
 	if (!bForceReligion)
 	{
@@ -11943,6 +12003,14 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		iBaseCommerceRate += 100 * iBuildingCommerce;
 	}
 
+	const int iPapalTribute = eCommerceType == COMMERCE_GOLD ? city.getPapalTributeGold() : 0;
+	if (iPapalTribute > 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_AP_UP_TRIBUTE", iPapalTribute));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iPapalTribute;
+	}
+
 	int iFreeCityCommerce = owner.getFreeCityCommerce(eCommerceType);
 	if (0 != iFreeCityCommerce)
 	{
@@ -12540,6 +12608,8 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 	// religion icons
 	for (int iI = 0; iI < GC.getNumReligionInfos(); ++iI)
 	{
+        if (pCity->isHolyCity((ReligionTypes)iI) && !pCity->isHasReligion((ReligionTypes)iI))
+            szBuffer.append(CvWString::format(L"%c", GC.getReligionInfo((ReligionTypes)iI).getDormantHolyCityChar()));
 		if (pCity->isHasReligion((ReligionTypes)iI))
 		{
 			if (pCity->isHolyCity((ReligionTypes)iI))
@@ -13685,6 +13755,20 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
             int iEfficiency = pCity->getTradeInfrastructureEfficiency(pOtherCity);
             szBuffer.append(NEWLINE);
             szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_EFFICIENCY", iEfficiency));
+            // Civic trade-yield bonuses multiply the completed route value;
+            // they are separate from the additive route modifiers above.
+            for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+            {
+                CivicTypes eCivic = GET_PLAYER(pCity->getOwnerINLINE()).getCivics((CivicOptionTypes)iOption);
+                if (eCivic == NO_CIVIC) continue;
+                int iCivicModifier = GC.getCivicInfo(eCivic).getTradeYieldModifier(YIELD_COMMERCE);
+                if (iCivicModifier != 0)
+                {
+                    szBuffer.append(NEWLINE);
+                    szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_CIVIC_YIELD", iCivicModifier,
+                        GC.getCivicInfo(eCivic).getTextKeyWide()));
+                }
+            }
             int iRouteValue = pCity->calculateTradeYield(YIELD_COMMERCE, pCity->calculateTradeProfit(pOtherCity));
             int iCultureHere = pCity->calculateTradeCultureTimes100(iRouteValue);
             int iCultureThere = pOtherCity->calculateTradeCultureTimes100(iRouteValue);
@@ -13692,7 +13776,7 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
             CvWString szCultureThere = CvWString::format(L"%d.%d", iCultureThere / 100, (iCultureThere % 100) / 10);
             szBuffer.append(NEWLINE);
             szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TRADE_CULTURE", szCultureHere.GetCString(), szCultureThere.GetCString()));
-            iProfit = pCity->calculateTradeProfit(pOtherCity);
+            iProfit = iRouteValue;
 
 			szBuffer.append(SEPARATOR);
 
@@ -14143,7 +14227,8 @@ void CvGameTextMgr::getTradeScreenIcons(std::vector< std::pair<CvString, CvWidge
 		CvWidgetDataStruct widgetData;
 		widgetData.m_eWidgetType = WIDGET_PEDIA_JUMP_TO_CIVIC;
 		widgetData.m_iData1 = eCivic;
-		widgetData.m_iData2 = -1;
+		// Negative values below -1 carry the displayed player for civic help.
+		widgetData.m_iData2 = -2 - (int)ePlayer;
 		widgetData.m_bOption = false;
 		aIconInfos.push_back(std::make_pair(CvString(GC.getCivicInfo(eCivic).getCivilizationButton(GET_PLAYER(ePlayer).getCivilizationType()).c_str()), widgetData));
 	}
@@ -14510,6 +14595,8 @@ void CvGameTextMgr::getFontSymbols(std::vector< std::vector<wchar> >& aacSymbols
 		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getCorporationInfo((CorporationTypes) iI).getChar());
 		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getCorporationInfo((CorporationTypes) iI).getHeadquarterChar());
 	}
+	for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+		aacSymbols[aacSymbols.size() - 1].push_back((wchar) GC.getReligionInfo((ReligionTypes)iI).getDormantHolyCityChar());
 
 	aacSymbols.push_back(std::vector<wchar>());
 	aiMaxNumRows.push_back(3);

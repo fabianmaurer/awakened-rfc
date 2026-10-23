@@ -110,6 +110,7 @@ struct VoteSelectionSubData
 struct VoteSelectionData
 {
 	int iId;
+	int iCouncilOwner;
 	VoteSourceTypes eVoteSource;
 	std::vector<VoteSelectionSubData> aVoteOptions;
 
@@ -124,6 +125,10 @@ struct VoteTriggeredData
 	int iId;
 	VoteSourceTypes eVoteSource;
 	VoteSelectionSubData kVoteOption;
+	// Council electorate and courier schedule are fixed when the ballot opens.
+	int iCouncilDeadline;
+	int aiCouncilWeight[MAX_CIV_PLAYERS];
+	int aiCouncilDelivery[MAX_CIV_PLAYERS];
 
 	int getID() const;
 	void setID(int iID);

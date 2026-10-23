@@ -21,6 +21,17 @@ public:
 	void AI_uninit();
 	void AI_reset(UnitAITypes eUnitAI = NO_UNITAI);
 
+	// Transient, observer-only diagnostics; deliberately excluded from saves.
+	void AI_recordObserverDecision(const char* reason);
+	void AI_recordObserverCityTarget(const char* reason, const CvCity* city = NULL);
+	const CvString& AI_getObserverCityTarget() const { return m_szObserverCityTarget; }
+	int AI_getObserverCityTargetX() const { return m_iObserverCityTargetX; }
+	int AI_getObserverCityTargetY() const { return m_iObserverCityTargetY; }
+	const CvString& AI_getObserverDecision() const { return m_szObserverDecision; }
+	int AI_getObserverDecisionTurn() const { return m_iObserverDecisionTurn; }
+	int AI_getObserverDecisionCount() const { return m_iObserverDecisionCount; }
+	int AI_getObserverRequiredStack() const { return m_iObserverRequiredStack; }
+	int AI_getObserverReadyToAttack() const { return m_iObserverReadyToAttack; }
 	bool AI_update();
 	bool AI_follow();
 
@@ -49,7 +60,18 @@ public:
 	void write(FDataStreamBase* pStream);
 
 protected:
+    CvCity* AI_jihadCampaignTarget(bool bEgyptCoastOnly = false);
+    bool AI_jihadCampaignEscort();
+    bool AI_jihadCampaignGarrison();
 
+	CvString m_szObserverCityTarget;
+	int m_iObserverCityTargetX;
+	int m_iObserverCityTargetY;
+	CvString m_szObserverDecision;
+	int m_iObserverDecisionTurn;
+	int m_iObserverDecisionCount;
+	int m_iObserverRequiredStack;
+	int m_iObserverReadyToAttack;
 	int m_iBirthmark;
 
 	UnitAITypes m_eUnitAIType;
@@ -61,6 +83,8 @@ protected:
 	void AI_workerMove();
 	void AI_barbAttackMove();
 	void AI_attackMove();
+	bool AI_slaveMove();
+	bool AI_slaveMilitaryNeeded() const;
 	void AI_attackCityMove();
 	void AI_attackCityLemmingMove();
 	void AI_collateralMove();
@@ -144,7 +168,7 @@ protected:
 	bool AI_goody(int iRange);
 	bool AI_explore();
 	bool AI_exploreRange(int iRange);
-	bool AI_targetCity(int iFlags = 0);
+	bool AI_targetCity(int iFlags = 0, PlayerTypes eTargetPlayer = NO_PLAYER, CvCity* pOrderedCity = NULL);
 	bool AI_targetBarbCity();
 	bool AI_targetMinorCity(int iMinorCiv); //Rhye
 	bool AI_bombardCity();

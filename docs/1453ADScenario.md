@@ -5,7 +5,7 @@ menu. The map belongs to `Mods\Awakened RFC` and uses the legacy game DLL.
 The authored position is immediately after the Ottoman capture of
 Constantinople, rather than the later conquest of the Mamluks or all Anatolia.
 
-The scenario contains 108 cities and 25 initially playable major civilization
+The scenario contains 109 cities and 26 initially playable major civilization
 slots. Every major civilization with cities is selectable, including early
 civilizations repurposed to represent contemporary successor states. Babylon
 has no independent state in this roster. America has not spawned and retains
@@ -28,6 +28,7 @@ major roster. America's later AI birth remains enabled.
 | Carthage | Hafsiden-Sultanat | Tunis | Abu Amr Uthman |
 | Rome | Republik Venedig | Venezia | Francesco Foscari |
 | Japan | Ashikaga-Shogunat | Kyoto | Ashikaga Yoshimasa |
+| Korea | Joseon | Hanseong | Danjong |
 | Ethiopia | Kaiserreich Abessinien | Aksum | Zara Yaqob |
 | Maya | Mani und Tayasal | Mani | Ah Xupan Xiu |
 | Vikings | Kalmarer Union | Kobenhavn | Christian I. |

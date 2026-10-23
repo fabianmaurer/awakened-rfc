@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_JIHAD_CAMPAIGN_ARRIVAL</Tag>
+    <English>%s1_General has joined your jihad with a campaign army at %s2_City.</English>
+    <French>%s1_General rejoint votre jihad avec une arm&#233;e &#224; %s2_City.</French>
+    <German>%s1_General schlie&#223;t sich Ihrem Jihad mit einer Feldarmee in %s2_City an.</German>
+    <Italian>%s1_General si unisce al tuo jihad con un esercito a %s2_City.</Italian>
+    <Spanish>%s1_General se une a tu yihad con un ej&#233;rcito en %s2_City.</Spanish>
+  </TEXT>
+</Civ4GameText>

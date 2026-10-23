@@ -304,6 +304,7 @@ void CvPlayer::init(PlayerTypes eID)
 	if (getID() == EGYPT) //Egyptian UP
 		setCivDescription(civDynamicNames[getID()][1]); //Egypt
 	//Rhye - end
+    configureCaliphateSuccessor();
 }
 
 
@@ -481,6 +482,19 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iTechScore = 0;
 	m_iWondersScore = 0;
 	m_iCombatExperience = 0;
+    m_iArabianJihadEndTurn = -1;
+    m_iCaliphatePartitionDecision = -1;
+    m_bCaliphatePartitioned = false;
+    m_bCaliphatePartitionInProgress = false;
+    m_iIslamFoundingDecision = -1;
+    m_bIslamSuppressionRally = false;
+    m_iIslamHolyCityDeadline = -1;
+    m_bArabianJihadTriggered = false;
+    m_bArabianJihadCairoSettlerGranted = false;
+    m_aiArabianJihadConquests.clear();
+    m_iJihadCampaignsCreated = 0;
+    m_iJihadMilitaryConquests = 0;
+    for (int iJihadTeam = 0; iJihadTeam < MAX_TEAMS; ++iJihadTeam) m_abArabianJihadEnemies[iJihadTeam] = false;
 	m_iPopRushHurryCount = 0;
 	m_iInflationModifier = 0;
 	m_uiStartTime = 0;
@@ -1283,8 +1297,10 @@ CvCity* CvPlayer::initCity(int iX, int iY, bool bBumpUnits, bool bUpdatePlotGrou
 }
 
 
-void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups)
+void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups, bool bArabianBirth)
 {
+	const PlayerTypes eCrusadeRecipient = bConquest && !bTrade ? GC.getGameINLINE().getCrusadeCityRecipient(getID(), *pOldCity) : NO_PLAYER;
+
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pNewCity;
 	CvUnit* pLoopUnit;
@@ -1323,6 +1339,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	int iI;
 	CLinkList<IDInfo> oldUnits;
 	std::vector<int> aeFreeSpecialists;
+	std::vector<BuildingTypes> aeGodStateDestroyedBuildings;
+	// Every conquest qualifies independently, including repeat recaptures.
+	const ReligionTypes eGodStateReligion = (bConquest && getStateReligion() != NO_RELIGION &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) &&
+		!pOldCity->isHasReligion(getStateReligion())) ? getStateReligion() : NO_RELIGION;
 
 	pCityPlot = pOldCity->plot();
 
@@ -1352,7 +1373,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	if (bConquest)
 	{
-		iRange = pOldCity->getCultureLevel();
+		iRange = GC.getNumCultureLevelInfos() - 1;
 
 		for (iDX = -(iRange); iDX <= iRange; iDX++)
 		{
@@ -1362,7 +1383,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				{
 					pLoopPlot = plotXY(pOldCity->getX_INLINE(),pOldCity-> getY_INLINE(), iDX, iDY);
 
-					if (pLoopPlot != NULL)
+					if (pOldCity->isCultureCovered(pLoopPlot))
 					{
 						if (pLoopPlot->getOwnerINLINE() == pOldCity->getOwnerINLINE())	
 						{
@@ -1461,6 +1482,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	}
 
 	changeGold(iCaptureGold);
+	if (bConquest)
+	{
+		GC.getGameINLINE().recordCrusadeActivity(getTeam(), pOldCity->getTeam(), pOldCity->plot());
+		GC.getGameINLINE().recordCrusadePlunder(getID(), pOldCity->getTeam(), pOldCity->plot(), iCaptureGold);
+	}
 
 	pabHasReligion = new bool[GC.getNumReligionInfos()];
 	pabHolyCity = new bool[GC.getNumReligionInfos()];
@@ -1660,6 +1686,8 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				}
 
 				pNewCity->setNumRealBuildingTimed(eBuilding, std::min(pNewCity->getNumRealBuilding(eBuilding) + iNum, GC.getCITY_MAX_NUM_BUILDINGS()), false, ((PlayerTypes)(paiBuildingOriginalOwner[iI])), paiBuildingOriginalTime[iI]);
+				if (eGodStateReligion != NO_RELIGION && iNum == 0)
+					aeGodStateDestroyedBuildings.push_back(eBuilding);
 			}
 		}
 	}
@@ -1701,7 +1729,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 		if (pabHolyCity[iI])
 		{
-			GC.getGameINLINE().setHolyCity(((ReligionTypes)iI), pNewCity, false);
+			GC.getGameINLINE().setHolyCity(((ReligionTypes)iI), pNewCity, false, pabHasReligion[iI]);
 		}
 	}
 
@@ -1762,6 +1790,56 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	if (bConquest && !bTrade) pNewCity->prepareConquestResearch(eOldOwner, iPopulation);
+
+	// Arm only after ownership transfer has restored religions and occupation.
+	pNewCity->setGodStateConquest(eGodStateReligion, aeGodStateDestroyedBuildings);
+	// Only a military capture within the rally window unlocks the full event.
+	if (bConquest && m_bIslamSuppressionRally && m_iIslamHolyCityDeadline >= 0 &&
+		GC.getGameINLINE().getGameTurn() <= m_iIslamHolyCityDeadline &&
+		pNewCity->isHolyCity((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM")))
+		startArabianJihad();
+	if (bArabianBirth && m_bIslamSuppressionRally && m_iIslamHolyCityDeadline >= 0 &&
+		GC.getGameINLINE().getGameTurn() <= m_iIslamHolyCityDeadline)
+		convertIslamicCity(pNewCity, !pNewCity->isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM")));
+	if (bConquest || bArabianBirth) applyArabianJihadConquest(pNewCity, iPopulation, bConquest && !bTrade);
+	if (bConquest && isArabianJihadActive())
+	{
+		// Cairo's Arabian naming tiles: reward its military capture once.
+		const int iCityX = pNewCity->getX_INLINE();
+		const int iCityY = pNewCity->getY_INLINE();
+		if (!m_bArabianJihadCairoSettlerGranted &&
+			getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ARABIA") &&
+			((iCityX == 68 && (iCityY == 34 || iCityY == 35)) || (iCityX == 69 && iCityY == 35)))
+		{
+			CvUnit* pSettler = initUnit((UnitTypes)GC.getInfoTypeForString("UNIT_SETTLER"), iCityX, iCityY, UNITAI_SETTLE);
+			if (pSettler != NULL)
+			{
+				pSettler->finishMoves();
+				m_bArabianJihadCairoSettlerGranted = true;
+			}
+		}
+		// Like a birth flip, establish immediate control of the city's 3x3.
+		// Stored city culture and neighboring city centers are not reset.
+		const int iCultureBonus = std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_CONQUEST_PLOT_CULTURE_BONUS"));
+		for (int iCultureDX = -1; iCultureDX <= 1; ++iCultureDX)
+		{
+			for (int iCultureDY = -1; iCultureDY <= 1; ++iCultureDY)
+			{
+				CvPlot* pCulturePlot = plotXY(pNewCity->getX_INLINE(), pNewCity->getY_INLINE(), iCultureDX, iCultureDY);
+				if (pCulturePlot == NULL || (pCulturePlot->isCity() && pCulturePlot != pCityPlot)) continue;
+				__int64 iConvertedCulture = iCultureBonus;
+				for (int iCulturePlayer = 0; iCulturePlayer < MAX_PLAYERS; ++iCulturePlayer)
+				{
+					iConvertedCulture += pCulturePlot->getCulture((PlayerTypes)iCulturePlayer);
+					pCulturePlot->setCulture((PlayerTypes)iCulturePlayer, 0, false, false);
+				}
+				pCulturePlot->setCulture(getID(), (int)std::min((__int64)MAX_INT, iConvertedCulture), false, false);
+				pCulturePlot->setForceUnownedTimer(0);
+				pCulturePlot->setOwner(getID(), true, bUpdatePlotGroups);
+			}
+		}
+	}
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 
 	SAFE_DELETE_ARRAY(pabHasReligion);
@@ -1772,7 +1850,45 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	SAFE_DELETE_ARRAY(paiBuildingOriginalOwner);
 	SAFE_DELETE_ARRAY(paiBuildingOriginalTime);
 
-	if (bConquest)
+	if (eCrusadeRecipient != NO_PLAYER)
+	{
+		pNewCity->grantConquestResearch();
+		const CvWString szSettlementCity = pNewCity->getName();
+		CvPlayer& kRecipient = GET_PLAYER(eCrusadeRecipient);
+		const int iSettlementCulture = pNewCity->getCultureTimes100(getID());
+		if (eCrusadeRecipient != getID()) kRecipient.acquireCity(pNewCity, false, true, true);
+		CvCity* pSettlement = pCityPlot->getPlotCity();
+		if (pSettlement && pSettlement->getOwnerINLINE() == eCrusadeRecipient)
+		{
+			if (eCrusadeRecipient != getID())
+			{
+				pSettlement->setCultureTimes100(eCrusadeRecipient, pSettlement->getCultureTimes100(eCrusadeRecipient) + iSettlementCulture, false, true);
+				pSettlement->setCultureTimes100(getID(), 0, false, true);
+			}
+			pSettlement->setOccupationTimer(0);
+			pSettlement->setHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"), true, false, false);
+			if (GC.getGameINLINE().isCrusadeHolyState(eCrusadeRecipient) && kRecipient.getNumCities() == 1)
+			{
+				pSettlement->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_PALACE"), 1);
+				kRecipient.setCapitalCity(pSettlement);
+				UnitTypes eDefender = pSettlement->AI_bestUnitAI(UNITAI_CITY_DEFENSE);
+				if (eDefender == NO_UNIT) eDefender = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
+				for (int iGuard = 0; iGuard < 2; ++iGuard)
+				{
+					CvUnit* pGuard = kRecipient.initUnit(eDefender, pSettlement->getX_INLINE(), pSettlement->getY_INLINE(), UNITAI_CITY_DEFENSE);
+					if (pGuard) pGuard->finishMoves();
+				}
+			}
+			CvEventReporter::getInstance().cityAcquiredAndKept(eCrusadeRecipient, pSettlement);
+#if ARFC_ENABLE_REPORTING
+			GC.getGameINLINE().reportApostolicMechanic("crusade_settlement_completed", getID(), eCrusadeRecipient, pSettlement->getOwnerINLINE(), pSettlement->getX_INLINE(), pSettlement->getY_INLINE(), kRecipient.getStateReligion());
+#endif
+		}
+		szBuffer = gDLL->getText("TXT_KEY_AP_CRUSADE_SETTLEMENT", szSettlementCity.GetCString(), kRecipient.getCivilizationDescription());
+		gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCityPlot->getX_INLINE(), pCityPlot->getY_INLINE());
+		gDLL->getInterfaceIFace()->addMessage(eCrusadeRecipient, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCityPlot->getX_INLINE(), pCityPlot->getY_INLINE());
+	}
+	else if (bConquest)
 	{
 		//Rhye - start
 //Speed: Modified by Kael 04/19/2007
@@ -1825,6 +1941,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 				}
 				else
 				{
+					pNewCity->grantConquestResearch();
 					pNewCity->chooseProduction();
 					CvEventReporter::getInstance().cityAcquiredAndKept(getID(), pNewCity);
 				}
@@ -1857,6 +1974,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	processCivNames(); //Rhye - dynamic civ names - not jdog's
 	GET_PLAYER(eOldOwner).processCivNames(); //Rhye - dynamic civ names - not jdog's
+	GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 
@@ -2605,6 +2723,9 @@ const wchar* CvPlayer::getCivilizationAdjectiveKey() const
 
 CvWString CvPlayer::getFlagDecal() const
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+		return L"Art/Interface/TeamColor/FlagDECAL_Papal.dds";
+
 	if (GC.getInitCore().getFlagDecal(getID()).empty())
 	{
 		return GC.getCivilizationInfo(getCivilizationType()).getFlagTexture();
@@ -2617,6 +2738,9 @@ CvWString CvPlayer::getFlagDecal() const
 
 bool CvPlayer::isWhiteFlag() const
 {
+	// Preserve the Papal banner's own colors instead of tinting it by team.
+	if (GC.getGameINLINE().isPapalState(getID())) return true;
+
 	if (GC.getInitCore().getFlagDecal(getID()).empty())
 	{
 		return GC.getCivilizationInfo(getCivilizationType()).getArtInfo()->isWhiteFlag();
@@ -4041,6 +4165,13 @@ bool CvPlayer::canReceiveTradeCity() const
 
 bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial) const
 {
+	const TeamTypes eOtherTeam = GET_PLAYER(eWhoTo).getTeam();
+	if (item.m_eItemType == TRADE_PEACE_TREATY && GC.getGameINLINE().isCrusadeWar(getTeam(), eOtherTeam)) return false;
+	if (item.m_eItemType == TRADE_PEACE && GC.getGameINLINE().isCrusadeWar(getTeam(), (TeamTypes)item.m_iData)) return false;
+	if (item.m_eItemType == TRADE_VASSAL || item.m_eItemType == TRADE_SURRENDER || item.m_eItemType == TRADE_PERMANENT_ALLIANCE)
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (GC.getGameINLINE().isCrusadeWar(getTeam(), (TeamTypes)t) || GC.getGameINLINE().isCrusadeWar(eOtherTeam, (TeamTypes)t)) return false;
+
 	CvCity *pOurCapitalCity;
 
 	if (bTestDenial)
@@ -4157,6 +4288,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 
 	case TRADE_VASSAL:
 	case TRADE_SURRENDER:
+		if (GET_TEAM(getTeam()).isArabianJihadWar(GET_PLAYER(eWhoTo).getTeam())) return false;
 		if (!isHuman() || GET_PLAYER(eWhoTo).isHuman()) //  human can't be vassal of AI
 		{
 			CvTeam& kVassalTeam = GET_TEAM(getTeam());
@@ -4180,6 +4312,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 		break;
 
 	case TRADE_PEACE:
+		if (GET_TEAM(getTeam()).isArabianJihadWar((TeamTypes)item.m_iData)) return false;
 		if (!(GET_TEAM(getTeam()).isHuman()))
 		{
 			if (!(GET_TEAM(getTeam()).isAVassal()))
@@ -4320,7 +4453,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 		break;
 
 	case TRADE_PEACE_TREATY:
-		return true;
+		return !GET_TEAM(getTeam()).isArabianJihadWar(GET_PLAYER(eWhoTo).getTeam());
 		break;
 	}
 
@@ -5574,6 +5707,13 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+    // Apply to humans, AI and ongoing production, including visibility checks.
+    if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
+    {
+        for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
+            if (GC.getUnitInfo(eUnit).getReligionSpreads(iReligion) > 0 && getStateReligion() != (ReligionTypes)iReligion)
+                return false;
+    }
 	const CvUnitInfo& kModernUnit = GC.getUnitInfo(eUnit);
 	if (kModernUnit.getDomainType() == DOMAIN_AIR || kModernUnit.getNukeRange() >= 0 ||
 		strcmp(kModernUnit.getType(), "UNIT_CARRIER") == 0 || strcmp(kModernUnit.getType(), "UNIT_GUNSHIP") == 0 ||
@@ -5696,6 +5836,7 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 
 bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE")) return false;
 	if (eBuilding == GC.getInfoTypeForString("BUILDING_ROMAN_ADMINISTRATION") && !isRomanRepublic())
 		return false;
 
@@ -6353,12 +6494,9 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 			iProductionNeeded /= 100;
 			break;
 		case INDEPENDENT:
-			iProductionNeeded *= 200;
-			iProductionNeeded /= 100;
-			break;
 		case INDEPENDENT2:
-			iProductionNeeded *= 200;
-			iProductionNeeded /= 100;
+		case BARBARIAN:
+			// Independent and Barbarian cities use normal production costs.
 			break;
 		case NATIVE:
 			iProductionNeeded *= 150;
@@ -6366,10 +6504,6 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 			break;
 		case CELTIA:
 			iProductionNeeded *= 150;
-			iProductionNeeded /= 100;
-			break;
-		case BARBARIAN:
-			iProductionNeeded *= 140;
 			iProductionNeeded /= 100;
 			break;
 		default:
@@ -6591,12 +6725,8 @@ int CvPlayer::getProductionNeeded(BuildingTypes eBuilding) const
 				iProductionNeeded /= 100;
 				break;
 			case INDEPENDENT:
-				iProductionNeeded *= 150;
-				iProductionNeeded /= 100;
-				break;
 			case INDEPENDENT2:
-				iProductionNeeded *= 150;
-				iProductionNeeded /= 100;
+				// Independent city-states use normal production costs.
 				break;
 			case NATIVE:
 				iProductionNeeded *= 150;
@@ -6913,6 +7043,21 @@ void CvPlayer::processBuilding(BuildingTypes eBuilding, int iChange, CvArea* pAr
 	if (GC.getBuildingInfo(eBuilding).getFreeBuildingClass() != NO_BUILDINGCLASS)
 	{
 		BuildingTypes eFreeBuilding = (BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings(GC.getBuildingInfo(eBuilding).getFreeBuildingClass());
+		// Divine Kingship preserves existing Obelisks when the Pyramids expire.
+		// Convert the last free grant before removing it, leaving city effects intact.
+		if (iChange < 0 && GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding) &&
+			getFreeBuildingCount(eFreeBuilding) + iChange == 0 &&
+			eFreeBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+			getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
+		{
+			int iLoop;
+			for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+			{
+				if (pCity->getNumFreeBuilding(eFreeBuilding) > 0 && pCity->getNumRealBuilding(eFreeBuilding) == 0)
+					pCity->setNumRealBuildingTimed(eFreeBuilding, 1, false, getID(), GC.getGameINLINE().getGameTurnYear());
+			}
+		}
 		changeFreeBuildingCount(eFreeBuilding, iChange);
 	}
 
@@ -7496,7 +7641,9 @@ int CvPlayer::calculateBaseNetResearch(TechTypes eTech) const
 		eResearchTech = getCurrentResearch();
 	}
 
-	return (((GC.getDefineINT("BASE_RESEARCH_RATE") + getCommerceRate(COMMERCE_RESEARCH)) * calculateResearchModifier(eResearchTech)) / 100);
+	int iResearch = ((GC.getDefineINT("BASE_RESEARCH_RATE") + getCommerceRate(COMMERCE_RESEARCH)) * calculateResearchModifier(eResearchTech)) / 100;
+	if (isHorde()) iResearch = (iResearch * 75) / 100;
+	return iResearch;
 }
 
 
@@ -7859,6 +8006,12 @@ bool CvPlayer::isRomanLegions() const
 		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"));
 }
 
+bool CvPlayer::isHorde() const
+{
+	const CivicTypes eCivic = (CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY");
+	return GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()) && isCivic(eCivic);
+}
+
 bool CvPlayer::isRomanLogisticsUnit(UnitTypes eUnit) const
 {
 	if (eUnit == NO_UNIT || getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ROME")) return false;
@@ -7894,9 +8047,474 @@ bool CvPlayer::isRomanProvince(int iX, int iY) const
 		getRomanProvinceStage(iX, iY) > 0;
 }
 
+bool CvPlayer::isArabianJihadActive() const
+{
+    return m_iArabianJihadEndTurn > GC.getGameINLINE().getGameTurn() && isAlive();
+}
+
+void CvPlayer::prepareIslamFounding()
+{
+    if (isBarbarian() || m_bArabianJihadTriggered || m_iIslamFoundingDecision >= 0) return;
+    m_iIslamFoundingDecision = GC.getGameINLINE().getGameTurn() + 1;
+}
+
+void CvPlayer::processIslamFounding()
+{
+    if (m_iIslamFoundingDecision < 0) return;
+    if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ARABIA"))
+        resolveIslamFounding(m_iIslamFoundingDecision, true);
+    else if (!isHuman() || GC.getGameINLINE().isObserverAutoPlay())
+    {
+        const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+        const int iJoinChance = getStateReligion() == eIslam ? 100 : (getStateReligion() == NO_RELIGION ? 85 : 25);
+        resolveIslamFounding(m_iIslamFoundingDecision, GC.getGameINLINE().getSorenRandNum(100, "Islam founding decision") < iJoinChance);
+    }
+    else
+    {
+        CyArgsList args;
+        args.add((int)getID());
+        gDLL->getPythonIFace()->callFunction("Islam", "showChoice", args.makeFunctionArgs());
+    }
+}
+
+void CvPlayer::resolveIslamFounding(int iDecision, bool bJoin)
+{
+    if (iDecision < 0 || iDecision != m_iIslamFoundingDecision) return;
+    m_iIslamFoundingDecision = -1; // Consume before any callbacks or effects.
+    if (!isAlive()) return;
+    const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+    CvCity* pHolyCity = GC.getGameINLINE().getHolyCity(eIslam);
+    if (pHolyCity == NULL || pHolyCity->getOwnerINLINE() != getID()) return;
+    if (bJoin)
+    {
+        startArabianJihad();
+        return;
+    }
+
+    // Preserve the founding location even if the suppression ban makes its shrine dormant.
+    int iLoop;
+    for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+        pCity->removeReligionByInquisition(eIslam);
+    // A hostile army must start on legal land near the city, never inside an occupied city.
+    CvPlot* pSpawn = NULL;
+    for (int iRadius = 1; iRadius <= std::max(GC.getMapINLINE().getGridWidthINLINE(), GC.getMapINLINE().getGridHeightINLINE()) && pSpawn == NULL; ++iRadius)
+        for (int iDX = -iRadius; iDX <= iRadius && pSpawn == NULL; ++iDX)
+            for (int iDY = -iRadius; iDY <= iRadius && pSpawn == NULL; ++iDY)
+            {
+                CvPlot* pPlot = plotXY(pHolyCity->getX_INLINE(), pHolyCity->getY_INLINE(), iDX, iDY);
+                if (pPlot != NULL && !pPlot->isWater() && !pPlot->isPeak() && !pPlot->isImpassable() &&
+                    !pPlot->isCity() && pPlot->getNumUnits() == 0 && pPlot->getArea() == pHolyCity->getArea())
+                    pSpawn = pPlot;
+            }
+    if (pSpawn != NULL)
+    {
+        const char* aszUnits[] = { "UNIT_LONGBOWMAN", "UNIT_SWORDSMAN", "UNIT_ARABIA_CAMELARCHER", "UNIT_CATAPULT" };
+        const char* aszCounts[] = { "RFCMP_ISLAM_SUPPRESSION_LONGBOWMEN", "RFCMP_ISLAM_SUPPRESSION_SWORDSMEN", "RFCMP_ISLAM_SUPPRESSION_CAMEL_ARCHERS", "RFCMP_ISLAM_SUPPRESSION_CATAPULTS" };
+        for (int i = 0; i < 4; ++i)
+            for (int j = 0; j < std::max(0, GC.getDefineINT(aszCounts[i])); ++j)
+            {
+                CvUnit* pUnit = GET_PLAYER(BARBARIAN_PLAYER).initUnit((UnitTypes)GC.getInfoTypeForString(aszUnits[i]),
+                    pSpawn->getX_INLINE(), pSpawn->getY_INLINE(), (i == 1 || i == 3) ? UNITAI_ATTACK_CITY : UNITAI_ATTACK);
+                if (pUnit != NULL) pUnit->finishMoves();
+            }
+    }
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_RFCMP_ISLAM_SUPPRESSED"), "AS2D_DECLAREWAR", MESSAGE_TYPE_MAJOR_EVENT,
+        GC.getReligionInfo(eIslam).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"),
+        pHolyCity->getX_INLINE(), pHolyCity->getY_INLINE(), true, true);
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        CvPlayer& kArabia = GET_PLAYER((PlayerTypes)i);
+        if (kArabia.getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ARABIA") || kArabia.m_bArabianJihadTriggered) continue;
+        kArabia.m_bIslamSuppressionRally = true;
+        kArabia.doArabianJihad(); // Defer automatically if Arabia has not established a city.
+    }
+}
+
+bool CvPlayer::isArabianJihadEnemy(TeamTypes eTeam) const
+{
+    return eTeam >= 0 && eTeam < MAX_TEAMS && m_abArabianJihadEnemies[eTeam];
+}
+
+void CvPlayer::announceArabianJihad(bool bStarting) const
+{
+    const int iRadius = std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_MESSAGE_RADIUS"));
+    const CvCity* pReference = GC.getGameINLINE().getHolyCity((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM"));
+    if (pReference == NULL) pReference = getCapitalCity();
+    const int iX = pReference ? pReference->getX_INLINE() : 75;
+    const int iY = pReference ? pReference->getY_INLINE() : 33;
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        CvPlayer& kRecipient = GET_PLAYER((PlayerTypes)i);
+        if (!kRecipient.isAlive() || kRecipient.isBarbarian()) continue;
+        bool bNearby = kRecipient.getTeam() == getTeam() || isArabianJihadEnemy(kRecipient.getTeam());
+        int iLoop;
+        for (CvCity* pCity = kRecipient.firstCity(&iLoop); pCity != NULL && !bNearby; pCity = kRecipient.nextCity(&iLoop))
+        {
+            bNearby = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), iX, iY) <= iRadius;
+            int iArabLoop;
+            for (CvCity* pArabCity = firstCity(&iArabLoop); pArabCity != NULL && !bNearby; pArabCity = nextCity(&iArabLoop))
+                bNearby = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pArabCity->getX_INLINE(), pArabCity->getY_INLINE()) <= iRadius;
+        }
+        if (bNearby)
+            gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
+                gDLL->getText(bStarting ? "TXT_KEY_RFCMP_ARABIAN_JIHAD_START" : "TXT_KEY_RFCMP_ARABIAN_JIHAD_END", getCivilizationDescription(0)),
+                "AS2D_DECLAREWAR", MESSAGE_TYPE_MAJOR_EVENT, GC.getReligionInfo((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM")).getButton(),
+                (ColorTypes)GC.getInfoTypeForString(bStarting ? "COLOR_RED" : "COLOR_HIGHLIGHT_TEXT"), iX, iY, false, false);
+    }
+}
+
+void CvPlayer::startArabianJihad()
+{
+    if (m_bArabianJihadTriggered || !isAlive() || getNumCities() == 0) return;
+    m_bArabianJihadTriggered = true;
+    m_bIslamSuppressionRally = false;
+    m_iIslamHolyCityDeadline = -1;
+    for (int i = 0; i < MAX_TEAMS; ++i) m_abArabianJihadEnemies[i] = false;
+    const int iStart = GC.getGameINLINE().getGameTurn();
+    const int iEndYear = GC.getGameINLINE().getGameTurnYear() + std::max(1, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_YEARS"));
+    m_iArabianJihadEndTurn = iStart + 1;
+    while (GC.getGameINLINE().getTurnYear(m_iArabianJihadEndTurn) < iEndYear && m_iArabianJihadEndTurn < iStart + 10000)
+        ++m_iArabianJihadEndTurn;
+    m_iArabianJihadEndTurn += std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_EXTRA_TURNS"));
+
+    adoptIslamicCause();
+    int iCityLoop;
+    for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))
+        convertIslamicCity(pCity, false);
+    createJihadCampaign(0);
+    doArabianJihad();
+    announceArabianJihad(true);
+}
+
+void CvPlayer::adoptIslamicCause()
+{
+    // Direct event adoption adds no revolution or religious anarchy.
+    const int iOldAnarchy = getAnarchyTurns();
+    const char* aszCivics[] = { "CIVIC_MONARCHY", "CIVIC_THEOCRATIC_LEGITIMACY", "CIVIC_GOD_STATE" };
+    for (int i = 0; i < 3; ++i)
+    {
+        CivicTypes eCivic = (CivicTypes)GC.getInfoTypeForString(aszCivics[i]);
+        setCivics((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType(), eCivic);
+    }
+    setLastStateReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM"));
+    changeAnarchyTurns(iOldAnarchy - getAnarchyTurns());
+}
+
+void CvPlayer::doArabianJihad()
+{
+    if (m_iCaliphatePartitionDecision >= 0 && isHuman() && !GC.getGameINLINE().isObserverAutoPlay())
+    {
+        CyArgsList args;
+        args.add((int)getID());
+        gDLL->getPythonIFace()->callFunction("CvEventInterface", "showCaliphateChoice", args.makeFunctionArgs());
+    }
+    if (m_bIslamSuppressionRally)
+    {
+        if (m_iIslamHolyCityDeadline >= 0 && GC.getGameINLINE().getGameTurn() > m_iIslamHolyCityDeadline)
+        {
+            m_bIslamSuppressionRally = false;
+            gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+                gDLL->getText("TXT_KEY_RFCMP_ISLAM_RALLY_FAILED"), NULL, MESSAGE_TYPE_MAJOR_EVENT);
+        }
+        const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+        CvCity* pHolyCity = GC.getGameINLINE().getHolyCity(eIslam);
+        // An Islamic holder takes up the cause itself, rather than becoming
+        // Arabia's suppression target. This also handles an unborn Arabia.
+        if (m_bIslamSuppressionRally && pHolyCity != NULL && pHolyCity->getOwnerINLINE() != getID() &&
+            GET_PLAYER(pHolyCity->getOwnerINLINE()).getStateReligion() == eIslam)
+        {
+            m_bIslamSuppressionRally = false;
+            GET_PLAYER(pHolyCity->getOwnerINLINE()).startArabianJihad();
+        }
+        if (m_bIslamSuppressionRally && m_iIslamHolyCityDeadline < 0 && isAlive() && getNumCities() > 0)
+        {
+            m_iIslamHolyCityDeadline = GC.getGameINLINE().getGameTurn() + std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS"));
+            adoptIslamicCause();
+            int iLoop;
+            for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+                convertIslamicCity(pCity, !pCity->isHasReligion(eIslam));
+            gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+                gDLL->getText("TXT_KEY_RFCMP_ISLAM_RALLY", std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS"))),
+                "AS2D_DECLAREWAR", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
+        }
+        // Re-evaluate ownership throughout the rally, never remember a previous
+        // suppressor or city owner as the target of a new declaration.
+        if (m_bIslamSuppressionRally && m_iIslamHolyCityDeadline >= 0 && isAlive() && getNumCities() > 0 &&
+            pHolyCity != NULL && pHolyCity->getTeam() != getTeam())
+        {
+            const TeamTypes eHolyOwner = pHolyCity->getTeam();
+            CvTeam& kTeam = GET_TEAM(getTeam());
+            kTeam.meet(eHolyOwner, false);
+            // Override temporary peace, preserving permanent peace and vassal ties.
+            if (!kTeam.isAtWar(eHolyOwner) && !kTeam.isAVassal() &&
+                kTeam.canChangeWarPeace(eHolyOwner, true) &&
+                !GC.getGameINLINE().isOption(GAMEOPTION_ALWAYS_PEACE))
+                kTeam.declareWar(eHolyOwner, false, WARPLAN_TOTAL);
+            if (kTeam.isAtWar(eHolyOwner))
+            {
+                kTeam.AI_setWarPlan(eHolyOwner, WARPLAN_TOTAL);
+                pHolyCity->area()->setTargetCity(getID(), pHolyCity);
+            }
+        }
+    }
+    if (m_iArabianJihadEndTurn < 0) return;
+    if (GC.getGameINLINE().getGameTurn() >= m_iArabianJihadEndTurn)
+    {
+        announceArabianJihad(false);
+        m_iArabianJihadEndTurn = -1;
+        for (int i = 0; i < MAX_TEAMS; ++i) m_abArabianJihadEnemies[i] = false;
+        if (!m_bCaliphatePartitioned && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ARABIA") && getNumCities() > 0)
+        {
+            m_iCaliphatePartitionDecision = GC.getGameINLINE().getGameTurn() + 1;
+            if (!isHuman() || GC.getGameINLINE().isObserverAutoPlay())
+                resolveCaliphatePartition(m_iCaliphatePartitionDecision, -1);
+        }
+        return;
+    }
+    if (!isArabianJihadActive()) return;
+    const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+    CvTeam& kTeam = GET_TEAM(getTeam());
+    for (int i = 0; i < MAX_TEAMS; ++i)
+    {
+        const TeamTypes eTarget = (TeamTypes)i;
+        if (eTarget == getTeam() || !GET_TEAM(eTarget).isAlive() || GET_TEAM(eTarget).isBarbarian() ||
+            !kTeam.isHasMet(eTarget) || kTeam.isVassal(eTarget) || GET_TEAM(eTarget).isVassal(getTeam())) continue;
+        bool bIslamicTeam = false;
+        for (int j = 0; j < MAX_PLAYERS; ++j)
+            if (GET_PLAYER((PlayerTypes)j).isAlive() && GET_PLAYER((PlayerTypes)j).getTeam() == eTarget && GET_PLAYER((PlayerTypes)j).getStateReligion() == eIslam)
+                bIslamicTeam = true;
+        if (bIslamicTeam) continue;
+        if (!kTeam.isAtWar(eTarget))
+        {
+            // Preserve scenario-level permanent peace and vassal diplomacy.
+            if (kTeam.isPermanentWarPeace(eTarget) || GET_TEAM(eTarget).isPermanentWarPeace(getTeam()) || kTeam.isAVassal()) continue;
+            bool abPreviouslyAtWar[MAX_TEAMS];
+            for (int j = 0; j < MAX_TEAMS; ++j) abPreviouslyAtWar[j] = kTeam.isAtWar((TeamTypes)j);
+            // This event overrides ordinary temporary peace treaties.
+            m_abArabianJihadEnemies[i] = true;
+            kTeam.declareWar(eTarget, false, WARPLAN_TOTAL);
+            for (int j = 0; j < MAX_TEAMS; ++j)
+                if (kTeam.isAtWar((TeamTypes)j) && !abPreviouslyAtWar[j]) m_abArabianJihadEnemies[j] = true;
+        }
+        if (kTeam.isAtWar(eTarget))
+        {
+            m_abArabianJihadEnemies[i] = true;
+            kTeam.AI_setWarPlan(eTarget, WARPLAN_TOTAL);
+        }
+    }
+}
+
+void CvPlayer::applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation, bool bMilitary)
+{
+    // Track first conquests even before the event, preventing recapture rewards.
+    const int iPlot = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+    const bool bFirstConquest = std::find(m_aiArabianJihadConquests.begin(), m_aiArabianJihadConquests.end(), iPlot) == m_aiArabianJihadConquests.end();
+    if (bFirstConquest) m_aiArabianJihadConquests.push_back(iPlot);
+    if (!isArabianJihadActive()) return;
+    if (bFirstConquest && bMilitary) ++m_iJihadMilitaryConquests;
+    const bool bUnlock = bFirstConquest && bMilitary &&
+        ((m_iJihadCampaignsCreated == 1 && m_iJihadMilitaryConquests >= 1) ||
+         (m_iJihadCampaignsCreated == 2 && m_iJihadMilitaryConquests >= 3));
+    // The campaign army incorporates this capture's ordinary recruitment reward.
+    convertIslamicCity(pCity, bFirstConquest && !bUnlock, iRecruitPopulation);
+    if (bUnlock) createJihadCampaign(m_iJihadCampaignsCreated, getArabianJihadRecruitmentPackages(iRecruitPopulation));
+}
+
+int CvPlayer::nearestJihadCampaign(const CvPlot* pPlot) const
+{
+    if (!isArabianJihadActive() || m_iJihadCampaignsCreated == 0) return -1;
+    int iBest = -1;
+    int iBestDistance = MAX_INT;
+    int iLoop;
+    for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+    {
+        if (pUnit->isDelayedDeath() || pUnit->getJihadCampaign() < 0 || pUnit->getArea() != pPlot->getArea()) continue;
+        // Egyptian captures sustain the surviving western field campaign,
+        // even when Khalid or Sa'd happens to be closer to the city.
+        if (65 <= pPlot->getX_INLINE() && pPlot->getX_INLINE() <= 72 &&
+            30 <= pPlot->getY_INLINE() && pPlot->getY_INLINE() <= 37 &&
+            pUnit->getJihadCampaign() == 1 && pUnit->canDefend() &&
+            !pUnit->isCargo() && pUnit->AI_getUnitAIType() == UNITAI_ATTACK_CITY) return 1;
+        const int iDistance = plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pUnit->getX_INLINE(), pUnit->getY_INLINE());
+        if (iDistance < iBestDistance)
+        {
+            iBestDistance = iDistance;
+            iBest = pUnit->getJihadCampaign();
+        }
+    }
+    return iBest;
+}
+
+void CvPlayer::createJihadCampaign(int iCampaign, int iRecruitPackages)
+{
+    // This belongs to the event recipient, never to a civilization or player slot.
+    if (!isArabianJihadActive() || iCampaign != m_iJihadCampaignsCreated || iCampaign >= 3) return;
+    CvCity* pStage = getCapitalCity();
+    if (pStage == NULL) return;
+    if (iCampaign > 0)
+    {
+        const int iTargetX = iCampaign == 1 ? 70 : 82;
+        const int iTargetY = iCampaign == 1 ? 35 : 39;
+        int iBestDistance = MAX_INT;
+        int iCityLoop;
+        for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))
+        {
+            if (pCity->plot()->isVisibleEnemyUnit(getID())) continue;
+            const int iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), iTargetX, iTargetY);
+            if (iDistance < iBestDistance)
+            {
+                pStage = pCity;
+                iBestDistance = iDistance;
+            }
+        }
+    }
+    const UnitTypes eGeneral = (UnitTypes)GC.getInfoTypeForString("UNIT_GREAT_GENERAL");
+    if (eGeneral == NO_UNIT) return;
+    const wchar* aszNames[] = { L"Khalid ibn al-Walid", L"Amr ibn al-As", L"Sa'd ibn Abi Waqqas" };
+    const char* aszUnits[] = { "UNIT_SWORDSMAN", "UNIT_ARABIA_CAMELARCHER", "UNIT_CATAPULT", "UNIT_SPEARMAN" };
+    const char* aszCounts[] = { "RFCMP_ARABIAN_JIHAD_SWORDSMEN", "RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS", "RFCMP_ARABIAN_JIHAD_CATAPULTS" };
+    const int aiMinimum[] = { 3, 2, 2, 1 };
+    // Egypt keeps its extra infantry and siege; restore one Swordsman to Sa'd
+    // so the eastern campaign receives a small additional reinforcement.
+    const int aiCampaignAdjustment[3][4] = {
+        { 0, 0, 0, 0 }, { 1, 0, 1, 0 }, { 0, 0, -1, 0 }
+    };
+    std::vector<CvUnit*> apArmy;
+    for (int iType = 0; iType < 4; ++iType)
+    {
+        const UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString(aszUnits[iType]);
+        if (eUnit == NO_UNIT) return;
+        const int iBaseWanted = iType == 3 ? aiMinimum[iType] :
+            std::max(aiMinimum[iType], iRecruitPackages * std::max(0, GC.getDefineINT(aszCounts[iType])));
+        const int iWanted = iBaseWanted + aiCampaignAdjustment[iCampaign][iType];
+        int iFound = 0;
+        // The opening campaign reuses the starting army; later arrivals incorporate
+        // the recruitment suppressed on their unlocking capture, then top it up.
+        if (iCampaign == 0)
+        {
+            for (CLLNode<IDInfo>* pNode = pStage->plot()->headUnitNode(); pNode != NULL; pNode = pStage->plot()->nextUnitNode(pNode))
+            {
+                CvUnit* pUnit = ::getUnit(pNode->m_data);
+                if (iFound < iWanted && pUnit != NULL && pUnit->getOwnerINLINE() == getID() &&
+                    pUnit->getUnitType() == eUnit && pUnit->getJihadCampaign() < 0 &&
+                    pUnit->getLeaderUnitType() == NO_UNIT && !pUnit->isDelayedDeath() &&
+                    pUnit->AI_getUnitAIType() != UNITAI_CITY_DEFENSE)
+                {
+                    apArmy.push_back(pUnit);
+                    ++iFound;
+                }
+            }
+        }
+        while (iFound < iWanted)
+        {
+            CvUnit* pUnit = initUnit(eUnit, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_ATTACK_CITY);
+            if (pUnit == NULL) return;
+            apArmy.push_back(pUnit);
+            ++iFound;
+        }
+    }
+    CvUnit* pLeader = apArmy[0];
+    CvUnit* pGeneral = initUnit(eGeneral, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_GENERAL);
+    if (pGeneral == NULL) return;
+    pGeneral->setName(aszNames[iCampaign]);
+    // Normal attachment grants the Warlord promotion, graphics, name and the
+    // standard shared Great General XP exactly once, including for humans.
+    if (!pGeneral->lead(pLeader->getID()))
+    {
+        pGeneral->kill(false);
+        return;
+    }
+    ++m_iJihadCampaignsCreated;
+    for (int i = 0; i < (int)apArmy.size(); ++i)
+    {
+        CvUnit* pUnit = apArmy[i];
+        pUnit->setJihadCampaign(iCampaign);
+        pUnit->AI_setUnitAIType(UNITAI_ATTACK_CITY);
+        if (pUnit != pLeader) pUnit->joinGroup(pLeader->getGroup());
+        pUnit->finishMoves();
+    }
+    if (iCampaign == 1 || iCampaign == 2)
+    {
+        // Separate city-defense escorts follow Amr or Sa'd, then garrison
+        // regional conquests without joining the field campaign.
+        const char* aszEscorts[] = { "UNIT_LONGBOWMAN", "UNIT_SPEARMAN" };
+        for (int iEscort = 0; iEscort < 2; ++iEscort)
+        {
+            const UnitTypes eEscort = (UnitTypes)GC.getInfoTypeForString(aszEscorts[iEscort]);
+            if (eEscort == NO_UNIT) continue;
+            CvUnit* pEscort = initUnit(eEscort, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_CITY_DEFENSE);
+            if (pEscort != NULL)
+            {
+                pEscort->setScriptData(iCampaign == 1 ? "RFCMP_JIHAD_EGYPT_ESCORT" : "RFCMP_JIHAD_PERSIA_ESCORT");
+                pEscort->finishMoves();
+            }
+        }
+    }
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_JIHAD_CAMPAIGN_ARRIVAL", aszNames[iCampaign], pStage->getNameKey()),
+        "AS2D_UNIT_GREATPEOPLE", MESSAGE_TYPE_MAJOR_EVENT, GC.getUnitInfo(eGeneral).getButton(),
+        (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"), pStage->getX_INLINE(), pStage->getY_INLINE(), true, true);
+}
+
+int CvPlayer::getArabianJihadRecruitmentPackages(int iPopulation) const
+{
+    const int iPopulationPerPackage = std::max(1, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_POPULATION_PER_EXTRA_PACKAGE"));
+    return 1 + std::max(0, iPopulation) / iPopulationPerPackage;
+}
+
+void CvPlayer::convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopulation)
+{
+    // Capture population before conversion/pacification can add population.
+    // Acquisitions pass the population before conquest casualties as well.
+    if (iRecruitPopulation < 0) iRecruitPopulation = pCity->getPopulation();
+    const ReligionTypes eIslam = (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+    pCity->clearReligionBan(eIslam);
+    // Reuse expulsion: remove ordinary buildings, suppress retained holy shrines.
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (i != eIslam) pCity->removeReligionByInquisition((ReligionTypes)i);
+    pCity->setHasReligion(eIslam, true, true, true);
+    // Conquest conversion remains guaranteed if the player later chose atheism.
+    if (!pCity->isHasReligion(eIslam)) pCity->setHasReligion(eIslam, true, true, true, true);
+
+    if (!bRecruit) return;
+    const int iPackages = getArabianJihadRecruitmentPackages(iRecruitPopulation);
+    const int iCampaign = nearestJihadCampaign(pCity->plot());
+    const char* aszUnits[] = { "UNIT_SWORDSMAN", "UNIT_ARABIA_CAMELARCHER", "UNIT_CATAPULT" };
+    const char* aszCounts[] = { "RFCMP_ARABIAN_JIHAD_SWORDSMEN", "RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS", "RFCMP_ARABIAN_JIHAD_CATAPULTS" };
+    for (int i = 0; i < 3; ++i)
+    {
+        const UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString(aszUnits[i]);
+        for (int j = 0; j < iPackages * std::max(0, GC.getDefineINT(aszCounts[i])); ++j)
+        {
+            CvUnit* pUnit = initUnit(eUnit, pCity->getX_INLINE(), pCity->getY_INLINE(), i == 1 ? UNITAI_ATTACK : UNITAI_ATTACK_CITY);
+            if (pUnit != NULL)
+            {
+                pUnit->setJihadCampaign(iCampaign);
+                if (pUnit->getJihadCampaign() >= 0) pUnit->AI_setUnitAIType(UNITAI_ATTACK_CITY);
+                pUnit->finishMoves();
+            }
+        }
+    }
+}
+
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) return false;
+		CivicOptionTypes eOption = (CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType();
+		if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
+		{
+			if (eOption == GC.getInfoTypeForString("CIVICOPTION_LEGAL")) return eCivic == getCivics(eOption);
+			if (eOption == GC.getInfoTypeForString("CIVICOPTION_RELIGION") && eCivic != GC.getInfoTypeForString("CIVIC_TOLERANCE") && !GC.getCivicInfo(eCivic).isStateReligion()) return false;
+			if (eCivic == getCivics(eOption)) return true;
+		}
+	}
 	PROFILE_FUNC();
+
+	if (GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()))
+		return GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_HORSEBACK_RIDING"));
 
 	if (GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())))
 	{
@@ -8127,6 +8745,7 @@ bool CvPlayer::canChangeReligion() const
 
 bool CvPlayer::canConvert(ReligionTypes eReligion) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()) && !isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE"))) return false;
 	if (isBarbarian())
 	{
 		return false;
@@ -10817,7 +11436,8 @@ void CvPlayer::verifyAlive()
 		{
 			if (!isBarbarian())
 			{
-				if (getNumCities() == 0 && getAdvancedStartPoints() < 0)
+				if (getNumCities() == 0 && getAdvancedStartPoints() < 0 &&
+					!(getNumUnits() > 0 && GC.getGameINLINE().canPapalSurviveWithoutCities(getID())))
 				{
 					if ((getNumUnits() == 0) || (!(GC.getGameINLINE().isOption(GAMEOPTION_COMPLETE_KILLS)) && isFoundedFirstCity()))
 					{
@@ -11421,6 +12041,11 @@ ReligionTypes CvPlayer::getStateReligion() const
 
 void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (!GC.getGameINLINE().isPapalCivicOverride() && !isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) && eNewValue != getLastStateReligion()) return;
+		GC.getGameINLINE().disablePapalPalaceEffects();
+	}
 	ReligionTypes eOldReligion;
 	CvWString szBuffer;
 	int iI;
@@ -11432,6 +12057,15 @@ void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 
 		eOldReligion = getLastStateReligion();
 		m_eLastStateReligion = eNewValue;
+
+        // Conversion lifts city bans only for the newly adopted religion.
+        // Actual religious presence is restored through subsequent spread.
+        if (eNewValue != NO_RELIGION)
+        {
+            int iLoop;
+            for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+                pCity->clearReligionBan(eNewValue);
+        }
 
 		// religion visibility now part of espionage
 		//GC.getGameINLINE().updateCitySight(true, true);
@@ -11481,6 +12115,7 @@ void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 			CvEventReporter::getInstance().playerChangeStateReligion(getID(), eNewValue, eOldReligion);
 		}
 	}
+	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 PlayerTypes CvPlayer::getParent() const
@@ -11548,6 +12183,24 @@ void CvPlayer::setTeam(TeamTypes eTeam)
 
 PlayerColorTypes CvPlayer::getPlayerColor() const
 {
+	// These identities have authored palettes. Scenario setup may retain an old
+	// slot color or assign an unused palette when another civ shares a default.
+	if (GC.getGameINLINE().isPapalState(getID()))
+		return (PlayerColorTypes)GC.getInfoTypeForString("PLAYERCOLOR_PAPAL");
+	const CivilizationTypes eCiv = getCivilizationType();
+	if (eCiv != NO_CIVILIZATION)
+	{
+		const CvCivilizationInfo& kCiv = GC.getCivilizationInfo(eCiv);
+		const char* szType = kCiv.getType();
+		if (strcmp(szType, "CIVILIZATION_ARABIA") == 0 ||
+			strcmp(szType, "CIVILIZATION_ABBASID") == 0 ||
+			strcmp(szType, "CIVILIZATION_FATIMID") == 0 ||
+			strcmp(szType, "CIVILIZATION_UMAYYAD") == 0 ||
+			strcmp(szType, "CIVILIZATION_INDEPENDENT") == 0 ||
+			strcmp(szType, "CIVILIZATION_INDEPENDENT2") == 0 ||
+			strcmp(szType, "CIVILIZATION_KOREA") == 0)
+			return (PlayerColorTypes)kCiv.getDefaultPlayerColor();
+	}
 	return GC.getInitCore().getColor(getID());
 }
 
@@ -12650,6 +13303,13 @@ void CvPlayer::changeHasReligionCount(ReligionTypes eIndex, int iChange)
 		FAssert(getHasReligionCount(eIndex) >= 0);
 
 		GC.getGameINLINE().updateBuildingCommerce();
+		// Foreign conversions, expulsions and city transfers change Papal tribute.
+		if (eIndex == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+		{
+			CvCity* pRome = GC.getGameINLINE().getPapalRome();
+			if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()))
+				pRome->updateCommerce(COMMERCE_GOLD);
+		}
 
 		GC.getGameINLINE().AI_makeAssignWorkDirty();
 	}
@@ -12862,6 +13522,20 @@ int CvPlayer::getCivicUpkeep(CivicTypes* paeCivics, bool bIgnoreAnarchy) const
 
 void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (!GC.getGameINLINE().isPapalCivicOverride())
+		{
+			if (eNewValue == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) return;
+			if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) && eNewValue != getCivics(eIndex))
+			{
+				if (eIndex == GC.getInfoTypeForString("CIVICOPTION_LEGAL")) return;
+				if (eIndex == GC.getInfoTypeForString("CIVICOPTION_RELIGION") && eNewValue != GC.getInfoTypeForString("CIVIC_TOLERANCE") && !GC.getCivicInfo(eNewValue).isStateReligion()) return;
+			}
+		}
+		GC.getGameINLINE().disablePapalPalaceEffects();
+	}
+
 	CvWString szBuffer;
 	CivicTypes eOldCivic;
 	//int iI; //Rhye
@@ -12907,7 +13581,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 					if (GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION || GC.getBuildingInfo(eBuilding).getPrereqReligion() != NO_RELIGION)
 					{
 						int iCount = pCity->getNumBuilding(eBuilding);
-						if (iCount != 0) pCity->processBuilding(eBuilding, (eNewValue == eAtheism ? -iCount : iCount), false, true);
+						if (iCount != 0 && !pCity->isShrineSuppressed(eBuilding)) pCity->processBuilding(eBuilding, (eNewValue == eAtheism ? -iCount : iCount), false, true);
 					}
 				}
 			}
@@ -12920,6 +13594,63 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		if (getCivics(eIndex) != NO_CIVIC)
 		{
 			processCivics(getCivics(eIndex), 1);
+		}
+
+		// Abolition gives each armed slave one synchronized chance to join the army.
+		if (eOldCivic == (CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+		{
+			const char* aszSlaveTypes[] = {
+				"UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN", "UNIT_SLAVE_MACEMAN",
+				"UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN", "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+			};
+			const char* aszRegularClasses[] = {
+				"UNITCLASS_AXEMAN", "UNITCLASS_SWORDSMAN", "UNITCLASS_MACEMAN",
+				"UNITCLASS_MUSKETMAN", "UNITCLASS_RIFLEMAN", "UNITCLASS_INFANTRY", "UNITCLASS_MARINE"
+			};
+			std::vector< std::pair<int, UnitTypes> > aCaptives;
+			int iLoop;
+			for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+			{
+				if (pUnit->isDelayedDeath()) continue;
+				for (int iTier = 0; iTier < (int)(sizeof(aszSlaveTypes) / sizeof(aszSlaveTypes[0])); ++iTier)
+				{
+					if (pUnit->getUnitType() == GC.getInfoTypeForString(aszSlaveTypes[iTier]))
+					{
+						UnitClassTypes eClass = (UnitClassTypes)GC.getInfoTypeForString(aszRegularClasses[iTier]);
+						UnitTypes eRegular = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(eClass);
+						if (eRegular != NO_UNIT) aCaptives.push_back(std::make_pair(pUnit->getID(), eRegular));
+						break;
+					}
+				}
+			}
+			int iConverted = 0;
+			int iDisbanded = 0;
+			const PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+			for (unsigned int i = 0; i < aCaptives.size(); ++i)
+			{
+				CvUnit* pSlave = getUnit(aCaptives[i].first);
+				if (pSlave == NULL || pSlave->isDelayedDeath()) continue;
+				if (GC.getGameINLINE().getSorenRandNum(100, "Armed slave emancipation") < 50)
+				{
+					CvUnit* pRegular = initUnit(aCaptives[i].second, pSlave->getX_INLINE(), pSlave->getY_INLINE(), pSlave->AI_getUnitAIType());
+					if (pRegular != NULL)
+					{
+						pRegular->convert(pSlave);
+						pRegular->setHasPromotion(eCannonFodder, false);
+						++iConverted;
+					}
+				}
+				else
+				{
+					pSlave->kill(true);
+					++iDisbanded;
+				}
+			}
+			if (iConverted + iDisbanded > 0)
+			{
+				gDLL->getInterfaceIFace()->addMessage(getID(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText("TXT_KEY_RFCMP_SLAVE_EMANCIPATION", iConverted, iDisbanded), "", MESSAGE_TYPE_INFO);
+			}
 		}
 
 		// Clear assigned specialists on adopting self-sufficiency; free specialists
@@ -13014,6 +13745,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			//Rhye - end
 		}
 	}
+	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 
@@ -16949,6 +17681,8 @@ void CvPlayer::processCivics(CivicTypes eCivic, int iChange)
 	changeLargestCityHappiness(GC.getCivicInfo(eCivic).getLargestCityHappiness() * iChange);
 	changeExtraHappiness(GC.getCivicInfo(eCivic).getCivicHappiness() * iChange);
 	changeWarWearinessModifier(GC.getCivicInfo(eCivic).getWarWearinessModifier() * iChange);
+	if (GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()))
+		changeWarWearinessModifier(-50 * iChange);
 	changeFreeSpecialist(GC.getCivicInfo(eCivic).getFreeSpecialist() * iChange);
 	changeTradeRoutes(GC.getCivicInfo(eCivic).getTradeRoutes() * iChange);
 	changeNoForeignTradeCount(GC.getCivicInfo(eCivic).isNoForeignTrade() * iChange);
@@ -17675,6 +18409,22 @@ void CvPlayer::read(FDataStreamBase* pStream)
 
 	pStream->Read(&m_iPopRushHurryCount);
 	pStream->Read(&m_iInflationModifier);
+    pStream->Read(&m_iArabianJihadEndTurn);
+    pStream->Read(&m_iCaliphatePartitionDecision);
+    pStream->Read(&m_bCaliphatePartitioned);
+    pStream->Read(&m_iIslamFoundingDecision);
+    pStream->Read(&m_bIslamSuppressionRally);
+    pStream->Read(&m_iIslamHolyCityDeadline);
+    pStream->Read(&m_bArabianJihadTriggered);
+    pStream->Read(&m_bArabianJihadCairoSettlerGranted);
+    pStream->Read(&m_iJihadCampaignsCreated);
+    pStream->Read(&m_iJihadMilitaryConquests);
+    pStream->Read(MAX_TEAMS, m_abArabianJihadEnemies);
+    int iJihadConquests;
+    pStream->Read(&iJihadConquests);
+    m_aiArabianJihadConquests.resize(iJihadConquests);
+    for (int i = 0; i < iJihadConquests; ++i) pStream->Read(&m_aiArabianJihadConquests[i]);
+    configureCaliphateSuccessor();
 
 	
 	//Rhye - RFCMP (slot bug)
@@ -18109,6 +18859,19 @@ void CvPlayer::write(FDataStreamBase* pStream)
 
 	pStream->Write(m_iPopRushHurryCount);
 	pStream->Write(m_iInflationModifier);
+    pStream->Write(m_iArabianJihadEndTurn);
+    pStream->Write(m_iCaliphatePartitionDecision);
+    pStream->Write(m_bCaliphatePartitioned);
+    pStream->Write(m_iIslamFoundingDecision);
+    pStream->Write(m_bIslamSuppressionRally);
+    pStream->Write(m_iIslamHolyCityDeadline);
+    pStream->Write(m_bArabianJihadTriggered);
+    pStream->Write(m_bArabianJihadCairoSettlerGranted);
+    pStream->Write(m_iJihadCampaignsCreated);
+    pStream->Write(m_iJihadMilitaryConquests);
+    pStream->Write(MAX_TEAMS, m_abArabianJihadEnemies);
+    pStream->Write((int)m_aiArabianJihadConquests.size());
+    for (int i = 0; i < (int)m_aiArabianJihadConquests.size(); ++i) pStream->Write(m_aiArabianJihadConquests[i]);
 }
 
 void CvPlayer::createGreatPeople(UnitTypes eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience, int iX, int iY)
@@ -18936,6 +19699,12 @@ bool CvPlayer::canDoEvent(EventTypes eEvent, const EventTriggeredData& kTriggere
 	}
 
 	CvEventInfo& kEvent = GC.getEventInfo(eEvent);
+	if (kTriggeredData.m_eOtherPlayer != NO_PLAYER && GC.getGameINLINE().isCrusadeWar(getTeam(), GET_PLAYER(kTriggeredData.m_eOtherPlayer).getTeam()))
+	{
+		CvString callback(kEvent.getPythonCallback());
+		if (callback == "doHeroicGesture2" || callback == "doGreatMediator2") return false;
+	}
+
 
 	int iGold = std::min(getEventCost(eEvent, kTriggeredData.m_eOtherPlayer, false), getEventCost(eEvent, kTriggeredData.m_eOtherPlayer, true));
 
@@ -21540,6 +22309,7 @@ void CvPlayer::processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive)
 
 int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || isMinorCiv() || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
 	int iVotes = 0;
 
 	ReligionTypes eReligion = GC.getGameINLINE().getVoteSourceReligion(eVoteSource);
@@ -21734,6 +22504,7 @@ bool CvPlayer::canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionS
 
 bool CvPlayer::canDefyResolution(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource)) return false;
 	if (GC.getGameINLINE().getSecretaryGeneral(eVoteSource) == getTeam())
 	{
 		return false;
@@ -22077,6 +22848,7 @@ bool CvPlayer::canSpyDestroyProject(PlayerTypes eTarget, ProjectTypes eProject) 
 
 void CvPlayer::forcePeace(PlayerTypes ePlayer)
 {
+	if (GC.getGameINLINE().isCrusadeWar(getTeam(), GET_PLAYER(ePlayer).getTeam())) return;
 	if (!GET_TEAM(getTeam()).isAVassal())
 	{
 		FAssert(GET_TEAM(getTeam()).canChangeWarPeace(GET_PLAYER(ePlayer).getTeam()));
@@ -23240,6 +24012,14 @@ static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
 
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
 {
+	if (iPlayer == MISSISSIPPIANS)
+	{
+		if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
+			return L"TXT_KEY_MISS_REPUBLIC";
+		if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_MISS_KINGDOM";
+		if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) return L"TXT_KEY_MISS_STATE";
+		return L"TXT_KEY_MISS_DESC";
+	}
 	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS)
 		return L"";
 	const bool bTribal = hasCountryCivic(civics, "CIVIC_TRIBAL_SYSTEM");
@@ -23340,15 +24120,17 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	else if (iPlayer == KHMER && bMonarchy && !bIslam && !bRuleOfLaw && iYear < 1431)
 		szForm = iYear < 802 ? L"CHENLA" : L"ANGKOR";
 	else if (iPlayer == SPAIN && bChristianMonarchy && iYear >= 718 && iYear < 1479)
-		szForm = iYear >= 1400 ? L"CASTILE_ARAGON" :
-			(iReligion == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ?
-			 L"CHRISTIAN_IBERIA" : L"IBERIAN_KINGDOMS");
+		szForm = iYear < 910 ? L"ASTURIAS" : iYear < 1230 ? L"LEON" : L"CASTILE";
 	else if (iPlayer == ENGLAND && bChristianMonarchy && iYear < 927)
 		szForm = L"ANGLO_SAXON";
 	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)
 		szForm = L"NORSE_KINGDOMS";
 	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
 		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+	else if (iPlayer == KOREA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy))
+		szForm = iYear < -400 ? L"CHIEFDOMS" : iYear < -108 ? L"GOJOSEON" :
+			(iYear < 668 ? L"KINGDOMS" : iYear < 918 ? L"SILLA" :
+			 iYear < 1392 ? L"GORYEO" : iYear < 1897 ? L"JOSEON" : L"KINGDOM");
 	else if (iPlayer == CHINA && bOrdinaryMonarchy && iYear >= -1046 && iYear < -256)
 		szForm = L"ZHOU";
 	else if (iPlayer == INDIA && bOrdinaryMonarchy && iNumCities <= 6 && iYear >= -1500 && iYear < -600)
@@ -23486,7 +24268,9 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 		szForm = L"ATHEOCRACY";
 
 	CvWString szNameKey = civDynamicNames[iPlayer][0];
-	szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
+	// Legacy major-player keys end in two digits; the Hun base key does not.
+	if (iPlayer != XIONGNU)
+		szNameKey = szNameKey.substr(0, szNameKey.length() - 2);
 	szNameKey += L"_";
 	szNameKey += szForm;
 	return szNameKey;
@@ -23495,8 +24279,42 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+	if (GC.getGameINLINE().isPapalState(getID())) { setCivDescription(L"TXT_KEY_AP_PAPAL_STATE"); return; }
+    if (GC.getGameINLINE().isCrusadeHolyState(getID()) && getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+    {
+        if (getID() == CRUSADER_STATE) setCivDescription(L"TXT_KEY_AP_CRUSADER_STATE");
+        else
+        {
+            m_szCivDesc = gDLL->getText("TXT_KEY_AP_HOLY_KINGDOM", GC.getCivilizationInfo(getCivilizationType()).getShortDescription());
+            m_szCivDescKey = m_szCivDesc;
+        }
+        return;
+    }
+
+    // Authored minor city states keep their WB identity, including the
+    // independent Andalusi cities in a reserved major-numbered slot.
+    if (isMinorCiv()) return;
+    if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ABBASID") ||
+        getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_FATIMID") ||
+        getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_UMAYYAD")) return;
 	if (getID() >= NUM_MAJOR_PLAYERS || !GET_PLAYER((PlayerTypes)getID()).isAlive())
 		return;
+
+    // The 900 AD scenario uses these regional slots for contemporary emirates.
+    // Keep their authored identities rather than reviving ancient country names.
+    if (GC.getGameINLINE().getStartTurn() == 211)
+    {
+        if (getID() == EGYPT && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT"))
+        {
+            setCivDescription(L"TXT_KEY_RFCMP_900_TULUNID_DESC");
+            return;
+        }
+        if (getID() == CARTHAGE && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_CARTHAGE"))
+        {
+            setCivDescription(L"TXT_KEY_RFCMP_900_AGHLABID_DESC");
+            return;
+        }
+    }
 
 	//if ((GC.getGameINLINE().getGameTurn() == 0 && GET_PLAYER((PlayerTypes)EGYPT).isPlayable())
 	//	|| (GC.getGameINLINE().getGameTurn() == 181 && !GET_PLAYER((PlayerTypes)EGYPT).isPlayable())) //late start condition (to be changed in MP)

@@ -18,6 +18,7 @@ import AIWars
 import Congresses
 import Consts as con
 import Scenario1453AD
+import Scenario900AD
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 import CvScreenEnums #Mercenaries, Rhye
@@ -104,7 +105,7 @@ class CvRFCEventHandler:
                 eventManager.addEventHandler("buildingBuilt",self.onBuildingBuilt) #Victory
                 eventManager.addEventHandler("projectBuilt",self.onProjectBuilt) #Victory
                 eventManager.addEventHandler("BeginPlayerTurn", self.onBeginPlayerTurn) 
-                #eventManager.addEventHandler("EndPlayerTurn", self.onEndPlayerTurn)
+                eventManager.addEventHandler("EndPlayerTurn", self.onEndPlayerTurn)
                 eventManager.addEventHandler("EndGameTurn", self.onEndGameTurn) #Stability
                 eventManager.addEventHandler("kbdEvent",self.onKbdEvent) 
                 eventManager.addEventHandler("techAcquired",self.onTechAcquired) #Stability
@@ -139,6 +140,10 @@ class CvRFCEventHandler:
                 'Called at the start of the game'
                 self.data.setupScriptData()
                 self.rnf.setup()
+                import Korea
+                Korea.setup(self.vic)
+                import NativeAmerica
+                NativeAmerica.setup()
                 self.rel.setup()
                 self.pla.setup()
                 self.sta.setup()
@@ -156,9 +161,7 @@ class CvRFCEventHandler:
                 self.slave.onCityAcquired(owner, playerType, city, bConquest, bTrade)
                 self.cnm.renameCities(city, playerType)
                 
-                if (playerType == con.iArabia):
-                        self.up.arabianUP(city)
-                elif (playerType == con.iTurkey):
+                if (playerType == con.iTurkey):
                         self.up.turkishUP(city)
 
                 if (playerType < iNumMajorPlayers):
@@ -166,8 +169,10 @@ class CvRFCEventHandler:
 
                 self.sta.onCityAcquired(owner,playerType,city,bConquest,bTrade)
 
+                # Voluntary cession to the Pope is not a Byzantine military collapse.
                 #kill byzantium
-                if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4):  #late start condition (RFCMP)
+                if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and
+                    not (bTrade and not bConquest and gc.getGame().isPapalState(playerType))):  #late start condition (RFCMP)
                         if (owner == iCeltia and gc.getPlayer(iCeltia).isAlive()):
                                 if ((city.getX() == 68 and city.getY() == 45) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
                                         print ("killed Byzantium")
@@ -296,7 +301,7 @@ class CvRFCEventHandler:
                 'Religion Founded'
                 iReligion, iFounder = argsList
 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
         
                 self.vic.onReligionFounded(iReligion, iFounder)
@@ -408,7 +413,6 @@ class CvRFCEventHandler:
                         self.rnf.deleteMode(iPlayer)
                         
                 self.pla.checkPlayerTurn(iGameTurn, iPlayer)
-                self.slave.checkPlayerTurn(iPlayer)
 
                 if (gc.getPlayer(iPlayer).isAlive()):
                         self.vic.checkPlayerTurn(iGameTurn, iPlayer)
@@ -425,9 +429,9 @@ class CvRFCEventHandler:
         def onEndPlayerTurn(self, argsList):
 
                 iGameTurn, iPlayer = argsList
-                #print ("END PLAYER", iPlayer)
-                
-                'Called at the end of a players turn'
+                # CvPlayer.doTurn fires this after city updates, before input
+                # resumes. Expired slaves must not create a stale decision.
+                self.slave.checkPlayerTurn(iPlayer)
 
 
         def onEndGameTurn(self, argsList):
@@ -459,7 +463,7 @@ class CvRFCEventHandler:
                 #print ("onTechAcquired", argsList)
                 iPlayer = argsList[2]
                 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
                 
                 if (gc.getGame().getGameTurn() > con.tBirth[iPlayer]):                    

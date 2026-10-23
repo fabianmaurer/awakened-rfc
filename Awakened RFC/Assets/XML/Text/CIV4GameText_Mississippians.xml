@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_MISS</Tag>
+        <English>Mississippians</English>
+        <French>Mississippiens</French>
+        <German>Mississippi-Kulturen</German>
+        <Italian>Mississippiani</Italian>
+        <Spanish>Misisipianos</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_DESC</Tag>
+        <English>Mississippian Chiefdoms</English>
+        <French>Chefferies mississippiennes</French>
+        <German>Mississippi-H&#228;uptlingst&#252;mer</German>
+        <Italian>Principati mississippiani</Italian>
+        <Spanish>Cacicazgos misisipianos</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_ADJ</Tag>
+        <English>Mississippian</English>
+        <French>mississippien</French>
+        <German>mississippisch</German>
+        <Italian>mississippiano</Italian>
+        <Spanish>misisipiano</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_LEADER</Tag>
+        <English>Paramount Chief</English>
+        <French>Chef supr&#234;me</French>
+        <German>Oberhaupt</German>
+        <Italian>Capo supremo</Italian>
+        <Spanish>Cacique supremo</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_REPUBLIC</Tag>
+        <English>Mississippian Confederation</English>
+        <French>Conf&#233;d&#233;ration mississippienne</French>
+        <German>Mississippi-Konf&#246;deration</German>
+        <Italian>Confederazione mississippiana</Italian>
+        <Spanish>Confederaci&#243;n misisipiana</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_KINGDOM</Tag>
+        <English>Mississippian Kingdom</English>
+        <French>Royaume mississippien</French>
+        <German>Mississippi-K&#246;nigreich</German>
+        <Italian>Regno mississippiano</Italian>
+        <Spanish>Reino misisipiano</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_STATE</Tag>
+        <English>Mississippian State</English>
+        <French>&#201;tat mississippien</French>
+        <German>Mississippi-Staat</German>
+        <Italian>Stato mississippiano</Italian>
+        <Spanish>Estado misisipiano</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_MISS_PEDIA</Tag>
+        <English>The Mississippian cultures developed farming towns, earthen platform mounds and extensive exchange networks in eastern North America. This civilization represents their related chiefdoms collectively rather than a single historical empire. The 900 AD start uses a small settlement at Cahokia; the 1453 start uses Etowah and Natchez instead of reviving abandoned Cahokia. The leader title is generic, and the inherited Native American artwork is representative rather than a portrait of a documented Mississippian ruler.</English>
+        <French>Les cultures mississippiennes ont d&#233;velopp&#233; des villes agricoles, des tertres en terre et de vastes r&#233;seaux d'&#233;changes dans l'est de l'Am&#233;rique du Nord. Cette civilisation repr&#233;sente leurs chefferies apparent&#233;es, et non un empire historique unique. Le d&#233;part de 900 utilise une petite implantation &#224; Cahokia ; celui de 1453 utilise Etowah et Natchez. Le titre du chef est g&#233;n&#233;rique et les graphismes am&#233;rindiens sont repr&#233;sentatifs.</French>
+        <German>Die Mississippi-Kulturen entwickelten landwirtschaftliche St&#228;dte, Erdh&#252;gel und weitreichende Handelsnetze im Osten Nordamerikas. Diese Zivilisation fasst verwandte H&#228;uptlingst&#252;mer zusammen und stellt kein einzelnes historisches Reich dar. Der Start von 900 verwendet eine kleine Siedlung in Cahokia, der Start von 1453 Etowah und Natchez. Der Herrschertitel ist allgemein; die vorhandene indigene Grafik dient als Ann&#228;herung.</German>
+        <Italian>Le culture mississippiane svilupparono citt&#224; agricole, tumuli di terra e vaste reti di scambio nell'America settentrionale orientale. Questa civilt&#224; rappresenta collettivamente i loro principati, non un singolo impero storico. Lo scenario del 900 usa un piccolo insediamento a Cahokia; quello del 1453 usa Etowah e Natchez. Il titolo del capo &#232; generico e la grafica nativa americana &#232; rappresentativa.</Italian>
+        <Spanish>Las culturas misisipianas desarrollaron poblaciones agr&#237;colas, mont&#237;culos de tierra y amplias redes de intercambio en el este de Norteam&#233;rica. Esta civilizaci&#243;n representa sus cacicazgos relacionados, no un &#250;nico imperio hist&#243;rico. El inicio de 900 usa un peque&#241;o asentamiento en Cahokia; el de 1453 usa Etowah y Natchez. El t&#237;tulo del gobernante es gen&#233;rico y el arte ind&#237;gena americano es representativo.</Spanish>
+    </TEXT>
+</Civ4GameText>

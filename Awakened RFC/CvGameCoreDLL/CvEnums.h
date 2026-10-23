@@ -584,6 +584,7 @@ enum ButtonPopupTypes			// Exposed to Python
 	BUTTONPOPUP_FREE_COLONY,
 	BUTTONPOPUP_LAUNCH,
 	BUTTONPOPUP_FOUND_RELIGION,
+	BUTTONPOPUP_PAPAL_FOUNDING,
 
 #ifdef _USRDLL
 	NUM_BUTTONPOPUP_TYPES
@@ -1065,6 +1066,7 @@ enum TaskTypes				// Exposed to Python
 	TASK_CLEAR_RALLY_PLOT,
 	TASK_LIBERATE,
     TASK_RELOCATE, // appended: preserve existing synchronized task indexes
+    TASK_KEEP_CONQUEST_RESEARCH,
 
 #ifdef _USRDLL
 	NUM_TASK_TYPES
@@ -1473,6 +1475,7 @@ enum CommandTypes					// Exposed to Python
 	COMMAND_UNLOAD,
 	COMMAND_UNLOAD_ALL,
 	COMMAND_HOTKEY,
+	COMMAND_PURGE_RELIGIONS,
 
 #ifdef _USRDLL
 	NUM_COMMAND_TYPES

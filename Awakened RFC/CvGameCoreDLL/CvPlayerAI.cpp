@@ -182,9 +182,11 @@ void CvPlayerAI::AI_reset(bool bConstructor)
 	m_iExtraGoldTarget = 0;
 	m_iRomanCampaignStallTurns = 0;
 	m_bRomanCampaignPreparing = false;
+#if ARFC_ENABLE_REPORTING
 	m_iRomanCampaignReadinessTurn = -1;
 	m_szRomanCampaignReadinessReason = "not_evaluated";
 	m_aiRomanCampaignReadiness.assign(13, -1);
+#endif
 
 	for (iI = 0; iI < NUM_UNITAI_TYPES; iI++)
 	{
@@ -401,6 +403,15 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 		return;
 	}
 	
+	// Old captives may be grouped under a soldier; give them their own update.
+	UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+	int iLoop;
+	for (CvUnit* pUnit = firstUnit(&iLoop); pUnit != NULL; pUnit = nextUnit(&iLoop))
+	{
+		if (pUnit->getUnitType() == eSlave && pUnit->getGroup()->getNumUnits() > 1)
+			pUnit->joinGroup(NULL);
+	}
+
 //	if (AI_isDoStrategy(AI_STRATEGY_CRUSH))
 //	{
 //		AI_convertUnitAITypesForCrush();		
@@ -487,7 +498,10 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 				bool bKilled = false;
 				if (!bNoDisband)
 				{
-					if (pLoopUnit->canFight())
+					// Slaves always have zero XP; keep them for employment/equipment.
+					SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+					if (pLoopUnit->canFight() && (eSlave == NO_SPECIALIST ||
+						!GC.getUnitInfo(pLoopUnit->getUnitType()).getGreatPeoples(eSlave)))
 					{
 						int iExp = pLoopUnit->getExperience();
 						CvCity* pPlotCity = pLoopUnit->plot()->getPlotCity();
@@ -1297,74 +1311,13 @@ void CvPlayerAI::AI_conquerCity(CvCity* pCity)
                             iRazeValue += GC.getLeaderHeadInfo(getPersonalityType()).getRazeCityProb();
 						}
 					}
-					//Rhye - moved down
-					/*//Rhye - start
-					int iX = pCity->getX_INLINE();
-					int iY = pCity->getY_INLINE();
-					if ((iX == 58 && iY == 39) || //Carthage
-						(iX == 76 && iY == 40) || //Babylon
-						(iX == 76 && iY == 42) || //Niniveh
-						(iX == 77 && iY == 42) || //Niniveh
-						(iX == 77 && iY == 38) || //Ur
-						(iX == 71 && iY == 43) || //Gordium
-						(iX == 73 && iY == 43) || //Hattusas
-						(iX == 77 && iY == 44) || //Artaxata
-						(iX == 69 && iY == 15) || //Zimbabwe
-						(iX == 71 && iY == 17)) //Quelimane
-						iRazeValue += 60;
-					//Rhye - end
-					
-					if (iRazeValue > 0)
-					{
-					    for (iI = 0; iI < GC.getNumTraitInfos(); iI++)
-					    {
-                            if (hasTrait((TraitTypes)iI))
-                            {
-                                iRazeValue *= (100 - (GC.getTraitInfo((TraitTypes)iI).getUpkeepModifier()));
-                                iRazeValue /= 100;
-							}
-						}
 
-                        if (GC.getGameINLINE().getSorenRandNum(100, "AI Raze City") < iRazeValue)
-						{
-							bRaze = true;
-							pCity->doTask(TASK_RAZE);
-						}
-					}*/
 				}
 			}
 		}
 		//Rhye - moved here
 
 		//Rhye - start
-		int iX = pCity->getX_INLINE();
-		int iY = pCity->getY_INLINE();
-		if ((iX == 58 && iY == 39) || //Carthage
-			(iX == 76 && iY == 40) || //Babylon
-			(iX == 62 && iY == 42) || //Pompeii
-			(iX == 76 && iY == 42) || //Niniveh
-			(iX == 77 && iY == 42) || //Niniveh
-			(iX == 77 && iY == 38) || //Ur
-			(iX == 71 && iY == 43) || //Gordium
-			(iX == 73 && iY == 43) || //Hattusas
-			(iX == 77 && iY == 44) || //Artaxata
-			(iX == 69 && iY == 15) || //Zimbabwe
-			(iX == 71 && iY == 17)) { //Quelimane
-			iRazeValue += 60;
-			if (pCity->hasActiveWorldWonder())
-				iRazeValue -= 30;
-			}
-		else if ((iX == 73 && iY == 40) || //Sur
-			(iX == 59 && iY == 50) || //Mainz
-			(iX == 54 && iY == 38)) { //Russadir
-			iRazeValue += 20;
-			if (pCity->hasActiveWorldWonder())
-				iRazeValue -= 10;
-			}
-		else if ((iX == 68 && iY == 45)) { //Byzantium
-				iRazeValue -= 30;
-			}
-
 		if (getID() == NATIVE || isBarbarian()) {
 				iRazeValue *= 2;
 				iRazeValue += 30;
@@ -1399,6 +1352,7 @@ void CvPlayerAI::AI_conquerCity(CvCity* pCity)
 
 	if (!bRaze)
 	{
+		pCity->grantConquestResearch();
 		CvEventReporter::getInstance().cityAcquiredAndKept(GC.getGameINLINE().getActivePlayer(), pCity);
 	}
 }
@@ -1621,7 +1575,7 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 			
 			iWeight += (100 - pCity->plot()->calculateCulturePercent(getID()));
 			
-			if (pCity->getCultureLevel() <= (CultureLevelTypes) 1)
+			if (pCity->needsCultureForWorkablePlots())
 			{
 				iWeight = std::max(iWeight, 800);				
 			}
@@ -3366,6 +3320,25 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 		}
 	}
 
+	// Recruitment makes developed first conquests especially valuable during jihad.
+	// Use the same population tiers as the reward; recaptures grant no troops.
+	if (AI_isArabianJihad() && pCity->getTeam() != getTeam())
+	{
+		const int iPlot = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+		if (std::find(m_aiArabianJihadConquests.begin(), m_aiArabianJihadConquests.end(), iPlot) == m_aiArabianJihadConquests.end())
+		{
+			const int iUnitsPerPackage = std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_SWORDSMEN")) +
+				std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_CAMEL_ARCHERS")) +
+				std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_CATAPULTS"));
+			iValue += 4 * iUnitsPerPackage * getArabianJihadRecruitmentPackages(pCity->getPopulation());
+		}
+	}
+
+	// Mandatory settlements still advance the shared campaign even when the
+	// conqueror will not retain the city. Prefer the actual regional front.
+	if (!isHuman() && GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
+		iValue = std::max(1, iValue) * 3;
+
 	if (bRandomize)
 	{
 		//iValue += GC.getGameINLINE().getSorenRandNum(((pCity->getPopulation() / 2) + 1), "AI Target City Value");
@@ -3422,17 +3395,32 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 }
 
 
+// Workers ignore these factions only when evaluating nearby danger.
+// Movement legality, combat and capture rules remain unchanged.
+static bool isIgnoredWorkerThreat(PlayerTypes eOwner)
+{
+	if (eOwner == NO_PLAYER) return false;
+	if (eOwner == BARBARIAN_PLAYER) return true;
+
+	// Scenarios can place Independent factions in additional player slots
+	// (for example, the Andalusian minors in 900 AD).
+	const CivilizationTypes eCiv = GET_PLAYER(eOwner).getCivilizationType();
+	return eCiv == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") ||
+		eCiv == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2");
+}
+
+
 int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
 {
     return AI_getPlotDanger(pPlot, iRange, bTestMoves, false);
 }
 
-bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves) const
+bool CvPlayerAI::AI_isPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
-    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true) > 0;
+    return AI_getPlotDanger(pPlot, iRange, bTestMoves, true, bIgnoreWorkerThreats) > 0;
 }
 
-int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const
+int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger, bool bIgnoreWorkerThreats) const
 {
 	PROFILE_FUNC();
 
@@ -3464,7 +3452,8 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, boo
 				if (pLoopPlot->area() == pPlotArea)
 				{
 				    iDistance = stepDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE());
-				    if (atWar(pLoopPlot->getTeam(), getTeam()))
+				    if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopPlot->getOwnerINLINE())) &&
+                        atWar(pLoopPlot->getTeam(), getTeam()))
 				    {
 				        if (iDistance == 1)
 				        {
@@ -3485,7 +3474,8 @@ int CvPlayerAI::AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, boo
 						pLoopUnit = ::getUnit(pUnitNode->m_data);
 						pUnitNode = pLoopPlot->nextUnitNode(pUnitNode);
 
-						if (pLoopUnit->isEnemy(getTeam()))
+						if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopUnit->getOwnerINLINE())) &&
+                            pLoopUnit->isEnemy(getTeam()))
 						{
 							if (pLoopUnit->canAttack())
 							{
@@ -6332,6 +6322,59 @@ PlayerVoteTypes CvPlayerAI::AI_diploVote(const VoteSelectionSubData& kVoteData, 
 	int iI;
 
 	VoteTypes eVote = kVoteData.eVote;
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource))
+	{
+		int iZeal = 0;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"))) iZeal += 3;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"))) iZeal += 3;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"))) iZeal += 2;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE"))) iZeal -= 4;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_RULE_OF_LAW"))) iZeal -= 2;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"))) iZeal -= 2;
+		CvVoteInfo& kVote = GC.getVoteInfo(eVote);
+		int iSupport = 2;
+		if (kVote.isForceWar())
+		{
+			bool abTargets[MAX_TEAMS];
+			GC.getGameINLINE().getCrusadeTargets(kVoteData.iCityId, abTargets);
+			iSupport = iZeal;
+			int iEnemyPower = 0, iAttitude = 0, iEnemies = 0;
+			for (int t = 0; t < MAX_TEAMS; ++t)
+				if (abTargets[t])
+				{
+					iEnemyPower += GET_TEAM((TeamTypes)t).getPower(false);
+					iAttitude += GET_TEAM(getTeam()).AI_getAttitudeVal((TeamTypes)t); ++iEnemies;
+					if (GET_TEAM(getTeam()).isAtWar((TeamTypes)t)) iSupport += 3;
+				}
+			iSupport -= iAttitude / (2 * std::max(1, iEnemies));
+			if (iEnemyPower > GET_TEAM(getTeam()).getPower(true) * 2) iSupport -= 4;
+			if (getNumMilitaryUnits() < getNumCities()) iSupport -= 3;
+		}
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_RELIGIOUS_REFORM")) iSupport = iZeal - 1;
+		else if (kVote.isDefensivePact()) iSupport = 2 + iZeal;
+		else if (kVote.isForcePeace()) iSupport = 3 - iZeal;
+		else if (kVote.isOpenBorders()) iSupport = 3 - iZeal / 2;
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_COLLEGE"))
+		{
+			iSupport = 2 - iZeal / 2;
+			if (getGold() < 100 || getCurrentResearch() == NO_TECH) iSupport -= 4;
+			else
+			{
+				bool bLearns = false;
+				for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+					if (GET_PLAYER((PlayerTypes)i).isVotingMember(eVoteSource) && GET_TEAM(GET_PLAYER((PlayerTypes)i).getTeam()).isHasTech(getCurrentResearch())) bLearns = true;
+				if (bLearns) iSupport += 4;
+			}
+		}
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_RELIEF"))
+		{
+			int iPoorest = MAX_INT;
+			for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+				if (GET_PLAYER((PlayerTypes)i).isVotingMember(eVoteSource)) iPoorest = std::min(iPoorest, GET_PLAYER((PlayerTypes)i).getGold());
+			iSupport = getGold() == iPoorest ? 8 : 1 - iZeal / 2 - (getGold() < 100 ? 3 : 0);
+		}
+		return iSupport > 0 ? PLAYER_VOTE_YES : iSupport < -1 ? PLAYER_VOTE_NO : PLAYER_VOTE_ABSTAIN;
+	}
 
 	if (GC.getGameINLINE().isTeamVote(eVote))
 	{
@@ -10315,10 +10358,13 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 	int iValue;
 	int iBestValue;
 	int iI;
+#if ARFC_ENABLE_REPORTING
 	// Observe existing evaluations only. Never re-score a civic for logging.
 	const bool bRecordLabor = GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
 		eCivicOption == GC.getInfoTypeForString("CIVICOPTION_LABOR") && getNumCities() > 0;
 	std::vector<int> laborScores;
+
+#endif
 
 	iBestValue = MIN_INT;
 	eBestCivic = NO_CIVIC;
@@ -10330,11 +10376,14 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			if (canDoCivics((CivicTypes)iI))
 			{
 				iValue = AI_civicValue((CivicTypes)iI);
+#if ARFC_ENABLE_REPORTING
 				if (bRecordLabor)
 				{
 					laborScores.push_back(iI);
 					laborScores.push_back(iValue);
 				}
+#endif
+
 
 				if (isCivic((CivicTypes)iI))
 				{
@@ -10350,7 +10399,9 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 					}
 				}
 
+#if ARFC_ENABLE_REPORTING
 				if (bRecordLabor) laborScores.push_back(iValue);
+#endif
 				if (iValue > iBestValue)
 				{
 					iBestValue = iValue;
@@ -10360,6 +10411,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 		}
 	}
 
+#if ARFC_ENABLE_REPORTING
 	if (bRecordLabor && !laborScores.empty())
 	{
 		CyArgsList args;
@@ -10371,6 +10423,7 @@ CivicTypes CvPlayerAI::AI_bestCivic(CivicOptionTypes eCivicOption) const
 			!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordLaborEvaluation", args.makeFunctionArgs()))
 			gDLL->logMsg("PythonErr.log", "Awakened RFC: labor evaluation recording callback could not be loaded or called.", false, false);
 	}
+#endif
 	return eBestCivic;
 }
 
@@ -10513,6 +10566,28 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 				(bWarPlan ? 1500 : 2500);
 		}
 	}
+	if (kCivic.isHordeVariant(getCivilizationType()))
+	{
+		int iMounted = 0, iMilitary = 0, iUnitLoop;
+		for (CvUnit* pUnit = firstUnit(&iUnitLoop); pUnit != NULL; pUnit = nextUnit(&iUnitLoop))
+		{
+			if (pUnit->getDomainType() != DOMAIN_LAND || !pUnit->canFight()) continue;
+			++iMilitary;
+			if (pUnit->getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED")) ++iMounted;
+		}
+		const int iMountedShare = std::max(40, (100 * iMounted) / std::max(1, iMilitary));
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+		{
+			iValue += (50 * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent * iMountedShare) / (bWarPlan ? 150000 : 250000);
+			iValue += (3 * (bWarPlan ? 8 : 5) * iWarmongerPercent * iMountedShare) / 10000;
+		}
+		iValue += (50 * getNumCities()) / (bWarPlan ? 10 : 50);
+		iValue += iMounted * (bWarPlan ? 2 : 1); // Raiding income.
+		// Remove the active penalty when estimating the common research baseline.
+		int iResearch = calculateBaseNetResearch();
+		if (isHorde()) iResearch = (iResearch * 4) / 3;
+		iValue -= iResearch / 4;
+	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE"))
 	{
 		const int iCoastalCities = countNumCoastalCities();
@@ -10550,6 +10625,14 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 					!isBuildingObsolete(eBuilding))
 					iValue -= 8 * pLoopCity->getNumBuilding(eBuilding);
 			}
+	}
+	if (eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE"))
+	{
+		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+			if (getStateReligion() != NO_RELIGION && pLoopCity->isHasReligion(getStateReligion()))
+				iValue += pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) / 2;
+		if (getStateReligion() != NO_RELIGION && bWarPlan)
+			iValue += getNumCities() * 3;
 	}
 	if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE"))
 		for (int iOther = 0; iOther < MAX_CIV_PLAYERS; ++iOther)
@@ -10644,7 +10727,8 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		}
 		iExperienceShare = (100 * iMelee) / std::max(1, iMilitary);
 	}
-	iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
+	if (!kCivic.isHordeVariant(getCivilizationType()))
+		iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);
 	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 ); 
@@ -11025,6 +11109,17 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	if (AI_isDoStrategy(AI_STRATEGY_CULTURE2) && (GC.getCivicInfo(eCivic).isNoNonStateReligionSpread()))
 	{
 	    iValue /= 10;	    
+	}
+
+	const int iPapalDevotion = GC.getGameINLINE().getPapalDevotionPercent(getID());
+	if (iPapalDevotion > 0)
+	{
+		const int iReligiousWeight = (100 + 40 * getNumCities()) * iPapalDevotion / 100;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") ||
+			eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE")) iValue += iReligiousWeight;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION")) iValue += iReligiousWeight / 3;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE") ||
+			eCivic == GC.getInfoTypeForString("CIVIC_ANCESTOR_CULT")) iValue -= iReligiousWeight;
 	}
 
 	return iValue;
@@ -11645,7 +11740,8 @@ void CvPlayerAI::AI_setEspionageWeight(int iNewValue)
 
 int CvPlayerAI::AI_getAttackOddsChange() const
 {
-	return m_iAttackOddsChange;
+	// Event zeal changes AI risk assessment, never actual combat strength.
+	return m_iAttackOddsChange + (AI_isArabianJihad() ? 15 : 0);
 }
 
 
@@ -12118,6 +12214,26 @@ void CvPlayerAI::AI_doCounter()
 }
 
 
+bool CvPlayerAI::AI_isCrusadeMobilizing() const
+{
+	if (isHuman() || !GC.getGameINLINE().isCrusadeParticipant(getID())) return false;
+	// Coalition peace frees reserves, but a separate foreign war still needs
+	// the ordinary defensive budget. Nearby barbarians are handled per city.
+	for (int i = 0; i < MAX_TEAMS; ++i)
+	{
+		const TeamTypes eOther = (TeamTypes)i;
+		if (GET_TEAM(eOther).isAlive() && !GET_TEAM(eOther).isBarbarian() &&
+			GET_TEAM(getTeam()).isAtWar(eOther) && !GC.getGameINLINE().isCrusadeWar(getTeam(), eOther))
+			return false;
+	}
+	return true;
+}
+
+bool CvPlayerAI::AI_isArabianJihad() const
+{
+	return !isHuman() && isArabianJihadActive();
+}
+
 bool CvPlayerAI::AI_isRomanCampaign() const
 {
 	// Campaign direction ends after the ancient imperial expansion window.
@@ -12246,6 +12362,7 @@ CvCity* CvPlayerAI::AI_romanCampaignTarget() const
 }
 
 
+#if ARFC_ENABLE_REPORTING
 int CvPlayerAI::AI_getRomanCampaignReadiness(int iIndex) const
 {
 	if (iIndex == 13) return m_iRomanCampaignReadinessTurn;
@@ -12274,6 +12391,7 @@ void CvPlayerAI::AI_recordRomanCampaign(const char* szReason, const CvCity* pTar
 	m_iRomanCampaignReadinessTurn = GC.getGameINLINE().getGameTurn();
 }
 
+#endif
 void CvPlayerAI::AI_doRomanCampaign()
 {
 	CvTeamAI& kTeam = GET_TEAM(getTeam());
@@ -14377,9 +14495,11 @@ void CvPlayerAI::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iRomanCampaignStallTurns);
 	pStream->Read(&m_bRomanCampaignPreparing);
 	// Diagnostic caches are transient and never restored from saves.
+#if ARFC_ENABLE_REPORTING
 	m_iRomanCampaignReadinessTurn = -1;
 	m_szRomanCampaignReadinessReason = "not_evaluated";
 	m_aiRomanCampaignReadiness.assign(13, -1);
+#endif
 
 	pStream->Read(&m_iStrategyHash);
 	pStream->Read(&m_iStrategyHashCacheTurn);
@@ -18949,7 +19069,7 @@ void CvPlayerAI::AI_invalidateCloseBordersAttitudeCache()
 	}
 }
 
-bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves) const
+bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
 	PROFILE_FUNC();
 
@@ -18973,7 +19093,8 @@ bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves)
 					for (CLLNode<IDInfo>* pUnitNode = pLoopPlot->headUnitNode(); pUnitNode != NULL; pUnitNode = pLoopPlot->nextUnitNode(pUnitNode))
 					{
 						CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
-						if (pLoopUnit->isEnemy(getTeam()) && pLoopUnit->canAttack() && !pLoopUnit->isInvisible(getTeam(), false))
+						if ((!bIgnoreWorkerThreats || !isIgnoredWorkerThreat(pLoopUnit->getOwnerINLINE())) &&
+                            pLoopUnit->isEnemy(getTeam()) && pLoopUnit->canAttack() && !pLoopUnit->isInvisible(getTeam(), false))
 						{
 							if (pLoopUnit->canMoveOrAttackInto(pPlot))
 							{

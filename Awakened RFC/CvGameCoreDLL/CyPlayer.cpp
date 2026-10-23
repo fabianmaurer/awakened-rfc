@@ -27,6 +27,44 @@ CyPlayer::CyPlayer(CvPlayer* pPlayer) : m_pPlayer(pPlayer)
 {
 }
 
+int CyPlayer::getCaliphatePartitionDecision()
+{
+    return m_pPlayer ? m_pPlayer->getCaliphatePartitionDecision() : -1;
+}
+
+bool CyPlayer::isCaliphatePartitionInProgress()
+{
+    return m_pPlayer && m_pPlayer->isCaliphatePartitionInProgress();
+}
+int CyPlayer::getCaliphateRealmMask()
+{
+    return m_pPlayer ? m_pPlayer->getCaliphateRealmMask() : 0;
+}
+void CyPlayer::resolveCaliphatePartition(int iDecision, int iRealm)
+{
+    if (m_pPlayer) m_pPlayer->resolveCaliphatePartition(iDecision, iRealm);
+}
+
+int CyPlayer::getIslamFoundingDecision()
+{
+    return m_pPlayer ? m_pPlayer->getIslamFoundingDecision() : -1;
+}
+
+bool CyPlayer::isArabianJihadActive()
+{
+    return m_pPlayer && m_pPlayer->isArabianJihadActive();
+}
+
+bool CyPlayer::hasArabianJihadTriggered()
+{
+    return m_pPlayer && m_pPlayer->hasArabianJihadTriggered();
+}
+
+void CyPlayer::resolveIslamFounding(int iDecision, bool bJoin)
+{
+    if (m_pPlayer) m_pPlayer->resolveIslamFounding(iDecision, bJoin);
+}
+
 int CyPlayer::startingPlotRange()
 {
 	return m_pPlayer ? m_pPlayer->startingPlotRange() : -1;
@@ -53,6 +91,12 @@ CyPlot* CyPlayer::findStartingPlot(bool bRandomize)
 CyCity* CyPlayer::initCity(int x, int y) 
 {
 	return m_pPlayer ? new CyCity(m_pPlayer->initCity(x, y, true, true)) : NULL;
+}
+
+void CyPlayer::acquireArabianBirthCity(CyCity* pCity)
+{
+    if (m_pPlayer && pCity && pCity->getCity())
+        m_pPlayer->acquireCity(pCity->getCity(), false, true, true, true);
 }
 
 void CyPlayer::acquireCity(CyCity* pCity, bool bConquest, bool bTrade)
@@ -143,6 +187,12 @@ void CyPlayer::setCivDescription(std::wstring szNewDesc)
 		m_pPlayer->setCivDescription(szNewDesc);
 }
 //Rhye (jdog) -  end -----------------------
+
+void CyPlayer::processCivNames()
+{
+	if (m_pPlayer)
+		m_pPlayer->processCivNames();
+}
 
 std::wstring CyPlayer::getCivilizationDescriptionKey()
 {
@@ -609,6 +659,7 @@ bool CyPlayer::isRomanCampaignExclusive()
 	return m_pPlayer ? GET_PLAYER(m_pPlayer->getID()).AI_isRomanCampaignExclusive() : false;
 }
 
+#if ARFC_ENABLE_REPORTING
 python::tuple CyPlayer::getRomanCampaignReadiness()
 {
 	python::list details;
@@ -619,6 +670,7 @@ python::tuple CyPlayer::getRomanCampaignReadiness()
 		kPlayer.AI_getRomanCampaignReadinessReason().c_str(), details,
 		GC.getGameINLINE().isObserverAutoPlay(), g_observerPerformance, kPlayer.AI_isRomanCampaign());
 }
+#endif
 
 bool CyPlayer::isCivic(int /*CivicTypes*/ eCivic)
 {

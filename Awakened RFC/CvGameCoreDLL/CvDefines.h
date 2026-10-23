@@ -24,7 +24,7 @@
 #define RANDPLOT_NOT_CITY											(0x00000040)
 
 #ifdef _USRDLL
-#define MAX_CIV_PLAYERS												(31) //Rhye
+#define MAX_CIV_PLAYERS												(38) // Awakened RFC: successors, Korea, Mississippians, Crusader and Papal slots
 #else
 #define MAX_CIV_PLAYERS												(CvGlobals::getInstance().getMaxCivPlayers())
 #endif

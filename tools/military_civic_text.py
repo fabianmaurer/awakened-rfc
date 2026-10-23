@@ -14,29 +14,29 @@ ENTRIES = {
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE': translations(
         'Naval Warfare', 'Guerre navale', 'Seekriegsführung', 'Guerra navale', 'Guerra naval'),
     'TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES': translations(
-        'Feudal Retinues', 'Osts féodaux', 'Feudale Aufgebote', 'Seguiti feudali', 'Mesnadas feudales'),
+        'Feudal Retinues', 'Osts féodaux', 'Heeresfolge', 'Seguiti feudali', 'Mesnadas feudales'),
     'TXT_KEY_RFCMP_CIVIC_EFFECT_NAVAL_WARFARE': translations(
         '[ICON_BULLET]+50% production of military ships, including transports[NEWLINE][ICON_BULLET]+2 experience for newly trained military ships',
         '[ICON_BULLET]+50% à la production de navires militaires, transports compris[NEWLINE][ICON_BULLET]+2 points d’expérience pour les nouveaux navires militaires',
-        '[ICON_BULLET]+50% Produktion für Militärschiffe einschließlich Transportschiffen[NEWLINE][ICON_BULLET]+2 Erfahrung für neu gebaute Militärschiffe',
+        '[ICON_BULLET]+50% Produktion für Schiffe[NEWLINE][ICON_BULLET]+2XP für neu gebaute Schiffe',
         '[ICON_BULLET]+50% alla produzione di navi militari, inclusi i trasporti[NEWLINE][ICON_BULLET]+2 esperienza per le nuove navi militari',
         '[ICON_BULLET]+50% a la producción de barcos militares, incluidos los transportes[NEWLINE][ICON_BULLET]+2 de experiencia para los nuevos barcos militares'),
     'TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES': translations(
         '[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units',
         '[ICON_BULLET]+5% à la production d’unités militaires terrestres par ferme exploitée par cette ville, unités de siège comprises',
-        '[ICON_BULLET]+5% Produktion militärischer Landeinheiten je von dieser Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten',
+        '[ICON_BULLET]+5% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet',
         '[ICON_BULLET]+5% alla produzione di unità militari terrestri per fattoria lavorata da questa città, incluse le unità d’assedio',
         '[ICON_BULLET]+5% a la producción de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio'),
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY': translations(
         '+50% military ship production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. Available to every civilization with Sailing.',
         '+50% à la production de navires militaires et +2 points d’expérience pour les nouveaux navires militaires, transports compris. Les bateaux de pêche ne reçoivent aucun de ces bonus. Accessible à toute civilisation connaissant la voile.',
-        '+50% Produktion und +2 Erfahrung für neu gebaute Militärschiffe einschließlich Transportschiffen. Arbeitsboote erhalten keine dieser Boni. Mit Segeln für alle Zivilisationen verfügbar.',
+        '+50% Produktion für Schiffe und +2XP für neu gebaute Schiffe. Mit Segeln für alle Zivilisationen verfügbar.',
         '+50% alla produzione e +2 esperienza per le nuove navi militari, inclusi i trasporti. Le barche da lavoro non ricevono questi bonus. Disponibile per tutte le civiltà con la Vela.',
         '+50% a la producción y +2 de experiencia para los nuevos barcos militares, incluidos los transportes. Los barcos de trabajo no reciben estas bonificaciones. Disponible para todas las civilizaciones con Navegación a vela.'),
     'TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY': translations(
         '+5% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +30%.',
         '+5% à la production d’unités militaires terrestres par ferme effectivement exploitée par la ville productrice. Inclut les unités de siège ; exclut les unités civiles et les navires. Six fermes exploitées donnent +30%.',
-        '+5% Produktion militärischer Landeinheiten je tatsächlich von der produzierenden Stadt bewirtschaftetem Bauernhof. Gilt auch für Belagerungseinheiten, aber nicht für zivile Einheiten oder Schiffe. Sechs bewirtschaftete Bauernhöfe geben +30%.',
+        '+5% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet.',
         '+5% alla produzione di unità militari terrestri per fattoria effettivamente lavorata dalla città produttrice. Include le unità d’assedio; esclude le unità civili e le navi. Sei fattorie lavorate danno +30%.',
         '+5% a la producción de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +30%.'),
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_PEDIA': translations(
@@ -48,7 +48,7 @@ ENTRIES = {
     'TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_PEDIA': translations(
         'Feudal Retinues mobilize military service and provisions through agricultural estates. Worked farms support the producing city’s land forces, making a productive rural base an alternative to the superior training of a Professional Army.',
         'Les osts féodaux mobilisent le service militaire et les provisions des domaines agricoles. Les fermes exploitées soutiennent les forces terrestres de leur ville : une base rurale productive offre ainsi une alternative à l’entraînement supérieur d’une armée professionnelle.',
-        'Feudale Aufgebote mobilisieren Kriegsdienste und Versorgung durch landwirtschaftliche Güter. Bewirtschaftete Bauernhöfe unterstützen die Landstreitkräfte ihrer Stadt. Eine leistungsfähige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.',
+        'Heeresfolge mobilisiert Kriegsdienste und Versorgung durch landwirtschaftliche Güter. Bewirtschaftete Bauernhöfe unterstützen die Landstreitkräfte ihrer Stadt. Eine leistungsfähige Landwirtschaft bietet so eine Alternative zur besseren Ausbildung einer Berufsarmee.',
         'I seguiti feudali mobilitano il servizio militare e le provviste delle proprietà agricole. Le fattorie lavorate sostengono le forze terrestri della propria città: una base rurale produttiva offre un’alternativa al migliore addestramento di un esercito professionale.',
         'Las mesnadas feudales movilizan el servicio militar y los suministros de las propiedades agrícolas. Las granjas trabajadas sostienen las fuerzas terrestres de su ciudad: una base rural productiva ofrece una alternativa al mejor adiestramiento de un ejército profesional.'),
     'TXT_KEY_RFCMP_ELECTION_NAVAL_WARFARE': translations(

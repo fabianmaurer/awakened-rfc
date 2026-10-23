@@ -35,6 +35,10 @@ def main():
         unit_type = re.search(r'<Type>([^<]+)</Type>', b).group(1)
         if unit_type == 'UNIT_ARMED_SLAVE' or unit_type.startswith('UNIT_SLAVE'):
             b = re.sub(r'<iCityDefense>[^<]+</iCityDefense>', '<iCityDefense>0</iCityDefense>', b)
+        if unit_type != 'UNIT_SLAVE' and (unit_type == 'UNIT_ARMED_SLAVE' or unit_type.startswith('UNIT_SLAVE')):
+            b = re.sub(r'<GreatPeoples\s*/>',
+                '<GreatPeoples><GreatPeople><GreatPeopleType>SPECIALIST_SLAVE</GreatPeopleType>'
+                '<bGreatPeople>1</bGreatPeople></GreatPeople></GreatPeoples>', b)
         early_strengths = {'UNIT_ARMED_SLAVE': 3, 'UNIT_SLAVE_SWORDSMAN': 4,
                            'UNIT_SLAVE_MACEMAN': 5}
         if unit_type in early_strengths:

@@ -8,12 +8,72 @@
 #include "CvArea.h"
 #include "CvPlot.h"
 #include "CvUnit.h"
+#include "CvUnitAI.h"
+#include "CvCity.h"
+#include "CvRhyes.h"
+#include "CvSelectionGroupAI.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
+#include "CvGameAI.h"
+#include "ObserverPerformance.h"
 #include "CyPlot.h"
 #include "CyArea.h"
 #include "CvArtFileMgr.h"
 #include "CySelectionGroup.h"
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvGlobals.h"
+
+python::dict CyUnit::getObserverArmyState()
+{
+	python::dict data;
+	if (m_pUnit == NULL || !GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance) return data;
+    if (m_pUnit->getOwnerINLINE() != ARABIA && !GET_PLAYER(m_pUnit->getOwnerINLINE()).isArabianJihadActive()) return data;
+	// CvPlayer stores units as CvUnitAI (m_units); no AI evaluation is invoked.
+	const CvUnitAI* unit = static_cast<const CvUnitAI*>(m_pUnit);
+	CvSelectionGroup* group = m_pUnit->getGroup();
+	const int turn = unit->AI_getObserverDecisionTurn();
+	data["decision_turn"] = turn;
+	data["decision_fresh"] = turn == GC.getGameINLINE().getGameTurn();
+	data["last_decision"] = unit->AI_getObserverDecision().c_str();
+	data["city_target_result"] = unit->AI_getObserverCityTarget().c_str();
+	data["selected_city_target"] = python::make_tuple(unit->AI_getObserverCityTargetX(), unit->AI_getObserverCityTargetY());
+	data["decision_markers"] = unit->AI_getObserverDecisionCount();
+	data["required_stack"] = unit->AI_getObserverRequiredStack();
+	data["ready_to_attack"] = unit->AI_getObserverReadyToAttack();
+	data["group"] = group->getID();
+	data["group_size"] = group->getNumUnits();
+	data["head"] = group->getHeadUnit()->getID();
+	data["activity"] = (int)group->getActivityType();
+	data["mission_timer"] = group->getMissionTimer();
+	data["mission_ai"] = (int)group->AI_getMissionAIType();
+	CvPlot* mission = group->AI_getMissionAIPlot();
+	data["mission_target"] = python::make_tuple(mission ? mission->getX_INLINE() : -1, mission ? mission->getY_INLINE() : -1);
+	CvUnit* targetUnit = group->AI_getMissionAIUnit();
+	data["mission_unit"] = python::make_tuple(targetUnit ? (int)targetUnit->getOwnerINLINE() : -1, targetUnit ? targetUnit->getID() : -1);
+	python::list queue;
+	for (CLLNode<MissionData>* node = group->headMissionQueueNode(); node != NULL; node = group->nextMissionQueueNode(node))
+		queue.append(python::make_tuple((int)node->m_data.eMissionType, node->m_data.iData1, node->m_data.iData2, node->m_data.iFlags));
+	data["queue"] = queue;
+	data["area_ai"] = (int)m_pUnit->area()->getAreaAIType(m_pUnit->getTeam());
+	CvCity* target = m_pUnit->area()->getTargetCity(m_pUnit->getOwnerINLINE());
+	data["area_target"] = python::make_tuple(target ? target->getX_INLINE() : -1, target ? target->getY_INLINE() : -1, target ? (int)target->getOwnerINLINE() : -1);
+	data["jihad_active"] = GET_PLAYER(m_pUnit->getOwnerINLINE()).isArabianJihadActive();
+    data["campaign"] = unit->getJihadCampaign();
+    data["group_campaign"] = unit->getJihadGroupCampaign();
+    data["attached_general"] = unit->getLeaderUnitType() != NO_UNIT;
+    data["general_name"] = unit->getLeaderUnitType() != NO_UNIT ?
+        std::wstring(unit->getNameNoDesc().GetCString()) : std::wstring();
+	if (m_pUnit->isGroupHead())
+	{
+		python::list plans;
+		CvTeamAI& team = GET_TEAM(m_pUnit->getTeam());
+		for (int i = 0; i < MAX_TEAMS; ++i)
+			if (team.AI_getWarPlan((TeamTypes)i) != NO_WARPLAN || team.isAtWar((TeamTypes)i))
+				plans.append(python::make_tuple(i, team.isAtWar((TeamTypes)i), (int)team.AI_getWarPlan((TeamTypes)i)));
+		data["war_plans"] = plans;
+	}
+	return data;
+}
 
 CyUnit::CyUnit() : m_pUnit(NULL)
 {

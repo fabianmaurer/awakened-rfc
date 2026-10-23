@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_MED_COAST</Tag>
+    <English>Can only be built on the Mediterranean coast.</English>
+    <French>Ne peut &#234;tre construit que sur la c&#244;te m&#233;diterran&#233;enne.</French>
+    <German>Kann nur an der Mittelmeerk&#252;ste gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo sulla costa mediterranea.</Italian>
+    <Spanish>Solo se puede construir en la costa mediterr&#225;nea.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_MEDITERRANEAN</Tag>
+    <English>Can only be built in the Mediterranean region.</English>
+    <French>Ne peut &#234;tre construit que dans la r&#233;gion m&#233;diterran&#233;enne.</French>
+    <German>Kann nur im Mittelmeerraum gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo nella regione mediterranea.</Italian>
+    <Spanish>Solo se puede construir en la regi&#243;n mediterr&#225;nea.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_MESOAMERICA</Tag>
+    <English>Can only be built in Mesoamerica (Mexico or Central America).</English>
+    <French>Ne peut &#234;tre construit qu'en M&#233;soam&#233;rique (Mexique ou Am&#233;rique centrale).</French>
+    <German>Kann nur in Mesoamerika (Mexiko oder Mittelamerika) gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo in Mesoamerica (Messico o America centrale).</Italian>
+    <Spanish>Solo se puede construir en Mesoam&#233;rica (M&#233;xico o Am&#233;rica Central).</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_EAST_ASIA</Tag>
+    <English>Can only be built in East Asia.</English>
+    <French>Ne peut &#234;tre construit qu'en Asie orientale.</French>
+    <German>Kann nur in Ostasien gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo in Asia orientale.</Italian>
+    <Spanish>Solo se puede construir en Asia Oriental.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_PACIFIC</Tag>
+    <English>Can only be built on the Pacific coast, including the coasts of Pacific islands.</English>
+    <French>Ne peut &#234;tre construit que sur la c&#244;te pacifique, y compris les c&#244;tes des &#238;les du Pacifique.</French>
+    <German>Kann nur an der Pazifikk&#252;ste gebaut werden, einschlie&#223;lich der K&#252;sten von Pazifikinseln.</German>
+    <Italian>Pu&#242; essere costruito solo sulla costa pacifica, incluse le coste delle isole del Pacifico.</Italian>
+    <Spanish>Solo se puede construir en la costa del Pac&#237;fico, incluidas las costas de las islas del Pac&#237;fico.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_DESERT</Tag>
+    <English>Requires at least one desert tile in the city radius (including the city tile).</English>
+    <French>N&#233;cessite au moins une case de d&#233;sert dans le rayon de la ville (y compris la case de la ville).</French>
+    <German>Ben&#246;tigt mindestens ein W&#252;stenfeld im Stadtradius (einschlie&#223;lich des Stadtfelds).</German>
+    <Italian>Richiede almeno una casella di deserto nel raggio cittadino (inclusa la casella della citt&#224;).</Italian>
+    <Spanish>Requiere al menos una casilla de desierto en el radio urbano (incluida la casilla de la ciudad).</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_CAPITAL</Tag>
+    <English>Can only be built in the capital.</English>
+    <French>Ne peut &#234;tre construit que dans la capitale.</French>
+    <German>Kann nur in der Hauptstadt gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo nella capitale.</Italian>
+    <Spanish>Solo se puede construir en la capital.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_MONARCHY</Tag>
+    <English>Can only be built under the Monarchy civic.</English>
+    <French>Ne peut &#234;tre construit que sous la doctrine Monarchie.</French>
+    <German>Kann nur unter der Staatsform Monarchie gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo con la forma di governo Monarchia.</Italian>
+    <Spanish>Solo se puede construir con la forma de gobierno Monarqu&#237;a.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_REPUBLIC</Tag>
+    <English>Can only be built in a coastal city under Republic or Democracy.</English>
+    <French>Ne peut &#234;tre construit que dans une ville c&#244;ti&#232;re sous une R&#233;publique ou une D&#233;mocratie.</French>
+    <German>Kann nur in einer K&#252;stenstadt unter der Staatsform Republik oder Demokratie gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo in una citt&#224; costiera con Repubblica o Democrazia.</Italian>
+    <Spanish>Solo se puede construir en una ciudad costera con Rep&#250;blica o Democracia.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_WONDER_REQ_RIVER</Tag>
+    <English>Can only be built in a city on a river.</English>
+    <French>Ne peut &#234;tre construit que dans une ville au bord d'un fleuve.</French>
+    <German>Kann nur in einer Stadt an einem Fluss gebaut werden.</German>
+    <Italian>Pu&#242; essere costruito solo in una citt&#224; su un fiume.</Italian>
+    <Spanish>Solo se puede construir en una ciudad junto a un r&#237;o.</Spanish>
+  </TEXT>
+</Civ4GameText>

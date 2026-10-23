@@ -760,14 +760,8 @@ class Stability:
                                 self.setCombatResultTempModifier(iPlayer, 0)
                                                         
                 if (pPlayer.getAnarchyTurns() != 0):
-                        iTempCivicsThreshold = self.getStability(iPlayer)
-                        if (self.getStability(iPlayer) > 24):
-                                #print("Stability: anarchy permanent", self.getStability(iPlayer) - self.getStability(iPlayer)/8, iPlayer)
-                                self.setStability(iPlayer, self.getStability(iPlayer) - self.getStability(iPlayer)/8)                                
-                        else:
-                                #print("Stability: anarchy permanent", 3, iPlayer)
-                                self.setStability(iPlayer, self.getStability(iPlayer)-3)
-                        self.setParameter(iPlayer, iParCivicsE, True, self.getStability(iPlayer) - iTempCivicsThreshold)
+                        # Anarchy affects the current base only, with no lasting
+                        # deduction from accumulated stability or civic events.
                         iNewBaseStability -= (self.getStability(iPlayer)+30)/2
                         self.setParameter(iPlayer, iParCivics1, True, -(self.getStability(iPlayer)+30)/2) 
                         #print("iNewBaseStability anarchy",iNewBaseStability, iPlayer)
@@ -811,6 +805,10 @@ class Stability:
 
 
         def onCityAcquired(self, owner, playerType, city, bConquest, bTrade):
+
+                # Canonical partition is neither a defeat nor a conquest gain.
+                if bTrade and not bConquest and gc.getPlayer(owner).isCaliphatePartitionInProgress():
+                        return
 
                 iGameTurn = gc.getGame().getGameTurn()
                 if (owner < con.iNumPlayers):
@@ -1066,6 +1064,8 @@ class Stability:
     
                 if (iGameTurn > con.i350BC and iGameTurn % 10 == 5):
                         for iPlayer in range(iNumPlayers):
+                                if utils.isIndependentMinor(iPlayer):
+                                        continue
                                 if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + 25 and not gc.getPlayer(iPlayer).isGoldenAge()):
                                         if (self.getStability(iPlayer) < -40): #civil war
                                                 print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))

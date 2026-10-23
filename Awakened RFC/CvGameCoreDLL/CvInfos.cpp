@@ -5370,6 +5370,8 @@ std::wstring CvCivicInfo::getCivilizationDescription(int iCivilization) const
 		return gDLL->getText("TXT_KEY_ROMAN_REPUBLIC");
 	if (isRomanLegionsVariant(iCivilization))
 		return gDLL->getText("TXT_KEY_ROMAN_LEGIONS");
+	if (isHordeVariant(iCivilization))
+		return gDLL->getText("TXT_KEY_HORDE");
 	return getDescription();
 }
 
@@ -5381,6 +5383,13 @@ bool CvCivicInfo::isRomanRepublicVariant(int iCivilization) const
 bool CvCivicInfo::isRomanLegionsVariant(int iCivilization) const
 {
 	return iCivilization == GC.getInfoTypeForString("CIVILIZATION_ROME") && strcmp(getType(), "CIVIC_WARRIOR_SOCIETY") == 0;
+}
+
+bool CvCivicInfo::isHordeVariant(int iCivilization) const
+{
+	return strcmp(getType(), "CIVIC_WARRIOR_SOCIETY") == 0 &&
+		(iCivilization == GC.getInfoTypeForString("CIVILIZATION_XIONGNU") ||
+		 iCivilization == GC.getInfoTypeForString("CIVILIZATION_MONGOL"));
 }
 
 bool CvCivicInfo::isPharaonicVariant(int iCivilization) const
@@ -5403,7 +5412,7 @@ std::string CvCivicInfo::getCivilizationButton(int iCivilization) const
 
 int CvCivicInfo::getCivilizationUpkeep(int iCivilization) const
 {
-	return isPharaonicVariant(iCivilization) ? GC.getInfoTypeForString("UPKEEP_MEDIUM") : getUpkeep();
+	return (isPharaonicVariant(iCivilization) || isHordeVariant(iCivilization)) ? GC.getInfoTypeForString("UPKEEP_MEDIUM") : getUpkeep();
 }
 
 bool CvCivicInfo::isDivineKingshipVariant(int iCivilization) const
@@ -15744,6 +15753,13 @@ int CvReligionInfo::getChar() const
 void CvReligionInfo::setChar(int i)
 {
 	m_iChar = i; 
+}
+
+// Dormant glyphs occupy unused slots after the religion/corporation icons.
+int CvReligionInfo::getDormantHolyCityChar() const
+{
+	const int iFirst = GC.getReligionInfo((ReligionTypes)0).getChar();
+	return iFirst + 2 * (GC.getNumReligionInfos() + GC.getNumCorporationInfos()) + (getChar() - iFirst) / 2;
 }
 
 int CvReligionInfo::getHolyCityChar() const		

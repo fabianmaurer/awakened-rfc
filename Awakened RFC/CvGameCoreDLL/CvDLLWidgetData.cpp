@@ -3843,18 +3843,18 @@ void CvDLLWidgetData::parseCultureHelp(CvWidgetDataStruct &widgetDataStruct, CvW
 		int iCultureTimes100 = pHeadSelectedCity->getCultureTimes100(pHeadSelectedCity->getOwnerINLINE());
 		if (iCultureTimes100%100 == 0)
 		{
-			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CULTURE", iCultureTimes100/100, pHeadSelectedCity->getCultureThreshold()));
+			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CULTURE", iCultureTimes100/100, pHeadSelectedCity->getNextCoveredPlotCost()));
 		}
 		else
 		{
 			CvWString szCulture = CvWString::format(L"%d.%02d", iCultureTimes100/100, iCultureTimes100%100);
-			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CULTURE_FLOAT", szCulture.GetCString(), pHeadSelectedCity->getCultureThreshold()));
+			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CULTURE_FLOAT", szCulture.GetCString(), pHeadSelectedCity->getNextCoveredPlotCost()));
 		}
 
 		int iCultureRateTimes100 = pHeadSelectedCity->getCommerceRateTimes100(COMMERCE_CULTURE);
 		if (iCultureRateTimes100 > 0)
 		{
-			int iCultureLeftTimes100 = 100 * pHeadSelectedCity->getCultureThreshold() - iCultureTimes100;
+			int iCultureLeftTimes100 = 100 * pHeadSelectedCity->getNextCoveredPlotCost() - iCultureTimes100;
 
 			if (iCultureLeftTimes100 > 0)
 			{
@@ -4366,7 +4366,13 @@ void CvDLLWidgetData::parseCivicHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 {
 	if (widgetDataStruct.m_iData2 != 0)
 	{
-		GAMETEXT.parseCivicInfo(szBuffer, (CivicTypes)widgetDataStruct.m_iData1);
+		// Diplomacy icons carry their player's identity; ordinary widgets keep
+		// the existing active-player context and Civilopedia click behavior.
+		const int iPlayer = -2 - widgetDataStruct.m_iData2;
+		if (widgetDataStruct.m_iData2 <= -2 && iPlayer >= 0 && iPlayer < MAX_PLAYERS)
+			GAMETEXT.parseCivicInfoForPlayer(szBuffer, (CivicTypes)widgetDataStruct.m_iData1, (PlayerTypes)iPlayer);
+		else
+			GAMETEXT.parseCivicInfo(szBuffer, (CivicTypes)widgetDataStruct.m_iData1);
 	}
 }
 

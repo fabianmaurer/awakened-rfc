@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 ## This file is part of Rhye's and Fall of Civilization.
 ## This file was originally taken from CivPath mod.
 ##  modified by eN
@@ -7,6 +8,10 @@ import CvRFCEventHandler
 import RiseAndFall
 import Congresses
 import Slavery
+import Islam
+import Caliphate
+from CvPythonExtensions import CyGlobalContext
+import NativeAmerica
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -63,18 +68,32 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             7623 : ('AskNoCityPopupEvent', self.congEventApply7623, self.congEventBegin7623),
 
             7624 : ('SlaveRevoltPopupEvent', self.slaveEventApply7624, self.slaveEventBegin7624),
-            7625 : ('CaptureAftermathPopupEvent', self.slaveEventApply7625, self.slaveEventBegin7625)
+            7625 : ('CaptureAftermathPopupEvent', self.slaveEventApply7625, self.slaveEventBegin7625),
+            7626 : ('IslamFoundingPopupEvent', Islam.applyChoice, Islam.beginChoice),
+            7627 : ('CaliphatePartitionPopupEvent', Caliphate.applyChoice, Caliphate.beginChoice)
         }
 
         # --> INSERT EVENT HANDLER INITIALIZATION HERE <--
-        import GameObserver
-        self.observer = GameObserver.Observer()
-        self.observer.install_before(self)
+        self.observer = None
+        if REPORTING_ENABLED:
+            import GameObserver
+            self.observer = GameObserver.Observer()
+            self.observer.install_before(self)
         CvRFCEventHandler.CvRFCEventHandler(self)
         self.rnf = RiseAndFall.RiseAndFall()
         self.cong = Congresses.Congresses()
         self.slave = Slavery.slavery
-        self.observer.install_after(self)
+        self.addEventHandler("BeginPlayerTurn", Islam.onBeginPlayerTurn)
+        self.addEventHandler("OnLoad", Islam.onLoadGame)
+        self.addEventHandler("GameStart", Islam.onLoadGame)
+        self.addEventHandler("BeginPlayerTurn", Caliphate.onBeginPlayerTurn)
+        self.addEventHandler("OnLoad", Caliphate.onLoadGame)
+        self.addEventHandler("GameStart", Caliphate.onLoadGame)
+        import Korea
+        self.addEventHandler("OnLoad", Korea.configureRegions)
+        self.addEventHandler("GameStart", Korea.configureRegions)
+        if REPORTING_ENABLED:
+            self.observer.install_after(self)
         
 
     def addEventHandler(self, eventType, eventHandler):
@@ -128,9 +147,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
                 try:
                     eventHandler(argsList[:len(argsList) - 6])
                 except:
-                    self.observer.exception(eventType)
+                    if REPORTING_ENABLED:
+                        self.observer.exception(eventType)
                     raise
-            if self.observer.enabled:
+            if REPORTING_ENABLED and self.observer.enabled:
                 self.observer.event(eventType, argsList[:len(argsList) - 6])
 
     def _handleConsumableEvent(self, eventType, argsList):
@@ -165,7 +185,16 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
     # TODO: this probably needs to be more complex
     def _handleOnLoadEvent(self, eventType, argsList):
         """Handles OnLoad events."""
-        return self._handleDefaultEvent(eventType, argsList)
+        result = self._handleDefaultEvent(eventType, argsList)
+        NativeAmerica.configureRegions()
+        # Refresh only after all saved players and load-time identities are ready.
+        # The native naming rules preserve authored minor and successor names.
+        gc = CyGlobalContext()
+        for iPlayer in range(gc.getMAX_CIV_PLAYERS()):
+            player = gc.getPlayer(iPlayer)
+            if player.isAlive():
+                player.processCivNames()
+        return result
 
     # popup event handlers
     def beginEvent( self, context, argsList=-1 ):
@@ -251,10 +280,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             pass
 
     def slaveEventApply7624(self, playerID, netUserData, popupReturn):
-            self.slave.eventApply(popupReturn)
+            self.slave.eventApply(playerID, netUserData, popupReturn)
 
     def slaveEventBegin7625(self):
             pass
 
     def slaveEventApply7625(self, playerID, netUserData, popupReturn):
-            self.slave.captureEventApply(playerID, popupReturn)
+            self.slave.captureEventApply(playerID, netUserData, popupReturn)

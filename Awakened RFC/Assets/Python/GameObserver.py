@@ -1,3 +1,7 @@
+from Reporting import ENABLED as REPORTING_ENABLED
+if not REPORTING_ENABLED:
+    raise ImportError("Reporting requires a DLL built with ARFC_ENABLE_REPORTING=1")
+
 # Optional developer instrumentation. Compatible with Civilization IV Python 2.4.
 # No XML lookups, files, RNG calls or event hooks when the launcher is absent.
 import os
@@ -20,6 +24,133 @@ def record_mechanic(event, player, details):
         observer.events.append(item)
     except:
         observer.fail('mechanic_recording')
+
+
+# Semantic payload version 1. Fields mirror the guarded native call sites.
+APOSTOLIC_FIELDS = {
+    'papal_request': ('decision', 'can_become', 'cities'),
+    'papal_decision': ('decision', 'choice'),
+    'papal_penalty_applied': ('observer', 'amount', 'accumulated', 'attitude_extra_after'),
+    'papal_penalty_cleared': ('observer', 'amount', 'attitude_extra_before', 'attitude_extra_after'),
+    'papal_palace_effects': ('enabled',),
+    'papacy_founded': ('previous_owner', 'became_papacy', 'rome_owner', 'enabled'),
+    'papal_rome_lost': ('recovery_deadline',),
+    'papal_dissolved': ('recovery_deadline',),
+    'council_opened': ('ballot', 'proposal', 'target_player', 'region', 'deadline', 'threshold_percent'),
+    'council_voter': ('ballot', 'weight', 'delivery_turn'),
+    'council_delivered': ('ballot', 'weight', 'deadline'),
+    'council_vote': ('ballot', 'choice', 'weight', 'deadline'),
+    'council_result': ('ballot', 'proposal', 'passed', 'yes', 'no', 'abstain', 'total', 'required'),
+    'council_resolution_applied': ('ballot', 'proposal'),
+    'council_closed': ('ballot', 'palace_active'),
+    'council_reformed': ('ballot', 'required_legitimation', 'required_religion_civic', 'actual_legitimation', 'actual_religion_civic'),
+    'council_tithe': ('ballot', 'gold_change', 'recipient', 'gold_after'),
+    'council_college_paid': ('ballot', 'cost', 'gold_after'),
+    'council_college_grant': ('ballot', 'tech', 'research_grant', 'team'),
+    'crusade_started': ('region', 'end_turn', 'base_duration', 'inactivity_duration'),
+    'crusade_ended': ('region', 'end_turn', 'reason'),
+    'crusade_joined': ('team', 'region'),
+    'crusade_activity': ('team', 'enemy_team', 'x', 'y', 'previous_end_turn', 'end_turn', 'inactivity_duration'),
+    'crusade_plunder': ('amount', 'accumulated', 'enemy_team', 'x', 'y'),
+    'crusade_reward': ('amount', 'rewards_received', 'x', 'y'),
+    'crusade_state_founded': ('sponsor', 'state_religion', 'legitimation', 'religion_civic'),
+    'crusade_settlement_selected': ('recipient', 'previous_owner', 'x', 'y', 'priority', 'new_state'),
+    'crusade_settlement_completed': ('recipient', 'actual_owner', 'x', 'y', 'state_religion'),
+}
+
+
+def record_apostolic_mechanic(event, player, values):
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        fields = APOSTOLIC_FIELDS[event]
+        details = dict(zip(fields, list(values)[:len(fields)]))
+        if event == 'council_vote':
+            from CvPythonExtensions import PlayerVoteTypes
+            choices = dict([(int(getattr(PlayerVoteTypes, key)), key) for key in
+                            ('PLAYER_VOTE_YES', 'PLAYER_VOTE_NO', 'PLAYER_VOTE_ABSTAIN')])
+            details['choice_name'] = choices.get(details['choice'], 'INVALID')
+            voter = observer.gc.getPlayer(player)
+            details['civics'] = [voter.getCivics(c) for c in range(observer.gc.getNumCivicOptionInfos())]
+            details['state_religion'] = voter.getStateReligion()
+            details['human'] = voter.isHuman()
+        elif event == 'papal_decision':
+            details['choice_name'] = ('cede_rome', 'refuse', 'become_papacy')[details['choice']]
+        elif event == 'crusade_ended':
+            details['reason_name'] = ('inactivity', 'targets_eliminated', 'coalition_eliminated')[details['reason']]
+        elif event == 'crusade_settlement_selected':
+            details['priority_name'] = ('historical_claim', 'christian_neighbor', 'dedicated_independent')[details['priority'] - 1]
+        record_mechanic(event, player, details)
+        rule = None
+        if event == 'crusade_activity' and details['end_turn'] != max(details['previous_end_turn'], observer.game.getGameTurn() + details['inactivity_duration']):
+            rule = 'crusade_activity_deadline'
+        elif event == 'papal_penalty_cleared' and details['attitude_extra_after'] != details['attitude_extra_before'] + details['amount']:
+            rule = 'papal_refusal_refund'
+        elif event == 'crusade_settlement_completed' and details['recipient'] != details['actual_owner']:
+            rule = 'crusade_settlement_owner'
+        elif event == 'council_reformed' and (details['required_legitimation'] != details['actual_legitimation'] or details['required_religion_civic'] != details['actual_religion_civic']):
+            rule = 'council_religious_reform'
+        if rule:
+            record_mechanic('apostolic_violation', player, {'severity': 'error', 'rule': rule, 'source_event': event})
+    except:
+        observer.fail('apostolic_event_recording')
+
+
+def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ballots):
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        header_keys = ('version', 'papal_player', 'refuser', 'retry_turn', 'palace_active',
+                       'rome_owner', 'rome_christian', 'founding_eligible', 'palace_buildings',
+                       'crusade_region', 'crusade_end_turn', 'base_duration', 'inactivity_duration')
+        if len(header) != len(header_keys) or header[0] != 1:
+            raise ValueError('Unexpected apostolic state payload')
+        details = dict(zip(header_keys, header))
+        def rows(values, keys):
+            width = len(keys)
+            if len(values) % width:
+                raise ValueError('Incomplete apostolic state rows')
+            return [dict(zip(keys, values[i:i+width])) for i in range(0, len(values), width)]
+        details['players'] = rows(flat_players, ('id', 'alive', 'team', 'state_religion', 'legitimation',
+                                  'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state',
+                                  'refusal_penalty', 'attitude_extra_to_refuser', 'cities'))
+        details['teams'] = rows(flat_teams, ('id', 'alive', 'participant', 'target'))
+        details['pairs'] = rows(flat_pairs, ('team', 'other', 'at_war', 'can_declare_war', 'can_change_war_peace', 'military_access'))
+        details['ballots'] = rows(flat_ballots, ('ballot', 'proposal', 'deadline', 'player', 'weight', 'delivery_turn', 'choice'))
+        details['boundary'] = 'native pre-EndGameTurn; before RFC end-turn callbacks'
+        record_mechanic('apostolic_state', -1, details)
+        players = dict([(p['id'], p) for p in details['players']])
+        teams = dict([(t['id'], t) for t in details['teams']])
+        gc = observer.gc
+        christian = gc.getInfoTypeForString('RELIGION_CHRISTIANITY')
+        tolerance = gc.getInfoTypeForString('CIVIC_TOLERANCE')
+        atheism = gc.getInfoTypeForString('CIVIC_STATE_ATHEISM')
+        issues = []
+        if details['palace_active']:
+            pope = players.get(details['papal_player'])
+            if not pope or details['rome_owner'] != details['papal_player'] or pope['state_religion'] != christian or pope['religion_civic'] == tolerance or details['palace_buildings'] <= 0:
+                issues.append('palace_active_without_christian_papal_rome')
+        pope = players.get(details['papal_player'])
+        if pope and pope['alive'] and pope['religion_civic'] == atheism:
+            issues.append('papacy_adopted_state_atheism')
+        if details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
+            issues.append('refusal_penalty_survived_loss_of_rome')
+        if details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
+            issues.append('refusal_penalty_without_refuser')
+        if details['crusade_region'] >= 0:
+            for pair in details['pairs']:
+                other = teams[pair['other']]
+                if other['participant']:
+                    if pair['at_war'] or pair['can_declare_war'] or not pair['military_access']:
+                        issues.append('coalition_peace_or_access:%d:%d' % (pair['team'], pair['other']))
+                elif other['target'] and (not pair['at_war'] or pair['can_change_war_peace']):
+                    issues.append('binding_crusade_war:%d:%d' % (pair['team'], pair['other']))
+        for issue in issues:
+            record_mechanic('apostolic_violation', -1, {'severity': 'error', 'rule': issue, 'boundary': details['boundary']})
+    except:
+        observer.fail('apostolic_state_recording')
 
 
 def record_labor_evaluation(player, current, best, flat_scores):
@@ -74,9 +205,12 @@ def json_text(value):
 class Observer:
     def __init__(self):
         global CURRENT
+        if CURRENT is not None:
+            CURRENT.restore_camera()
         CURRENT = self
         self.enabled = False
         self.started = False
+        self.reveal_map = False
         self.events = []
         self.previous = {}
         self.births = {}
@@ -85,9 +219,11 @@ class Observer:
         self.last_snapshot = 0
         self.civic_exposure = {}
         self.labor_evaluations = {}
+        self.jihad_positions = {}
         self.checkpoints_seen = set()
         self.camera_pending = False
         self.camera_elapsed = 0.0
+        self.camera_original = None
         self.performance = {}
         self.performance_stack = []
         self.performance_boundary = None
@@ -116,6 +252,8 @@ class Observer:
                 raise ValueError('Invalid observer mode')
             self.output = os.path.abspath(get('OutputDirectory'))
             self.autoplay = parser.getboolean('Observer', 'Autoplay')
+            self.reveal_map = (parser.has_option('Observer', 'RevealMap') and
+                               parser.getboolean('Observer', 'RevealMap'))
             self.unattended = (parser.has_option('Observer', 'Unattended') and
                                parser.getboolean('Observer', 'Unattended'))
             self.limit = int(get('Turns'))
@@ -221,6 +359,7 @@ class Observer:
         error = traceback.format_exc()
         print('Awakened RFC observer disabled: ' + phase + '\n' + error)
         self.enabled = False
+        self.restore_camera()
         if self.output and os.path.isdir(self.output):
             try:
                 self.status('failed', {'phase': phase, 'traceback': error})
@@ -260,10 +399,12 @@ class Observer:
                     self.gc.getPlayer(0).setPlayable(True)
                 actual_player = game.getActivePlayer()
                 setup_player = actual_player
+                setup_slots = {'3000bc': (0, 2), '800bc': (0, 2, 5)}.get(self.scenario, ())
                 if (self.scenario in ('3000bc', '800bc') and self.autoplay and
-                        actual_player in (0, 2) and expected_player == 26):
+                        actual_player in setup_slots and expected_player == 26):
                     # The executable can retain an earlier slot despite the WB
-                    # selector restriction. Transfer control before RFC setup;
+                    # selector restriction, including Persia in the 800 BC start.
+                    # Transfer control before RFC setup;
                     # neither operation creates/deletes cities or units.
                     if self.gc.getPlayer(26).getCivilizationType() != self.gc.getInfoTypeForString('CIVILIZATION_AMERICA'):
                         raise ValueError('Observer America slot mismatch')
@@ -322,6 +463,8 @@ class Observer:
                 self.game.getMapRand().init(self.seed)
             if self.autoplay:
                 self.game.setObserverAutoPlay(True)
+                if self.reveal_map:
+                    self.game.setObserverRevealMap(True)
             self.start_time = time.clock()
         except:
             self.fail('prepare')
@@ -337,11 +480,11 @@ class Observer:
                 if not native_path or not os.path.isfile(native_path):
                     raise ValueError('Native performance timings were not activated; rebuild/sync the observer DLL')
                 self.started = True
-                self.camera_pending = False
+                self.camera_pending = self.reveal_map and self.autoplay
                 self.performance_boundary = time.clock()
                 self.write({'kind': 'performance_metadata', 'mode': self.mode,
                             'scenario': self.scenario, 'start_turn': game.getGameTurn(),
-                            'seed': self.seed, 'runtime_fingerprint': self.fingerprint,
+                            'seed': self.seed, 'reveal_map': self.reveal_map, 'runtime_fingerprint': self.fingerprint,
                             'seed_applied_at': 'CvGame.init before scenario initialization; no GameStart reseed',
                             'rng_state_before_rfc_setup': self.initial_rng_state,
                             'timer': 'Windows Python time.clock wall seconds',
@@ -352,12 +495,25 @@ class Observer:
                         'handicap': gc.getHandicapInfo(game.getHandicapType()).getType(),
                         'options': [gc.getGameOptionInfo(i).getType() for i in range(gc.getNumGameOptionInfos()) if game.isOption(i)]}
             infos = {}
-            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era'):
+            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era', 'Mission', 'Vote'):
                 count = getattr(gc, 'getNum' + category + 'Infos')()
                 getter = getattr(gc, 'get' + category + 'Info')
                 infos[category.lower()] = [getter(i).getType() for i in range(count)]
+            import CvPythonExtensions as extensions
+            enum_names = {}
+            for category, prefix in (('UnitAITypes', 'UNITAI_'), ('ActivityTypes', 'ACTIVITY_'),
+                                     ('MissionAITypes', 'MISSIONAI_'), ('AreaAITypes', 'AREAAI_'),
+                                     ('WarPlanTypes', 'WARPLAN_')):
+                enum = getattr(extensions, category)
+                enum_names[category] = dict([(str(int(getattr(enum, name))), name)
+                                            for name in dir(enum) if name.startswith(prefix)])
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
+                        'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
+                        'army_recording_version': 2, 'apostolic_recording_version': 1,
+                        'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
+                                                 '1': 'Amr: Egypt / North Africa',
+                                                 '2': "Sa'd: Iraq / Persia"},
                         'seed_applied_at': 'GameStart, before RFC setup (map and initial placement already loaded)',
                         'mod_version': self.version, 'runtime_fingerprint': self.fingerprint,
                         'scenario': self.loaded_scenario, 'map_script': self.map_script,
@@ -375,7 +531,7 @@ class Observer:
                 self.write({'kind': 'initial_map', 'plots': plots})
                 self.map_previous = plots
             self.started = True
-            self.camera_pending = False
+            self.camera_pending = self.reveal_map and self.autoplay
             self.observe_players(False)
             self.snapshot('initial')
             self.checkpoint('initial')
@@ -392,8 +548,13 @@ class Observer:
     def setup_camera(self, args):
         # Called by the main interface refresh; the engine's optional Update
         # event is disabled by the stock Python callback defines.
-        # Smaller zoom values move inward (CvCameraControls).
+        if self.camera_original is not None and (not self.enabled or
+                not self.game.isObserverAutoPlay()):
+            self.restore_camera()
         if not self.enabled or not self.started or not self.camera_pending:
+            return
+        if not self.reveal_map or not self.game.isObserverAutoPlay():
+            self.camera_pending = False
             return
         self.camera_elapsed += 0.25
         if self.camera_elapsed < 1.0:
@@ -401,15 +562,50 @@ class Observer:
         self.camera_pending = False
         try:
             from CvPythonExtensions import CyCamera
+            import math
             camera = CyCamera()
-            before = camera.GetZoom()
-            camera.SetZoom(0.5)
-            self.status('camera', {'requested_zoom': 0.5,
-                                   'previous_zoom': before,
+            names = ('FIELD_OF_VIEW', 'CAMERA_UPPER_PITCH', 'CAMERA_LOWER_PITCH')
+            defines = dict([(name, self.gc.getDefineFLOAT(name)) for name in names])
+            self.camera_original = (defines, camera.GetZoom(),
+                                    camera.GetBasePitch(), camera.GetBaseTurn())
+            # Doubling tan(FOV/2) gives the framing of twice the distance.
+            # Keep the default physical zoom so distance-based detail culling
+            # and globe-view transitions do not hide units/cities/features.
+            field_of_view = math.degrees(2.0 * math.atan(
+                2.0 * math.tan(math.radians(defines['FIELD_OF_VIEW']) / 2.0)))
+            self.gc.setDefineFLOAT('FIELD_OF_VIEW', field_of_view)
+            self.gc.setDefineFLOAT('CAMERA_UPPER_PITCH', -90.0)
+            self.gc.setDefineFLOAT('CAMERA_LOWER_PITCH', -90.0)
+            camera.ResetZoom()
+            camera.SetBaseTurn(0.0)
+            # Base pitch is an offset from the zoom-dependent pitch, which
+            # the limits above already fix at -90 degrees. Keep it neutral
+            # to avoid tilting past overhead and inverting the map.
+            camera.SetBasePitch(0.0)
+            self.status('camera', {'view': 'overhead', 'distance_equivalent': 2.0,
+                                   'field_of_view': field_of_view,
                                    'reported_zoom': camera.GetZoom()})
         except:
             # A presentation failure must not discard a valid recording.
             self.events.append({'event': 'observer_camera_error', 'traceback': traceback.format_exc()})
+            self.restore_camera()
+
+    def restore_camera(self):
+        if self.camera_original is None:
+            return
+        try:
+            from CvPythonExtensions import CyCamera
+            defines, zoom, pitch, turn = self.camera_original
+            for name, value in defines.items():
+                self.gc.setDefineFLOAT(name, value)
+            camera = CyCamera()
+            camera.SetZoom(zoom)
+            camera.SetBasePitch(pitch)
+            camera.SetBaseTurn(turn)
+            self.camera_original = None
+        except:
+            self.events.append({'event': 'observer_camera_restore_error',
+                                'traceback': traceback.format_exc()})
 
     def units(self, player):
         unit, iterator = player.firstUnit(False)
@@ -567,6 +763,7 @@ class Observer:
             players.append(data)
         if diagnostic and imported != exported:
             checks.append({'severity': 'error', 'rule': 'global_food_conservation', 'imports': imported, 'exports': exported})
+        checks.extend([dict(event) for event in self.events if event.get('event') == 'apostolic_violation'])
         record = {'kind': kind, 'turn': turn, 'year': self.game.getGameTurnYear(), 'players': players,
                   'elapsed_turns': self.turns, 'span_turns': self.turns - self.last_snapshot,
                   'civic_player_turns': self.civic_exposure,
@@ -590,6 +787,43 @@ class Observer:
         self.last_snapshot = self.turns
         self.civic_exposure = {}
         self.events = []
+
+    def observe_arabian_army(self):
+        # Every boundary; observation reads state without evaluating AI or RNG.
+        if not self.autoplay or self.mode == 'performance':
+            return
+        import Consts
+        positions = {}
+        for iPlayer in range(self.gc.getMAX_PLAYERS()):
+            player = self.gc.getPlayer(iPlayer)
+            if not player.isAlive() or player.getNumCities() == 0:
+                continue
+            if iPlayer != Consts.iArabia and not player.isArabianJihadActive():
+                continue
+            units = []
+            for unit in self.units(player):
+                if unit.baseCombatStr() <= 0:
+                    continue
+                state = unit.getObserverArmyState()
+                position = (unit.getX(), unit.getY())
+                key = (iPlayer, unit.getID())
+                previous = self.jihad_positions.get(key)
+                unchanged = 0
+                if previous and previous[0] == position:
+                    unchanged = previous[1] + 1
+                positions[key] = (position, unchanged)
+                state.update({'id': unit.getID(), 'created_turn': unit.getGameTurnCreated(),
+                              'type': self.gc.getUnitInfo(unit.getUnitType()).getType(),
+                              'ai': int(unit.getUnitAIType()), 'x': position[0], 'y': position[1],
+                              'damage': unit.getDamage(), 'moves_left': unit.movesLeft(),
+                              'cargo': unit.isCargo(), 'plot_owner': unit.plot().getOwner(),
+                              'unchanged_position_turns': unchanged})
+                units.append(state)
+            # Retain the existing event name for recording-reader compatibility.
+            self.events.append({'event': 'arabian_army_state', 'player': iPlayer,
+                                'turn': self.game.getGameTurn(), 'year': self.game.getGameTurnYear(),
+                                'units': units})
+        self.jihad_positions = positions
 
     def observe_roman_campaign(self):
         if not self.autoplay or self.mode == 'performance':
@@ -651,6 +885,7 @@ class Observer:
                 self.performance_boundary = time.clock()
                 self.status('heartbeat', {'turns_recorded': self.turns, 'turn': self.game.getGameTurn()})
                 if self.turns >= self.limit:
+                    self.restore_camera()
                     self.game.setObserverAutoPlay(False)
                     self.status('complete', {'turns': self.turns, 'errors': self.error_count,
                                             'elapsed_seconds': time.clock() - self.start_time})
@@ -658,6 +893,7 @@ class Observer:
                 return
             self.observe_players(True)
             self.observe_roman_campaign()
+            self.observe_arabian_army()
             if self.turns % self.record_interval == 0 or self.turns >= self.limit:
                 self.snapshot('turn')
             if self.checkpoint_interval > 0 and self.turns % self.checkpoint_interval == 0:
@@ -665,6 +901,7 @@ class Observer:
             self.status('heartbeat', {'turns_recorded': self.turns, 'turn': self.game.getGameTurn()})
             if self.turns >= self.limit:
                 self.checkpoint('final')
+                self.restore_camera()
                 self.status('complete', {'turns': self.turns, 'errors': self.error_count,
                                         'elapsed_seconds': time.clock() - self.start_time})
                 self.enabled = False

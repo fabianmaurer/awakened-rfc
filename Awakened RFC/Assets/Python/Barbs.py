@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Barbarian units and cities
 
 from CvPythonExtensions import *
@@ -89,20 +90,22 @@ iHandicapOld = 0
 
 class Barbs:
 
-        def makeUnit(self, iUnit, iPlayer, tCoords, iNum, iForceAttack):
+        def makeUnit(self, iUnit, iPlayer, tCoords, iNum, iForceAttack, sNameKey=None):
                 'Makes iNum units for player iPlayer of the type iUnit at tCoords.'
                 for i in range(iNum):
                         player = gc.getPlayer(iPlayer)
                         if (iForceAttack == 0):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_SOUTH)
                         elif (iForceAttack == 1):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)                                  
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
                         elif (iForceAttack == 2):
-                                player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK_SEA, DirectionTypes.DIRECTION_SOUTH)
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_ATTACK_SEA, DirectionTypes.DIRECTION_SOUTH)
+                        elif (iForceAttack == 3):
+                                unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_PILLAGE, DirectionTypes.DIRECTION_SOUTH)
+                        if (sNameKey):
+                                unit.setName(CyTranslator().getText(sNameKey, ()))
 
 
-
-        	
         def checkTurn(self, iGameTurn):
             
                 #handicap level modifier
@@ -122,6 +125,16 @@ class Barbs:
                         self.spawnUnits( iBarbarian, (55, 10), (72, 29), con.iPanther, 1, iGameTurn, 4, 3, utils.outerInvasion, 0)
 
                         
+                # Small, staggered frontier raids for the 3000 BC Egyptian start.
+                # Give the first settlement twelve turns; stop before later armies.
+                if (gc.getGame().getStartTurn() == 0 and gc.getPlayer(con.iEgypt).isAlive()
+                    and gc.getPlayer(con.iEgypt).getNumCities() > 0
+                    and iGameTurn >= 12 and iGameTurn <= con.i850BC):
+                        # Nubians approach along the Nile; Libyans enter from the west.
+                        # Pillage AI and warriors keep these as light military pressure.
+                        self.spawnUnits(iBarbarian, (68, 30), (69, 31), con.iWarrior, 2, iGameTurn, 18, 12, utils.outerInvasion, 3, "TXT_KEY_UNIT_NUBIAN_RAIDERS")
+                        self.spawnUnits(iBarbarian, (65, 33), (67, 35), con.iWarrior, 1, iGameTurn, 28, 22, utils.outerInvasion, 3, "TXT_KEY_UNIT_LIBYAN_RAIDERS")
+
                 #celts
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i110BC):
                         self.spawnUnits( iCeltia, (49, 46), (65, 52), con.iCelticGallicWarrior, 1, iGameTurn, 7, 0, utils.outerInvasion, 0)
@@ -132,20 +145,22 @@ class Barbs:
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i550AD):
                         self.spawnUnits( iCeltia, (50, 49), (61, 65), con.iGalley, 1, iGameTurn, 25, 0, utils.outerSeaSpawn, 2)
                         
-                #mongolia
-                if (iGameTurn >= con.i210BC and iGameTurn < con.i300AD):
+                # Northern steppe raids are replaced by the living Xiongnu state.
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn >= con.i210BC and iGameTurn < con.i300AD):
                         self.spawnUnits( iBarbarian, (94, 48), (107, 54), con.iHorseArcher, 2 + iHandicap*2, iGameTurn, 8, 0, utils.outerInvasion, 0)
-                if (iGameTurn >= con.i300AD and iGameTurn <= con.i900AD):
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn >= con.i300AD and iGameTurn <= con.i900AD):
                         self.spawnUnits( iBarbarian, (91, 50), (107, 54), con.iHorseArcher, 3 + iHandicap*2, iGameTurn, 7, 0, utils.outerInvasion, 0)
-                if (iGameTurn > con.i900AD and iGameTurn <= con.i1100AD):
+                if (not gc.getPlayer(con.iXiongnu).isAlive() and iGameTurn > con.i900AD and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (94, 48), (107, 54), con.iHorseArcher, 2 + iHandicap, iGameTurn, 6, 0, utils.outerInvasion, 0)
                         
                 #tibet
                 if (iGameTurn >= con.i350BC and iGameTurn <= con.i1100AD):
                         self.spawnUnits( iBarbarian, (92, 41), (99, 45), con.iSwordsman, 1 + iHandicap, iGameTurn, 10-iHandicap, 3, utils.outerInvasion, 0)
 
-                #elephants in india pre-khmer
-                if (iGameTurn >= con.i210BC and iGameTurn <= con.i700AD):
+                self.checkHunaInvasion(iGameTurn)
+
+                # Early Indian elephant raids end before the Huna invasion warning.
+                if (iGameTurn >= con.i210BC and iGameTurn < con.i450AD):
                         self.spawnUnits( iBarbarian, (86, 31), (100, 41), con.iWarElephant, 1, iGameTurn, 6-iHandicap, 4, utils.outerInvasion, 0)
        
                         
@@ -218,7 +233,9 @@ class Barbs:
                 #if (iGameTurn >= con.i850BC and iGameTurn <= con.i190AD):
                 #        self.spawnUnits( iBarbarian, (73, 30), (82, 36), con.iCamelArcher, 1, iGameTurn, 12-iHandicap, 3, utils.outerInvasion, 0)
                 if (iGameTurn >= con.i190AD and iGameTurn <= con.i550AD):
-                        self.spawnUnits( iBarbarian, (73, 30), (82, 36), con.iCamelArcher, 2, iGameTurn, 9-iHandicap, 7, utils.outerInvasion, 0)
+                        # Keep late-antique raids near lower Mesopotamia rather than
+                        # the short desert approach to independent Jerusalem.
+                        self.spawnUnits( iBarbarian, (77, 35), (81, 41), con.iCamelArcher, 2, iGameTurn, 9-iHandicap, 7, utils.outerInvasion, 0)
 
                 #African natives
                 if (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4):  #late start condition (RFCMP)
@@ -268,7 +285,7 @@ class Barbs:
                 self.foundCity(iIndependent2, lTyre, "Sur", iGameTurn, 1, con.iArcher, 1)
                 self.foundCity(iIndependent, lJerusalem, "Yerushalayim", iGameTurn, 2, con.iArcher, 3)                        
                 #self.foundCity(lBabylon, "Babel", iGameTurn, 1, con.iArcher, 1)
-                self.foundCity(iIndependent2, lSusa, "Shushan", iGameTurn, 1, con.iArcher, 1)
+                self.foundCity(iBarbarian, lSusa, "Shushan", iGameTurn, 1, con.iArcher, 1)
                 #self.foundCity(lKnossos, "Knossos", iGameTurn, 1, con.iWarrior, 0)                
                 self.foundCity(iBarbarian, lHattusas, "Hattusas", iGameTurn, 1, con.iChariot, 2)
                 self.foundCity(iIndependent, lSamarkand, "Afrasiyab", iGameTurn, 1, con.iArcher, 1)
@@ -334,6 +351,73 @@ class Barbs:
 
 
 
+        def checkHunaInvasion(self, iGameTurn):
+                # One finite late-Gupta invasion, separate from China's Xiongnu.
+                if (iGameTurn != con.i450AD and iGameTurn != con.i500AD):
+                        return
+                pIndia = gc.getPlayer(con.iIndia)
+                if (not pIndia.isAlive() or pIndia.getNumCities() == 0):
+                        return
+                if (iGameTurn == con.i450AD):
+                        CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                                CyTranslator().getText("TXT_KEY_HUNA_INVASION_WARNING", ()),
+                                "", 0, "", ColorTypes(con.iOrange), 88, 40, True, True)
+                        return
+
+                # Punjab side of the mountains: prefer unclaimed land, then
+                # Indian territory, then foreign-controlled approach tiles.
+                # Adjacent cities and Indian interior territory do not block
+                # entry; the entry tile itself must have no city or units.
+                lOpen = []
+                lIndian = []
+                lForeign = []
+                for x in range(87, 90):
+                        for y in range(39, 42):
+                                plot = gc.getMap().plot(x, y)
+                                if (plot.isWater() or plot.isPeak() or plot.isImpassable()
+                                    or plot.isCity() or plot.isUnit()):
+                                        continue
+                                if (plot.getTerrainType() == con.iMarsh or plot.getFeatureType() == con.iJungle):
+                                        continue
+                                if (plot.area().getID() != pIndia.getCapitalCity().plot().area().getID()):
+                                        continue
+                                if (not plot.isOwned() or plot.getOwner() == iBarbarian):
+                                        lOpen.append((x, y))
+                                elif (plot.getOwner() == con.iIndia):
+                                        lIndian.append((x, y))
+                                elif (plot.getOwner() != con.iIndia):
+                                        lForeign.append((x, y))
+                lPlots = lOpen or lIndian or lForeign
+                if (not lPlots):
+                        return
+                tSpawn = lPlots[utils.getFakeRandNum(len(lPlots), 'Huna invasion')]
+                # One shared entry point keeps the invasion together. Three
+                # cavalry pillage; the rest of the force can assault cities.
+                lArmy = ((con.iHorseArcher, 4, UnitAITypes.UNITAI_ATTACK_CITY),
+                         (con.iHorseArcher, 3, UnitAITypes.UNITAI_PILLAGE),
+                         (con.iSwordsman, 3, UnitAITypes.UNITAI_ATTACK_CITY),
+                         (con.iSpearman, 2, UnitAITypes.UNITAI_COUNTER))
+                if REPORTING_ENABLED:
+                    import GameObserver
+                iFlanking1 = gc.getInfoTypeForString("PROMOTION_FLANKING1")
+                iFlanking2 = gc.getInfoTypeForString("PROMOTION_FLANKING2")
+                for iUnit, iCount, iAI in lArmy:
+                        for i in range(iCount):
+                                unit = pBarbarian.initUnit(iUnit, tSpawn[0], tSpawn[1], iAI, DirectionTypes.DIRECTION_SOUTH)
+                                unit.setScriptData("RFCMP_HUNA_INVASION")
+                                if (iUnit == con.iHorseArcher):
+                                        unit.setHasPromotion(iFlanking1, True)
+                                        unit.setHasPromotion(iFlanking2, True)
+                        if REPORTING_ENABLED:
+                            GameObserver.record_mechanic('scripted_spawn', iBarbarian,
+                                    {'unit': iUnit, 'count': iCount,
+                                     'x': tSpawn[0], 'y': tSpawn[1],
+                                     'region': [87, 39, 89, 41], 'period': 0})
+                CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                        CyTranslator().getText("TXT_KEY_HUNA_INVASION_ARRIVAL", ()),
+                        "", 0, "", ColorTypes(con.iOrange), tSpawn[0], tSpawn[1], True, True)
+
+
         def getCity(self, tCoords): #by LOQ
                 'Returns a city at coordinates tCoords.'
                 return CyGlobalContext().getMap().plot(tCoords[0], tCoords[1]).getPlotCity()
@@ -394,22 +478,24 @@ class Barbs:
 
 
 
-        def spawnUnits(self, iCiv, tTopLeft, tBottomRight, iUnitType, iNumUnits, iTurn, iPeriod, iRest, function, iForceAttack):
+        def spawnUnits(self, iCiv, tTopLeft, tBottomRight, iUnitType, iNumUnits, iTurn, iPeriod, iRest, function, iForceAttack, sNameKey=None):
                 if (iTurn % iPeriod == iRest):
                         dummy, plotList = utils.squareSearch( tTopLeft, tBottomRight, function, [] )
                         if (len(plotList)):
                                 rndNum = utils.getFakeRandNum(len(plotList), 'Spawn units')
                                 result = plotList[rndNum]
                                 if (result):
-                                        self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack)
+                                        self.makeUnit(iUnitType, iCiv, result, iNumUnits, iForceAttack, sNameKey)
                                         # Observe successful scripted groups without another
                                         # spawn search, unit creation or RNG draw.
-                                        import GameObserver
-                                        GameObserver.record_mechanic('scripted_spawn', iCiv,
-                                                {'unit': iUnitType, 'count': iNumUnits,
-                                                 'x': result[0], 'y': result[1],
-                                                 'region': [tTopLeft[0], tTopLeft[1], tBottomRight[0], tBottomRight[1]],
-                                                 'period': iPeriod})
+                                        if REPORTING_ENABLED:
+                                            import GameObserver
+                                        if REPORTING_ENABLED:
+                                            GameObserver.record_mechanic('scripted_spawn', iCiv,
+                                                    {'unit': iUnitType, 'count': iNumUnits,
+                                                     'x': result[0], 'y': result[1],
+                                                     'region': [tTopLeft[0], tTopLeft[1], tBottomRight[0], tBottomRight[1]],
+                                                     'period': iPeriod})
                                 
 
 

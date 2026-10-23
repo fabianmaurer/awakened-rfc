@@ -2,7 +2,8 @@
 
 Current icons are exported at 64 x 64 pixels with Pillow. Most are drawn directly
 at that size; Republic, Dictatorship, Legitimacy and Military reuse scenes from the first artwork
-set with darker, subdued colors. No new image generation is required.
+set with darker, subdued colors. Labor uses imagegen paintings preserved in
+`labor-imagegen/`; rebuilding uses these saved sources without new generation.
 The original RFC civic atlas supplies the rounded corner alpha mask.
 
 The five Government icons are drawn directly at 64 x 64 pixels by
@@ -44,9 +45,12 @@ the other portrait icons. `draw_military.py` exports the preserved 64px sources:
 Run `.venv-art/Scripts/python.exe art/civics/draw_military.py` to rebuild
 only that column and its `military-pixel-preview.png` contact sheet.
 
-Labor uses detailed object scenes drawn directly at 64px by `draw_labor.py`:
+Labor uses five separate paintings created with the built-in imagegen tool.
+`draw_labor.py` downsamples the saved `labor-imagegen/*.png` sources with Lanczos
+and applies the original atlas alpha before exporting 64px DXT3 buttons.
+`labor-imagegen/prompts.json` preserves the complete generation prompts.
 
-- Self Sufficiency: woven grain basket, earthenware jar and bread in a pantry.
+- Self Sufficiency: a woman picking a ripe apple from a tree, with a gathering basket.
 - Slavery: weathered iron manacles and chains on damp stone.
 - Serfdom: wheat sheaf and iron sickle before fields and a distant manor.
 - Planned Economy: folded crimson hammer-and-sickle flag above an industrial skyline.
@@ -54,6 +58,8 @@ Labor uses detailed object scenes drawn directly at 64px by `draw_labor.py`:
 
 Run `.venv-art/Scripts/python.exe art/civics/draw_labor.py` to rebuild
 only that column and its `labor-pixel-preview.png` contact sheet.
+The earlier procedural drawing functions remain available as artwork history;
+the exporter uses the saved paintings.
 
 Legitimacy is exported by `draw_legitimacy.py` from the preserved first-set
 64px sources in `references/`, with the same subdued colors as the Government

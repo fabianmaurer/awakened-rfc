@@ -24,6 +24,7 @@ Other unique-power hooks remain present and reachable:
 | Japan, Spain, England, Portugal | Unit bonuses in `CvUnit::init`: city defense, naval movement, naval first-strike chances and naval visibility. |
 | Ethiopia, Khmer, Netherlands | Ethiopian cultural defection protection in `CvPlot::doCulture`; jungle access and naval territorial access in `CvUnit`. |
 | France, Germany, Vikings | Diplomatic friendliness in `CvPlayerAI`/Congresses; Industrialism upgrade discount in `CvUnit::upgradePrice`; pillage gold in `CvUnit`. |
-| Arabia, Russia, Mongolia, Aztecs, Turkey, America | The existing Python unique-power implementations and their event hooks remain active: conquered-city religion, winter damage, razing terror, enslavement, cultural assimilation and migration. |
+| Arabia | By requested rework, the permanent Python conquest-conversion/building grants are replaced by the saved 300-year Mecca/Islam expansion event in `CvPlayer`: conquest/birth-flip conversion and expulsion, first-acquisition recruits and locked border wars. See `Gameplay.en.md`. |
+| Russia, Mongolia, Aztecs, Turkey, America | The existing Python unique-power implementations and their event hooks remain active: winter damage, razing terror, enslavement, cultural assimilation and migration. |
 
 The Turkish half-revolt-probability adjustment was general balance tuning; its named culture-assimilation power remains in `UniquePowers.py`. The obsolete Persian maintenance and English naval unit-cost code was already inactive in the original and is not revived.

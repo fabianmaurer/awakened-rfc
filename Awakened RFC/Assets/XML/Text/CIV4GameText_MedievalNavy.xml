@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_WAR_GALLEY</Tag>
+        <English>War Galley</English>
+        <French>Gal&#232;re de guerre</French>
+        <German>Kriegsgaleere</German>
+        <Italian>Galea da guerra</Italian>
+        <Spanish>Galera de guerra</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_COG</Tag>
+        <English>Cog</English>
+        <French>Cogue</French>
+        <German>Kogge</German>
+        <Italian>Cocca</Italian>
+        <Spanish>Coca</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_WAR_GALLEY_STRATEGY</Tag>
+        <English>A medieval coastal warship for fighting enemy fleets and escorting transports. Stronger than the Trireme, but unable to carry units or enter ocean. Upgrades to the Frigate.</English>
+        <French>Navire de guerre c&#244;tier m&#233;di&#233;val destin&#233; au combat naval et &#224; l'escorte des transports. Plus puissant que la trir&#232;me, il ne peut ni transporter d'unit&#233;s ni entrer dans l'oc&#233;an. &#201;volue en fr&#233;gate.</French>
+        <German>Ein mittelalterliches K&#252;stenkriegsschiff f&#252;r Seek&#228;mpfe und Geleitschutz. St&#228;rker als die Triere, kann aber weder Einheiten transportieren noch Ozeanfelder befahren. Wird zur Fregatte aufger&#252;stet.</German>
+        <Italian>Nave da guerra costiera medievale per combattere le flotte nemiche e scortare i trasporti. Pi&#249; forte della trireme, ma non pu&#242; trasportare unit&#224; n&#233; entrare nell'oceano. Si aggiorna a fregata.</Italian>
+        <Spanish>Buque de guerra costero medieval para combatir flotas enemigas y escoltar transportes. M&#225;s fuerte que el trirreme, pero no puede transportar unidades ni entrar en el oc&#233;ano. Se mejora a fragata.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_COG_STRATEGY</Tag>
+        <English>A medieval coastal transport carrying three land units. Stronger and more spacious than the Galley, but unable to enter ocean. Upgrades to the faster, ocean-going Galleon.</English>
+        <French>Transport c&#244;tier m&#233;di&#233;val pouvant embarquer trois unit&#233;s terrestres. Plus puissant et plus spacieux que la gal&#232;re, il ne peut pas entrer dans l'oc&#233;an. &#201;volue en galion, plus rapide et capable de traverser les oc&#233;ans.</French>
+        <German>Ein mittelalterlicher K&#252;stentransporter f&#252;r drei Landeinheiten. St&#228;rker und ger&#228;umiger als die Galeere, kann aber keine Ozeanfelder befahren. Wird zur schnelleren, hochseetauglichen Galeone aufger&#252;stet.</German>
+        <Italian>Trasporto costiero medievale che imbarca tre unit&#224; terrestri. Pi&#249; forte e capiente della galea, ma non pu&#242; entrare nell'oceano. Si aggiorna al galeone, pi&#249; veloce e adatto alla navigazione oceanica.</Italian>
+        <Spanish>Transporte costero medieval con capacidad para tres unidades terrestres. M&#225;s fuerte y espacioso que la galera, pero no puede entrar en el oc&#233;ano. Se mejora al gale&#243;n, m&#225;s r&#225;pido y capaz de cruzar oc&#233;anos.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_TRIREME_REVISED_STRATEGY</Tag>
+        <English>A coastal warship stronger than the Galley. Use it to escort transports and protect fishing boats. Cannot enter ocean. Upgrades to the War Galley.</English>
+        <French>Navire de guerre c&#244;tier plus puissant que la gal&#232;re. Escorte les transports et prot&#232;ge les bateaux de p&#234;che. Ne peut pas entrer dans l'oc&#233;an. &#201;volue en gal&#232;re de guerre.</French>
+        <German>Ein K&#252;stenkriegsschiff, das st&#228;rker als die Galeere ist. Eskortiert Transporter und sch&#252;tzt Fischerboote. Kann keine Ozeanfelder befahren. Wird zur Kriegsgaleere aufger&#252;stet.</German>
+        <Italian>Nave da guerra costiera pi&#249; forte della galea. Scorta i trasporti e protegge le barche da pesca. Non pu&#242; entrare nell'oceano. Si aggiorna alla galea da guerra.</Italian>
+        <Spanish>Buque de guerra costero m&#225;s fuerte que la galera. Escolta transportes y protege barcos pesqueros. No puede entrar en el oc&#233;ano. Se mejora a galera de guerra.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_WAR_GALLEY_PEDIA</Tag>
+        <English>Medieval war galleys combined sails with banks of oars and carried fighting crews for boarding actions. Byzantine dromons and later Mediterranean galleys served as escorts and battle vessels. Some Byzantine ships also used Greek fire.</English>
+        <French>Les gal&#232;res de guerre m&#233;di&#233;vales combinaient voiles et rang&#233;es de rames et embarquaient des combattants pour l'abordage. Les dromons byzantins et les gal&#232;res m&#233;diterran&#233;ennes ult&#233;rieures servaient &#224; l'escorte et au combat naval. Certains navires byzantins utilisaient aussi le feu gr&#233;geois.</French>
+        <German>Mittelalterliche Kriegsgaleeren verbanden Segel mit Ruderb&#228;nken und f&#252;hrten K&#228;mpfer f&#252;r Entergefechte mit. Byzantinische Dromonen und sp&#228;tere Mittelmeergaleeren dienten als Geleit- und Kriegsschiffe. Einige byzantinische Schiffe verwendeten auch Griechisches Feuer.</German>
+        <Italian>Le galee da guerra medievali combinavano vele e banchi di remi e trasportavano combattenti per gli abbordaggi. I dromoni bizantini e le successive galee mediterranee servivano come scorte e navi da battaglia. Alcune navi bizantine impiegavano anche il fuoco greco.</Italian>
+        <Spanish>Las galeras de guerra medievales combinaban velas y bancos de remos y llevaban combatientes para el abordaje. Los dromones bizantinos y las posteriores galeras mediterr&#225;neas serv&#237;an como escoltas y buques de combate. Algunos barcos bizantinos tambi&#233;n usaban fuego griego.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_COG_PEDIA</Tag>
+        <English>The cog was a medieval sailing ship associated with northern European trade. Its broad hull and high sides provided substantial cargo space, while raised platforms could carry defenders. Cogs transported goods, soldiers and supplies and could also be used in warfare.</English>
+        <French>La cogue &#233;tait un voilier m&#233;di&#233;val associ&#233; au commerce de l'Europe du Nord. Sa coque large et ses hauts flancs offraient une grande capacit&#233; de chargement, tandis que ses plateformes sur&#233;lev&#233;es pouvaient accueillir des d&#233;fenseurs. Les cogues transportaient marchandises, soldats et ravitaillement et pouvaient aussi servir &#224; la guerre.</French>
+        <German>Die Kogge war ein mittelalterliches Segelschiff des nordeurop&#228;ischen Handels. Ihr breiter Rumpf und ihre hohen Bordw&#228;nde boten viel Laderaum; erh&#246;hte Plattformen konnten Verteidiger aufnehmen. Koggen transportierten Waren, Soldaten und Nachschub und wurden auch im Krieg eingesetzt.</German>
+        <Italian>La cocca era un veliero medievale associato al commercio dell'Europa settentrionale. Lo scafo largo e le fiancate alte offrivano molto spazio per il carico, mentre le piattaforme rialzate potevano ospitare difensori. Le cocche trasportavano merci, soldati e rifornimenti e potevano essere impiegate anche in guerra.</Italian>
+        <Spanish>La coca era un velero medieval asociado al comercio del norte de Europa. Su casco ancho y sus altos costados ofrec&#237;an gran capacidad de carga, mientras que las plataformas elevadas pod&#237;an albergar defensores. Las cocas transportaban mercanc&#237;as, soldados y suministros y tambi&#233;n pod&#237;an emplearse en la guerra.</Spanish>
+    </TEXT>
+</Civ4GameText>

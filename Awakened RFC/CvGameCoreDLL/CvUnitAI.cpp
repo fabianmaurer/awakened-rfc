@@ -63,6 +63,14 @@ void CvUnitAI::AI_reset(UnitAITypes eUnitAI)
 {
 	AI_uninit();
 
+	m_szObserverCityTarget = "not_attempted";
+	m_iObserverCityTargetX = -1;
+	m_iObserverCityTargetY = -1;
+	m_szObserverDecision.clear();
+	m_iObserverDecisionTurn = -1;
+	m_iObserverDecisionCount = 0;
+	m_iObserverRequiredStack = -1;
+	m_iObserverReadyToAttack = -1;
 	m_iBirthmark = 0;
 
 	m_eUnitAIType = eUnitAI;
@@ -70,10 +78,38 @@ void CvUnitAI::AI_reset(UnitAITypes eUnitAI)
 	m_iAutomatedAbortTurn = -1;
 }
 
+void CvUnitAI::AI_recordObserverCityTarget(const char* reason, const CvCity* city)
+{
+	if (!GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance ||
+        (getOwnerINLINE() != ARABIA && !GET_PLAYER(getOwnerINLINE()).isArabianJihadActive())) return;
+	m_szObserverCityTarget = reason;
+	m_iObserverCityTargetX = city ? city->getX_INLINE() : -1;
+	m_iObserverCityTargetY = city ? city->getY_INLINE() : -1;
+}
+
+void CvUnitAI::AI_recordObserverDecision(const char* reason)
+{
+	if (!GC.getGameINLINE().isObserverAutoPlay() || g_observerPerformance ||
+        (getOwnerINLINE() != ARABIA && !GET_PLAYER(getOwnerINLINE()).isArabianJihadActive())) return;
+	const int turn = GC.getGameINLINE().getGameTurn();
+	if (m_iObserverDecisionTurn != turn) m_iObserverDecisionCount = 0;
+	m_iObserverDecisionTurn = turn;
+	++m_iObserverDecisionCount;
+	m_szObserverDecision = reason;
+}
+
 // AI_update returns true when we should abort the loop and wait until next slice
 bool CvUnitAI::AI_update()
 {
 	OBSERVER_PERFORMANCE("CvUnitAI::AI_update");
+	if (GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
+        (getOwnerINLINE() == ARABIA || GET_PLAYER(getOwnerINLINE()).isArabianJihadActive()))
+	{
+		AI_recordObserverDecision("AI_update:entered");
+		AI_recordObserverCityTarget("not_attempted");
+		m_iObserverRequiredStack = -1;
+		m_iObserverReadyToAttack = -1;
+	}
 	PROFILE_FUNC();
 
 	CvUnit* pTransportUnit;
@@ -117,6 +153,14 @@ bool CvUnitAI::AI_update()
 				}
 			}
 		}
+	}
+
+	// Captives need an employment/equipment decision before normal combat AI.
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (!isHuman() && !isBarbarian() && eSlave != NO_SPECIALIST &&
+		m_pUnitInfo->getGreatPeoples(eSlave) && AI_slaveMove())
+	{
+		return false;
 	}
 
 	if (AI_afterAttack())
@@ -485,6 +529,14 @@ bool CvUnitAI::AI_follow()
 void CvUnitAI::AI_upgrade()
 {
 	PROFILE_FUNC();
+	// Unarmed captives buy weapons in AI_slaveMove only when needed. Keep
+	// peacetime armed slaves available for employment instead of re-equipping.
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	if (eSlave != NO_SPECIALIST && m_pUnitInfo->getGreatPeoples(eSlave) && !isBarbarian() &&
+		(getUnitType() == GC.getInfoTypeForString("UNIT_SLAVE") || !AI_slaveMilitaryNeeded()))
+	{
+		return;
+	}
 
 	FAssertMsg(!isHuman(), "isHuman did not return false as expected");
 	FAssertMsg(AI_getUnitAIType() != NO_UNITAI, "AI_getUnitAIType() is not expected to be equal with NO_UNITAI");
@@ -1372,7 +1424,7 @@ void CvUnitAI::AI_workerMove()
 
     if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2))
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2, true, true))
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -1794,6 +1846,106 @@ void CvUnitAI::AI_barbAttackMove()
 }
 
 
+bool CvUnitAI::AI_slaveMilitaryNeeded() const
+{
+	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
+	if (kPlayer.AI_isPlotDanger(plot(), 2)) return true;
+	if (GET_TEAM(getTeam()).getAtWarCount(true) == 0) return false;
+	AreaAITypes eAreaAI = area()->getAreaAIType(getTeam());
+	return eAreaAI == AREAAI_OFFENSIVE || eAreaAI == AREAAI_DEFENSIVE || eAreaAI == AREAAI_MASSING;
+}
+
+bool CvUnitAI::AI_slaveMove()
+{
+	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
+	const bool bUnarmed = getUnitType() == GC.getInfoTypeForString("UNIT_SLAVE");
+	const bool bMilitaryNeed = AI_slaveMilitaryNeeded();
+	if (!bUnarmed && (bMilitaryNeed || getGroup()->getNumUnits() > 1)) return false;
+
+	const char* aszWeapons[] = { "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN",
+		"UNIT_SLAVE_MACEMAN", "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN",
+		"UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY" };
+	UnitTypes eWeapon = NO_UNIT;
+	for (int i = 0; i < 7; ++i)
+	{
+		UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString(aszWeapons[i]);
+		if (eUnit == NO_UNIT) continue;
+		TechTypes eTech = (TechTypes)GC.getUnitInfo(eUnit).getPrereqAndTech();
+		if (eTech == NO_TECH || GET_TEAM(getTeam()).isHasTech(eTech)) eWeapon = eUnit;
+	}
+	const bool bDanger = kPlayer.AI_isPlotDanger(plot(), 2);
+	const bool bBuyWeapons = bUnarmed && bMilitaryNeed && eWeapon != NO_UNIT &&
+		(bDanger || !kPlayer.AI_isFinancialTrouble()) &&
+		kPlayer.getGold() >= upgradePrice(eWeapon) + (bDanger ? 0 : 20);
+	if (bBuyWeapons && canUpgrade(eWeapon))
+	{
+		upgrade(eWeapon);
+		doDelayedDeath();
+		return true;
+	}
+
+	SpecialistTypes eSlave = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SLAVE");
+	const int iRebelStrength = GC.getUnitInfo(eWeapon == NO_UNIT ?
+		(UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE") : eWeapon).getCombat();
+	CvCity* pBestCity = NULL;
+	int iBestValue = 0;
+	int iLoop;
+	for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity != NULL; pCity = kPlayer.nextCity(&iLoop))
+	{
+		if (!AI_plotValid(pCity->plot()) || pCity->plot()->isVisibleEnemyUnit(this) ||
+			kPlayer.AI_isPlotDanger(pCity->plot(), 2)) continue;
+		// A weapons purchase can use a safe destination even without Slavery.
+		if (bBuyWeapons ? !pCity->canTrain(eWeapon, false, false, true) :
+			!canJoin(pCity->plot(), eSlave)) continue;
+
+		int iChance = 0;
+		if (!bBuyWeapons)
+		{
+			int iGarrison = 0;
+			CLLNode<IDInfo>* pNode = pCity->plot()->headUnitNode();
+			while (pNode != NULL)
+			{
+				CvUnit* pUnit = ::getUnit(pNode->m_data);
+				pNode = pCity->plot()->nextUnitNode(pNode);
+				// Settling consumes this unit: exclude it from future security.
+				if (pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() && pUnit->canDefend())
+					iGarrison += pUnit->baseCombatStr();
+			}
+			int iSlaves = pCity->getSpecialistCount(eSlave) + pCity->getFreeSpecialistCount(eSlave) + 1;
+			int iPower = std::max(1, iSlaves * iRebelStrength);
+			iChance = std::min(40, iSlaves * 5 * std::max(0, iPower - iGarrison) / iPower);
+			if (iChance > 10) continue;
+		}
+		int iTurns;
+		if (!generatePath(pCity->plot(), MOVE_NO_ENEMY_TERRITORY, true, &iTurns)) continue;
+		int iValue = (bBuyWeapons ? 100 : std::max(1,
+			pCity->AI_specialistValue(eSlave, pCity->AI_avoidGrowth(), false))) * 100;
+		iValue /= (1 + iTurns) * (1 + iChance);
+		if (iValue > iBestValue)
+		{
+			iBestValue = iValue;
+			pBestCity = pCity;
+		}
+	}
+	if (pBestCity != NULL)
+	{
+		if (atPlot(pBestCity->plot()))
+		{
+			if (!bBuyWeapons) getGroup()->pushMission(MISSION_JOIN, eSlave);
+			else getGroup()->pushMission(MISSION_SKIP);
+		}
+		else getGroup()->pushMission(MISSION_MOVE_TO, pBestCity->getX_INLINE(),
+			pBestCity->getY_INLINE(), MOVE_NO_ENEMY_TERRITORY);
+		return true;
+	}
+	// Armed units can still serve normally when no suitable job is available.
+	if (!bUnarmed) return false;
+	if (AI_retreatToCity()) return true;
+	if (AI_safety()) return true;
+	getGroup()->pushMission(MISSION_SKIP);
+	return true;
+}
+
 void CvUnitAI::AI_attackMove()
 {
 	OBSERVER_PERFORMANCE("unitAI.AI_attackMove");
@@ -1804,11 +1956,13 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCity(true))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(true)");
 			return;
 		}
 
 		if (AI_heal(30, 1))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_heal(30, 1)");
 			return;
 		}
 		
@@ -1817,11 +1971,13 @@ void CvUnitAI::AI_attackMove()
 		//{
 			if (AI_group(UNITAI_SETTLE, 1, -1, -1, false, false, false, 3, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_SETTLE, 1, -1, -1, false, false, false, 3, true)");
 				return;
 			}
 
 			if (AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true)");
 				return;
 			}
 		//}
@@ -1829,11 +1985,13 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCityAirlift())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCityAirlift()");
 			return;
 		}
 
 		if (AI_guardCity(false, true, 1))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, true, 1)");
 			return;
 		}
 
@@ -1842,6 +2000,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 1, true, true))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 1, true, true)");
 				return;
 			}
 		}
@@ -1855,6 +2014,7 @@ void CvUnitAI::AI_attackMove()
                 {
                     if (AI_offensiveAirlift())
                     {
+                        AI_recordObserverDecision("AI_attackMove:AI_offensiveAirlift()");
                         return;
                     }
                 }
@@ -1865,11 +2025,13 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_cityAttack(1, 55))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(1, 55)");
 				return;
 			}
 
 			if (AI_anyAttack(1, 65))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 65)");
 				return;
 			}
 
@@ -1877,6 +2039,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_anyAttack(1, 45, 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 45, 3)");
 					return;
 				}
 			}
@@ -1886,6 +2049,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_guardCity(false, false))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, false)");
 				return;
 			}
 		}
@@ -1897,17 +2061,20 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY, 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY, 3)");
 					return;
 				}
 
 				if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, 2, -1, -1, MOVE_SAFE_TERRITORY, 4))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, 2, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 					return;
 				}
 
 				if (GET_PLAYER(getOwnerINLINE()).AI_unitTargetMissionAIs(this, MISSIONAI_GROUP) > 0)
 				{
 					getGroup()->pushMission(MISSION_SKIP);
+					AI_recordObserverDecision("AI_attackMove:MISSION_SKIP");
 					return;
 				}
 			}
@@ -1918,37 +2085,44 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_pillageRange(1, 20))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_pillageRange(1, 20)");
 				return;
 			}
 
 			if (AI_cityAttack(1, 35))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(1, 35)");
 				return;
 			}
 
 			if (AI_anyAttack(1, 45))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 45)");
 				return;
 			}
 
 			if (AI_pillageRange(3, 20))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_pillageRange(3, 20)");
 				return;
 			}
 			
 			if (AI_choke(1))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_choke(1)");
 				return;
 			}
 		}
 
 		if (AI_goody(3))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_goody(3)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 70))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_anyAttack(1, 70)");
 			return;
 		}
 	}
@@ -1960,11 +2134,13 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_cityAttack(4, 30))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_cityAttack(4, 30)");
 				return;
 			}
 
 			if (AI_anyAttack(2, 40))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_anyAttack(2, 40)");
 				return;
 			}
 		}
@@ -1973,6 +2149,7 @@ void CvUnitAI::AI_attackMove()
 		{
 			if (AI_heal())
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_heal()");
 				return;
 			}
 		}
@@ -1981,11 +2158,13 @@ void CvUnitAI::AI_attackMove()
 		{
 				if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, true, /*iMaxPath*/ 5))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, true, /*iMaxPath*/ 5)");
 					return;
 				}
 
 			if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, false, /*iMaxPath*/ 4))
 			{
+				AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 1, /*iMaxOwnUnitAI*/ 1, -1, true, true, false, /*iMaxPath*/ 4)");
 				return;
 			}
 			
@@ -1993,6 +2172,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 4, /*iMaxOwnUnitAI*/ 1, -1, true, false, false, /*iMaxPath*/ 3))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 4, /*iMaxOwnUnitAI*/ 1, -1, true, false, false, /*iMaxPath*/ 3)");
 					return;
 				}
 			}
@@ -2004,6 +2184,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetBarbCity())
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetBarbCity()");
 					return;
 				}
 			}
@@ -2012,6 +2193,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(NATIVE))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(NATIVE)");
 					return;
 				}
 			}
@@ -2019,6 +2201,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(CELTIA))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(CELTIA)");
 					return;
 				}
 			}
@@ -2026,6 +2209,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(INDEPENDENT))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(INDEPENDENT)");
 					return;
 				}
 			}
@@ -2033,6 +2217,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetMinorCity(INDEPENDENT2))
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetMinorCity(INDEPENDENT2)");
 					return;
 				}
 			}
@@ -2044,6 +2229,7 @@ void CvUnitAI::AI_attackMove()
 			{
 				if (AI_targetCity())
 				{
+					AI_recordObserverDecision("AI_attackMove:AI_targetCity()");
 					return;
 				}
 			}
@@ -2051,6 +2237,7 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_guardCity(false, true, 3))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_guardCity(false, true, 3)");
 			return;
 		}
 
@@ -2064,11 +2251,13 @@ void CvUnitAI::AI_attackMove()
 					{
 						if (AI_exploreRange(3))
 						{
+							AI_recordObserverDecision("AI_attackMove:AI_exploreRange(3)");
 							return;
 						}
 
 						if (AI_explore())
 						{
+							AI_recordObserverDecision("AI_attackMove:AI_explore()");
 							return;
 						}
 					}
@@ -2078,41 +2267,49 @@ void CvUnitAI::AI_attackMove()
 
 		if (AI_protect(35))
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_protect(35)");
 			return;
 		}
 
 		if (AI_offensiveAirlift())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_offensiveAirlift()");
 			return;
 		}
 
 		if (AI_defend())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_defend()");
 			return;
 		}
 
 		if (AI_travelToUpgradeCity())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_travelToUpgradeCity()");
 			return;
 		}
 
 		if (AI_patrol())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_patrol()");
 			return;
 		}
 
 		if (AI_retreatToCity())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_retreatToCity()");
 			return;
 		}
 
 		if (AI_safety())
 		{
+			AI_recordObserverDecision("AI_attackMove:AI_safety()");
 			return;
 		}
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_attackMove:MISSION_SKIP");
 	return;
 }
 
@@ -2247,6 +2444,9 @@ void CvUnitAI::AI_attackCityMove()
 {
 	OBSERVER_PERFORMANCE("unitAI.AI_attackCityMove");
 	PROFILE_FUNC();
+	const bool bArabianJihad = GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad();
+	const bool bHunaInvasion = isBarbarian() && getScriptData() == "RFCMP_HUNA_INVASION"
+		&& GET_PLAYER((PlayerTypes)INDIA).isAlive() && GET_PLAYER((PlayerTypes)INDIA).getNumCities() > 0;
 
 	bool bIgnoreFaster = false;
 	if (GET_PLAYER(getOwnerINLINE()).AI_isDoStrategy(AI_STRATEGY_FASTMOVERS))
@@ -2263,11 +2463,12 @@ void CvUnitAI::AI_attackCityMove()
         plot()->getOwnerINLINE() == getOwnerINLINE() && plot()->isCity())
     {
         getGroup()->pushMission(MISSION_HEAL);
+		AI_recordObserverDecision("AI_attackCityMove:MISSION_HEAL");
 		return;
     }
 
     AreaAITypes eAreaAIType = area()->getAreaAIType(getTeam());
-    bool bLandWar = !isBarbarian() && ((eAreaAIType == AREAAI_OFFENSIVE) || (eAreaAIType == AREAAI_DEFENSIVE) || (eAreaAIType == AREAAI_MASSING));
+    bool bLandWar = bHunaInvasion || (!isBarbarian() && ((eAreaAIType == AREAAI_OFFENSIVE) || (eAreaAIType == AREAAI_DEFENSIVE) || (eAreaAIType == AREAAI_MASSING)));
 
 	if (plot()->isCity())
 	{
@@ -2279,6 +2480,7 @@ void CvUnitAI::AI_attackCityMove()
 
 			if (pOldGroup != getGroup())
 			{
+				AI_recordObserverDecision("AI_attackCityMove:other_return");
 				return;
 			}
 		}
@@ -2289,28 +2491,64 @@ void CvUnitAI::AI_attackCityMove()
 		    {
 		        if (AI_offensiveAirlift())
 		        {
+		            AI_recordObserverDecision("AI_attackCityMove:AI_offensiveAirlift()");
 		            return;
 		        }
 		    }
 		}
 	}
 
-	if (AI_guardCity(false, false, 1))
+	// Keep a defender behind without turning the whole invasion into a garrison.
+	if ((!bHunaInvasion || plot()->plotCount(PUF_canDefend, -1, -1, getOwnerINLINE()) <= getGroup()->getNumUnits()) && AI_guardCity(false, false, 1))
 	{
+        AI_recordObserverDecision(getJihadGroupCampaign() >= 0 ?
+            "AI_attackCityMove:jihad_emergency_garrison" : "AI_attackCityMove:AI_guardCity(false, false, 1)");
 		return;
 	}
 
 	if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 0, true, true, bIgnoreFaster))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 0, true, true, bIgnoreFaster)");
 		return;
 	}
 
 	bool bCity = plot()->isCity();
 
+    // Commit Amr to the Egyptian core, then the Mediterranean coast, before
+    // opportunistic attacks or shared-area staging divert him south or north.
+    // Local defense above and healing remain available.
+    CvCity* pCampaignTarget = getJihadGroupCampaign() == 1 ? AI_jihadCampaignTarget(true) : NULL;
+    if (pCampaignTarget != NULL)
+    {
+        if (AI_heal(30, 1)) return;
+        if (stepDistance(getX_INLINE(), getY_INLINE(), pCampaignTarget->getX_INLINE(), pCampaignTarget->getY_INLINE()) <= 1)
+        {
+            if (AI_bombardCity()) return;
+            if (getGroup()->getNumUnits() > 1 && AI_stackAttackCity(1, 90, true)) return;
+            if (AI_anyAttack(1, 60)) return;
+        }
+        if (AI_heal(50, 3)) return;
+        if (getGroup()->getNumUnits() >= 4)
+        {
+            if (AI_targetCity(0, NO_PLAYER, pCampaignTarget))
+            {
+                AI_recordObserverDecision("AI_attackCityMove:egypt_coast_campaign_advance");
+                return;
+            }
+        }
+        else if (AI_group(UNITAI_ATTACK_CITY, -1, -1, -1, bIgnoreFaster, true, true, 10, true)) return;
+        // Hold the front rather than selecting an unrelated empire-wide target.
+        getGroup()->pushMission(MISSION_SKIP);
+        AI_recordObserverDecision("AI_attackCityMove:egypt_coast_campaign_hold");
+        return;
+    }
+
+
 	if (!bCity)
 	{
 		if (AI_bombardCity())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_bombardCity()");
 			return;
 		}
 
@@ -2319,6 +2557,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_stackAttackCity(1, 250, true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_stackAttackCity(1, 250, true)");
 				return;
 			}
 		}
@@ -2326,8 +2565,10 @@ void CvUnitAI::AI_attackCityMove()
 		//stack attack
 		if (getGroup()->getNumUnits() > 1)
 		{
-			if (AI_stackAttackCity(1, 110, true))
+			// During the event, Arabia accepts a modest strength disadvantage.
+			if (AI_stackAttackCity(1, bArabianJihad ? 90 : 110, true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_stackAttackCity(1, bArabianJihad ? 90 : 110, true)");
 				return;
 			}
 		}
@@ -2335,16 +2576,18 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (AI_groupMergeRange(UNITAI_ATTACK_CITY, 2, true, true, bIgnoreFaster))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_groupMergeRange(UNITAI_ATTACK_CITY, 2, true, true, bIgnoreFaster)");
 		return;
 	}
 
 	if (AI_heal(30, 1))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_heal(30, 1)");
 		return;
 	}
 
 	bool bHuntBarbs = false;
-	if (area()->getCitiesPerPlayer(BARBARIAN_PLAYER) > 0)
+	if (!bHunaInvasion && area()->getCitiesPerPlayer(BARBARIAN_PLAYER) > 0)
 	{
 		if ((area()->getAreaAIType(getTeam()) != AREAAI_OFFENSIVE) && (area()->getAreaAIType(getTeam()) != AREAAI_DEFENSIVE))
 		{
@@ -2386,15 +2629,28 @@ void CvUnitAI::AI_attackCityMove()
 	}
 	//Rhye - end
 	
-	if (AI_romanCampaignEmbark()) return;
+	if (AI_romanCampaignEmbark())
+	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_romanCampaignEmbark()");
+		return;
+	}
 
-	bool bReadyToAttack = ((getGroup()->getNumUnits() >= (bHuntBarbs ? 3 : AI_stackOfDoomExtra())));
+	// Smaller event armies advance instead of waiting for a large stack.
+	const int iRequiredStack = (bHuntBarbs || bHunaInvasion) ? 3 : AI_stackOfDoomExtra();
+	bool bReadyToAttack = getGroup()->getNumUnits() >= (bArabianJihad ? std::min(4, iRequiredStack) : iRequiredStack);
+	if (GC.getGameINLINE().isObserverAutoPlay() && !g_observerPerformance &&
+        (getOwnerINLINE() == ARABIA || GET_PLAYER(getOwnerINLINE()).isArabianJihadActive()))
+	{
+		m_iObserverRequiredStack = bArabianJihad ? std::min(4, iRequiredStack) : iRequiredStack;
+		m_iObserverReadyToAttack = bReadyToAttack ? 1 : 0;
+	}
 	if (plot()->getOwnerINLINE() == getOwnerINLINE())
 	{
 		if (!bLandWar)
 		{
 			if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, NO_UNITAI, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 				return;
 			}
 		}
@@ -2406,6 +2662,7 @@ void CvUnitAI::AI_attackCityMove()
 			{
 				if (AI_moveToStagingCity())
 				{
+					AI_recordObserverDecision("AI_attackCityMove:AI_moveToStagingCity()");
 					return;
 				}
 			}
@@ -2416,12 +2673,14 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_anyAttack(1, 45, 3))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_anyAttack(1, 45, 3)");
 			return;
 		}
 	}
 
 	if (AI_anyAttack(1, 60))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_anyAttack(1, 60)");
 		return;
 	}
 
@@ -2431,17 +2690,20 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_pillageRange(3, 11))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_pillageRange(3, 11)");
 			return;
 		}
 
 		if (AI_pillageRange(1))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_pillageRange(1)");
 			return;
 		}
 	}
 
 	if (AI_heal(50, 3))
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_heal(50, 3)");
 		return;
 	}
 
@@ -2449,6 +2711,7 @@ void CvUnitAI::AI_attackCityMove()
 	{
 		if (AI_heal())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_heal()");
 			return;
 		}
 
@@ -2456,6 +2719,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_retreatToCity())
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_retreatToCity()");
 				return;
 			}
 		}
@@ -2463,8 +2727,9 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (!bReadyToAttack && !noDefensiveBonus())
 	{
-		if (AI_guardCity(false, false))
+		if ((!bHunaInvasion || plot()->plotCount(PUF_canDefend, -1, -1, getOwnerINLINE()) <= getGroup()->getNumUnits()) && AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -2475,32 +2740,41 @@ void CvUnitAI::AI_attackCityMove()
 //			((area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE) && (getGroup()->getNumUnits() >= AI_stackOfDoomExtra())))
 	if (bReadyToAttack)
 	{
+        // Campaign orders take precedence over the shared area target and
+        // generic independent/barbarian hunting, retaining normal combat/heal logic.
+        if (getJihadGroupCampaign() >= 0 && AI_targetCity()) return;
 		if (bHuntBarbs && AI_targetBarbCity())
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		//Rhye - start
 		else if (bHuntNatives && AI_targetMinorCity(NATIVE))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntCelts && AI_targetMinorCity(CELTIA))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntIndependents && AI_targetMinorCity(INDEPENDENT))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		else if (bHuntIndependents2 && AI_targetMinorCity(INDEPENDENT2))
 		{
+			AI_recordObserverDecision("AI_attackCityMove:other_return");
 			return;
 		}
 		//Rhye - end
 		else if (bLandWar)
 		{
-			if (AI_targetCity())
+			if (AI_targetCity(0, bHunaInvasion ? (PlayerTypes)INDIA : NO_PLAYER))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_targetCity()");
 				return;
 			}
 			CvTeamAI& kTeam = GET_TEAM(getTeam());
@@ -2512,6 +2786,7 @@ void CvUnitAI::AI_attackCityMove()
 				{
 					if (AI_solveBlockageProblem(pTargetCity->plot(), (kTeam.getAtWarCount(true) == 0)))
 					{
+						AI_recordObserverDecision("AI_attackCityMove:AI_solveBlockageProblem(pTargetCity->plot(), (kTeam.getAtWarCount(true) == 0))");
 						return;
 					}
 				}
@@ -2524,6 +2799,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_group(UNITAI_ATTACK_CITY, -1, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ true))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_group(UNITAI_ATTACK_CITY, -1, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ true)");
 				return;
 			}
 		}
@@ -2531,6 +2807,7 @@ void CvUnitAI::AI_attackCityMove()
 		{
 			if (AI_group(UNITAI_ATTACK_CITY, AI_stackOfDoomExtra() * 2, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ false))
 			{
+				AI_recordObserverDecision("AI_attackCityMove:AI_group(UNITAI_ATTACK_CITY, AI_stackOfDoomExtra() * 2, -1, -1, bIgnoreFaster, true, true, /*iMaxPath*/ 10, /*bAllowRegrouping*/ false)");
 				return;
 			}
 		}
@@ -2538,25 +2815,30 @@ void CvUnitAI::AI_attackCityMove()
 
 	if (AI_moveToStagingCity())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_moveToStagingCity()");
 		return;
 	}
 
 	if (AI_offensiveAirlift())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_offensiveAirlift()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_attackCityMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_attackCityMove:MISSION_SKIP");
 	return;
 }
 
@@ -2841,6 +3123,7 @@ void CvUnitAI::AI_reserveMove()
 
 	if (bDanger && AI_leaveAttack(2, 55, 130))
 	{
+		AI_recordObserverDecision("AI_reserveMove:other_return");
 		return;
 	}
 	
@@ -2848,10 +3131,12 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 			return;
 		}
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_WORKER, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_WORKER, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 			return;
 		}
 	}
@@ -2860,12 +3145,14 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_group(UNITAI_SETTLE, 2, -1, -1, false, false, false, 3, true)");
 			return;
 		}
 	}
 	
 	if (AI_guardCity(true))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(true)");
 		return;
 	}
 	
@@ -2873,22 +3160,26 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardFort(false))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardFort(false)");
 			return;
 		}
 	}
 		
 	if (AI_guardCityAirlift())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCityAirlift()");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 	
 	if (AI_guardCitySite())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCitySite()");
 		return;
 	}
 	
@@ -2896,17 +3187,20 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardFort(true))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardFort(true)");
 			return;
 		}
 		
 		if (AI_guardBonus(15))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardBonus(15)");
 			return;
 		}
 	}
 
 	if (AI_heal(30, 1))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_heal(30, 1)");
 		return;
 	}
 
@@ -2914,11 +3208,13 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_cityAttack(1, 55))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_cityAttack(1, 55)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 60))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_anyAttack(1, 60)");
 			return;
 		}
 	}
@@ -2927,6 +3223,7 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -2935,41 +3232,49 @@ void CvUnitAI::AI_reserveMove()
 	{
 		if (AI_cityAttack(3, 45))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_cityAttack(3, 45)");
 			return;
 		}
 
 		if (AI_anyAttack(3, 50))
 		{
+			AI_recordObserverDecision("AI_reserveMove:AI_anyAttack(3, 50)");
 			return;
 		}
 	}
 
 	if (AI_protect(45))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_protect(45)");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 3))
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_guardCity(false, true, 3)");
 		return;
 	}
 
 	if (AI_defend())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_defend()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_reserveMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_reserveMove:MISSION_SKIP");
 	return;
 }
 
@@ -2981,6 +3286,7 @@ void CvUnitAI::AI_counterMove()
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 	
@@ -2990,6 +3296,7 @@ void CvUnitAI::AI_counterMove()
 		{
 			if (AI_shadow(UNITAI_ATTACK_CITY))
 			{
+				AI_recordObserverDecision("AI_counterMove:AI_shadow(UNITAI_ATTACK_CITY)");
 				return;
 			}
 		}
@@ -3004,6 +3311,7 @@ void CvUnitAI::AI_counterMove()
             {
                 if (AI_offensiveAirlift())
                 {
+                    AI_recordObserverDecision("AI_counterMove:AI_offensiveAirlift()");
                     return;
                 }
             }
@@ -3016,11 +3324,13 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 			return;
 		}
 
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4)");
 			return;
 		}
 	}
@@ -3029,6 +3339,7 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_guardCity(false, false))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, false)");
 			return;
 		}
 	}
@@ -3037,17 +3348,20 @@ void CvUnitAI::AI_counterMove()
 	{
 		if (AI_cityAttack(1, 30))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_cityAttack(1, 30)");
 			return;
 		}
 
 		if (AI_anyAttack(1, 40))
 		{
+			AI_recordObserverDecision("AI_counterMove:AI_anyAttack(1, 40)");
 			return;
 		}
 	}
 
 			if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6))
 			{
+				AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6)");
 				return;
 			}
 	
@@ -3055,46 +3369,55 @@ void CvUnitAI::AI_counterMove()
 
 	if (AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 2, -1, -1, bFastMovers, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 5))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK, /*iMaxGroup*/ 2, -1, -1, bFastMovers, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 5)");
 		return;
 	}
 	
 	if (AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_group(UNITAI_ATTACK_CITY, /*iMaxGroup*/ -1, 2, -1, false, /*bIgnoreOwnUnitType*/ true, /*bStackOfDoom*/ true, /*iMaxPath*/ 6)");
 		return;
 	}
 	
 	if (AI_guardCity(false, true, 3))
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_guardCity(false, true, 3)");
 		return;
 	}
 
 	if (AI_heal())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_heal()");
 		return;
 	}
 
 	if (AI_offensiveAirlift())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_offensiveAirlift()");
 		return;
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_counterMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_counterMove:MISSION_SKIP");
 	return;
 }
 
 
 void CvUnitAI::AI_cityDefenseMove()
 {
+    if (!isHuman() && AI_jihadCampaignEscort()) return;
 	OBSERVER_PERFORMANCE("unitAI.AI_cityDefenseMove");
 	PROFILE_FUNC();
 	
@@ -3104,17 +3427,38 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_leaveAttack(1, 70, 175))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_leaveAttack(1, 70, 175)");
 			return;
 		}
 
 		if (AI_chokeDefend())
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_chokeDefend()");
 			return;
 		}
 	}
 
 	if (AI_guardCityBestDefender())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityBestDefender()");
+		return;
+	}
+
+	// Keep the best local defender and the city's minimum garrison. Healthy
+	// surplus guards can reinforce a reachable regional crusade on this landmass.
+	CvCity* pCrusadeHome = plot()->getPlotCity();
+	CvCity* pCrusadeTarget = area()->getTargetCity(getOwnerINLINE());
+	if (!bDanger && getDamage() == 0 && getGroup()->getNumUnits() == 1 && canAttack() &&
+		GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing() &&
+		pCrusadeHome != NULL && pCrusadeHome->getOwnerINLINE() == getOwnerINLINE() &&
+		!pCrusadeHome->isOccupation() && !pCrusadeHome->AI_isDanger() &&
+		plot()->plotCount(PUF_isUnitAIType, UNITAI_CITY_DEFENSE, -1, getOwnerINLINE()) > pCrusadeHome->AI_neededDefenders() &&
+		pCrusadeTarget != NULL && GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pCrusadeTarget) &&
+		pCrusadeTarget->isRevealed(getTeam(), false) && generatePath(pCrusadeTarget->plot(), 0, true))
+	{
+		AI_setUnitAIType(UNITAI_ATTACK_CITY);
+		AI_recordObserverDecision("AI_cityDefenseMove:crusade_mobilization");
+		getGroup()->pushMission(MISSION_SKIP);
 		return;
 	}
 	
@@ -3124,6 +3468,7 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY, 1))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY, 1)");
 				return;
 			}
 		}
@@ -3131,11 +3476,13 @@ void CvUnitAI::AI_cityDefenseMove()
 	
 	if (AI_guardCityMinDefender(true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityMinDefender(true)");
 		return;
 	}
 
 	if (AI_guardCity(true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(true)");
 		return;
 	}
 	
@@ -3144,11 +3491,13 @@ void CvUnitAI::AI_cityDefenseMove()
 	//{
 		if (AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 1, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 1, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true)");
 			return;
 		}
 
 		if (AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 2, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_SETTLE, /*iMaxGroup*/ 2, -1, -1, false, false, false, /*iMaxPath*/ 2, /*bAllowRegrouping*/ true)");
 			return;
 		}
 
@@ -3156,6 +3505,7 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, -1, -1, 1, -1, MOVE_SAFE_TERRITORY)");
 				return;
 			}
 		}
@@ -3167,6 +3517,7 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, 0, MOVE_SAFE_TERRITORY))
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK_CITY, -1, -1, -1, 0, MOVE_SAFE_TERRITORY)");
 			return;
 		}		
 	}
@@ -3175,17 +3526,20 @@ void CvUnitAI::AI_cityDefenseMove()
 	{
 		if (AI_guardFort())
 		{
+			AI_recordObserverDecision("AI_cityDefenseMove:AI_guardFort()");
 			return;
 		}
 	}
 
 	if (AI_guardCityAirlift())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityAirlift()");
 		return;
 	}
 
 	if (AI_guardCity(false, true, 1))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(false, true, 1)");
 		return;
 	}
 
@@ -3194,18 +3548,21 @@ void CvUnitAI::AI_cityDefenseMove()
 		if (AI_load(UNITAI_SETTLER_SEA, MISSIONAI_LOAD_SETTLER, UNITAI_SETTLE, 3, -1, -1, -1, MOVE_SAFE_TERRITORY))
 		{
 			// will enter here if in danger
+			AI_recordObserverDecision("AI_cityDefenseMove:other_return");
 			return;
 		}
 	}
 
 	if (AI_guardCity(false, true))
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCity(false, true)");
 		return;
 	}
 	if (!isBarbarian() && ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING)))
 	{
 			if (AI_group(UNITAI_ATTACK_CITY, -1, 2, 4, /*bIgnoreFaster*/ true))
 			{
+				AI_recordObserverDecision("AI_cityDefenseMove:AI_group(UNITAI_ATTACK_CITY, -1, 2, 4, /*bIgnoreFaster*/ true)");
 				return;
 			}
 		}
@@ -3216,21 +3573,25 @@ void CvUnitAI::AI_cityDefenseMove()
 		{
 			// does this ever occur? the previous settler check is less strict, this one should never be true (I think)
 			FAssertMsg(false, "unexpected settler load (non-fatal)");
+			AI_recordObserverDecision("AI_cityDefenseMove:other_return");
 			return;
 		}
 	}
 
 	if (AI_retreatToCity())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_retreatToCity()");
 		return;
 	}
 
 	if (AI_safety())
 	{
+		AI_recordObserverDecision("AI_cityDefenseMove:AI_safety()");
 		return;
 	}
 
 	getGroup()->pushMission(MISSION_SKIP);
+	AI_recordObserverDecision("AI_cityDefenseMove:MISSION_SKIP");
 	return;
 }
 
@@ -4245,7 +4606,7 @@ void CvUnitAI::AI_workerSeaMove()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity())
 			{
@@ -6009,7 +6370,7 @@ void CvUnitAI::AI_networkAutomated()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -6088,7 +6449,7 @@ void CvUnitAI::AI_cityAutomated()
 
 	if (!(getGroup()->canDefend()))
 	{
-		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot()) > 0)
+		if (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), -1, true, true) > 0)
 		{
 			if (AI_retreatToCity()) // XXX maybe not do this??? could be working productively somewhere else...
 			{
@@ -7440,9 +7801,123 @@ bool CvUnitAI::AI_guardCityMinDefender(bool bSearch)
 }
 
 // Returns true if a mission was pushed...
+bool CvUnitAI::AI_jihadCampaignEscort()
+{
+    const int iCampaign = getScriptData() == "RFCMP_JIHAD_EGYPT_ESCORT" ? 1 :
+        (getScriptData() == "RFCMP_JIHAD_PERSIA_ESCORT" ? 2 : -1);
+    if (iCampaign < 0) return false;
+    if (!GET_PLAYER(getOwnerINLINE()).isArabianJihadActive())
+    {
+        setScriptData("");
+        return false;
+    }
+    CvCity* pCity = plot()->getPlotCity();
+    const bool bRegion = iCampaign == 1 ?
+        (65 <= getX_INLINE() && getX_INLINE() <= 72 && 30 <= getY_INLINE() && getY_INLINE() <= 37) :
+        (75 <= getX_INLINE() && getX_INLINE() <= 93 && 36 <= getY_INLINE() && getY_INLINE() <= 46);
+    if (pCity != NULL && pCity->getOwnerINLINE() == getOwnerINLINE() && bRegion)
+    {
+        int iGuards = 0;
+        for (CLLNode<IDInfo>* pNode = plot()->headUnitNode(); pNode != NULL; pNode = plot()->nextUnitNode(pNode))
+        {
+            CvUnit* pUnit = ::getUnit(pNode->m_data);
+            if (pUnit != NULL && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() &&
+                pUnit->getDomainType() == DOMAIN_LAND && pUnit->canDefend() && !pUnit->isCargo() &&
+                !pUnit->isDelayedDeath() && pUnit->AI_isCityAIType() &&
+                pUnit->getScriptData() != "RFCMP_JIHAD_EGYPT_ESCORT" &&
+                pUnit->getScriptData() != "RFCMP_JIHAD_PERSIA_ESCORT") ++iGuards;
+        }
+        if (iGuards < (pCity->AI_isDanger() ? 2 : 1))
+        {
+            setScriptData("");
+            getGroup()->pushMission(MISSION_SKIP, -1, -1, 0, false, false, MISSIONAI_GUARD_CITY, pCity->plot());
+            AI_recordObserverDecision("AI_cityDefenseMove:campaign_escort_garrison");
+            return true;
+        }
+    }
+    CvUnit* pBest = NULL;
+    int iBestDistance = MAX_INT;
+    int iLoop;
+    for (CvUnit* pUnit = GET_PLAYER(getOwnerINLINE()).firstUnit(&iLoop); pUnit != NULL;
+         pUnit = GET_PLAYER(getOwnerINLINE()).nextUnit(&iLoop))
+    {
+        if (pUnit->getJihadCampaign() != iCampaign || pUnit->isDelayedDeath() || pUnit->isCargo() ||
+            pUnit->getArea() != getArea() || pUnit->AI_getUnitAIType() != UNITAI_ATTACK_CITY) continue;
+        int iPathTurns;
+        if (!generatePath(pUnit->plot(), 0, true, &iPathTurns)) continue;
+        // Prefer the attached commander; surviving troops retain the escort
+        // if the general dies. Do not join their group or acquire a campaign tag.
+        const int iDistance = iPathTurns + (pUnit->getLeaderUnitType() == NO_UNIT ? 10000 : 0);
+        if (iDistance < iBestDistance) { iBestDistance = iDistance; pBest = pUnit; }
+    }
+    if (pBest == NULL)
+    {
+        setScriptData("");
+        return false;
+    }
+    if (atPlot(pBest->plot()))
+        getGroup()->pushMission(MISSION_SKIP, -1, -1, 0, false, false, MISSIONAI_SHADOW, NULL, pBest);
+    else
+    {
+        // MOVE_TO_UNIT refuses to move a city's best UNITAI_CITY_DEFENSE
+        // defender. Follow one turn of path instead, so escorts can leave the
+        // staging city and reassess newly captured garrisons each turn.
+        if (!generatePath(pBest->plot(), 0, true)) return false;
+        CvPlot* pStep = getPathEndTurnPlot();
+        if (pStep == NULL || atPlot(pStep))
+            getGroup()->pushMission(MISSION_SKIP);
+        else
+            getGroup()->pushMission(MISSION_MOVE_TO, pStep->getX_INLINE(), pStep->getY_INLINE(), 0, false, false, MISSIONAI_SHADOW, NULL, pBest);
+    }
+    AI_recordObserverDecision("AI_cityDefenseMove:campaign_escort_follow");
+    return true;
+}
+
+bool CvUnitAI::AI_jihadCampaignGarrison()
+{
+    CvCity* pCity = plot()->getPlotCity();
+    if (pCity == NULL || pCity->getOwnerINLINE() != getOwnerINLINE()) return false;
+
+    int iGarrison = 0;
+    for (CLLNode<IDInfo>* pNode = plot()->headUnitNode(); pNode != NULL; pNode = plot()->nextUnitNode(pNode))
+    {
+        CvUnit* pUnit = ::getUnit(pNode->m_data);
+        if (pUnit->getOwnerINLINE() == getOwnerINLINE() && !pUnit->isCargo() &&
+            pUnit->getDomainType() == DOMAIN_LAND && pUnit->canDefend() &&
+            !pUnit->isDelayedDeath() && pUnit->AI_isCityAIType()) ++iGarrison;
+    }
+    const bool bDanger = pCity->AI_isDanger();
+    const int iWanted = bDanger ? 2 : 1;
+    if (iGarrison >= iWanted) return false;
+
+    // Never feed the entire campaign into repeated one-unit guard groups.
+    // A small army can defend together in an actual local emergency.
+    if (getGroup()->getNumUnits() <= 4)
+    {
+        if (bDanger && iGarrison == 0)
+        {
+            getGroup()->pushMission(MISSION_SKIP, -1, -1, 0, false, false, MISSIONAI_GUARD_CITY, pCity->plot());
+            return true;
+        }
+        return false;
+    }
+
+    CvUnit* pGuard = getGroup()->AI_ejectBestDefender(plot());
+    if (pGuard == NULL) return false;
+    // A real garrison leaves the field campaign and is counted by subsequent
+    // armies, rather than repeatedly requesting another guard from each stack.
+    pGuard->setJihadCampaign(-1);
+    pGuard->AI_setUnitAIType(UNITAI_CITY_DEFENSE);
+    pGuard->getGroup()->pushMission(MISSION_SKIP, -1, -1, 0, false, false, MISSIONAI_GUARD_CITY, pCity->plot());
+    return pGuard == this;
+}
+
 bool CvUnitAI::AI_guardCity(bool bLeave, bool bSearch, int iMaxPath)
 {
 	PROFILE_FUNC();
+    // Campaigns use a bounded local garrison policy, including calls made by
+    // other combat routines. Generic empire-wide guard demand cannot strip them.
+    if (!isHuman() && getJihadGroupCampaign() >= 0) return AI_jihadCampaignGarrison();
 
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pCity;
@@ -10814,9 +11289,59 @@ bool CvUnitAI::AI_exploreRange(int iRange)
 
 
 // Returns true if a mission was pushed...
-bool CvUnitAI::AI_targetCity(int iFlags)
+CvCity* CvUnitAI::AI_jihadCampaignTarget(bool bEgyptCoastOnly)
+{
+    const int iCampaign = getJihadGroupCampaign();
+    if (isHuman() || iCampaign < 0) return NULL;
+    CvCity* pBest = NULL;
+    int iBestPriority = -1;
+    int iBestValue = -1;
+    for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; ++iPlayer)
+    {
+        CvPlayer& kEnemy = GET_PLAYER((PlayerTypes)iPlayer);
+        // Orders never create wars or override peace/vassal rules.
+        if (!kEnemy.isAlive() || !GET_TEAM(getTeam()).isAtWar(kEnemy.getTeam())) continue;
+        int iCityLoop;
+        for (CvCity* pCity = kEnemy.firstCity(&iCityLoop); pCity != NULL; pCity = kEnemy.nextCity(&iCityLoop))
+        {
+            if (!AI_plotValid(pCity->plot()) || !pCity->isRevealed(getTeam(), false)) continue;
+            int iPathTurns;
+            if (!generatePath(pCity->plot(), 0, true, &iPathTurns)) continue;
+            const int x = pCity->getX_INLINE();
+            const int y = pCity->getY_INLINE();
+            const bool bLevant = 73 <= x && x <= 79 && 37 <= y && y <= 43;
+            const bool bEgypt = 65 <= x && x <= 72 && 30 <= y && y <= 37;
+            const bool bEgyptCore = (x == 69 && y == 33) || (x == 68 && y == 36);
+            const bool bLowerEgypt = bEgypt && y >= 33;
+            const bool bAfrica = 45 <= x && x < 65 && 28 <= y && y <= 39;
+            const bool bAfricaCoast = bAfrica && y >= 34;
+            if (bEgyptCoastOnly && !(bLowerEgypt || bAfricaCoast)) continue;
+            const bool bIraq = 80 <= x && x <= 85 && 36 <= y && y <= 43;
+            const bool bPersia = 85 < x && x <= 97 && 30 <= y && y <= 45;
+            int iPriority = 0;
+            if (iCampaign == 0) iPriority = bLevant ? 3 : (bIraq ? 2 : 0);
+            // Thebes and Kem Kasir first; Nubia and inland Africa must not
+            // postpone the westward drive into the future Umayyad realm.
+            if (iCampaign == 1) iPriority = bEgyptCore ? 4 : (bLowerEgypt ? 3 :
+                (bAfricaCoast ? 2 : ((bEgypt || bAfrica) ? 1 : 0)));
+            if (iCampaign == 2) iPriority = bIraq ? 3 : (bPersia ? 2 : 0);
+            // With no reachable enemies in its region, help on another front.
+            const int iValue = GET_PLAYER(getOwnerINLINE()).AI_targetCityValue(pCity, false, false) * 1000 / (4 + iPathTurns * iPathTurns);
+            if (iPriority > iBestPriority || (iPriority == iBestPriority && iValue > iBestValue))
+            {
+                iBestPriority = iPriority;
+                iBestValue = iValue;
+                pBest = pCity;
+            }
+        }
+    }
+    return pBest;
+}
+
+bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrderedCity)
 {
 	PROFILE_FUNC();
+	AI_recordObserverCityTarget("no_reachable_city");
 
 	CvCity* pTargetCity;
 	CvCity* pLoopCity;
@@ -10832,9 +11357,10 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 	iBestValue = 0;
 	pBestCity = NULL;
 
-	pTargetCity = area()->getTargetCity(getOwnerINLINE());
+	pTargetCity = pOrderedCity != NULL ? pOrderedCity : AI_jihadCampaignTarget();
+    if (pTargetCity == NULL) pTargetCity = area()->getTargetCity(getOwnerINLINE());
 
-	if (pTargetCity != NULL)
+	if (pTargetCity != NULL && (eTargetPlayer == NO_PLAYER || pTargetCity->getOwnerINLINE() == eTargetPlayer))
 	{
 		if (AI_potentialEnemy(pTargetCity->getTeam(), pTargetCity->plot()))
 		{
@@ -10845,10 +11371,11 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 		}
 	}
 
-	if (pBestCity == NULL)
+	if (pBestCity == NULL && pOrderedCity == NULL)
 	{
 		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
+			if (eTargetPlayer != NO_PLAYER && iI != eTargetPlayer) continue;
 			if (GET_PLAYER((PlayerTypes)iI).isAlive())
 			{
 				for (pLoopCity = GET_PLAYER((PlayerTypes)iI).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iI).nextCity(&iLoop))
@@ -10893,6 +11420,7 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 
 	if (pBestCity != NULL)
 	{
+		AI_recordObserverCityTarget("no_approach_plot", pBestCity);
 		iBestValue = 0;
 		pBestPlot = NULL;
 
@@ -10948,10 +11476,12 @@ bool CvUnitAI::AI_targetCity(int iFlags)
 
 		if (pBestPlot != NULL)
 		{
+			AI_recordObserverCityTarget("already_at_approach", pBestCity);
 			FAssert(!(pBestCity->at(pBestPlot)) || 0 != (iFlags & MOVE_THROUGH_ENEMY)); // no suicide missions...
 			if (!atPlot(pBestPlot))
 			{
 				getGroup()->pushMission(MISSION_MOVE_TO, pBestPlot->getX_INLINE(), pBestPlot->getY_INLINE(), iFlags);
+				AI_recordObserverCityTarget("move_queued", pBestCity);
 				return true;
 			}
 		}
@@ -15021,7 +15551,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 	int iBestValue = MAX_INT;
 	int iPass;
 	int iLoop;
-	int iCurrentDanger = GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot());
+	int iCurrentDanger = GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), -1, true, false, getGroup()->isWorkerGroup());
 
 	pCity = plot()->getPlotCity();
 
@@ -15063,7 +15593,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 							{
 								if (iPathTurns <= ((iPass == 2) ? 1 : iMaxPath))
 								{
-									if ((iPass > 0) || (getGroup()->canFight() || GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot()) < iCurrentDanger))
+									if ((iPass > 0) || (getGroup()->canFight() || GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot(), -1, true, false, getGroup()->isWorkerGroup()) < iCurrentDanger))
 									{
 										iValue = iPathTurns;
 										
@@ -17681,6 +18211,11 @@ bool CvUnitAI::AI_allowGroup(const CvUnit* pUnit, UnitAITypes eUnitAI) const
 {
 	CvSelectionGroup* pGroup = pUnit->getGroup();
 	CvPlot* pPlot = pUnit->plot();
+
+    // Untagged reinforcements can join an army; armies cannot chase or merge
+    // into another campaign or an unrelated unassigned stack.
+    if (!isHuman() && getJihadGroupCampaign() >= 0 &&
+        getJihadGroupCampaign() != pUnit->getJihadGroupCampaign()) return false;
 
 	if (pUnit == this)
 	{

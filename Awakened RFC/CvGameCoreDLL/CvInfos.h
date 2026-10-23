@@ -1303,6 +1303,7 @@ public:
 	bool isDivineKingshipVariant(int iCivilization) const;
 	bool isRomanRepublicVariant(int iCivilization) const;
 	bool isRomanLegionsVariant(int iCivilization) const;
+	bool isHordeVariant(int iCivilization) const;
 	int getCivilizationUpkeep(int iCivilization) const;
 
 	int getCivicOptionType() const;				// Exposed to Python					
@@ -4009,6 +4010,7 @@ public:
 
 	int getChar() const;								// Exposed to Python
 	void setChar(int i);			
+	int getDormantHolyCityChar() const; // Exposed to Python
 	int getHolyCityChar() const;				// Exposed to Python
 	void setHolyCityChar(int i);			
 	int getTechPrereq() const;					// Exposed to Python

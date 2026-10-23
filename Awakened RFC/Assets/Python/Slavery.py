@@ -3,6 +3,7 @@
 
 from CvPythonExtensions import *
 import Popup
+import CvUtil
 import Consts as con
 
 gc = CyGlobalContext()
@@ -10,13 +11,15 @@ gc = CyGlobalContext()
 SLAVE_REVOLT_POPUP = 7624
 CAPTURE_AFTERMATH_POPUP = 7625
 CAPTURE_AFTERMATH_MINIMUM_POPULATION = 4
+CAPTURE_AFTERMATH_MAX_DISTANCE = 12
 CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
 
 class Slavery:
 
 	def __init__(self):
-		self.pending = (-1, -1)
+		self.pending = {}
 		self.capturePending = {}
+		self.nextDecisionID = 0
 
 	def _info(self, name):
 		return gc.getInfoTypeForString(name)
@@ -57,8 +60,9 @@ class Slavery:
 	def _refugeeCulture(self, city):
 		return min(200, max(50, (city.getPopulation() + 1) * 10))
 
-	def _continentCity(self, player, area, bLargest):
-		candidates = [city for city in self._cities(player) if city.plot().getArea() == area]
+	def _nearbyCity(self, player, x, y, bLargest):
+		candidates = [city for city in self._cities(player)
+			if plotDistance(x, y, city.getX(), city.getY()) <= CAPTURE_AFTERMATH_MAX_DISTANCE]
 		if not candidates: return None
 		if bLargest:
 			candidates.sort(key=lambda city: (-city.getPopulation(), city.getID()))
@@ -75,7 +79,7 @@ class Slavery:
 		if iOldOwner == iNewOwner: return
 
 		bSlaveMarket = self._hasSlavery(gc.getPlayer(iNewOwner))
-		area = city.plot().getArea()
+		x, y = city.getX(), city.getY()
 		cityName = city.getName()
 		price = self._capturePrice(city)
 		culture = self._refugeeCulture(city)
@@ -83,9 +87,12 @@ class Slavery:
 			if iPlayer == iNewOwner: continue
 			player = gc.getPlayer(iPlayer)
 			if not player.isAlive() or player.getNumCities() <= 0: continue
-			target = self._continentCity(player, area, bSlaveMarket and self._hasSlavery(player))
+			# The former owner's survivors are mandatory refugees, even when
+			# the conqueror sells captives to the other civilizations.
+			bPlayerSlaveMarket = bSlaveMarket and iPlayer != iOldOwner
+			target = self._nearbyCity(player, x, y, bPlayerSlaveMarket and self._hasSlavery(player))
 			if target is None: continue
-			data = (iOldOwner, cityName, bSlaveMarket, target.getID(), price, culture)
+			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), price, culture)
 			self._offerCaptureAftermath(iPlayer, data)
 
 	def _offerCaptureAftermath(self, iPlayer, data):
@@ -94,13 +101,18 @@ class Slavery:
 		bSlavery = self._hasSlavery(player)
 		if not player.isHuman():
 			# The AI only spends a meaningful reserve on a slave-market purchase;
-			# accepting refugees is free and always useful in its continental city.
+			# accepting refugees is free and always useful in its nearby city.
 			bAccept = not bSlaveMarket or player.getGold() >= price * 2
 			self._resolveCaptureAftermath(iPlayer, data, bAccept)
 			return
 
-		self.capturePending[iPlayer] = data
+		iDecision = self.nextDecisionID
+		self.nextDecisionID += 1
+		# Keep pending decisions on every peer; only the owner opens the UI.
+		self.capturePending[iDecision] = (iPlayer, data)
+		if gc.getGame().getActivePlayer() != iPlayer: return
 		popup = Popup.PyPopup(CAPTURE_AFTERMATH_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
+		popup.setUserData((iPlayer, iDecision))
 		if bSlaveMarket:
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_TITLE", ()))
 			if bSlavery:
@@ -111,28 +123,38 @@ class Slavery:
 				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_BUY_FREEDOM", (price,)))
 		else:
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_TITLE", ()))
-			if bSlavery:
+			if iPlayer == iOldOwner:
+				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_OWN_CITY", (cityName,)))
+			elif bSlavery:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_SLAVERY", (cityName,)))
-				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", ()))
 			else:
 				popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_FREE", (cityName,)))
-				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", ()))
-		popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
+			if bSlavery:
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVE", (player.getCity(iCity).getName(), CAPTURE_AFTERMATH_REFUGEE_TURNS)))
+			else:
+				popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPT", (player.getCity(iCity).getName(),)))
+		if iPlayer != iOldOwner:
+			popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_MARKET_DECLINE", ()))
 		popup.launch(False)
 
-	def captureEventApply(self, iPlayer, popupReturn):
-		if not self.capturePending.has_key(iPlayer): return
-		data = self.capturePending[iPlayer]
-		del self.capturePending[iPlayer]
-		self._resolveCaptureAftermath(iPlayer, data, popupReturn.getButtonClicked() == 0)
+	def captureEventApply(self, iPlayer, netUserData, popupReturn):
+		iOwner, iDecision = netUserData
+		if iPlayer != iOwner or not self.capturePending.has_key(iDecision): return
+		iPendingOwner, data = self.capturePending[iDecision]
+		if iPlayer != iPendingOwner: return
+		iButton = popupReturn.getButtonClicked()
+		if iButton not in (0, 1): return
+		del self.capturePending[iDecision]
+		self._resolveCaptureAftermath(iPlayer, data, iButton == 0)
 
 	def _resolveCaptureAftermath(self, iPlayer, data, bAccept):
-		if not bAccept: return
 		iOldOwner, cityName, bSlaveMarket, iCity, price, culture = data
+		# Enforce mandatory arrivals on every peer, independently of the UI.
+		if not bAccept and iPlayer != iOldOwner: return
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive(): return
 		city = player.getCity(iCity)
-		if city.getOwner() != iPlayer: return
+		if city.isNone() or city.getOwner() != iPlayer: return
 		bSlavery = self._hasSlavery(player)
 
 		if bSlaveMarket:
@@ -151,11 +173,11 @@ class Slavery:
 			if bSlavery:
 				city.addTemporarySlaveSpecialist(CAPTURE_AFTERMATH_REFUGEE_TURNS)
 				city.addSlaveRefugeeUnhappiness(CAPTURE_AFTERMATH_REFUGEE_TURNS)
-				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVED", (cityName,)), "", 0, "", ColorTypes(7), city.getX(), city.getY(), True, True)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ENSLAVED", (cityName, city.getName())), "", 0, "", ColorTypes(7), city.getX(), city.getY(), True, True)
 			else:
 				city.changePopulation(1)
 				city.changeCulture(iOldOwner, culture, False)
-				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPTED", (cityName,)), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
+				CyInterface().addMessage(iPlayer, True, 14, CyTranslator().getText("TXT_KEY_RFCMP_REFUGEES_ACCEPTED", (cityName, city.getName())), "", 0, "", ColorTypes(8), city.getX(), city.getY(), True, True)
 
 	def _garrisonStrength(self, city, owner):
 		plot = city.plot()
@@ -192,9 +214,14 @@ class Slavery:
 				return # one decision per player turn
 
 	def _startRevolt(self, iPlayer, city):
-		self.pending = (iPlayer, city.getID())
 		if gc.getPlayer(iPlayer).isHuman():
+			iDecision = self.nextDecisionID
+			self.nextDecisionID += 1
+			self.pending[iDecision] = (iPlayer, city.getID())
+			CvUtil.pyPrint("Slave revolt queued: owner=%d decision=%d city=%d slaves=%d" % (iPlayer, iDecision, city.getID(), self._slaveCount(city)))
+			if gc.getGame().getActivePlayer() != iPlayer: return
 			popup = Popup.PyPopup(SLAVE_REVOLT_POPUP, EventContextTypes.EVENTCONTEXT_ALL)
+			popup.setUserData((iPlayer, iDecision))
 			popup.setHeaderString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_TITLE", ()))
 			popup.setBodyString(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_TEXT", (city.getName(), self._slaveCount(city))))
 			popup.addButton(CyTranslator().getText("TXT_KEY_RFCMP_SLAVE_REVOLT_FREE", ()))
@@ -207,15 +234,26 @@ class Slavery:
 			else:
 				self._free(city)
 
-	def eventApply(self, popupReturn):
-		iPlayer, iCity = self.pending
-		self.pending = (-1, -1)
-		if iPlayer < 0: return
+	def eventApply(self, iPlayer, netUserData, popupReturn):
+		CvUtil.pyPrint("Slave revolt response: player=%d data=%s button=%d" % (iPlayer, str(netUserData), popupReturn.getButtonClicked()))
+		iOwner, iDecision = netUserData
+		if iPlayer != iOwner or not self.pending.has_key(iDecision):
+			CvUtil.pyPrint("Slave revolt response rejected: wrong owner or missing decision")
+			return
+		iPendingOwner, iCity = self.pending[iDecision]
+		if iPlayer != iPendingOwner: return
+		iButton = popupReturn.getButtonClicked()
+		if iButton not in (0, 1): return
+		# EVENTCONTEXT_ALL delivers this answer to every peer, including non-owners.
+		del self.pending[iDecision]
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive(): return
 		city = player.getCity(iCity)
-		if self._slaveCount(city) <= 0: return
-		if popupReturn.getButtonClicked() == 0:
+		if city.isNone() or city.getOwner() != iPlayer: return
+		if self._slaveCount(city) <= 0:
+			CvUtil.pyPrint("Slave revolt response rejected: city no longer has slaves")
+			return
+		if iButton == 0:
 			self._free(city)
 		else:
 			self._suppress(iPlayer, city, True)

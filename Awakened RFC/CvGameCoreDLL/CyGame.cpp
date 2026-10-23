@@ -536,6 +536,7 @@ int CyGame::getInitWonders() const
 	return (NULL != m_pGame ? m_pGame->getInitWonders() : 0);
 }
 
+#if ARFC_ENABLE_REPORTING
 void CyGame::saveObserverCheckpoint(std::string path)
 {
 	if (m_pGame && !m_pGame->isGameMultiPlayer())
@@ -550,6 +551,12 @@ void CyGame::setObserverAutoPlay(bool enabled)
 	if (m_pGame) m_pGame->setObserverAutoPlay(enabled);
 }
 
+void CyGame::setObserverRevealMap(bool enabled)
+{
+	if (m_pGame) m_pGame->setObserverRevealMap(enabled);
+}
+
+#endif
 bool CyGame::isObserverAutoPlay() const
 {
 	return m_pGame && m_pGame->isObserverAutoPlay();
@@ -1217,3 +1224,22 @@ void CyGame::doControl(int iControl)
 		m_pGame->doControl((ControlTypes) iControl);
 	}
 }
+
+bool CyGame::isReportingEnabled() const
+{
+    return ARFC_ENABLE_REPORTING != 0;
+}
+
+int CyGame::getCouncilVoteId() const { return m_pGame ? m_pGame->getCouncilVoteId() : -1; }
+int CyGame::getCouncilTally(int iVoteId, int iCategory, bool bNations) const { return m_pGame ? m_pGame->getCouncilTally(iVoteId, iCategory, bNations) : 0; }
+int CyGame::getCouncilTurnsLeft(int iVoteId) const { return m_pGame ? m_pGame->getCouncilTurnsLeft(iVoteId) : 0; }
+std::wstring CyGame::getCouncilVoteText(int iVoteId) const { return m_pGame ? m_pGame->getCouncilVoteText(iVoteId) : L""; }
+
+bool CyGame::isCrusadeParticipant(int iPlayer) const { return m_pGame && m_pGame->isCrusadeParticipant((PlayerTypes)iPlayer); }
+int CyGame::getCrusadeTurnsLeft() const { return m_pGame ? m_pGame->getCrusadeTurnsLeft() : 0; }
+int CyGame::getCrusadePlunder(int iPlayer) const { return m_pGame ? m_pGame->getCrusadePlunder(iPlayer) : 0; }
+std::wstring CyGame::getActiveCrusadeName() const { return m_pGame ? m_pGame->getActiveCrusadeName() : L""; }
+
+bool CyGame::isCrusadeHolyState(int iPlayer) const { return m_pGame && m_pGame->isCrusadeHolyState((PlayerTypes)iPlayer); }
+
+bool CyGame::isPapalState(int iPlayer) const { return m_pGame && m_pGame->isPapalState((PlayerTypes)iPlayer); }

@@ -21,12 +21,21 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 	python::scope().attr("__doc__") = "Civilization IV Player Class"; 
 	x
 		.def("isNone", &CyPlayer::isNone, "checks for a null player")
+        .def("getCaliphatePartitionDecision", &CyPlayer::getCaliphatePartitionDecision, "int () - pending caliphate partition, or -1")
+        .def("isCaliphatePartitionInProgress", &CyPlayer::isCaliphatePartitionInProgress, "bool () - canonical partition city transfers in progress")
+        .def("getCaliphateRealmMask", &CyPlayer::getCaliphateRealmMask, "int () - eligible successor realms")
+        .def("resolveCaliphatePartition", &CyPlayer::resolveCaliphatePartition, "void (int decision, int realm) - synchronized successor choice")
+        .def("getIslamFoundingDecision", &CyPlayer::getIslamFoundingDecision, "int () - pending Islam founding decision, or -1")
+        .def("isArabianJihadActive", &CyPlayer::isArabianJihadActive, "bool () - full jihad event currently active for this player")
+        .def("hasArabianJihadTriggered", &CyPlayer::hasArabianJihadTriggered, "bool () - full conquest event has started, including expired events")
+        .def("resolveIslamFounding", &CyPlayer::resolveIslamFounding, "void (int decision, bool join) - synchronized founding choice")
 		.def("startingPlotRange", &CyPlayer::startingPlotRange, "int ()")
 		.def("startingPlotWithinRange", &CyPlayer::startingPlotWithinRange, "bool (CyPlot *pPlot, int /*PlayerTypes*/ ePlayer, int iRange, int iPass)")
 
 		.def("findStartingPlot", &CyPlayer::findStartingPlot, python::return_value_policy<python::manage_new_object>(), "findStartingPlot(bool bRandomize) - Finds a starting plot for player")
 
 		.def("initCity", &CyPlayer::initCity, python::return_value_policy<python::manage_new_object>(), "initCity( plotX, plotY ) - spawns a city at x,y")
+		.def("acquireArabianBirthCity", &CyPlayer::acquireArabianBirthCity, "void (CyCity*) - birth flip with active Arabian event effects")
 		.def("acquireCity", &CyPlayer::acquireCity, "void (CyCity* pCity, bool bConquest, bool bTrade)")
 		.def("killCities", &CyPlayer::killCities, "void ()")
 
@@ -52,6 +61,7 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 		//Rhye (jdog) -  end -----------------------
 		.def("getCivilizationShortDescription", &CyPlayer::getCivilizationShortDescription, "str() - returns the short Civilization Description")
 		.def("getCivilizationDescriptionKey", &CyPlayer::getCivilizationDescriptionKey, "str() - returns the Civilization Description String")
+		.def("processCivNames", &CyPlayer::processCivNames, "void () - refresh the country name from current institutions and diplomatic identity")
 		.def("getCivilizationShortDescriptionKey", &CyPlayer::getCivilizationShortDescriptionKey, "str() - returns the short Civilization Description")
 		.def("getCivilizationAdjective", &CyPlayer::getCivilizationAdjective, "str() - returns the Civilization name in adjective form")
 		.def("getCivilizationAdjectiveKey", &CyPlayer::getCivilizationAdjectiveKey, "str() - returns the Civilization name in adjective form")
@@ -147,7 +157,9 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 
 		.def("isRomanProvince", &CyPlayer::isRomanProvince, "bool (int x, int y)")
 		.def("isRomanCampaignExclusive", &CyPlayer::isRomanCampaignExclusive, "bool ()")
+#if ARFC_ENABLE_REPORTING
 		.def("getRomanCampaignReadiness", &CyPlayer::getRomanCampaignReadiness, "tuple () - read-only cached campaign decision")
+#endif
 		.def("isCivic", &CyPlayer::isCivic, "bool (int (CivicTypes) eCivic)")
 		.def("canDoCivics", &CyPlayer::canDoCivics, "bool (int (CivicTypes) eCivic)")
 		.def("canRevolution", &CyPlayer::canRevolution, "bool (int (CivicTypes*) paeNewCivics)")

@@ -6,6 +6,19 @@ Python command examples below assume the repository root as the working director
 Existing recordings are preserved under `testing/runs/`. Game-side observer
 hooks remain in the mod source because Civ4 loads them from there.
 
+Reporting is excluded from normal DLL builds and release packages. Before using
+an observer launcher, build the DLL with `ARFC_ENABLE_REPORTING=1` in the build
+environment (or ignored `Makefile.settings`) and synchronize the development
+Python files. The launcher refuses a DLL without reporting support. Existing
+token/PID authorization and multiplayer restrictions still apply.
+
+For ordinary builds, unset the environment flag or set `ARFC_ENABLE_REPORTING=0`.
+Gameplay and reporting objects/PCHs use separate directories under `temp_files`;
+switching modes does not reuse objects from the other mode. The final DLL still
+uses the standard output/install paths. Development packages require
+`python tools/package_release.py --include-reporting` and receive a `-reporting`
+filename suffix; normal packaging rejects a reporting-enabled DLL.
+
 ## Working with the assistant
 
 1. Describe the test you want: purpose, mode, game count, duration and any
@@ -125,7 +138,7 @@ each new game window, and Enter is held for 200 ms for DirectInput polling.
 After bringing the game forward it waits for keyboard focus to settle before
 pressing the key. `setup-input.log` records focus waits and each confirmation;
 the launcher prefers an already focused game window, restores minimized game
-windows, and retries foreground activation through the Windows input queue.
+windows asynchronously, and makes one ordinary foreground activation attempt.
 if Windows refuses focus, select the game window to allow startup to continue.
 It stops sending input
 as soon as GameStart begins, before RFC initialization. Native error dialogs
@@ -147,7 +160,19 @@ is not saved, and does not change normal-game autosave settings or `--observe-on
 It does not call RFC's existing `setAIAutoPlay`, which deletes that player's
 possessions. While explicitly enabled, all civilizations use their AI paths
 and the game can continue without a surviving human civilization.
-AI simulations use an **interface-only black progress screen** with a centered
+Pass `--reveal-map` to `testing\run-test.cmd` to watch the AI on a fully
+revealed map with the normal HUD, minimap and scoreboard. For example:
+`testing\run-test.cmd --mode balance --turns 220 --seed 1 --reveal-map`.
+The camera looks directly down with twice the default view span. This uses
+a wider field of view at the default physical zoom to retain normal map detail
+instead of triggering distance-based detail reduction or globe view. Camera
+settings are temporary and restored when observation ends.
+This changes spectator display only; AI visibility remains unchanged. It
+requires AI control (omit `--observe-only`) and adds rendering overhead, so
+leave it off for comparable performance measurements. The setting is recorded
+in run metadata and is not saved in checkpoints.
+
+By default, AI simulations use an **interface-only black progress screen** with a centered
 green progress bar on a white track. Map rendering, normal HUD/minimap/scoreboard
 refreshes, and spectator reveal overrides are disabled. No zoom setup runs.
 Movement display, combat presentation, enemy glow and mission-animation delays
@@ -179,6 +204,90 @@ that was already running.
 
 ## Activation and safety
 
+### Native crash evidence
+
+Every batch starts an independent emergency-stop helper before launching Civ4.
+Press **Ctrl+Alt+Shift+F10** to stop that batch without focusing the game or
+launcher. The helper terminates only games assigned to the batch's private Windows
+job. If debugger cleanup cannot finish, it also stops that exact launcher after
+five seconds. Closing the launcher also terminates its job's games. The launcher
+refuses to start games if the job or emergency hotkey cannot be initialized.
+An external stop request can also be made by creating an empty `STOP` file in
+the batch directory. After a stall timeout, diagnostics and shutdown have a
+15-second independent deadline so a blocked dump writer cannot trap the desktop.
+The default no-progress timeout is 60 seconds, reset by each heartbeat; use
+`--stall-timeout` to override it. The separate startup timeout remains five minutes.
+Emergency hotkey/`STOP` requests attempt `hang-emergency.dmp` for the game with
+the oldest heartbeat before minimizing the windows, so minimization does not
+alter the captured game-thread state. Capture runs
+in a separate process with a three-second limit, then shutdown proceeds even if
+capture failed. This preserves evidence when stopping before the normal timeout.
+Flushed recordings are preserved, but emergency termination can interrupt the
+final compression; the analyzer accepts the original `turns.jsonl`.
+
+Setup makes one ordinary foreground activation attempt per game. It never joins
+another application's input queue or repeatedly takes focus back. If Windows
+declines activation, select the game's setup window yourself. Foreground handling
+ends as soon as GameStart begins. Hotkey termination has been confirmed in a
+user-operated run; the updated x86 stack writer still needs runtime validation.
+
+Crash and hang capture use `testing/bin/observer_dump32.exe`, an external x86
+writer, even when the launcher runs under Python x64. A dump from the x64 writer
+can retain only the WOW64 side of a thread and omit its actual game stack.
+The launcher refuses to start if the native writer is missing. Build it from
+`Awakened RFC/CvGameCoreDLL` using the existing legacy environment/settings:
+
+```powershell
+$env:TARGET = 'Release'
+nmake observer_dump_writer
+```
+
+This builds only the diagnostic helper, not the game DLL. Its source is
+`testing/observer_dump32.cpp`; its generated binary is ignored by Git and imports
+only Windows system DLLs. Normal mod launches do not use it.
+
+Balance and diagnostics launches automatically debug only their own child game.
+The game starts normally; capture attaches after authenticated `started.json`
+confirms GameStart. Starting Civ4 under a debugger can cause an early exit before
+scenario setup, so startup itself is not captured. `crash-capture.json` records
+whether attachment succeeded. An attachment failure is reported but does not
+stop the test.
+The final capture status also records received debug-event counts; successful
+attachment alone is not proof that exception events were received. Process and
+exception events are flushed to `debug-events.jsonl`. After an abnormal exit
+without a captured dump, the launcher waits up to two minutes for Windows to
+finish its per-PID dump in `%LOCALAPPDATA%/CrashDumps` and copies it into the run
+as `crash-windows.dmp`. This fallback uses existing Windows dump configuration;
+it does not enable WER or change the registry. Missing dumps are recorded explicitly.
+Stall timeouts after GameStart save `hang-1.dmp` and `hang-2.dmp` with companion
+JSON files before terminating the child. The samples are separated by at least
+two seconds and contain live thread stacks/registers, allowing a busy loop or
+blocked thread to be located even when no exception occurs. Capture failures
+are recorded explicitly. This also works in performance mode without attaching
+a debugger; the extra work occurs only after a stall timeout.
+The launcher saves `crash-*.json` and `crash-*.dmp` inside the affected game folder
+on serious native faults and unhandled exceptions. JSON identifies the exception
+code/address, faulting thread, loaded module bases and last flushed heartbeat;
+access-violation parameters identify read/write/execute and the accessed address.
+First-chance evidence is captured before Civ4's handler runs: a handled fault can
+therefore leave evidence even when the game completes. `unhandled` reports mark
+exceptions that reached the debugger after application handlers failed. Capture
+does not suppress application exceptions or change gameplay decisions.
+
+Each batch preserves its exact `CvGameCoreDLL.dll` in `crash-build/`, along with
+matching PDB/map files when available and the native source diff. Reporting Release
+builds now generate optimized VC7.1 debug symbols; rebuild once after this change.
+Keep the batch folder for analysis after subsequent DLL rebuilds. In WinDbg, add
+`crash-build/` to the symbol/image paths, open the dump and select the JSON's
+`thread_id` before inspecting its stack/registers.
+These dumps save thread contexts without an exception stream, so use that thread
+selection rather than `.ecxr`. No debugger install, registry change or administrator
+access is needed to capture them. Capture errors are reported explicitly.
+
+Performance mode does not attach a debugger, to avoid debug-event overhead in
+measurements. Dumps and fault capture remain unverified in a user-operated game;
+implementing this support does not start a run.
+
 Copy `testing/observer.example.ini` to `testing/observer.local.ini` for optional launcher
 defaults. That file alone cannot activate instrumentation. The launcher
 creates a private per-run configuration and passes its path and a random
@@ -199,8 +308,9 @@ saves, so reopening a checkpoint normally does not enable AI control.
 
 For 3000 BC and 800 BC observer runs, America is selected as the observer civilization. It
 does not spawn during the first 150 turns (its ordinary spawn is turn 346).
-If the setup screen retains Egypt or China, the observer transfers the active and human
-slots to America before RFC initialization, leaving Egypt controlled by AI.
+If the setup screen retains Egypt or China, or Persia in the 800 BC start, the observer
+transfers the active and human slots to America before RFC initialization, leaving the
+previously selected civilization controlled by AI.
 For 3000 BC the observer restores Egypt's playable flag because
 RFC uses it to identify the early scenario. Other civilizations retain their
 ordinary participation and spawn rules. The 600 AD observer remains China.
@@ -398,11 +508,46 @@ only at snapshot boundaries, so sparse sampling can miss short-lived changes.
 | Civilization population, cities, land, gold/rate, research/rate, era, tech count, power, army composition, civics, religion and stability | Yes | Yes |
 | Basic city population, food, imports/exports, yields, happiness, health and slaves | Yes | Yes |
 | War, city founding/conquest/razing, technologies, religion, victory and observed civic/alive/religion changes | Yes | Yes |
-| Exact known-tech lists, unit positions/damage/XP/promotions | No | Yes |
+| Arabian combat units: positions, damage, movement, roles, groups, missions, targets and cached AI decisions (every turn) | Yes | Yes |
+| Exact known-tech lists, all-unit positions/damage/XP/promotions | No | Yes |
 | Buildings, specialists, production target/progress, occupation and city/tile culture | No | Yes |
 | Routes with infrastructure efficiency, profit and net food; slave revolt chance | No | Yes |
 | Initial terrain/features/resources/improvements/routes/owners and subsequent changes | No | Yes |
 | Global food conservation and city export-cap checks | No | Yes |
+
+`arabian_army_state` events capture every combat unit each turn after Arabia
+has a city, and for any other nation while its full jihad event is active,
+even with `--record-interval` greater than one. Each event identifies its player.
+Army recording version 2 adds the unit's `campaign`, effective `group_campaign`,
+`attached_general` flag and Unicode `general_name`; metadata maps campaign IDs
+to names. A campaign ID of -1 means unassigned. Observation does not run AI or
+pathfinding evaluations. The records also include group
+heads/sizes, activity, mission queues (`type, data1, data2, flags`), mission
+plot/unit targets, area AI/target city (`x, y, owner`), and head-group war plans
+(`team, at_war, plan`). Metadata maps AI/activity/war-plan IDs to names; mission
+IDs use the existing `infos.mission` dictionary. Missing targets use `-1`.
+
+The DLL caches the last successful branch in attack, city-assault, reserve,
+counter and city-defense movement; no AI predicates are repeated for logging.
+`decision_fresh` distinguishes this turn's decisions from old ones; followers
+and units continuing queued missions may have no fresh decision.
+`AI_update:entered` and `other_return` indicate an uncovered branch, not a
+specific explanation. `city_target_result` distinguishes a selector that was
+not attempted, no reachable city, no approach tile, already at the chosen
+approach tile, and a queued advance; `selected_city_target` gives its coordinates.
+These fields describe `AI_targetCity`, not barbarian/minor-city selectors.
+`decision_markers` counts diagnostic markers this turn
+(including entry), not moves. Stack readiness uses `-1` when not evaluated;
+ignore cached readiness when the decision is stale. `unchanged_position_turns`
+counts consecutive equal end-turn positions, which can also include legitimate
+guarding or moving away and back. These diagnostics are transient, excluded
+from saves, and disabled in performance mode and ordinary games.
+
+The 2026-10-19 40-game batch exposed an inherited ten-unit iteration cap in
+`CvSelectionGroup::canMoveThrough`: groups above ten members rejected paths
+through intermediate tiles and repeatedly chose safety or staging. The cap is
+removed; every member still has to pass the normal movement restrictions.
+The correction needs confirmation in a subsequent user-operated recording.
 
 Diagnostics are detailed observations, **not a replacement save format**:
 they do not serialize every engine field, mission queue, plot culture or
@@ -452,6 +597,20 @@ This streams records into `report.md` and `summary.json`, including:
   re-run for reporting. Evaluations are sampled when current/best civic changes
   and at 25-turn boundaries when an evaluation occurs; sample frequency is biased
   towards changes and must not be interpreted as preference prevalence.
+- Apostolic Palace/Papacy/Crusade coverage: founding requests and choices, accumulated
+  refusal penalties and exact diplomatic refunds, Palace activation changes,
+  courier schedules/delivery, frozen voting weights, votes with civic context,
+  results and resolution effects, Crusade deadlines/activity, plunder and combat
+  rewards, coalition joins, new holy states and selected/completed settlements.
+  Native state is recorded every turn in balance/diagnostics autoplay, independently
+  of the expensive snapshot interval, immediately before `EndGameTurn` callbacks.
+  It includes reserved Papal/Crusader slots, coalition/target masks, war/peace/access
+  permissions and pending ballots. Events are retained until the next snapshot.
+  Automatic findings flag broken coalition peace/access, separate Crusade peace,
+  invalid Palace activation, retained refusal penalties, incorrect timer resets,
+  settlement owners, religious reform or refunds, and Ancestor Worship with a
+  state religion. The report shows observed coverage; unexercised paths remain
+  unverified. Recordings do not establish multiplayer popup or rendered HUD behavior.
 - A compact run-integrity table and grouped diagnostics with one traceback per
   error signature, affected seeds and first error turn.
 

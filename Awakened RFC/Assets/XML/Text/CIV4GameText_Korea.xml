@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT><Tag>TXT_KEY_DN_KOR_TRIBAL</Tag>
+    <English>Korean Chiefdoms</English>
+    <French>Korean Chiefdoms</French>
+    <German>Koreanische Stammesgebiete</German>
+    <Italian>Korean Chiefdoms</Italian>
+    <Spanish>Korean Chiefdoms</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_KINGDOM</Tag>
+    <English>Kingdom of Korea</English>
+    <French>Kingdom of Korea</French>
+    <German>K&#246;nigreich Korea</German>
+    <Italian>Kingdom of Korea</Italian>
+    <Spanish>Kingdom of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_EMPIRE</Tag>
+    <English>Empire of Korea</English>
+    <French>Empire of Korea</French>
+    <German>Kaiserreich Korea</German>
+    <Italian>Empire of Korea</Italian>
+    <Spanish>Empire of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_CONSTITUTIONAL</Tag>
+    <English>Kingdom of Korea</English>
+    <French>Kingdom of Korea</French>
+    <German>K&#246;nigreich Korea</German>
+    <Italian>Kingdom of Korea</Italian>
+    <Spanish>Kingdom of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_REPUBLIC</Tag>
+    <English>Republic of Korea</English>
+    <French>Republic of Korea</French>
+    <German>Republik Korea</German>
+    <Italian>Republic of Korea</Italian>
+    <Spanish>Republic of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_DEMOCRACY</Tag>
+    <English>Korea</English>
+    <French>Korea</French>
+    <German>Korea</German>
+    <Italian>Korea</Italian>
+    <Spanish>Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_MERCHANT_REPUBLIC</Tag>
+    <English>League of the Inland Sea</English>
+    <French>League of the Inland Sea</French>
+    <German>Bund der Binnenmeer-St&#228;dte</German>
+    <Italian>League of the Inland Sea</Italian>
+    <Spanish>League of the Inland Sea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_SOCIALIST_REPUBLIC</Tag>
+    <English>Korean People's Republic</English>
+    <French>Korean People's Republic</French>
+    <German>Koreanische Volksrepublik</German>
+    <Italian>Korean People's Republic</Italian>
+    <Spanish>Korean People's Republic</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_SOCIALIST_DEMOCRACY</Tag>
+    <English>Korea</English>
+    <French>Korea</French>
+    <German>Korea</German>
+    <Italian>Korea</Italian>
+    <Spanish>Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_PEOPLES_STATE</Tag>
+    <English>Korean People's Republic</English>
+    <French>Korean People's Republic</French>
+    <German>Koreanische Volksrepublik</German>
+    <Italian>Korean People's Republic</Italian>
+    <Spanish>Korean People's Republic</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_DICTATORSHIP</Tag>
+    <English>Korean State</English>
+    <French>Korean State</French>
+    <German>Koreanischer Staat</German>
+    <Italian>Korean State</Italian>
+    <Spanish>Korean State</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_MILITARY</Tag>
+    <English>Korean Military Government</English>
+    <French>Korean Military Government</French>
+    <German>Koreanische Milit&#228;rregierung</German>
+    <Italian>Korean Military Government</Italian>
+    <Spanish>Korean Military Government</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_NATIONAL_STATE</Tag>
+    <English>Korean State</English>
+    <French>Korean State</French>
+    <German>Koreanischer Staat</German>
+    <Italian>Korean State</Italian>
+    <Spanish>Korean State</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_NATIONAL_REPUBLIC</Tag>
+    <English>Republic of Korea</English>
+    <French>Republic of Korea</French>
+    <German>Republik Korea</German>
+    <Italian>Republic of Korea</Italian>
+    <Spanish>Republic of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_THEOCRACY</Tag>
+    <English>Sacred Kingdom of Korea</English>
+    <French>Sacred Kingdom of Korea</French>
+    <German>Heiliges K&#246;nigreich Korea</German>
+    <Italian>Sacred Kingdom of Korea</Italian>
+    <Spanish>Sacred Kingdom of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_HOLY_KINGDOM</Tag>
+    <English>Sacred Kingdom of Korea</English>
+    <French>Sacred Kingdom of Korea</French>
+    <German>Heiliges K&#246;nigreich Korea</German>
+    <Italian>Sacred Kingdom of Korea</Italian>
+    <Spanish>Sacred Kingdom of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_THEOCRATIC_REPUBLIC</Tag>
+    <English>Republic of Korea</English>
+    <French>Republic of Korea</French>
+    <German>Republik Korea</German>
+    <Italian>Republic of Korea</Italian>
+    <Spanish>Republic of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_ISLAMIC_REPUBLIC</Tag>
+    <English>Islamic Republic of Korea</English>
+    <French>Islamic Republic of Korea</French>
+    <German>Islamische Republik Korea</German>
+    <Italian>Islamic Republic of Korea</Italian>
+    <Spanish>Islamic Republic of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_CALIPHATE</Tag>
+    <English>Caliphate of Korea</English>
+    <French>Caliphate of Korea</French>
+    <German>Kalifat Korea</German>
+    <Italian>Caliphate of Korea</Italian>
+    <Spanish>Caliphate of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_SULTANATE</Tag>
+    <English>Sultanate of Korea</English>
+    <French>Sultanate of Korea</French>
+    <German>Sultanat Korea</German>
+    <Italian>Sultanate of Korea</Italian>
+    <Spanish>Sultanate of Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_SECULAR_REPUBLIC</Tag>
+    <English>Korea</English>
+    <French>Korea</French>
+    <German>Korea</German>
+    <Italian>Korea</Italian>
+    <Spanish>Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_ROYAL_PLANNED</Tag>
+    <English>Korean Royal Provisioning State</English>
+    <French>Korean Royal Provisioning State</French>
+    <German>K&#246;niglicher Versorgungsstaat Korea</German>
+    <Italian>Korean Royal Provisioning State</Italian>
+    <Spanish>Korean Royal Provisioning State</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_PLUTOCRATIC_PLANNED</Tag>
+    <English>Korean Industrial Conclave</English>
+    <French>Korean Industrial Conclave</French>
+    <German>Koreanischer Industriekonvent</German>
+    <Italian>Korean Industrial Conclave</Italian>
+    <Spanish>Korean Industrial Conclave</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_ATHEOCRACY</Tag>
+    <English>Order of the Godless Dawn</English>
+    <French>Order of the Godless Dawn</French>
+    <German>Orden der gottlosen Morgenr&#246;te</German>
+    <Italian>Order of the Godless Dawn</Italian>
+    <Spanish>Order of the Godless Dawn</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR00</Tag>
+    <English>Korea</English>
+    <French>Korea</French>
+    <German>Korea</German>
+    <Italian>Korea</Italian>
+    <Spanish>Korea</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_CHIEFDOMS</Tag>
+    <English>Korean Chiefdoms</English>
+    <French>Korean Chiefdoms</French>
+    <German>Koreanische Stammesgebiete</German>
+    <Italian>Korean Chiefdoms</Italian>
+    <Spanish>Korean Chiefdoms</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_GOJOSEON</Tag>
+    <English>Gojoseon</English>
+    <French>Gojoseon</French>
+    <German>Gojoseon</German>
+    <Italian>Gojoseon</Italian>
+    <Spanish>Gojoseon</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_KINGDOMS</Tag>
+    <English>Korean Kingdoms</English>
+    <French>Korean Kingdoms</French>
+    <German>Koreanische K&#246;nigreiche</German>
+    <Italian>Korean Kingdoms</Italian>
+    <Spanish>Korean Kingdoms</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_SILLA</Tag>
+    <English>Silla</English>
+    <French>Silla</French>
+    <German>Silla</German>
+    <Italian>Silla</Italian>
+    <Spanish>Silla</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_GORYEO</Tag>
+    <English>Goryeo</English>
+    <French>Goryeo</French>
+    <German>Goryeo</German>
+    <Italian>Goryeo</Italian>
+    <Spanish>Goryeo</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_DN_KOR_JOSEON</Tag>
+    <English>Joseon</English>
+    <French>Joseon</French>
+    <German>Joseon</German>
+    <Italian>Joseon</Italian>
+    <Spanish>Joseon</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_LEADER_0</Tag>
+    <English>Dangun</English>
+    <French>Dangun</French>
+    <German>Dangun</German>
+    <Italian>Dangun</Italian>
+    <Spanish>Dangun</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_LEADER_87</Tag>
+    <English>Dangun</English>
+    <French>Dangun</French>
+    <German>Dangun</German>
+    <Italian>Dangun</Italian>
+    <Spanish>Dangun</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_LEADER_181</Tag>
+    <English>Yeongyang</English>
+    <French>Yeongyang</French>
+    <German>Yeongyang</German>
+    <Italian>Yeongyang</Italian>
+    <Spanish>Yeongyang</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_LEADER_211</Tag>
+    <English>Hyogong</English>
+    <French>Hyogong</French>
+    <German>Hyogong</German>
+    <Italian>Hyogong</Italian>
+    <Spanish>Hyogong</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_LEADER_271</Tag>
+    <English>Danjong</English>
+    <French>Danjong</French>
+    <German>Danjong</German>
+    <Italian>Danjong</Italian>
+    <Spanish>Danjong</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_KOR1</Tag>
+    <English>Control at least two cities in the Korean core, with no foreign cities there, by 1000 AD.</English>
+    <French>Control at least two cities in the Korean core, with no foreign cities there, by 1000 AD.</French>
+    <German>Kontrolliert bis 1000 n. Chr. mindestens zwei St&#228;dte im koreanischen Kernland, ohne fremde St&#228;dte dort.</German>
+    <Italian>Control at least two cities in the Korean core, with no foreign cities there, by 1000 AD.</Italian>
+    <Spanish>Control at least two cities in the Korean core, with no foreign cities there, by 1000 AD.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_KOR2</Tag>
+    <English>Build two Seowon by 1600 AD.</English>
+    <French>Build two Seowon by 1600 AD.</French>
+    <German>Errichtet bis 1600 n. Chr. zwei Seowon.</German>
+    <Italian>Build two Seowon by 1600 AD.</Italian>
+    <Spanish>Build two Seowon by 1600 AD.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_KOR3</Tag>
+    <English>Lose no city to conquest before 1900 AD; in 1900, be independent and control at least two cities in the Korean core.</English>
+    <French>Lose no city to conquest before 1900 AD; in 1900, be independent and control at least two cities in the Korean core.</French>
+    <German>Verliert vor 1900 n. Chr. keine Stadt durch Eroberung; seid 1900 unabh&#228;ngig und kontrolliert mindestens zwei St&#228;dte im koreanischen Kernland.</German>
+    <Italian>Lose no city to conquest before 1900 AD; in 1900, be independent and control at least two cities in the Korean core.</Italian>
+    <Spanish>Lose no city to conquest before 1900 AD; in 1900, be independent and control at least two cities in the Korean core.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_KOR</Tag>
+    <English>Korean Heritage</English>
+    <French>Korean Heritage</French>
+    <German>Koreanisches Erbe</German>
+    <Italian>Korean Heritage</Italian>
+    <Spanish>Korean Heritage</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_KOR2</Tag>
+    <English>Hwacha replaces the Catapult; Seowon replaces the University.</English>
+    <French>Hwacha replaces the Catapult; Seowon replaces the University.</French>
+    <German>Hwacha ersetzt das Katapult; Seowon ersetzt die Universitaet.</German>
+    <Italian>Hwacha replaces the Catapult; Seowon replaces the University.</Italian>
+    <Spanish>Hwacha replaces the Catapult; Seowon replaces the University.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_INTRO_0</Tag>
+    <English>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</English>
+    <French>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</French>
+    <German>Euer Stammesgebiet entsteht um 800 v. Chr. auf der koreanischen Halbinsel. Entwickelt die Hauptstadt im Norden, besiedelt den S&#252;den und erschlie&#223;t Nahrung und Kupfer. Treibt Seehandel mit Japan und sichert die Grenze zum Festland. Die bronzezeitlichen Stammesgebiete werden gemeinsam dargestellt.</German>
+    <Italian>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</Italian>
+    <Spanish>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_INTRO_181</Tag>
+    <English>600 AD: The Three Kingdoms contend for the peninsula. Yeongyang represents Goguryeo, with Pyongyang as your capital. Gyeongju represents the southern kingdoms in this compressed Korean slot. Develop both regional centers and defend against continental invasion; this is a regional aggregation, not a claim of unification in 600.</English>
+    <French>600 AD: The Three Kingdoms contend for the peninsula. Yeongyang represents Goguryeo, with Pyongyang as your capital. Gyeongju represents the southern kingdoms in this compressed Korean slot. Develop both regional centers and defend against continental invasion; this is a regional aggregation, not a claim of unification in 600.</French>
+    <German>600 n. Chr.: Die Drei K&#246;nigreiche ringen um die Halbinsel. Yeongyang vertritt Goguryeo mit der Hauptstadt Pyongyang. Gyeongju steht im gemeinsamen koreanischen Spielerplatz fuer die s&#252;dlichen K&#246;nigreiche. Entwickelt beide Zentren und sichert die Festlandsgrenze; Korea ist historisch noch nicht geeint.</German>
+    <Italian>600 AD: The Three Kingdoms contend for the peninsula. Yeongyang represents Goguryeo, with Pyongyang as your capital. Gyeongju represents the southern kingdoms in this compressed Korean slot. Develop both regional centers and defend against continental invasion; this is a regional aggregation, not a claim of unification in 600.</Italian>
+    <Spanish>600 AD: The Three Kingdoms contend for the peninsula. Yeongyang represents Goguryeo, with Pyongyang as your capital. Gyeongju represents the southern kingdoms in this compressed Korean slot. Develop both regional centers and defend against continental invasion; this is a regional aggregation, not a claim of unification in 600.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_INTRO_211</Tag>
+    <English>900 AD: Hyogong rules declining Silla from Gyeongju. Korea is entering the Later Three Kingdoms period; your two cities aggregate regional Korean powers rather than depict a unified monarchy. Strengthen coastal trade and scholarship while preserving independence from the mainland.</English>
+    <French>900 AD: Hyogong rules declining Silla from Gyeongju. Korea is entering the Later Three Kingdoms period; your two cities aggregate regional Korean powers rather than depict a unified monarchy. Strengthen coastal trade and scholarship while preserving independence from the mainland.</French>
+    <German>900 n. Chr.: Hyogong regiert das zerfallende Silla von Gyeongju aus. Korea tritt in die Zeit der Sp&#228;ten Drei K&#246;nigreiche ein. Die beiden St&#228;dte fassen regionale Maechte zusammen. St&#228;rkt Seehandel und Gelehrsamkeit und bewahrt eure Unabh&#228;ngigkeit.</German>
+    <Italian>900 AD: Hyogong rules declining Silla from Gyeongju. Korea is entering the Later Three Kingdoms period; your two cities aggregate regional Korean powers rather than depict a unified monarchy. Strengthen coastal trade and scholarship while preserving independence from the mainland.</Italian>
+    <Spanish>900 AD: Hyogong rules declining Silla from Gyeongju. Korea is entering the Later Three Kingdoms period; your two cities aggregate regional Korean powers rather than depict a unified monarchy. Strengthen coastal trade and scholarship while preserving independence from the mainland.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_INTRO_271</Tag>
+    <English>1453 AD: Danjong sits on the Joseon throne in Hanseong. Develop your Seowon, use Hwacha to support the army, and secure the northern frontier at Uiju. Your compact coastal realm can prosper through scholarship and trade without extensive continental conquest.</English>
+    <French>1453 AD: Danjong sits on the Joseon throne in Hanseong. Develop your Seowon, use Hwacha to support the army, and secure the northern frontier at Uiju. Your compact coastal realm can prosper through scholarship and trade without extensive continental conquest.</French>
+    <German>1453 n. Chr.: Danjong sitzt in Hanseong auf dem Thron Joseons. Entwickelt eure Seowon, unterstuetzt das Heer mit Hwacha und sichert die Nordgrenze bei Uiju. Euer kompaktes K&#252;stenreich kann durch Gelehrsamkeit und Handel gedeihen.</German>
+    <Italian>1453 AD: Danjong sits on the Joseon throne in Hanseong. Develop your Seowon, use Hwacha to support the army, and secure the northern frontier at Uiju. Your compact coastal realm can prosper through scholarship and trade without extensive continental conquest.</Italian>
+    <Spanish>1453 AD: Danjong sits on the Joseon throne in Hanseong. Develop your Seowon, use Hwacha to support the army, and secure the northern frontier at Uiju. Your compact coastal realm can prosper through scholarship and trade without extensive continental conquest.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_KOREA_INTRO_87</Tag>
+    <English>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</English>
+    <French>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</French>
+    <German>Euer Stammesgebiet entsteht um 800 v. Chr. auf der koreanischen Halbinsel. Entwickelt die Hauptstadt im Norden, besiedelt den S&#252;den und erschlie&#223;t Nahrung und Kupfer. Treibt Seehandel mit Japan und sichert die Grenze zum Festland. Die bronzezeitlichen Stammesgebiete werden gemeinsam dargestellt.</German>
+    <Italian>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</Italian>
+    <Spanish>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_RFCMP_PROMOTION_SLAVE_KOREA</Tag><English>Korean Origin</English><French>Origine cor&#233;enne</French><German>Koreanische Herkunft</German><Italian>Origine coreana</Italian><Spanish>Origen coreano</Spanish></TEXT>
+</Civ4GameText>

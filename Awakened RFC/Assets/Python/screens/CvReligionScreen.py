@@ -2,6 +2,7 @@
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
 import PyHelpers
+import Consts as con
 import CvUtil
 import ScreenInput
 import CvScreenEnums
@@ -196,7 +197,7 @@ class CvReligionScreen:
                                 year = CyGame().getTurnYear(gc.getGame().getReligionGameTurnFounded(i))
 
                                 #RFCMP
-                                if (gc.getPlayer(30).getCivilizationType() == 4 and i != 2):  #late start condition (2 == Islam)
+                                if (gc.getPlayer(con.iIndependent).getCivilizationType() == 4 and i != 2):  #late start condition (2 == Islam)
                                         szFounded = localText.getText("TXT_KEY_AGE_BRONZE", ())
                                 elif (gc.getGame().getStartTurn() != 0 and i != 2 and i != 1):  #late start condition 800BC (1 == Christianity)
                                         szFounded = localText.getText("TXT_KEY_AGE_BRONZE", ())
@@ -316,7 +317,10 @@ class CvReligionScreen:
 			lHolyCity = pLoopCity.getHolyCity()
 			if lHolyCity:
 				for iI in range(len(lHolyCity)):
-					szCityName += u"%c" %(gc.getReligionInfo(lHolyCity[iI]).getHolyCityChar())
+					szHolySymbol = u"%c" % gc.getReligionInfo(lHolyCity[iI]).getHolyCityChar()
+					if not pLoopCity.GetCy().isHasReligion(lHolyCity[iI]):
+						szHolySymbol = u"%c" % gc.getReligionInfo(lHolyCity[iI]).getDormantHolyCityChar()
+					szCityName += szHolySymbol
 	
 			lReligions = pLoopCity.getReligions()
 			if lReligions:

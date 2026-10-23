@@ -1901,7 +1901,18 @@ tWarsMap = (
 
 
       
-  
+# Reserved successors share Arabia's targets; Xiongnu focus on the northern frontier.
+tWarsMap += (tWarsMap[con.iArabia], tWarsMap[con.iArabia],
+        tuple(tuple(int(98 <= x <= 107 and 43 <= 67-y <= 49) * 8 +
+                    int(94 <= x <= 105 and 50 <= 67-y <= 55) * 4
+                    for x in range(124)) for y in range(68)))
+
+
+# Inner targets score 8; the surrounding region scores 3 (Python 2.4 syntax).
+tWarsMap += (tuple(tuple(5 * int(20 <= x <= 27 and 42 <= 67-y <= 48) +
+                         3 * int(18 <= x <= 29 and 40 <= 67-y <= 50)
+                         for x in range(124)) for y in range(68)),)
+
 class AIWars:
 
         def getAttackingCivsArray( self, iCiv ):
@@ -2084,6 +2095,7 @@ class AIWars:
                 tCiv = gc.getTeam(pCiv.getTeam())
                 iGameTurn = gc.getGame().getGameTurn()
                 bPunicCampaign = (iCiv == con.iCarthage and iGameTurn >= con.tBirth[con.iCarthage] + 20 and iGameTurn <= con.i300AD)
+                bArabianCampaign = (iCiv == con.iArabia)
                 lTargetCivs = []
                 #lTargetCivs = con.l0ArrayTotal
 
@@ -2127,6 +2139,11 @@ class AIWars:
                                                         if ((49 <= i <= 55 and 40 <= j <= 45) or
                                                             (57 <= i <= 63 and 40 <= j <= 44)):
                                                                 lTargetCivs[iOwner] += 60
+                                                # Egypt must be conquered rather than inherited at birth.
+                                                # Prefer its cities regardless of their current owner.
+                                                if (bArabianCampaign and 65 <= i <= 72 and 30 <= j <= 37 and
+                                                    gc.getMap().plot(i, j).isCity()):
+                                                        lTargetCivs[iOwner] += 60
                                                 
                 #there are other routines for this
                 #RFCMP

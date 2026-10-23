@@ -1,3 +1,7 @@
+from Reporting import ENABLED as REPORTING_ENABLED
+if not REPORTING_ENABLED:
+    raise ImportError("Reporting requires a DLL built with ARFC_ENABLE_REPORTING=1")
+
 # Observer scenario setup, compatible with Civ4's Python 2.4.
 # Called by the WB loader before GameStart; normal launches return immediately.
 import os

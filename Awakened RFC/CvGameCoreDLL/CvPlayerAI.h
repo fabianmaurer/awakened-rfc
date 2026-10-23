@@ -33,11 +33,15 @@ public:
 	static void freeStatics();
 	DllExport static bool areStaticsInitialized();
 
+	bool AI_isArabianJihad() const;
+	bool AI_isCrusadeMobilizing() const;
 	bool AI_isRomanCampaign() const;
 	bool AI_isRomanCampaignExclusive() const;
 	bool AI_isRomanCampaignPreparing() const;
+#if ARFC_ENABLE_REPORTING
 	int AI_getRomanCampaignReadiness(int iIndex) const;
 	const CvString& AI_getRomanCampaignReadinessReason() const;
+#endif
 	CvCity* AI_romanCampaignTarget() const;
 	int AI_romanCampaignRoute(const CvCity* pTarget, CvCity*& pPort) const;
 	CvCity* AI_romanCampaignPort(const CvCity* pTarget) const;
@@ -90,8 +94,8 @@ public:
 
 	bool AI_isCommercePlot(CvPlot* pPlot) const;
 	int AI_getPlotDanger(CvPlot* pPlot, int iRange = -1, bool bTestMoves = true) const;
-	bool AI_isPlotDanger(CvPlot* pPlot, int iRange = -1, bool bTestMoves = true) const;
-	int AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger) const;
+	bool AI_isPlotDanger(CvPlot* pPlot, int iRange = -1, bool bTestMoves = true, bool bIgnoreWorkerThreats = false) const;
+	int AI_getPlotDanger(CvPlot* pPlot, int iRange, bool bTestMoves, bool bAnyDanger, bool bIgnoreWorkerThreats = false) const;
 	int AI_getUnitDanger(CvUnit* pUnit, int iRange = -1, bool bTestMoves = true, bool bAnyDanger = true) const;
 	int AI_getWaterDanger(CvPlot* pPlot, int iRange, bool bTestMoves = true) const;
 
@@ -347,7 +351,7 @@ public:
 	int AI_getPlotAirbaseValue(CvPlot* pPlot) const;
 	int AI_getPlotCanalValue(CvPlot* pPlot) const;
 
-	bool AI_isPlotThreatened(CvPlot* pPlot, int iRange = -1, bool bTestMoves = true) const;
+	bool AI_isPlotThreatened(CvPlot* pPlot, int iRange = -1, bool bTestMoves = true, bool bIgnoreWorkerThreats = false) const;
 
 	bool AI_isFirstTech(TechTypes eTech) const;
 
@@ -367,9 +371,11 @@ protected:
 	int m_iExtraGoldTarget;
 	int m_iRomanCampaignStallTurns;
 	bool m_bRomanCampaignPreparing;
+#if ARFC_ENABLE_REPORTING
 	mutable int m_iRomanCampaignReadinessTurn;
 	mutable CvString m_szRomanCampaignReadinessReason;
 	mutable std::vector<int> m_aiRomanCampaignReadiness;
+#endif
 	
 	mutable int m_iStrategyHash;
 	mutable int m_iStrategyHashCacheTurn;
@@ -418,9 +424,17 @@ protected:
 	void AI_doCounter();
 	void AI_doMilitary();
 	void AI_doRomanCampaign();
+#if ARFC_ENABLE_REPORTING
 	void AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget = NULL, const CvCity* pPort = NULL,
 		int iRequiredAttackers = -1, int iRequiredSiege = -1, int iAttackers = -1, int iSiege = -1,
 		int iCargo = -1, int iEscorts = -1, int iAttackStrength = -1, int iDefenseStrength = -1) const;
+#endif
+#if !ARFC_ENABLE_REPORTING
+	void AI_recordRomanCampaign(const char* szReason, const CvCity* pTarget = NULL, const CvCity* pPort = NULL,
+		int iRequiredAttackers = -1, int iRequiredSiege = -1, int iAttackers = -1, int iSiege = -1,
+		int iCargo = -1, int iEscorts = -1, int iAttackStrength = -1, int iDefenseStrength = -1) const {}
+#endif
+
 	void AI_doResearch();
 	void AI_doCivics();
 	void AI_doReligion();

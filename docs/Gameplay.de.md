@@ -11,6 +11,87 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+## Kulturelle Grenzerweiterung
+
+Städte beginnen mit ihrem Stadtfeld und den acht Nachbarfeldern. Weitere Kultur
+erweitert das Gebiet **um ein Feld je eigener Kulturschwelle**, statt bei jeder
+Kulturstufe einen ganzen Ring hinzuzufügen. Nahe Felder kommen zuerst; Wasser,
+Hügel, Berge und Geländemerkmale kosten mehr, Flüsse und bei der Stadtgründung
+sichtbare Ressourcen weniger. Reihenfolge und kumulierte Kosten werden bei der
+Gründung festgelegt und mitgespeichert. Große Kulturzuwächse können mehrere
+Feldschwellen auf einmal überschreiten. Bei fremdem Besitz entscheidet weiterhin
+die konkurrierende Feldkultur.
+
+Die Erweiterung folgt einem zusammenhängenden Weg von der Stadt über passierbare
+Felder innerhalb ihrer maximalen Kulturreichweite. Berge und andere unpassierbare
+Felder können am Rand zum Gebiet gehören, auch unter den neun Startfeldern,
+tragen die Kultur aber nicht über eine Barriere hinweg. Felder dahinter benötigen
+einen passierbaren Umweg; unerreichbare Felder werden aus der Erwerbsreihenfolge
+ausgeschlossen. Küstenausdehnung bleibt möglich. Die Markierung des nächsten
+Feldes folgt dieser erreichbaren Reihenfolge.
+
+Kulturbalken und Tooltip zeigen die nächste Schwelle für ein Feld außerhalb des
+eigenen Gebiets. Ein violetter Kreis im Stadtbildschirm markiert dieses Feld und
+überspringt bereits durch andere Städte besessene Felder. Jede Stadt entwickelt
+ihre überlappende Abdeckung weiterhin zu den ursprünglichen Schwellen. Während
+einer Besatzung oder wenn kein weiteres Feld außerhalb des eigenen Gebiets
+verbleibt, wird die Markierung ausgeblendet. Kulturstufen
+bestimmen weiterhin Kulturverteidigung und Siegbedingungen. Besatzung setzt die
+Gebietsabdeckung aus; danach gilt wieder die durch die aktuelle Stadtkultur
+erreichte Abdeckung. Maximale Reichweite und bearbeitbarer Stadtradius bleiben
+unverändert.
+
+## Indien und die Huna-Invasion
+
+Um **500 n. Chr.** erscheint einmalig ein barbarisches Huna-Heer an der
+punjabischen Grenze östlich der Berge: **sieben berittene Bogenschützen, drei
+Schwertkämpfer und zwei Speerkämpfer** (12 Einheiten). Indien erhält drei Runden zuvor (um 450 n.
+Chr.) eine Warnung. Drei Reiter sollen plündern; die übrigen Reiter und die
+Schwertkämpfer sollen mit Unterstützung der Speerkämpfer Städte angreifen.
+Die Angriffstruppen wählen auch nach einer Eroberung weitere erreichbare indische
+Städte als Ziele. Sie rücken in Gruppen ab drei Einheiten vor, lassen einen
+Stadtverteidiger zurück und behalten ihre normalen Heilungs- und Angriffschancenprüfungen.
+Dieses Verhalten gilt nur für die Huna-Invasion.
+Alle sieben berittenen Bogenschützen erhalten **Flanke I und II**; ihre
+Rückzugschance steigt damit von 20% auf **50%**. Das Heer erscheint gemeinsam
+auf einem freien, passierbaren Landfeld zwischen `(87, 39)` und `(89, 41)`,
+auch direkt neben Städten. Bevorzugt wird unbeanspruchtes oder barbarisches Land,
+danach indisches Gebiet einschließlich des Landesinneren, zuletzt das Gebiet
+anderer Staaten im selben Zugangskorridor. Das Eintrittsfeld selbst darf keine
+Stadt und keine vorhandenen Einheiten enthalten. Ohne geeignetes Eintrittsfeld
+entfällt die Invasion. Sie
+setzt ein lebendes Indien mit Städten voraus, erhält keine wiederkehrenden
+Verstärkungen und erzwingt weder Stadtübergaben noch einen Zusammenbruch. Die
+früheren barbarischen Elefantenwellen in Indien enden vor der Warnung. Indiens
+einzigartige Fähigkeit ohne Revolutionsanarchie bleibt erhalten. Die Hunas sind
+von der gegen China gerichteten Hunnenkonföderation getrennt. Spielbalance und
+Mehrspieler-Verhalten sind im Spiel noch ungeprüft.
+
+## Historische Wunderbedingungen
+
+Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. Regionen beziehen sich auf die RFC-Weltkarte und sind unabhängig von Zivilisation und Besitzer. Bestehende Technologie-, Ressourcen- und Gebäudevoraussetzungen gelten weiterhin. Religionen müssen in der Stadt vorhanden sein; sie müssen keine Staatsreligion sein. Staatsformbedingungen gelten auch für laufende Bauaufträge; fertige Wunder behalten ihre Wirkung nach einem Staatsformwechsel.
+
+| Wunder | Zusätzliche Voraussetzung |
+| --- | --- |
+| Großer Leuchtturm, Koloss | Mittelmeerküste |
+| Parthenon, Artemistempel, Zeusstatue, Mausoleum von Maussollos | Mittelmeerraum |
+| Tempel des Kukulkan (Chichén Itzá) | Mesoamerika (Mexiko / Mittelamerika) |
+| Große Mauer | Ostasien |
+| Moai-Statuen | Pazifikküste oder Pazifikinsel |
+| Pyramiden | Mindestens ein Wüstenfeld im Stadtradius, einschließlich Stadtfeld |
+| Hängende Gärten | Stadt an einem Fluss |
+| Shwedagon-Pagode | Buddhismus in der Stadt |
+| Angkor Wat | Hinduismus in der Stadt |
+| Hagia Sophia, Sixtinische Kapelle, Notre Dame, Cristo Redentor | Christentum in der Stadt |
+| Spiralminarett, Universität von Sankore, Taj Mahal | Islam in der Stadt |
+| Versailles | Monarchie während des Baus |
+| Freiheitsstatue | Küstenstadt; Republik oder Demokratie während des Baus |
+| Kreml | Hauptstadt |
+| Große Bibliothek | Bibliothek in der Stadt |
+| Pentagon | Kaserne in der Stadt |
+| Wembley | Kolosseum in der Stadt |
+| Graceland, Hollywood | Theater in der Stadt |
+
 ## Spieländerungen im Überblick
 
 - **25 Staatsformen in fünf Kategorien:** Regierung, Legitimation, Arbeit,
@@ -23,8 +104,8 @@ Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
   Boni; Theokratie mit Toleranz erhält einen Malus. Die Summe ist begrenzt.
 - **Vorwarnungen vor Gebietswechseln:** Feld-Tooltips zeigen zukünftige
-  Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten drei
-  Runden vor dem Wechsel Unruhen.
+  Zivilisationen, deren Kerngebiet das Feld einschließt. Städte erhalten ab dem
+  Erscheinen der Zivilisation Unruhen bis zum Wechsel.
 - **Dynamische Ländernamen:** Deutsche und englische Namen reagieren auf
   Staatsformen, Religion, Reichsgröße sowie Vasallen- und Kolonialverhältnisse.
 - **Einheitliche Produktionskosten:** Die individuellen Produktionskosten-
@@ -55,6 +136,110 @@ China bildet Nahkampf- und Schießpulvereinheiten mit **1,5-facher Geschwindigke
 aus; die Maya haben **40% geringere Forschungskosten bis zum Ende des Mittelalters**;
 Persien erhält **+2 Stabilität je eroberter Stadt**.
 
+## Große Mauer
+
+Die Große Mauer verhindert das Betreten der Grenzen durch Barbaren nicht mehr.
+Barbarische Landeinheiten erleiden beim Überqueren einer Grenze in geschütztes
+Gebiet **20 Trefferpunkte Schaden**, behalten aber mindestens **einen Trefferpunkt**.
+Der Schutz gilt wie bisher für das Gebiet des Teams auf dem Kontinent der Mauer.
+Bewegungen innerhalb desselben Teamgebiets verursachen keinen weiteren Schaden;
+erneutes Verlassen und Betreten zählt als neuer Grenzübertritt. Bau der Mauer,
+Grenzverschiebungen und direkt im Gebiet erzeugte Einheiten lösen allein keinen
+Schaden aus. Reguläre Zivilisationen wie die Hunnen sind davon nicht betroffen.
+Der Schaden ist über `RFCMP_GREAT_WALL_CROSSING_DAMAGE` einstellbar.
+
+## China und die Hunnen
+
+Die **Hunnenkonföderation unter Modu Chanyu** erscheint um **210 v. Chr.**
+bei `(99, 51)`, am späteren mongolischen Hauptstadtstandort. Ihr kleines
+Gründungsgebiet liegt auf der Steppe zwischen `(96, 50)` und `(103, 54)`;
+chinesische Kernstädte werden bei dieser Gründung nicht automatisch übernommen.
+Die Fraktion ist ein zusätzlicher KI-Gegner und nicht zur Spielerauswahl vorgesehen.
+
+Die Hunnen verwenden die ortsabhängige Stadtnamenkarte und die
+Eroberungsumbenennungen der Mongolen. Die arabischen Nachfolgestaaten verwenden
+entsprechend die arabische Stadtnamenkarte und deren Eroberungsumbenennungen.
+
+Sie beginnt mit **acht berittenen Bogenschützen, vier Speerkämpfern, zwei
+Bogenschützen, einem Siedler und zwei Arbeitern**. Ihre Starttechnologien
+ermöglichen klassische Reiterei und einfache Wirtschaft, aber keine
+Belagerungswaffen. Zwei Reiter plündern bevorzugt, sechs dienen als Stadtangreifer.
+Bei der Gründung beginnt ein Krieg mit einem lebenden China, sofern die normalen
+Diplomatieregeln dies zulassen; spätere Friedensschlüsse bleiben möglich.
+Die Hunnen sind China gegenüber besonders feindselig. Modus
+Einheitenbaupräferenz steigt von 35 auf 50, sein Hauptkriegs-Zufallsschwellenwert
+sinkt von 50 auf 35 und die akzeptierte gegnerische Stärke für nahe Kriege
+steigt von 120% auf 140%. Bei `(98, 51)` wird die Schafweide zu Grasland,
+`(99, 50)` wird ein Ebenenhügel und `(100, 51)` erhält Schafe. Diese dauerhaften
+Kartenänderungen gelten in allen fünf Szenarien und helfen später auch der Mongolei.
+Regelmäßige kostenlose
+Verstärkungswellen gibt es nicht; weitere Truppen entstehen durch Produktion.
+Solange die Hunnen leben, entfallen die überlappenden nördlichen barbarischen
+Reiterwellen. Leben die Hunnen beim vorgesehenen ersten Erscheinen der Mongolen
+noch, entfällt die mongolische Gründung dauerhaft, einschließlich Gebietswechseln
+und Gründungsunruhen. Stattdessen erhalten die Hunnen **einmalig dieselbe
+Kampfarmee wie beim mongolischen Start**: sechs Keshiks, zwei berittene
+Bogenschützen, drei Langbogenschützen, zwei Armbrustschützen und zwei Katapulte.
+Sie erscheint bei ihrer Hauptstadt, bei einem stadtlosen Restheer möglichst bei
+einer überlebenden Landeinheit. Siedler, Arbeiter und zusätzliche Technologien
+werden dabei nicht vergeben. Die Entscheidung bleibt auch nach Laden der Partie
+und einem späteren Untergang der Hunnen bestehen; die Mongolen erhalten dann
+auch keinen regulären Respawn. Sind die Hunnen bereits untergegangen, erscheinen
+die Mongolen nach den normalen Regeln. In späteren Szenarien bereits bestehende
+Mongolen bleiben bestehen. Die Hunnen selbst erhalten keinen regulären Respawn.
+
+**Einzigartige Fähigkeit – Macht der Steppe:** Eine verwundete berittene Einheit
+der Hunnen heilt beim Plündern einer Modernisierung bis zu **25 Trefferpunkte**,
+höchstens einmal je Einheit und Spielrunde. Das Feld muss einer gegnerischen
+Fraktion gehören, mit der Krieg herrscht. Nur tatsächlich zerstörte oder
+herabgestufte Modernisierungen zählen; Straßen und Eisenbahnen geben keine
+Heilung. Bewegungskosten und Angriffsmöglichkeiten bleiben unverändert. Die
+Rundenbegrenzung bleibt beim Speichern, Laden und Aufwerten einer Einheit erhalten.
+
+Der zusätzliche Kriegs- und Grenzdruck kann über die bestehenden Regeln
+Abspaltungen oder einen Zusammenbruch Chinas auslösen. Historische Daten
+erzwingen keinen Zusammenbruch. Chinas einzigartige **1,5-fache
+Ausbildungsgeschwindigkeit für Nahkampf- und Schießpulvereinheiten** bleibt aktiv.
+Die neuen Fraktionsdaten gelten für neue Partien; Spielbalance und
+Mehrspielerverhalten sind noch nicht im Spiel validiert.
+
+## Entwicklung unabhängiger Städte
+
+Die barbarischen Kamelraubzüge von 190–550 n. Chr. erscheinen im Zugang zum unteren Mesopotamien zwischen `(77, 35)` und `(81, 41)`. Dadurch verlagert sich der Druck nach Babylon und Susa und von Jerusalem weg. Gruppengröße und Zeitplan bleiben gleich; Eintrittsfelder müssen weiterhin ohne Kultur, Stadt und Einheit sein. Das verringert nahegelegene Barbarenspawns, verhindert aber weder Angriffe noch Stadtzerstörungen.
+
+Die beiden unabhängigen Fraktionen zahlen normale Produktionskosten für Einheiten und Gebäude. Die bisherigen Faktoren von 2 für Einheiten und 1,5 für Gebäude entfallen. Ihre Städte behalten den vollen Kulturertrag, auch oberhalb von vier Kulturpunkten pro Runde; die bisherige Begrenzung auf 15 Prozent des Kulturzuwachses entfällt.
+
+Unabhängige Städte bauen zuerst ihre lokale Verbesserungswirtschaft auf: Mit mindestens einem Verteidiger und ohne unmittelbare Gefahr hat ein benötigter lokaler Bautrupp Vorrang vor weiteren Verteidigern und Kulturgebäuden. Ein bereits begonnener Bautrupp wird nicht wegen eines entfernten Verteidigungskriegs unterbrochen. Das normale Garnisonsziel beträgt zwei geeignete Landverteidiger, je einen weiteren bei unmittelbarer Gefahr und ab Bevölkerung sechs. Einheiten unter zwei Dritteln der Grundstärke des besten ausbildbaren Stadtverteidigers erfüllen es nicht. Nach der Grundgarnison haben Stadtmauern Vorrang vor weiteren Kulturgebäuden. Alles wird weiterhin regulär produziert und benötigt die normalen Voraussetzungen. Die KI gewährt keine kostenlosen Modernisierungen und keinen dauerhaften Grenzschutz. Im Szenario 800 v. Chr. erhalten beide unabhängigen Fraktionen nun grundlegende antike Technologien einschließlich Landwirtschaft und Steinmetzkunst, damit sie Bauernhöfe und Stadtmauern tatsächlich bauen können. Spielbalance und Mehrspieler-Verhalten sind noch nicht im Spiel validiert.
+
+## Religiöse Schreine
+
+Alle sieben religiösen Schreine gewähren **zwei kostenlose Priester** statt drei zuweisbarer Priesterplätze. Der bisherige Goldertrag je Stadt und die Ertragsobergrenze werden durch **einen Handelspunkt je fünf Anhänger weltweit** ersetzt. Jede Stadt trägt zu jeder dort vorhandenen Religion `Bevölkerung / Anzahl vorhandener Religionen` bei. Bruchteile bleiben erhalten und werden weltweit summiert, bevor durch fünf geteilt und abgerundet wird. Eine Stadt mit Bevölkerung 12 und drei Religionen trägt somit je vier Anhänger bei. Die Handelspunkte werden über die Regler verteilt und sind kein direkter Goldertrag. Kultur, Große-Persönlichkeit-Punkte und religiöse Funktionen bleiben erhalten. Vertreibung und Staatsatheismus unterdrücken die Schreinwirkungen weiterhin.
+
+Jerusalem erhält den jüdischen Schrein, den Salomonischen Tempel, automatisch im ersten Zug ab **957 v. Chr.**, sofern die Stadt besteht und das Judentum enthält. Das Datum folgt der traditionellen Bauchronologie in [Gettys Eintrag zum Ersten Tempel](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039). Spätere Szenarien wenden die Vergabe beim Start an. Fehlt die Stadt oder das Judentum, wartet die Vergabe. Ein bereits andernorts errichteter Schrein wird nicht dupliziert; nach einer Zerstörung erfolgt kein automatischer Wiederaufbau. Die Vergabe wird synchron verarbeitet und gespeichert. Spiel- und Mehrspieler-Validierung stehen noch aus.
+
+## Wissen durch Eroberungen
+
+Alle Forschungskosten erhalten zusätzlich den globalen Faktor **1,1**
+(`RFCMP_GLOBAL_RESEARCH_COST_PERCENT = 110` in `GlobalDefines.xml`).
+Wer eine militärisch eroberte Stadt behält, erhält Wissen für eine gleichverteilt
+zufällig gewählte Technologie: Der frühere Besitzer muss sie kennen, das eigene
+Team darf sie noch nicht kennen und der Eroberer muss sie bereits erforschen können.
+Unabhängige, kleinere Fraktionen und Barbaren geben keine Wissensbelohnung;
+kleinere Fraktionen und Barbaren erhalten selbst keine.
+
+Verglichen mit der Epoche des früheren Besitzers gibt eine Technologie seiner
+**aktuellen Epoche 5% + 2 Prozentpunkte je Bevölkerung**, eine Technologie der
+**vorherigen Epoche 10% + 4 Prozentpunkte je Bevölkerung**, eine **noch ältere
+Technologie den vollständigen Abschluss**. Es zählt die Bevölkerung vor
+Eroberungsverlusten. Prozente beziehen sich auf die gesamten eigenen
+Forschungskosten; der Gewinn endet beim Abschluss, Überschüsse verfallen.
+
+Jeder Stadtstandort kann jedem Team nur einmal Wissen geben, auch nach
+Zerstörung und Neugründung. Niederbrennen, Umsiedeln, Schenkungen, Handel und
+friedliche Besitzerwechsel geben kein Wissen. Menschen und KI folgen denselben
+Regeln. Offene Belohnungen und die Standortgeschichte werden gespeichert;
+Mehrspieler-Laufzeitverhalten bleibt ungeprüft.
+
 ## Technologieabhängiges Wachstum
 
 Alle Zivilisationen haben einen **Wachstumsmalus von 30% auf den positiven
@@ -82,6 +267,11 @@ Siedler/Bautrupps bleiben unverändert. Der Malus greift nach Handel und Verbrau
 also auch auf positiven Überschuss aus importierter Nahrung. Bestehende gemeinsame
 Wachstumsschwellen und die Nahrungserhaltung durch Kornspeicher bleiben bestehen.
 
+Auch während der Produktion von Siedlern, Bautrupps und anderen Einheiten mit
+Nahrungsproduktion bleiben Nahrungsdefizite wirksam: Vorräte werden verbraucht,
+und bei leeren Vorräten kann die Stadt schrumpfen. Nur positiver Überschuss
+wird in Produktion umgewandelt.
+
 `RFCMP_GROWTH_BASE_PENALTY_TIMES100` (3000) und
 `RFCMP_GROWTH_TECH_REDUCTION_TIMES100` (50) in `Assets/XML/GlobalDefines.xml`
 verwenden Hundertstel eines Prozentpunkts. Bestehende Spielstände beginnen ohne
@@ -89,6 +279,10 @@ gespeicherten Nachkommarest und verwenden den neuen Malus sofort.
 
 ## Landerschließung
 
+- **Oasen** liefern **2 Nahrung und 2 Handel** und erlauben ausschließlich
+  **Bauernhöfe** ab Landwirtschaft. Die Oase bleibt erhalten und liefert das
+  nötige Süßwasser; mit Bauernhof ergibt das normalerweise **3 Nahrung und
+  2 Handel**, mit Biologie **4 Nahrung und 2 Handel**.
 - **Bauernhöfe auf Schwemmland** benötigen nur Landwirtschaft und die üblichen
   Voraussetzungen für Bauernhöfe. Das Schwemmland bleibt erhalten; es gibt keine
   zusätzliche Technologie oder zusätzliche Bauzeit für dieses Geländemerkmal.
@@ -159,11 +353,11 @@ Routenbesitzers aufgedeckt.
   beim Inlandshandel. Die Bevölkerung der jeweils empfangenden Stadt schwächt
   den Einfluss. Kultur pro Route und Richtung: `abgerundet(5 × Routenwert / Bevölkerung) / 10`:
   die Hälfte der bisherigen ungerundeten Rate, auf eine Nachkommastelle abgerundet.
-  Religionschance: `abgerundet(2,5 × Routenwert / Bevölkerung)` Prozent je
-  Religion der Partnerstadt, höchstens **12%** pro Route.
+  Religionschance: `abgerundet(5 × Routenwert bei voller Infrastruktur-Effizienz / Bevölkerung)` Prozent je
+  Religion der Partnerstadt, höchstens **12%** pro Route vor Abzügen und Boni.
   Der Anteil der Besitzerkultur in der empfangenden Stadt verursacht einen
   linearen Abzug: null bei **75%**, bis zu **12 Prozentpunkten bei 100%**.
-  Bei vollständig eigener Kultur ist die Handelsverbreitung damit unmöglich.
+  Bei vollständig eigener Kultur sinkt die Grundchance vor additiven Boni damit auf null.
   Grundlage ist die gespeicherte Stadtkultur vor dem Kulturaustausch dieser Route.
   Heilige Städte erhalten weitere **3 Prozentpunkte Abzug** für Religionen,
   für die sie nicht heilig sind; mehrere heilige Religionen stapeln diesen Abzug
@@ -180,8 +374,8 @@ Routenbesitzers aufgedeckt.
   und historische Religionsgründungen bleiben erhalten. Staatsatheismus sperrt
   weiterhin Missionare sowie das Senden und Empfangen von Religionen durch Handel.
 - Beispiel vor Kultur- und Heilige-Stadt-Abzügen: Eine Route mit sechs Wirtschaftspunkten bringt einer Stadt der
-  Größe 2 **1,5 Kultur pro Runde** und **7% Verbreitungschance** je zulässiger
-  Partnerreligion. Bei Größe 10 sind es 0,3 Kultur und 1% Religionschance.
+  Größe 2 **1,5 Kultur pro Runde** und **12% Verbreitungschance** je zulässiger
+  Partnerreligion. Bei Größe 10 sind es 0,3 Kultur und 3% Religionschance.
 - Ab **Währung** lässt sich im Außenberater unter Beziehungen eine Zivilisation
   auswählen und ein **Handelsembargo verhängen oder aufheben**. Es blockiert
   sofort die Routen zwischen beiden Zivilisationen, wird gespeichert und lässt
@@ -256,7 +450,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Despotismus** | Keine | Keiner | +1 Zufriedenheit durch Paläste und Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit je Gebäude der Staatsreligion; -2 Zufriedenheit je Gebäude einer anderen Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit anderer oder keiner Staatsreligion, bei Angriff und Verteidigung. |
+| **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit von Gebäuden der Staatsreligion; -2 Zufriedenheit von Gebäuden einer fremden Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit fremder oder keiner Staatsreligion, bei Angriff und Verteidigung. |
 | **Plutokratie** | Bankwesen | Mittel | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
 | **Nationalismus** | Nationalismus | Mittel | +5 Kultur in jeder Stadt; +20% Produktion; -5 Zufriedenheit in Städten, in denen die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers. |
 | **Rechtsstaat** | Verfassung | Hoch | +2 Zufriedenheit in jeder Stadt; +10% Handel. |
@@ -267,21 +461,44 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Feudalismus | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. |
+| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
 | **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
 Das Wachstum umfasst sämtliche Ausbaustufen: **Hütte → Weiler → Dorf → Gemeinde**.
 Selbstversorgung verhindert die Aufwertung; Marktwirtschaft verdoppelt ihre
-Geschwindigkeit. Der Handelsmalus der Leibeigenschaft betrifft ausschließlich
-die Stufe **Dorf**. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
+Geschwindigkeit. Normale unbeschäftigte Bürger bleiben bei Selbstversorgung
 als Möglichkeit für überschüssige Bevölkerung verfügbar.
 
 ### Folgen großer Eroberungen
 
-Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Angebote erhalten nur große Zivilisationen mit einer Stadt auf demselben Kontinent.
+Die Eroberung einer großen Stadt unter **Sklaverei** erzeugt einen regionalen Sklavenmarkt. Andere Sklavenhalter können eine Sklaveneinheit kaufen; andere Staaten können die Freiheit eines Gefangenen kaufen. Dieser erhöht die Bevölkerung, bringt Kultur des früheren Besitzers und 20 Runden Zufriedenheit. Erobert ein Staat ohne Sklaverei eine große Stadt, fliehen Menschen als Flüchtlinge: Staaten ohne Sklaverei nehmen sie kostenlos auf, Sklavenhalter können sie für 20 Runden zur Arbeit zwingen. Das gibt einen vorübergehenden Sklavenspezialisten und eine vorübergehende Unzufriedenheit. Der frühere Besitzer erhält immer Flüchtlinge statt eines Sklavenmarktangebots und kann sie nicht ablehnen; dabei gelten dieselben von der Sklaverei abhängigen Flüchtlingseffekte. Angebote erhalten nur große Zivilisationen mit einer Zielstadt in höchstens 12 Feldern Entfernung von der eroberten Stadt (Civ4-Kartenentfernung). Wasser und Kontinentgrenzen schränken die Teilnahme nicht ein. Die bisherige Bevorzugung der größten beziehungsweise kleinsten Zielstadt gilt nur innerhalb dieses Radius.
 
 Unter Sklaverei kostet eine Eroberung **zwei Bevölkerungspunkte** statt einem und erzeugt eine Sklaveneinheit je verlorenem Bevölkerungspunkt. Städte behalten mindestens Größe eins; Rückeroberungen sind ausgenommen.
+
+Unter Sklaverei werden gefangene **Bautrupps, Missionare und Siedler** garantiert
+zu je einer Sklaveneinheit anstelle der normalen Gefangennahme oder Vernichtung.
+Das gilt auch für zivilisationsspezifische Varianten. Der Sklave erscheint auf
+dem Feld der gefangenen Einheit, hat in dieser Runde keine Bewegung mehr und
+erhält, soweit vorhanden, die Herkunftsbeförderung ihres bisherigen Besitzers.
+
+Alle bewaffneten Sklaveneinheiten können unter Sklaverei in einer Stadt
+desselben Teams als Sklavenspezialist für **20 Runden** angesiedelt werden.
+Bei Abschaffung der Sklaverei wird für jede Kriegersklaveneinheit einzeln mit
+**50% Chance** die passende reguläre Einheit gebildet, einschließlich der
+zivilisationsspezifischen Variante: etwa Axtkämpfer, Schwertkämpfer oder
+Streitkolbenträger; moderne Sklaveninfanterie wird zu Marines. Die übrigen
+Kriegersklaveneinheiten lösen sich auf. Umgewandelte Einheiten behalten
+Erfahrung, Beförderungen, Schaden und bereits verbrauchte Bewegung; die
+Kanonenfutter-Beförderung und der ermäßigte Sklavenunterhalt entfallen.
+
+KI-Gefangene suchen unter Sklaverei normalerweise eine sichere Stadt zum
+Ansiedeln. Kurze Wege und ein geringes Aufstandsrisiko haben Vorrang; nach dem
+Ansiedeln darf das Risiko höchstens 10% betragen. Bei nahen Bedrohungen oder
+einem örtlichen Landkrieg kaufen sie bezahlbare Sklavenwaffen der modernsten
+freigeschalteten Stufe. Ohne unmittelbare Gefahr behalten sie dabei 20 Gold.
+Andernfalls ziehen sie sich in Sicherheit zurück. Für den Kampf benötigte
+bewaffnete Sklaven bleiben im Militärdienst.
 
 Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Sklaven gefangen zu nehmen**, wenn er einen schwächeren Landverteidiger tötet. Tiere sind ausgenommen. Verglichen wird die effektive Kampfstärke zu Kampfbeginn einschließlich Verteidigungsboni. Der Angreifer muss vollständig gesund beginnen und darf nur durch Erstangriffe des Verteidigers Schaden erleiden. Rückzüge und Kollateraltötungen zählen nicht. Der Sklave erscheint auf dem Feld des Angreifers und erhält, soweit vorhanden, die Herkunftsbeförderung der besiegten Zivilisation.
 
@@ -290,24 +507,90 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
-| **Miliz** | Bogenschießen | Niedrig | +30% Stadtverteidigung; -10% Kampfstärke außerhalb des eigenen Gebiets. |
-| **Rittertum** | Maschinenbau | Hoch | Neu ausgebildete berittene Einheiten und Samurai starten mit +6 Erfahrung. +2 Zufriedenheit durch Burgen, solange diese nicht veraltet sind. Heißt für Japan **Bushido**. |
+| **Horde** (ersetzt die Kriegergesellschaft für Hunnen und Mongolei) | Reiterei | Mittel | +50% Produktion für berittene Einheiten; neu ausgebildete berittene Einheiten erhalten +3 Erfahrung; +100% Gold beim Plündern von Modernisierungen; -50% Kriegsmüdigkeit; **-25% Forschungsleistung**. |
+| **Seekriegsführung** | Segeln | Niedrig | +50% Produktion und +2 Erfahrung für neu gebaute militärische Schiffe, einschließlich Transportschiffen. Arbeitsboote erhalten keinen dieser Boni. |
+| **Heeresfolge** | Feudalismus | Mittel | +5% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +30%. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
 | **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
+
+Die Horde belegt den bisherigen Platz der Kriegergesellschaft; jede
+Zivilisation behält fünf Militärstaatsformen. Hunnen und Mongolei beginnen mit
+der Horde, sofern Reiterei verfügbar ist. Nahkampferfahrung und der
+Belagerungsmalus der Kriegergesellschaft entfallen; einzigartige Fähigkeiten
+bleiben separat aktiv. Die Forschungsleistung wird nach den normalen
+Forschungsmodifikatoren mit 75% multipliziert und ganzzahlig abgerundet.
 
 Die Einheitenproduktionsboni von Stammessystem und Wehrpflicht gelten auch für
 Bautrupps, Siedler und Missionare. Wehrpflicht gewährt keine zusätzliche
 Rekrutierungsfähigkeit; ihr Effekt ist der oben aufgeführte Produktionsbonus.
+
+### Islamisches Expansionsereignis
+
+Arabiens Gründungsübertritte sind auf die arabische Halbinsel begrenzt (x=73-82, y=30-37, geschnitten mit dem normalen Gründungsgebiet). Ägypten, Sinai, Levante und Irak müssen erobert werden. Das gilt auch für Kultur, Einheiten, Vorwarnungen und Kartenhinweise; das Stabilitätskerngebiet bleibt unverändert. Die arabische KI behält den Bonus von 60 Punkten je Stadt im ägyptischen Gebiet bei der Kriegszielwahl.
+
+Arabien beginnt bei normalen Gründungen, auch im Szenario 600 n. Chr., mit **zwei Siedlern, zwei verteidigenden Langbogenschützen und einer Feldarmee aus drei Schwertkämpfern, zwei Kamelbogenschützen, zwei Katapulten und einem Speerkämpfer**. Bereits bestehende Positionen späterer Szenarien bleiben unverändert.
+
+Wird der Islam erstmals in **einer beliebigen arabischen Stadt** gegründet, schließt sich Arabien automatisch der islamischen Sache an; Mekka ist nicht erforderlich. Ein anderes Gründerland entscheidet zwischen **Anschluss** und **Unterdrückung**. Der Anschluss übernimmt ohne zusätzliche Anarchie **Islam, Monarchie, Theokratie (Legitimation) und Gottesstaat**, bekehrt alle eigenen Städte und vertreibt deren andere Religionen nach den normalen Regeln. Wirtschafts- und Militärstaatsformen bleiben bestehen. Das vollständige Ereignis gilt unabhängig von der Zivilisation für das angeschlossene Land. Es ersetzt die bisherige dauerhafte arabische Eroberungskonvertierung.
+
+KI-Gründer schließen sich ohne Staatsreligion mit **85%**, mit einer anderen Staatsreligion mit **25%** und als bereits islamisches Land mit **100%** Wahrscheinlichkeit an. Menschliche Gründer außerhalb Arabiens erhalten eine nur auf ihrem Client angezeigte Entscheidung mit synchronisierten Auswirkungen.
+
+Unterdrückung vertreibt den Islam aus den Städten des Gründerlandes und erzeugt nahe der heiligen Stadt ein Barbarenheer aus **10 Einheiten: 2 Langbogenschützen, 3 Schwertkämpfern, 3 Kamelbogenschützen und 2 Katapulten**. Das Heer kann in dieser Runde nicht ziehen. Stattdessen übernimmt Arabien die islamische Sache und bekehrt seine Städte; jede neu bekehrte Stadt gibt **nach ihrer Bevölkerung skalierte Truppenpakete (siehe unten)**. Das gilt auch für spätere Gründungsübertritte während der Mobilisierung. Hat Arabien noch keine Stadt, wartet die Mobilisierung bis zur ersten Stadt. Arabien muss die heilige Stadt des Islam **innerhalb von 20 Runden ab Mobilisierung militärisch erobern**. Erst diese Eroberung aktiviert das vollständige Ereignis für dessen normale Dauer. Bei Fristablauf bleiben Städte, Staatsformen, Religion und Truppen erhalten, das vollständige Ereignis entfällt jedoch. Während der Mobilisierung erklärt Arabien dem aktuellen nichtislamischen Besitzer der heiligen Stadt automatisch den totalen Krieg. Befristete Friedensverträge werden übergangen; dauerhafter Frieden und Vasallenbindungen bleiben erhalten. Der Besitzer wird jede Runde neu geprüft, auch bei Wechseln vor Arabiens Erscheinen. Ist ein anderes Land als Besitzer der heiligen Stadt islamisch, erhält es stattdessen das vollständige Ereignis und Arabiens Mobilisierung endet. Die KI priorisiert die heilige Stadt, solange deren Besitzer mit Arabien im Krieg liegt. Kriege gegen alle bekannten nichtislamischen Länder und Friedenssperren des vollständigen Ereignisses gelten noch nicht.
+
+Das Ereignis dauert **300 Kalenderjahre plus 10 Runden**. Beim Start wird die Kalenderdauer in eine Endrunde umgerechnet; anschließend werden die zusätzlichen Runden angehängt (normalerweise 620 bis 1020 n. Chr., 40 Runden). Währenddessen gilt:
+
+- Während des Ereignisses bevorzugt die KI des teilnehmenden Landes die Militärproduktion, strebt Garnisonen von zwei Verteidigern in der Hauptstadt und einem in anderen ruhigen Städten an, rückt mit kleineren Angriffsgruppen vor und wagt riskantere Angriffe. Die Zielwahl berücksichtigt außerdem die bevölkerungsabhängige Truppenbelohnung: Jede erwartete Einheit erhöht den Zielwert um vier Punkte und begünstigt entwickelte Städte bei erstmaliger Eroberung. Bereits belohnte Stadtstandorte erhalten keine Rekrutierungsgewichtung; normale Entfernungs- und Angriffserwägungen gelten weiterhin. Diese KI-Vorgaben enden sofort mit dem Ereignis.
+- Jede militärisch eroberte oder bei Arabiens Gründung übergetretene Stadt erhält während des Ereignisses den Islam. Alle anderen Religionen werden nach den normalen Vertreibungsregeln entfernt und verbannt; normale Religionsgebäude werden zerstört und Heilige Städte behalten ruhende einzigartige Tempel. Die normale Gottesstaat-Befriedung durch Konvertierung bleibt bei erfüllten Bedingungen wirksam.
+- Jede militärische Eroberung während des Ereignisses gibt außerdem sofort die Kontrolle über das Stadtfeld und seine acht Nachbarfelder. Deren fremde Feldkultur wird zurückgesetzt und dem Eroberer übertragen, mit **20 zusätzlichen Kulturpunkten je Feld**. Andere Stadtzentren sind ausgenommen; gespeicherte Stadtkultur bleibt unverändert. Dies gilt auch bei Rückeroberungen, aber nicht bei friedlichen Übertragungen oder Bekehrungen während der Mobilisierung nach einer Unterdrückung des Islam.
+- Jede erstmals durch militärische Eroberung vom teilnehmenden Land erworbene Stadt sowie arabische Gründungsübertritte während Arabiens Ereignis geben **ein Truppenpaket plus ein weiteres je vier Bevölkerung**: `1 + abgerundet(Bevölkerung / 4)` Pakete mit jeweils **2 Schwertkämpfern, 1 Kamelbogenschützen und 1 Katapult**, auch ohne normale Ausbildungsvoraussetzungen. Es zählt die Bevölkerung vor Eroberungsverlusten und dem Bevölkerungsbonus des Gottesstaats. Größe 1–3 gibt 4 Einheiten, 4–7 gibt 8 und 8–11 gibt 12. Dieselbe Skalierung gilt für neu bekehrte Städte während Arabiens Mobilisierung nach einer Unterdrückung des Islam; hier zählt die Bevölkerung vor der Bekehrung. Diese Einheiten haben in ihrer Ankunftsrunde keine Bewegung mehr. Rückeroberungen geben keine weiteren Truppen; die gespeicherte Geschichte verwendet Stadtstandorte und berücksichtigt Eroberungen vor dem Ereignis. Andere Schenkungen, Handelsübertragungen und friedliche Übertritte geben keine Ereignisbelohnungen.
+Das **vollständige Jihad-Ereignis gilt unabhängig von der Zivilisation** und gewährt drei Feldarmeen: **Khalid ibn al-Walid** zu Beginn (Levante, dann Irak), **Amr ibn al-As** nach der ersten militärischen Eroberung (Ägypten, dann Nordafrika) und **Sa'd ibn Abi Waqqas** nach der dritten (Irak, dann Persien). Die Unterdrückungs-Sammlung allein gewährt keine Generäle. Nur erstmals militärisch eroberte, vorher nie erworbene Stadtpositionen während des aktiven Ereignisses zählen; Gründungsübertritte, Geschenke, Handel und Rückeroberungen zählen nicht.
+
+Khalids Armee umfasst mindestens **3 Schwertkämpfer, 2 Kamelbogenschützen, 2 Katapulte und 1 Speerkämpfer**. Amr erhält **einen zusätzlichen Schwertkämpfer und ein zusätzliches Katapult**, insgesamt mindestens **10 Einheiten**. Sa'd erhält ein Katapult weniger, mindestens **7 Einheiten** (3 Schwertkämpfer, 2 Kamelbogenschützen, 1 Katapult und 1 Speerkämpfer). Diese festen Anpassungen erfolgen nach der Bevölkerungsskalierung; der wiederhergestellte Schwertkämpfer für Sa'd erhöht die bisherige Gesamtzuteilung der drei Armeen um eine Einheit. Die erste nutzt geeignete Starttruppen in der Hauptstadt und ergänzt Fehlbestände. Spätere Armeen enthalten die normalen Rekruten der freischaltenden Eroberung und werden je Einheitentyp auf die Mindeststärke ergänzt; eine zweite volle Eroberungsbelohnung entfällt. Sie erscheinen in einer eigenen Stadt nahe ihrer Front. Der General wird sofort einem Schwertkämpfer angeschlossen und verteilt dabei die normalen Großer-General-Erfahrungspunkte auf geeignete eigene Einheiten am Standort. Die Feldarmee kann im Ankunftszug nicht ziehen.
+
+Die KI wählt je Feldarmee erreichbare, bekannte feindliche Städte im zugewiesenen Gebiet und hilft andernorts, wenn dort keine erreichbar ist. Feldarmeen verschiedener Feldzüge werden nicht automatisch zusammengelegt; unzugewiesener Ersatz kann sich anschließen. Eroberungsrekruten erhalten den nächsten noch bestehenden Feldzug derselben Landmasse. Angeschlossene Jihad-Generäle werden nicht als reguläre Garnison aus der Feldarmee gelöst. Feldarmeen stellen höchstens einen eigenen lokalen Stadtverteidiger ab, bei unmittelbarer Gefahr zwei, und behalten mindestens vier Einheiten in der Feldgruppe. Abgestellte Verteidiger verlassen den Feldzug und erhalten die Stadtverteidiger-Rolle; nachfolgende Armeen zählen sie zum selben lokalen Limit. Eine kleinere Armee darf bei lokaler Gefahr geschlossen eine sonst unverteidigte Stadt halten, wird aber nicht weiter in Garnisonen aufgeteilt. Die Zuordnung bleibt nach dem Tod des Generals bestehen und endet mit dem Ereignis. Amr priorisiert Theben und Kem Kasir, danach weitere nordägyptische Städte und dann die Mittelmeerküste westwärts nach Libyen und Tunesien. Diese erreichbaren, bekannten feindlichen Ziele haben Vorrang vor allgemeinen Sammel- und Gelegenheitsbewegungen; Nubien und das afrikanische Binnenland folgen erst, wenn kein solches Ziel erreichbar ist. Lokale Verteidigung, Heilung und Angriffe am zugewiesenen Ziel bleiben möglich. Rekruten aus ägyptischen Eroberungen bevorzugen seinen verbliebenen Feldzug derselben Landmasse; andernfalls gilt die bisherige Zuordnung zum nächsten Feldzug. Zusätzlich erhält Amr einen separaten Langbogenschützen und einen separaten Speerkämpfer als Stadtverteidiger-Eskorte. Die KI-Eskorten folgen dem Feldzug und bleiben in ägyptischen Städten mit Garnisonsbedarf. Sie haben keine Feldzugszuordnung und werden nicht mit seiner Armee zusammengelegt. Menschen steuern dieselben zusätzlichen Einheiten frei. Ohne verbleibenden Feldzug oder nach Ende des Ereignisses nutzen die Eskorten wieder die normale Stadtverteidiger-KI. Freischaltungen und Zuordnungen werden gespeichert. Menschliche Empfänger erhalten dieselben Armeen, Generäle und Erfahrungspunkte bei freier Steuerung. Spielbalance und Mehrspieler-Verhalten sind noch nicht im Spiel validiert.
+
+- Arabien erhält **einen Siedler**, wenn es Kairo während des Ereignisses militärisch erobert. Der Bonus gilt einmalig und unabhängig vom aktuellen Stadtnamen; friedliche Übertragungen und erneute Eroberungen geben keinen weiteren Siedler. Er kann in seiner Ankunftsrunde nicht ziehen.
+- Das teilnehmende Land erklärt allen bekannten nichtislamischen Ländern sofort den totalen Krieg und prüft jede Runde auf neue Kontakte. Teams mit mindestens einem lebenden islamischen Mitglied sind ausgenommen. Normale Friedensverträge werden übergangen; szenariobedingter dauerhafter Frieden und eigene Herrschafts-/Vasallenbindungen bleiben erhalten. Ereigniskriege einschließlich neu beteiligter Schutzpakt-, Herrschafts- und Vasallenparteien können bis zum Ende weder durch Frieden, Vermittlung, Kapitulation noch Skriptfrieden beendet werden.
+
+Start- und Endmeldungen nennen das teilnehmende Land und gehen gezielt an dessen Team, Ereignisgegner sowie Länder mit einer Stadt innerhalb von 16 Kartenentfernungseinheiten zur heiligen Stadt des Islam oder einer teilnehmenden Stadt. Am Ende entfallen automatische Konvertierung, Rekrutierung, Kriegserklärungen und die Ereignis-Friedenssperren. Bestehende Einheiten, Religionen/Verbote, Staatsformen und Staatsreligion bleiben erhalten; Kriege werden verhandelbar, enden aber nicht automatisch. Dauer, Truppenzahlen und Meldungsradius stehen als `RFCMP_ARABIAN_JIHAD_*`, Unterdrückungsheer und Eroberungsfrist als `RFCMP_ISLAM_*` in `GlobalDefines.xml`. Offene Gründerentscheidungen, Mobilisierungsfrist, Ereigniszeitablauf, Kriegssperren und Eroberungsgeschichte werden gespeichert und auf allen Multiplayer-Peers geführt; die Laufzeitprüfung im Multiplayer bleibt separat.
+
+Wenn **Arabiens eigener Dschihad endet**, zerfällt sein Kalifat in neue Nachfolgezivilisationen: **Abbasiden** im Irak, in Persien und Arabien; **Fatimiden** in Ägypten, der Levante und im östlichen Nordafrika; sowie **Umayyaden** im westlichen Nordafrika und auf der Iberischen Halbinsel. Städte außerhalb dieser Regionen gehören zur geografisch nächstgelegenen Reichsregion; dabei wird auch der Übergang über den linken und rechten Kartenrand berücksichtigt. Dies sind geografische Annäherungen, keine Nachbildung ihrer genauen historischen Grenzen oder Daten. Nur arabische Städte werden aufgeteilt. Ein Reich entsteht nur, wenn es mindestens eine Stadt erhält. Ist nur eine Region vertreten, wird Arabien zu diesem einzelnen Nachfolgereich. Jedes Nachfolgereich erhält beim Zerfall höchstens **4 Städte bei einem erscheinenden Reich, jeweils 6 bei zwei und jeweils 8 bei drei Reichen**. Überzählige Städte werden unabhängig. Bevorzugt bleiben Städte nahe den historischen Reichszentren erhalten; jedes erscheinende Reich behält mindestens eine Stadt. Die Grenze gilt nur für die Aufteilung beim Zerfall.
+
+Ein menschlicher arabischer Spieler wählt, welches verfügbare Reich er weiterregiert. Die KI behält die Abbasiden, sofern deren Region vertreten ist, andernfalls das bevölkerungsreichere verbleibende Reich. Das gewählte Reich behält die Spielerverbindung und diplomatische Identität. Jedes andere Reich wird in einem reservierten neuen Platz zur unabhängigen Zivilisation, erbt bekannte Technologien, Staatsformen, Staatsreligion und bestehende Kriege gegen andere Länder und beginnt im Frieden mit den übrigen Nachfolgern. Gold und jede Einheitenklasse werden ungefähr nach regionaler Bevölkerung aufgeteilt; Transporte behalten ihre Ladung. Die Truppen werden ohne verbleibende Bewegung in eigene Städte oder Häfen verlegt. Die Teilung gewährt keine neuen Armeen oder Eroberungsbelohnungen. Jedes Reich erhält eine bestehende Hauptstadt nahe seinem historischen Zentrum. Die regionalen Stabilitätsdaten werden angepasst; die Stabilität beginnt bei +5. Nachfolger verfolgen normale Siegbedingungen statt Arabiens historischer Ziele. Die menschliche Entscheidung bleibt beim Speichern erhalten und wird auf jedem Mehrspieler-Client einmalig aufgelöst; das Laufzeitverhalten im Mehrspielermodus ist noch ungeprüft.
+
+Die kanonische Teilung verursacht weder Stabilitätsabzüge für verlorene Städte noch Stabilitätsboni für Eroberungen. Die Zähler für fremdes Land und fehlende Heimatstädte werden bis zur nächsten regulären Neuberechnung zurückgesetzt.
 
 ### Religion
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare aller Religionen. |
-| **Gottesstaat** | Theologie | Hoch | +2 Zufriedenheit und +10% Produktion in Städten mit Staatsreligion; -2 Zufriedenheit in Städten ohne Staatsreligion. |
-| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. |
+| **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
+| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
+| **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. Erlaubt die Ausbildung von Missionaren aller Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
+
+Unter Toleranz erhöht sich die eingehende Handelsverbreitung je fehlender Religion und Route nach allen Kultur- und Heilige-Stadt-Abzügen um **5 Prozentpunkte** (vor Rivalit?t und Infrastruktur-Effizienz). Auch eine sonst auf null gesenkte Chance beträgt vor diesen Faktoren damit 5%; Inlandsrouten zählen ebenfalls. Staatsatheismus und andere Verbreitungsverbote bleiben wirksam.
+
+Missionare können nur für die eigene Staatsreligion ausgebildet werden, außer unter **Toleranz**. Ohne Staatsreligion und ohne Toleranz können keine Missionare ausgebildet werden. Das gilt auch für laufende Bauaufträge.
+
+Bei **Gründung des Christentums** erhalten auch die **zwei nächsten geeigneten Städte an der Mittelmeerküste** sofort diese Religion. Die Gründungsstadt ist ausgeschlossen. Die Auswahl prüft angrenzendes Mittelmeerwasser ohne Schwarzes und Rotes Meer und beachtet Staatsatheismus, Stadtverbote und Verbote fremder Religionen. Gibt es weniger als zwei geeignete Städte, werden entsprechend weniger konvertiert. Es gilt die normale christlich-jüdische Ersetzungsregel.
+
+**Christentum und Islam** multiplizieren die nach Kultur- und Heilige-Stadt-Abzügen verbleibende Grundchance der Handelsverbreitung mit **1,5**. Danach erhalten sie **+10 Prozentpunkte nur in religionslosen Städten**; Christentum erhält diesen additiven Bonus auch in Städten mit ausschließlich Judentum. Der additive Bonus kann eine Nullchance anheben, der Multiplikator nicht. Toleranz addiert seinen separaten Bonus von +5 Prozentpunkten nach der Multiplikation. Enthält die empfangende Stadt die jeweils andere Religion, reduziert christlich-islamische Rivalität die resultierende Handelschance auf **25%** und die Missionarschance auf **50%** ihres normalen Werts. Danach wird die Handelschance mit der Infrastruktur-Effizienz multipliziert und abgerundet; eine gültige Route bleibt erforderlich. Diese Regeln gelten weltweit, unabhängig von Zivilisation oder Region.
+
+Erfolgreiche christliche Verbreitung durch Handel oder Missionare in eine zuvor ausschließlich jüdische Stadt entfernt mit **50%** Chance das Judentum. Die jüdische Heilige Stadt ist ausgenommen. Diese Ersetzung verbannt das Judentum nicht.
+
+**Religion vertreiben:** Ein Missionar kann in einer eigenen Stadt mit seiner Religion verbraucht werden, um alle anderen Religionen zu entfernen und ihre normalen Religionsgebäude zu zerstören. Eine Heilige Stadt behält ihren Status und einzigartigen Tempel; das heilige Symbol wird ausgegraut. Die Religion gilt als nicht vorhanden und der Tempel hat keine Wirkung, einschließlich Einnahmen, Spezialisten und Große-Persönlichkeiten-Punkten. Erneute Verbreitung stellt den vollen Status und die Tempelwirkung wieder her; zerstörte normale Gebäude müssen neu gebaut werden.
+
+Vertriebene Religionen einschließlich heiliger Religionen sind bis zum Besitzerwechsel für Handel, Missionare, Ereignisse und Skripte gesperrt. Beim Wechsel der Staatsreligion werden sofort alle Verbote für die neue Religion in allen eigenen Städten aufgehoben, ohne die Religion automatisch zu verbreiten. Verbote und ruhender Heilige-Stadt-Status bleiben beim Speichern und Laden erhalten; ein Besitzerwechsel allein reaktiviert die Religion nicht. Ohne entfernbare Religion ist die Aktion nicht verfügbar.
+
+Befriedung durch Gottesstaat: Fehlte die eigene Staatsreligion bei der Eroberung, beendet ihre Verbreitung einmalig die Eroberungsunruhe, gibt +1 Bevölkerung und stellt nach Möglichkeit ein dabei zerstörtes Gebäude wieder her. Gottesstaat muss bei Eroberung und Konvertierung aktiv und die Staatsreligion dieselbe sein. Jede Rückeroberung prüft den Anspruch neu; er bleibt beim Speichern erhalten.
+
+Jede in einer Stadt vorhandene **Nichtstaatsreligion verursacht grundsätzlich
+-1 Zufriedenheit**. Ohne Staatsreligion gilt das für jede vorhandene Religion.
+Toleranz hebt diese Religionsunzufriedenheit auf, ohne zusätzliche
+Zufriedenheit zu erzeugen. Andere Boni auf Nichtstaatsreligionen werden mit
+dem Grundmalus verrechnet. Der Gottesstaat verursacht zusätzlich -1, also
+insgesamt **-2 Zufriedenheit je Nichtstaatsreligion**.
 
 Staatsatheismus deaktiviert die Staatsreligion; die anderen vier religiösen
 Staatsformen erlauben eine Staatsreligion.
@@ -333,7 +616,7 @@ vor der Erzeugung der Start-Einheiten durch Skripte. Nicht verfügbare Staatsfor
 werden durch festgelegte Alternativen ersetzt; zusätzliche Technologien oder
 Anarchie entstehen dadurch nicht.
 
-Die Profile gelten für alle vier Szenarien und überschreiben keine späteren
+Die Profile gelten für alle fünf Szenarien und überschreiben keine späteren
 Spielerentscheidungen. Bereits vorhandene Zivilisationen in Spielständen behalten
 ihre Staatsformen. Alle Profile und Ersatzregeln stehen in
 [StartingCivics.md](StartingCivics.md).
@@ -377,7 +660,7 @@ Die folgenden Kombinationen tragen zur Basisstabilität bei:
 | Monarchie + Theokratie | +1 |
 | Plutokratie + Planwirtschaft | -1 |
 | Republik oder Demokratie + Rechtsstaat | +2 |
-| Monarchie + Rittertum | +2 |
+| Monarchie + Heeresfolge | +2 |
 | Theokratie + Staatsreligion oder Gottesstaat | +2 |
 | Plutokratie + Marktwirtschaft | +1 |
 | Theokratie + Toleranz | -3 |
@@ -415,6 +698,32 @@ Hintergründe und Verhalten in Spielständen stehen in
 
 ## Neue Zivilisationen und Gebietswechsel
 
+### Garnisonen in Festungen
+
+Eine Festung mit mindestens einer kampffähigen Landeinheit einer regulären
+Zivilisation gehört dem Spieler dieser Garnison, unabhängig von der Feldkultur.
+Das gilt auch in neutralem Gebiet. Unabhängige und Barbaren beanspruchen auf
+diese Weise keine Festungen; zivile Einheiten und transportierte Truppen zählen
+nicht als Garnison. Teilen sich befreundete Truppen eine Festung, behält der
+bisherige Besitzer die Kontrolle, solange seine Garnison dort bleibt.
+
+Eine im Krieg eroberte Festung fällt beim Friedensschluss mit dem vorherigen
+Besitzer an den normalen kulturellen Feldbesitzer zurück. Truppen ohne
+Aufenthaltsrecht werden dabei wie üblich aus fremdem Gebiet versetzt. Auch
+bei offenen Grenzen beansprucht die verbliebene Garnison die Festung nicht
+sofort erneut; die militärische Beanspruchung wird erst nach vollständigem
+Abzug aller geeigneten Garnisonseinheiten wieder freigegeben. In neutralem
+Gebiet beanspruchte Festungen und friedliche Garnisonen behalten ihre bisherige
+Regel. Der Kriegsbesatzungsstatus wird gespeichert.
+
+Mit dem Abzug der letzten geeigneten Garnison oder dem Entfernen der Festung
+bestimmt wieder die normale Feldkultur den Besitzer. Die Garnison schützt nur
+das Festungsfeld, nicht die umliegenden Felder. Beim Erscheinen einer neuen
+Zivilisation bleiben besetzte Festungen und ihre Garnisonen vom automatischen
+Übertritt, der Startgebietsbereinigung und dem Truppenverrat ausgenommen.
+Liegt der vorgesehene Startpunkt auf einer fremden besetzten Festung, erscheint
+die neue Armee stattdessen auf dem nächsten freien Landfeld derselben Landmasse.
+
 ### Feld-Tooltips
 
 Beim Überfahren eines Feldes erscheinen die **Grundnamen** zukünftiger
@@ -429,15 +738,47 @@ Verzögerung neu und dient daher als Planungshilfe.
 
 ### Unruhen vor dem Gebietswechsel
 
-**Drei Runden vor einem geplanten ersten Gebietswechsel** erhalten Städte im
-Kerngebiet und auf Ausnahmefeldern der neuen Zivilisation drei Runden Unruhen
-über den Besatzungszähler. Eine bereits länger andauernde Besatzung bleibt
-erhalten. Der Zeitplan berücksichtigt die Verzögerungen der Gründungslogik.
+**Beim Erscheinen der Zivilisation** erhalten Städte in ihrem Kerngebiet und
+auf Ausnahmefeldern drei Runden Unruhen über den Besatzungszähler. Bei der
+üblichen zweistufigen Gründung bleiben die Unruhen dadurch bis zum
+Städteübertritt aktiv. Eine bereits länger andauernde Besatzung bleibt erhalten; bei
+einem späteren Übertritt werden die Unruhen bis zur vorgesehenen Runde verlängert.
 
 Betroffene menschliche Besitzer erhalten eine Nachricht mit dem frühen
 dynamischen Namen der Zivilisation, etwa **„Die [Völker] erheben sich!“**.
 Diese Vorwarnung begleitet das bestehende Gebietswechsel-System und führt
 keine eigene Regel für den Wechsel stationierter Einheiten ein.
+
+### Wiederauferstehende Zivilisationen
+
+Ein Respawn kann Städte einer regulären Zivilisation nur noch bei deren
+Stabilität **unter -20** beanspruchen. Der frühere versteckte Abzug von zehn
+Stabilitätspunkten und die mildere Ausnahme für die alte Hauptstadt der
+wiederkehrenden Zivilisation entfallen.
+
+Aktuelle und historische Hauptstädte des Besitzers sowie feiernde Städte sind
+geschützt; der Besitzer muss mindestens drei Städte haben. Eine beanspruchte
+Stadt muss von der wiederkehrenden Zivilisation gegründet worden sein, ihre
+historische Hauptstadt sein oder mindestens **25% ihrer Stadtkultur** besitzen.
+Bei Stabilität von **-40 bis unter -20** muss die Stadt zusätzlich unzufrieden,
+unter Besatzung oder mindestens acht Felder von der Hauptstadt entfernt sein;
+für die Entfernungsbedingung braucht der Besitzer mindestens vier Städte.
+Unter -40 entfällt diese zusätzliche Bedingung.
+
+Die regionalen Grenzen, Mindestzahl beanspruchbarer Städte und Regeln für
+unabhängige oder barbarische Städte bleiben bestehen.
+
+China kann bereits **zehn Runden nach seiner letzten lebenden Runde**
+wiederkehren. Dafür erfolgt **alle fünf Runden** eine eigene Prüfung, unabhängig
+von der weltweiten Zahl untergegangener Zivilisationen. Die normale Sperre bis
+mehr als 50 Runden nach der ursprünglichen Gründung sowie mindestens zwei
+geeignete Städte im Rückkehrgebiet bleiben erforderlich. Alle oben beschriebenen
+Schutzregeln für stabile Eroberer gelten weiterhin.
+
+Ein zurückkehrendes China erhält die normale Startstabilität **+10** sowie drei
+zusätzliche Garnisonseinheiten je zurückgewonnener Stadt, bei wiederholten
+Rückkehrereignissen vier. Dies gilt auch für Städte unabhängiger Fraktionen oder
+Barbaren. Die Rückkehr stellt nicht automatisch das frühere Gesamtreich wieder her.
 
 ## Kulturaufstände
 
@@ -547,6 +888,25 @@ in [CountryNaming.md](CountryNaming.md). Die neuen Ländernamen sind auf
 Deutsch und Englisch vorhanden; Französisch, Italienisch und Spanisch verwenden
 englische Ersatztexte.
 
+## Zufällige Feldereignisse
+
+Zufallsereignisse, die ein geeignetes Kartenfeld voraussetzen, haben gegenüber
+anderen Zufallsereignissen das doppelte Auswahlgewicht. Das betrifft etwa die
+Entdeckung von Präriehunden, aber auch negative Ereignisse wie Waldbrände.
+Die tatsächliche Häufigkeit hängt von den jeweils erfüllten Voraussetzungen
+und den anderen verfügbaren Ereignissen ab. Die allgemeine Ereignischance
+pro Runde sowie Voraussetzungen und Einmaligkeitsregeln bleiben unverändert.
+
+## Korea
+
+Korea ist ab dem Szenario 800 v. Chr. spielbar und beginnt dort als
+Stammesgebiet. Im Szenario 3000 v. Chr. ist es nicht auswählbar und entsteht
+erst um 800 v. Chr. als KI-Zivilisation. Die
+Szenarien 600, 900 und 1453 n. Chr. bieten bereits bestehende koreanische
+Regionalstaaten. Nahrung, Kupfer und Fisch tragen eine kompakte Wirtschaft
+auf der Halbinsel. Hwacha und Seowon bleiben die besonderen Einheiten und
+Gebäude. Siehe [Startpositionen und historische Ziele](800BCScenario.md#korea-across-the-scenarios).
+
 ## Installation und Mehrspieler
 
 1. Den Ordner **`Awakened RFC`** in das **`Mods`**-Verzeichnis von Beyond the Sword kopieren.
@@ -556,14 +916,11 @@ englische Ersatztexte.
    [Launch Awakened RFC.bat](<../Launch Awakened RFC.bat>) starten. Der Starter
    verwendet den üblichen Steam-Installationspfad; bei anderen Installationen
    muss der Pfad angepasst werden.
-4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **1453 n. Chr.**.
+4. Eines der enthaltenen Szenarien wählen: **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.**, **900 n. Chr.** oder **1453 n. Chr.**.
 
 Alle Teilnehmer benötigen dieselben Mod-Dateien einschließlich Python, XML und
 DLL. Spielmechaniken und Wahlzufall verwenden synchronisierten Spielzustand;
 die Überarbeitung muss noch im Mehrspielerbetrieb validiert werden.
-
-Nach Textänderungen beim Start **Shift gedrückt halten**, um den Textcache neu
-aufzubauen.
 
 Nach Änderungen an XML-Staatsformen-Modifikatoren ein neues Spiel beginnen,
 da alte Spielstände gespeicherte Spieler- und Stadtboni behalten können.
@@ -592,10 +949,25 @@ Forschung endet bei +15 %. Ein sehr teurer KI- und Automatisierungsbaum eröffne
 sechs neue Stadtgebäude. Ein Sozialstaatssystem ist noch nicht umgesetzt.
 Siehe [Regeln, Kosten und technische Umsetzung](ModernEra.md).
 
+### Siedlerstart 900 n. Chr.
+
+Frankreich, Spanien, Deutschland, Russland, England und die Wikinger beginnen
+gleichzeitig mit Siedlern und ihren mittelalterlichen Armeen, ohne vorgegebene
+Städte. Die übrige Welt basiert auf einer angepassten Karte von 600 n. Chr.
+Spanien beginnt im nördlichen Asturien als Ausgangspunkt für die Expansion nach Süden.
+Spätere Zivilisationen behalten ihre regulären Gründungstermine.
+Abbasiden, Tuluniden, Aghlabiden und das Umayyadenemirat Córdoba beginnen als
+bestehende, spielbare Staaten mit Städten, Hauptstädten und Armeen für 900 n. Chr.
+Das historisch erst 909 gegründete Fatimidenkalifat besteht noch nicht.
+Sevilla, Badajoz, Toledo und Zaragoza stellen autonome muslimische Stadtherren dar.
+Spanien beginnt mit ihrem eigenen Kleinstaaten-Team im Krieg; andere unabhängige
+Städte außerhalb Iberiens sind von diesem Startkrieg nicht betroffen.
+Siehe [Starteinheiten und Einrichtung](900ADScenario.md).
+
 ### Start 1453 n. Chr.
 
 Das Szenario von 1453 beginnt unmittelbar nach der osmanischen Eroberung
-Konstantinopels. Es umfasst 96 Städte und 25 bestehende, sofort spielbare
+Konstantinopels. Es umfasst 109 Städte und 26 bestehende, sofort spielbare
 Hauptzivilisationen. Namen und Startprofile bilden unter anderem das
 Mamlukensultanat, Ming-China, Moskau, die italienischen Staaten und das
 Osmanische Sultanat ab. Amerika behält seinen späteren Gründungszeitpunkt.

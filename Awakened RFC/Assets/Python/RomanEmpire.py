@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 # Roman administration and campaign safeguards. Civ4 / Python 2.4.
 from CvPythonExtensions import CyGlobalContext
 import cPickle as pickle
@@ -63,8 +64,9 @@ def handleProvincialLoss(iPlayer, reason):
             candidate = city
     if (candidate is not None):
         coords = (candidate.getX(), candidate.getY())
-        before = player.getNumCities()
-        stability = utils.getStability(iPlayer)
+        if REPORTING_ENABLED:
+            before = player.getNumCities()
+            stability = utils.getStability(iPlayer)
         utils.cultureManager(coords, 50, con.iIndependent, iPlayer, False, False, False)
         utils.flipUnitsInCityBefore(coords, con.iIndependent, iPlayer)
         utils.flipCity(coords, 0, 0, con.iIndependent, [iPlayer])
@@ -73,9 +75,11 @@ def handleProvincialLoss(iPlayer, reason):
         data = pickle.loads(gc.getGame().getScriptData())
         data['iRomanLastProvincialLossTurn'] = turn
         gc.getGame().setScriptData(pickle.dumps(data))
-        import GameObserver
-        GameObserver.record_mechanic('collapse_trigger', iPlayer,
-            {'reason': reason, 'outcome': 'fragmentation', 'partial': True,
-             'stability_before': stability, 'cities_before': before,
-             'cities_after': player.getNumCities(), 'province': list(coords)})
+        if REPORTING_ENABLED:
+            import GameObserver
+        if REPORTING_ENABLED:
+            GameObserver.record_mechanic('collapse_trigger', iPlayer,
+                {'reason': reason, 'outcome': 'fragmentation', 'partial': True,
+                 'stability_before': stability, 'cities_before': before,
+                 'cities_after': player.getNumCities(), 'province': list(coords)})
     return True

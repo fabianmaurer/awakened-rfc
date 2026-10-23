@@ -347,6 +347,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iX = INVALID_PLOT_COORD;
 	m_iY = INVALID_PLOT_COORD;
 	m_iLastMoveTurn = 0;
+	m_iLastHunPillageHealTurn = -1;
 	m_iReconX = INVALID_PLOT_COORD;
 	m_iReconY = INVALID_PLOT_COORD;
 	m_iGameTurnCreated = 0;
@@ -412,6 +413,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_pUnitInfo = (NO_UNIT != m_eUnitType) ? &GC.getUnitInfo(m_eUnitType) : NULL;
 	m_iBaseCombat = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCombat() : 0;
 	m_eLeaderUnitType = NO_UNIT;
+    m_iJihadCampaign = -1;
 	m_iCargoCapacity = (NO_UNIT != m_eUnitType) ? m_pUnitInfo->getCargoSpace() : 0;
 
 	m_combatUnit.reset();
@@ -498,6 +500,7 @@ void CvUnit::convert(CvUnit* pUnit)
 
 	setGameTurnCreated(pUnit->getGameTurnCreated());
 	setDamage(pUnit->getDamage());
+	m_iLastHunPillageHealTurn = pUnit->m_iLastHunPillageHealTurn;
 	setMoves(pUnit->getMoves());
 
 	setLevel(pUnit->getLevel());
@@ -507,6 +510,8 @@ void CvUnit::convert(CvUnit* pUnit)
 
 	setName(pUnit->getNameNoDesc());
 	setLeaderUnitType(pUnit->getLeaderUnitType());
+    if (getOwnerINLINE() == pUnit->getOwnerINLINE())
+        m_iJihadCampaign = pUnit->getJihadCampaign();
 
 	CvUnit* pTransportUnit = pUnit->getTransportUnit();
 	if (pTransportUnit != NULL)
@@ -678,6 +683,35 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 	eCapturingPlayer = getCapturingPlayer();
 	eCaptureUnitType = ((eCapturingPlayer != NO_PLAYER) ? getCaptureUnitType(GET_PLAYER(eCapturingPlayer).getCivilizationType()) : NO_UNIT);
 
+	// Civilian captives become slaves under the captor's current labor civic.
+	// Work boats and combat units retain their existing capture rules.
+	bool bEnslaveCaptive = false;
+	PromotionTypes eCaptiveOrigin = NO_PROMOTION;
+	if (eCapturingPlayer != NO_PLAYER && !GET_PLAYER(eCapturingPlayer).isBarbarian() &&
+		getDomainType() == DOMAIN_LAND && !canFight() &&
+		GET_PLAYER(eCapturingPlayer).getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
+		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY"))
+	{
+		bool bEligibleCivilian = isFound() || getUnitClassType() == (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_WORKER");
+		for (int iReligion = 0; iReligion < GC.getNumReligionInfos() && !bEligibleCivilian; ++iReligion)
+		{
+			bEligibleCivilian = m_pUnitInfo->getReligionSpreads(iReligion) > 0;
+		}
+		if (bEligibleCivilian)
+		{
+			UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
+			if (eSlave != NO_UNIT)
+			{
+				eCaptureUnitType = eSlave;
+				bEnslaveCaptive = true;
+				CvString szCivType = GC.getCivilizationInfo(GET_PLAYER(eOwner).getCivilizationType()).getType();
+				CvString szPromotion = "PROMOTION_SLAVE_";
+				if (szCivType.length() > 13) szPromotion += szCivType.substr(13);
+				eCaptiveOrigin = (PromotionTypes)GC.getInfoTypeForString(szPromotion, true);
+			}
+		}
+	}
+
 	setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true);
 
 	joinGroup(NULL, false, false);
@@ -688,12 +722,13 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 	if ((eCapturingPlayer != NO_PLAYER) && (eCaptureUnitType != NO_UNIT) && !(GET_PLAYER(eCapturingPlayer).isBarbarian()))
 	{
-		if (GET_PLAYER(eCapturingPlayer).isHuman() || GET_PLAYER(eCapturingPlayer).AI_captureUnit(eCaptureUnitType, pPlot) || 0 == GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
+		if (bEnslaveCaptive || GET_PLAYER(eCapturingPlayer).isHuman() || GET_PLAYER(eCapturingPlayer).AI_captureUnit(eCaptureUnitType, pPlot) || 0 == GC.getDefineINT("AI_CAN_DISBAND_UNITS"))
 		{
 			CvUnit* pkCapturedUnit = GET_PLAYER(eCapturingPlayer).initUnit(eCaptureUnitType, pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			if (pkCapturedUnit != NULL)
 			{
+				if (eCaptiveOrigin != NO_PROMOTION) pkCapturedUnit->setHasPromotion(eCaptiveOrigin, true);
 				szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(eCaptureUnitType).getTextKeyWide());
 				gDLL->getInterfaceIFace()->addMessage(eCapturingPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pkCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
@@ -708,7 +743,7 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 				pkCapturedUnit->finishMoves();
 
-				if (!GET_PLAYER(eCapturingPlayer).isHuman())
+				if (!bEnslaveCaptive && !GET_PLAYER(eCapturingPlayer).isHuman())
 				{
 					CvPlot* pPlot = pkCapturedUnit->plot();
 					if (pPlot && !pPlot->isCity(false))
@@ -1118,6 +1153,7 @@ void CvUnit::updateAirCombat(bool bQuick)
 
 void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition& kBattle)
 {
+	if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality()) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pDefender->getTeam(), pPlot);
 	CombatDetails cdAttackerDetails;
 	CombatDetails cdDefenderDetails;
 
@@ -1516,6 +1552,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
+			GC.getGameINLINE().rewardCrusadeCombat(pDefender, this);
 			CvEventReporter::getInstance().combatResult(pDefender, this);
 		}
 		else if (pDefender->isDead())
@@ -1546,6 +1583,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer,GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
+			GC.getGameINLINE().rewardCrusadeCombat(this, pDefender);
 			CvEventReporter::getInstance().combatResult(this, pDefender);
 
 			bool bAdvance = false;
@@ -2107,6 +2145,9 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		}
 		break;
 
+	case COMMAND_PURGE_RELIGIONS:
+		return canPurgeReligions(bTestVisible);
+
 	case COMMAND_HOTKEY:
 		if (isGroupHead())
 		{
@@ -2200,6 +2241,11 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 			bCycle = true;
 			break;
 
+		case COMMAND_PURGE_RELIGIONS:
+			purgeReligions();
+			bCycle = true;
+			break;
+
 		case COMMAND_HOTKEY:
 			setHotKeyNumber(iData1);
 			break;
@@ -2242,6 +2288,7 @@ bool CvUnit::generatePath(const CvPlot* pToPlot, int iFlags, bool bReuse, int* p
 
 bool CvUnit::canEnterTerritory(TeamTypes eTeam, bool bIgnoreRightOfPassage) const
 {
+	if (!bIgnoreRightOfPassage && GC.getGameINLINE().hasCrusadeAccess(getTeam(), eTeam) && (canFight() || getDomainType() == DOMAIN_SEA)) return true;
 	if (GET_TEAM(getTeam()).isFriendlyTerritory(eTeam))
 	{
 		return true;
@@ -2296,16 +2343,7 @@ bool CvUnit::canEnterArea(TeamTypes eTeam, const CvArea* pArea, bool bIgnoreRigh
 		return false;
 	}
 
-	if (isBarbarian() && DOMAIN_LAND == getDomainType())
-	{
-		if (eTeam != NO_TEAM && eTeam != getTeam())
-		{
-			if (pArea && pArea->isBorderObstacle(eTeam))
-			{
-				return false;
-			}
-		}
-	}
+	// The Great Wall damages entering barbarians in move(), rather than excluding them.
 
 	return true;
 }
@@ -2871,6 +2909,19 @@ void CvUnit::move(CvPlot* pPlot, bool bShow)
 	FAssert(canMoveOrAttackInto(pPlot) || isMadeAttack());
 
 	CvPlot* pOldPlot = plot();
+
+	// Apply only on an actual border crossing, before city capture can change ownership.
+	// The area flag retains the Great Wall's original continent/team coverage.
+	if (isBarbarian() && getDomainType() == DOMAIN_LAND && !pPlot->isWater() &&
+		pOldPlot != NULL && pPlot->getTeam() != NO_TEAM &&
+		pPlot->getTeam() != getTeam() && pOldPlot->getTeam() != pPlot->getTeam() &&
+		pPlot->area()->isBorderObstacle(pPlot->getTeam()))
+	{
+		int iDamage = std::max(0, GC.getDefineINT("RFCMP_GREAT_WALL_CROSSING_DAMAGE"));
+		int iNewDamage = std::min(maxHitPoints() - 1, getDamage() + iDamage);
+		if (iNewDamage > getDamage())
+			setDamage(iNewDamage, pPlot->getOwnerINLINE());
+	}
 
 	changeMoves(pPlot->movementCost(this, plot()));
 
@@ -4398,7 +4449,9 @@ bool CvUnit::airBomb(int iX, int iY)
 
 	if (pCity != NULL)
 	{
+		int iCrusadeDefense = pCity->getDefenseModifier(false);
 		pCity->changeDefenseModifier(-airBombCurrRate());
+		if (pCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 
 		szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_DEFENSES_REDUCED_TO", pCity->getNameKey(), pCity->getDefenseModifier(false), getNameKey());
 		gDLL->getInterfaceIFace()->addMessage(pCity->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_BOMBARDED", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pCity->getX_INLINE(), pCity->getY_INLINE(), true, true);
@@ -4422,6 +4475,7 @@ bool CvUnit::airBomb(int iX, int iY)
 					gDLL->getInterfaceIFace()->addMessage(pPlot->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_PILLAGED", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE(), true, true);
 				}
 
+				GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 				pPlot->setImprovementType((ImprovementTypes)(GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementPillage()));
 			}
 			else
@@ -4553,7 +4607,9 @@ bool CvUnit::bombard()
 		iBombardModifier -= pBombardCity->getBuildingBombardDefense();
 	}
 
+	int iCrusadeDefense = pBombardCity->getDefenseModifier(false);
 	pBombardCity->changeDefenseModifier(-(bombardRate() * std::max(0, 100 + iBombardModifier)) / 100);
+	if (pBombardCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pTargetPlot->getTeam(), pTargetPlot);
 
 	setMadeAttack(true);
 	changeMoves(GC.getMOVE_DENOMINATOR());
@@ -4694,6 +4750,7 @@ bool CvUnit::pillage()
 			delete pyUnit;	// python fxn must not hold on to this pointer 
 
 			iPillageGold = (int)lPillageGold;
+			if (GET_PLAYER(getOwnerINLINE()).isHorde()) iPillageGold *= 2;
 
 			//Rhye - start UP (Viking)
 			if (getOwnerINLINE() == VIKING)
@@ -4704,6 +4761,7 @@ bool CvUnit::pillage()
 			if (iPillageGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iPillageGold);
+				GC.getGameINLINE().recordCrusadePlunder(getOwnerINLINE(), pPlot->getTeam(), pPlot, iPillageGold);
 
 				szBuffer = gDLL->getText("TXT_KEY_MISC_PLUNDERED_GOLD_FROM_IMP", iPillageGold, GC.getImprovementInfo(pPlot->getImprovementType()).getTextKeyWide());
 				gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_PILLAGE", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
@@ -4722,6 +4780,18 @@ bool CvUnit::pillage()
 	{
 		eTempRoute = pPlot->getRouteType();
 		pPlot->setRouteType(NO_ROUTE, true); // XXX downgrade rail???
+	}
+
+	// Huns - Power of the Steppe: recover through raiding, once per unit per turn.
+	// Require a real improvement change in territory of a team formally at war.
+	if (eTempImprovement != NO_IMPROVEMENT && pPlot->getImprovementType() != eTempImprovement &&
+		pPlot->isOwned() && GET_TEAM(getTeam()).isAtWar(pPlot->getTeam()) &&
+		getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_XIONGNU") &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED") && getDamage() > 0 &&
+		m_iLastHunPillageHealTurn != GC.getGameINLINE().getGameTurn())
+	{
+		m_iLastHunPillageHealTurn = GC.getGameINLINE().getGameTurn();
+		changeDamage(-25);
 	}
 
 	changeMoves(GC.getMOVE_DENOMINATOR());
@@ -4746,6 +4816,7 @@ bool CvUnit::pillage()
 
 	if (eTempImprovement != NO_IMPROVEMENT || eTempRoute != NO_ROUTE)
 	{
+		GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 		CvEventReporter::getInstance().unitPillage(this, eTempImprovement, eTempRoute, getOwnerINLINE());
 	}
 
@@ -5435,7 +5506,7 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 
 	if (GET_PLAYER(pCity->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return false;
 
-	if (pCity->isHasReligion(eReligion))
+	if (pCity->isHasReligion(eReligion) || pCity->isReligionBanned(eReligion))
 	{
 		return false;
 	}
@@ -5489,9 +5560,11 @@ bool CvUnit::spread(ReligionTypes eReligion)
 
 		iSpreadProb += (((GC.getNumReligionInfos() - pCity->getReligionCount()) * (100 - iSpreadProb)) / GC.getNumReligionInfos());
 
+		iSpreadProb = iSpreadProb * pCity->getReligionRivalryPercent(eReligion, true) / 100;
+
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Religion") < iSpreadProb)
 		{
-			pCity->setHasReligion(eReligion, true, true, false);
+			pCity->spreadReligion(eReligion, false);
 			bSuccess = true;
 		}
 		else
@@ -5515,6 +5588,38 @@ bool CvUnit::spread(ReligionTypes eReligion)
 	return true;
 }
 
+
+bool CvUnit::canPurgeReligions(bool bTestVisible) const
+{
+    ReligionTypes eMissionaryReligion = NO_RELIGION;
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (m_pUnitInfo->getReligionSpreads(i) > 0)
+        {
+            eMissionaryReligion = (ReligionTypes)i;
+            break;
+        }
+    if (eMissionaryReligion == NO_RELIGION) return false;
+    if (bTestVisible) return true;
+    CvCity* pCity = plot()->getPlotCity();
+    if (pCity == NULL || pCity->getOwnerINLINE() != getOwnerINLINE() || !canMove() || isCargo() || isDelayedDeath()) return false;
+    if (!pCity->isHasReligion(eMissionaryReligion) ||
+        GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return false;
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (i != eMissionaryReligion && pCity->isHasReligion((ReligionTypes)i)) return true;
+    return false;
+}
+
+bool CvUnit::purgeReligions()
+{
+    if (!canPurgeReligions()) return false;
+    CvCity* pCity = plot()->getPlotCity();
+    for (int i = 0; i < GC.getNumReligionInfos(); ++i)
+        if (m_pUnitInfo->getReligionSpreads(i) <= 0)
+            pCity->removeReligionByInquisition((ReligionTypes)i);
+    // Command execution is synchronized by the regular unit-command message.
+    kill(true);
+    return true;
+}
 
 bool CvUnit::canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorporation, bool bTestVisible) const
 {
@@ -7937,7 +8042,7 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY")) &&
-		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
+		!GET_PLAYER(getOwnerINLINE()).isRomanLegions() && !GET_PLAYER(getOwnerINLINE()).isHorde() && getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_SIEGE"))
 	{
 		iExtraModifier -= 20;
 	}
@@ -8890,7 +8995,7 @@ bool CvUnit::isNeverInvisible() const
 
 bool CvUnit::isInvisible(TeamTypes eTeam, bool bDebug, bool bCheckCargo) const
 {
-	if (bDebug && GC.getGameINLINE().isDebugMode())
+	if (bDebug && (GC.getGameINLINE().isDebugMode() || GC.getGameINLINE().isObserverMapRevealed(eTeam)))
 	{
 		return false;
 	}
@@ -9275,10 +9380,30 @@ CvSelectionGroup* CvUnit::getGroup() const
 }
 
 
+int CvUnit::getJihadGroupCampaign() const
+{
+    if (!GET_PLAYER(getOwnerINLINE()).isArabianJihadActive()) return -1;
+    if (m_iJihadCampaign >= 0) return m_iJihadCampaign;
+    CvSelectionGroup* pGroup = getGroup();
+    if (pGroup == NULL) return -1;
+    for (CLLNode<IDInfo>* pNode = pGroup->headUnitNode(); pNode != NULL; pNode = pGroup->nextUnitNode(pNode))
+    {
+        CvUnit* pUnit = ::getUnit(pNode->m_data);
+        if (pUnit != NULL && pUnit->getJihadCampaign() >= 0) return pUnit->getJihadCampaign();
+    }
+    return -1;
+}
+
 bool CvUnit::canJoinGroup(const CvPlot* pPlot, CvSelectionGroup* pSelectionGroup) const
 {
 	CvUnit* pHeadUnit;
 	
+    if (!isHuman() && pSelectionGroup->getHeadUnit() != NULL)
+    {
+        const int iOurs = getJihadGroupCampaign();
+        const int iTheirs = pSelectionGroup->getHeadUnit()->getJihadGroupCampaign();
+        if (iOurs >= 0 && iTheirs >= 0 && iOurs != iTheirs) return false;
+    }
 	// do not allow someone to join a group that is about to be split apart
 	// this prevents a case of a never-ending turn
 	if (pSelectionGroup->AI_isForceSeparate())
@@ -9354,6 +9479,10 @@ void CvUnit::joinGroup(CvSelectionGroup* pSelectionGroup, bool bRemoveSelected, 
 
 		if ((pNewSelectionGroup == NULL) || canJoinGroup(pPlot, pNewSelectionGroup))
 		{
+            // Local reinforcements inherit the campaign they actually join.
+            if (!isHuman() && pNewSelectionGroup != NULL && pNewSelectionGroup->getHeadUnit() != NULL &&
+                getJihadGroupCampaign() < 0)
+                m_iJihadCampaign = pNewSelectionGroup->getHeadUnit()->getJihadGroupCampaign();
 			if (pOldSelectionGroup != NULL)
 			{
 				bool bWasHead = false;
@@ -9704,6 +9833,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 				GET_TEAM(getTeam()).AI_changeWarSuccess(pNewCity->getTeam(), GC.getDefineINT("WAR_SUCCESS_CITY_CAPTURING"));
 
 				PlayerTypes eNewOwner = GET_PLAYER(getOwnerINLINE()).pickConqueredCityOwner(*pNewCity);
+				if (GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pNewCity)) eNewOwner = getOwnerINLINE();
 
 				if (NO_PLAYER != eNewOwner)
 				{
@@ -9900,6 +10030,17 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	if (pNewPlot != NULL)
 	{
 		gDLL->getEntityIFace()->updateEnemyGlow(getUnitEntity());
+	}
+
+	// Ownership changes must follow movement bookkeeping (including cargo and
+	// outside-unit counts), rather than running inside addUnit/removeUnit.
+	if (pOldPlot != NULL)
+	{
+		pOldPlot->updateFortOwnership();
+	}
+	if (pNewPlot != NULL)
+	{
+		pNewPlot->updateFortOwnership();
 	}
 
 	// report event to Python, along with some other key state
@@ -10115,6 +10256,13 @@ int CvUnit::getExperience() const
 
 void CvUnit::setExperience(int iNewValue, int iMax)
 {
+	// Slave units cannot gain experience, including direct grants and upgrades.
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if (eCannonFodder != NO_PROMOTION && isHasPromotion(eCannonFodder))
+	{
+		iNewValue = 0;
+	}
+
 	if ((getExperience() != iNewValue) && (getExperience() < ((iMax == -1) ? MAX_INT : iMax)))
 	{
 		m_iExperience = std::min(((iMax == -1) ? MAX_INT : iMax), iNewValue);
@@ -10129,7 +10277,9 @@ void CvUnit::setExperience(int iNewValue, int iMax)
 
 void CvUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInBorders, bool bUpdateGlobal)
 {
-	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")))
+	PromotionTypes eCannonFodder = (PromotionTypes)GC.getInfoTypeForString("PROMOTION_CANNON_FODDER");
+	if (isHasPromotion((PromotionTypes)GC.getInfoTypeForString("PROMOTION_MERCENARY")) ||
+		(eCannonFodder != NO_PROMOTION && isHasPromotion(eCannonFodder)))
 	{
 		return;
 	}
@@ -11231,6 +11381,11 @@ void CvUnit::setTransportUnit(CvUnit* pTransportUnit)
 			getGroup()->setActivityType(ACTIVITY_AWAKE);
 		}
 
+		if (plot() != NULL)
+		{
+			plot()->updateFortOwnership();
+		}
+
 #ifdef _DEBUG
 		std::vector<CvUnit*> aCargoUnits;
 		if (pOldTransportUnit != NULL)
@@ -11730,6 +11885,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iX);
 	pStream->Read(&m_iY);
 	pStream->Read(&m_iLastMoveTurn);
+	pStream->Read(&m_iLastHunPillageHealTurn);
 	pStream->Read(&m_iReconX);
 	pStream->Read(&m_iReconY);
 	pStream->Read(&m_iGameTurnCreated);
@@ -11805,6 +11961,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	FAssert(NO_UNIT != m_eUnitType);
 	m_pUnitInfo = (NO_UNIT != m_eUnitType) ? &GC.getUnitInfo(m_eUnitType) : NULL;
 	pStream->Read((int*)&m_eLeaderUnitType);
+    pStream->Read(&m_iJihadCampaign);
 
 	pStream->Read((int*)&m_combatUnit.eOwner);
 	pStream->Read(&m_combatUnit.iID);
@@ -11839,6 +11996,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iX);
 	pStream->Write(m_iY);
 	pStream->Write(m_iLastMoveTurn);
+	pStream->Write(m_iLastHunPillageHealTurn);
 	pStream->Write(m_iReconX);
 	pStream->Write(m_iReconY);
 	pStream->Write(m_iGameTurnCreated);
@@ -11904,6 +12062,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_eCapturingPlayer);
 	pStream->Write(m_eUnitType);
 	pStream->Write(m_eLeaderUnitType);
+    pStream->Write(m_iJihadCampaign);
 
 	pStream->Write(m_combatUnit.eOwner);
 	pStream->Write(m_combatUnit.iID);
@@ -12282,6 +12441,7 @@ bool CvUnit::airStrike(CvPlot* pPlot)
 
 	collateralCombat(pPlot, pDefender);
 
+	if (iUnitDamage > pDefender->getDamage()) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pDefender->getTeam(), pPlot);
 	pDefender->setDamage(iUnitDamage, getOwnerINLINE());
 
 	return true;

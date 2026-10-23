@@ -109,5 +109,5 @@ count so new ordinary technologies are included.
 
 The DLL is built with the legacy VC7.1 toolchain. XML parsing, enabled research
 dependencies and complete five-language coverage are audited separately. No
-gameplay, load or multiplayer tests have been run. A Shift-start and a German
-menu/technology-screen inspection remain the user-operated runtime checks.
+gameplay, load or multiplayer tests have been run. A German menu/technology-screen
+inspection remains a user-operated runtime check.

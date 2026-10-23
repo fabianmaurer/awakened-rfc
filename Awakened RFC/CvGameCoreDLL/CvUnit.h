@@ -201,6 +201,8 @@ public:
 
 	bool canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestVisible = false) const;					// Exposed to Python
 	bool spread(ReligionTypes eReligion);
+	bool canPurgeReligions(bool bTestVisible = false) const;
+	bool purgeReligions();
 
 	bool canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorporation, bool bTestVisible = false) const;					// Exposed to Python
 	bool spreadCorporation(CorporationTypes eCorporation);
@@ -657,6 +659,9 @@ public:
 
 	DllExport const UnitTypes getLeaderUnitType() const;
 	void setLeaderUnitType(UnitTypes leaderUnitType);
+    int getJihadCampaign() const { return m_iJihadCampaign; }
+    void setJihadCampaign(int iCampaign) { m_iJihadCampaign = iCampaign; }
+    int getJihadGroupCampaign() const;
 
 	DllExport CvUnit* getCombatUnit() const;
 	void setCombatUnit(CvUnit* pUnit, bool bAttacking = false);
@@ -779,6 +784,7 @@ protected:
 	int m_iX;
 	int m_iY;
 	int m_iLastMoveTurn;
+	int m_iLastHunPillageHealTurn;
 	int m_iReconX;
 	int m_iReconY;
 	int m_iGameTurnCreated;
@@ -831,6 +837,7 @@ protected:
 	int m_iBaseCombat;
 	DirectionTypes m_eFacingDirection;
 	int m_iImmobileTimer;
+    int m_iJihadCampaign;
 
 	bool m_bMadeAttack;
 	bool m_bMadeInterception;

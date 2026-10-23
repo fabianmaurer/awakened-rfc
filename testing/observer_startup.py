@@ -14,6 +14,7 @@ class SetupConfirmation:
         self.focused_since = None
         self.focused_hwnd = None
         self.last_state = None
+        self.focus_requested = False
         self.user32 = ctypes.WinDLL('user32', use_last_error=True)
         self.kernel32 = ctypes.WinDLL('kernel32', use_last_error=True)
         self.kernel32.GetCurrentThreadId.argtypes = []
@@ -29,9 +30,7 @@ class SetupConfirmation:
             'SetForegroundWindow': ([wintypes.HWND], wintypes.BOOL),
             'GetForegroundWindow': ([], wintypes.HWND),
             'IsIconic': ([wintypes.HWND], wintypes.BOOL),
-            'ShowWindow': ([wintypes.HWND, ctypes.c_int], wintypes.BOOL),
-            'AttachThreadInput': ([wintypes.DWORD, wintypes.DWORD, wintypes.BOOL], wintypes.BOOL),
-            'BringWindowToTop': ([wintypes.HWND], wintypes.BOOL),
+            'ShowWindowAsync': ([wintypes.HWND, ctypes.c_int], wintypes.BOOL),
         }
         for name, (arguments, result) in signatures.items():
             function = getattr(self.user32, name)
@@ -46,26 +45,15 @@ class SetupConfirmation:
             handle.write('%s: %s\n' % (time.strftime('%H:%M:%S'), state))
 
     def foreground(self, hwnd):
+        # Never join another app's input queue or take focus back repeatedly.
+        if self.focus_requested:
+            return
+        self.focus_requested = True
         if self.user32.IsIconic(hwnd):
-            self.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+            self.user32.ShowWindowAsync(hwnd, 9)  # SW_RESTORE without waiting on the game
         if self.user32.GetForegroundWindow() == hwnd:
             return
         self.user32.SetForegroundWindow(hwnd)
-        if self.user32.GetForegroundWindow() == hwnd:
-            return
-        # A batch launcher may no longer own foreground activation rights.
-        # Temporarily join the foreground input queue, then always detach.
-        foreground = self.user32.GetForegroundWindow()
-        thread = self.user32.GetWindowThreadProcessId(foreground, None)
-        current = self.kernel32.GetCurrentThreadId()
-        attached = thread and thread != current and self.user32.AttachThreadInput(current, thread, True)
-        try:
-            if attached:
-                self.user32.BringWindowToTop(hwnd)
-                self.user32.SetForegroundWindow(hwnd)
-        finally:
-            if attached:
-                self.user32.AttachThreadInput(current, thread, False)
 
     def tick(self, ready):
         # The mod authenticates the activation token/PID and validates the

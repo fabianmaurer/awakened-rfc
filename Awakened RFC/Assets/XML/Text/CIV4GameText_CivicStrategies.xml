@@ -52,7 +52,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_THEOCRATIC_LEGITIMACY_STRATEGY</Tag>
         <English>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</English>
         <French>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</French>
-        <German>+15% Kampfst&#228;rke f&#252;r Landeinheiten gegen Barbaren und L&#228;nder mit anderer oder keiner Staatsreligion. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, andere religi&#246;se Geb&#228;ude -2 Zufriedenheit.</German>
+        <German>+15% Kampfst&#228;rke f&#252;r Landeinheiten gegen Barbaren und L&#228;nder mit fremder oder keiner Staatsreligion. Geb&#228;ude der Staatsreligion geben +1 Zufriedenheit, Geb&#228;ude fremder Religionen -2 Zufriedenheit.</German>
         <Italian>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Italian>
         <Spanish>+15% land combat strength against barbarians and countries with a different or no state religion. State-religion buildings give +1 happiness; other religious buildings give -2 happiness.</Spanish>
     </TEXT>
@@ -92,17 +92,17 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_SLAVERY_STRATEGY</Tag>
         <English>Enables slave specialists. Enslave conquered peoples.</English>
         <French>Enables slave specialists. Enslave conquered peoples.</French>
-        <German>Erm&#246;glicht Sklavenspezialisten. Versklavt eroberte V&#246;lker.</German>
+        <German>Schaltet Sklavenspezialisten frei. Versklavt eroberte V&#246;lker.</German>
         <Italian>Enables slave specialists. Enslave conquered peoples.</Italian>
         <Spanish>Enables slave specialists. Enslave conquered peoples.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
-        <English>+1 food from farms; workers build improvements 50% faster, and population can rush units.</English>
-        <French>+1 food from farms; workers build improvements 50% faster, and population can rush units.</French>
-        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller und Bev&#246;lkerung kann Einheiten beschleunigen.</German>
-        <Italian>+1 food from farms; workers build improvements 50% faster, and population can rush units.</Italian>
-        <Spanish>+1 food from farms; workers build improvements 50% faster, and population can rush units.</Spanish>
+        <English>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</English>
+        <French>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev&#246;lkerung opfern, um nur Einheiten zu beschleunigen, keine Geb&#228;ude oder Projekte.</German>
+        <Italian>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</Italian>
+        <Spanish>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
@@ -132,7 +132,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY</Tag>
         <English>+50% military ship production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. Available to every civilization with Sailing.</English>
         <French>+50% &#224; la production de navires militaires et +2 points d&#8217;exp&#233;rience pour les nouveaux navires militaires, transports compris. Les bateaux de p&#234;che ne re&#231;oivent aucun de ces bonus. Accessible &#224; toute civilisation connaissant la voile.</French>
-        <German>+50% Produktion und +2 Erfahrung f&#252;r neu gebaute Milit&#228;rschiffe einschlie&#223;lich Transportschiffen. Arbeitsboote erhalten keine dieser Boni. Mit Segeln f&#252;r alle Zivilisationen verf&#252;gbar.</German>
+        <German>+50% Produktion f&#252;r Schiffe und +2XP f&#252;r neu gebaute Schiffe. Mit Segeln f&#252;r alle Zivilisationen verf&#252;gbar.</German>
         <Italian>+50% alla produzione e +2 esperienza per le nuove navi militari, inclusi i trasporti. Le barche da lavoro non ricevono questi bonus. Disponibile per tutte le civilt&#224; con la Vela.</Italian>
         <Spanish>+50% a la producci&#243;n y +2 de experiencia para los nuevos barcos militares, incluidos los transportes. Los barcos de trabajo no reciben estas bonificaciones. Disponible para todas las civilizaciones con Navegaci&#243;n a vela.</Spanish>
     </TEXT>
@@ -140,7 +140,7 @@
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY</Tag>
         <English>+5% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +30%.</English>
         <French>+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme effectivement exploit&#233;e par la ville productrice. Inclut les unit&#233;s de si&#232;ge ; exclut les unit&#233;s civiles et les navires. Six fermes exploit&#233;es donnent +30%.</French>
-        <German>+5% Produktion milit&#228;rischer Landeinheiten je tats&#228;chlich von der produzierenden Stadt bewirtschaftetem Bauernhof. Gilt auch f&#252;r Belagerungseinheiten, aber nicht f&#252;r zivile Einheiten oder Schiffe. Sechs bewirtschaftete Bauernh&#246;fe geben +30%.</German>
+        <German>+5% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet.</German>
         <Italian>+5% alla produzione di unit&#224; militari terrestri per fattoria effettivamente lavorata dalla citt&#224; produttrice. Include le unit&#224; d&#8217;assedio; esclude le unit&#224; civili e le navi. Sei fattorie lavorate danno +30%.</Italian>
         <Spanish>+5% a la producci&#243;n de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +30%.</Spanish>
     </TEXT>
@@ -162,35 +162,35 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_ANCESTOR_CULT_STRATEGY</Tag>
-        <English>+1 culture from monuments, including unique replacements.</English>
-        <French>+1 culture from monuments, including unique replacements.</French>
-        <German>+1 Kultur durch Monumente, einschlie&#223;lich einzigartiger Ersatzgeb&#228;ude.</German>
-        <Italian>+1 culture from monuments, including unique replacements.</Italian>
-        <Spanish>+1 culture from monuments, including unique replacements.</Spanish>
+        <English>+1 culture from monuments, including unique replacements.[NEWLINE]+1 unhappiness from state religion.</English>
+        <French>+1 culture des monuments, y compris leurs remplacements uniques.[NEWLINE]+1 m&#233;contentement de la religion d&#8217;&#201;tat.</French>
+        <German>+1 Kultur durch Monumente, einschlie&#223;lich einzigartiger Ersatzgeb&#228;ude.[NEWLINE]+1 Unzufriedenheit durch die Staatsreligion.</German>
+        <Italian>+1 cultura dai monumenti, incluse le sostituzioni uniche.[NEWLINE]+1 infelicit&#224; dalla religione di Stato.</Italian>
+        <Spanish>+1 cultura de los monumentos, incluidos sus sustitutos exclusivos.[NEWLINE]+1 infelicidad por la religi&#243;n de Estado.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_STATE_RELIGION_STRATEGY</Tag>
-        <English>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</English>
-        <French>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</French>
-        <German>+1 Zufriedenheit in St&#228;dten mit Staatsreligion; +100% Produktion f&#252;r Missionare aller Religionen.</German>
-        <Italian>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</Italian>
-        <Spanish>+1 happiness in cities with the state religion; +100% production for missionaries of any religion.</Spanish>
+        <English>+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.</English>
+        <French>+1 bonheur dans les villes de la religion d&#8217;&#201;tat ; +100% de production pour ses missionnaires et +25% pour ses b&#226;timents religieux.</French>
+        <German>+1 Zufriedenheit in St&#228;dten mit Staatsreligion; +100% Produktion f&#252;r Missionare und +25% Produktion f&#252;r Geb&#228;ude der Staatsreligion.</German>
+        <Italian>+1 felicit&#224; nelle citt&#224; con la religione di Stato; +100% produzione per i suoi missionari e +25% per i suoi edifici religiosi.</Italian>
+        <Spanish>+1 felicidad en ciudades con la religi&#243;n estatal; +100% de producci&#243;n para sus misioneros y +25% para sus edificios religiosos.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_GOD_STATE_STRATEGY</Tag>
-        <English>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</English>
-        <French>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</French>
-        <German>St&#228;dte mit Staatsreligion erhalten +2 Zufriedenheit und +10% Produktion; St&#228;dte ohne sie erhalten -2 Zufriedenheit.</German>
-        <Italian>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Italian>
-        <Spanish>Cities with the state religion gain +2 happiness and +10% production; cities without it get -2 happiness.</Spanish>
+        <English>+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.</English>
+        <French>+10% de production dans les villes de la religion d&#8217;&#201;tat ; -1 bonheur par autre religion. La conversion pacifie les villes conquises.</French>
+        <German>+10% Produktion in St&#228;dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St&#228;dte werden durch Konvertierung befriedet.</German>
+        <Italian>+10% produzione nelle citt&#224; con la religione di Stato; -1 felicit&#224; per ogni altra religione. La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>+10% de producci&#243;n en ciudades con la religi&#243;n estatal; -1 felicidad por cada otra religi&#243;n. La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>
-        <English>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</English>
-        <French>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</French>
-        <German>Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion, au&#223;er Staatsatheismus.</German>
-        <Italian>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Italian>
-        <Spanish>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism.</Spanish>
+        <English>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of any religion.</English>
+        <French>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 points de pourcentage aux chances de propagation des religions vers vos villes par les routes commerciales. Permet de former des missionnaires de toutes les religions.</French>
+        <German>Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L&#228;ndern mit anderer Staatsreligion, au&#223;er Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St&#228;dte. Erlaubt die Ausbildung von Missionaren aller Religionen.</German>
+        <Italian>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 punti percentuali alla probabilit&#224; di diffusione delle religioni nelle proprie citt&#224; tramite rotte commerciali. Consente di addestrare missionari di qualsiasi religione.</Italian>
+        <Spanish>No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 puntos porcentuales a la probabilidad de propagaci&#243;n religiosa a tus ciudades por rutas comerciales. Permite formar misioneros de cualquier religi&#243;n.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_STATE_ATHEISM_STRATEGY</Tag>

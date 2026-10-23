@@ -1037,5 +1037,19 @@
 			<fAlpha>1.00</fAlpha>
 		</ColorVal>
 		<!-- Rhye - end -->
+		<ColorVal>
+			<Type>COLOR_PLAYER_ABBASID_EMERALD</Type>
+			<fRed>0.05</fRed>
+			<fGreen>0.85</fGreen>
+			<fBlue>0.45</fBlue>
+			<fAlpha>1.00</fAlpha>
+		</ColorVal>
+		<ColorVal>
+			<Type>COLOR_PLAYER_ABBASID_EMERALD_TEXT</Type>
+			<fRed>0.20</fRed>
+			<fGreen>0.95</fGreen>
+			<fBlue>0.55</fBlue>
+			<fAlpha>1.00</fAlpha>
+		</ColorVal>
 	</ColorVals>
 </Civ4ColorVals>

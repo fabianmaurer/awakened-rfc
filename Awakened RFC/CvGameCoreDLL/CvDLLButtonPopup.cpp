@@ -1,6 +1,7 @@
 // buttonPopup.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvRhyes.h"
 #include "CvDLLButtonPopup.h"
 #include "CvGlobals.h"
 #include "CvPlayerAI.h"
@@ -320,6 +321,7 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			CvCity* pCity = GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCity(info.getData1());
 			if (NULL != pCity)
 			{
+				CvMessageControl::getInstance().sendDoTask(info.getData1(), TASK_KEEP_CONQUEST_RESEARCH, -1, -1, false, false, false, false);
 				pCity->chooseProduction();
 				CvEventReporter::getInstance().cityAcquiredAndKept(GC.getGameINLINE().getActivePlayer(), pCity);
 			}
@@ -384,10 +386,19 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		}
 		break;
 
+	case BUTTONPOPUP_PAPAL_FOUNDING:
+		if (info.getData2() == GC.getGameINLINE().getActivePlayer() && pPopupReturn->getButtonClicked() >= 0)
+			CvMessageControl::getInstance().sendModNetMessage(ARFC_NET_PAPAL_DECISION, info.getData2(), info.getData1(), pPopupReturn->getButtonClicked(), 0);
+		break;
 	case BUTTONPOPUP_CHOOSEELECTION:
 		{
 			VoteSelectionData* pData = GC.getGameINLINE().getVoteSelection(info.getData1());
-			if (NULL != pData && pPopupReturn->getButtonClicked() < (int)pData->aVoteOptions.size())
+			if (pData && GC.getGameINLINE().isApostolicCouncil(pData->eVoteSource))
+			{
+				int iChoice = pPopupReturn->getButtonClicked();
+				CvMessageControl::getInstance().sendChooseElection(iChoice < (int)pData->aVoteOptions.size() ? iChoice : -1, info.getData1());
+			}
+			else if (NULL != pData && pPopupReturn->getButtonClicked() < (int)pData->aVoteOptions.size())
 			{
 				CvMessageControl::getInstance().sendChooseElection((VoteTypes)(pPopupReturn->getButtonClicked()), info.getData1());
 			}
@@ -839,6 +850,9 @@ bool CvDLLButtonPopup::launchButtonPopup(CvPopup* pPopup, CvPopupInfo &info)
 	case BUTTONPOPUP_CHANGERELIGION:
 		bLaunched = launchChangeReligionPopup(pPopup, info);
 		break;
+	case BUTTONPOPUP_PAPAL_FOUNDING:
+		bLaunched = launchPapalFoundingPopup(pPopup, info);
+		break;
 	case BUTTONPOPUP_CHOOSEELECTION:
 		bLaunched = launchChooseElectionPopup(pPopup, info);
 		break;
@@ -1274,6 +1288,7 @@ bool CvDLLButtonPopup::launchChooseElectionPopup(CvPopup* pPopup, CvPopupInfo &i
 	}
 
 	VoteSourceTypes eVoteSource = pVoteSelectionData->eVoteSource;
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!GC.getGameINLINE().isCouncilActive() || pVoteSelectionData->iCouncilOwner != GC.getGameINLINE().getActivePlayer())) return false;
 
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, GC.getVoteSourceInfo(eVoteSource).getPopupText());
 
@@ -1282,7 +1297,7 @@ bool CvDLLButtonPopup::launchChooseElectionPopup(CvPopup* pPopup, CvPopupInfo &i
 		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, pVoteSelectionData->aVoteOptions[iI].szText, NULL, iI, WIDGET_GENERAL);
 	}
 
-	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_NONE").c_str(), NULL, GC.getNumVoteInfos(), WIDGET_GENERAL);
+	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_NONE").c_str(), NULL, GC.getGameINLINE().isApostolicCouncil(eVoteSource) ? (int)pVoteSelectionData->aVoteOptions.size() : GC.getNumVoteInfos(), WIDGET_GENERAL);
 	gDLL->getInterfaceIFace()->popupLaunch(pPopup, false, POPUPSTATE_IMMEDIATE);
 	return (true);
 }
@@ -1297,6 +1312,13 @@ bool CvDLLButtonPopup::launchDiploVotePopup(CvPopup* pPopup, CvPopupInfo &info)
 		return false;
 	}
 
+	if (GC.getGameINLINE().isApostolicCouncil(pVoteTriggered->eVoteSource))
+	{
+		PlayerTypes ePlayer = GC.getGameINLINE().getActivePlayer();
+		if (!GC.getGameINLINE().isCouncilActive() || ePlayer < 0 || ePlayer >= MAX_CIV_PLAYERS ||
+			pVoteTriggered->aiCouncilWeight[ePlayer] <= 0 || pVoteTriggered->aiCouncilDelivery[ePlayer] >= 0 ||
+			GC.getGameINLINE().getCouncilTurnsLeft(info.getData1()) <= 0 || GC.getGameINLINE().getPlayerVote(ePlayer, info.getData1()) != NO_PLAYER_VOTE) return false;
+	}
 	VoteTypes eVote = pVoteTriggered->kVoteOption.eVote;
 	VoteSourceTypes eVoteSource = pVoteTriggered->eVoteSource;
 
@@ -2576,5 +2598,18 @@ bool CvDLLButtonPopup::launchFoundReligionPopup(CvPopup* pPopup, CvPopupInfo &in
 
 	gDLL->getInterfaceIFace()->popupLaunch(pPopup, false, POPUPSTATE_IMMEDIATE);
 
+	return true;
+}
+
+bool CvDLLButtonPopup::launchPapalFoundingPopup(CvPopup* pPopup, CvPopupInfo &info)
+{
+	PlayerTypes eOwner = (PlayerTypes)info.getData2();
+	if (GC.getGameINLINE().getActivePlayer() != eOwner || !GC.getGameINLINE().isPapalDecisionValid(eOwner, info.getData1())) return false;
+	gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_EVENT_TITLE"));
+	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_EVENT_BODY", std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent() / 100)));
+	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_ESTABLISH"), NULL, 0, WIDGET_GENERAL);
+	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_DENY"), NULL, 1, WIDGET_GENERAL);
+	if (GC.getGameINLINE().canBecomePapacy(eOwner)) gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_BECOME"), NULL, 2, WIDGET_GENERAL);
+	gDLL->getInterfaceIFace()->popupLaunch(pPopup, false, POPUPSTATE_IMMEDIATE);
 	return true;
 }

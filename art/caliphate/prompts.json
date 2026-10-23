@@ -1,0 +1,22 @@
+{
+  "tool": "Built-in imagegen",
+  "common": "Production texture for a Civilization IV civilization banner, a flat square heraldic emblem. Large emblem centered in central 70 percent with generous plain field margins. Thick clear shapes legible downscaled to 128x128 pixels. Clean flat vector-like shapes and solid colors. No lettering, no writing, no calligraphy, no border, no fabric, no folds, no pole, no lighting or 3D. Full square opaque image.",
+  "designs": [
+    {
+      "name": "Arabia",
+      "design": "Original Arabia: imposing deep blood-red field, two large crossed golden curved scimitars, blades pointed up and out, small bold gold eight-point sun above the crossing. Powerful martial medieval heraldic design."
+    },
+    {
+      "name": "Abbasid",
+      "design": "Abbasid successor realm: jet-black field, a large golden eight-point geometric rosette enclosing a smaller gold ring, four simple gold dots at the cardinal directions. Dignified medieval Islamic court geometry."
+    },
+    {
+      "name": "Fatimid",
+      "design": "Fatimid successor realm: warm ivory field, a large emerald-green circular medallion with a bold interlaced eight-point geometric star, small gold center. Elegant medieval Egyptian Islamic ornament."
+    },
+    {
+      "name": "Umayyad",
+      "design": "Umayyad successor realm in Iberia and the Maghreb: warm ivory field, one bold crimson horseshoe arch framing a stylized golden palm with crimson trunk, simple balanced Andalusian ornament."
+    }
+  ]
+}

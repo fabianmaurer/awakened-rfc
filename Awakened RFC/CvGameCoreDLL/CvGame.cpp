@@ -32,6 +32,7 @@
 #include "CvSelectionGroup.h"
 #include "CvUnit.h"
 
+#if ARFC_ENABLE_REPORTING
 // Bind early benchmark seeding to the same private config/token/PID as Python.
 // Ordinary and multiplayer initialization never consume this override.
 static bool observerPerformanceSeed(unsigned int& seed, std::string& marker)
@@ -207,6 +208,7 @@ ObserverPerformanceScope::~ObserverPerformanceScope()
     if (!g_observerPerformance) observerPerformanceFlush();
 }
 
+#endif
 // interface uses
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
@@ -293,6 +295,7 @@ void CvGame::init(HandicapTypes eHandicap)
 	m_voteSelections.init();
 	m_votesTriggered.init();
 
+#if ARFC_ENABLE_REPORTING
 	unsigned int benchmarkSeed = 0;
 	std::string seedMarker;
 	bool benchmarkSeeded = false;
@@ -303,8 +306,10 @@ void CvGame::init(HandicapTypes eHandicap)
 		GC.getInitCore().setMapRandSeed(benchmarkSeed);
 		GC.getInitCore().setSyncRandSeed(benchmarkSeed);
 	}
+#endif
 	m_mapRand.init(GC.getInitCore().getMapRandSeed() % 73637381);
 	m_sorenRand.init(GC.getInitCore().getSyncRandSeed() % 52319761);
+#if ARFC_ENABLE_REPORTING
 	if (benchmarkSeeded)
 	{
 		FILE* marker = fopen(seedMarker.c_str(), "w");
@@ -315,6 +320,8 @@ void CvGame::init(HandicapTypes eHandicap)
 			fclose(marker);
 		}
 	}
+
+#endif
 
 	//--------------------------------
 	// Init non-saved data
@@ -561,7 +568,7 @@ void CvGame::regenerateMap()
 
 	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 
-	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
+	if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave(true);
 
 	if (NO_PLAYER != getActivePlayer())
 	{
@@ -650,8 +657,11 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iInitTech = 0;
 	m_iInitWonders = 0;
 	m_iAIAutoPlay = 0;
+#if ARFC_ENABLE_REPORTING
 	m_bObserverAutoPlay = false;
 	m_bObserverNoAutosaves = false;
+	m_bObserverRevealMap = false;
+#endif
 	m_iCircumnavigated = -1; //Rhye
 
 	m_uiInitialTime = 0;
@@ -802,12 +812,31 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_deals.removeAll();
 	m_voteSelections.removeAll();
 	m_votesTriggered.removeAll();
+	m_iPapalPlayer = NO_PLAYER;
+	m_iPapalRetryTurn = 0;
+	m_iPapalFirstCouncilTurn = -1;
+	m_iPapalRomeDeadline = -1;
+	m_iPapalDevotionFadeStart = -1;
+	m_iPapalDecisionSerial = 0;
+	m_iPapalRefuser = NO_PLAYER;
+	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) m_aiPapalRefusalPenalties[iRefusal] = 0;
+	m_papalDecisions.clear();
+	m_bPapalPalaceEffects = false;
+	m_bPapalCivicOverride = false;
+	m_iCrusadeRegion = -1;
+	m_bCrusadePeaceOverride = false;
+	for (int i = 0; i < MAX_TEAMS; ++i) { m_abCrusadeParticipants[i] = false; m_abCrusadeTargets[i] = false; }
+	for (int i = 0; i < MAX_PLAYERS; ++i) { m_aiCrusadePlunder[i] = 0; m_abCrusadeHolyStates[i] = false; }
+	m_iCrusadeEndTurn = 0;
+	for (int iReward = 0; iReward < MAX_CIV_PLAYERS; ++iReward) m_aiCrusadeRewards[iReward] = -1;
 
 	m_mapRand.reset();
 	m_sorenRand.reset();
 
 	m_iNumSessions = 1;
 
+    m_bShrinePopulationDirty = true;
+    m_aiShrinePopulationCommerce.clear();
 	m_iShrineBuildingCount = 0;
 	m_iNumCultureVictoryCities = 0;
 	m_eCultureVictoryCultureLevel = NO_CULTURELEVEL;
@@ -2326,7 +2355,7 @@ void CvGame::update()
 
 		if (getTurnSlice() == 0)
 		{
-			if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave(true);
+			if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave(true);
 		}
 
 		if (getNumGameTurnActive() == 0)
@@ -3162,6 +3191,7 @@ bool CvGame::isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource) co
 
 int CvGame::countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice) const
 {
+	if (isApostolicCouncil(kData.eVoteSource)) return getCouncilTally(kData.getID(), eChoice == PLAYER_VOTE_YES ? 0 : (eChoice == PLAYER_VOTE_NO ? 2 : 1), false);
 	int iCount = 0;
 	//for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++) //Rhye
 	for (int iI = 0; iI < NUM_MAJOR_PLAYERS; iI++) //Rhye
@@ -3181,13 +3211,14 @@ int CvGame::countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice) c
 
 int CvGame::countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
+	if (isApostolicCouncil(eVoteSource) && getCouncilVoteId() >= 0) return getCouncilTally(getCouncilVoteId(), 4, false);
 	int iCount;
 	int iI;
 
 	iCount = 0;
 
 	//for (iI = 0; iI < MAX_CIV_PLAYERS; iI++) //Rhye
-	for (iI = 0; iI < NUM_MAJOR_PLAYERS; iI++) //Rhye
+	for (iI = 0; iI < (isApostolicCouncil(eVoteSource) ? MAX_CIV_PLAYERS : NUM_MAJOR_PLAYERS); iI++)
 	{
 		iCount += GET_PLAYER((PlayerTypes)iI).getVotes(eVote, eVoteSource);
 	}
@@ -3226,12 +3257,23 @@ TeamTypes CvGame::findHighestVoteTeam(const VoteTriggeredData& kData) const
 
 int CvGame::getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
+	if (isApostolicCouncil(eVoteSource))
+	{
+		int iTotal = countPossibleVote(eVote, eVoteSource);
+		int iRule = GC.getVoteInfo(eVote).getPopulationThreshold();
+		return iRule == 67 ? (2 * iTotal + 2) / 3 : (iRule == 0 ? 1 : iTotal / 2 + 1);
+	}
 	return ((countPossibleVote(eVote, eVoteSource) * GC.getVoteInfo(eVote).getPopulationThreshold()) / 100);
 }
 
 
 TeamTypes CvGame::getSecretaryGeneral(VoteSourceTypes eVoteSource) const
 {
+	if (isApostolicCouncil(eVoteSource))
+	{
+		CvCity* pPalace = getApostolicPalace();
+		return isCouncilActive() && pPalace ? GET_PLAYER(pPalace->getOwnerINLINE()).getTeam() : NO_TEAM;
+	}
 	int iI;
 
 	if (!canHaveSecretaryGeneral(eVoteSource))
@@ -3484,6 +3526,53 @@ int CvGame::getNumFreeBonuses(BuildingTypes eBuilding)
 	}
 }
 
+
+int CvGame::getShrinePopulationCommerce(ReligionTypes eReligion)
+{
+    if (eReligion == NO_RELIGION) return 0;
+    if (m_bShrinePopulationDirty || (int)m_aiShrinePopulationCommerce.size() != GC.getNumReligionInfos())
+    {
+        // Exact shares for every possible religion count: LCM(1..7) = 420.
+        // Sum before dividing by five, so small mixed cities are not rounded away.
+        int iScale = 1;
+        for (int n = 2; n <= GC.getNumReligionInfos(); ++n)
+        {
+            int a = iScale, b = n;
+            while (b != 0) { const int r = a % b; a = b; b = r; }
+            iScale = iScale / a * n;
+        }
+        std::vector<__int64> aiPopulation(GC.getNumReligionInfos(), 0);
+        for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+        {
+            int iLoop;
+            for (CvCity* pCity = GET_PLAYER((PlayerTypes)iPlayer).firstCity(&iLoop); pCity != NULL;
+                 pCity = GET_PLAYER((PlayerTypes)iPlayer).nextCity(&iLoop))
+            {
+                const int iReligions = pCity->getReligionCount();
+                if (iReligions == 0) continue;
+                const __int64 iShare = (__int64)pCity->getPopulation() * (iScale / iReligions);
+                for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
+                    if (pCity->isHasReligion((ReligionTypes)iReligion)) aiPopulation[iReligion] += iShare;
+            }
+        }
+        m_aiShrinePopulationCommerce.assign(GC.getNumReligionInfos(), 0);
+        for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
+            m_aiShrinePopulationCommerce[iReligion] = (int)(aiPopulation[iReligion] / ((__int64)iScale * 5));
+        m_bShrinePopulationDirty = false;
+    }
+    return m_aiShrinePopulationCommerce[eReligion];
+}
+
+void CvGame::updateShrineCommerce()
+{
+    if (getShrineBuildingCount() == 0) return;
+    for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+    {
+        int iLoop;
+        for (CvCity* pCity = GET_PLAYER((PlayerTypes)iPlayer).firstCity(&iLoop); pCity != NULL;
+             pCity = GET_PLAYER((PlayerTypes)iPlayer).nextCity(&iLoop)) pCity->updateShrineCommerce();
+    }
+}
 
 int CvGame::countReligionLevels(ReligionTypes eReligion)
 {
@@ -4361,10 +4450,12 @@ int CvGame::getAIAutoPlay()
 }
 
 
+#if ARFC_ENABLE_REPORTING
 void CvGame::setObserverAutoPlay(bool enabled)
 {
 	// Preserve every civilization and its units. Never enable in multiplayer.
 	if (isGameMultiPlayer() || m_bObserverAutoPlay == enabled) return;
+	if (!enabled) setObserverRevealMap(false);
 	m_bObserverAutoPlay = enabled;
 	// Keep suppression through the final turn after observer AI is disabled.
 	// Transient session state: reset for new games, never serialized in saves.
@@ -4385,6 +4476,25 @@ void CvGame::setObserverAutoPlay(bool enabled)
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
 }
+#endif
+
+#if ARFC_ENABLE_REPORTING
+void CvGame::setObserverRevealMap(bool enabled)
+{
+	if (isGameMultiPlayer() || (enabled && !isObserverAutoPlay()) || m_bObserverRevealMap == enabled) return;
+	m_bObserverRevealMap = enabled;
+	if (enabled) gDLL->getEngineIFace()->PushFogOfWar(FOGOFWARMODE_OFF);
+	else gDLL->getEngineIFace()->PopFogOfWar();
+	gDLL->getEngineIFace()->setFogOfWarFromStack();
+	GC.getMapINLINE().updateVisibility();
+	GC.getMapINLINE().updateSymbols();
+	GC.getMapINLINE().updateMinimapColor();
+	gDLL->getInterfaceIFace()->setDirty(GlobeLayer_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
+}
+#endif
 
 void CvGame::setAIAutoPlay(int iNewValue)
 {
@@ -4534,7 +4644,7 @@ bool CvGame::circumnavigationAvailable() const
 
 bool CvGame::isDiploVote(VoteSourceTypes eVoteSource) const
 {
-	return (getDiploVoteCount(eVoteSource) > 0);
+	return (getDiploVoteCount(eVoteSource) > 0 && (!isApostolicCouncil(eVoteSource) || isCouncilActive()));
 }
 
 
@@ -4568,6 +4678,7 @@ void CvGame::changeDiploVote(VoteSourceTypes eVoteSource, int iChange)
 
 bool CvGame::canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const
 {
+	if (isApostolicCouncil(eVoteSource)) return canCouncilPropose(kData);
 	if (GC.getVoteInfo(kData.eVote).isVictory())
 	{
 		for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
@@ -4611,6 +4722,7 @@ bool CvGame::canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionSub
 
 bool CvGame::isValidVoteSelection(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const
 {
+	if (isApostolicCouncil(eVoteSource)) return canCouncilPropose(kData);
 	if (NO_PLAYER != kData.ePlayer)
 	{
 		CvPlayer& kPlayer = GET_PLAYER(kData.ePlayer);
@@ -5944,7 +6056,9 @@ void CvGame::setVoteChosen(int iSelection, int iVoteId)
 	VoteSelectionData* pVoteSelectionData = getVoteSelection(iVoteId);
 	if (NULL != pVoteSelectionData)
 	{
-		addVoteTriggered(*pVoteSelectionData, iSelection);
+		if (!isApostolicCouncil(pVoteSelectionData->eVoteSource) ||
+			(isCouncilActive() && getCouncilVoteId() < 0 && iSelection >= 0 && iSelection < (int)pVoteSelectionData->aVoteOptions.size() && canCouncilPropose(pVoteSelectionData->aVoteOptions[iSelection])))
+			addVoteTriggered(*pVoteSelectionData, iSelection);
 	}
 
 	deleteVoteSelection(iVoteId);
@@ -5959,7 +6073,68 @@ CvCity* CvGame::getHolyCity(ReligionTypes eIndex)
 }
 
 
-void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce)
+// Founding Christianity establishes a small coastal foothold. This is confined
+// to the RFC Mediterranean basin, excluding the Black Sea, Red Sea and Atlantic.
+static void seedChristianMediterraneanCities(CvCity* pHolyCity)
+{
+    const ReligionTypes eReligion = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+    const CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
+    std::vector<bool> abMediterranean(GC.getMapINLINE().numPlotsINLINE(), false);
+    std::vector<CvPlot*> apWater;
+    CvPlot* pSeed = GC.getMapINLINE().plotINLINE(60, 39);
+    if (pSeed == NULL || !pSeed->isWater()) return;
+    apWater.push_back(pSeed);
+    abMediterranean[GC.getMapINLINE().plotNum(60, 39)] = true;
+    for (int i = 0; i < (int)apWater.size(); ++i)
+    {
+        CvPlot* pPlot = apWater[i];
+        for (int j = 0; j < NUM_CARDINALDIRECTION_TYPES; ++j)
+        {
+            CvPlot* pNext = plotCardinalDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), (CardinalDirectionTypes)j);
+            if (pNext == NULL || !pNext->isWater()) continue;
+            const int x = pNext->getX_INLINE(), y = pNext->getY_INLINE();
+            if (x < 52 || x > 74 || y < 37 || y > 45 || (x >= 69 && y >= 44)) continue;
+            const int iIndex = GC.getMapINLINE().plotNum(x, y);
+            if (!abMediterranean[iIndex])
+            {
+                abMediterranean[iIndex] = true;
+                apWater.push_back(pNext);
+            }
+        }
+    }
+    const int iCount = std::max(0, GC.getDefineINT("RFCMP_CHRISTIANITY_INITIAL_COASTAL_CITIES"));
+    for (int i = 0; i < iCount; ++i)
+    {
+        CvCity* pBestCity = NULL;
+        int iBestDistance = MAX_INT;
+        // Map-index ordering breaks equal-distance ties identically on all peers.
+        for (int j = 0; j < GC.getMapINLINE().numPlotsINLINE(); ++j)
+        {
+            CvCity* pCity = GC.getMapINLINE().plotByIndexINLINE(j)->getPlotCity();
+            if (pCity == NULL || pCity == pHolyCity || pCity->isHasReligion(eReligion) || pCity->isReligionBanned(eReligion)) continue;
+            CvPlayer& kOwner = GET_PLAYER(pCity->getOwnerINLINE());
+            if (!kOwner.isAlive() || kOwner.isCivic(eAtheism) || (kOwner.isNoNonStateReligionSpread() && kOwner.getStateReligion() != eReligion)) continue;
+            bool bMediterraneanCoast = false;
+            for (int k = 0; k < NUM_DIRECTION_TYPES; ++k)
+            {
+                CvPlot* pAdjacent = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)k);
+                if (pAdjacent != NULL && abMediterranean[GC.getMapINLINE().plotNum(pAdjacent->getX_INLINE(), pAdjacent->getY_INLINE())])
+                    bMediterraneanCoast = true;
+            }
+            if (!bMediterraneanCoast) continue;
+            const int iDistance = plotDistance(pHolyCity->getX_INLINE(), pHolyCity->getY_INLINE(), pCity->getX_INLINE(), pCity->getY_INLINE());
+            if (iDistance < iBestDistance)
+            {
+                iBestDistance = iDistance;
+                pBestCity = pCity;
+            }
+        }
+        if (pBestCity == NULL) break;
+        pBestCity->spreadReligion(eReligion, true);
+    }
+}
+
+void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce, bool bSpreadReligion)
 {
 	CvWString szBuffer;
 	CvCity* pOldValue;
@@ -5969,6 +6144,7 @@ void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumReligionInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
 
+	const bool bNewReligion = !isReligionFounded(eIndex);
 	pOldValue = getHolyCity(eIndex);
 
 	if (pOldValue != pNewValue)
@@ -6001,12 +6177,20 @@ void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce
 		{
 			pHolyCity = getHolyCity(eIndex);
 
-			pHolyCity->setHasReligion(eIndex, true, bAnnounce, true, true);
+			// Persist the owner-scoped choice before adding Islam, suppressing the
+			// ordinary conversion popup until this founding decision is resolved.
+            const bool bIslamFounding = bSpreadReligion && bNewReligion &&
+                eIndex == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
+            if (bIslamFounding) GET_PLAYER(pHolyCity->getOwnerINLINE()).prepareIslamFounding();
+			if (bSpreadReligion) pHolyCity->setHasReligion(eIndex, true, bAnnounce, true, true);
 			pHolyCity->changeReligionInfluence(eIndex, GC.getDefineINT("HOLY_CITY_INFLUENCE"));
 
 			pHolyCity->updateReligionCommerce();
 
 			pHolyCity->setInfoDirty(true);
+            if (bSpreadReligion && bNewReligion && eIndex == (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+                seedChristianMediterraneanCities(pHolyCity);
+            if (bIslamFounding) GET_PLAYER(pHolyCity->getOwnerINLINE()).processIslamFounding();
 
 			if (bAnnounce)
 			{
@@ -6129,12 +6313,24 @@ void CvGame::setPlayerVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes
 	FAssert(NULL != getVoteTriggered(iVoteId));
 
 	GET_PLAYER(eOwnerIndex).setVote(iVoteId, eNewValue);
+#if ARFC_ENABLE_REPORTING
+	VoteTriggeredData* pCouncil = getVoteTriggered(iVoteId);
+	if (pCouncil && isApostolicCouncil(pCouncil->eVoteSource) && eNewValue != NO_PLAYER_VOTE)
+		reportApostolicMechanic("council_vote", eOwnerIndex, iVoteId, eNewValue, pCouncil->aiCouncilWeight[eOwnerIndex], pCouncil->iCouncilDeadline);
+#endif
 }
 
 
 void CvGame::castVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes ePlayerVote)
 {
 	VoteTriggeredData* pTriggeredData = getVoteTriggered(iVoteId);
+	if (pTriggeredData && isApostolicCouncil(pTriggeredData->eVoteSource))
+	{
+		if (!isCouncilActive() || eOwnerIndex < 0 || eOwnerIndex >= MAX_CIV_PLAYERS || pTriggeredData->aiCouncilWeight[eOwnerIndex] <= 0 ||
+			pTriggeredData->aiCouncilDelivery[eOwnerIndex] >= 0 || getGameTurn() >= pTriggeredData->iCouncilDeadline ||
+			getPlayerVote(eOwnerIndex, iVoteId) != NO_PLAYER_VOTE || !GET_PLAYER(eOwnerIndex).isVotingMember(pTriggeredData->eVoteSource) ||
+			(ePlayerVote != PLAYER_VOTE_YES && ePlayerVote != PLAYER_VOTE_NO && ePlayerVote != PLAYER_VOTE_ABSTAIN)) return;
+	}
 	if (NULL != pTriggeredData)
 	{
 		CvVoteInfo& kVote = GC.getVoteInfo(pTriggeredData->kVoteOption.eVote);
@@ -6249,6 +6445,8 @@ void CvGame::addGreatPersonBornName(const CvWString& szName)
 
 void CvGame::doTurn()
 {
+	doCrusade();
+	doPapalFounding();
 	observerPerformanceFlush();
 	OBSERVER_PERFORMANCE("game.doTurn");
 	PROFILE_BEGIN("CvGame::doTurn()");
@@ -6267,6 +6465,9 @@ void CvGame::doTurn()
 
 	// END OF TURN
 	CvEventReporter::getInstance().beginGameTurn( getGameTurn() );
+    // Check even dead players so expiry and announcements are never stranded.
+    for (int iJihadPlayer = 0; iJihadPlayer < MAX_PLAYERS; ++iJihadPlayer)
+        GET_PLAYER((PlayerTypes)iJihadPlayer).doArabianJihad();
 
 	doUpdateCacheOnTurn();
 
@@ -6310,6 +6511,10 @@ void CvGame::doTurn()
 		}
 	}
 
+
+#if ARFC_ENABLE_REPORTING
+	reportApostolicState();
+#endif
 	CvEventReporter::getInstance().endGameTurn(getGameTurn());
 
 	incrementGameTurn();
@@ -6385,7 +6590,7 @@ void CvGame::doTurn()
 
 	stopProfilingDLL();
 
-	if (!m_bObserverNoAutosaves) gDLL->getEngineIFace()->AutoSave();
+	if (!isObserverNoAutosaves()) gDLL->getEngineIFace()->AutoSave();
 }
 
 
@@ -6661,7 +6866,11 @@ void CvGame::doDiploVote()
 {
 	OBSERVER_PERFORMANCE("CvGame::doDiploVote");
 	doVoteResults();
-
+	int iLoop;
+	std::vector<int> aDelete;
+	for (VoteSelectionData* pData = m_voteSelections.beginIter(&iLoop); pData; pData = m_voteSelections.nextIter(&iLoop))
+		if (isApostolicCouncil(pData->eVoteSource) && (!isCouncilActive() || pData->iCouncilOwner != getApostolicPalace()->getOwnerINLINE())) aDelete.push_back(pData->getID());
+	for (int i = 0; i < (int)aDelete.size(); ++i) deleteVoteSelection(aDelete[i]);
 	doVoteSelection();
 }
 
@@ -7667,6 +7876,11 @@ void CvGame::testVictory()
 
 void CvGame::processVote(const VoteTriggeredData& kData, int iChange)
 {
+	if (isApostolicCouncil(kData.eVoteSource))
+	{
+		if (iChange > 0) { processCouncilResolution(kData); setVoteOutcome(kData, NO_PLAYER_VOTE); }
+		return;
+	}
 	CvVoteInfo& kVote = GC.getVoteInfo(kData.kVoteOption.eVote);
 
 	changeTradeRoutes(kVote.getTradeRoutes() * iChange);
@@ -7899,6 +8113,24 @@ int CvGame::calculateSyncChecksum()
             iValue += (pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101) *
                 (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
+	iValue += (m_iPapalPlayer + 1) * 269 + m_iPapalRetryTurn * 271 + m_iPapalDecisionSerial * 277 + m_bPapalPalaceEffects * 281;
+	iValue += (m_iPapalRefuser + 1) * 283;
+	iValue += (m_iPapalFirstCouncilTurn + 1) * 313;
+	iValue += (m_iPapalRomeDeadline + 1) * 307 + (m_iPapalDevotionFadeStart + 1) * 311;
+	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) iValue += m_aiPapalRefusalPenalties[iRefusal] * (iRefusal + 1) * 293;
+	for (std::map<int, PlayerTypes>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p) iValue += (p->first + 1) * (p->second + 1) * 283;
+	iValue += (m_iCrusadeRegion + 1) * 7919 + m_iCrusadeEndTurn * 101;
+	for (int t = 0; t < MAX_TEAMS; ++t) iValue += (t + 1) * (m_abCrusadeParticipants[t] * 241 + m_abCrusadeTargets[t] * 251);
+	for (int i = 0; i < MAX_PLAYERS; ++i) iValue += (i + 1) * (m_aiCrusadePlunder[i] * 257 + m_abCrusadeHolyStates[i] * 263);
+	for (int iReward = 0; iReward < MAX_CIV_PLAYERS; ++iReward) iValue += (iReward + 1) * (m_aiCrusadeRewards[iReward] + 1) * 131;
+	int iCouncilLoop;
+	for (VoteTriggeredData* pCouncil = m_votesTriggered.beginIter(&iCouncilLoop); pCouncil; pCouncil = m_votesTriggered.nextIter(&iCouncilLoop))
+	{
+		if (!isApostolicCouncil(pCouncil->eVoteSource)) continue;
+		iValue += pCouncil->getID() * 197 + pCouncil->iCouncilDeadline * 211 + pCouncil->kVoteOption.eVote * 223;
+		for (int iVoter = 0; iVoter < MAX_CIV_PLAYERS; ++iVoter)
+			iValue += (iVoter + 1) * (pCouncil->aiCouncilWeight[iVoter] * 227 + pCouncil->aiCouncilDelivery[iVoter] * 229 + (getPlayerVote((PlayerTypes)iVoter, pCouncil->getID()) + 10) * 233);
+	}
 	iValue += getNumCities();
 	iValue += getTotalPopulation();
 	iValue += getNumDeals();
@@ -8134,6 +8366,8 @@ bool CvGame::changePlayer( int playerIdx, int newCivType, int newLeader, int tea
 		//logMsg("Changing player graphics");
 		CivilizationTypes civType = GET_PLAYER((PlayerTypes)playerIdx).getCivilizationType();
 		GC.getInitCore().setFlagDecal( (PlayerTypes)playerIdx, (CvWString)GC.getCivilizationInfo(civType).getFlagTexture() );
+		// Successor banners can use full-color art rather than a team-color mask.
+		GC.getInitCore().setWhiteFlag( (PlayerTypes)playerIdx, GC.getCivilizationInfo(civType).getArtInfo()->isWhiteFlag() );
 		GC.getInitCore().setColor( (PlayerTypes)playerIdx, (PlayerColorTypes)GC.getCivilizationInfo(civType).getDefaultPlayerColor() );
 		GC.getInitCore().setArtStyle( (PlayerTypes)playerIdx, (ArtStyleTypes)GC.getCivilizationInfo(civType).getArtStyleType() );
 
@@ -8506,6 +8740,30 @@ void CvGame::read(FDataStreamBase* pStream)
 	ReadStreamableFFreeListTrashArray(m_deals, pStream);
 	ReadStreamableFFreeListTrashArray(m_voteSelections, pStream);
 	ReadStreamableFFreeListTrashArray(m_votesTriggered, pStream);
+	pStream->Read(&m_iCrusadeRegion);
+	pStream->Read(MAX_TEAMS, m_abCrusadeParticipants);
+	pStream->Read(MAX_TEAMS, m_abCrusadeTargets);
+	pStream->Read(MAX_PLAYERS, m_aiCrusadePlunder);
+	pStream->Read(MAX_PLAYERS, m_abCrusadeHolyStates);
+	pStream->Read(&m_iPapalPlayer);
+	pStream->Read(&m_iPapalRetryTurn);
+	pStream->Read(&m_iPapalFirstCouncilTurn);
+	pStream->Read(&m_iPapalRomeDeadline);
+	pStream->Read(&m_iPapalDevotionFadeStart);
+	pStream->Read(&m_iPapalDecisionSerial);
+	pStream->Read(&m_iPapalRefuser);
+	pStream->Read(MAX_CIV_PLAYERS, m_aiPapalRefusalPenalties);
+	pStream->Read(&m_bPapalPalaceEffects);
+	int iPapalPending;
+	pStream->Read(&iPapalPending);
+	m_papalDecisions.clear();
+	for (int p = 0; p < iPapalPending; ++p)
+	{
+		int iId, iOwner; pStream->Read(&iId); pStream->Read(&iOwner);
+		m_papalDecisions[iId] = (PlayerTypes)iOwner;
+	}
+	pStream->Read(&m_iCrusadeEndTurn);
+	pStream->Read(MAX_CIV_PLAYERS, m_aiCrusadeRewards);
 
 	m_mapRand.read(pStream);
 	m_sorenRand.read(pStream);
@@ -8725,6 +8983,25 @@ void CvGame::write(FDataStreamBase* pStream)
 	WriteStreamableFFreeListTrashArray(m_deals, pStream);
 	WriteStreamableFFreeListTrashArray(m_voteSelections, pStream);
 	WriteStreamableFFreeListTrashArray(m_votesTriggered, pStream);
+	pStream->Write(m_iCrusadeRegion);
+	pStream->Write(MAX_TEAMS, m_abCrusadeParticipants);
+	pStream->Write(MAX_TEAMS, m_abCrusadeTargets);
+	pStream->Write(MAX_PLAYERS, m_aiCrusadePlunder);
+	pStream->Write(MAX_PLAYERS, m_abCrusadeHolyStates);
+	pStream->Write(m_iPapalPlayer);
+	pStream->Write(m_iPapalRetryTurn);
+	pStream->Write(m_iPapalFirstCouncilTurn);
+	pStream->Write(m_iPapalRomeDeadline);
+	pStream->Write(m_iPapalDevotionFadeStart);
+	pStream->Write(m_iPapalDecisionSerial);
+	pStream->Write(m_iPapalRefuser);
+	pStream->Write(MAX_CIV_PLAYERS, m_aiPapalRefusalPenalties);
+	pStream->Write(m_bPapalPalaceEffects);
+	pStream->Write((int)m_papalDecisions.size());
+	for (std::map<int, PlayerTypes>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p)
+	{ pStream->Write(p->first); pStream->Write((int)p->second); }
+	pStream->Write(m_iCrusadeEndTurn);
+	pStream->Write(MAX_CIV_PLAYERS, m_aiCrusadeRewards);
 
 	m_mapRand.write(pStream);
 	m_sorenRand.write(pStream);
@@ -9301,6 +9578,1094 @@ VoteSelectionData* CvGame::getVoteSelection(int iID) const
 	return ((VoteSelectionData*)(m_voteSelections.getAt(iID)));
 }
 
+bool CvGame::isApostolicCouncil(VoteSourceTypes eSource) const
+{
+	return eSource == GC.getInfoTypeForString("DIPLOVOTE_POPE");
+}
+
+CvCity* CvGame::getApostolicPalace() const
+{
+	BuildingTypes ePalace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE");
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+		if (!kPlayer.isAlive() || kPlayer.getBuildingClassCount((BuildingClassTypes)GC.getBuildingInfo(ePalace).getBuildingClassType()) == 0) continue;
+		int iLoop;
+		for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity; pCity = kPlayer.nextCity(&iLoop))
+			if (pCity->getNumRealBuilding(ePalace) > 0) return pCity;
+	}
+	return NULL;
+}
+
+bool CvGame::isCouncilActive() const
+{
+	// This tracks applied effects. Refresh around civic/religion changes so
+	// removal runs while the old source is still active, without stranded yields.
+	return m_bPapalPalaceEffects;
+}
+
+CvCity* CvGame::getPapalRome() const
+{
+	CvPlot* pPlot = GC.getMapINLINE().plot(60, 44);
+	return pPlot ? pPlot->getPlotCity() : NULL;
+}
+
+bool CvGame::isPapalState(PlayerTypes ePlayer) const { return ePlayer != NO_PLAYER && ePlayer == m_iPapalPlayer; }
+
+bool CvGame::canFoundPapacy(PlayerTypes ePlayer) const
+{
+	CvCity* pRome = getPapalRome();
+	if (m_iPapalPlayer != NO_PLAYER || GET_PLAYER((PlayerTypes)PAPAL_STATE).isAlive() || !pRome || pRome->getOwnerINLINE() != ePlayer || !pRome->isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return false;
+	CvPlayer& kOwner = GET_PLAYER(ePlayer);
+	if (kOwner.isBarbarian() || kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) || kOwner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) return false;
+	bool bIndependent = kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") || kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2");
+	return bIndependent || kOwner.getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+}
+
+bool CvGame::canBecomePapacy(PlayerTypes ePlayer) const
+{
+	return canFoundPapacy(ePlayer) && GET_PLAYER(ePlayer).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(ePlayer).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"));
+}
+
+bool CvGame::isPapalDecisionValid(PlayerTypes ePlayer, int iDecision) const
+{
+	std::map<int, PlayerTypes>::const_iterator it = m_papalDecisions.find(iDecision);
+	return it != m_papalDecisions.end() && it->second == ePlayer && canFoundPapacy(ePlayer);
+}
+
+void CvGame::disablePapalPalaceEffects()
+{
+	if (!m_bPapalPalaceEffects) return;
+	CvCity* pPalace = getApostolicPalace();
+	if (pPalace && !GET_PLAYER(pPalace->getOwnerINLINE()).isBuildingObsolete((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE")))
+		pPalace->processBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), -1, false, true);
+	m_bPapalPalaceEffects = false;
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("papal_palace_effects", m_iPapalPlayer, 0);
+#endif
+	if (pPalace)
+	{
+		pPalace->updateBuildingCommerce();
+		pPalace->updateCommerce(COMMERCE_GOLD);
+		pPalace->updateExtraSpecialistYield();
+		pPalace->updateExtraBuildingHappiness();
+		pPalace->updateExtraBuildingHealth();
+	}
+}
+
+#if ARFC_ENABLE_REPORTING
+void CvGame::reportApostolicMechanic(const char* event, int player, int a, int b, int c, int d, int e, int f, int g, int h) const
+{
+	if (!isObserverAutoPlay() || isGameMultiPlayer() || g_observerPerformance) return;
+	int values[] = {a, b, c, d, e, f, g, h};
+	CyArgsList args;
+	args.add(event); args.add(player); args.add(values, 8);
+	if (!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordApostolicMechanic", args.makeFunctionArgs()))
+		gDLL->logMsg("PythonErr.log", "Awakened RFC: apostolic mechanic recording callback failed.", false, false);
+}
+
+
+#endif
+
+void CvGame::clearPapalRefusalPenalties()
+{
+	if (m_iPapalRefuser == NO_PLAYER) return;
+
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		if (m_aiPapalRefusalPenalties[i] != 0)
+		{
+#if ARFC_ENABLE_REPORTING
+			int iPreviousAttitude = GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser);
+#endif
+			GET_PLAYER((PlayerTypes)i).AI_changeAttitudeExtra((PlayerTypes)m_iPapalRefuser, m_aiPapalRefusalPenalties[i]);
+#if ARFC_ENABLE_REPORTING
+			reportApostolicMechanic("papal_penalty_cleared", m_iPapalRefuser, i, m_aiPapalRefusalPenalties[i], iPreviousAttitude, GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser));
+#endif
+		}
+		m_aiPapalRefusalPenalties[i] = 0;
+	}
+	m_iPapalRefuser = NO_PLAYER;
+}
+
+void CvGame::refreshPapalPalaceEffects()
+{
+	CvCity* pRome = getPapalRome();
+	if (pRome != NULL && isPapalState(pRome->getOwnerINLINE()))
+	{
+		m_iPapalRomeDeadline = -1;
+		// Claim the first ring immediately on founding or recapture, even when
+		// the Palace is inactive. Culture updates keep these borders protected.
+		for (int i = 0; i < NUM_DIRECTION_TYPES; ++i)
+		{
+			CvPlot* pPlot = plotDirection(pRome->getX_INLINE(), pRome->getY_INLINE(), (DirectionTypes)i);
+			if (pPlot != NULL) pPlot->updateCulture(true, true);
+		}
+	}
+	if (m_iPapalRefuser != NO_PLAYER && (!pRome || pRome->getOwnerINLINE() != m_iPapalRefuser)) clearPapalRefusalPenalties();
+	BuildingTypes ePalace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE");
+	bool bEnable = pRome && isPapalState(pRome->getOwnerINLINE()) && pRome->getNumRealBuilding(ePalace) > 0 &&
+		GET_PLAYER(pRome->getOwnerINLINE()).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY") &&
+		!GET_PLAYER(pRome->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) &&
+		!GET_PLAYER(pRome->getOwnerINLINE()).isBuildingObsolete(ePalace);
+	if (bEnable == m_bPapalPalaceEffects) return;
+	if (!bEnable) disablePapalPalaceEffects();
+	else
+	{
+		m_bPapalPalaceEffects = true;
+		pRome->processBuilding(ePalace, 1, false, true);
+		pRome->updateCommerce(COMMERCE_GOLD);
+#if ARFC_ENABLE_REPORTING
+		reportApostolicMechanic("papal_palace_effects", m_iPapalPlayer, 1);
+#endif
+	}
+	gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
+}
+
+void CvGame::announcePapalCouncil(const char* szEvent)
+{
+    const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+    for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+    {
+        CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+        // Retain Christian affiliation under Tolerance, which hides state religion.
+        if (!kPlayer.isAlive() || kPlayer.getLastStateReligion() != eChristianity) continue;
+        const char* szTone = "CASUAL";
+        if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) ||
+            kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))) szTone = "SCEPTICAL";
+        else if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"))) szTone = "DEVOUT";
+        else if (kPlayer.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_RELIGION"))) szTone = "RESPECTFUL";
+        const CvString szKey = CvString::format("TXT_KEY_AP_COUNCIL_%s_%s", szEvent, szTone);
+        const CvWString szText = gDLL->getText(szKey.c_str(), std::max(0, m_iPapalFirstCouncilTurn - getGameTurn()));
+        gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
+            szText, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+            (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), 60, 44);
+        if (kPlayer.isHuman())
+        {
+            // Informational only: addressed delivery, with no gameplay callback.
+            CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_TEXT);
+            if (pInfo) { pInfo->setText(szText); gDLL->getInterfaceIFace()->addPopup(pInfo, (PlayerTypes)i); }
+        }
+    }
+}
+
+void CvGame::notifyPapalRomeLost(PlayerTypes eOwner)
+{
+	if (!isPapalState(eOwner) || !GET_PLAYER(eOwner).isAlive() || m_iPapalRomeDeadline >= 0) return;
+	m_iPapalRomeDeadline = getGameTurn() + 10;
+	gDLL->getInterfaceIFace()->addMessage(eOwner, false, GC.getEVENT_MESSAGE_TIME(),
+		gDLL->getText("TXT_KEY_AP_ROME_RECOVERY", 10), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+		(ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), 60, 44);
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("papal_rome_lost", eOwner, m_iPapalRomeDeadline);
+#endif
+}
+
+bool CvGame::canPapalSurviveWithoutCities(PlayerTypes ePlayer) const
+{
+	return isPapalState(ePlayer) && m_iPapalRomeDeadline >= 0 && GC.getInitCore().getGameTurn() <= m_iPapalRomeDeadline;
+}
+
+int CvGame::getPapalDevotionPercent(PlayerTypes ePlayer) const
+{
+	if (!isPapalState(ePlayer) || !GET_PLAYER(ePlayer).isAlive()) return 0;
+	if (m_iPapalDevotionFadeStart < 0) return 100;
+	const int iDuration = std::max(1, 30 * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+	return std::max(0, 100 * (iDuration - std::max(0, GC.getInitCore().getGameTurn() - m_iPapalDevotionFadeStart)) / iDuration);
+}
+
+void CvGame::doPapalLifecycle()
+{
+	if (m_iPapalPlayer == NO_PLAYER) return;
+	const PlayerTypes ePope = (PlayerTypes)m_iPapalPlayer;
+	CvPlayer& kPope = GET_PLAYER(ePope);
+	if (kPope.isAlive())
+	{
+		if (m_iPapalDevotionFadeStart < 0 && getCurrentEra() >= GC.getInfoTypeForString("ERA_MODERN"))
+			m_iPapalDevotionFadeStart = getGameTurn();
+		CvCity* pRome = getPapalRome();
+		if (pRome != NULL && pRome->getOwnerINLINE() == ePope)
+		{
+			m_iPapalRomeDeadline = -1;
+			return;
+		}
+		notifyPapalRomeLost(ePope);
+		if (getGameTurn() < m_iPapalRomeDeadline) return;
+		disablePapalPalaceEffects();
+		// Release cities peacefully rather than razing them or giving the
+		// conqueror a second empire. No conquest rewards or fresh recruitment.
+		while (kPope.getNumCities() > 0)
+		{
+			int iLoop;
+			CvCity* pCity = kPope.firstCity(&iLoop);
+			CvPlot* pPlot = pCity->plot();
+			const int iCulture = pCity->getCultureTimes100(ePope);
+			const PlayerTypes eRecipient = GET_PLAYER((PlayerTypes)INDEPENDENT).getNumCities() <=
+				GET_PLAYER((PlayerTypes)INDEPENDENT2).getNumCities() ? (PlayerTypes)INDEPENDENT : (PlayerTypes)INDEPENDENT2;
+			GET_PLAYER(eRecipient).acquireCity(pCity, false, true, false);
+			pCity = pPlot->getPlotCity();
+			pCity->setCultureTimes100(eRecipient, pCity->getCultureTimes100(eRecipient) + iCulture, false, false);
+			pCity->setCultureTimes100(ePope, 0, false, false);
+			const int iPlotCulture = pPlot->getCulture(ePope);
+			pPlot->changeCulture(eRecipient, iPlotCulture, false);
+			pPlot->setCulture(ePope, 0, true, false);
+		}
+		kPope.setAlive(false); // Disband remaining units as in ordinary elimination.
+#if ARFC_ENABLE_REPORTING
+		reportApostolicMechanic("papal_dissolved", ePope, m_iPapalRomeDeadline);
+#endif
+	}
+	announcePapalCouncil("DISSOLVED");
+	m_iPapalFirstCouncilTurn = -1;
+	// Death clears the identity, so a later eligible Rome event can restore it.
+	disablePapalPalaceEffects();
+	clearPapalRefusalPenalties();
+	m_iPapalPlayer = NO_PLAYER;
+	m_iPapalRomeDeadline = -1;
+	m_iPapalDevotionFadeStart = -1;
+	m_iPapalRetryTurn = getGameTurn();
+	gDLL->getInterfaceIFace()->setDirty(Flag_DIRTY_BIT, true);
+	m_papalDecisions.clear();
+}
+
+void CvGame::doPapalFounding()
+{
+	doPapalLifecycle();
+	refreshPapalPalaceEffects();
+	for (std::map<int, PlayerTypes>::iterator it = m_papalDecisions.begin(); it != m_papalDecisions.end(); )
+		if (!canFoundPapacy(it->second)) m_papalDecisions.erase(it++); else ++it;
+	if (m_iPapalPlayer != NO_PLAYER || !m_papalDecisions.empty()) return;
+	CvCity* pRome = getPapalRome();
+	if (!pRome || !canFoundPapacy(pRome->getOwnerINLINE())) return;
+	PlayerTypes eOwner = pRome->getOwnerINLINE();
+	CvPlayer& kOwner = GET_PLAYER(eOwner);
+	if (kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") || kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2"))
+	{ establishPapacy(eOwner, false); return; }
+	if (getGameTurn() < m_iPapalRetryTurn) return;
+	int iDecision = m_iPapalDecisionSerial++;
+	m_papalDecisions[iDecision] = eOwner;
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("papal_request", eOwner, iDecision, canBecomePapacy(eOwner), kOwner.getNumCities());
+#endif
+	if (!kOwner.isHuman())
+	{ resolvePapalDecision(eOwner, iDecision, canBecomePapacy(eOwner) ? 2 : (kOwner.getNumCities() > 1 ? 0 : 1)); return; }
+	CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_PAPAL_FOUNDING);
+	if (pInfo) { pInfo->setData1(iDecision); pInfo->setData2(eOwner); gDLL->getInterfaceIFace()->addPopup(pInfo, eOwner); }
+}
+
+void CvGame::resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoice)
+{
+	if (!isPapalDecisionValid(ePlayer, iDecision) || iChoice < 0 || iChoice > 2 || (iChoice == 2 && !canBecomePapacy(ePlayer))) return;
+	m_papalDecisions.erase(iDecision); // Consume before transfers and Python events.
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("papal_decision", ePlayer, iDecision, iChoice);
+#endif
+	if (iChoice == 0 || iChoice == 2) establishPapacy(ePlayer, iChoice == 2);
+	else
+	{
+		if (m_iPapalRefuser != ePlayer) clearPapalRefusalPenalties();
+		m_iPapalRefuser = ePlayer;
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			if (i != ePlayer && GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+			{
+				GET_PLAYER((PlayerTypes)i).AI_changeAttitudeExtra(ePlayer, -2);
+				m_aiPapalRefusalPenalties[i] += 2;
+#if ARFC_ENABLE_REPORTING
+				reportApostolicMechanic("papal_penalty_applied", ePlayer, i, 2, m_aiPapalRefusalPenalties[i], GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra(ePlayer));
+#endif
+			}
+		announcePapalCouncil("REFUSED");
+		m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+	}
+}
+
+void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
+{
+	if (!canFoundPapacy(eOwner) || (bBecome && !canBecomePapacy(eOwner))) return;
+	clearPapalRefusalPenalties();
+	CvCity* pRome = getPapalRome();
+	PlayerTypes ePope = bBecome ? eOwner : (PlayerTypes)PAPAL_STATE;
+	if (!bBecome)
+	{
+		GC.getInitCore().setMinorNationCiv(ePope, false);
+		addPlayer(ePope, (LeaderHeadTypes)GC.getInfoTypeForString("LEADER_INDEPENDENT"), (CivilizationTypes)GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT"));
+	}
+	m_iPapalPlayer = ePope;
+	GC.getInitCore().setLeaderName(ePope, L"TXT_KEY_AP_POPE");
+	// Papal identity applies to the new state and to an owner becoming Pope.
+	GC.getInitCore().setColor(ePope, (PlayerColorTypes)GC.getInfoTypeForString("PLAYERCOLOR_PAPAL"));
+	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
+	gDLL->getEngineIFace()->SetDirty(GlobePartialTexture_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
+	gDLL->getInterfaceIFace()->setDirty(Flag_DIRTY_BIT, true);
+	m_iPapalRomeDeadline = -1;
+	// Each incarnation is devout again, even when founded in the modern world.
+	m_iPapalDevotionFadeStart = getCurrentEra() >= GC.getInfoTypeForString("ERA_MODERN") ? getGameTurn() : -1;
+	m_bPapalCivicOverride = true;
+	CvPlayer& kPope = GET_PLAYER(ePope);
+	if (!bBecome)
+	{
+		kPope.setAlive(true);
+		for (int t = 0; t < GC.getNumTechInfos(); ++t)
+			if (GET_TEAM(GET_PLAYER(eOwner).getTeam()).isHasTech((TechTypes)t)) GET_TEAM(kPope.getTeam()).setHasTech((TechTypes)t, true, ePope, false, false);
+	}
+	const char* civics[] = { "CIVIC_MONARCHY", "CIVIC_THEOCRATIC_LEGITIMACY", "CIVIC_GOD_STATE" };
+	for (int c = bBecome ? 1 : 0; c < 3; ++c)
+	{
+		CivicTypes eCivic = (CivicTypes)GC.getInfoTypeForString(civics[c]);
+		kPope.setCivics((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType(), eCivic);
+	}
+	kPope.setLastStateReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
+	if (!bBecome) kPope.acquireCity(pRome, false, true, true);
+	pRome = getPapalRome();
+	kPope.processCivNames();
+	pRome->setOccupationTimer(0);
+	if (!bBecome)
+	{
+		pRome->setCultureTimes100(ePope, std::max(10000, pRome->getCultureTimes100(ePope)), false, true);
+		pRome->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_PALACE"), 1);
+		kPope.setCapitalCity(pRome);
+		UnitTypes eGuard = pRome->AI_bestUnitAI(UNITAI_CITY_DEFENSE);
+		if (eGuard == NO_UNIT) eGuard = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
+		for (int i = 0; i < 2; ++i) { CvUnit* pGuard = kPope.initUnit(eGuard, 60, 44, UNITAI_CITY_DEFENSE); if (pGuard) pGuard->finishMoves(); }
+		if (isCrusadeParticipant(eOwner)) joinCrusadeCoalition(ePope);
+	}
+	setVoteSourceReligion((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
+	pRome->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), 1);
+	m_bPapalCivicOverride = false;
+	refreshPapalPalaceEffects();
+	m_iPapalFirstCouncilTurn = std::max(getGameTurn() + 3, getStartTurn() + 10);
+	setVoteTimer((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), 0);
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("papacy_founded", ePope, eOwner, bBecome, pRome->getOwnerINLINE(), isCouncilActive());
+#endif
+	m_papalDecisions.clear();
+	announcePapalCouncil("ESTABLISHED");
+}
+
+namespace
+{
+// Geographic fronts on RFC's 124 x 68 world map; earlier regions take precedence.
+// Name, west, south, east, north. Coordinates include both endpoints.
+struct CrusadeRegion { const char* name; int west, south, east, north; };
+const CrusadeRegion crusadeRegions[] = {
+	{ "TXT_KEY_AP_REGION_IBERIA", 43, 40, 53, 49 },
+	{ "TXT_KEY_AP_REGION_WEST_EUROPE", 43, 50, 61, 58 },
+	{ "TXT_KEY_AP_REGION_NORTH_EUROPE", 43, 59, 81, 67 },
+	{ "TXT_KEY_AP_REGION_EAST_EUROPE", 62, 50, 81, 58 },
+	{ "TXT_KEY_AP_REGION_ITALY_BALKANS", 54, 40, 70, 49 },
+	{ "TXT_KEY_AP_REGION_ANATOLIA", 71, 44, 81, 49 },
+	{ "TXT_KEY_AP_REGION_LEVANT", 71, 36, 77, 43 },
+	{ "TXT_KEY_AP_REGION_EGYPT", 62, 28, 70, 39 },
+	{ "TXT_KEY_AP_REGION_MAGHREB", 43, 28, 61, 39 },
+	{ "TXT_KEY_AP_REGION_ARABIA", 71, 24, 81, 35 },
+	{ "TXT_KEY_AP_REGION_PERSIA", 78, 36, 93, 43 },
+	{ "TXT_KEY_AP_REGION_CENTRAL_ASIA", 82, 44, 93, 67 },
+	{ "TXT_KEY_AP_REGION_INDIA", 82, 20, 97, 35 },
+	{ "TXT_KEY_AP_REGION_EAST_ASIA", 94, 36, 123, 67 },
+	{ "TXT_KEY_AP_REGION_SOUTHEAST_ASIA", 98, 20, 123, 35 },
+	{ "TXT_KEY_AP_REGION_AFRICA", 43, 0, 81, 27 },
+	{ "TXT_KEY_AP_REGION_NORTH_AMERICA", 0, 36, 42, 67 },
+	{ "TXT_KEY_AP_REGION_SOUTH_AMERICA", 0, 0, 42, 35 },
+	{ "TXT_KEY_AP_REGION_OCEANIA", 82, 0, 123, 19 }
+};
+
+bool isChristianTeam(TeamTypes eTeam)
+{
+	for (int i = 0; i < MAX_PLAYERS; ++i)
+		if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() == eTeam &&
+			GET_PLAYER((PlayerTypes)i).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) return true;
+	return false;
+}
+
+int crusadeDuration(const char* key)
+{
+	return std::max(1, GC.getDefineINT(key) * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent() / 100);
+}
+}
+
+int CvGame::getCrusadeRegionCount() const { return sizeof(crusadeRegions) / sizeof(crusadeRegions[0]); }
+
+int CvGame::getCrusadeRegionAt(const CvPlot* pPlot) const
+{
+	if (!pPlot) return -1;
+	for (int i = 0; i < getCrusadeRegionCount(); ++i)
+	{
+		const CrusadeRegion& r = crusadeRegions[i];
+		if (pPlot->getX_INLINE() >= r.west && pPlot->getX_INLINE() <= r.east && pPlot->getY_INLINE() >= r.south && pPlot->getY_INLINE() <= r.north) return i;
+	}
+	return -1;
+}
+
+CvWString CvGame::getCrusadeRegionName(int iRegion) const
+{
+	return iRegion >= 0 && iRegion < getCrusadeRegionCount() ? gDLL->getText(crusadeRegions[iRegion].name) : CvWString();
+}
+
+bool CvGame::getCrusadeTargets(int iRegion, bool* abTargets) const
+{
+	for (int t = 0; t < MAX_TEAMS; ++t) abTargets[t] = false;
+	if (iRegion < 0 || iRegion >= getCrusadeRegionCount()) return false;
+	bool bFrontier = false;
+	for (int i = 0; i < MAX_PLAYERS; ++i)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+		if (!kPlayer.isAlive() || kPlayer.isBarbarian() || isChristianTeam(kPlayer.getTeam())) continue;
+		int iLoop;
+		for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity; pCity = kPlayer.nextCity(&iLoop))
+			if (getCrusadeRegionAt(pCity->plot()) == iRegion) { abTargets[kPlayer.getTeam()] = true; break; }
+	}
+	// The frontier must be a real land border in this region, not merely nearby capitals.
+	const CrusadeRegion& r = crusadeRegions[iRegion];
+	for (int x = r.west; x <= r.east && !bFrontier; ++x)
+		for (int y = r.south; y <= r.north && !bFrontier; ++y)
+		{
+			CvPlot* pPlot = GC.getMapINLINE().plot(x, y);
+			if (!pPlot || getCrusadeRegionAt(pPlot) != iRegion || pPlot->isWater() || !pPlot->isOwned() || !abTargets[pPlot->getTeam()]) continue;
+			for (int d = 0; d < NUM_CARDINALDIRECTION_TYPES; ++d)
+			{
+				CvPlot* pNext = plotCardinalDirection(x, y, (CardinalDirectionTypes)d);
+				if (pNext && !pNext->isWater() && pNext->isOwned() && isChristianTeam(pNext->getTeam())) bFrontier = true;
+			}
+		}
+	// Team-wide war necessarily includes target masters, vassals and defensive allies.
+	for (int pass = 0; pass < MAX_TEAMS; ++pass)
+	{
+		bool bChanged = false;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (abTargets[t])
+				for (int v = 0; v < MAX_TEAMS; ++v)
+					if (GET_TEAM((TeamTypes)v).isAlive() && (GET_TEAM((TeamTypes)t).isVassal((TeamTypes)v) || GET_TEAM((TeamTypes)v).isVassal((TeamTypes)t) || GET_TEAM((TeamTypes)t).isDefensivePact((TeamTypes)v)))
+					{
+						if (isChristianTeam((TeamTypes)v)) return false;
+						if (!abTargets[v]) { abTargets[v] = true; bChanged = true; }
+					}
+		if (!bChanged) break;
+	}
+	return bFrontier;
+}
+
+bool CvGame::canStartCrusade(int iRegion) const
+{
+	if (m_iCrusadeRegion >= 0 || isOption(GAMEOPTION_ALWAYS_PEACE) || isOption(GAMEOPTION_ALWAYS_WAR) || isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE)) return false;
+	bool abTargets[MAX_TEAMS];
+	if (!getCrusadeTargets(iRegion, abTargets)) return false;
+	VoteSourceTypes eSource = (VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE");
+	for (int p = 0; p < MAX_TEAMS; ++p)
+	{
+		CvTeam& kTeam = GET_TEAM((TeamTypes)p);
+		if (!kTeam.isAlive() || !kTeam.isVotingMember(eSource)) continue;
+		TeamTypes eCommander = (TeamTypes)p;
+		for (int m = 0; m < MAX_TEAMS; ++m) if (kTeam.isVassal((TeamTypes)m)) eCommander = (TeamTypes)m;
+		if (!GET_TEAM(eCommander).isVotingMember(eSource)) return false;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+		{
+			if (!abTargets[t]) continue;
+			CvTeam& kEnemy = GET_TEAM((TeamTypes)t);
+			if (kTeam.isArabianJihadWar((TeamTypes)t) || kTeam.isPermanentWarPeace((TeamTypes)t) || kEnemy.isPermanentWarPeace((TeamTypes)p) || kTeam.isDefensivePact((TeamTypes)t)) return false;
+			// Avoid a target's defensive alliance turning council members against one another.
+			if (kEnemy.isDefensivePact(eCommander)) return false;
+			if (!GET_TEAM(eCommander).isAtWar((TeamTypes)t) &&
+				(!GET_TEAM(eCommander).canChangeWarPeace((TeamTypes)t, true) || GET_TEAM(eCommander).isForcePeace((TeamTypes)t))) return false;
+		}
+	}
+	return true;
+}
+
+bool CvGame::isCrusadeWar(TeamTypes eFirst, TeamTypes eSecond) const
+{
+	if (m_iCrusadeRegion < 0 || eFirst < 0 || eSecond < 0 || eFirst >= MAX_TEAMS || eSecond >= MAX_TEAMS) return false;
+	return (m_abCrusadeParticipants[eFirst] && m_abCrusadeTargets[eSecond]) || (m_abCrusadeParticipants[eSecond] && m_abCrusadeTargets[eFirst]);
+}
+
+bool CvGame::hasCrusadeAccess(TeamTypes eFirst, TeamTypes eSecond) const
+{
+	return m_iCrusadeRegion >= 0 && eFirst >= 0 && eSecond >= 0 && eFirst < MAX_TEAMS && eSecond < MAX_TEAMS && m_abCrusadeParticipants[eFirst] && m_abCrusadeParticipants[eSecond];
+}
+
+bool CvGame::isCrusadeParticipant(PlayerTypes ePlayer) const
+{
+	return ePlayer >= 0 && ePlayer < MAX_PLAYERS && GET_PLAYER(ePlayer).isAlive() && hasCrusadeAccess(GET_PLAYER(ePlayer).getTeam(), GET_PLAYER(ePlayer).getTeam());
+}
+
+int CvGame::getCrusadeTurnsLeft() const { return m_iCrusadeRegion < 0 ? 0 : std::max(0, m_iCrusadeEndTurn - GC.getInitCore().getGameTurn()); }
+CvWString CvGame::getActiveCrusadeName() const { return getCrusadeRegionName(m_iCrusadeRegion); }
+int CvGame::getCrusadePlunder(int iPlayer) const
+{
+	if (iPlayer >= 0 && iPlayer < MAX_PLAYERS) return m_aiCrusadePlunder[iPlayer];
+	int iTotal = 0; for (int i = 0; i < MAX_PLAYERS; ++i) iTotal += m_aiCrusadePlunder[i]; return iTotal;
+}
+
+#if ARFC_ENABLE_REPORTING
+void CvGame::reportApostolicState()
+{
+	if (!isObserverAutoPlay() || isGameMultiPlayer() || g_observerPerformance) return;
+	CvCity* pRome = getPapalRome();
+	ReligionTypes eChristian = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+	BuildingTypes ePalace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE");
+	int header[] = {1, m_iPapalPlayer, m_iPapalRefuser, m_iPapalRetryTurn, m_bPapalPalaceEffects,
+		pRome ? pRome->getOwnerINLINE() : -1, pRome ? pRome->isHasReligion(eChristian) : 0,
+		pRome ? canFoundPapacy(pRome->getOwnerINLINE()) : 0, pRome ? pRome->getNumRealBuilding(ePalace) : 0,
+		m_iCrusadeRegion, m_iCrusadeEndTurn, crusadeDuration("AP_CRUSADE_BASE_TURNS"), crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS")};
+	std::vector<int> players, teams, pairs, ballots;
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+		players.push_back(i); players.push_back(kPlayer.isAlive()); players.push_back(kPlayer.getTeam());
+		players.push_back(kPlayer.getStateReligion());
+		players.push_back(kPlayer.getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LEGAL")));
+		players.push_back(kPlayer.getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION")));
+		players.push_back(kPlayer.getGold()); players.push_back(m_aiCrusadePlunder[i]);
+		players.push_back(m_aiCrusadeRewards[i]); players.push_back(m_abCrusadeHolyStates[i]);
+		players.push_back(m_aiPapalRefusalPenalties[i]);
+		players.push_back(m_iPapalRefuser == NO_PLAYER ? 0 : GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser));
+		players.push_back(kPlayer.getNumCities());
+	}
+	for (int t = 0; t < MAX_TEAMS; ++t)
+	{
+		teams.push_back(t); teams.push_back(GET_TEAM((TeamTypes)t).isAlive());
+		teams.push_back(m_abCrusadeParticipants[t]); teams.push_back(m_abCrusadeTargets[t]);
+		if (m_iCrusadeRegion < 0 || !m_abCrusadeParticipants[t] || !GET_TEAM((TeamTypes)t).isAlive()) continue;
+		for (int u = 0; u < MAX_TEAMS; ++u)
+		{
+			if (t == u || (!m_abCrusadeParticipants[u] && !m_abCrusadeTargets[u]) || !GET_TEAM((TeamTypes)u).isAlive()) continue;
+			CvTeam& kTeam = GET_TEAM((TeamTypes)t);
+			pairs.push_back(t); pairs.push_back(u); pairs.push_back(kTeam.isAtWar((TeamTypes)u));
+			pairs.push_back(kTeam.canDeclareWar((TeamTypes)u)); pairs.push_back(kTeam.canChangeWarPeace((TeamTypes)u));
+			pairs.push_back(hasCrusadeAccess((TeamTypes)t, (TeamTypes)u));
+		}
+	}
+	int iLoop;
+	for (VoteTriggeredData* pVote = m_votesTriggered.beginIter(&iLoop); pVote; pVote = m_votesTriggered.nextIter(&iLoop))
+	{
+		if (!isApostolicCouncil(pVote->eVoteSource)) continue;
+		for (int v = 0; v < MAX_CIV_PLAYERS; ++v)
+		{
+			if (pVote->aiCouncilWeight[v] <= 0) continue;
+			ballots.push_back(pVote->getID()); ballots.push_back(pVote->kVoteOption.eVote);
+			ballots.push_back(pVote->iCouncilDeadline); ballots.push_back(v);
+			ballots.push_back(pVote->aiCouncilWeight[v]); ballots.push_back(pVote->aiCouncilDelivery[v]);
+			ballots.push_back(getPlayerVote((PlayerTypes)v, pVote->getID()));
+		}
+	}
+	CyArgsList args;
+	args.add(header, 13); args.add(&players[0], (int)players.size()); args.add(&teams[0], (int)teams.size());
+	args.add(pairs.empty() ? (const int*)NULL : &pairs[0], (int)pairs.size());
+	args.add(ballots.empty() ? (const int*)NULL : &ballots[0], (int)ballots.size());
+	if (!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordApostolicState", args.makeFunctionArgs()))
+		gDLL->logMsg("PythonErr.log", "Awakened RFC: apostolic state recording callback failed.", false, false);
+}
+#endif
+
+void CvGame::startCrusade(int iRegion)
+{
+	bool abTargets[MAX_TEAMS];
+	if (!canStartCrusade(iRegion) || !getCrusadeTargets(iRegion, abTargets)) return;
+	VoteSourceTypes eSource = (VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE");
+	for (int t = 0; t < MAX_TEAMS; ++t)
+	{
+		m_abCrusadeTargets[t] = abTargets[t];
+		m_abCrusadeParticipants[t] = GET_TEAM((TeamTypes)t).isAlive() && GET_TEAM((TeamTypes)t).isVotingMember(eSource);
+	}
+	for (int p = 0; p < MAX_TEAMS; ++p)
+		if (m_abCrusadeParticipants[p])
+			for (int v = 0; v < MAX_TEAMS; ++v)
+				if (GET_TEAM((TeamTypes)v).isAlive() && GET_TEAM((TeamTypes)v).isVassal((TeamTypes)p)) m_abCrusadeParticipants[v] = true;
+	for (int i = 0; i < MAX_PLAYERS; ++i) m_aiCrusadePlunder[i] = 0;
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i) m_aiCrusadeRewards[i] = GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() >= 0 && m_abCrusadeParticipants[GET_PLAYER((PlayerTypes)i).getTeam()] ? 0 : -1;
+	m_bCrusadePeaceOverride = true;
+	for (int p = 0; p < MAX_TEAMS; ++p)
+		if (m_abCrusadeParticipants[p])
+			for (int q = p + 1; q < MAX_TEAMS; ++q)
+				if (m_abCrusadeParticipants[q] && GET_TEAM((TeamTypes)p).isAtWar((TeamTypes)q)) GET_TEAM((TeamTypes)p).makePeace((TeamTypes)q);
+	m_bCrusadePeaceOverride = false;
+	m_iCrusadeRegion = iRegion;
+	m_iCrusadeEndTurn = getGameTurn() + crusadeDuration("AP_CRUSADE_BASE_TURNS");
+	for (int p = 0; p < MAX_TEAMS; ++p)
+		if (m_abCrusadeParticipants[p] && !GET_TEAM((TeamTypes)p).isAVassal())
+			for (int t = 0; t < MAX_TEAMS; ++t)
+				if (m_abCrusadeTargets[t] && !GET_TEAM((TeamTypes)p).isAtWar((TeamTypes)t))
+				{ GET_TEAM((TeamTypes)p).meet((TeamTypes)t, true); GET_TEAM((TeamTypes)p).declareWar((TeamTypes)t, false, WARPLAN_DOGPILE); }
+	GC.getMapINLINE().verifyUnitValidPlot();
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_started", -1, m_iCrusadeRegion, m_iCrusadeEndTurn, crusadeDuration("AP_CRUSADE_BASE_TURNS"), crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS"));
+#endif
+}
+
+bool CvGame::isCrusadeHolyState(PlayerTypes ePlayer) const
+{
+	return ePlayer >= 0 && ePlayer < MAX_PLAYERS && m_abCrusadeHolyStates[ePlayer];
+}
+
+void CvGame::prepareCrusadeState(PlayerTypes ePlayer, PlayerTypes eSponsor)
+{
+	CvPlayer& kPlayer = GET_PLAYER(ePlayer);
+	if (kPlayer.isAlive()) return;
+	if (ePlayer == CRUSADER_STATE && !kPlayer.isAlive())
+	{
+		// This slot never belongs to the ordinary, world-wide Independent players.
+		GC.getInitCore().setMinorNationCiv(ePlayer, true);
+		addPlayer(ePlayer, (LeaderHeadTypes)GC.getInfoTypeForString("LEADER_INDEPENDENT"), (CivilizationTypes)GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT"));
+	}
+	m_abCrusadeHolyStates[ePlayer] = true;
+	kPlayer.setAlive(true);
+	CvPlayer& kSponsor = GET_PLAYER(eSponsor);
+	for (int c = 0; c < GC.getNumCivicOptionInfos(); ++c) kPlayer.setCivics((CivicOptionTypes)c, kSponsor.getCivics((CivicOptionTypes)c));
+	const char* civics[] = { "CIVIC_MONARCHY", "CIVIC_THEOCRATIC_LEGITIMACY", "CIVIC_GOD_STATE" };
+	for (int c = 0; c < 3; ++c)
+	{
+		CivicTypes eCivic = (CivicTypes)GC.getInfoTypeForString(civics[c]);
+		kPlayer.setCivics((CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType(), eCivic);
+	}
+	kPlayer.setLastStateReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
+	for (int t = 0; t < GC.getNumTechInfos(); ++t)
+		if (GET_TEAM(kSponsor.getTeam()).isHasTech((TechTypes)t))
+			GET_TEAM(kPlayer.getTeam()).setHasTech((TechTypes)t, true, ePlayer, false, false);
+	kPlayer.processCivNames();
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_state_founded", ePlayer, eSponsor, kPlayer.getStateReligion(), kPlayer.getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LEGAL")), kPlayer.getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION")));
+#endif
+	CyArgsList args;
+	args.add((int)ePlayer);
+	gDLL->getPythonIFace()->callFunction(PYScreensModule, "onCrusadeStateFounded", args.makeFunctionArgs());
+}
+
+void CvGame::joinCrusadeCoalition(PlayerTypes ePlayer)
+{
+	TeamTypes eTeam = GET_PLAYER(ePlayer).getTeam();
+	if (m_iCrusadeRegion < 0 || m_abCrusadeParticipants[eTeam]) return;
+	// A restored target joins the other side as a new Christian kingdom.
+	m_abCrusadeTargets[eTeam] = false;
+	for (int t = 0; t < MAX_TEAMS; ++t)
+		if (GET_TEAM(eTeam).isVassal((TeamTypes)t)) GET_TEAM(eTeam).setVassal((TeamTypes)t, false, false);
+	m_bCrusadePeaceOverride = true;
+	for (int t = 0; t < MAX_TEAMS; ++t)
+		if ((m_abCrusadeParticipants[t] || (isCrusadeHolyState(ePlayer) && GET_PLAYER(ePlayer).getNumCities() == 0)) && GET_TEAM(eTeam).isAtWar((TeamTypes)t)) GET_TEAM(eTeam).makePeace((TeamTypes)t);
+	m_bCrusadePeaceOverride = false;
+	m_abCrusadeParticipants[eTeam] = true;
+	for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
+		if (GET_PLAYER((PlayerTypes)p).getTeam() == eTeam && m_aiCrusadeRewards[p] < 0) m_aiCrusadeRewards[p] = 0;
+	for (int t = 0; t < MAX_TEAMS; ++t)
+		if (m_abCrusadeTargets[t] && GET_TEAM((TeamTypes)t).isAlive() && !GET_TEAM(eTeam).isAtWar((TeamTypes)t))
+		{
+			// Joining a binding council war overrides the new recipient's former truce.
+			GET_TEAM(eTeam).meet((TeamTypes)t, true);
+			GET_TEAM(eTeam).setForcePeace((TeamTypes)t, false);
+			GET_TEAM((TeamTypes)t).setForcePeace(eTeam, false);
+			GET_TEAM(eTeam).declareWar((TeamTypes)t, false, WARPLAN_DOGPILE);
+		}
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_joined", ePlayer, eTeam, m_iCrusadeRegion);
+#endif
+}
+
+bool CvGame::isCrusadeConquest(PlayerTypes eConqueror, const CvCity& kCity) const
+{
+	return isCrusadeParticipant(eConqueror) && isCrusadeWar(GET_PLAYER(eConqueror).getTeam(), kCity.getTeam()) && getCrusadeRegionAt(kCity.plot()) == m_iCrusadeRegion;
+}
+
+PlayerTypes CvGame::getCrusadeCityRecipient(PlayerTypes eConqueror, const CvCity& kCity)
+{
+	if (!isCrusadeConquest(eConqueror, kCity)) return NO_PLAYER;
+	PlayerTypes eRecipient = NO_PLAYER;
+
+#if ARFC_ENABLE_REPORTING
+	int iClaimPriority = 1;
+#endif
+	// Ask the same Python tables that author the historical birth/flip zones.
+	CyArgsList args;
+	args.add(kCity.getX_INLINE()); args.add(kCity.getY_INLINE()); args.add((int)eConqueror);
+	long iClaimant = -1;
+	gDLL->getPythonIFace()->callFunction(PYScreensModule, "getCrusadeFlipRecipient", args.makeFunctionArgs(), &iClaimant);
+	if (iClaimant >= 0 && iClaimant < NUM_MAJOR_PLAYERS && iClaimant != eConqueror)
+	{
+		CvPlayer& kClaimant = GET_PLAYER((PlayerTypes)iClaimant);
+		if ((!kClaimant.isAlive() && !kClaimant.isHuman() && kClaimant.getNumCities() == 0 && kClaimant.getNumUnits() == 0) ||
+			(kClaimant.isAlive() && kClaimant.getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) eRecipient = (PlayerTypes)iClaimant;
+	}
+	if (eRecipient == NO_PLAYER)
+	{
+
+#if ARFC_ENABLE_REPORTING
+		iClaimPriority = 2;
+#endif
+		// Eligible neighbors share a land frontier with the defeated nation in this region.
+		bool abNeighbors[MAX_TEAMS]; for (int t = 0; t < MAX_TEAMS; ++t) abNeighbors[t] = false;
+		for (int p = 0; p < GC.getMapINLINE().numPlotsINLINE(); ++p)
+		{
+			CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(p);
+			if (getCrusadeRegionAt(pPlot) != m_iCrusadeRegion || pPlot->isWater() || pPlot->getTeam() != kCity.getTeam()) continue;
+			for (int d = 0; d < NUM_CARDINALDIRECTION_TYPES; ++d)
+			{
+				CvPlot* pNext = plotCardinalDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), (CardinalDirectionTypes)d);
+				if (pNext && pNext->isOwned() && !pNext->isWater() && isChristianTeam(pNext->getTeam())) abNeighbors[pNext->getTeam()] = true;
+			}
+		}
+		int iBestDistance = MAX_INT;
+		for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
+		{
+			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)p);
+			if (p == eConqueror || !kPlayer.isAlive() || !abNeighbors[kPlayer.getTeam()] || kPlayer.getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) continue;
+			int iLoop;
+			for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity; pCity = kPlayer.nextCity(&iLoop))
+			{
+				int iDistance = plotDistance(kCity.getX_INLINE(), kCity.getY_INLINE(), pCity->getX_INLINE(), pCity->getY_INLINE());
+				if (iDistance < iBestDistance) { iBestDistance = iDistance; eRecipient = (PlayerTypes)p; }
+			}
+		}
+	}
+	if (eRecipient == NO_PLAYER)
+	{
+		eRecipient = (PlayerTypes)CRUSADER_STATE;
+#if ARFC_ENABLE_REPORTING
+		iClaimPriority = 3;
+#endif
+	}
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_settlement_selected", eConqueror, eRecipient, kCity.getOwnerINLINE(), kCity.getX_INLINE(), kCity.getY_INLINE(), iClaimPriority, !GET_PLAYER(eRecipient).isAlive());
+#endif
+	prepareCrusadeState(eRecipient, eConqueror);
+	joinCrusadeCoalition(eRecipient);
+	return eRecipient;
+}
+
+void CvGame::recordCrusadeActivity(TeamTypes eFirst, TeamTypes eSecond, const CvPlot* pPlot)
+{
+	if (!isCrusadeWar(eFirst, eSecond) || !GET_TEAM(eFirst).isAtWar(eSecond) || getCrusadeRegionAt(pPlot) != m_iCrusadeRegion) return;
+
+#if ARFC_ENABLE_REPORTING
+	const int iPreviousEnd = m_iCrusadeEndTurn;
+#endif
+	m_iCrusadeEndTurn = std::max(m_iCrusadeEndTurn, getGameTurn() + crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS"));
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_activity", -1, eFirst, eSecond, pPlot->getX_INLINE(), pPlot->getY_INLINE(), iPreviousEnd, m_iCrusadeEndTurn, crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS"));
+#endif
+}
+
+void CvGame::recordCrusadePlunder(PlayerTypes ePlayer, TeamTypes eEnemy, const CvPlot* pPlot, int iGold)
+{
+	if (isCrusadeParticipant(ePlayer) && isCrusadeWar(GET_PLAYER(ePlayer).getTeam(), eEnemy) && getCrusadeRegionAt(pPlot) == m_iCrusadeRegion)
+	{
+		m_aiCrusadePlunder[ePlayer] += std::max(0, iGold);
+#if ARFC_ENABLE_REPORTING
+		reportApostolicMechanic("crusade_plunder", ePlayer, std::max(0, iGold), m_aiCrusadePlunder[ePlayer], eEnemy, pPlot->getX_INLINE(), pPlot->getY_INLINE());
+#endif
+	}
+}
+
+void CvGame::doCrusade()
+{
+	if (m_iCrusadeRegion < 0) return;
+	bool bEnemyAlive = false, bParticipantAlive = false;
+	for (int t = 0; t < MAX_TEAMS; ++t)
+	{
+		if (GET_TEAM((TeamTypes)t).isAlive() && m_abCrusadeTargets[t]) bEnemyAlive = true;
+		if (GET_TEAM((TeamTypes)t).isAlive() && m_abCrusadeParticipants[t]) bParticipantAlive = true;
+	}
+	if (getGameTurn() < m_iCrusadeEndTurn && bEnemyAlive && bParticipantAlive) return;
+	CvWString szRegion = getActiveCrusadeName();
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_ended", -1, m_iCrusadeRegion, m_iCrusadeEndTurn, getGameTurn() >= m_iCrusadeEndTurn ? 0 : (!bEnemyAlive ? 1 : 2));
+#endif
+	// Release every pair simultaneously before calling recursive vassal peace logic.
+	m_iCrusadeRegion = -1;
+	m_bCrusadePeaceOverride = true;
+	for (int p = 0; p < MAX_TEAMS; ++p)
+		if (m_abCrusadeParticipants[p])
+			for (int t = 0; t < MAX_TEAMS; ++t)
+				if (m_abCrusadeTargets[t] && GET_TEAM((TeamTypes)p).isAtWar((TeamTypes)t)) GET_TEAM((TeamTypes)p).makePeace((TeamTypes)t);
+	m_bCrusadePeaceOverride = false;
+	GC.getMapINLINE().verifyUnitValidPlot();
+	for (int i = 0; i < MAX_PLAYERS; ++i)
+		if (GET_PLAYER((PlayerTypes)i).isAlive() && m_abCrusadeParticipants[GET_PLAYER((PlayerTypes)i).getTeam()])
+			gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_AP_CRUSADE_ENDED", szRegion.GetCString(), m_aiCrusadePlunder[i]), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"));
+}
+
+bool CvGame::canCouncilPropose(const VoteSelectionSubData& kData) const
+{
+	if (!isCouncilActive()) return false;
+	VoteSourceTypes eSource = (VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE");
+	CvVoteInfo& kVote = GC.getVoteInfo(kData.eVote);
+	if (!kVote.isVoteSourceType(eSource)) return false;
+	int iMembers = 0;
+	bool bUseful = false;
+	bool bRelief = kData.eVote == GC.getInfoTypeForString("VOTE_AP_RELIEF");
+	bool bCollege = kData.eVote == GC.getInfoTypeForString("VOTE_AP_COLLEGE");
+	bool bReform = kData.eVote == GC.getInfoTypeForString("VOTE_AP_RELIGIOUS_REFORM");
+	TeamTypes eTarget = kData.ePlayer == NO_PLAYER ? NO_TEAM : GET_PLAYER(kData.ePlayer).getTeam();
+	if (kVote.isForceWar())
+	{
+		int iVoters = 0;
+		for (int t = 0; t < MAX_TEAMS; ++t) if (GET_TEAM((TeamTypes)t).isAlive() && GET_TEAM((TeamTypes)t).isVotingMember(eSource)) ++iVoters;
+		return iVoters >= 3 && canStartCrusade(kData.iCityId);
+	}
+	if (kVote.isForcePeace() && (eTarget == NO_TEAM || !GET_TEAM(eTarget).isVotingMember(eSource))) return false;
+	for (int i = 0; i < MAX_CIV_TEAMS; ++i)
+	{
+		CvTeam& kTeam = GET_TEAM((TeamTypes)i);
+		if (!kTeam.isAlive() || !kTeam.isVotingMember(eSource)) continue;
+		++iMembers;
+		for (int j = i + 1; j < MAX_CIV_TEAMS; ++j)
+		{
+			CvTeam& kOther = GET_TEAM((TeamTypes)j);
+			if (!kOther.isAlive() || !kOther.isVotingMember(eSource)) continue;
+			if (kVote.isOpenBorders() || kVote.isDefensivePact())
+			{
+				if (kTeam.isAtWar((TeamTypes)j)) return false;
+				if (kVote.isOpenBorders() && !kTeam.isOpenBorders((TeamTypes)j))
+				{
+					bUseful = true;
+				}
+				if (kVote.isDefensivePact() && !kTeam.isDefensivePact((TeamTypes)j))
+				{
+					if (kTeam.isAVassal() || kOther.isAVassal() || !kTeam.canSignDefensivePact((TeamTypes)j)) return false;
+					bUseful = true;
+				}
+			}
+		}
+		if (kVote.isForcePeace() && i != eTarget && kTeam.isAtWar(eTarget))
+		{
+			if (!kTeam.canChangeWarPeace(eTarget)) return false;
+			bUseful = true;
+		}
+	}
+	if (bReform)
+	{
+		for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
+			if (GET_PLAYER((PlayerTypes)p).isVotingMember(eSource) &&
+				(!GET_PLAYER((PlayerTypes)p).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY")) || !GET_PLAYER((PlayerTypes)p).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")))) bUseful = true;
+	}
+	if (bRelief || bCollege)
+	{
+		int iMinGold = MAX_INT, iMaxGold = 0;
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+		{
+			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+			if (!kPlayer.isVotingMember(eSource)) continue;
+			iMinGold = std::min(iMinGold, kPlayer.getGold());
+			iMaxGold = std::max(iMaxGold, kPlayer.getGold());
+			if (bCollege)
+			{
+				if (kPlayer.getGold() < 50) return false;
+				TechTypes eTech = kPlayer.getCurrentResearch();
+				if (eTech != NO_TECH)
+					for (int j = 0; j < MAX_CIV_PLAYERS; ++j)
+						if (GET_PLAYER((PlayerTypes)j).isVotingMember(eSource) && GET_TEAM(GET_PLAYER((PlayerTypes)j).getTeam()).isHasTech(eTech)) bUseful = true;
+			}
+		}
+		if (bRelief) bUseful = iMaxGold >= 100 && iMaxGold - iMinGold >= 100;
+	}
+	return iMembers >= 3 && bUseful;
+}
+
+CvWString CvGame::getCouncilProposalText(const VoteSelectionSubData& kData) const
+{
+	CvWString szText = GC.getVoteInfo(kData.eVote).getDescription();
+	if (GC.getVoteInfo(kData.eVote).isForceWar())
+	{
+		szText += L": " + getCrusadeRegionName(kData.iCityId);
+		bool abTargets[MAX_TEAMS]; getCrusadeTargets(kData.iCityId, abTargets);
+		szText += NEWLINE + gDLL->getText("TXT_KEY_AP_CRUSADE_TARGETS");
+		for (int t = 0; t < MAX_TEAMS; ++t) if (abTargets[t]) szText += L" " + CvWString(GET_TEAM((TeamTypes)t).getName()) + L";";
+	}
+	else if (kData.ePlayer != NO_PLAYER) szText += L": " + CvWString(GET_TEAM(GET_PLAYER(kData.ePlayer).getTeam()).getName());
+	if (!GC.getVoteInfo(kData.eVote).isForceWar())
+		szText += NEWLINE + gDLL->getText(
+		GC.getVoteInfo(kData.eVote).isForcePeace() ? "TXT_KEY_AP_TRUCE_EFFECT" :
+		GC.getVoteInfo(kData.eVote).isOpenBorders() ? "TXT_KEY_AP_PILGRIM_EFFECT" :
+		GC.getVoteInfo(kData.eVote).isDefensivePact() ? "TXT_KEY_AP_LEAGUE_EFFECT" :
+		kData.eVote == GC.getInfoTypeForString("VOTE_AP_RELIEF") ? "TXT_KEY_AP_RELIEF_EFFECT" : kData.eVote == GC.getInfoTypeForString("VOTE_AP_RELIGIOUS_REFORM") ? "TXT_KEY_AP_REFORM_EFFECT" : "TXT_KEY_AP_COLLEGE_EFFECT");
+	int iRule = GC.getVoteInfo(kData.eVote).getPopulationThreshold();
+	szText += NEWLINE + gDLL->getText(iRule == 67 ? "TXT_KEY_AP_TWO_THIRDS" : iRule == 0 ? "TXT_KEY_AP_MORE_YES" : "TXT_KEY_AP_MAJORITY");
+	return szText;
+}
+
+int CvGame::getCouncilVoteId() const
+{
+	if (!isCouncilActive()) return -1;
+	int iLoop;
+	for (VoteTriggeredData* pData = m_votesTriggered.beginIter(&iLoop); pData; pData = m_votesTriggered.nextIter(&iLoop))
+		if (isApostolicCouncil(pData->eVoteSource)) return pData->getID();
+	return -1;
+}
+
+int CvGame::getCouncilTally(int iVoteId, int iCategory, bool bNations) const
+{
+	VoteTriggeredData* pData = getVoteTriggered(iVoteId);
+	if (!pData || !isApostolicCouncil(pData->eVoteSource)) return 0;
+	int iTotal = 0;
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		if (pData->aiCouncilWeight[i] <= 0) continue;
+		PlayerVoteTypes eVote = getPlayerVote((PlayerTypes)i, iVoteId);
+		int iBucket = eVote == PLAYER_VOTE_YES ? 0 : eVote == PLAYER_VOTE_NO ? 2 : eVote == PLAYER_VOTE_ABSTAIN ? 1 : 3;
+		if (iCategory == 4 || iCategory == iBucket) iTotal += bNations ? 1 : pData->aiCouncilWeight[i];
+	}
+	return iTotal;
+}
+
+int CvGame::getCouncilTurnsLeft(int iVoteId) const
+{
+	VoteTriggeredData* pData = getVoteTriggered(iVoteId);
+	return pData ? std::max(0, pData->iCouncilDeadline - GC.getInitCore().getGameTurn()) : 0;
+}
+
+CvWString CvGame::getCouncilVoteText(int iVoteId) const
+{
+	VoteTriggeredData* pData = getVoteTriggered(iVoteId);
+	return pData ? pData->kVoteOption.szText : CvWString();
+}
+
+void CvGame::doCouncilBallot(VoteTriggeredData& kData)
+{
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		if (kData.aiCouncilWeight[i] <= 0) continue;
+		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+		if (!kPlayer.isVotingMember(kData.eVoteSource) || getGameTurn() >= kData.iCouncilDeadline)
+		{
+			if (getPlayerVote((PlayerTypes)i, kData.getID()) == NO_PLAYER_VOTE)
+				setPlayerVote((PlayerTypes)i, kData.getID(), PLAYER_VOTE_ABSTAIN);
+			kData.aiCouncilDelivery[i] = -1;
+			continue;
+		}
+		if (kData.aiCouncilDelivery[i] < 0 || getGameTurn() < kData.aiCouncilDelivery[i]) continue;
+		kData.aiCouncilDelivery[i] = -1;
+#if ARFC_ENABLE_REPORTING
+		reportApostolicMechanic("council_delivered", i, kData.getID(), kData.aiCouncilWeight[i], kData.iCouncilDeadline);
+#endif
+		if (kPlayer.isHuman())
+		{
+			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_DIPLOVOTE);
+			if (pInfo) { pInfo->setData1(kData.getID()); gDLL->getInterfaceIFace()->addPopup(pInfo, (PlayerTypes)i); }
+		}
+		else castVote((PlayerTypes)i, kData.getID(), kPlayer.AI_diploVote(kData.kVoteOption, kData.eVoteSource, false));
+	}
+}
+
+void CvGame::processCouncilResolution(const VoteTriggeredData& kData)
+{
+
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("council_resolution_applied", -1, kData.getID(), kData.kVoteOption.eVote);
+#endif
+	CvVoteInfo& kVote = GC.getVoteInfo(kData.kVoteOption.eVote);
+	TeamTypes eTarget = kData.kVoteOption.ePlayer == NO_PLAYER ? NO_TEAM : GET_PLAYER(kData.kVoteOption.ePlayer).getTeam();
+	if (kVote.isForceWar()) { startCrusade(kData.kVoteOption.iCityId); return; }
+	if (kData.kVoteOption.eVote == GC.getInfoTypeForString("VOTE_AP_RELIGIOUS_REFORM"))
+	{
+		m_bPapalCivicOverride = true;
+		for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
+		{
+			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)p);
+			if (!kPlayer.isVotingMember(kData.eVoteSource)) continue;
+			CivicTypes eTheocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY");
+			CivicTypes eHolyState = (CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE");
+			kPlayer.setCivics((CivicOptionTypes)GC.getCivicInfo(eTheocracy).getCivicOptionType(), eTheocracy);
+			kPlayer.setCivics((CivicOptionTypes)GC.getCivicInfo(eHolyState).getCivicOptionType(), eHolyState);
+#if ARFC_ENABLE_REPORTING
+			reportApostolicMechanic("council_reformed", p, kData.getID(), eTheocracy, eHolyState, kPlayer.getCivics((CivicOptionTypes)GC.getCivicInfo(eTheocracy).getCivicOptionType()), kPlayer.getCivics((CivicOptionTypes)GC.getCivicInfo(eHolyState).getCivicOptionType()));
+#endif
+		}
+		m_bPapalCivicOverride = false;
+		return;
+	}
+	for (int i = 0; i < MAX_CIV_TEAMS; ++i)
+	{
+		CvTeam& kTeam = GET_TEAM((TeamTypes)i);
+		if (!kTeam.isVotingMember(kData.eVoteSource)) continue;
+		if (kVote.isForcePeace() && i != eTarget && kTeam.isAtWar(eTarget)) kTeam.makePeace(eTarget);
+		for (int j = i + 1; j < MAX_CIV_TEAMS; ++j)
+		{
+			if (!GET_TEAM((TeamTypes)j).isVotingMember(kData.eVoteSource)) continue;
+			bool bBorders = kVote.isOpenBorders() && !kTeam.isOpenBorders((TeamTypes)j);
+			bool bPact = kVote.isDefensivePact() && !kTeam.isDefensivePact((TeamTypes)j);
+			if (bBorders || bPact)
+			{
+				// The council authorizes these treaties before their ordinary technology unlock.
+				CLinkList<TradeData> ourList, theirList;
+				TradeData item;
+				setTradeItem(&item, bBorders ? TRADE_OPEN_BORDERS : TRADE_DEFENSIVE_PACT);
+				ourList.insertAtEnd(item); theirList.insertAtEnd(item);
+				implementDeal(kTeam.getLeaderID(), GET_TEAM((TeamTypes)j).getLeaderID(), &ourList, &theirList, true);
+				if (bBorders) { kTeam.setTradeEmbargo((TeamTypes)j, false); GET_TEAM((TeamTypes)j).setTradeEmbargo((TeamTypes)i, false); }
+			}
+		}
+	}
+	if (kData.kVoteOption.eVote == GC.getInfoTypeForString("VOTE_AP_RELIEF"))
+	{
+		PlayerTypes ePoor = NO_PLAYER;
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			if (GET_PLAYER((PlayerTypes)i).isVotingMember(kData.eVoteSource) && (ePoor == NO_PLAYER || GET_PLAYER((PlayerTypes)i).getGold() < GET_PLAYER(ePoor).getGold())) ePoor = (PlayerTypes)i;
+		int iFund = 0;
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			if (i != ePoor && GET_PLAYER((PlayerTypes)i).isVotingMember(kData.eVoteSource))
+			{
+				int iTithe = std::max(0, GET_PLAYER((PlayerTypes)i).getGold() / 10);
+				GET_PLAYER((PlayerTypes)i).changeGold(-iTithe); iFund += iTithe;
+#if ARFC_ENABLE_REPORTING
+				reportApostolicMechanic("council_tithe", i, kData.getID(), -iTithe, ePoor, GET_PLAYER((PlayerTypes)i).getGold());
+#endif
+			}
+		if (ePoor != NO_PLAYER)
+		{
+			GET_PLAYER(ePoor).changeGold(iFund);
+#if ARFC_ENABLE_REPORTING
+			reportApostolicMechanic("council_tithe", ePoor, kData.getID(), iFund, ePoor, GET_PLAYER(ePoor).getGold());
+#endif
+		}
+	}
+	if (kData.kVoteOption.eVote == GC.getInfoTypeForString("VOTE_AP_COLLEGE"))
+	{
+		// Determine all grants before completing any technology; no same-turn knowledge cascade.
+		TechTypes aeTech[MAX_CIV_TEAMS];
+		PlayerTypes aeScholar[MAX_CIV_TEAMS];
+		for (int t = 0; t < MAX_CIV_TEAMS; ++t) { aeTech[t] = NO_TECH; aeScholar[t] = NO_PLAYER; }
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+		{
+			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+			if (!kPlayer.isVotingMember(kData.eVoteSource)) continue;
+			kPlayer.changeGold(-50);
+#if ARFC_ENABLE_REPORTING
+			reportApostolicMechanic("council_college_paid", i, kData.getID(), 50, kPlayer.getGold());
+#endif
+			TechTypes eTech = kPlayer.getCurrentResearch();
+			if (eTech == NO_TECH || aeTech[kPlayer.getTeam()] != NO_TECH) continue;
+			for (int j = 0; j < MAX_CIV_PLAYERS; ++j)
+				if (GET_PLAYER((PlayerTypes)j).isVotingMember(kData.eVoteSource) && GET_TEAM(GET_PLAYER((PlayerTypes)j).getTeam()).isHasTech(eTech))
+				{ aeTech[kPlayer.getTeam()] = eTech; aeScholar[kPlayer.getTeam()] = (PlayerTypes)i; break; }
+		}
+		for (int t = 0; t < MAX_CIV_TEAMS; ++t)
+			if (aeTech[t] != NO_TECH)
+			{
+				int iGrant = std::max(1, GET_TEAM((TeamTypes)t).getResearchCost(aeTech[t]) / 5);
+				GET_TEAM((TeamTypes)t).changeResearchProgress(aeTech[t], iGrant, aeScholar[t]);
+#if ARFC_ENABLE_REPORTING
+				reportApostolicMechanic("council_college_grant", aeScholar[t], kData.getID(), aeTech[t], iGrant, t);
+#endif
+			}
+	}
+}
+
+void CvGame::rewardCrusadeCombat(CvUnit* pWinner, CvUnit* pLoser)
+{
+	PlayerTypes eWinner = pWinner->getOwnerINLINE();
+	CvPlot* pBattlePlot = pWinner->isAttacking() ? pLoser->plot() : pWinner->plot();
+	if (!isCrusadeParticipant(eWinner) || eWinner >= MAX_CIV_PLAYERS || !isCrusadeWar(pWinner->getTeam(), pLoser->getTeam()) ||
+		getCrusadeRegionAt(pBattlePlot) != m_iCrusadeRegion || m_aiCrusadeRewards[eWinner] < 0 || m_aiCrusadeRewards[eWinner] >= 10 ||
+		!GET_TEAM(pWinner->getTeam()).isAtWar(pLoser->getTeam()) || pWinner->getUnitInfo().isHiddenNationality() || pLoser->getUnitInfo().isHiddenNationality()) return;
+	++m_aiCrusadeRewards[eWinner];
+	GET_PLAYER(eWinner).changeGold(25);
+	recordCrusadePlunder(eWinner, pLoser->getTeam(), pBattlePlot, 25);
+#if ARFC_ENABLE_REPORTING
+	reportApostolicMechanic("crusade_reward", eWinner, 25, m_aiCrusadeRewards[eWinner], pBattlePlot->getX_INLINE(), pBattlePlot->getY_INLINE());
+#endif
+	gDLL->getInterfaceIFace()->addMessage(eWinner, false, GC.getEVENT_MESSAGE_TIME(), gDLL->getText("TXT_KEY_AP_CRUSADE_REWARD", 25, 10 - m_aiCrusadeRewards[eWinner]), NULL, MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"));
+}
+
 VoteSelectionData* CvGame::addVoteSelection(VoteSourceTypes eVoteSource)
 {
 	VoteSelectionData* pData = ((VoteSelectionData*)(m_voteSelections.add()));
@@ -9308,6 +10673,7 @@ VoteSelectionData* CvGame::addVoteSelection(VoteSourceTypes eVoteSource)
 	if  (NULL != pData)
 	{
 		pData->eVoteSource = eVoteSource;
+		pData->iCouncilOwner = isApostolicCouncil(eVoteSource) && isCouncilActive() ? getApostolicPalace()->getOwnerINLINE() : NO_PLAYER;
 
 		for (int iI = 0; iI < GC.getNumVoteInfos(); iI++)
 		{
@@ -9321,7 +10687,15 @@ VoteSelectionData* CvGame::addVoteSelection(VoteSourceTypes eVoteSource)
 					kData.ePlayer = NO_PLAYER;
 					kData.eOtherPlayer = NO_PLAYER;
 
-					if (GC.getVoteInfo(kData.eVote).isOpenBorders())
+					if (isApostolicCouncil(eVoteSource) && GC.getVoteInfo(kData.eVote).isForceWar())
+					{
+						for (int r = 0; r < getCrusadeRegionCount(); ++r)
+						{
+							kData.iCityId = r;
+							if (canCouncilPropose(kData)) pData->aVoteOptions.push_back(kData);
+						}
+					}
+					else if (GC.getVoteInfo(kData.eVote).isOpenBorders())
 					{
 						if (isValidVoteSelection(eVoteSource, kData))
 						{
@@ -9437,6 +10811,10 @@ VoteSelectionData* CvGame::addVoteSelection(VoteSourceTypes eVoteSource)
 			}
 		}
 
+		if (isApostolicCouncil(eVoteSource))
+			for (int iOption = 0; iOption < (int)pData->aVoteOptions.size(); ++iOption)
+				pData->aVoteOptions[iOption].szText = getCouncilProposalText(pData->aVoteOptions[iOption]);
+
 		if (0 == pData->aVoteOptions.size())
 		{
 			deleteVoteSelection(pData->getID());
@@ -9475,6 +10853,35 @@ VoteTriggeredData* CvGame::addVoteTriggered(VoteSourceTypes eVoteSource, const V
 	{
 		pData->eVoteSource = eVoteSource;
 		pData->kVoteOption = kOptionData;
+		pData->iCouncilDeadline = 0;
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+		{
+			pData->aiCouncilWeight[i] = 0;
+			pData->aiCouncilDelivery[i] = -1;
+		}
+		if (isApostolicCouncil(eVoteSource))
+		{
+			CvCity* pPalace = getApostolicPalace();
+			if (!isCouncilActive()) { deleteVoteTriggered(pData->getID()); return NULL; }
+			int iLastDelivery = getGameTurn();
+			for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			{
+				CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+				if (!kPlayer.isVotingMember(eVoteSource)) continue;
+				CvCity* pCapital = kPlayer.getCapitalCity();
+				int iDistance = pCapital ? plotDistance(pCapital->getX_INLINE(), pCapital->getY_INLINE(), pPalace->getX_INLINE(), pPalace->getY_INLINE()) : 0;
+				pData->aiCouncilWeight[i] = kPlayer.getVotes(kOptionData.eVote, eVoteSource);
+				pData->aiCouncilDelivery[i] = getGameTurn() + 1 + std::min(2, iDistance / 12);
+				iLastDelivery = std::max(iLastDelivery, pData->aiCouncilDelivery[i]);
+			}
+			pData->iCouncilDeadline = iLastDelivery + 3;
+#if ARFC_ENABLE_REPORTING
+			reportApostolicMechanic("council_opened", -1, pData->getID(), kOptionData.eVote, kOptionData.ePlayer, kOptionData.iCityId, pData->iCouncilDeadline, GC.getVoteInfo(kOptionData.eVote).getPopulationThreshold());
+			for (int v = 0; v < MAX_CIV_PLAYERS; ++v)
+				if (pData->aiCouncilWeight[v] > 0) reportApostolicMechanic("council_voter", v, pData->getID(), pData->aiCouncilWeight[v], pData->aiCouncilDelivery[v]);
+#endif
+			return pData;
+		}
 
 		for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
@@ -9503,6 +10910,10 @@ VoteTriggeredData* CvGame::addVoteTriggered(VoteSourceTypes eVoteSource, const V
 
 void CvGame::deleteVoteTriggered(int iID)
 {
+#if ARFC_ENABLE_REPORTING
+	VoteTriggeredData* pCouncil = getVoteTriggered(iID);
+	if (pCouncil && isApostolicCouncil(pCouncil->eVoteSource)) reportApostolicMechanic("council_closed", -1, iID, isCouncilActive());
+#endif
 	m_votesTriggered.removeAt(iID);
 }
 
@@ -9516,6 +10927,13 @@ void CvGame::doVoteResults()
 		VoteTypes eVote = pVoteTriggered->kVoteOption.eVote;
 		VoteSourceTypes eVoteSource = pVoteTriggered->eVoteSource;
 		bool bPassed = false;
+
+		if (isApostolicCouncil(eVoteSource))
+		{
+			if (!isCouncilActive()) { deleteVoteTriggered(pVoteTriggered->getID()); continue; }
+			doCouncilBallot(*pVoteTriggered);
+			if (getGameTurn() < pVoteTriggered->iCouncilDeadline) continue;
+		}
 
 		if (!canDoResolution(eVoteSource, pVoteTriggered->kVoteOption))
 		{
@@ -9536,7 +10954,7 @@ void CvGame::doVoteResults()
 			for (int iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
 			{
 				PlayerTypes ePlayer = (PlayerTypes) iJ;
-				if (GET_PLAYER(ePlayer).isVotingMember(eVoteSource))
+				if (!isApostolicCouncil(eVoteSource) && GET_PLAYER(ePlayer).isVotingMember(eVoteSource))
 				{
 					if (getPlayerVote(ePlayer, pVoteTriggered->getID()) == NO_PLAYER_VOTE)
 					{
@@ -9611,13 +11029,15 @@ void CvGame::doVoteResults()
 			else
 			{
 				bPassed = countVote(*pVoteTriggered, PLAYER_VOTE_YES) >= getVoteRequired(eVote, eVoteSource);
+				if (isApostolicCouncil(eVoteSource) && GC.getVoteInfo(eVote).getPopulationThreshold() == 0)
+					bPassed = countVote(*pVoteTriggered, PLAYER_VOTE_YES) > countVote(*pVoteTriggered, PLAYER_VOTE_NO);
 
 				// Defying resolution
 				if (bPassed)
 				{
 					for (int iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
 					{
-						if (getPlayerVote((PlayerTypes)iJ, pVoteTriggered->getID()) == PLAYER_VOTE_NEVER)
+						if (!isApostolicCouncil(eVoteSource) && getPlayerVote((PlayerTypes)iJ, pVoteTriggered->getID()) == PLAYER_VOTE_NEVER)
 						{
 							bPassed = false;
 
@@ -9640,12 +11060,25 @@ void CvGame::doVoteResults()
 					}
 				}
 
+				if (isApostolicCouncil(eVoteSource))
+				{
+					const int iTotal = std::max(1, getCouncilTally(pVoteTriggered->getID(), 4, false));
+					const CvWString szYes = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 0, false) + iTotal / 2) / iTotal);
+					const CvWString szNo = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 2, false) + iTotal / 2) / iTotal);
+					const CvWString szAbstain = CvWString::format(L"%d%%", (100 * getCouncilTally(pVoteTriggered->getID(), 1, false) + iTotal / 2) / iTotal);
+					szBuffer = gDLL->getText(bPassed ? "TXT_KEY_AP_RESULT_PASS" : "TXT_KEY_AP_RESULT_FAIL", szYes.GetCString(), szNo.GetCString(), szAbstain.GetCString());
+					// Keep the proposal title/target, without repeating its rules.
+					szBuffer += NEWLINE + pVoteTriggered->kVoteOption.szText.substr(0, pVoteTriggered->kVoteOption.szText.find(L'\n'));
+				}
+				else
 				szBuffer += NEWLINE + gDLL->getText((bPassed ? "TXT_KEY_POPUP_DIPLOMATIC_VOTING_SUCCEEDS" : "TXT_KEY_POPUP_DIPLOMATIC_VOTING_FAILURE"), GC.getVoteInfo(eVote).getTextKeyWide(), countVote(*pVoteTriggered, PLAYER_VOTE_YES), getVoteRequired(eVote, eVoteSource), countPossibleVote(eVote, eVoteSource));
 
+				if (!isApostolicCouncil(eVoteSource))
 				for (int iI = PLAYER_VOTE_NEVER; iI <= PLAYER_VOTE_YES; ++iI)
 				{
 					for (int iJ = 0; iJ < MAX_CIV_PLAYERS; iJ++)
 					{
+						const int iVotes = GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource);
 						if (GET_PLAYER((PlayerTypes)iJ).isVotingMember(eVoteSource))
 						{
 							if (getPlayerVote(((PlayerTypes)iJ), pVoteTriggered->getID()) == (PlayerVoteTypes)iI)
@@ -9653,16 +11086,16 @@ void CvGame::doVoteResults()
 								switch ((PlayerVoteTypes)iI)
 								{
 								case PLAYER_VOTE_ABSTAIN:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_ABSTAINS", GET_PLAYER((PlayerTypes)iJ).getNameKey(), GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_ABSTAINS", GET_PLAYER((PlayerTypes)iJ).getNameKey(), iVotes);
 									break;
 								case PLAYER_VOTE_NEVER:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_VOTE_NEVER", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_VOTE_NEVER", iVotes);
 									break;
 								case PLAYER_VOTE_NO:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_NO", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_NO", iVotes);
 									break;
 								case PLAYER_VOTE_YES:
-									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_YES", GET_PLAYER((PlayerTypes)iJ).getVotes(eVote, eVoteSource));
+									szBuffer += NEWLINE + gDLL->getText("TXT_KEY_POPUP_VOTES_YES_NO", GET_PLAYER((PlayerTypes)iJ).getNameKey(), L"TXT_KEY_POPUP_YES", iVotes);
 									break;
 								default:
 									FAssert(false);
@@ -9673,6 +11106,10 @@ void CvGame::doVoteResults()
 					}
 				}
 
+
+#if ARFC_ENABLE_REPORTING
+				if (isApostolicCouncil(eVoteSource)) reportApostolicMechanic("council_result", -1, pVoteTriggered->getID(), eVote, bPassed, getCouncilTally(pVoteTriggered->getID(), 0, false), getCouncilTally(pVoteTriggered->getID(), 2, false), getCouncilTally(pVoteTriggered->getID(), 1, false), getCouncilTally(pVoteTriggered->getID(), 4, false), getVoteRequired(eVote, eVoteSource));
+#endif
 				setVoteOutcome(*pVoteTriggered, bPassed ? PLAYER_VOTE_YES : PLAYER_VOTE_NO);
 			}
 
@@ -9681,7 +11118,8 @@ void CvGame::doVoteResults()
 				CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
 				if (kPlayer.isHuman())
 				{
-					bool bShow = kPlayer.isVotingMember(pVoteTriggered->eVoteSource);
+					bool bShow = isApostolicCouncil(eVoteSource) ?
+						pVoteTriggered->aiCouncilWeight[iI] > 0 : kPlayer.isVotingMember(pVoteTriggered->eVoteSource);
 
 					if (bShow)
 					{
@@ -9733,6 +11171,16 @@ void CvGame::doVoteSelection()
 	for (int iI = 0; iI < GC.getNumVoteSourceInfos(); ++iI)
 	{
 		VoteSourceTypes eVoteSource = (VoteSourceTypes)iI;
+		if (isApostolicCouncil(eVoteSource))
+		{
+			if (m_iPapalFirstCouncilTurn >= 0 && getGameTurn() < m_iPapalFirstCouncilTurn) continue;
+			if (getCouncilVoteId() >= 0) continue;
+			bool bPending = false;
+			int iSelection;
+			for (VoteSelectionData* pSelection = m_voteSelections.beginIter(&iSelection); pSelection; pSelection = m_voteSelections.nextIter(&iSelection))
+				if (pSelection->eVoteSource == eVoteSource) bPending = true;
+			if (bPending) continue;
+		}
 
 		if (isDiploVote(eVoteSource))
 		{
@@ -9742,7 +11190,7 @@ void CvGame::doVoteSelection()
 			}
 			else
 			{
-				setVoteTimer(eVoteSource, (GC.getVoteSourceInfo(eVoteSource).getVoteInterval() * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent()) / 100);
+				setVoteTimer(eVoteSource, ((isApostolicCouncil(eVoteSource) ? 30 : GC.getVoteSourceInfo(eVoteSource).getVoteInterval()) * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent()) / 100);
 
 				for (int iTeam1 = 0; iTeam1 < MAX_CIV_TEAMS; ++iTeam1)
 				{
@@ -9767,7 +11215,7 @@ void CvGame::doVoteSelection()
 
 				if (eSecretaryGeneral != NO_TEAM)
 				{
-					eSecretaryPlayer = GET_TEAM(eSecretaryGeneral).getSecretaryID();
+					eSecretaryPlayer = isApostolicCouncil(eVoteSource) ? getApostolicPalace()->getOwnerINLINE() : GET_TEAM(eSecretaryGeneral).getSecretaryID();
 				}
 				else
 				{
@@ -9775,7 +11223,7 @@ void CvGame::doVoteSelection()
 				}
 
 				bool bSecretaryGeneralVote = false;
-				if (canHaveSecretaryGeneral(eVoteSource))
+				if (!isApostolicCouncil(eVoteSource) && canHaveSecretaryGeneral(eVoteSource))
 				{
 					if (getSecretaryGeneralTimer(eVoteSource) > 0)
 					{

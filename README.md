@@ -127,10 +127,10 @@ culture and espionage, distinct from gold income.
    the original mod can remain alongside it.
 2. Load it from the game's mod menu or use [the launcher](<Launch Awakened RFC.bat>)
    (configured for Steam).
-3. Choose **3000 BC**, **800 BC**, **600 AD** or **840 AD**. All multiplayer peers need identical
+3. Choose **3000 BC**, **800 BC**, **600 AD**, **900 AD** or **1453 AD**. All multiplayer peers need identical
    mod files and DLLs.
 
-Hold **Shift while launching** after text changes. Start a new game after changes
+Start a new game after changes
 to civic XML modifiers. Multiplayer runtime validation of the overhaul is pending.
 
 ## Details and development

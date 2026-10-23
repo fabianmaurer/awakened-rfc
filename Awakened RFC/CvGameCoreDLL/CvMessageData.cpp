@@ -1,5 +1,7 @@
 #include "CvGameCoreDLL.h"
+#include "CvRhyes.h"
 #include "CvMessageData.h"
+#include "CvCity.h"
 #include "FDataStreamBase.h"
 #include "CvDLLUtilityIFaceBase.h"
 #include "CvDLLInterfaceIFaceBase.h"
@@ -509,6 +511,8 @@ void CvNetModNetMessage::Debug(char* szAddendum)
 
 void CvNetModNetMessage::Execute()
 {
+	if (m_iData1 == ARFC_NET_PAPAL_DECISION)
+	{ GC.getGameINLINE().resolvePapalDecision((PlayerTypes)m_iData2, m_iData3, m_iData4); return; }
 	CvEventReporter::getInstance().reportModNetMessage(m_iData1, m_iData2, m_iData3, m_iData4, m_iData5);
 }
 
@@ -975,6 +979,12 @@ void CvNetChooseElection::Debug(char* szAddendum)
 
 void CvNetChooseElection::Execute()
 {
+	VoteSelectionData* pData = GC.getGameINLINE().getVoteSelection(m_iVoteId);
+	if (pData && GC.getGameINLINE().isApostolicCouncil(pData->eVoteSource))
+	{
+		CvCity* pPalace = GC.getGameINLINE().getApostolicPalace();
+		if (!GC.getGameINLINE().isCouncilActive() || !pPalace || pPalace->getOwnerINLINE() != m_ePlayer) return;
+	}
 	GC.getGameINLINE().setVoteChosen(m_iSelection, m_iVoteId);
 }
 

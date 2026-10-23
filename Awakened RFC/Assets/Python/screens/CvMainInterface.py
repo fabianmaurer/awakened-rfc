@@ -1,3 +1,4 @@
+from Reporting import ENABLED as REPORTING_ENABLED
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
@@ -523,7 +524,7 @@ class CvMainInterface:
 			xCoord = xResolution - 242 + (i * 34)
 			yCoord = 42
 			szName = "ReligionHolyCityDDS" + str(i)
-			screen.addDDSGFC( szName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_HOLYCITY_OVERLAY").getPath(), xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
+			screen.setImageButton( szName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_HOLYCITY_OVERLAY").getPath(), xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
 			screen.hide( szName )
 
 		for i in range( gc.getNumCorporationInfos() ):
@@ -613,8 +614,11 @@ class CvMainInterface:
 
 	# Will update the screen (every 250 MS)
 	def updateScreen(self):
-		import GameObserver
-		if GameObserver.CURRENT is not None:
+		self.updateApostolicCouncil()
+		self.updateCrusadeReminder()
+		if REPORTING_ENABLED:
+			import GameObserver
+		if REPORTING_ENABLED and GameObserver.CURRENT is not None:
 			GameObserver.CURRENT.setup_camera(())
 		
 		global g_szTimeText
@@ -627,38 +631,39 @@ class CvMainInterface:
 		yResolution = screen.getYResolution()
 		self.m_iNumPlotListButtons = (xResolution - (iMultiListXL+iMultiListXR) - 68) / 34
 
-		# Centered spectator progress bar; refresh only when its values change.
-		observer = GameObserver.CURRENT
-		if observer and observer.enabled and observer.started and observer.autoplay:
-			screen.setRenderInterfaceOnly(True)
-			progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
-			if getattr(self, 'observerProgressDisplay', None) != progress:
-				if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
-					screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
-					screen.setPanelColor("ObserverSimulationBackground", 0, 0, 0)
-					self.observerSimulationSize = (xResolution, yResolution)
-				width = min(800, xResolution - 80)
-				screen.addStackedBarGFC("ObserverProgressBar", (xResolution - width) / 2, yResolution / 2 - 18, width, 36, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
-				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_GREEN"))
-				screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_WHITE"))
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, min(1.0, float(observer.turns) / max(1, observer.limit)))
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
-				screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
-				self.observerProgressDisplay = progress
-			screen.show("ObserverSimulationBackground")
-			screen.moveToFront("ObserverSimulationBackground")
-			screen.show("ObserverProgressBar")
-			screen.moveToFront("ObserverProgressBar")
-			return
-		else:
-			if getattr(self, 'observerSimulationSize', None) is not None:
-				screen.setRenderInterfaceOnly(False)
-				screen.hide("ObserverSimulationBackground")
-				self.observerSimulationSize = None
-			screen.hide("ObserverProgressBar")
-			self.observerProgressDisplay = None
-		screen.hide("ObserverProgressOverlay")
+		if REPORTING_ENABLED:
+			# Centered spectator progress bar; refresh only when its values change.
+			observer = GameObserver.CURRENT
+			if observer and observer.enabled and observer.started and observer.autoplay and not observer.reveal_map:
+				screen.setRenderInterfaceOnly(True)
+				progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
+				if getattr(self, 'observerProgressDisplay', None) != progress:
+					if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
+						screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
+						screen.setPanelColor("ObserverSimulationBackground", 0, 0, 0)
+						self.observerSimulationSize = (xResolution, yResolution)
+					width = min(800, xResolution - 80)
+					screen.addStackedBarGFC("ObserverProgressBar", (xResolution - width) / 2, yResolution / 2 - 18, width, 36, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
+					screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_GREEN"))
+					screen.setStackedBarColors("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_WHITE"))
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_STORED, min(1.0, float(observer.turns) / max(1, observer.limit)))
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
+					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
+					self.observerProgressDisplay = progress
+				screen.show("ObserverSimulationBackground")
+				screen.moveToFront("ObserverSimulationBackground")
+				screen.show("ObserverProgressBar")
+				screen.moveToFront("ObserverProgressBar")
+				return
+			else:
+				if getattr(self, 'observerSimulationSize', None) is not None:
+					screen.setRenderInterfaceOnly(False)
+					screen.hide("ObserverSimulationBackground")
+					self.observerSimulationSize = None
+				screen.hide("ObserverProgressBar")
+				self.observerProgressDisplay = None
+			screen.hide("ObserverProgressOverlay")
 		
 		# This should recreate the minimap on load games and returns if already exists -JW
 		screen.initMinimap( xResolution - 210, xResolution - 9, yResolution - 131, yResolution - 9, -0.1 )
@@ -740,7 +745,12 @@ class CvMainInterface:
 
 	# Will redraw the interface
 	def redraw( self ):
-		if gc.getGame().isObserverAutoPlay():
+		if REPORTING_ENABLED:
+			import GameObserver
+		observer = None
+		if REPORTING_ENABLED:
+			observer = GameObserver.CURRENT
+		if gc.getGame().isObserverAutoPlay() and not (observer and observer.reveal_map):
 			return
 
 		screen = CyGInterfaceScreen( "MainInterface", CvScreenEnums.MAIN_INTERFACE )
@@ -1258,6 +1268,18 @@ class CvMainInterface:
 		global g_NumProjectInfos
 		global g_NumProcessInfos
 		global g_NumActionInfos
+
+		# A Python reload can leave the native screen alive while these module
+		# caches return to zero. Restore them before hiding/rebuilding widgets.
+		if g_NumHurryInfos == 0 or g_NumBuildingClassInfos == 0:
+			g_NumEmphasizeInfos = gc.getNumEmphasizeInfos()
+			g_NumCityTabTypes = CityTabTypes.NUM_CITYTAB_TYPES
+			g_NumHurryInfos = gc.getNumHurryInfos()
+			g_NumUnitClassInfos = gc.getNumUnitClassInfos()
+			g_NumBuildingClassInfos = gc.getNumBuildingClassInfos()
+			g_NumProjectInfos = gc.getNumProjectInfos()
+			g_NumProcessInfos = gc.getNumProcessInfos()
+			g_NumActionInfos = gc.getNumActionInfos()
 		
 		# Find out our resolution
 		xResolution = screen.getXResolution()
@@ -1848,8 +1870,11 @@ class CvMainInterface:
 			g_szTimeText = localText.getText("TXT_KEY_TIME_TURN", (CyGame().getElapsedGameTurns(), )) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 		
 		# Observer progress is measured in completed simulated turns, not snapshots.
-		import GameObserver
-		observer = GameObserver.CURRENT
+		if REPORTING_ENABLED:
+			import GameObserver
+		observer = None
+		if REPORTING_ENABLED:
+			observer = GameObserver.CURRENT
 		if observer and observer.enabled and observer.started and observer.autoplay:
 			g_szTimeText = localText.getText("TXT_KEY_OBSERVER_RUN_PROGRESS", (observer.turns, observer.limit)) + u" - " + unicode(CyGameTextMgr().getInterfaceTimeStr(ePlayer))
 			if CyUserProfile().isClockOn():
@@ -2421,7 +2446,11 @@ class CvMainInterface:
 					
 						bEnable = False
 						szButton = gc.getReligionInfo(i).getButton()
+						if pHeadSelectedCity.isHolyCityByType(i):
+							szBuffer += u"%c " % gc.getReligionInfo(i).getDormantHolyCityChar()
+							screen.show("ReligionHolyCityDDS" + str(i))
 
+					screen.enable("ReligionHolyCityDDS" + str(i), bEnable)
 					szName = "ReligionDDS" + str(i)
 					screen.setImageButton( szName, szButton, xCoord, yCoord, 24, 24, WidgetTypes.WIDGET_HELP_RELIGION_CITY, i, -1 )
 					screen.enable( szName, bEnable )
@@ -2538,12 +2567,12 @@ class CvMainInterface:
 						screen.setBarPercentage( "GreatPeopleBar", InfoBarTypes.INFOBAR_RATE, ( ( float(pHeadSelectedCity.getGreatPeopleRate()) / float( gc.getPlayer( pHeadSelectedCity.getOwner() ).greatPeopleThreshold(false) ) ) ) / ( 1 - iFirst ) )
 					screen.show( "GreatPeopleBar" )
 
-				iFirst = float(pHeadSelectedCity.getCultureTimes100(pHeadSelectedCity.getOwner())) / float(100 * pHeadSelectedCity.getCultureThreshold())
+				iFirst = float(pHeadSelectedCity.getCultureTimes100(pHeadSelectedCity.getOwner())) / float(100 * pHeadSelectedCity.getNextCoveredPlotCost())
 				screen.setBarPercentage( "CultureBar", InfoBarTypes.INFOBAR_STORED, iFirst )
 				if ( iFirst == 1 ):
-					screen.setBarPercentage( "CultureBar", InfoBarTypes.INFOBAR_RATE, ( float(pHeadSelectedCity.getCommerceRate(CommerceTypes.COMMERCE_CULTURE)) / float(pHeadSelectedCity.getCultureThreshold()) ) )
+					screen.setBarPercentage( "CultureBar", InfoBarTypes.INFOBAR_RATE, ( float(pHeadSelectedCity.getCommerceRate(CommerceTypes.COMMERCE_CULTURE)) / float(pHeadSelectedCity.getNextCoveredPlotCost()) ) )
 				else:
-					screen.setBarPercentage( "CultureBar", InfoBarTypes.INFOBAR_RATE, ( ( float(pHeadSelectedCity.getCommerceRate(CommerceTypes.COMMERCE_CULTURE)) / float(pHeadSelectedCity.getCultureThreshold()) ) ) / ( 1 - iFirst ) )
+					screen.setBarPercentage( "CultureBar", InfoBarTypes.INFOBAR_RATE, ( ( float(pHeadSelectedCity.getCommerceRate(CommerceTypes.COMMERCE_CULTURE)) / float(pHeadSelectedCity.getNextCoveredPlotCost()) ) ) / ( 1 - iFirst ) )
 				screen.show( "CultureBar" )
 				
 		else:
@@ -2811,6 +2840,44 @@ class CvMainInterface:
 
 		return 0
 		
+	def groupScoreRows(self, scoreRows):
+		# Input is bottom-to-top score order; group only already-visible teams.
+		teamRows = {}
+		teams = []
+		for ePlayer, szBuffer in reversed(scoreRows):
+			eTeam = gc.getPlayer(ePlayer).getTeam()
+			if eTeam not in teamRows:
+				teams.append(eTeam)
+				teamRows[eTeam] = []
+			teamRows[eTeam].append((ePlayer, szBuffer))
+		children = {}
+		parents = {}
+		for eTeam in teams:
+			children[eTeam] = []
+		for eTeam in teams:
+			for eMaster in teams:
+				if eTeam != eMaster and gc.getTeam(eTeam).isVassal(eMaster):
+					parents[eTeam] = eMaster
+					children[eMaster].append(eTeam)
+					break
+		rows = []
+		visited = set()
+		def appendTeam(eTeam, depth):
+			if eTeam in visited:
+				return
+			visited.add(eTeam)
+			for ePlayer, szBuffer in teamRows[eTeam]:
+				rows.append((ePlayer, szBuffer, depth))
+			for eVassal in children[eTeam]:
+				appendTeam(eVassal, depth + 1)
+		for eTeam in teams:
+			if eTeam not in parents:
+				appendTeam(eTeam, 0)
+		# Keep every visible row even if malformed diplomacy contains a cycle.
+		for eTeam in teams:
+			appendTeam(eTeam, 0)
+		return rows
+
 	# Will update the scores
 	def updateScoreStrings( self ):
 	
@@ -2828,6 +2895,7 @@ class CvMainInterface:
 		iWidth = 0
 		iCount = 0
 		iBtnHeight = 18 #Rhye (22)
+		scoreRows = []
 		
 		if ((CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_HIDE_ALL and CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_MINIMAP_ONLY)):
 			if ((CyInterface().isScoresVisible() or gc.getGame().isObserverAutoPlay()) and not CyInterface().isCityScreenUp() and CyEngine().isGlobeviewUp() == false):
@@ -2942,6 +3010,9 @@ class CvMainInterface:
                                                                                                         if (ePlayer < con.iNumMajorPlayers): #in case byzantium is major
                                                                                                                 szTempBuffer = u"<color=%s>%d/3</color>" %(utils.getGoalsColor(ePlayer), utils.countAchievedGoals(ePlayer))
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
+                                                                                                        elif gc.getGame().isPapalState(ePlayer):
+                                                                                                                # The dedicated Papal slot has no historical goals.
+                                                                                                                szBuffer += " - " + localText.getText("TXT_KEY_AP_NO_UHV_SCORE", ())
                                                                                                 #Rhye - end victory
 
                                                                                                 #Rhye - start stability
@@ -2979,6 +3050,14 @@ class CvMainInterface:
                                                                                                                         #if (gc.getPlayer(ePlayer).isHuman()):
                                                                                                                         #        szTempBuffer = szTempBuffer + " (" + localText.getText("TXT_KEY_STABILITY_VERYSOLID", ()) + ")"
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
+                                                                                                        elif gc.getGame().isPapalState(ePlayer):
+                                                                                                                # Papal survival depends on retaining or recovering Rome.
+                                                                                                                pRome = CyMap().plot(60, 44).getPlotCity()
+                                                                                                                bHoldsRome = not pRome.isNone() and pRome.getOwner() == ePlayer
+                                                                                                                iSymbol = CyGame().getSymbolID(FontSymbols.POWER_CHAR) + 3
+                                                                                                                if bHoldsRome:
+                                                                                                                        iSymbol += 2
+                                                                                                                szBuffer += " - " + unichr(iSymbol)
                                                                                                 #Rhye - end stability
 
                                                                                 else:
@@ -2989,22 +3068,26 @@ class CvMainInterface:
                                                                                         
                                                                                 szBuffer = szBuffer + "</font>"
 
-										if ( CyInterface().determineWidth( szBuffer ) > iWidth ):
-											iWidth = CyInterface().determineWidth( szBuffer )
-
-										szName = "ScoreText" + str(ePlayer)
-										if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
-											yCoord = yResolution - 206
-										else:
-											yCoord = yResolution - 88
-										screen.setText( szName, "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 12, yCoord - (iCount * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1 )
-										screen.show( szName )
+										scoreRows.append((ePlayer, szBuffer))
 										
 										CyInterface().checkFlashReset(ePlayer)
 
 										iCount = iCount + 1
 							j = j - 1
 					i = i - 1
+
+				scoreRows = self.groupScoreRows(scoreRows)
+				for ePlayer, szBuffer, depth in scoreRows:
+					iWidth = max(iWidth, CyInterface().determineWidth(szBuffer) + depth * 16)
+				if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
+					yCoord = yResolution - 206
+				else:
+					yCoord = yResolution - 88
+				for iRow in range(len(scoreRows)):
+					ePlayer, szBuffer, depth = scoreRows[iRow]
+					szName = "ScoreText" + str(ePlayer)
+					screen.setText(szName, "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 12 - depth * 16, yCoord - ((iCount - 1 - iRow) * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1)
+					screen.show(szName)
 
 				if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
 					yCoord = yResolution - 186
@@ -3288,6 +3371,79 @@ class CvMainInterface:
 	def handleInput (self, inputClass):
 		return 0
 	
+	def updateApostolicCouncil(self):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		game = gc.getGame()
+		iVote = game.getCouncilVoteId()
+		iPlayer = game.getActivePlayer()
+		iSource = gc.getInfoTypeForString("DIPLOVOTE_POPE")
+		visible = iVote >= 0 and iPlayer >= 0 and gc.getPlayer(iPlayer).isVotingMember(iSource)
+		visible = visible and not CyInterface().isCityScreenUp() and not CyEngine().isGlobeviewUp() and CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW
+		widgets = ("CouncilPanel", "CouncilTitle", "CouncilScore", "CouncilRule", "CouncilBar")
+		if not visible:
+			for name in widgets:
+				screen.hide(name)
+			self._councilDisplay = None
+			return
+		weights = [game.getCouncilTally(iVote, i, False) for i in range(5)]
+		nations = [game.getCouncilTally(iVote, i, True) for i in range(5)]
+		text = game.getCouncilVoteText(iVote).split(u"\n")
+		state = (iVote, weights, nations, game.getCouncilTurnsLeft(iVote), screen.getXResolution())
+		if getattr(self, "_councilDisplay", None) == state:
+			return
+		self._councilDisplay = state
+		width = min(680, screen.getXResolution() - 300)
+		x = (screen.getXResolution() - width) / 2
+		y = 65
+		screen.addPanel("CouncilPanel", u"", u"", True, False, x, y, width, 100, PanelStyles.PANEL_STYLE_MAIN)
+		title = localText.getText("TXT_KEY_AP_LIVE_TITLE", (text[0], game.getCouncilTurnsLeft(iVote)))
+		screen.setLabel("CouncilTitle", "Background", u"<font=2b>" + title + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 7, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		cast = weights[4] - weights[3]
+		score = localText.getText("TXT_KEY_AP_LIVE_SCORE", (weights[0], nations[0], weights[1], nations[1], weights[2], nations[2], cast, weights[4], weights[3], nations[3]))
+		screen.setLabel("CouncilScore", "Background", u"<font=1>" + score + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 29, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		# The remaining segments are fractions of the unused portion of a Civ4 stacked bar.
+		screen.addStackedBarGFC("CouncilBar", x + 16, y + 49, width - 32, 16, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		colors = ("COLOR_GREEN", "COLOR_DARK_GREY", "COLOR_RED", "COLOR_LIGHT_GREY")
+		remaining = weights[4]
+		for i in range(4):
+			screen.setStackedBarColors("CouncilBar", i, gc.getInfoTypeForString(colors[i]))
+			screen.setBarPercentage("CouncilBar", i, float(weights[i]) / max(1, remaining))
+			remaining -= weights[i]
+		rule = text[-1]
+		screen.setLabel("CouncilRule", "Background", u"<font=1>" + rule + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 72, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		for name in widgets:
+			screen.show(name)
+
+	def updateCrusadeReminder(self):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		game = gc.getGame()
+		iPlayer = game.getActivePlayer()
+		visible = iPlayer >= 0 and game.isCrusadeParticipant(iPlayer)
+		visible = visible and not CyInterface().isCityScreenUp() and not CyEngine().isGlobeviewUp() and CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW
+		widgets = ("CrusadePanel", "CrusadeTitle", "CrusadeGold", "CrusadeRules")
+		if not visible:
+			for name in widgets:
+				screen.hide(name)
+			self._crusadeDisplay = None
+			return
+		y = 65
+		if getattr(self, "_councilDisplay", None) is not None:
+			y = 170
+		state = (iPlayer, game.getActiveCrusadeName(), game.getCrusadeTurnsLeft(), game.getCrusadePlunder(iPlayer), game.getCrusadePlunder(-1), screen.getXResolution(), y)
+		if getattr(self, "_crusadeDisplay", None) == state:
+			return
+		self._crusadeDisplay = state
+		width = min(680, screen.getXResolution() - 300)
+		x = (screen.getXResolution() - width) / 2
+		screen.addPanel("CrusadePanel", u"", u"", True, False, x, y, width, 81, PanelStyles.PANEL_STYLE_MAIN)
+		title = localText.getText("TXT_KEY_AP_CRUSADE_LIVE", (state[1], state[2]))
+		gold = localText.getText("TXT_KEY_AP_CRUSADE_PLUNDER", (state[3], state[4]))
+		rules = localText.getText("TXT_KEY_AP_CRUSADE_LIVE_RULES", ())
+		for name, text, offset in (("CrusadeTitle", title, 7), ("CrusadeGold", gold, 29), ("CrusadeRules", rules, 52)):
+			screen.setLabel(name, "Background", u"<font=2>" + text + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + offset, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		for name in widgets:
+			screen.show(name)
+
 	def update(self, fDelta):
 		return
 	

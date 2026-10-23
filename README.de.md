@@ -130,8 +130,7 @@ die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
 3. **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.** wählen. Alle Mitspieler
    benötigen identische Mod-Dateien und DLLs.
 
-Nach Textänderungen beim Start **Shift gedrückt halten**. Nach Änderungen an
-XML-Staatsformenboni ein neues Spiel beginnen. Die Validierung der Überarbeitung
+Nach Änderungen an XML-Staatsformenboni ein neues Spiel beginnen. Die Validierung der Überarbeitung
 im Mehrspielerbetrieb steht noch aus.
 
 ## Details und Entwicklung

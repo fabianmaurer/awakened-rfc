@@ -258,6 +258,11 @@ int CyPlot::getNumCultureRangeCities(int /*PlayerTypes*/ ePlayer)
 	return m_pPlot ? m_pPlot->getNumCultureRangeCities((PlayerTypes)ePlayer) : -1;
 }
 
+int /*PlayerTypes*/ CyPlot::getFortGarrisonOwner()
+{
+	return m_pPlot ? m_pPlot->getFortGarrisonOwner() : -1;
+}
+
 int /*PlayerTypes*/ CyPlot::calculateCulturalOwner()
 {
 	return m_pPlot ? m_pPlot->calculateCulturalOwner() : -1;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_HORDE</Tag>
+    <English>Horde</English>
+    <French>Horde</French>
+    <German>Horde</German>
+    <Italian>Orda</Italian>
+    <Spanish>Horda</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HORDE_EFFECT</Tag>
+    <English>[ICON_BULLET]+50% production of mounted units[NEWLINE][ICON_BULLET]+3 experience for newly trained mounted units[NEWLINE][ICON_BULLET]+100% gold from pillaging improvements[NEWLINE][ICON_BULLET]-50% war weariness[NEWLINE][ICON_BULLET]-25% research output[NEWLINE][ICON_BULLET]Replaces Warrior Society for the Huns and Mongolia</English>
+    <French>[ICON_BULLET]+50% de production des unit&#233;s mont&#233;es[NEWLINE][ICON_BULLET]+3 points d'exp&#233;rience pour les nouvelles unit&#233;s mont&#233;es[NEWLINE][ICON_BULLET]+100% d'or du pillage des am&#233;nagements[NEWLINE][ICON_BULLET]-50% de lassitude de guerre[NEWLINE][ICON_BULLET]-25% de recherche[NEWLINE][ICON_BULLET]Remplace la Soci&#233;t&#233; guerri&#232;re pour les Huns et la Mongolie</French>
+    <German>[ICON_BULLET]+50% Produktion f&#252;r berittene Einheiten[NEWLINE][ICON_BULLET]+3 Erfahrung f&#252;r neu ausgebildete berittene Einheiten[NEWLINE][ICON_BULLET]+100% Gold beim Pl&#252;ndern von Modernisierungen[NEWLINE][ICON_BULLET]-50% Kriegsm&#252;digkeit[NEWLINE][ICON_BULLET]-25% Forschungsleistung[NEWLINE][ICON_BULLET]Ersetzt die Kriegergesellschaft f&#252;r die Hunnen und die Mongolei</German>
+    <Italian>[ICON_BULLET]+50% produzione di unit&#224; a cavallo[NEWLINE][ICON_BULLET]+3 esperienza per le nuove unit&#224; a cavallo[NEWLINE][ICON_BULLET]+100% oro dal saccheggio dei miglioramenti[NEWLINE][ICON_BULLET]-50% stanchezza di guerra[NEWLINE][ICON_BULLET]-25% ricerca[NEWLINE][ICON_BULLET]Sostituisce la Societ&#224; guerriera per gli Unni e la Mongolia</Italian>
+    <Spanish>[ICON_BULLET]+50% producci&#243;n de unidades montadas[NEWLINE][ICON_BULLET]+3 de experiencia para nuevas unidades montadas[NEWLINE][ICON_BULLET]+100% oro del saqueo de mejoras[NEWLINE][ICON_BULLET]-50% hast&#237;o b&#233;lico[NEWLINE][ICON_BULLET]-25% investigaci&#243;n[NEWLINE][ICON_BULLET]Sustituye a la Sociedad guerrera para los hunos y Mongolia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HORDE_PEDIA</Tag>
+    <English>A military organization centered on mounted warfare and raiding. Horde replaces Warrior Society for the Huns and Mongolia, requires Horseback Riding and has medium upkeep. It accelerates mounted recruitment and grants new mounted units experience, doubles gold from pillaging improvements and reduces war weariness. Research output is reduced by 25% while active. It does not grant Warrior Society's melee experience or siege combat penalty. The civilization's unique power remains separate.</English>
+    <French>Une organisation militaire fond&#233;e sur la cavalerie et les raids. La Horde remplace la Soci&#233;t&#233; guerri&#232;re pour les Huns et la Mongolie, exige l'&#201;quitation et a un entretien moyen. Elle acc&#233;l&#232;re le recrutement mont&#233;, donne de l'exp&#233;rience aux nouvelles unit&#233;s mont&#233;es, double l'or du pillage des am&#233;nagements et r&#233;duit la lassitude de guerre. La recherche diminue de 25% tant qu'elle est active. Elle ne conserve ni l'exp&#233;rience de m&#234;l&#233;e ni le malus de si&#232;ge de la Soci&#233;t&#233; guerri&#232;re. Le pouvoir unique reste distinct.</French>
+    <German>Eine auf Reiterei und Raubz&#252;ge ausgerichtete Heeresorganisation. Die Horde ersetzt die Kriegergesellschaft f&#252;r die Hunnen und die Mongolei, erfordert Reiterei und hat mittleren Unterhalt. Sie beschleunigt die Ausbildung berittener Einheiten, gibt neuen Reitern Erfahrung, verdoppelt das Gold beim Pl&#252;ndern von Modernisierungen und senkt die Kriegsm&#252;digkeit. Die Forschungsleistung sinkt w&#228;hrend ihrer Nutzung um 25%. Erfahrungsbonus f&#252;r Nahkampfeinheiten und Kampfstrafen f&#252;r Belagerungseinheiten der Kriegergesellschaft entfallen. Die einzigartige F&#228;higkeit gilt unabh&#228;ngig davon.</German>
+    <Italian>Un'organizzazione militare basata sulla cavalleria e sulle razzie. L'Orda sostituisce la Societ&#224; guerriera per gli Unni e la Mongolia, richiede l'Equitazione e ha mantenimento medio. Accelera il reclutamento a cavallo, concede esperienza alle nuove unit&#224; montate, raddoppia l'oro dal saccheggio dei miglioramenti e riduce la stanchezza di guerra. La ricerca cala del 25% mentre &#232; attiva. Non conserva il bonus di esperienza da mischia o la penalit&#224; d'assedio della Societ&#224; guerriera. Il potere unico resta separato.</Italian>
+    <Spanish>Una organizaci&#243;n militar centrada en la caballer&#237;a y las incursiones. La Horda sustituye a la Sociedad guerrera para los hunos y Mongolia, requiere Equitaci&#243;n y tiene mantenimiento medio. Acelera el reclutamiento montado, da experiencia a las nuevas unidades montadas, duplica el oro del saqueo de mejoras y reduce el hast&#237;o b&#233;lico. La investigaci&#243;n disminuye un 25% mientras est&#225; activa. No conserva la experiencia de combate cuerpo a cuerpo ni la penalizaci&#243;n de asedio de la Sociedad guerrera. El poder &#250;nico permanece separado.</Spanish>
+  </TEXT>
+</Civ4GameText>

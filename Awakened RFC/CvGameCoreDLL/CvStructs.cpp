@@ -76,6 +76,7 @@ void VoteSelectionData::setID(int iID)
 void VoteSelectionData::read(FDataStreamBase* pStream)
 {
 	pStream->Read(&iId);
+	pStream->Read(&iCouncilOwner);
 	pStream->Read((int*)&eVoteSource);
 	int iSize;
 	pStream->Read(&iSize);
@@ -94,6 +95,7 @@ void VoteSelectionData::read(FDataStreamBase* pStream)
 void VoteSelectionData::write(FDataStreamBase* pStream)
 {
 	pStream->Write(iId);
+	pStream->Write(iCouncilOwner);
 	pStream->Write(eVoteSource);
 	pStream->Write(aVoteOptions.size());
 	for (std::vector<VoteSelectionSubData>::iterator it = aVoteOptions.begin(); it != aVoteOptions.end(); ++it)
@@ -125,6 +127,9 @@ void VoteTriggeredData::read(FDataStreamBase* pStream)
 	pStream->Read(&kVoteOption.iCityId);
 	pStream->Read((int*)&kVoteOption.eOtherPlayer);
 	pStream->ReadString(kVoteOption.szText);
+	pStream->Read(&iCouncilDeadline);
+	pStream->Read(MAX_CIV_PLAYERS, aiCouncilWeight);
+	pStream->Read(MAX_CIV_PLAYERS, aiCouncilDelivery);
 }
 
 void VoteTriggeredData::write(FDataStreamBase* pStream)
@@ -136,6 +141,9 @@ void VoteTriggeredData::write(FDataStreamBase* pStream)
 	pStream->Write(kVoteOption.iCityId);
 	pStream->Write(kVoteOption.eOtherPlayer);
 	pStream->WriteString(kVoteOption.szText);
+	pStream->Write(iCouncilDeadline);
+	pStream->Write(MAX_CIV_PLAYERS, aiCouncilWeight);
+	pStream->Write(MAX_CIV_PLAYERS, aiCouncilDelivery);
 }
 
 void PlotExtraYield::read(FDataStreamBase* pStream)

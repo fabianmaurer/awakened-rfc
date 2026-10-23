@@ -1589,6 +1589,12 @@ def applyFreedomConcert2(argsList):
 			if bestCity != None:									
 				bestCity.setHasReligion(iReligion, true, true, true)
 
+def canMakeEventPeace(player, otherPlayer):
+	# Indigenous and Independent factions cannot be pacified by random events.
+	minorFactions = (con.iIndependent, con.iIndependent2, con.iNative, con.iCeltia, con.iBarbarian)
+	return player.getID() not in minorFactions and otherPlayer.getID() not in minorFactions
+
+
 ######## HEROIC_GESTURE ###########
 
 def canTriggerHeroicGesture(argsList):
@@ -1596,6 +1602,8 @@ def canTriggerHeroicGesture(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 
+	if not canMakeEventPeace(player, destPlayer):
+		return false
 	if not gc.getTeam(destPlayer.getTeam()).canChangeWarPeace(player.getTeam()):
 		return false
 		
@@ -1613,6 +1621,10 @@ def doHeroicGesture2(argsList):
 
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 	player = gc.getPlayer(kTriggeredData.ePlayer)
+	if not canMakeEventPeace(player, destPlayer):
+		return
+	if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+		return
 	
 	if destPlayer.isHuman():
 		# this works only because it's a single-player only event
@@ -1645,6 +1657,10 @@ def heroicGesture2Callback(argsList):
 	if iButton == 0:
 		destPlayer = gc.getPlayer(iData1)
 		player = gc.getPlayer(iData2)
+		if not canMakeEventPeace(player, destPlayer):
+			return 0
+		if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+			return 0
 		destPlayer.forcePeace(iData2)
 		destPlayer.AI_changeAttitudeExtra(iData2, 1)
 		player.AI_changeAttitudeExtra(iData1, 1)		
@@ -1669,6 +1685,8 @@ def canTriggerGreatMediator(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 
+	if not canMakeEventPeace(player, destPlayer):
+		return false
 	if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
 		return false
 		
@@ -1676,13 +1694,6 @@ def canTriggerGreatMediator(argsList):
 	if gc.getTeam(player.getTeam()).AI_getAtWarCounter(destPlayer.getTeam()) < 6: #Rhye
 		return false
 
-	#Rhye - start
-	if (player.getID() == con.iIndependent or player.getID() == con.iIndependent2):
-		return false
-
-	if (destPlayer.getID() == con.iIndependent or destPlayer.getID() == con.iIndependent2):
-		return false
-	#Rhye - end
 
 	return true
 
@@ -1692,6 +1703,10 @@ def doGreatMediator2(argsList):
 
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 	player = gc.getPlayer(kTriggeredData.ePlayer)
+	if not canMakeEventPeace(player, destPlayer):
+		return
+	if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+		return
 	
 	if destPlayer.isHuman():
 		# this works only because it's a single-player only event
@@ -1724,6 +1739,10 @@ def greatMediator2Callback(argsList):
 	if iButton == 0:
 		destPlayer = gc.getPlayer(iData1)
 		player = gc.getPlayer(iData2)
+		if not canMakeEventPeace(player, destPlayer):
+			return 0
+		if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+			return 0
 		gc.getTeam(destPlayer.getTeam()).makePeace(player.getTeam())
 		destPlayer.AI_changeAttitudeExtra(iData2, 1)
 		player.AI_changeAttitudeExtra(iData1, 1)		

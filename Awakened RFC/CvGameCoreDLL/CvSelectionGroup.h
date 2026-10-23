@@ -74,6 +74,7 @@ public:
 	bool visibilityRange();
 
 	void unloadAll();
+	bool isWorkerGroup() const;
 	bool alwaysInvisible() const;																																							// Exposed to Python
 	bool isInvisible(TeamTypes eTeam) const;																								// Exposed to Python
 	int countNumUnitAIType(UnitAITypes eUnitAI);																												// Exposed to Python

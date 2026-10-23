@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ARABIAN_JIHAD_START</Tag>
+        <English>%s1_Country% has joined the Islamic cause and begun its Jihad.</English>
+        <French>%s1_Country% a rejoint la cause islamique et commenc&#233; son djihad.</French>
+        <German>%s1_Country% hat sich der islamischen Sache angeschlossen und den Dschihad begonnen.</German>
+        <Italian>%s1_Country% ha abbracciato la causa islamica e iniziato il jihad.</Italian>
+        <Spanish>%s1_Country% ha abrazado la causa isl&#225;mica e iniciado la yihad.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ARABIAN_JIHAD_END</Tag>
+        <English>The Islamic Jihad of %s1_Country% has come to an end.</English>
+        <French>Le djihad islamique de %s1_Country% a pris fin.</French>
+        <German>Der islamische Dschihad von %s1_Country% ist zu Ende gegangen.</German>
+        <Italian>Il jihad islamico di %s1_Country% &#232; giunto al termine.</Italian>
+        <Spanish>La yihad isl&#225;mica de %s1_Country% ha llegado a su fin.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_CHOICE_TITLE</Tag>
+        <English>The founding of Islam</English>
+        <French>La fondation de l'islam</French>
+        <German>Die Gr&#252;ndung des Islam</German>
+        <Italian>La fondazione dell'Islam</Italian>
+        <Spanish>La fundaci&#243;n del islam</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_CHOICE_BODY</Tag>
+        <English>Islam has been founded in your country. Join the cause to adopt Islam, Monarchy, Theocracy and Holy State without anarchy, convert every owned city and expel its other religions. The conquest event grants troops for first conquests and forces war against all met non-Islamic civilizations. Or suppress Islam: expel it, face a large barbarian army near the holy city, and trigger Arabia's declaration of war to capture that city.</English>
+        <French>L'islam a &#233;t&#233; fond&#233; dans votre pays. Rejoignez la cause pour adopter sans anarchie l'islam, la Monarchie, la Th&#233;ocratie et l'&#201;tat sacr&#233;, convertir toutes vos villes et en expulser les autres religions. L'&#233;v&#233;nement accorde des troupes aux premi&#232;res conqu&#234;tes et impose la guerre &#224; toutes les civilisations non islamiques rencontr&#233;es. Ou r&#233;primez l'islam : expulsez-le, affrontez une grande arm&#233;e barbare pr&#232;s de la ville sainte et provoquez une d&#233;claration de guerre de l'Arabie pour la conqu&#233;rir.</French>
+        <German>Der Islam wurde in Eurem Land gegr&#252;ndet. Schlie&#223;t Euch der Sache an: &#220;bernehmt ohne Anarchie Islam, Monarchie, Theokratie und Gottesstaat, bekehrt alle eigenen St&#228;dte und vertreibt deren andere Religionen. Das Ereignis gew&#228;hrt Truppen bei erstmaligen Eroberungen und erzwingt Krieg gegen alle bekannten nichtislamischen Zivilisationen. Oder unterdr&#252;ckt den Islam: Vertreibt ihn, stellt Euch einem gro&#223;en Barbarenheer nahe der heiligen Stadt und l&#246;st Arabiens Kriegserkl&#228;rung zur Eroberung dieser Stadt aus.</German>
+        <Italian>L'Islam &#232; stato fondato nel tuo paese. Abbraccia la causa per adottare senza anarchia Islam, Monarchia, Teocrazia e Stato sacro, convertire tutte le tue citt&#224; ed espellerne le altre religioni. L'evento concede truppe alle prime conquiste e impone la guerra a tutte le civilt&#224; non islamiche incontrate. Oppure reprimi l'Islam: espellilo, affronta un grande esercito barbaro vicino alla citt&#224; santa e provoca una dichiarazione di guerra dell'Arabia per conquistarla.</Italian>
+        <Spanish>El islam se ha fundado en tu pa&#237;s. Abraza la causa para adoptar sin anarqu&#237;a el islam, la Monarqu&#237;a, la Teocracia y el Estado sagrado, convertir todas tus ciudades y expulsar sus otras religiones. El evento concede tropas por las primeras conquistas e impone la guerra a todas las civilizaciones no isl&#225;micas conocidas. O reprime el islam: exp&#250;lsalo, afronta un gran ej&#233;rcito b&#225;rbaro cerca de la ciudad santa y provoca una declaraci&#243;n de guerra de Arabia para conquistarla.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_JOIN</Tag>
+        <English>Join the Islamic cause</English>
+        <French>Rejoindre la cause islamique</French>
+        <German>Der islamischen Sache anschlie&#223;en</German>
+        <Italian>Abbraccia la causa islamica</Italian>
+        <Spanish>Abrazar la causa isl&#225;mica</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_SUPPRESS</Tag>
+        <English>Suppress Islam</English>
+        <French>R&#233;primer l'islam</French>
+        <German>Den Islam unterdr&#252;cken</German>
+        <Italian>Reprimi l'Islam</Italian>
+        <Spanish>Reprimir el islam</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_SUPPRESSED</Tag>
+        <English>Islam has been suppressed. A great barbarian army rises near its holy city!</English>
+        <French>L'islam a &#233;t&#233; r&#233;prim&#233;. Une grande arm&#233;e barbare se l&#232;ve pr&#232;s de sa ville sainte !</French>
+        <German>Der Islam wurde unterdr&#252;ckt. Ein gro&#223;es Barbarenheer erhebt sich nahe seiner heiligen Stadt!</German>
+        <Italian>L'Islam &#232; stato represso. Un grande esercito barbaro sorge vicino alla sua citt&#224; santa!</Italian>
+        <Spanish>El islam ha sido reprimido. &#161;Un gran ej&#233;rcito b&#225;rbaro se alza cerca de su ciudad santa!</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_RALLY</Tag>
+        <English>Islam has been suppressed abroad. Your cities embrace Islam and raise troops. Conquer its holy city within %d1_Turns% turns to unlock the full Jihad event.</English>
+        <French>L'islam a &#233;t&#233; r&#233;prim&#233; &#224; l'&#233;tranger. Vos villes adoptent l'islam et l&#232;vent des troupes. Conqu&#233;rez sa ville sainte sous %d1_Turns% tours pour activer le djihad complet.</French>
+        <German>Der Islam wurde im Ausland unterdr&#252;ckt. Eure St&#228;dte bekennen sich zum Islam und stellen Truppen auf. Erobert die heilige Stadt innerhalb von %d1_Turns% Runden, um das vollst&#228;ndige Dschihad-Ereignis freizuschalten.</German>
+        <Italian>L'Islam &#232; stato represso all'estero. Le tue citt&#224; abbracciano l'Islam e reclutano truppe. Conquista la sua citt&#224; santa entro %d1_Turns% turni per attivare l'evento jihad completo.</Italian>
+        <Spanish>El islam ha sido reprimido en el extranjero. Tus ciudades adoptan el islam y reclutan tropas. Conquista su ciudad santa en %d1_Turns% turnos para activar el evento completo de la yihad.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_RFCMP_ISLAM_RALLY_FAILED</Tag>
+        <English>The deadline to conquer Islam's holy city has passed. The full Jihad event remains inactive; your cities, religion and troops are retained.</English>
+        <French>Le d&#233;lai pour conqu&#233;rir la ville sainte de l'islam a expir&#233;. Le djihad complet reste inactif ; vos villes, votre religion et vos troupes sont conserv&#233;es.</French>
+        <German>Die Frist zur Eroberung der heiligen Stadt des Islam ist abgelaufen. Das vollst&#228;ndige Dschihad-Ereignis bleibt inaktiv; St&#228;dte, Religion und Truppen bleiben erhalten.</German>
+        <Italian>Il termine per conquistare la citt&#224; santa dell'Islam &#232; scaduto. L'evento jihad completo resta inattivo; conservi citt&#224;, religione e truppe.</Italian>
+        <Spanish>Ha vencido el plazo para conquistar la ciudad santa del islam. El evento completo de la yihad sigue inactivo; conservas tus ciudades, religi&#243;n y tropas.</Spanish>
+    </TEXT>
+</Civ4GameText>

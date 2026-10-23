@@ -41,8 +41,30 @@ protected:
 
 public:
 
+    bool isArabianJihadActive() const;
+    int getArabianJihadRecruitmentPackages(int iPopulation) const;
+    int getCaliphatePartitionDecision() const { return m_iCaliphatePartitionDecision; }
+    bool isCaliphatePartitionInProgress() const { return m_bCaliphatePartitionInProgress; }
+    int getCaliphateRealmMask() const;
+    void resolveCaliphatePartition(int iDecision, int iRealm);
+    void configureCaliphateSuccessor();
+    bool isArabianJihadEnemy(TeamTypes eTeam) const;
+    void startArabianJihad();
+    void doArabianJihad();
+    void applyArabianJihadConquest(CvCity* pCity, int iRecruitPopulation, bool bMilitary);
+    void createJihadCampaign(int iCampaign, int iRecruitPackages = 0);
+    int nearestJihadCampaign(const CvPlot* pPlot) const;
+    void announceArabianJihad(bool bStarting) const;
+    void prepareIslamFounding();
+    void processIslamFounding();
+    int getIslamFoundingDecision() const { return m_iIslamFoundingDecision; }
+    bool hasArabianJihadTriggered() const { return m_bArabianJihadTriggered; }
+    void resolveIslamFounding(int iDecision, bool bJoin);
+    void convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopulation = -1);
+    void adoptIslamicCause();
 	bool isRomanRepublic() const;
 	bool isRomanLegions() const;
+	bool isHorde() const;
 	bool isRomanLogisticsUnit(UnitTypes eUnit) const;
 	int getRomanCargoBonus(UnitTypes eUnit) const;
 	int getRomanProvinceStage(int iX, int iY) const;
@@ -62,7 +84,7 @@ public:
 	CvPlotGroup* initPlotGroup(CvPlot* pPlot);													
 
 	CvCity* initCity(int iX, int iY, bool bBumpUnits, bool bUpdatePlotGroups);																																// Exposed to Python
-	void acquireCity(CvCity* pCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups);																							// Exposed to Python
+	void acquireCity(CvCity* pCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups, bool bArabianBirth = false);																							// Exposed to Python
 	void killCities();																																												// Exposed to Python
 	CvWString getNewCityName() const;																																								// Exposed to Python
 	void getCivilizationCityName(CvWString& szBuffer, CivilizationTypes eCivilization) const;
@@ -1165,6 +1187,19 @@ protected:
 	int m_iCombatExperience;
 	int m_iPopRushHurryCount;
 	int m_iInflationModifier;
+    int m_iArabianJihadEndTurn;
+    int m_iCaliphatePartitionDecision;
+    bool m_bCaliphatePartitioned;
+    bool m_bCaliphatePartitionInProgress; // Transient, only during synchronous city transfers.
+    int m_iIslamFoundingDecision;
+    bool m_bIslamSuppressionRally;
+    int m_iIslamHolyCityDeadline;
+    bool m_bArabianJihadTriggered;
+    bool m_bArabianJihadCairoSettlerGranted;
+    bool m_abArabianJihadEnemies[MAX_TEAMS];
+    std::vector<int> m_aiArabianJihadConquests;
+    int m_iJihadCampaignsCreated;
+    int m_iJihadMilitaryConquests;
 
 	uint m_uiStartTime;  // XXX save these?
 

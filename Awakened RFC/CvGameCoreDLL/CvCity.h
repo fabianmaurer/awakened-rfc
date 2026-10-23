@@ -591,6 +591,13 @@ public:
 	static int getCultureThreshold(CultureLevelTypes eLevel);
 	void setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups);
 	void updateCultureLevel(bool bUpdatePlotGroups);
+	int getNextExpansionPlotIndex() const;
+	int getNextCoveredPlotCost() const;
+	CvPlot* getNextCulturePlot() const;
+	bool needsCultureForWorkablePlots() const;
+	bool isCultureCovered(const CvPlot* pPlot) const;
+	void initCulturePlots();
+	void updateCoveredPlots(bool bUpdatePlotGroups);
 
 	int getSeaPlotYield(YieldTypes eIndex) const;																// Exposed to Python
 	void changeSeaPlotYield(YieldTypes eIndex, int iChange);
@@ -649,6 +656,7 @@ public:
 	int getCommerceRateTimes100(CommerceTypes eIndex) const;									// Exposed to Python
 	int getCommerceFromPercent(CommerceTypes eIndex, int iYieldRate) const;			// Exposed to Python
 	int getBaseCommerceRate(CommerceTypes eIndex) const;												// Exposed to Python
+	int getPapalTributeGold() const;
 	int getBaseCommerceRateTimes100(CommerceTypes eIndex) const;												// Exposed to Python
 	int getTotalCommerceRateModifier(CommerceTypes eIndex) const;								// Exposed to Python
 	void updateCommerce(CommerceTypes eIndex);
@@ -659,6 +667,7 @@ public:
 
 	int getBuildingCommerce(CommerceTypes eIndex) const;																				// Exposed to Python
 	int getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+    void updateShrineCommerce();
 	void updateBuildingCommerce();
 
 	int getSpecialistCommerce(CommerceTypes eIndex) const;											// Exposed to Python
@@ -838,7 +847,16 @@ public:
 	void setNumFreeBuilding(BuildingTypes eIndex, int iNewValue);
 
 	bool isHasReligion(ReligionTypes eIndex) const;
+	bool isReligionBanned(ReligionTypes eReligion) const;
+	void clearReligionBan(ReligionTypes eReligion);
+	bool isShrineSuppressed(BuildingTypes eBuilding) const;
+	bool removeReligionByInquisition(ReligionTypes eReligion);
+	int getReligionRivalryPercent(ReligionTypes eReligion, bool bMissionary) const;
+	void spreadReligion(ReligionTypes eReligion, bool bArrows);
 	void setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true, bool bPreserve = false);
+	void prepareConquestResearch(PlayerTypes eOldOwner, int iPopulation);
+	void grantConquestResearch();
+	void setGodStateConquest(ReligionTypes eReligion, const std::vector<BuildingTypes>& aeDestroyedBuildings);
 
 	bool isHasCorporation(CorporationTypes eIndex) const;
 	void setHasCorporation(CorporationTypes eIndex, bool bNewValue, bool bAnnounce, bool bArrows = true);
@@ -990,6 +1008,7 @@ protected:
 	int m_iSpecialistPopulation;
 	int m_iNumGreatPeople;
 	int m_iBaseGreatPeopleRate;
+    int m_iShrineCommerce;
 	int m_iGreatPeopleRateModifier;
 	int m_iGreatPeopleProgress;
 	int m_iNumWorldWonders;
@@ -1063,6 +1082,10 @@ protected:
 	int m_iDefenseDamage;
 	int m_iLastDefenseDamage;
 	int m_iOccupationTimer;
+	TechTypes m_eConquestResearchTech;
+	int m_iConquestResearchPercent;
+	ReligionTypes m_eGodStateConquestReligion;
+	std::vector<BuildingTypes> m_aeGodStateDestroyedBuildings;
 	int m_iCultureUpdateTimer;
 	int m_iCitySizeBoost;
 	int m_iSpecialistFreeExperience;
@@ -1084,6 +1107,9 @@ protected:
 	PlayerTypes m_ePreviousOwner;
 	PlayerTypes m_eOriginalOwner;
 	CultureLevelTypes m_eCultureLevel;
+	std::vector<int> m_aiCulturePlots;
+	std::vector<int> m_aiCulturePlotCosts;
+	int m_iCoveredPlots;
 
 	int* m_aiSeaPlotYield;
 	int* m_aiRiverPlotYield;
@@ -1144,6 +1170,7 @@ protected:
 
 	bool* m_pabWorkingPlot;
 	bool* m_pabHasReligion;
+	bool* m_pabReligionBanned;
 	bool* m_pabHasCorporation;
 
 	IDInfo* m_paTradeCities;

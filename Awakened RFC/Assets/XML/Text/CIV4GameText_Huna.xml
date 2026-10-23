@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_HUNA_INVASION_WARNING</Tag>
+    <English>Huna armies are gathering beyond your northwestern frontier. Prepare for an invasion in three turns!</English>
+    <French>Des arm&#233;es huna se rassemblent au-del&#224; de votre fronti&#232;re nord-ouest. Pr&#233;parez-vous &#224; une invasion dans trois tours !</French>
+    <German>Huna-Heere sammeln sich jenseits Eurer Nordwestgrenze. Bereitet Euch auf eine Invasion in drei Runden vor!</German>
+    <Italian>Eserciti huna si radunano oltre la vostra frontiera nordoccidentale. Preparatevi a un'invasione tra tre turni!</Italian>
+    <Spanish>Los ej&#233;rcitos hunas se re&#250;nen m&#225;s all&#225; de vuestra frontera noroccidental. &#161;Preparaos para una invasi&#243;n en tres turnos!</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HUNA_INVASION_ARRIVAL</Tag>
+    <English>The Hunas have entered the northwestern frontier! Defend your cities and farms.</English>
+    <French>Les Huna ont franchi la fronti&#232;re nord-ouest ! D&#233;fendez vos villes et vos fermes.</French>
+    <German>Die Hunas sind an der Nordwestgrenze eingefallen! Verteidigt Eure St&#228;dte und Bauernh&#246;fe.</German>
+    <Italian>Gli Huna hanno varcato la frontiera nordoccidentale! Difendete le vostre citt&#224; e fattorie.</Italian>
+    <Spanish>&#161;Los hunas han cruzado la frontera noroccidental! Defended vuestras ciudades y granjas.</Spanish>
+  </TEXT>
+</Civ4GameText>

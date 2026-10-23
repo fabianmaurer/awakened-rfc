@@ -93,7 +93,7 @@ def analyze(path):
             for event in record['events']:
                 events[event['event']] += 1
             for finding in record['checks']:
-                findings.append(dict(finding, turn=record['turn'], year=record['year']))
+                findings.append(dict(finding, turn=finding.get('turn', record['turn']), year=finding.get('year', record['year'])))
     complete = path.with_name('complete.json')
     if not metadata:
         issues.append('Missing metadata')

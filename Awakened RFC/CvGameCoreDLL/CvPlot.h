@@ -142,6 +142,9 @@ public:
 	int getNumCultureRangeCities(PlayerTypes ePlayer) const;																				// Exposed to Python
 
 	PlayerTypes calculateCulturalOwner() const;
+	PlayerTypes getFortGarrisonOwner(bool bIgnorePeace = false) const;
+	void updateFortOwnership();
+	void restoreFortCultureAfterPeace(TeamTypes eFirstTeam, TeamTypes eSecondTeam);
 
 	void plotAction(PlotUnitFunc func, int iData1 = -1, int iData2 = -1, PlayerTypes eOwner = NO_PLAYER, TeamTypes eTeam = NO_TEAM);
 	int plotCount(ConstPlotUnitFunc funcA, int iData1A = -1, int iData2A = -1, PlayerTypes eOwner = NO_PLAYER, TeamTypes eTeam = NO_TEAM, ConstPlotUnitFunc funcB = NULL, int iData1B = -1, int iData2B = -1) const;
@@ -511,6 +514,8 @@ protected:
 	bool m_bLayoutStateWorked:1;
 
 	char /*PlayerTypes*/ m_eOwner;
+	char /*PlayerTypes*/ m_eFortOccupier;
+	char /*TeamTypes*/ m_eFortCapturedFromTeam;
 	short /*PlotTypes*/ m_ePlotType;
 	short /*TerrainTypes*/ m_eTerrainType;
 	short /*FeatureTypes*/ m_eFeatureType;
