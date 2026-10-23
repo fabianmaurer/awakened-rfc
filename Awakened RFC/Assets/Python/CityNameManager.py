@@ -1934,6 +1934,9 @@ tCityMap = tCityMap[:27] + (tCityMap[iArabia], tCityMap[iArabia],
 # Korean home regions and continuous geographic coverage in China/Manchuria.
 tCityMap = tCityMap[:30] + (Korea.cityNameMap(tCityMap[iChina]),) + tCityMap[30:]
 
+import NativeAmerica
+tCityMap = tCityMap[:31] + (NativeAmerica.cityNameMap(),) + tCityMap[31:]
+
 class CityNameManager:
 
         def assignName(self, city):

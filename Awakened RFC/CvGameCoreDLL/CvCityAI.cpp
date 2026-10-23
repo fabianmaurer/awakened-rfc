@@ -5346,7 +5346,7 @@ int CvCityAI::AI_neededDefenders()
 	PROFILE_FUNC();
 	// Campaign AI accepts exposed quiet cities to keep its conquest army moving.
 	// Occupation and nearby threats retain ordinary reinforcement demands.
-	if ((GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad()) && !isOccupation() && !AI_isDanger())
+	if ((GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad() || GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing()) && !isOccupation() && !AI_isDanger())
 		return AI_minDefenders();
 	int iDefenders;
 	bool bOffenseWar = ((area()->getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (area()->getAreaAIType(getTeam()) == AREAAI_MASSING));
@@ -5429,6 +5429,8 @@ int CvCityAI::AI_neededDefenders()
 int CvCityAI::AI_minDefenders()
 {
 	if (GET_PLAYER(getOwnerINLINE()).AI_isRomanCampaign() || GET_PLAYER(getOwnerINLINE()).AI_isArabianJihad()) return isCapital() ? 2 : 1;
+	if (GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing() && !isOccupation() && !AI_isDanger())
+		return isCapital() ? 2 : 1;
 	int iDefenders = 1;
 	int iEra = GET_PLAYER(getOwnerINLINE()).getCurrentEra();
 	if (iEra > 0)

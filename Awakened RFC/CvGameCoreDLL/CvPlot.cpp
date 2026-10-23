@@ -3033,6 +3033,16 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 {
 	PROFILE("CvPlot::calculateCulturalOwner()")
 
+	// Papal Rome retains its immediate territory regardless of foreign culture
+	// or fort garrisons. Other city tiles still follow normal conquest rules.
+	if (abs(getX_INLINE() - 60) <= 1 && abs(getY_INLINE() - 44) <= 1)
+	{
+		CvCity* pRome = GC.getGameINLINE().getPapalRome();
+		if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()) &&
+			(!isCity() || getPlotCity() == pRome))
+			return pRome->getOwnerINLINE();
+	}
+
 	PlayerTypes eGarrisonOwner = getFortGarrisonOwner();
 	if (eGarrisonOwner != NO_PLAYER)
 	{
@@ -8715,6 +8725,10 @@ void CvPlot::doCulture()
 	int iCityStrength;
 
 	pCity = getPlotCity();
+
+	// The minor-player majority rule below must not override Rome's immunity.
+	if (pCity != NULL && pCity == GC.getGameINLINE().getPapalRome() &&
+		GC.getGameINLINE().isPapalState(pCity->getOwnerINLINE())) return;
 
 	if (pCity != NULL)
 	{

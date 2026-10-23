@@ -31,6 +31,7 @@ private:
 	static CvDLLButtonPopup* m_pInst;
 
 	bool launchTextPopup(CvPopup* pPopup, CvPopupInfo &info);
+	bool launchPapalFoundingPopup(CvPopup* pPopup, CvPopupInfo &info);
 	bool launchProductionPopup(CvPopup* pPopup, CvPopupInfo &info);
 	bool launchChangeReligionPopup(CvPopup* pPopup, CvPopupInfo &info);
 	bool launchChooseElectionPopup(CvPopup* pPopup, CvPopupInfo &info);

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<TEXT>
+		<Tag>TXT_KEY_AP_PILGRIM</Tag>
+		<English>Pilgrimage Charter</English>
+		<French>Pilgrimage Charter</French>
+		<German>Pilgrimage Charter</German>
+		<Italian>Pilgrimage Charter</Italian>
+		<Spanish>Pilgrimage Charter</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_LEAGUE</Tag>
+		<English>Holy League</English>
+		<French>Holy League</French>
+		<German>Holy League</German>
+		<Italian>Holy League</Italian>
+		<Spanish>Holy League</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_TRUCE</Tag>
+		<English>Truce of God</English>
+		<French>Truce of God</French>
+		<German>Truce of God</German>
+		<Italian>Truce of God</Italian>
+		<Spanish>Truce of God</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE</Tag>
+		<English>Call a Crusade</English>
+		<French>Call a Crusade</French>
+		<German>Call a Crusade</German>
+		<Italian>Call a Crusade</Italian>
+		<Spanish>Call a Crusade</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_RELIEF</Tag>
+		<English>Relief Tithe</English>
+		<French>Relief Tithe</French>
+		<German>Relief Tithe</German>
+		<Italian>Relief Tithe</Italian>
+		<Spanish>Relief Tithe</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_COLLEGE</Tag>
+		<English>College of Christendom</English>
+		<French>College of Christendom</French>
+		<German>College of Christendom</German>
+		<Italian>College of Christendom</Italian>
+		<Spanish>College of Christendom</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_EFFECT</Tag>
+		<English>Declare a regional Crusade against every non-Christian nation with a city in this region, including Independents and their required war allies. All council members are bound, including No and Abstain voters. Coalition members end their wars with one another, cannot declare war on each other, and receive temporary military passage. Separate peace, capitulation that evades the war, and peace events are blocked. When the Crusade ends, all coalition wars against its targets end and temporary passage expires. Regional combat victories earn 25 gold each, up to 10 rewards per nation. The reminder includes those rewards plus regional pillage and city-capture gold. Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</English>
+		<French>Declare a regional Crusade against every non-Christian nation with a city in this region, including Independents and their required war allies. All council members are bound, including No and Abstain voters. Coalition members end their wars with one another, cannot declare war on each other, and receive temporary military passage. Separate peace, capitulation that evades the war, and peace events are blocked. When the Crusade ends, all coalition wars against its targets end and temporary passage expires. Regional combat victories earn 25 gold each, up to 10 rewards per nation. The reminder includes those rewards plus regional pillage and city-capture gold. Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</French>
+		<German>Declare a regional Crusade against every non-Christian nation with a city in this region, including Independents and their required war allies. All council members are bound, including No and Abstain voters. Coalition members end their wars with one another, cannot declare war on each other, and receive temporary military passage. Separate peace, capitulation that evades the war, and peace events are blocked. When the Crusade ends, all coalition wars against its targets end and temporary passage expires. Regional combat victories earn 25 gold each, up to 10 rewards per nation. The reminder includes those rewards plus regional pillage and city-capture gold. Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</German>
+		<Italian>Declare a regional Crusade against every non-Christian nation with a city in this region, including Independents and their required war allies. All council members are bound, including No and Abstain voters. Coalition members end their wars with one another, cannot declare war on each other, and receive temporary military passage. Separate peace, capitulation that evades the war, and peace events are blocked. When the Crusade ends, all coalition wars against its targets end and temporary passage expires. Regional combat victories earn 25 gold each, up to 10 rewards per nation. The reminder includes those rewards plus regional pillage and city-capture gold. Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</Italian>
+		<Spanish>Declare a regional Crusade against every non-Christian nation with a city in this region, including Independents and their required war allies. All council members are bound, including No and Abstain voters. Coalition members end their wars with one another, cannot declare war on each other, and receive temporary military passage. Separate peace, capitulation that evades the war, and peace events are blocked. When the Crusade ends, all coalition wars against its targets end and temporary passage expires. Regional combat victories earn 25 gold each, up to 10 rewards per nation. The reminder includes those rewards plus regional pillage and city-capture gold. Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_TRUCE_EFFECT</Tag>
+		<English>End every war between the named Christian nation and other council members. This is immediate peace, not a permanent ban on future wars. No defiance veto.</English>
+		<French>End every war between the named Christian nation and other council members. This is immediate peace, not a permanent ban on future wars. No defiance veto.</French>
+		<German>End every war between the named Christian nation and other council members. This is immediate peace, not a permanent ban on future wars. No defiance veto.</German>
+		<Italian>End every war between the named Christian nation and other council members. This is immediate peace, not a permanent ban on future wars. No defiance veto.</Italian>
+		<Spanish>End every war between the named Christian nation and other council members. This is immediate peace, not a permanent ban on future wars. No defiance veto.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PILGRIM_EFFECT</Tag>
+		<English>All council members sign open borders with one another, allowing pilgrims, armies and trade to cross their territory. These agreements end bilateral trade embargoes and can later be cancelled under normal rules. The council bypasses the usual treaty technology requirement. No defiance veto.</English>
+		<French>All council members sign open borders with one another, allowing pilgrims, armies and trade to cross their territory. These agreements end bilateral trade embargoes and can later be cancelled under normal rules. The council bypasses the usual treaty technology requirement. No defiance veto.</French>
+		<German>All council members sign open borders with one another, allowing pilgrims, armies and trade to cross their territory. These agreements end bilateral trade embargoes and can later be cancelled under normal rules. The council bypasses the usual treaty technology requirement. No defiance veto.</German>
+		<Italian>All council members sign open borders with one another, allowing pilgrims, armies and trade to cross their territory. These agreements end bilateral trade embargoes and can later be cancelled under normal rules. The council bypasses the usual treaty technology requirement. No defiance veto.</Italian>
+		<Spanish>All council members sign open borders with one another, allowing pilgrims, armies and trade to cross their territory. These agreements end bilateral trade embargoes and can later be cancelled under normal rules. The council bypasses the usual treaty technology requirement. No defiance veto.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_LEAGUE_EFFECT</Tag>
+		<English>All council members sign mutual defensive pacts: an attack on one can bring the others into war. Pacts follow the normal cancellation and war rules. Available only when every member can join. The council bypasses the usual treaty technology requirement. No defiance veto.</English>
+		<French>All council members sign mutual defensive pacts: an attack on one can bring the others into war. Pacts follow the normal cancellation and war rules. Available only when every member can join. The council bypasses the usual treaty technology requirement. No defiance veto.</French>
+		<German>All council members sign mutual defensive pacts: an attack on one can bring the others into war. Pacts follow the normal cancellation and war rules. Available only when every member can join. The council bypasses the usual treaty technology requirement. No defiance veto.</German>
+		<Italian>All council members sign mutual defensive pacts: an attack on one can bring the others into war. Pacts follow the normal cancellation and war rules. Available only when every member can join. The council bypasses the usual treaty technology requirement. No defiance veto.</Italian>
+		<Spanish>All council members sign mutual defensive pacts: an attack on one can bring the others into war. Pacts follow the normal cancellation and war rules. Available only when every member can join. The council bypasses the usual treaty technology requirement. No defiance veto.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_RELIEF_EFFECT</Tag>
+		<English>Every member except the poorest pays 10% of its current treasury, rounded down. The entire fund goes to the member with the least gold when the vote passes (ties: lowest player number). Available only with at least a 100-gold treasury gap and one treasury of at least 100 gold. No defiance veto.</English>
+		<French>Every member except the poorest pays 10% of its current treasury, rounded down. The entire fund goes to the member with the least gold when the vote passes (ties: lowest player number). Available only with at least a 100-gold treasury gap and one treasury of at least 100 gold. No defiance veto.</French>
+		<German>Every member except the poorest pays 10% of its current treasury, rounded down. The entire fund goes to the member with the least gold when the vote passes (ties: lowest player number). Available only with at least a 100-gold treasury gap and one treasury of at least 100 gold. No defiance veto.</German>
+		<Italian>Every member except the poorest pays 10% of its current treasury, rounded down. The entire fund goes to the member with the least gold when the vote passes (ties: lowest player number). Available only with at least a 100-gold treasury gap and one treasury of at least 100 gold. No defiance veto.</Italian>
+		<Spanish>Every member except the poorest pays 10% of its current treasury, rounded down. The entire fund goes to the member with the least gold when the vote passes (ties: lowest player number). Available only with at least a 100-gold treasury gap and one treasury of at least 100 gold. No defiance veto.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_COLLEGE_EFFECT</Tag>
+		<English>Every member pays 50 gold. Each team receives 20% of the cost of its current research as research progress if another member already knows that technology (one grant per team). Available only when everyone can afford the levy and at least one member can learn. No defiance veto.</English>
+		<French>Every member pays 50 gold. Each team receives 20% of the cost of its current research as research progress if another member already knows that technology (one grant per team). Available only when everyone can afford the levy and at least one member can learn. No defiance veto.</French>
+		<German>Every member pays 50 gold. Each team receives 20% of the cost of its current research as research progress if another member already knows that technology (one grant per team). Available only when everyone can afford the levy and at least one member can learn. No defiance veto.</German>
+		<Italian>Every member pays 50 gold. Each team receives 20% of the cost of its current research as research progress if another member already knows that technology (one grant per team). Available only when everyone can afford the levy and at least one member can learn. No defiance veto.</Italian>
+		<Spanish>Every member pays 50 gold. Each team receives 20% of the cost of its current research as research progress if another member already knows that technology (one grant per team). Available only when everyone can afford the levy and at least one member can learn. No defiance veto.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_TWO_THIRDS</Tag>
+		<English>Requires at least two-thirds of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</English>
+		<French>Requires at least two-thirds of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</French>
+		<German>Requires at least two-thirds of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</German>
+		<Italian>Requires at least two-thirds of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</Italian>
+		<Spanish>Requires at least two-thirds of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_MAJORITY</Tag>
+		<English>Requires more than half of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</English>
+		<French>Requires more than half of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</French>
+		<German>Requires more than half of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</German>
+		<Italian>Requires more than half of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</Italian>
+		<Spanish>Requires more than half of ALL eligible vote weight. Abstentions and outstanding votes do not count as Yes.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_MORE_YES</Tag>
+		<English>Passes with more Yes than No vote weight; abstentions do not count for either side.</English>
+		<French>Passes with more Yes than No vote weight; abstentions do not count for either side.</French>
+		<German>Passes with more Yes than No vote weight; abstentions do not count for either side.</German>
+		<Italian>Passes with more Yes than No vote weight; abstentions do not count for either side.</Italian>
+		<Spanish>Passes with more Yes than No vote weight; abstentions do not count for either side.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_REWARD</Tag>
+		<English>Crusade participation: +%d1 gold. %d2 rewarded victories remaining.</English>
+		<French>Crusade participation: +%d1 gold. %d2 rewarded victories remaining.</French>
+		<German>Crusade participation: +%d1 gold. %d2 rewarded victories remaining.</German>
+		<Italian>Crusade participation: +%d1 gold. %d2 rewarded victories remaining.</Italian>
+		<Spanish>Crusade participation: +%d1 gold. %d2 rewarded victories remaining.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_LIVE_TITLE</Tag>
+		<English>%s1 - %d2 turns remaining</English>
+		<French>%s1 - %d2 turns remaining</French>
+		<German>%s1 - %d2 turns remaining</German>
+		<Italian>%s1 - %d2 turns remaining</Italian>
+		<Spanish>%s1 - %d2 turns remaining</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_LIVE_SCORE</Tag>
+		<English>Yes %d1 (%d2 nations)   Abstain %d3 (%d4)   No %d5 (%d6)   Cast %d7 / %d8 votes   Outstanding %d9 (%d10)</English>
+		<French>Yes %d1 (%d2 nations)   Abstain %d3 (%d4)   No %d5 (%d6)   Cast %d7 / %d8 votes   Outstanding %d9 (%d10)</French>
+		<German>Yes %d1 (%d2 nations)   Abstain %d3 (%d4)   No %d5 (%d6)   Cast %d7 / %d8 votes   Outstanding %d9 (%d10)</German>
+		<Italian>Yes %d1 (%d2 nations)   Abstain %d3 (%d4)   No %d5 (%d6)   Cast %d7 / %d8 votes   Outstanding %d9 (%d10)</Italian>
+		<Spanish>Yes %d1 (%d2 nations)   Abstain %d3 (%d4)   No %d5 (%d6)   Cast %d7 / %d8 votes   Outstanding %d9 (%d10)</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PEDIA</Tag>
+		<English>The Apostolic Palace is founded only by the Papal State event in the city of Rome; it cannot be built. Rome must contain Christianity. A Christian owner may cede Rome to a new Papal State or refuse at a repeated diplomatic cost. An owner using Theocracy and Holy State may instead turn their entire nation into the Papal State. Independent Rome flips automatically. Non-Christian or barbarian ownership, Tolerance and State Atheism prevent the event.[PARAGRAPH:1]The Papal State cannot change its state religion or legitimation civic unless it adopts Tolerance, and cannot adopt State Atheism. Tolerance disables the Palace, its councils and its bonuses. Returning to Christian religious rule restores them. The Palace is inactive if the Papal State loses Rome.[PARAGRAPH:1]Christian councils meet approximately every 30 turns, scaled to game speed, with 1-3 turn capital-distance courier delays and a live public tally. All members must follow passed resolutions; voting offers only Yes, No and Abstain. Crusades, leagues, truces, pilgrimage, relief, scholarship and religious reform have explicit effects and thresholds. See each proposal for its exact obligations. Crusade conquests are settled under historical claims, neighboring Christian nations and the dedicated Independent Crusader States.[PARAGRAPH:1]The Papal State has ten turns to recover a lost Rome; failure dissolves it, releases its remaining cities as Independents and disbands its army. No new Papal founding event occurs while a Papal State survives. Every founding or restoration starts with a strong AI preference for Theocracy and Holy State. Once the world reaches the Modern era, this preference fades over 30 turns at Normal speed. A modern restoration restarts the full preference and its fade. Human civic choices remain player-controlled.</English>
+		<French>The Apostolic Palace is founded only by the Papal State event in the city of Rome; it cannot be built. Rome must contain Christianity. A Christian owner may cede Rome to a new Papal State or refuse at a repeated diplomatic cost. An owner using Theocracy and Holy State may instead turn their entire nation into the Papal State. Independent Rome flips automatically. Non-Christian or barbarian ownership, Tolerance and State Atheism prevent the event.[PARAGRAPH:1]The Papal State cannot change its state religion or legitimation civic unless it adopts Tolerance, and cannot adopt State Atheism. Tolerance disables the Palace, its councils and its bonuses. Returning to Christian religious rule restores them. The Palace is inactive if the Papal State loses Rome.[PARAGRAPH:1]Christian councils meet approximately every 30 turns, scaled to game speed, with 1-3 turn capital-distance courier delays and a live public tally. All members must follow passed resolutions; voting offers only Yes, No and Abstain. Crusades, leagues, truces, pilgrimage, relief, scholarship and religious reform have explicit effects and thresholds. See each proposal for its exact obligations. Crusade conquests are settled under historical claims, neighboring Christian nations and the dedicated Independent Crusader States.[PARAGRAPH:1]L&#8217;&#201;tat pontifical dispose de dix tours pour reprendre Rome ; en cas d&#8217;&#233;chec, il est dissous, ses villes restantes deviennent ind&#233;pendantes et son arm&#233;e est dissoute. Aucun nouvel &#233;v&#233;nement de fondation n&#8217;a lieu tant qu&#8217;il survit. Chaque fondation ou restauration donne &#224; l&#8217;IA une forte pr&#233;f&#233;rence pour Th&#233;ocratie et &#201;tat sacr&#233;. D&#232;s l&#8217;&#232;re moderne mondiale, elle diminue sur 30 tours en vitesse normale. Une restauration moderne r&#233;tablit cette pr&#233;f&#233;rence et relance son d&#233;clin. Les joueurs humains gardent le choix de leurs doctrines.</French>
+		<German>The Apostolic Palace is founded only by the Papal State event in the city of Rome; it cannot be built. Rome must contain Christianity. A Christian owner may cede Rome to a new Papal State or refuse at a repeated diplomatic cost. An owner using Theocracy and Holy State may instead turn their entire nation into the Papal State. Independent Rome flips automatically. Non-Christian or barbarian ownership, Tolerance and State Atheism prevent the event.[PARAGRAPH:1]The Papal State cannot change its state religion or legitimation civic unless it adopts Tolerance, and cannot adopt State Atheism. Tolerance disables the Palace, its councils and its bonuses. Returning to Christian religious rule restores them. The Palace is inactive if the Papal State loses Rome.[PARAGRAPH:1]Christian councils meet approximately every 30 turns, scaled to game speed, with 1-3 turn capital-distance courier delays and a live public tally. All members must follow passed resolutions; voting offers only Yes, No and Abstain. Crusades, leagues, truces, pilgrimage, relief, scholarship and religious reform have explicit effects and thresholds. See each proposal for its exact obligations. Crusade conquests are settled under historical claims, neighboring Christian nations and the dedicated Independent Crusader States.[PARAGRAPH:1]Der Kirchenstaat hat zehn Runden, um das verlorene Rom zur&#252;ckzuerobern. Bei Misserfolg wird er aufgel&#246;st, seine &#252;brigen St&#228;dte werden unabh&#228;ngig und seine Armee wird aufgel&#246;st. Solange er existiert, gibt es kein neues Gr&#252;ndungsereignis. Jede Gr&#252;ndung oder Wiederherstellung gibt der KI eine starke Vorliebe f&#252;r Theokratie und Heiligen Staat. Sobald die Welt die Moderne erreicht, klingt sie bei normaler Geschwindigkeit &#252;ber 30 Runden ab. Eine moderne Wiederherstellung erneuert die volle Vorliebe und startet ihr Abklingen neu. Menschliche Spieler entscheiden weiterhin selbst &#252;ber ihre Staatsformen.</German>
+		<Italian>The Apostolic Palace is founded only by the Papal State event in the city of Rome; it cannot be built. Rome must contain Christianity. A Christian owner may cede Rome to a new Papal State or refuse at a repeated diplomatic cost. An owner using Theocracy and Holy State may instead turn their entire nation into the Papal State. Independent Rome flips automatically. Non-Christian or barbarian ownership, Tolerance and State Atheism prevent the event.[PARAGRAPH:1]The Papal State cannot change its state religion or legitimation civic unless it adopts Tolerance, and cannot adopt State Atheism. Tolerance disables the Palace, its councils and its bonuses. Returning to Christian religious rule restores them. The Palace is inactive if the Papal State loses Rome.[PARAGRAPH:1]Christian councils meet approximately every 30 turns, scaled to game speed, with 1-3 turn capital-distance courier delays and a live public tally. All members must follow passed resolutions; voting offers only Yes, No and Abstain. Crusades, leagues, truces, pilgrimage, relief, scholarship and religious reform have explicit effects and thresholds. See each proposal for its exact obligations. Crusade conquests are settled under historical claims, neighboring Christian nations and the dedicated Independent Crusader States.[PARAGRAPH:1]Lo Stato Pontificio ha dieci turni per riconquistare Roma; in caso di fallimento viene sciolto, le citt&#224; rimaste diventano indipendenti e il suo esercito viene sciolto. Non si verifica un nuovo evento di fondazione finch&#233; sopravvive. Ogni fondazione o restaurazione conferisce all&#8217;IA una forte preferenza per Teocrazia e Stato sacro. Quando il mondo raggiunge l&#8217;era moderna, questa preferenza svanisce in 30 turni a velocit&#224; normale. Una restaurazione moderna ripristina la preferenza completa e ne riavvia il declino. I giocatori umani mantengono il controllo delle proprie scelte civiche.</Italian>
+		<Spanish>The Apostolic Palace is founded only by the Papal State event in the city of Rome; it cannot be built. Rome must contain Christianity. A Christian owner may cede Rome to a new Papal State or refuse at a repeated diplomatic cost. An owner using Theocracy and Holy State may instead turn their entire nation into the Papal State. Independent Rome flips automatically. Non-Christian or barbarian ownership, Tolerance and State Atheism prevent the event.[PARAGRAPH:1]The Papal State cannot change its state religion or legitimation civic unless it adopts Tolerance, and cannot adopt State Atheism. Tolerance disables the Palace, its councils and its bonuses. Returning to Christian religious rule restores them. The Palace is inactive if the Papal State loses Rome.[PARAGRAPH:1]Christian councils meet approximately every 30 turns, scaled to game speed, with 1-3 turn capital-distance courier delays and a live public tally. All members must follow passed resolutions; voting offers only Yes, No and Abstain. Crusades, leagues, truces, pilgrimage, relief, scholarship and religious reform have explicit effects and thresholds. See each proposal for its exact obligations. Crusade conquests are settled under historical claims, neighboring Christian nations and the dedicated Independent Crusader States.[PARAGRAPH:1]Los Estados Pontificios tienen diez turnos para recuperar Roma; si fracasan, se disuelven, sus ciudades restantes se independizan y su ej&#233;rcito se disuelve. No se produce otro evento de fundaci&#243;n mientras sobrevivan. Cada fundaci&#243;n o restauraci&#243;n otorga a la IA una fuerte preferencia por Teocracia y Estado sagrado. Cuando el mundo alcanza la era moderna, esta preferencia desaparece en 30 turnos a velocidad normal. Una restauraci&#243;n moderna recupera la preferencia completa y reinicia su disminuci&#243;n. Los jugadores humanos mantienen el control de sus opciones c&#237;vicas.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_STRATEGY</Tag>
+		<English>The Apostolic Palace cannot be constructed. Once Christianity is present in the city of Rome, its eligible Christian owner may cede Rome to establish the Papal State, or become the Papal State if already using Theocracy and Holy State. Independent Rome becomes Papal automatically. The Palace convenes binding Christian councils while controlled by the Christian, non-tolerant Papal State.[PARAGRAPH:1]The Papal State has ten turns to recover a lost Rome; failure dissolves it, releases its remaining cities as Independents and disbands its army. No new Papal founding event occurs while a Papal State survives. Every founding or restoration starts with a strong AI preference for Theocracy and Holy State. Once the world reaches the Modern era, this preference fades over 30 turns at Normal speed. A modern restoration restarts the full preference and its fade. Human civic choices remain player-controlled.</English>
+		<French>The Apostolic Palace cannot be constructed. Once Christianity is present in the city of Rome, its eligible Christian owner may cede Rome to establish the Papal State, or become the Papal State if already using Theocracy and Holy State. Independent Rome becomes Papal automatically. The Palace convenes binding Christian councils while controlled by the Christian, non-tolerant Papal State.[PARAGRAPH:1]L&#8217;&#201;tat pontifical dispose de dix tours pour reprendre Rome ; en cas d&#8217;&#233;chec, il est dissous, ses villes restantes deviennent ind&#233;pendantes et son arm&#233;e est dissoute. Aucun nouvel &#233;v&#233;nement de fondation n&#8217;a lieu tant qu&#8217;il survit. Chaque fondation ou restauration donne &#224; l&#8217;IA une forte pr&#233;f&#233;rence pour Th&#233;ocratie et &#201;tat sacr&#233;. D&#232;s l&#8217;&#232;re moderne mondiale, elle diminue sur 30 tours en vitesse normale. Une restauration moderne r&#233;tablit cette pr&#233;f&#233;rence et relance son d&#233;clin. Les joueurs humains gardent le choix de leurs doctrines.</French>
+		<German>The Apostolic Palace cannot be constructed. Once Christianity is present in the city of Rome, its eligible Christian owner may cede Rome to establish the Papal State, or become the Papal State if already using Theocracy and Holy State. Independent Rome becomes Papal automatically. The Palace convenes binding Christian councils while controlled by the Christian, non-tolerant Papal State.[PARAGRAPH:1]Der Kirchenstaat hat zehn Runden, um das verlorene Rom zur&#252;ckzuerobern. Bei Misserfolg wird er aufgel&#246;st, seine &#252;brigen St&#228;dte werden unabh&#228;ngig und seine Armee wird aufgel&#246;st. Solange er existiert, gibt es kein neues Gr&#252;ndungsereignis. Jede Gr&#252;ndung oder Wiederherstellung gibt der KI eine starke Vorliebe f&#252;r Theokratie und Heiligen Staat. Sobald die Welt die Moderne erreicht, klingt sie bei normaler Geschwindigkeit &#252;ber 30 Runden ab. Eine moderne Wiederherstellung erneuert die volle Vorliebe und startet ihr Abklingen neu. Menschliche Spieler entscheiden weiterhin selbst &#252;ber ihre Staatsformen.</German>
+		<Italian>The Apostolic Palace cannot be constructed. Once Christianity is present in the city of Rome, its eligible Christian owner may cede Rome to establish the Papal State, or become the Papal State if already using Theocracy and Holy State. Independent Rome becomes Papal automatically. The Palace convenes binding Christian councils while controlled by the Christian, non-tolerant Papal State.[PARAGRAPH:1]Lo Stato Pontificio ha dieci turni per riconquistare Roma; in caso di fallimento viene sciolto, le citt&#224; rimaste diventano indipendenti e il suo esercito viene sciolto. Non si verifica un nuovo evento di fondazione finch&#233; sopravvive. Ogni fondazione o restaurazione conferisce all&#8217;IA una forte preferenza per Teocrazia e Stato sacro. Quando il mondo raggiunge l&#8217;era moderna, questa preferenza svanisce in 30 turni a velocit&#224; normale. Una restaurazione moderna ripristina la preferenza completa e ne riavvia il declino. I giocatori umani mantengono il controllo delle proprie scelte civiche.</Italian>
+		<Spanish>The Apostolic Palace cannot be constructed. Once Christianity is present in the city of Rome, its eligible Christian owner may cede Rome to establish the Papal State, or become the Papal State if already using Theocracy and Holy State. Independent Rome becomes Papal automatically. The Palace convenes binding Christian councils while controlled by the Christian, non-tolerant Papal State.[PARAGRAPH:1]Los Estados Pontificios tienen diez turnos para recuperar Roma; si fracasan, se disuelven, sus ciudades restantes se independizan y su ej&#233;rcito se disuelve. No se produce otro evento de fundaci&#243;n mientras sobrevivan. Cada fundaci&#243;n o restauraci&#243;n otorga a la IA una fuerte preferencia por Teocracia y Estado sagrado. Cuando el mundo alcanza la era moderna, esta preferencia desaparece en 30 turnos a velocidad normal. Una restauraci&#243;n moderna recupera la preferencia completa y reinicia su disminuci&#243;n. Los jugadores humanos mantienen el control de sus opciones c&#237;vicas.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_RESULT_PASS</Tag>
+		<English>Passed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</English>
+		<French>Passed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</French>
+		<German>Passed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</German>
+		<Italian>Passed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</Italian>
+		<Spanish>Passed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_RESULT_FAIL</Tag>
+		<English>Failed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</English>
+		<French>Failed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</French>
+		<German>Failed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</German>
+		<Italian>Failed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</Italian>
+		<Spanish>Failed: Yes %d1, No %d2, Abstain %d3 / %d4 total vote weight.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_DURATION</Tag>
+		<English>Initial travel window: %d1 turns. Combat, effective bombardment, pillaging or conquest against the opposing Crusade side in this region restores at least %d2 turns remaining. Activity never shortens the timer; movement alone does not extend it.</English>
+		<French>Initial travel window: %d1 turns. Combat, effective bombardment, pillaging or conquest against the opposing Crusade side in this region restores at least %d2 turns remaining. Activity never shortens the timer; movement alone does not extend it.</French>
+		<German>Initial travel window: %d1 turns. Combat, effective bombardment, pillaging or conquest against the opposing Crusade side in this region restores at least %d2 turns remaining. Activity never shortens the timer; movement alone does not extend it.</German>
+		<Italian>Initial travel window: %d1 turns. Combat, effective bombardment, pillaging or conquest against the opposing Crusade side in this region restores at least %d2 turns remaining. Activity never shortens the timer; movement alone does not extend it.</Italian>
+		<Spanish>Initial travel window: %d1 turns. Combat, effective bombardment, pillaging or conquest against the opposing Crusade side in this region restores at least %d2 turns remaining. Activity never shortens the timer; movement alone does not extend it.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_TARGETS</Tag>
+		<English>Target nations (including required allies; re-evaluated when the vote passes):</English>
+		<French>Target nations (including required allies; re-evaluated when the vote passes):</French>
+		<German>Target nations (including required allies; re-evaluated when the vote passes):</German>
+		<Italian>Target nations (including required allies; re-evaluated when the vote passes):</Italian>
+		<Spanish>Target nations (including required allies; re-evaluated when the vote passes):</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_LIVE</Tag>
+		<English>Crusade: %s1 - %d2 turns remaining</English>
+		<French>Crusade: %s1 - %d2 turns remaining</French>
+		<German>Crusade: %s1 - %d2 turns remaining</German>
+		<Italian>Crusade: %s1 - %d2 turns remaining</Italian>
+		<Spanish>Crusade: %s1 - %d2 turns remaining</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_PLUNDER</Tag>
+		<English>Your plunder: %d1 gold     Coalition plunder: %d2 gold</English>
+		<French>Your plunder: %d1 gold     Coalition plunder: %d2 gold</French>
+		<German>Your plunder: %d1 gold     Coalition plunder: %d2 gold</German>
+		<Italian>Your plunder: %d1 gold     Coalition plunder: %d2 gold</Italian>
+		<Spanish>Your plunder: %d1 gold     Coalition plunder: %d2 gold</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_LIVE_RULES</Tag>
+		<English>Coalition peace and military passage active. No separate peace with targets.</English>
+		<French>Coalition peace and military passage active. No separate peace with targets.</French>
+		<German>Coalition peace and military passage active. No separate peace with targets.</German>
+		<Italian>Coalition peace and military passage active. No separate peace with targets.</Italian>
+		<Spanish>Coalition peace and military passage active. No separate peace with targets.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_ENDED</Tag>
+		<English>The Crusade in %s1 has ended. Peace with its targets is restored; your nation gained %d2 gold.</English>
+		<French>The Crusade in %s1 has ended. Peace with its targets is restored; your nation gained %d2 gold.</French>
+		<German>The Crusade in %s1 has ended. Peace with its targets is restored; your nation gained %d2 gold.</German>
+		<Italian>The Crusade in %s1 has ended. Peace with its targets is restored; your nation gained %d2 gold.</Italian>
+		<Spanish>The Crusade in %s1 has ended. Peace with its targets is restored; your nation gained %d2 gold.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_IBERIA</Tag>
+		<English>Iberia</English>
+		<French>Iberia</French>
+		<German>Iberia</German>
+		<Italian>Iberia</Italian>
+		<Spanish>Iberia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_WEST_EUROPE</Tag>
+		<English>Western Europe</English>
+		<French>Western Europe</French>
+		<German>Western Europe</German>
+		<Italian>Western Europe</Italian>
+		<Spanish>Western Europe</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_NORTH_EUROPE</Tag>
+		<English>Northern Europe</English>
+		<French>Northern Europe</French>
+		<German>Northern Europe</German>
+		<Italian>Northern Europe</Italian>
+		<Spanish>Northern Europe</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_EAST_EUROPE</Tag>
+		<English>Eastern Europe</English>
+		<French>Eastern Europe</French>
+		<German>Eastern Europe</German>
+		<Italian>Eastern Europe</Italian>
+		<Spanish>Eastern Europe</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_ITALY_BALKANS</Tag>
+		<English>Italy and the Balkans</English>
+		<French>Italy and the Balkans</French>
+		<German>Italy and the Balkans</German>
+		<Italian>Italy and the Balkans</Italian>
+		<Spanish>Italy and the Balkans</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_ANATOLIA</Tag>
+		<English>Anatolia and the Caucasus</English>
+		<French>Anatolia and the Caucasus</French>
+		<German>Anatolia and the Caucasus</German>
+		<Italian>Anatolia and the Caucasus</Italian>
+		<Spanish>Anatolia and the Caucasus</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_LEVANT</Tag>
+		<English>The Levant</English>
+		<French>The Levant</French>
+		<German>The Levant</German>
+		<Italian>The Levant</Italian>
+		<Spanish>The Levant</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_EGYPT</Tag>
+		<English>Egypt</English>
+		<French>Egypt</French>
+		<German>Egypt</German>
+		<Italian>Egypt</Italian>
+		<Spanish>Egypt</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_MAGHREB</Tag>
+		<English>The Maghreb</English>
+		<French>The Maghreb</French>
+		<German>The Maghreb</German>
+		<Italian>The Maghreb</Italian>
+		<Spanish>The Maghreb</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_ARABIA</Tag>
+		<English>Arabia</English>
+		<French>Arabia</French>
+		<German>Arabia</German>
+		<Italian>Arabia</Italian>
+		<Spanish>Arabia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_PERSIA</Tag>
+		<English>Persia and Mesopotamia</English>
+		<French>Persia and Mesopotamia</French>
+		<German>Persia and Mesopotamia</German>
+		<Italian>Persia and Mesopotamia</Italian>
+		<Spanish>Persia and Mesopotamia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_CENTRAL_ASIA</Tag>
+		<English>Central Asia</English>
+		<French>Central Asia</French>
+		<German>Central Asia</German>
+		<Italian>Central Asia</Italian>
+		<Spanish>Central Asia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_INDIA</Tag>
+		<English>India</English>
+		<French>India</French>
+		<German>India</German>
+		<Italian>India</Italian>
+		<Spanish>India</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_EAST_ASIA</Tag>
+		<English>East Asia</English>
+		<French>East Asia</French>
+		<German>East Asia</German>
+		<Italian>East Asia</Italian>
+		<Spanish>East Asia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_SOUTHEAST_ASIA</Tag>
+		<English>Southeast Asia</English>
+		<French>Southeast Asia</French>
+		<German>Southeast Asia</German>
+		<Italian>Southeast Asia</Italian>
+		<Spanish>Southeast Asia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_AFRICA</Tag>
+		<English>Sub-Saharan Africa</English>
+		<French>Sub-Saharan Africa</French>
+		<German>Sub-Saharan Africa</German>
+		<Italian>Sub-Saharan Africa</Italian>
+		<Spanish>Sub-Saharan Africa</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_NORTH_AMERICA</Tag>
+		<English>North America</English>
+		<French>North America</French>
+		<German>North America</German>
+		<Italian>North America</Italian>
+		<Spanish>North America</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_SOUTH_AMERICA</Tag>
+		<English>South America</English>
+		<French>South America</French>
+		<German>South America</German>
+		<Italian>South America</Italian>
+		<Spanish>South America</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REGION_OCEANIA</Tag>
+		<English>Oceania</English>
+		<French>Oceania</French>
+		<German>Oceania</German>
+		<Italian>Oceania</Italian>
+		<Spanish>Oceania</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_HOLY_KINGDOM</Tag>
+		<English>Holy Kingdom of %s1</English>
+		<French>Holy Kingdom of %s1</French>
+		<German>Holy Kingdom of %s1</German>
+		<Italian>Holy Kingdom of %s1</Italian>
+		<Spanish>Holy Kingdom of %s1</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADER_STATE</Tag>
+		<English>Independent Crusader States</English>
+		<French>Independent Crusader States</French>
+		<German>Independent Crusader States</German>
+		<Italian>Independent Crusader States</Italian>
+		<Spanish>Independent Crusader States</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_SETTLEMENT</Tag>
+		<English>%s1 has been assigned to %s2 under the Crusade settlement. The conqueror keeps its conquest rewards.</English>
+		<French>%s1 has been assigned to %s2 under the Crusade settlement. The conqueror keeps its conquest rewards.</French>
+		<German>%s1 has been assigned to %s2 under the Crusade settlement. The conqueror keeps its conquest rewards.</German>
+		<Italian>%s1 has been assigned to %s2 under the Crusade settlement. The conqueror keeps its conquest rewards.</Italian>
+		<Spanish>%s1 has been assigned to %s2 under the Crusade settlement. The conqueror keeps its conquest rewards.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_CRUSADE_SETTLEMENT_RULE</Tag>
+		<English>Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</English>
+		<French>Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</French>
+		<German>Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</German>
+		<Italian>Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</Italian>
+		<Spanish>Conquered cities in the target region are assigned, in order, to a Christian or extinct nation with a historical flip claim; the nearest neighboring Christian nation; or a dedicated Independent Crusader state. The conqueror cannot choose to keep, raze or relocate the settlement. Extinct claimants return as Christian Holy State kingdoms and join the coalition; other recipients join it too.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_STATE</Tag>
+		<English>The Papal State</English>
+		<French>The Papal State</French>
+		<German>The Papal State</German>
+		<Italian>The Papal State</Italian>
+		<Spanish>The Papal State</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_EVENT_TITLE</Tag>
+		<English>The Papal Claim to Rome</English>
+		<French>The Papal Claim to Rome</French>
+		<German>The Papal Claim to Rome</German>
+		<Italian>The Papal Claim to Rome</Italian>
+		<Spanish>The Papal Claim to Rome</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_EVENT_BODY</Tag>
+		<English>Christianity has taken root in Rome. The Pope requests temporal sovereignty over the city and offers to establish the Apostolic Palace there. You may cede Rome to a new Papal State, or refuse and receive a stacking -2 relations penalty from every other Christian nation. These refusal penalties disappear when you accept the request (including becoming the Papal State) or lose Rome. Refusal postpones the request for %d1 turns. Ceding your last city can end your nation. A nation already using Holy State and Theocracy may instead become the Papal State, retaining its territory and player control. The Papal State is bound to its state religion and legitimation civic while it is not tolerant, and can never adopt State Atheism. Tolerance disables the Palace and all its effects; returning to Christian religious rule restores them.</English>
+		<French>Christianity has taken root in Rome. The Pope requests temporal sovereignty over the city and offers to establish the Apostolic Palace there. You may cede Rome to a new Papal State, or refuse and receive a stacking -2 relations penalty from every other Christian nation. These refusal penalties disappear when you accept the request (including becoming the Papal State) or lose Rome. Refusal postpones the request for %d1 turns. Ceding your last city can end your nation. A nation already using Holy State and Theocracy may instead become the Papal State, retaining its territory and player control. The Papal State is bound to its state religion and legitimation civic while it is not tolerant, and can never adopt State Atheism. Tolerance disables the Palace and all its effects; returning to Christian religious rule restores them.</French>
+		<German>Christianity has taken root in Rome. The Pope requests temporal sovereignty over the city and offers to establish the Apostolic Palace there. You may cede Rome to a new Papal State, or refuse and receive a stacking -2 relations penalty from every other Christian nation. These refusal penalties disappear when you accept the request (including becoming the Papal State) or lose Rome. Refusal postpones the request for %d1 turns. Ceding your last city can end your nation. A nation already using Holy State and Theocracy may instead become the Papal State, retaining its territory and player control. The Papal State is bound to its state religion and legitimation civic while it is not tolerant, and can never adopt State Atheism. Tolerance disables the Palace and all its effects; returning to Christian religious rule restores them.</German>
+		<Italian>Christianity has taken root in Rome. The Pope requests temporal sovereignty over the city and offers to establish the Apostolic Palace there. You may cede Rome to a new Papal State, or refuse and receive a stacking -2 relations penalty from every other Christian nation. These refusal penalties disappear when you accept the request (including becoming the Papal State) or lose Rome. Refusal postpones the request for %d1 turns. Ceding your last city can end your nation. A nation already using Holy State and Theocracy may instead become the Papal State, retaining its territory and player control. The Papal State is bound to its state religion and legitimation civic while it is not tolerant, and can never adopt State Atheism. Tolerance disables the Palace and all its effects; returning to Christian religious rule restores them.</Italian>
+		<Spanish>Christianity has taken root in Rome. The Pope requests temporal sovereignty over the city and offers to establish the Apostolic Palace there. You may cede Rome to a new Papal State, or refuse and receive a stacking -2 relations penalty from every other Christian nation. These refusal penalties disappear when you accept the request (including becoming the Papal State) or lose Rome. Refusal postpones the request for %d1 turns. Ceding your last city can end your nation. A nation already using Holy State and Theocracy may instead become the Papal State, retaining its territory and player control. The Papal State is bound to its state religion and legitimation civic while it is not tolerant, and can never adopt State Atheism. Tolerance disables the Palace and all its effects; returning to Christian religious rule restores them.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_ESTABLISH</Tag>
+		<English>Establish the Papal State: cede Rome and found the Apostolic Palace.</English>
+		<French>Establish the Papal State: cede Rome and found the Apostolic Palace.</French>
+		<German>Establish the Papal State: cede Rome and found the Apostolic Palace.</German>
+		<Italian>Establish the Papal State: cede Rome and found the Apostolic Palace.</Italian>
+		<Spanish>Establish the Papal State: cede Rome and found the Apostolic Palace.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_DENY</Tag>
+		<English>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</English>
+		<French>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</French>
+		<German>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</German>
+		<Italian>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</Italian>
+		<Spanish>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPAL_BECOME</Tag>
+		<English>Become the Papal State: retain your nation and establish the Palace in Rome.</English>
+		<French>Become the Papal State: retain your nation and establish the Palace in Rome.</French>
+		<German>Become the Papal State: retain your nation and establish the Palace in Rome.</German>
+		<Italian>Become the Papal State: retain your nation and establish the Palace in Rome.</Italian>
+		<Spanish>Become the Papal State: retain your nation and establish the Palace in Rome.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_PAPACY_ESTABLISHED</Tag>
+		<English>The Papal State has been established and the Apostolic Palace founded in Rome.</English>
+		<French>The Papal State has been established and the Apostolic Palace founded in Rome.</French>
+		<German>The Papal State has been established and the Apostolic Palace founded in Rome.</German>
+		<Italian>The Papal State has been established and the Apostolic Palace founded in Rome.</Italian>
+		<Spanish>The Papal State has been established and the Apostolic Palace founded in Rome.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REFORM</Tag>
+		<English>Reaffirm Christian Rule</English>
+		<French>Reaffirm Christian Rule</French>
+		<German>Reaffirm Christian Rule</German>
+		<Italian>Reaffirm Christian Rule</Italian>
+		<Spanish>Reaffirm Christian Rule</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_AP_REFORM_EFFECT</Tag>
+		<English>Every participating nation immediately adopts Theocracy as its legitimation civic and Holy State as its religion civic, without anarchy. This is a binding change for Yes, No and Abstain voters alike. Normal future civic changes remain possible. No defiance veto.</English>
+		<French>Every participating nation immediately adopts Theocracy as its legitimation civic and Holy State as its religion civic, without anarchy. This is a binding change for Yes, No and Abstain voters alike. Normal future civic changes remain possible. No defiance veto.</French>
+		<German>Every participating nation immediately adopts Theocracy as its legitimation civic and Holy State as its religion civic, without anarchy. This is a binding change for Yes, No and Abstain voters alike. Normal future civic changes remain possible. No defiance veto.</German>
+		<Italian>Every participating nation immediately adopts Theocracy as its legitimation civic and Holy State as its religion civic, without anarchy. This is a binding change for Yes, No and Abstain voters alike. Normal future civic changes remain possible. No defiance veto.</Italian>
+		<Spanish>Every participating nation immediately adopts Theocracy as its legitimation civic and Holy State as its religion civic, without anarchy. This is a binding change for Yes, No and Abstain voters alike. Normal future civic changes remain possible. No defiance veto.</Spanish>
+	</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_AP_UP_HELP</Tag>
+	<English>The Power of the Holy See: while the Papal State controls an active Apostolic Palace, Rome gains +2 base [ICON_GOLD] per foreign city containing Christianity, amplified by gold modifiers. Papal cities containing Christianity gain +50% city defense; bombardment still applies. Both bonuses stop when the Palace is inactive, including under Tolerance or after losing Rome.</English>
+	<French>Le pouvoir du Saint-Si&#232;ge : tant que l&#8217;&#201;tat pontifical contr&#244;le un Palais apostolique actif, Rome gagne +2 [ICON_GOLD] de base par ville &#233;trang&#232;re abritant le christianisme, amplifi&#233;s par les modificateurs d&#8217;or. Les villes pontificales chr&#233;tiennes gagnent +50 % de d&#233;fense urbaine ; le bombardement reste applicable. Ces bonus cessent si le Palais est inactif, notamment sous la Tol&#233;rance ou apr&#232;s la perte de Rome.</French>
+	<German>Die Macht des Heiligen Stuhls: Solange der Kirchenstaat den aktiven Apostolischen Palast kontrolliert, erh&#228;lt Rom +2 Basis-[ICON_GOLD] je ausl&#228;ndischer Stadt mit Christentum, verst&#228;rkt durch Goldmodifikatoren. P&#228;pstliche St&#228;dte mit Christentum erhalten +50% Stadtverteidigung; Bombardierung wirkt weiterhin. Beide Boni entfallen bei inaktivem Palast, auch unter Toleranz oder nach dem Verlust Roms.</German>
+	<Italian>Il potere della Santa Sede: finch&#233; lo Stato Pontificio controlla un Palazzo Apostolico attivo, Roma riceve +2 [ICON_GOLD] di base per ogni citt&#224; straniera con il cristianesimo, amplificati dai modificatori dell&#8217;oro. Le citt&#224; pontificie cristiane ricevono +50% alla difesa cittadina; il bombardamento resta efficace. Entrambi i bonus cessano quando il Palazzo &#232; inattivo, anche con Tolleranza o dopo la perdita di Roma.</Italian>
+	<Spanish>El poder de la Santa Sede: mientras los Estados Pontificios controlen un Palacio Apost&#243;lico activo, Roma obtiene +2 [ICON_GOLD] de base por ciudad extranjera con cristianismo, amplificados por los modificadores de oro. Las ciudades pontificias cristianas obtienen +50% de defensa urbana; el bombardeo sigue siendo eficaz. Ambos beneficios cesan cuando el Palacio est&#225; inactivo, incluso bajo Tolerancia o tras perder Roma.</Spanish>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_AP_UP_TRIBUTE</Tag>
+	<English>+%d1 [ICON_GOLD] from the Power of the Holy See</English>
+	<French>+%d1 [ICON_GOLD] gr&#226;ce au pouvoir du Saint-Si&#232;ge</French>
+	<German>+%d1 [ICON_GOLD] durch die Macht des Heiligen Stuhls</German>
+	<Italian>+%d1 [ICON_GOLD] dal potere della Santa Sede</Italian>
+	<Spanish>+%d1 [ICON_GOLD] por el poder de la Santa Sede</Spanish>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_AP_ROME_RECOVERY</Tag>
+	<English>Rome has been lost! Recapture it within %d1 turns or the Papal State will dissolve. Its remaining cities will become independent and its army will disband.</English>
+	<French>Rome est perdue ! Reprenez-la sous %d1 tours ou l&#8217;&#201;tat pontifical sera dissous. Ses villes restantes deviendront ind&#233;pendantes et son arm&#233;e sera dissoute.</French>
+	<German>Rom ist verloren! Erobert es innerhalb von %d1 Runden zur&#252;ck, sonst wird der Kirchenstaat aufgel&#246;st. Seine verbleibenden St&#228;dte werden unabh&#228;ngig und seine Armee wird aufgel&#246;st.</German>
+	<Italian>Roma &#232; perduta! Riconquistatela entro %d1 turni o lo Stato Pontificio sar&#224; sciolto. Le citt&#224; rimaste diventeranno indipendenti e il suo esercito sar&#224; sciolto.</Italian>
+	<Spanish>&#161;Roma se ha perdido! Reconqu&#237;stala en %d1 turnos o los Estados Pontificios se disolver&#225;n. Sus ciudades restantes se independizar&#225;n y su ej&#233;rcito se disolver&#225;.</Spanish>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_AP_DISSOLVED</Tag>
+	<English>The Papal State has dissolved after failing to recover Rome within ten turns. Its remaining cities have become independent.</English>
+	<French>L&#8217;&#201;tat pontifical a &#233;t&#233; dissous faute d&#8217;avoir repris Rome sous dix tours. Ses villes restantes sont devenues ind&#233;pendantes.</French>
+	<German>Der Kirchenstaat wurde aufgel&#246;st, da er Rom nicht innerhalb von zehn Runden zur&#252;ckerobert hat. Seine verbleibenden St&#228;dte sind nun unabh&#228;ngig.</German>
+	<Italian>Lo Stato Pontificio &#232; stato sciolto dopo non aver riconquistato Roma entro dieci turni. Le citt&#224; rimaste sono diventate indipendenti.</Italian>
+	<Spanish>Los Estados Pontificios se han disuelto al no recuperar Roma en diez turnos. Sus ciudades restantes se han independizado.</Spanish>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_AP_LIFECYCLE_HELP</Tag>
+	<English>The Papal State has ten turns to recover a lost Rome; failure dissolves it, releases its remaining cities as Independents and disbands its army. No new Papal founding event occurs while a Papal State survives. Every founding or restoration starts with a strong AI preference for Theocracy and Holy State. Once the world reaches the Modern era, this preference fades over 30 turns at Normal speed. A modern restoration restarts the full preference and its fade. Human civic choices remain player-controlled.</English>
+	<French>L&#8217;&#201;tat pontifical dispose de dix tours pour reprendre Rome ; en cas d&#8217;&#233;chec, il est dissous, ses villes restantes deviennent ind&#233;pendantes et son arm&#233;e est dissoute. Aucun nouvel &#233;v&#233;nement de fondation n&#8217;a lieu tant qu&#8217;il survit. Chaque fondation ou restauration donne &#224; l&#8217;IA une forte pr&#233;f&#233;rence pour Th&#233;ocratie et &#201;tat sacr&#233;. D&#232;s l&#8217;&#232;re moderne mondiale, elle diminue sur 30 tours en vitesse normale. Une restauration moderne r&#233;tablit cette pr&#233;f&#233;rence et relance son d&#233;clin. Les joueurs humains gardent le choix de leurs doctrines.</French>
+	<German>Der Kirchenstaat hat zehn Runden, um das verlorene Rom zur&#252;ckzuerobern. Bei Misserfolg wird er aufgel&#246;st, seine &#252;brigen St&#228;dte werden unabh&#228;ngig und seine Armee wird aufgel&#246;st. Solange er existiert, gibt es kein neues Gr&#252;ndungsereignis. Jede Gr&#252;ndung oder Wiederherstellung gibt der KI eine starke Vorliebe f&#252;r Theokratie und Heiligen Staat. Sobald die Welt die Moderne erreicht, klingt sie bei normaler Geschwindigkeit &#252;ber 30 Runden ab. Eine moderne Wiederherstellung erneuert die volle Vorliebe und startet ihr Abklingen neu. Menschliche Spieler entscheiden weiterhin selbst &#252;ber ihre Staatsformen.</German>
+	<Italian>Lo Stato Pontificio ha dieci turni per riconquistare Roma; in caso di fallimento viene sciolto, le citt&#224; rimaste diventano indipendenti e il suo esercito viene sciolto. Non si verifica un nuovo evento di fondazione finch&#233; sopravvive. Ogni fondazione o restaurazione conferisce all&#8217;IA una forte preferenza per Teocrazia e Stato sacro. Quando il mondo raggiunge l&#8217;era moderna, questa preferenza svanisce in 30 turni a velocit&#224; normale. Una restaurazione moderna ripristina la preferenza completa e ne riavvia il declino. I giocatori umani mantengono il controllo delle proprie scelte civiche.</Italian>
+	<Spanish>Los Estados Pontificios tienen diez turnos para recuperar Roma; si fracasan, se disuelven, sus ciudades restantes se independizan y su ej&#233;rcito se disuelve. No se produce otro evento de fundaci&#243;n mientras sobrevivan. Cada fundaci&#243;n o restauraci&#243;n otorga a la IA una fuerte preferencia por Teocracia y Estado sagrado. Cuando el mundo alcanza la era moderna, esta preferencia desaparece en 30 turnos a velocidad normal. Una restauraci&#243;n moderna recupera la preferencia completa y reinicia su disminuci&#243;n. Los jugadores humanos mantienen el control de sus opciones c&#237;vicas.</Spanish>
+</TEXT>
+</Civ4GameText>

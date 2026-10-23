@@ -3417,7 +3417,7 @@ void CvUnitAI::AI_counterMove()
 
 void CvUnitAI::AI_cityDefenseMove()
 {
-    if (!isHuman() && AI_jihadEgyptEscort()) return;
+    if (!isHuman() && AI_jihadCampaignEscort()) return;
 	OBSERVER_PERFORMANCE("unitAI.AI_cityDefenseMove");
 	PROFILE_FUNC();
 	
@@ -3441,6 +3441,24 @@ void CvUnitAI::AI_cityDefenseMove()
 	if (AI_guardCityBestDefender())
 	{
 		AI_recordObserverDecision("AI_cityDefenseMove:AI_guardCityBestDefender()");
+		return;
+	}
+
+	// Keep the best local defender and the city's minimum garrison. Healthy
+	// surplus guards can reinforce a reachable regional crusade on this landmass.
+	CvCity* pCrusadeHome = plot()->getPlotCity();
+	CvCity* pCrusadeTarget = area()->getTargetCity(getOwnerINLINE());
+	if (!bDanger && getDamage() == 0 && getGroup()->getNumUnits() == 1 && canAttack() &&
+		GET_PLAYER(getOwnerINLINE()).AI_isCrusadeMobilizing() &&
+		pCrusadeHome != NULL && pCrusadeHome->getOwnerINLINE() == getOwnerINLINE() &&
+		!pCrusadeHome->isOccupation() && !pCrusadeHome->AI_isDanger() &&
+		plot()->plotCount(PUF_isUnitAIType, UNITAI_CITY_DEFENSE, -1, getOwnerINLINE()) > pCrusadeHome->AI_neededDefenders() &&
+		pCrusadeTarget != NULL && GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pCrusadeTarget) &&
+		pCrusadeTarget->isRevealed(getTeam(), false) && generatePath(pCrusadeTarget->plot(), 0, true))
+	{
+		AI_setUnitAIType(UNITAI_ATTACK_CITY);
+		AI_recordObserverDecision("AI_cityDefenseMove:crusade_mobilization");
+		getGroup()->pushMission(MISSION_SKIP);
 		return;
 	}
 	
@@ -7783,17 +7801,21 @@ bool CvUnitAI::AI_guardCityMinDefender(bool bSearch)
 }
 
 // Returns true if a mission was pushed...
-bool CvUnitAI::AI_jihadEgyptEscort()
+bool CvUnitAI::AI_jihadCampaignEscort()
 {
-    if (getScriptData() != "RFCMP_JIHAD_EGYPT_ESCORT") return false;
+    const int iCampaign = getScriptData() == "RFCMP_JIHAD_EGYPT_ESCORT" ? 1 :
+        (getScriptData() == "RFCMP_JIHAD_PERSIA_ESCORT" ? 2 : -1);
+    if (iCampaign < 0) return false;
     if (!GET_PLAYER(getOwnerINLINE()).isArabianJihadActive())
     {
         setScriptData("");
         return false;
     }
     CvCity* pCity = plot()->getPlotCity();
-    if (pCity != NULL && pCity->getOwnerINLINE() == getOwnerINLINE() &&
-        65 <= getX_INLINE() && getX_INLINE() <= 72 && 30 <= getY_INLINE() && getY_INLINE() <= 37)
+    const bool bRegion = iCampaign == 1 ?
+        (65 <= getX_INLINE() && getX_INLINE() <= 72 && 30 <= getY_INLINE() && getY_INLINE() <= 37) :
+        (75 <= getX_INLINE() && getX_INLINE() <= 93 && 36 <= getY_INLINE() && getY_INLINE() <= 46);
+    if (pCity != NULL && pCity->getOwnerINLINE() == getOwnerINLINE() && bRegion)
     {
         int iGuards = 0;
         for (CLLNode<IDInfo>* pNode = plot()->headUnitNode(); pNode != NULL; pNode = plot()->nextUnitNode(pNode))
@@ -7802,13 +7824,14 @@ bool CvUnitAI::AI_jihadEgyptEscort()
             if (pUnit != NULL && pUnit != this && pUnit->getOwnerINLINE() == getOwnerINLINE() &&
                 pUnit->getDomainType() == DOMAIN_LAND && pUnit->canDefend() && !pUnit->isCargo() &&
                 !pUnit->isDelayedDeath() && pUnit->AI_isCityAIType() &&
-                pUnit->getScriptData() != "RFCMP_JIHAD_EGYPT_ESCORT") ++iGuards;
+                pUnit->getScriptData() != "RFCMP_JIHAD_EGYPT_ESCORT" &&
+                pUnit->getScriptData() != "RFCMP_JIHAD_PERSIA_ESCORT") ++iGuards;
         }
         if (iGuards < (pCity->AI_isDanger() ? 2 : 1))
         {
             setScriptData("");
             getGroup()->pushMission(MISSION_SKIP, -1, -1, 0, false, false, MISSIONAI_GUARD_CITY, pCity->plot());
-            AI_recordObserverDecision("AI_cityDefenseMove:egypt_escort_garrison");
+            AI_recordObserverDecision("AI_cityDefenseMove:campaign_escort_garrison");
             return true;
         }
     }
@@ -7818,7 +7841,7 @@ bool CvUnitAI::AI_jihadEgyptEscort()
     for (CvUnit* pUnit = GET_PLAYER(getOwnerINLINE()).firstUnit(&iLoop); pUnit != NULL;
          pUnit = GET_PLAYER(getOwnerINLINE()).nextUnit(&iLoop))
     {
-        if (pUnit->getJihadCampaign() != 1 || pUnit->isDelayedDeath() || pUnit->isCargo() ||
+        if (pUnit->getJihadCampaign() != iCampaign || pUnit->isDelayedDeath() || pUnit->isCargo() ||
             pUnit->getArea() != getArea() || pUnit->AI_getUnitAIType() != UNITAI_ATTACK_CITY) continue;
         int iPathTurns;
         if (!generatePath(pUnit->plot(), 0, true, &iPathTurns)) continue;
@@ -7846,7 +7869,7 @@ bool CvUnitAI::AI_jihadEgyptEscort()
         else
             getGroup()->pushMission(MISSION_MOVE_TO, pStep->getX_INLINE(), pStep->getY_INLINE(), 0, false, false, MISSIONAI_SHADOW, NULL, pBest);
     }
-    AI_recordObserverDecision("AI_cityDefenseMove:egypt_escort_follow");
+    AI_recordObserverDecision("AI_cityDefenseMove:campaign_escort_follow");
     return true;
 }
 

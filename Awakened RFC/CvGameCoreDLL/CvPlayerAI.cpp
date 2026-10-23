@@ -3334,6 +3334,11 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 		}
 	}
 
+	// Mandatory settlements still advance the shared campaign even when the
+	// conqueror will not retain the city. Prefer the actual regional front.
+	if (!isHuman() && GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
+		iValue = std::max(1, iValue) * 3;
+
 	if (bRandomize)
 	{
 		//iValue += GC.getGameINLINE().getSorenRandNum(((pCity->getPopulation() / 2) + 1), "AI Target City Value");
@@ -6300,6 +6305,59 @@ PlayerVoteTypes CvPlayerAI::AI_diploVote(const VoteSelectionSubData& kVoteData, 
 	int iI;
 
 	VoteTypes eVote = kVoteData.eVote;
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource))
+	{
+		int iZeal = 0;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"))) iZeal += 3;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE"))) iZeal += 3;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_WARRIOR_SOCIETY"))) iZeal += 2;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE"))) iZeal -= 4;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_RULE_OF_LAW"))) iZeal -= 2;
+		if (isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"))) iZeal -= 2;
+		CvVoteInfo& kVote = GC.getVoteInfo(eVote);
+		int iSupport = 2;
+		if (kVote.isForceWar())
+		{
+			bool abTargets[MAX_TEAMS];
+			GC.getGameINLINE().getCrusadeTargets(kVoteData.iCityId, abTargets);
+			iSupport = iZeal;
+			int iEnemyPower = 0, iAttitude = 0, iEnemies = 0;
+			for (int t = 0; t < MAX_TEAMS; ++t)
+				if (abTargets[t])
+				{
+					iEnemyPower += GET_TEAM((TeamTypes)t).getPower(false);
+					iAttitude += GET_TEAM(getTeam()).AI_getAttitudeVal((TeamTypes)t); ++iEnemies;
+					if (GET_TEAM(getTeam()).isAtWar((TeamTypes)t)) iSupport += 3;
+				}
+			iSupport -= iAttitude / (2 * std::max(1, iEnemies));
+			if (iEnemyPower > GET_TEAM(getTeam()).getPower(true) * 2) iSupport -= 4;
+			if (getNumMilitaryUnits() < getNumCities()) iSupport -= 3;
+		}
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_RELIGIOUS_REFORM")) iSupport = iZeal - 1;
+		else if (kVote.isDefensivePact()) iSupport = 2 + iZeal;
+		else if (kVote.isForcePeace()) iSupport = 3 - iZeal;
+		else if (kVote.isOpenBorders()) iSupport = 3 - iZeal / 2;
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_COLLEGE"))
+		{
+			iSupport = 2 - iZeal / 2;
+			if (getGold() < 100 || getCurrentResearch() == NO_TECH) iSupport -= 4;
+			else
+			{
+				bool bLearns = false;
+				for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+					if (GET_PLAYER((PlayerTypes)i).isVotingMember(eVoteSource) && GET_TEAM(GET_PLAYER((PlayerTypes)i).getTeam()).isHasTech(getCurrentResearch())) bLearns = true;
+				if (bLearns) iSupport += 4;
+			}
+		}
+		else if (eVote == GC.getInfoTypeForString("VOTE_AP_RELIEF"))
+		{
+			int iPoorest = MAX_INT;
+			for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+				if (GET_PLAYER((PlayerTypes)i).isVotingMember(eVoteSource)) iPoorest = std::min(iPoorest, GET_PLAYER((PlayerTypes)i).getGold());
+			iSupport = getGold() == iPoorest ? 8 : 1 - iZeal / 2 - (getGold() < 100 ? 3 : 0);
+		}
+		return iSupport > 0 ? PLAYER_VOTE_YES : iSupport < -1 ? PLAYER_VOTE_NO : PLAYER_VOTE_ABSTAIN;
+	}
 
 	if (GC.getGameINLINE().isTeamVote(eVote))
 	{
@@ -11036,6 +11094,17 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	    iValue /= 10;	    
 	}
 
+	const int iPapalDevotion = GC.getGameINLINE().getPapalDevotionPercent(getID());
+	if (iPapalDevotion > 0)
+	{
+		const int iReligiousWeight = (100 + 40 * getNumCities()) * iPapalDevotion / 100;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY") ||
+			eCivic == GC.getInfoTypeForString("CIVIC_GOD_STATE")) iValue += iReligiousWeight;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_RELIGION")) iValue += iReligiousWeight / 3;
+		if (eCivic == GC.getInfoTypeForString("CIVIC_TOLERANCE") ||
+			eCivic == GC.getInfoTypeForString("CIVIC_ANCESTOR_CULT")) iValue -= iReligiousWeight;
+	}
+
 	return iValue;
 }
 
@@ -12127,6 +12196,21 @@ void CvPlayerAI::AI_doCounter()
 	}
 }
 
+
+bool CvPlayerAI::AI_isCrusadeMobilizing() const
+{
+	if (isHuman() || !GC.getGameINLINE().isCrusadeParticipant(getID())) return false;
+	// Coalition peace frees reserves, but a separate foreign war still needs
+	// the ordinary defensive budget. Nearby barbarians are handled per city.
+	for (int i = 0; i < MAX_TEAMS; ++i)
+	{
+		const TeamTypes eOther = (TeamTypes)i;
+		if (GET_TEAM(eOther).isAlive() && !GET_TEAM(eOther).isBarbarian() &&
+			GET_TEAM(getTeam()).isAtWar(eOther) && !GC.getGameINLINE().isCrusadeWar(getTeam(), eOther))
+			return false;
+	}
+	return true;
+}
 
 bool CvPlayerAI::AI_isArabianJihad() const
 {

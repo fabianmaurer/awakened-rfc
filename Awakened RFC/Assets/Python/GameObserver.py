@@ -26,6 +26,133 @@ def record_mechanic(event, player, details):
         observer.fail('mechanic_recording')
 
 
+# Semantic payload version 1. Fields mirror the guarded native call sites.
+APOSTOLIC_FIELDS = {
+    'papal_request': ('decision', 'can_become', 'cities'),
+    'papal_decision': ('decision', 'choice'),
+    'papal_penalty_applied': ('observer', 'amount', 'accumulated', 'attitude_extra_after'),
+    'papal_penalty_cleared': ('observer', 'amount', 'attitude_extra_before', 'attitude_extra_after'),
+    'papal_palace_effects': ('enabled',),
+    'papacy_founded': ('previous_owner', 'became_papacy', 'rome_owner', 'enabled'),
+    'papal_rome_lost': ('recovery_deadline',),
+    'papal_dissolved': ('recovery_deadline',),
+    'council_opened': ('ballot', 'proposal', 'target_player', 'region', 'deadline', 'threshold_percent'),
+    'council_voter': ('ballot', 'weight', 'delivery_turn'),
+    'council_delivered': ('ballot', 'weight', 'deadline'),
+    'council_vote': ('ballot', 'choice', 'weight', 'deadline'),
+    'council_result': ('ballot', 'proposal', 'passed', 'yes', 'no', 'abstain', 'total', 'required'),
+    'council_resolution_applied': ('ballot', 'proposal'),
+    'council_closed': ('ballot', 'palace_active'),
+    'council_reformed': ('ballot', 'required_legitimation', 'required_religion_civic', 'actual_legitimation', 'actual_religion_civic'),
+    'council_tithe': ('ballot', 'gold_change', 'recipient', 'gold_after'),
+    'council_college_paid': ('ballot', 'cost', 'gold_after'),
+    'council_college_grant': ('ballot', 'tech', 'research_grant', 'team'),
+    'crusade_started': ('region', 'end_turn', 'base_duration', 'inactivity_duration'),
+    'crusade_ended': ('region', 'end_turn', 'reason'),
+    'crusade_joined': ('team', 'region'),
+    'crusade_activity': ('team', 'enemy_team', 'x', 'y', 'previous_end_turn', 'end_turn', 'inactivity_duration'),
+    'crusade_plunder': ('amount', 'accumulated', 'enemy_team', 'x', 'y'),
+    'crusade_reward': ('amount', 'rewards_received', 'x', 'y'),
+    'crusade_state_founded': ('sponsor', 'state_religion', 'legitimation', 'religion_civic'),
+    'crusade_settlement_selected': ('recipient', 'previous_owner', 'x', 'y', 'priority', 'new_state'),
+    'crusade_settlement_completed': ('recipient', 'actual_owner', 'x', 'y', 'state_religion'),
+}
+
+
+def record_apostolic_mechanic(event, player, values):
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        fields = APOSTOLIC_FIELDS[event]
+        details = dict(zip(fields, list(values)[:len(fields)]))
+        if event == 'council_vote':
+            from CvPythonExtensions import PlayerVoteTypes
+            choices = dict([(int(getattr(PlayerVoteTypes, key)), key) for key in
+                            ('PLAYER_VOTE_YES', 'PLAYER_VOTE_NO', 'PLAYER_VOTE_ABSTAIN')])
+            details['choice_name'] = choices.get(details['choice'], 'INVALID')
+            voter = observer.gc.getPlayer(player)
+            details['civics'] = [voter.getCivics(c) for c in range(observer.gc.getNumCivicOptionInfos())]
+            details['state_religion'] = voter.getStateReligion()
+            details['human'] = voter.isHuman()
+        elif event == 'papal_decision':
+            details['choice_name'] = ('cede_rome', 'refuse', 'become_papacy')[details['choice']]
+        elif event == 'crusade_ended':
+            details['reason_name'] = ('inactivity', 'targets_eliminated', 'coalition_eliminated')[details['reason']]
+        elif event == 'crusade_settlement_selected':
+            details['priority_name'] = ('historical_claim', 'christian_neighbor', 'dedicated_independent')[details['priority'] - 1]
+        record_mechanic(event, player, details)
+        rule = None
+        if event == 'crusade_activity' and details['end_turn'] != max(details['previous_end_turn'], observer.game.getGameTurn() + details['inactivity_duration']):
+            rule = 'crusade_activity_deadline'
+        elif event == 'papal_penalty_cleared' and details['attitude_extra_after'] != details['attitude_extra_before'] + details['amount']:
+            rule = 'papal_refusal_refund'
+        elif event == 'crusade_settlement_completed' and details['recipient'] != details['actual_owner']:
+            rule = 'crusade_settlement_owner'
+        elif event == 'council_reformed' and (details['required_legitimation'] != details['actual_legitimation'] or details['required_religion_civic'] != details['actual_religion_civic']):
+            rule = 'council_religious_reform'
+        if rule:
+            record_mechanic('apostolic_violation', player, {'severity': 'error', 'rule': rule, 'source_event': event})
+    except:
+        observer.fail('apostolic_event_recording')
+
+
+def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ballots):
+    observer = CURRENT
+    if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
+        return
+    try:
+        header_keys = ('version', 'papal_player', 'refuser', 'retry_turn', 'palace_active',
+                       'rome_owner', 'rome_christian', 'founding_eligible', 'palace_buildings',
+                       'crusade_region', 'crusade_end_turn', 'base_duration', 'inactivity_duration')
+        if len(header) != len(header_keys) or header[0] != 1:
+            raise ValueError('Unexpected apostolic state payload')
+        details = dict(zip(header_keys, header))
+        def rows(values, keys):
+            width = len(keys)
+            if len(values) % width:
+                raise ValueError('Incomplete apostolic state rows')
+            return [dict(zip(keys, values[i:i+width])) for i in range(0, len(values), width)]
+        details['players'] = rows(flat_players, ('id', 'alive', 'team', 'state_religion', 'legitimation',
+                                  'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state',
+                                  'refusal_penalty', 'attitude_extra_to_refuser', 'cities'))
+        details['teams'] = rows(flat_teams, ('id', 'alive', 'participant', 'target'))
+        details['pairs'] = rows(flat_pairs, ('team', 'other', 'at_war', 'can_declare_war', 'can_change_war_peace', 'military_access'))
+        details['ballots'] = rows(flat_ballots, ('ballot', 'proposal', 'deadline', 'player', 'weight', 'delivery_turn', 'choice'))
+        details['boundary'] = 'native pre-EndGameTurn; before RFC end-turn callbacks'
+        record_mechanic('apostolic_state', -1, details)
+        players = dict([(p['id'], p) for p in details['players']])
+        teams = dict([(t['id'], t) for t in details['teams']])
+        gc = observer.gc
+        christian = gc.getInfoTypeForString('RELIGION_CHRISTIANITY')
+        tolerance = gc.getInfoTypeForString('CIVIC_TOLERANCE')
+        atheism = gc.getInfoTypeForString('CIVIC_STATE_ATHEISM')
+        issues = []
+        if details['palace_active']:
+            pope = players.get(details['papal_player'])
+            if not pope or details['rome_owner'] != details['papal_player'] or pope['state_religion'] != christian or pope['religion_civic'] == tolerance or details['palace_buildings'] <= 0:
+                issues.append('palace_active_without_christian_papal_rome')
+        pope = players.get(details['papal_player'])
+        if pope and pope['alive'] and pope['religion_civic'] == atheism:
+            issues.append('papacy_adopted_state_atheism')
+        if details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
+            issues.append('refusal_penalty_survived_loss_of_rome')
+        if details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
+            issues.append('refusal_penalty_without_refuser')
+        if details['crusade_region'] >= 0:
+            for pair in details['pairs']:
+                other = teams[pair['other']]
+                if other['participant']:
+                    if pair['at_war'] or pair['can_declare_war'] or not pair['military_access']:
+                        issues.append('coalition_peace_or_access:%d:%d' % (pair['team'], pair['other']))
+                elif other['target'] and (not pair['at_war'] or pair['can_change_war_peace']):
+                    issues.append('binding_crusade_war:%d:%d' % (pair['team'], pair['other']))
+        for issue in issues:
+            record_mechanic('apostolic_violation', -1, {'severity': 'error', 'rule': issue, 'boundary': details['boundary']})
+    except:
+        observer.fail('apostolic_state_recording')
+
+
 def record_labor_evaluation(player, current, best, flat_scores):
     observer = CURRENT
     if observer is None or not observer.enabled or not observer.started or observer.mode == 'performance':
@@ -368,7 +495,7 @@ class Observer:
                         'handicap': gc.getHandicapInfo(game.getHandicapType()).getType(),
                         'options': [gc.getGameOptionInfo(i).getType() for i in range(gc.getNumGameOptionInfos()) if game.isOption(i)]}
             infos = {}
-            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era', 'Mission'):
+            for category in ('Civic', 'Unit', 'Tech', 'Building', 'Religion', 'Specialist', 'Promotion', 'Era', 'Mission', 'Vote'):
                 count = getattr(gc, 'getNum' + category + 'Infos')()
                 getter = getattr(gc, 'get' + category + 'Info')
                 infos[category.lower()] = [getter(i).getType() for i in range(count)]
@@ -383,7 +510,7 @@ class Observer:
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
-                        'army_recording_version': 2,
+                        'army_recording_version': 2, 'apostolic_recording_version': 1,
                         'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
                                                  '1': 'Amr: Egypt / North Africa',
                                                  '2': "Sa'd: Iraq / Persia"},
@@ -636,6 +763,7 @@ class Observer:
             players.append(data)
         if diagnostic and imported != exported:
             checks.append({'severity': 'error', 'rule': 'global_food_conservation', 'imports': imported, 'exports': exported})
+        checks.extend([dict(event) for event in self.events if event.get('event') == 'apostolic_violation'])
         record = {'kind': kind, 'turn': turn, 'year': self.game.getGameTurnYear(), 'players': players,
                   'elapsed_turns': self.turns, 'span_turns': self.turns - self.last_snapshot,
                   'civic_player_turns': self.civic_exposure,

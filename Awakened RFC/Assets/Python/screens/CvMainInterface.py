@@ -614,6 +614,8 @@ class CvMainInterface:
 
 	# Will update the screen (every 250 MS)
 	def updateScreen(self):
+		self.updateApostolicCouncil()
+		self.updateCrusadeReminder()
 		if REPORTING_ENABLED:
 			import GameObserver
 		if REPORTING_ENABLED and GameObserver.CURRENT is not None:
@@ -2838,6 +2840,44 @@ class CvMainInterface:
 
 		return 0
 		
+	def groupScoreRows(self, scoreRows):
+		# Input is bottom-to-top score order; group only already-visible teams.
+		teamRows = {}
+		teams = []
+		for ePlayer, szBuffer in reversed(scoreRows):
+			eTeam = gc.getPlayer(ePlayer).getTeam()
+			if eTeam not in teamRows:
+				teams.append(eTeam)
+				teamRows[eTeam] = []
+			teamRows[eTeam].append((ePlayer, szBuffer))
+		children = {}
+		parents = {}
+		for eTeam in teams:
+			children[eTeam] = []
+		for eTeam in teams:
+			for eMaster in teams:
+				if eTeam != eMaster and gc.getTeam(eTeam).isVassal(eMaster):
+					parents[eTeam] = eMaster
+					children[eMaster].append(eTeam)
+					break
+		rows = []
+		visited = set()
+		def appendTeam(eTeam, depth):
+			if eTeam in visited:
+				return
+			visited.add(eTeam)
+			for ePlayer, szBuffer in teamRows[eTeam]:
+				rows.append((ePlayer, szBuffer, depth))
+			for eVassal in children[eTeam]:
+				appendTeam(eVassal, depth + 1)
+		for eTeam in teams:
+			if eTeam not in parents:
+				appendTeam(eTeam, 0)
+		# Keep every visible row even if malformed diplomacy contains a cycle.
+		for eTeam in teams:
+			appendTeam(eTeam, 0)
+		return rows
+
 	# Will update the scores
 	def updateScoreStrings( self ):
 	
@@ -2855,6 +2895,7 @@ class CvMainInterface:
 		iWidth = 0
 		iCount = 0
 		iBtnHeight = 18 #Rhye (22)
+		scoreRows = []
 		
 		if ((CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_HIDE_ALL and CyInterface().getShowInterface() != InterfaceVisibility.INTERFACE_MINIMAP_ONLY)):
 			if ((CyInterface().isScoresVisible() or gc.getGame().isObserverAutoPlay()) and not CyInterface().isCityScreenUp() and CyEngine().isGlobeviewUp() == false):
@@ -3016,22 +3057,26 @@ class CvMainInterface:
                                                                                         
                                                                                 szBuffer = szBuffer + "</font>"
 
-										if ( CyInterface().determineWidth( szBuffer ) > iWidth ):
-											iWidth = CyInterface().determineWidth( szBuffer )
-
-										szName = "ScoreText" + str(ePlayer)
-										if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
-											yCoord = yResolution - 206
-										else:
-											yCoord = yResolution - 88
-										screen.setText( szName, "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, xResolution - 12, yCoord - (iCount * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1 )
-										screen.show( szName )
+										scoreRows.append((ePlayer, szBuffer))
 										
 										CyInterface().checkFlashReset(ePlayer)
 
 										iCount = iCount + 1
 							j = j - 1
 					i = i - 1
+
+				scoreRows = self.groupScoreRows(scoreRows)
+				for ePlayer, szBuffer, depth in scoreRows:
+					iWidth = max(iWidth, CyInterface().determineWidth(szBuffer) + depth * 16)
+				if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
+					yCoord = yResolution - 206
+				else:
+					yCoord = yResolution - 88
+				for iRow in range(len(scoreRows)):
+					ePlayer, szBuffer, depth = scoreRows[iRow]
+					szName = "ScoreText" + str(ePlayer)
+					screen.setText(szName, "Background", szBuffer, CvUtil.FONT_LEFT_JUSTIFY, xResolution - 12 - iWidth + depth * 16, yCoord - ((iCount - 1 - iRow) * iBtnHeight), -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_CONTACT_CIV, ePlayer, -1)
+					screen.show(szName)
 
 				if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW or CyInterface().isInAdvancedStart()):
 					yCoord = yResolution - 186
@@ -3315,6 +3360,79 @@ class CvMainInterface:
 	def handleInput (self, inputClass):
 		return 0
 	
+	def updateApostolicCouncil(self):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		game = gc.getGame()
+		iVote = game.getCouncilVoteId()
+		iPlayer = game.getActivePlayer()
+		iSource = gc.getInfoTypeForString("DIPLOVOTE_POPE")
+		visible = iVote >= 0 and iPlayer >= 0 and gc.getPlayer(iPlayer).isVotingMember(iSource)
+		visible = visible and not CyInterface().isCityScreenUp() and not CyEngine().isGlobeviewUp() and CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW
+		widgets = ("CouncilPanel", "CouncilTitle", "CouncilScore", "CouncilRule", "CouncilBar")
+		if not visible:
+			for name in widgets:
+				screen.hide(name)
+			self._councilDisplay = None
+			return
+		weights = [game.getCouncilTally(iVote, i, False) for i in range(5)]
+		nations = [game.getCouncilTally(iVote, i, True) for i in range(5)]
+		text = game.getCouncilVoteText(iVote).split(u"\n")
+		state = (iVote, weights, nations, game.getCouncilTurnsLeft(iVote), screen.getXResolution())
+		if getattr(self, "_councilDisplay", None) == state:
+			return
+		self._councilDisplay = state
+		width = min(680, screen.getXResolution() - 300)
+		x = (screen.getXResolution() - width) / 2
+		y = 65
+		screen.addPanel("CouncilPanel", u"", u"", True, False, x, y, width, 100, PanelStyles.PANEL_STYLE_MAIN)
+		title = localText.getText("TXT_KEY_AP_LIVE_TITLE", (text[0], game.getCouncilTurnsLeft(iVote)))
+		screen.setLabel("CouncilTitle", "Background", u"<font=2b>" + title + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 7, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		cast = weights[4] - weights[3]
+		score = localText.getText("TXT_KEY_AP_LIVE_SCORE", (weights[0], nations[0], weights[1], nations[1], weights[2], nations[2], cast, weights[4], weights[3], nations[3]))
+		screen.setLabel("CouncilScore", "Background", u"<font=1>" + score + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 29, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		# The remaining segments are fractions of the unused portion of a Civ4 stacked bar.
+		screen.addStackedBarGFC("CouncilBar", x + 16, y + 49, width - 32, 16, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		colors = ("COLOR_GREEN", "COLOR_DARK_GREY", "COLOR_RED", "COLOR_LIGHT_GREY")
+		remaining = weights[4]
+		for i in range(4):
+			screen.setStackedBarColors("CouncilBar", i, gc.getInfoTypeForString(colors[i]))
+			screen.setBarPercentage("CouncilBar", i, float(weights[i]) / max(1, remaining))
+			remaining -= weights[i]
+		rule = text[-1]
+		screen.setLabel("CouncilRule", "Background", u"<font=1>" + rule + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + 72, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		for name in widgets:
+			screen.show(name)
+
+	def updateCrusadeReminder(self):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		game = gc.getGame()
+		iPlayer = game.getActivePlayer()
+		visible = iPlayer >= 0 and game.isCrusadeParticipant(iPlayer)
+		visible = visible and not CyInterface().isCityScreenUp() and not CyEngine().isGlobeviewUp() and CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW
+		widgets = ("CrusadePanel", "CrusadeTitle", "CrusadeGold", "CrusadeRules")
+		if not visible:
+			for name in widgets:
+				screen.hide(name)
+			self._crusadeDisplay = None
+			return
+		y = 65
+		if getattr(self, "_councilDisplay", None) is not None:
+			y = 170
+		state = (iPlayer, game.getActiveCrusadeName(), game.getCrusadeTurnsLeft(), game.getCrusadePlunder(iPlayer), game.getCrusadePlunder(-1), screen.getXResolution(), y)
+		if getattr(self, "_crusadeDisplay", None) == state:
+			return
+		self._crusadeDisplay = state
+		width = min(680, screen.getXResolution() - 300)
+		x = (screen.getXResolution() - width) / 2
+		screen.addPanel("CrusadePanel", u"", u"", True, False, x, y, width, 81, PanelStyles.PANEL_STYLE_MAIN)
+		title = localText.getText("TXT_KEY_AP_CRUSADE_LIVE", (state[1], state[2]))
+		gold = localText.getText("TXT_KEY_AP_CRUSADE_PLUNDER", (state[3], state[4]))
+		rules = localText.getText("TXT_KEY_AP_CRUSADE_LIVE_RULES", ())
+		for name, text, offset in (("CrusadeTitle", title, 7), ("CrusadeGold", gold, 29), ("CrusadeRules", rules, 52)):
+			screen.setLabel(name, "Background", u"<font=2>" + text + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, x + width / 2, y + offset, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		for name in widgets:
+			screen.show(name)
+
 	def update(self, fDelta):
 		return
 	

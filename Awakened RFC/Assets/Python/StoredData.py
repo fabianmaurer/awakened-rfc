@@ -1,6 +1,7 @@
 # Rhye's and Fall of Civilization - Stored Data
 
 from CvPythonExtensions import *
+import Consts as con
 import CvUtil
 import PyHelpers  
 import cPickle as pickle
@@ -25,8 +26,8 @@ class StoredData:
                                     'bMongoliaReplaced': False,
                                     'lColonistsAlreadyGiven': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
                                     'lAstronomyTurn': [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500], #active players
-                                    'lNumCities': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #total players to contain Byzantium too
-                                    'lLastTurnAlive': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #total players to contain Byzantium too
+                                    'lNumCities': [0] * con.iNumTotalPlayers, #total players to contain Byzantium too
+                                    'lLastTurnAlive': [0] * con.iNumTotalPlayers, #total players to contain Byzantium too
                                     'lSpawnDelay': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
                                     'lFlipsDelay': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'iBetrayalTurns': 0,
@@ -66,11 +67,11 @@ class StoredData:
                                     'lBribe' : [-1, -1, -1],
                                     'lCivsToBribe': [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
                                     'tTempFlippingCityCongress': -1,
-                                    'lMemory': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #total players + barbarians (minors and barbs are not used, but necessary for not going out of range)
+                                    'lMemory': [0] * con.iNumTotalPlayersB, #total players + barbarians (minors and barbs are not used, but necessary for not going out of range)
                                     #------------Plague
-                                    'lPlagueCountdown': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #total players + barbarians
+                                    'lPlagueCountdown': [0] * con.iNumTotalPlayersB, #total players + barbarians
                                     'lGenericPlagueDates': [-1, -1, -1, -1],# -1],
-                                    'lFirstContactPlague': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False], #total players + barbarians
+                                    'lFirstContactPlague': [False] * con.iNumTotalPlayersB, #total players + barbarians
                                      #------------Victories
                                     'lGoals': [[-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1], [-1, -1, -1]],
                                     'lReligionFounded': [-1, -1, -1, -1, -1, -1, -1],
@@ -102,4 +103,12 @@ class StoredData:
                                     'lStabilityParameters': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #2+3+2+3+3
                                     'lLastRecordedStabilityStuff': [0, 0, 0, 0, 0, 0], # total + 5 parameters
 				}
+                # Allocate the added major entry when creating a new game.
+                import copy
+                for key, value in scriptDict.items():
+                        if isinstance(value, list) and len(value) == 31:
+                                for row in value:
+                                        if isinstance(row, list) and len(row) == 31:
+                                                row.append(copy.deepcopy(row[-1]))
+                                value.append(copy.deepcopy(value[-1]))
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )

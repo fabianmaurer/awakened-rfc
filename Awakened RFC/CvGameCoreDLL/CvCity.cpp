@@ -920,6 +920,12 @@ void CvCity::kill(bool bUpdatePlotGroups)
 	}
 
 	pPlot->setPlotCity(NULL);
+	// Capturing, gifting or razing Rome ends the former owner's refusal penalty.
+	if (pPlot->getX_INLINE() == 60 && pPlot->getY_INLINE() == 44)
+	{
+		GC.getGameINLINE().clearPapalRefusalPenalties();
+		GC.getGameINLINE().notifyPapalRomeLost(getOwnerINLINE());
+	}
 
 	area()->changeCitiesPerPlayer(getOwnerINLINE(), -1);
 
@@ -4029,7 +4035,7 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	int iI, iJ;
 
 	const bool bReligious = GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION || GC.getBuildingInfo(eBuilding).getPrereqReligion() != NO_RELIGION;
-	const bool bEffects = bCivicTransition || (!isShrineSuppressed(eBuilding) && (!bReligious || !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))));
+	const bool bEffects = bCivicTransition || ((eBuilding != GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE") || GC.getGameINLINE().isCouncilActive()) && !isShrineSuppressed(eBuilding) && (!bReligious || !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"))));
 
 	if ((!(GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eBuilding)) || bObsolete) && bEffects)
 	{
@@ -4489,6 +4495,9 @@ int CvCity::getNoMilitaryPercentAnger() const
 
 int CvCity::getCulturePercentAnger() const
 {
+	if (GC.getGameINLINE().isPapalState(getOwnerINLINE()) &&
+		GC.getGameINLINE().getPapalRome() == this) return 0;
+
 	int iTotalCulture;
 	int iAngryCulture;
 	int iCulture;
@@ -5313,7 +5322,7 @@ int CvCity::getNumActiveBuilding(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex != NO_BUILDING, "BuildingType eIndex is expected to not be NO_BUILDING");
 
-	if (GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eIndex) || isShrineSuppressed(eIndex))
+	if ((eIndex == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE") && !GC.getGameINLINE().isCouncilActive()) || GET_PLAYER(getOwnerINLINE()).isBuildingObsolete(eIndex) || isShrineSuppressed(eIndex))
 	{
 		return 0;
 	}
@@ -7599,6 +7608,10 @@ int CvCity::getNaturalDefense() const
 int CvCity::getTotalDefense(bool bIgnoreBuilding) const
 {
 	int iDefense = std::max(((bIgnoreBuilding) ? 0 : getBuildingDefense()), getNaturalDefense()) + GET_PLAYER(getOwnerINLINE()).getCityDefenseModifier();
+	// The Holy See protects Christian Papal cities. This is a national bonus,
+	// independent of walls; bombardment still reduces the resulting defense.
+	if (GC.getGameINLINE().isPapalState(getOwnerINLINE()) && GC.getGameINLINE().isCouncilActive() &&
+		isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) iDefense += 50;
 	return iDefense;
 }
 
@@ -9015,6 +9028,16 @@ int CvCity::getBaseCommerceRate(CommerceTypes eIndex) const
 	return (getBaseCommerceRateTimes100(eIndex) / 100);
 }
 
+int CvCity::getPapalTributeGold() const
+{
+	CvGame& kGame = GC.getGameINLINE();
+	if (getX_INLINE() != 60 || getY_INLINE() != 44 ||
+		!kGame.isPapalState(getOwnerINLINE()) || !kGame.isCouncilActive()) return 0;
+	const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
+	const int iForeignCities = kGame.countReligionLevels(eChristianity) - GET_PLAYER(getOwnerINLINE()).getHasReligionCount(eChristianity);
+	return 2 * std::max(0, iForeignCities);
+}
+
 int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 {
 	int iBaseCommerceRate;
@@ -9023,6 +9046,7 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 
 	iBaseCommerceRate += 100 * ((getSpecialistPopulation() + getNumGreatPeople()) * GET_PLAYER(getOwnerINLINE()).getSpecialistExtraCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
+	if (eIndex == COMMERCE_GOLD) iBaseCommerceRate += 100 * getPapalTributeGold();
 
 	if (eIndex == COMMERCE_CULTURE)
 	{
@@ -9133,6 +9157,7 @@ int CvCity::getBuildingCommerce(CommerceTypes eIndex) const
 
 int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
 {
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE") && !GC.getGameINLINE().isCouncilActive()) return 0;
 	int iCommerce;
 
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");

@@ -59,6 +59,26 @@ def getStability(argsList):
         return utils.getStability(argsList[0])
 def countAchievedGoals(argsList):
         return utils.countAchievedGoals(argsList[0])
+def onCrusadeStateFounded(argsList):
+        # Mirror the normal resurrection baseline, without broad regional flips.
+        iPlayer = argsList[0]
+        if iPlayer >= con.iNumMajorPlayers:
+                return
+        import cPickle as pickle
+        raw = gc.getGame().getScriptData()
+        if not raw:
+                return
+        data = pickle.loads(raw)
+        data['lStability'][iPlayer] = 10
+        data['lBaseStabilityLastTurn'][iPlayer] = 0
+        data['lNumCities'][iPlayer] = 0
+        data['lLatestRebellionTurn'][iPlayer] = gc.getGame().getGameTurn()
+        data['lPlagueCountdown'][iPlayer] = -10
+        gc.getGame().setScriptData(pickle.dumps(data))
+
+def getCrusadeFlipRecipient(argsList):
+        return con.getCrusadeFlipRecipient(argsList)
+
 def getBirthFlipMask(argsList):
         return con.getBirthFlipMask(argsList)
 

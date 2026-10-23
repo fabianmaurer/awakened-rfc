@@ -6,7 +6,7 @@ from xml.sax.saxutils import escape
 ROOT = Path(__file__).resolve().parents[1]
 MAPS = ROOT / 'Awakened RFC/PublicMaps'
 TARGET = MAPS / 'Start 3b - 900 AD.CivBeyondSwordWBSave'
-ACTIVE = (0, 2, 6, 8, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30)
+ACTIVE = (0, 2, 6, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31)
 # English, French, German, Italian, Spanish. Contemporary representatives of
 # aggregated RFC slots, not claims to rule every region represented by a slot.
 LEADERS = {
@@ -24,7 +24,7 @@ LEADERS = {
     16: ('Edward the Elder', "\u00c9douard l'Ancien", 'Eduard der \u00c4ltere', 'Edoardo il Vecchio', 'Eduardo el Viejo'),
     17: ('Louis the Child', "Louis l'Enfant", 'Ludwig das Kind', 'Ludovico il Fanciullo', 'Luis el Ni\u00f1o'),
     18: ('Oleg of Kiev', 'Oleg de Kiev', 'Oleg von Kiew', 'Oleg di Kiev', 'Oleg de Kiev'),
-    34: ('Leo VI the Wise', 'L\u00e9on VI le Sage', 'Leo VI. der Weise', 'Leone VI il Saggio', 'Le\u00f3n VI el Sabio'),
+    35: ('Leo VI the Wise', 'L\u00e9on VI le Sage', 'Leo VI. der Weise', 'Leone VI il Saggio', 'Le\u00f3n VI el Sabio'),
 }
 CORDOBA = (51, 41)
 CORDOBA_OWNER = 27  # Reserved successor slot, selectable in this scenario.
@@ -63,10 +63,10 @@ CITIES = {
     (50, 43): (28, 'Batalyaws', 4),       # Badajoz: Marwanid local dynasty
     (52, 43): (28, 'Tulaytula', 5),       # Autonomous Toledo
     (54, 45): (28, 'Saraqusta', 5),       # Zaragoza: Tujibid governors
-    (52, 37): (31, 'Fes', 4),             # Idrisid Morocco
-    (55, 37): (32, 'Tahert', 4),          # Rustamid central Maghreb
-    (79, 35): (31, 'Al-Ahsa', 3),         # Qarmatian base, not later Hajar
-    (76, 30): (32, "San'a", 3),          # Local Yemeni rule, not direct Abbasid rule
+    (52, 37): (32, 'Fes', 4),             # Idrisid Morocco
+    (55, 37): (33, 'Tahert', 4),          # Rustamid central Maghreb
+    (79, 35): (32, 'Al-Ahsa', 3),         # Qarmatian base, not later Hajar
+    (76, 30): (33, "San'a", 3),          # Local Yemeni rule, not direct Abbasid rule
 }
 INTRODUCTIONS = {
     0: ("900 AD: Harun ibn Khumarawayh rules the autonomous Tulunid emirate from Al-Qata'i. Egypt and southern Syria sustain your state, while the Abbasid caliph has recovered the northern frontier. Preserve your army and treasury; recognition of the caliph does not make your lands directly governed from Baghdad.",
@@ -142,7 +142,7 @@ def main():
     text = re.sub(r'GameTurn=181\b', 'GameTurn=211', text)
     text = text.replace('Description=TXT_KEY_RHYES_WB_DESC',
                         'Description=TXT_KEY_RFCMP_900_DESC')
-    players = iter(range(35))
+    players = iter(range(len(re.findall(r'BeginPlayer\b', text))))
 
     def player(match):
         owner = next(players)
@@ -181,7 +181,7 @@ def main():
         return 'BeginPlayer' + block + 'EndPlayer'
 
     text = re.sub(r'BeginPlayer\b(.*?)EndPlayer', player, text, flags=re.S)
-    teams = iter(range(35))
+    teams = iter(range(len(re.findall(r'BeginTeam\b', text))))
 
     def team(match):
         owner = next(teams)
@@ -192,8 +192,8 @@ def main():
                 if other != owner:
                     block += '\n\tContactWithTeam=' + str(other) + '\n'
         # The Aghlabid conquest of Sicily was still in progress in 900.
-        if owner in (6, 34):
-            block += '\n\tAtWar=' + str(34 if owner == 6 else 6) + '\n'
+        if owner in (6, 35):
+            block += '\n\tAtWar=' + str(35 if owner == 6 else 6) + '\n'
         if owner in (14, 28):
             other = 28 if owner == 14 else 14
             block += '\n\tContactWithTeam=' + str(other) + '\n\tAtWar=' + str(other) + '\n'
@@ -246,7 +246,8 @@ def main():
             if not re.fullmatch(r'\s*(?:Begin|End)(?:Game|Team|Player|Map|Plot|City|Unit)\s*', line):
                 raise ValueError('WB block marker must be on its own line: ' + line)
     from korea_scenarios import apply_korea
-    text = apply_korea(text)
+    from american_scenarios import apply_american_starts
+    text = apply_american_starts(apply_korea(text))
     TARGET.write_text(text, encoding='utf-8')
     write_leader_text()
     print(TARGET.relative_to(ROOT))

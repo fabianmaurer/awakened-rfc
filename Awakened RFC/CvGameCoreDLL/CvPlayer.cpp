@@ -1299,6 +1299,8 @@ CvCity* CvPlayer::initCity(int iX, int iY, bool bBumpUnits, bool bUpdatePlotGrou
 
 void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups, bool bArabianBirth)
 {
+	const PlayerTypes eCrusadeRecipient = bConquest && !bTrade ? GC.getGameINLINE().getCrusadeCityRecipient(getID(), *pOldCity) : NO_PLAYER;
+
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pNewCity;
 	CvUnit* pLoopUnit;
@@ -1480,6 +1482,11 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	}
 
 	changeGold(iCaptureGold);
+	if (bConquest)
+	{
+		GC.getGameINLINE().recordCrusadeActivity(getTeam(), pOldCity->getTeam(), pOldCity->plot());
+		GC.getGameINLINE().recordCrusadePlunder(getID(), pOldCity->getTeam(), pOldCity->plot(), iCaptureGold);
+	}
 
 	pabHasReligion = new bool[GC.getNumReligionInfos()];
 	pabHolyCity = new bool[GC.getNumReligionInfos()];
@@ -1843,7 +1850,45 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	SAFE_DELETE_ARRAY(paiBuildingOriginalOwner);
 	SAFE_DELETE_ARRAY(paiBuildingOriginalTime);
 
-	if (bConquest)
+	if (eCrusadeRecipient != NO_PLAYER)
+	{
+		pNewCity->grantConquestResearch();
+		const CvWString szSettlementCity = pNewCity->getName();
+		CvPlayer& kRecipient = GET_PLAYER(eCrusadeRecipient);
+		const int iSettlementCulture = pNewCity->getCultureTimes100(getID());
+		if (eCrusadeRecipient != getID()) kRecipient.acquireCity(pNewCity, false, true, true);
+		CvCity* pSettlement = pCityPlot->getPlotCity();
+		if (pSettlement && pSettlement->getOwnerINLINE() == eCrusadeRecipient)
+		{
+			if (eCrusadeRecipient != getID())
+			{
+				pSettlement->setCultureTimes100(eCrusadeRecipient, pSettlement->getCultureTimes100(eCrusadeRecipient) + iSettlementCulture, false, true);
+				pSettlement->setCultureTimes100(getID(), 0, false, true);
+			}
+			pSettlement->setOccupationTimer(0);
+			pSettlement->setHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"), true, false, false);
+			if (GC.getGameINLINE().isCrusadeHolyState(eCrusadeRecipient) && kRecipient.getNumCities() == 1)
+			{
+				pSettlement->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_PALACE"), 1);
+				kRecipient.setCapitalCity(pSettlement);
+				UnitTypes eDefender = pSettlement->AI_bestUnitAI(UNITAI_CITY_DEFENSE);
+				if (eDefender == NO_UNIT) eDefender = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
+				for (int iGuard = 0; iGuard < 2; ++iGuard)
+				{
+					CvUnit* pGuard = kRecipient.initUnit(eDefender, pSettlement->getX_INLINE(), pSettlement->getY_INLINE(), UNITAI_CITY_DEFENSE);
+					if (pGuard) pGuard->finishMoves();
+				}
+			}
+			CvEventReporter::getInstance().cityAcquiredAndKept(eCrusadeRecipient, pSettlement);
+#if ARFC_ENABLE_REPORTING
+			GC.getGameINLINE().reportApostolicMechanic("crusade_settlement_completed", getID(), eCrusadeRecipient, pSettlement->getOwnerINLINE(), pSettlement->getX_INLINE(), pSettlement->getY_INLINE(), kRecipient.getStateReligion());
+#endif
+		}
+		szBuffer = gDLL->getText("TXT_KEY_AP_CRUSADE_SETTLEMENT", szSettlementCity.GetCString(), kRecipient.getCivilizationDescription());
+		gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCityPlot->getX_INLINE(), pCityPlot->getY_INLINE());
+		gDLL->getInterfaceIFace()->addMessage(eCrusadeRecipient, false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pCityPlot->getX_INLINE(), pCityPlot->getY_INLINE());
+	}
+	else if (bConquest)
 	{
 		//Rhye - start
 //Speed: Modified by Kael 04/19/2007
@@ -1929,6 +1974,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 
 	processCivNames(); //Rhye - dynamic civ names - not jdog's
 	GET_PLAYER(eOldOwner).processCivNames(); //Rhye - dynamic civ names - not jdog's
+	GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 
@@ -2677,6 +2723,9 @@ const wchar* CvPlayer::getCivilizationAdjectiveKey() const
 
 CvWString CvPlayer::getFlagDecal() const
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+		return L"Art/Interface/TeamColor/FlagDECAL_Papal.dds";
+
 	if (GC.getInitCore().getFlagDecal(getID()).empty())
 	{
 		return GC.getCivilizationInfo(getCivilizationType()).getFlagTexture();
@@ -2689,6 +2738,9 @@ CvWString CvPlayer::getFlagDecal() const
 
 bool CvPlayer::isWhiteFlag() const
 {
+	// Preserve the Papal banner's own colors instead of tinting it by team.
+	if (GC.getGameINLINE().isPapalState(getID())) return true;
+
 	if (GC.getInitCore().getFlagDecal(getID()).empty())
 	{
 		return GC.getCivilizationInfo(getCivilizationType()).getArtInfo()->isWhiteFlag();
@@ -4113,6 +4165,13 @@ bool CvPlayer::canReceiveTradeCity() const
 
 bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial) const
 {
+	const TeamTypes eOtherTeam = GET_PLAYER(eWhoTo).getTeam();
+	if (item.m_eItemType == TRADE_PEACE_TREATY && GC.getGameINLINE().isCrusadeWar(getTeam(), eOtherTeam)) return false;
+	if (item.m_eItemType == TRADE_PEACE && GC.getGameINLINE().isCrusadeWar(getTeam(), (TeamTypes)item.m_iData)) return false;
+	if (item.m_eItemType == TRADE_VASSAL || item.m_eItemType == TRADE_SURRENDER || item.m_eItemType == TRADE_PERMANENT_ALLIANCE)
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (GC.getGameINLINE().isCrusadeWar(getTeam(), (TeamTypes)t) || GC.getGameINLINE().isCrusadeWar(eOtherTeam, (TeamTypes)t)) return false;
+
 	CvCity *pOurCapitalCity;
 
 	if (bTestDenial)
@@ -5777,6 +5836,7 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 
 bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE")) return false;
 	if (eBuilding == GC.getInfoTypeForString("BUILDING_ROMAN_ADMINISTRATION") && !isRomanRepublic())
 		return false;
 
@@ -8377,10 +8437,10 @@ void CvPlayer::createJihadCampaign(int iCampaign, int iRecruitPackages)
         if (pUnit != pLeader) pUnit->joinGroup(pLeader->getGroup());
         pUnit->finishMoves();
     }
-    if (iCampaign == 1)
+    if (iCampaign == 1 || iCampaign == 2)
     {
-        // Separate city-defense escorts follow Amr, then remain in Egyptian
-        // conquests. They never join the field campaign or absorb its general.
+        // Separate city-defense escorts follow Amr or Sa'd, then garrison
+        // regional conquests without joining the field campaign.
         const char* aszEscorts[] = { "UNIT_LONGBOWMAN", "UNIT_SPEARMAN" };
         for (int iEscort = 0; iEscort < 2; ++iEscort)
         {
@@ -8389,7 +8449,7 @@ void CvPlayer::createJihadCampaign(int iCampaign, int iRecruitPackages)
             CvUnit* pEscort = initUnit(eEscort, pStage->getX_INLINE(), pStage->getY_INLINE(), UNITAI_CITY_DEFENSE);
             if (pEscort != NULL)
             {
-                pEscort->setScriptData("RFCMP_JIHAD_EGYPT_ESCORT");
+                pEscort->setScriptData(iCampaign == 1 ? "RFCMP_JIHAD_EGYPT_ESCORT" : "RFCMP_JIHAD_PERSIA_ESCORT");
                 pEscort->finishMoves();
             }
         }
@@ -8443,6 +8503,17 @@ void CvPlayer::convertIslamicCity(CvCity* pCity, bool bRecruit, int iRecruitPopu
 
 bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (eCivic == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) return false;
+		CivicOptionTypes eOption = (CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType();
+		if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
+		{
+			if (eOption == GC.getInfoTypeForString("CIVICOPTION_LEGAL")) return eCivic == getCivics(eOption);
+			if (eOption == GC.getInfoTypeForString("CIVICOPTION_RELIGION") && eCivic != GC.getInfoTypeForString("CIVIC_TOLERANCE") && !GC.getCivicInfo(eCivic).isStateReligion()) return false;
+			if (eCivic == getCivics(eOption)) return true;
+		}
+	}
 	PROFILE_FUNC();
 
 	if (GC.getCivicInfo(eCivic).isHordeVariant(getCivilizationType()))
@@ -8677,6 +8748,7 @@ bool CvPlayer::canChangeReligion() const
 
 bool CvPlayer::canConvert(ReligionTypes eReligion) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()) && !isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE"))) return false;
 	if (isBarbarian())
 	{
 		return false;
@@ -11367,7 +11439,8 @@ void CvPlayer::verifyAlive()
 		{
 			if (!isBarbarian())
 			{
-				if (getNumCities() == 0 && getAdvancedStartPoints() < 0)
+				if (getNumCities() == 0 && getAdvancedStartPoints() < 0 &&
+					!(getNumUnits() > 0 && GC.getGameINLINE().canPapalSurviveWithoutCities(getID())))
 				{
 					if ((getNumUnits() == 0) || (!(GC.getGameINLINE().isOption(GAMEOPTION_COMPLETE_KILLS)) && isFoundedFirstCity()))
 					{
@@ -11971,6 +12044,11 @@ ReligionTypes CvPlayer::getStateReligion() const
 
 void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (!GC.getGameINLINE().isPapalCivicOverride() && !isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) && eNewValue != getLastStateReligion()) return;
+		GC.getGameINLINE().disablePapalPalaceEffects();
+	}
 	ReligionTypes eOldReligion;
 	CvWString szBuffer;
 	int iI;
@@ -12040,6 +12118,7 @@ void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 			CvEventReporter::getInstance().playerChangeStateReligion(getID(), eNewValue, eOldReligion);
 		}
 	}
+	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 PlayerTypes CvPlayer::getParent() const
@@ -12107,6 +12186,22 @@ void CvPlayer::setTeam(TeamTypes eTeam)
 
 PlayerColorTypes CvPlayer::getPlayerColor() const
 {
+	// These identities have authored palettes. Scenario setup may retain an old
+	// slot color or assign an unused palette when another civ shares a default.
+	if (GC.getGameINLINE().isPapalState(getID()))
+		return (PlayerColorTypes)GC.getInfoTypeForString("PLAYERCOLOR_PAPAL");
+	const CivilizationTypes eCiv = getCivilizationType();
+	if (eCiv != NO_CIVILIZATION)
+	{
+		const CvCivilizationInfo& kCiv = GC.getCivilizationInfo(eCiv);
+		const char* szType = kCiv.getType();
+		if (strcmp(szType, "CIVILIZATION_ARABIA") == 0 ||
+			strcmp(szType, "CIVILIZATION_ABBASID") == 0 ||
+			strcmp(szType, "CIVILIZATION_FATIMID") == 0 ||
+			strcmp(szType, "CIVILIZATION_UMAYYAD") == 0 ||
+			strcmp(szType, "CIVILIZATION_KOREA") == 0)
+			return (PlayerColorTypes)kCiv.getDefaultPlayerColor();
+	}
 	return GC.getInitCore().getColor(getID());
 }
 
@@ -13209,6 +13304,13 @@ void CvPlayer::changeHasReligionCount(ReligionTypes eIndex, int iChange)
 		FAssert(getHasReligionCount(eIndex) >= 0);
 
 		GC.getGameINLINE().updateBuildingCommerce();
+		// Foreign conversions, expulsions and city transfers change Papal tribute.
+		if (eIndex == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+		{
+			CvCity* pRome = GC.getGameINLINE().getPapalRome();
+			if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()))
+				pRome->updateCommerce(COMMERCE_GOLD);
+		}
 
 		GC.getGameINLINE().AI_makeAssignWorkDirty();
 	}
@@ -13421,6 +13523,20 @@ int CvPlayer::getCivicUpkeep(CivicTypes* paeCivics, bool bIgnoreAnarchy) const
 
 void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 {
+	if (GC.getGameINLINE().isPapalState(getID()))
+	{
+		if (!GC.getGameINLINE().isPapalCivicOverride())
+		{
+			if (eNewValue == GC.getInfoTypeForString("CIVIC_STATE_ATHEISM")) return;
+			if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")) && eNewValue != getCivics(eIndex))
+			{
+				if (eIndex == GC.getInfoTypeForString("CIVICOPTION_LEGAL")) return;
+				if (eIndex == GC.getInfoTypeForString("CIVICOPTION_RELIGION") && eNewValue != GC.getInfoTypeForString("CIVIC_TOLERANCE") && !GC.getCivicInfo(eNewValue).isStateReligion()) return;
+			}
+		}
+		GC.getGameINLINE().disablePapalPalaceEffects();
+	}
+
 	CvWString szBuffer;
 	CivicTypes eOldCivic;
 	//int iI; //Rhye
@@ -13630,6 +13746,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 			//Rhye - end
 		}
 	}
+	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
 }
 
 
@@ -19583,6 +19700,12 @@ bool CvPlayer::canDoEvent(EventTypes eEvent, const EventTriggeredData& kTriggere
 	}
 
 	CvEventInfo& kEvent = GC.getEventInfo(eEvent);
+	if (kTriggeredData.m_eOtherPlayer != NO_PLAYER && GC.getGameINLINE().isCrusadeWar(getTeam(), GET_PLAYER(kTriggeredData.m_eOtherPlayer).getTeam()))
+	{
+		CvString callback(kEvent.getPythonCallback());
+		if (callback == "doHeroicGesture2" || callback == "doGreatMediator2") return false;
+	}
+
 
 	int iGold = std::min(getEventCost(eEvent, kTriggeredData.m_eOtherPlayer, false), getEventCost(eEvent, kTriggeredData.m_eOtherPlayer, true));
 
@@ -22187,6 +22310,7 @@ void CvPlayer::processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive)
 
 int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || isMinorCiv() || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
 	int iVotes = 0;
 
 	ReligionTypes eReligion = GC.getGameINLINE().getVoteSourceReligion(eVoteSource);
@@ -22381,6 +22505,7 @@ bool CvPlayer::canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionS
 
 bool CvPlayer::canDefyResolution(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource)) return false;
 	if (GC.getGameINLINE().getSecretaryGeneral(eVoteSource) == getTeam())
 	{
 		return false;
@@ -22724,6 +22849,7 @@ bool CvPlayer::canSpyDestroyProject(PlayerTypes eTarget, ProjectTypes eProject) 
 
 void CvPlayer::forcePeace(PlayerTypes ePlayer)
 {
+	if (GC.getGameINLINE().isCrusadeWar(getTeam(), GET_PLAYER(ePlayer).getTeam())) return;
 	if (!GET_TEAM(getTeam()).isAVassal())
 	{
 		FAssert(GET_TEAM(getTeam()).canChangeWarPeace(GET_PLAYER(ePlayer).getTeam()));
@@ -23887,6 +24013,14 @@ static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
 
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
 {
+	if (iPlayer == MISSISSIPPIANS)
+	{
+		if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
+			return L"TXT_KEY_MISS_REPUBLIC";
+		if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_MISS_KINGDOM";
+		if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) return L"TXT_KEY_MISS_STATE";
+		return L"TXT_KEY_MISS_DESC";
+	}
 	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS)
 		return L"";
 	const bool bTribal = hasCountryCivic(civics, "CIVIC_TRIBAL_SYSTEM");
@@ -24148,6 +24282,18 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+	if (GC.getGameINLINE().isPapalState(getID())) { setCivDescription(L"TXT_KEY_AP_PAPAL_STATE"); return; }
+    if (GC.getGameINLINE().isCrusadeHolyState(getID()) && getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+    {
+        if (getID() == CRUSADER_STATE) setCivDescription(L"TXT_KEY_AP_CRUSADER_STATE");
+        else
+        {
+            m_szCivDesc = gDLL->getText("TXT_KEY_AP_HOLY_KINGDOM", GC.getCivilizationInfo(getCivilizationType()).getShortDescription());
+            m_szCivDescKey = m_szCivDesc;
+        }
+        return;
+    }
+
     // Authored minor city states keep their WB identity, including the
     // independent Andalusi cities in a reserved major-numbered slot.
     if (isMinorCiv()) return;

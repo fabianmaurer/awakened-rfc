@@ -8,9 +8,11 @@
 //#include "CvStructs.h"
 #include "CvDeal.h"
 #include "CvRandom.h"
+#include <map>
 
 class CvPlot;
 class CvCity;
+class CvUnit;
 class CvReplayMessage;
 class CvReplayInfo;
 
@@ -444,6 +446,59 @@ public:
 	void deleteVoteSelection(int iID);
 
 	VoteTriggeredData* getVoteTriggered(int iID) const;
+	bool isApostolicCouncil(VoteSourceTypes eSource) const;
+	CvCity* getApostolicPalace() const;
+	bool isCouncilActive() const;
+	bool canCouncilPropose(const VoteSelectionSubData& kData) const;
+	CvWString getCouncilProposalText(const VoteSelectionSubData& kData) const;
+	int getCouncilVoteId() const;
+	int getCouncilTally(int iVoteId, int iCategory, bool bNations) const;
+	int getCouncilTurnsLeft(int iVoteId) const;
+	CvWString getCouncilVoteText(int iVoteId) const;
+	void doCouncilBallot(VoteTriggeredData& kData);
+	void processCouncilResolution(const VoteTriggeredData& kData);
+	void rewardCrusadeCombat(CvUnit* pWinner, CvUnit* pLoser);
+	int getCrusadeRegionCount() const;
+	int getCrusadeRegionAt(const CvPlot* pPlot) const;
+	CvWString getCrusadeRegionName(int iRegion) const;
+	bool getCrusadeTargets(int iRegion, bool* abTargets) const;
+	bool canStartCrusade(int iRegion) const;
+	void startCrusade(int iRegion);
+	void doCrusade();
+	bool isCrusadeWar(TeamTypes eFirst, TeamTypes eSecond) const;
+	bool isCrusadePeaceOverride() const { return m_bCrusadePeaceOverride; }
+	bool isCrusadeParticipant(PlayerTypes ePlayer) const;
+	bool hasCrusadeAccess(TeamTypes eFirst, TeamTypes eSecond) const;
+	void recordCrusadeActivity(TeamTypes eFirst, TeamTypes eSecond, const CvPlot* pPlot);
+	void recordCrusadePlunder(PlayerTypes ePlayer, TeamTypes eEnemy, const CvPlot* pPlot, int iGold);
+	int getCrusadeTurnsLeft() const;
+	int getCrusadePlunder(int iPlayer) const;
+	CvWString getActiveCrusadeName() const;
+	bool isCrusadeConquest(PlayerTypes eConqueror, const CvCity& kCity) const;
+	PlayerTypes getCrusadeCityRecipient(PlayerTypes eConqueror, const CvCity& kCity);
+	void joinCrusadeCoalition(PlayerTypes ePlayer);
+	void prepareCrusadeState(PlayerTypes ePlayer, PlayerTypes eSponsor);
+	bool isCrusadeHolyState(PlayerTypes ePlayer) const;
+	CvCity* getPapalRome() const;
+	bool isPapalState(PlayerTypes ePlayer) const;
+	bool canFoundPapacy(PlayerTypes ePlayer) const;
+	bool canBecomePapacy(PlayerTypes ePlayer) const;
+	bool isPapalDecisionValid(PlayerTypes ePlayer, int iDecision) const;
+	void doPapalFounding();
+	void doPapalLifecycle();
+	void notifyPapalRomeLost(PlayerTypes eOwner);
+	bool canPapalSurviveWithoutCities(PlayerTypes ePlayer) const;
+	int getPapalDevotionPercent(PlayerTypes ePlayer) const;
+	void resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoice);
+	void establishPapacy(PlayerTypes eOwner, bool bBecome);
+	void clearPapalRefusalPenalties();
+#if ARFC_ENABLE_REPORTING
+	void reportApostolicMechanic(const char* event, int player = -1, int a = -1, int b = -1, int c = -1, int d = -1, int e = -1, int f = -1, int g = -1, int h = -1) const;
+	void reportApostolicState();
+#endif
+	void disablePapalPalaceEffects();
+	void refreshPapalPalaceEffects();
+	bool isPapalCivicOverride() const { return m_bPapalCivicOverride; }
 	VoteTriggeredData* addVoteTriggered(const VoteSelectionData& kData, int iChoice);
 	VoteTriggeredData* addVoteTriggered(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kOptionData);
 	void deleteVoteTriggered(int iID);
@@ -658,6 +713,24 @@ protected:
 
 	FFreeListTrashArray<CvDeal> m_deals;
 	FFreeListTrashArray<VoteSelectionData> m_voteSelections;
+	bool m_bCrusadePeaceOverride;
+	int m_iCrusadeRegion;
+	int m_iCrusadeEndTurn;
+	int m_aiCrusadeRewards[MAX_CIV_PLAYERS];
+	int m_aiCrusadePlunder[MAX_PLAYERS];
+	bool m_abCrusadeParticipants[MAX_TEAMS];
+	bool m_abCrusadeTargets[MAX_TEAMS];
+	bool m_abCrusadeHolyStates[MAX_PLAYERS];
+	int m_iPapalPlayer;
+	int m_iPapalRetryTurn;
+	int m_iPapalRomeDeadline;
+	int m_iPapalDevotionFadeStart;
+	int m_iPapalDecisionSerial;
+	int m_iPapalRefuser;
+	int m_aiPapalRefusalPenalties[MAX_CIV_PLAYERS];
+	std::map<int, PlayerTypes> m_papalDecisions;
+	bool m_bPapalPalaceEffects;
+	bool m_bPapalCivicOverride;
 	FFreeListTrashArray<VoteTriggeredData> m_votesTriggered;
 
 	CvRandom m_mapRand;

@@ -1613,6 +1613,8 @@ def doHeroicGesture2(argsList):
 
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 	player = gc.getPlayer(kTriggeredData.ePlayer)
+	if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+		return
 	
 	if destPlayer.isHuman():
 		# this works only because it's a single-player only event
@@ -1645,6 +1647,8 @@ def heroicGesture2Callback(argsList):
 	if iButton == 0:
 		destPlayer = gc.getPlayer(iData1)
 		player = gc.getPlayer(iData2)
+		if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+			return 0
 		destPlayer.forcePeace(iData2)
 		destPlayer.AI_changeAttitudeExtra(iData2, 1)
 		player.AI_changeAttitudeExtra(iData1, 1)		
@@ -1692,6 +1696,8 @@ def doGreatMediator2(argsList):
 
 	destPlayer = gc.getPlayer(kTriggeredData.eOtherPlayer)
 	player = gc.getPlayer(kTriggeredData.ePlayer)
+	if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+		return
 	
 	if destPlayer.isHuman():
 		# this works only because it's a single-player only event
@@ -1724,6 +1730,8 @@ def greatMediator2Callback(argsList):
 	if iButton == 0:
 		destPlayer = gc.getPlayer(iData1)
 		player = gc.getPlayer(iData2)
+		if not gc.getTeam(player.getTeam()).canChangeWarPeace(destPlayer.getTeam()):
+			return 0
 		gc.getTeam(destPlayer.getTeam()).makePeace(player.getTeam())
 		destPlayer.AI_changeAttitudeExtra(iData2, 1)
 		player.AI_changeAttitudeExtra(iData1, 1)		

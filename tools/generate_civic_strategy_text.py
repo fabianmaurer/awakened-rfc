@@ -66,8 +66,8 @@ SUMMARIES = {
         '+25% unit production. Food surplus contributes to land military unit production.',
         '+25% Einheitenproduktion. Nahrungs\xfcberschuss tr\xe4gt zur Produktion milit\xe4rischer Landeinheiten bei.'),
     'ANCESTOR_CULT': (
-        '+1 culture from monuments, including unique replacements.',
-        '+1 Kultur durch Monumente, einschließlich einzigartiger Ersatzgebäude.'),
+        '+1 culture from monuments, including unique replacements.[NEWLINE]+1 unhappiness from state religion.',
+        '+1 Kultur durch Monumente, einschlie\u00dflich einzigartiger Ersatzgeb\u00e4ude.[NEWLINE]+1 Unzufriedenheit durch die Staatsreligion.'),
     'STATE_RELIGION': (
         '+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.',
         '+1 Zufriedenheit in St\xe4dten mit Staatsreligion; +100% Produktion f\xfcr Missionare und +25% Produktion f\xfcr Geb\xe4ude der Staatsreligion.'),

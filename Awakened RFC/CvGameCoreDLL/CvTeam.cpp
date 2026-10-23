@@ -1033,7 +1033,7 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 		return false;
 	}
 
-	if (isArabianJihadWar(eTeam) || isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
+	if (GC.getGameINLINE().isCrusadeWar(getID(), eTeam) || isArabianJihadWar(eTeam) || isPermanentWarPeace(eTeam) || GET_TEAM(eTeam).isPermanentWarPeace(getID()))
 	{
 		return false;
 	}
@@ -1081,6 +1081,7 @@ bool CvTeam::canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal) const
 
 bool CvTeam::canDeclareWar(TeamTypes eTeam) const
 {
+	if (GC.getGameINLINE().hasCrusadeAccess(getID(), eTeam)) return false;
 	if (eTeam == getID())
 	{
 		return false;
@@ -1147,6 +1148,7 @@ bool CvTeam::canDeclareWar(TeamTypes eTeam) const
 
 void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 {
+	if (GC.getGameINLINE().hasCrusadeAccess(getID(), eTeam)) return;
 	PROFILE_FUNC();
 
 	CLLNode<TradeData>* pNode;
@@ -1561,7 +1563,7 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 void CvTeam::makePeace(TeamTypes eTeam, bool bBumpUnits)
 {
-	if (isArabianJihadWar(eTeam)) return;
+	if (GC.getGameINLINE().isCrusadeWar(getID(), eTeam) || (isArabianJihadWar(eTeam) && !GC.getGameINLINE().isCrusadePeaceOverride())) return;
 
 	CvWString szBuffer;
 	int iI;
@@ -3791,6 +3793,7 @@ bool CvTeam::isAtWar(TeamTypes eIndex) const
 
 void CvTeam::setAtWar(TeamTypes eIndex, bool bNewValue)
 {
+	if ((!bNewValue && GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) || (bNewValue && GC.getGameINLINE().hasCrusadeAccess(getID(), eIndex))) return;
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	m_abAtWar[eIndex] = bNewValue;
@@ -3949,6 +3952,7 @@ bool CvTeam::isForcePeace(TeamTypes eIndex) const
 
 void CvTeam::setForcePeace(TeamTypes eIndex, bool bNewValue)
 {
+	if (bNewValue && GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	m_abForcePeace[eIndex] = bNewValue;
@@ -3982,6 +3986,12 @@ bool CvTeam::isVassal(TeamTypes eIndex) const
 
 void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 {
+	if (bNewValue)
+	{
+		if (GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (GC.getGameINLINE().isCrusadeWar(getID(), (TeamTypes)t) && !GET_TEAM(eIndex).isAtWar((TeamTypes)t)) return;
+	}
     if (bNewValue)
     {
         if (isArabianJihadWar(eIndex)) return;

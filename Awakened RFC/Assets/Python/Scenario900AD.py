@@ -8,7 +8,7 @@ START_TURN = 211
 SPAIN_START = (51, 46)  # Asturias / Oviedo region, not the Madrid-area birth tile.
 ACTIVE_PLAYERS = (con.iEgypt, con.iChina, con.iCarthage, con.iJapan, con.iVikings, con.iArabia,
                   con.iKhmer, con.iSpain, con.iFrance, con.iEngland,
-                  con.iGermany, con.iRussia, con.iCaliphateSlot1, con.iKorea)
+                  con.iGermany, con.iRussia, con.iCaliphateSlot1, con.iKorea, con.iMaya, con.iMississippians)
 
 
 def isScenario():

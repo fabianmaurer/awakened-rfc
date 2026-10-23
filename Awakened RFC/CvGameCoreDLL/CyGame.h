@@ -125,6 +125,16 @@ public:
 	bool isNoNukes() const;
 	void changeNoNukesCount(int iChange);
 	int getSecretaryGeneralTimer(int iVoteSource) const;
+	bool isPapalState(int iPlayer) const;
+	bool isCrusadeHolyState(int iPlayer) const;
+	bool isCrusadeParticipant(int iPlayer) const;
+	int getCrusadeTurnsLeft() const;
+	int getCrusadePlunder(int iPlayer) const;
+	std::wstring getActiveCrusadeName() const;
+	int getCouncilVoteId() const;
+	int getCouncilTally(int iVoteId, int iCategory, bool bNations) const;
+	int getCouncilTurnsLeft(int iVoteId) const;
+	std::wstring getCouncilVoteText(int iVoteId) const;
 	int getVoteTimer(int iVoteSource) const;
 	int getNukesExploded() const;
 	void changeNukesExploded(int iChange);

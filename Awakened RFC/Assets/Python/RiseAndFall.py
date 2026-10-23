@@ -1436,6 +1436,10 @@ class RiseAndFall:
 
                               
         def _canRespawnFlip(self, city, iDeadCiv):
+                if iDeadCiv == iRome:
+                        west, south, east, north = con.tItalyRespawnArea
+                        if not (west <= city.getX() <= east and south <= city.getY() <= north):
+                                return False
                 iOwner = city.getOwner()
                 if iOwner >= iNumActivePlayers:
                         return True # independent and barbarian cities have no national stability
@@ -1505,6 +1509,9 @@ class RiseAndFall:
                                         break
                 #print ("iDeadCiv", iDeadCiv)
                 if (bDeadCivFound):
+                        tRespawnBounds = None
+                        if iDeadCiv == iRome:
+                                tRespawnBounds = con.tItalyRespawnArea
                         self.setRebelCiv(iDeadCiv) #for popup and CollapseCapitals()
                         if (len(tLeaders[iDeadCiv]) > 1):
                                 iLen = len(tLeaders[iDeadCiv])
@@ -1564,17 +1571,17 @@ class RiseAndFall:
                                                                 teamDeadCiv.setHasTech(t, True, iDeadCiv, False, False)
 
                                         if (iOwner == iBarbarian or iOwner == iIndependent or iOwner == iIndependent2 or iOwner == iNative):
-                                                utils.cultureManager((cityList[k].getX(),cityList[k].getY()), 100, iDeadCiv, iOwner, False, True, True)
+                                                utils.cultureManager((cityList[k].getX(),cityList[k].getY()), 100, iDeadCiv, iOwner, False, True, True, tPlotBounds=tRespawnBounds)
                                                 utils.flipUnitsInCityBefore((cityList[k].getX(),cityList[k].getY()), iDeadCiv, iOwner)
                                                 self.setTempFlippingCity((cityList[k].getX(),cityList[k].getY()))
                                                 utils.flipCity((cityList[k].getX(),cityList[k].getY()), 0, 0, iDeadCiv, [iOwner])
                                                 tCoords = self.getTempFlippingCity()
                                                 utils.flipUnitsInCityAfter(tCoords, iOwner)
-                                                utils.flipUnitsInArea((tCoords[0]-2, tCoords[1]-2), (tCoords[0]+2, tCoords[1]+2), iDeadCiv, iOwner, True, False)
+                                                utils.flipUnitsInArea((tCoords[0]-2, tCoords[1]-2), (tCoords[0]+2, tCoords[1]+2), iDeadCiv, iOwner, True, False, tPlotBounds=tRespawnBounds)
                                                 if iDeadCiv == iChina:
                                                         utils.createGarrisons(tCoords, iDeadCiv, iNewUnits)
                                         else:
-                                                utils.cultureManager((cityList[k].getX(),cityList[k].getY()), 50, iDeadCiv, iOwner, False, True, True)
+                                                utils.cultureManager((cityList[k].getX(),cityList[k].getY()), 50, iDeadCiv, iOwner, False, True, True, tPlotBounds=tRespawnBounds)
                                                 utils.pushOutGarrisons((cityList[k].getX(),cityList[k].getY()), iOwner)
                                                 utils.relocateSeaGarrisons((cityList[k].getX(),cityList[k].getY()), iOwner)                                                                        
                                                 self.setTempFlippingCity((cityList[k].getX(),cityList[k].getY()))
@@ -1613,6 +1620,10 @@ class RiseAndFall:
                                                 apCityList = PyPlayer(iIndCiv).getCityList()
                                                 for pCity in apCityList:
                                                         indepCity = pCity.GetCy()                                                                
+                                                        if iDeadCiv == iRome:
+                                                                west, south, east, north = con.tItalyRespawnArea
+                                                                if not (west <= indepCity.getX() <= east and south <= indepCity.getY() <= north):
+                                                                        continue
                                                         if (indepCity.getOriginalOwner() == iDeadCiv):
                                                                 print ("colony:", indepCity.getName(), indepCity.getOriginalOwner())
                                                                 indX = indepCity.getX()
@@ -1624,13 +1635,13 @@ class RiseAndFall:
                                 for k in range(len(colonyList)):
                                         print ("INDEPENDENCE: ", colonyList[k].getName())   
                                         iOwner = colonyList[k].getOwner()
-                                        utils.cultureManager((colonyList[k].getX(),colonyList[k].getY()), 100, iDeadCiv, iOwner, False, True, True)
+                                        utils.cultureManager((colonyList[k].getX(),colonyList[k].getY()), 100, iDeadCiv, iOwner, False, True, True, tPlotBounds=tRespawnBounds)
                                         utils.flipUnitsInCityBefore((colonyList[k].getX(),colonyList[k].getY()), iDeadCiv, iOwner)
                                         self.setTempFlippingCity((colonyList[k].getX(),colonyList[k].getY()))
                                         utils.flipCity((colonyList[k].getX(),colonyList[k].getY()), 0, 0, iDeadCiv, [iOwner])
                                         tCoords = self.getTempFlippingCity()
                                         utils.flipUnitsInCityAfter(tCoords, iOwner)
-                                        utils.flipUnitsInArea((tCoords[0]-2, tCoords[1]-2), (tCoords[0]+2, tCoords[1]+2), iDeadCiv, iOwner, True, False)
+                                        utils.flipUnitsInArea((tCoords[0]-2, tCoords[1]-2), (tCoords[0]+2, tCoords[1]+2), iDeadCiv, iOwner, True, False, tPlotBounds=tRespawnBounds)
 
                         #RFCMP
                         #CyInterface().addMessage(utils.getHumanID(), True, con.iDuration, \
@@ -1758,6 +1769,8 @@ class RiseAndFall:
                                                 lNotifiedPlayers.append(iOwner)
 
         def checkFlipUnrest(self, iGameTurn, iCiv):
+                if gc.getGame().isCrusadeHolyState(iCiv):
+                        return
                 if iCiv == iMongolia and con.isMongolianBirthReplaced():
                         return
                 # Start on appearance so the three-turn occupation timer
@@ -1780,6 +1793,12 @@ class RiseAndFall:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
+                if iCiv == con.iMaya and gc.getGame().getStartTurn() == 87:
+                        return # Preclassic Maya are already settled in this start.
+                if iCiv == con.iMississippians and gc.getGame().getStartTurn() >= 211:
+                        return # The late starts already contain this civilization.
+                if gc.getGame().isCrusadeHolyState(iCiv):
+                        return
                 if iCiv == con.iKorea and gc.getGame().getStartTurn() >= con.tBirth[con.iKorea]:
                         return # Korea is already authored in the later starts.
                 if iCiv == iMongolia and con.isMongolianBirthReplaced():
@@ -2508,7 +2527,7 @@ class RiseAndFall:
                                 iNewWorldCiv = iTeamX
                                 iOldWorldCiv = iHasMetTeamY
                         #print ("iOldWorldCiv", iOldWorldCiv, "iNewWorldCiv", iNewWorldCiv)
-                        if (iOldWorldCiv != -1 and iNewWorldCiv != -1):
+                        if (iOldWorldCiv != -1 and iNewWorldCiv != -1 and iNewWorldCiv != con.iMississippians):
                                 
                                 iIndex = -1
                                 if (iNewWorldCiv == iMaya):
@@ -2870,6 +2889,10 @@ class RiseAndFall:
                 utils.makeUnit(con.iCatapult, iCiv, tPlot, 2)
 
         def createStartingUnits( self, iCiv, tPlot ):
+                if iCiv == con.iMississippians:
+                        utils.makeUnit(con.iSettler, iCiv, tPlot, 1)
+                        utils.makeUnit(con.iArcher, iCiv, tPlot, 2)
+                        utils.makeUnit(con.iScout, iCiv, tPlot, 1)
                 # Do not place a new nation's army on another nation's garrison.
                 startingPlot = gc.getMap().plot(tPlot[0], tPlot[1])
                 if startingPlot.getFortGarrisonOwner() not in (-1, iCiv):
@@ -3148,6 +3171,8 @@ class RiseAndFall:
 
                                 
         def createStartingWorkers( self, iCiv, tPlot ):
+                if iCiv == con.iMississippians:
+                        utils.makeUnit(con.iWorker, iCiv, tPlot, 1)
                 if iCiv == con.iKorea:
                         utils.makeUnit(con.iWorker, iCiv, tPlot, 1)
                 if iCiv == con.iXiongnu:
@@ -3867,6 +3892,9 @@ class RiseAndFall:
                 teamJapan.setHasTech(con.iArchery, True, iCiv, False, False)
 
         def assignTechs( self, iCiv ):
+                if iCiv == con.iMississippians:
+                        import NativeAmerica
+                        NativeAmerica.grantTechs()
                 if iCiv == con.iKorea:
                         import Korea
                         Korea.grantTechs()

@@ -61,7 +61,7 @@ public:
 
 protected:
     CvCity* AI_jihadCampaignTarget(bool bEgyptCoastOnly = false);
-    bool AI_jihadEgyptEscort();
+    bool AI_jihadCampaignEscort();
     bool AI_jihadCampaignGarrison();
 
 	CvString m_szObserverCityTarget;

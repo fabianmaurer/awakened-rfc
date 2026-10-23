@@ -437,7 +437,7 @@ class RFCUtils:
 
                                                         
         #RiseAndFall
-        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers, bProtectForts=False):
+        def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers, bProtectForts=False, tPlotBounds=None):
                 """Deletes, recreates units in 0,67 and moves them to the previous tile.
                 If there are units belonging to others in that plot and the new owner is barbarian, the units aren't recreated.
                 Settlers aren't created.
@@ -445,6 +445,8 @@ class RFCUtils:
                 Births use bProtectForts to preserve major-civilization garrisons."""
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
                         for y in range(tTopLeft[1], tBottomRight[1]+1):
+                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                        continue
                                 killPlot = gc.getMap().plot(x,y)
                                 if bProtectForts and killPlot.getFortGarrisonOwner() != -1:
                                         continue
@@ -539,7 +541,7 @@ class RFCUtils:
 
 
         #Congresses, RiseAndFall
-        def cultureManager(self, tCityPlot, iCulturePercent, iNewOwner, iOldOwner, bBarbarian2x2Decay, bBarbarian2x2Conversion, bAlwaysOwnPlots):
+        def cultureManager(self, tCityPlot, iCulturePercent, iNewOwner, iOldOwner, bBarbarian2x2Decay, bBarbarian2x2Conversion, bAlwaysOwnPlots, tPlotBounds=None):
                 """Converts the culture of the city and of the surrounding plots to the new owner of a city.
                 iCulturePercent determine the percentage that goes to the new owner.
                 If old owner is barbarian, all the culture is converted"""
@@ -562,6 +564,8 @@ class RFCUtils:
                         if (iNewOwner != con.iBarbarian and iNewOwner != con.iIndependent and iNewOwner != con.iIndependent2):
                                 for x in range(tCityPlot[0]-2, tCityPlot[0]+3):        # from x-2 to x+2
                                         for y in range(tCityPlot[1]-2, tCityPlot[1]+3):	# from y-2 to y+2                                
+                                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                                        continue
                                                 iPlotBarbCulture = gc.getMap().plot(x, y).getCulture(con.iBarbarian)
                                                 if (iPlotBarbCulture > 0):
                                                         if (gc.getMap().plot(x, y).getPlotCity().isNone() or (x==tCityPlot[0] and y==tCityPlot[1])):
@@ -590,6 +594,8 @@ class RFCUtils:
                 #plot                               
                 for x in range(tCityPlot[0]-1, tCityPlot[0]+2):        # from x-1 to x+1
                         for y in range(tCityPlot[1]-1, tCityPlot[1]+2):	# from y-1 to y+1
+                                if tPlotBounds is not None and not (tPlotBounds[0] <= x <= tPlotBounds[2] and tPlotBounds[1] <= y <= tPlotBounds[3]):
+                                        continue
                                 pCurrent = gc.getMap().plot(x, y)
                                 
                                 iCurrentPlotCulture = pCurrent.getCulture(iOldOwner)

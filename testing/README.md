@@ -597,6 +597,20 @@ This streams records into `report.md` and `summary.json`, including:
   re-run for reporting. Evaluations are sampled when current/best civic changes
   and at 25-turn boundaries when an evaluation occurs; sample frequency is biased
   towards changes and must not be interpreted as preference prevalence.
+- Apostolic Palace/Papacy/Crusade coverage: founding requests and choices, accumulated
+  refusal penalties and exact diplomatic refunds, Palace activation changes,
+  courier schedules/delivery, frozen voting weights, votes with civic context,
+  results and resolution effects, Crusade deadlines/activity, plunder and combat
+  rewards, coalition joins, new holy states and selected/completed settlements.
+  Native state is recorded every turn in balance/diagnostics autoplay, independently
+  of the expensive snapshot interval, immediately before `EndGameTurn` callbacks.
+  It includes reserved Papal/Crusader slots, coalition/target masks, war/peace/access
+  permissions and pending ballots. Events are retained until the next snapshot.
+  Automatic findings flag broken coalition peace/access, separate Crusade peace,
+  invalid Palace activation, retained refusal penalties, incorrect timer resets,
+  settlement owners, religious reform or refunds, and Ancestor Worship with a
+  state religion. The report shows observed coverage; unexercised paths remain
+  unverified. Recordings do not establish multiplayer popup or rendered HUD behavior.
 - A compact run-integrity table and grouped diagnostics with one traceback per
   error signature, affected seeds and first error turn.
 

@@ -656,6 +656,7 @@ public:
 	int getCommerceRateTimes100(CommerceTypes eIndex) const;									// Exposed to Python
 	int getCommerceFromPercent(CommerceTypes eIndex, int iYieldRate) const;			// Exposed to Python
 	int getBaseCommerceRate(CommerceTypes eIndex) const;												// Exposed to Python
+	int getPapalTributeGold() const;
 	int getBaseCommerceRateTimes100(CommerceTypes eIndex) const;												// Exposed to Python
 	int getTotalCommerceRateModifier(CommerceTypes eIndex) const;								// Exposed to Python
 	void updateCommerce(CommerceTypes eIndex);

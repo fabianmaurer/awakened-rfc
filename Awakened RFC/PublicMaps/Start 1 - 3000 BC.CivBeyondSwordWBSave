@@ -78,13 +78,19 @@ BeginTeam
 EndTeam
 BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
+EndTeam
+BeginTeam                 
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 EndTeam
 BeginPlayer
 	LeaderType=LEADER_RAMESSES
@@ -308,11 +314,25 @@ BeginPlayer
 	StartingY=48
 	StartingGold=80
 EndPlayer
+BeginPlayer
+	Team=31
+	CivType=CIVILIZATION_NATIVE_AMERICA
+	LeaderType=LEADER_SITTING_BULL
+	PlayableCiv=1
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	CivDesc=TXT_KEY_MISS_DESC
+	CivShortDesc=TXT_KEY_MISS
+	CivAdjective=TXT_KEY_MISS_ADJ
+	LeaderName=TXT_KEY_MISS_LEADER
+	StartingX=23
+	StartingY=45
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=31
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -321,7 +341,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=32
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -330,7 +350,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=33
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -338,10 +358,24 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=34
+	Team=35
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=1
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
 EndPlayer
 
 BeginMap

@@ -7751,6 +7751,12 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 			gDLL->getText(szHistoricalRequirement).GetCString()));
 	}
 
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_AP_LIFECYCLE_HELP"));
+	}
+
 	if (!CvWString(kBuilding.getHelp()).empty())
 	{
 		szBuffer.append(NEWLINE);
@@ -11995,6 +12001,14 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_COMMERCE", iBuildingCommerce, info.getChar()));
 		szBuffer.append(NEWLINE);
 		iBaseCommerceRate += 100 * iBuildingCommerce;
+	}
+
+	const int iPapalTribute = eCommerceType == COMMERCE_GOLD ? city.getPapalTributeGold() : 0;
+	if (iPapalTribute > 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_AP_UP_TRIBUTE", iPapalTribute));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iPapalTribute;
 	}
 
 	int iFreeCityCommerce = owner.getFreeCityCommerce(eCommerceType);

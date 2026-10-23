@@ -188,6 +188,12 @@ void CyPlayer::setCivDescription(std::wstring szNewDesc)
 }
 //Rhye (jdog) -  end -----------------------
 
+void CyPlayer::processCivNames()
+{
+	if (m_pPlayer)
+		m_pPlayer->processCivNames();
+}
+
 std::wstring CyPlayer::getCivilizationDescriptionKey()
 {
 	return m_pPlayer ? m_pPlayer->getCivilizationDescriptionKey() : std::wstring();

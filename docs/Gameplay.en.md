@@ -11,6 +11,172 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+## Apostolic council
+
+The Apostolic Palace **cannot be constructed**. Once Christianity is present in
+the city of Rome at (60,44), the Papal State founding event becomes eligible:
+
+- A Christian owner may cede Rome to a new Papal State, or refuse for a stacking
+  **-2 relations penalty from every other Christian nation**. Refusal repeats after
+  10 turns at Normal speed (`AP_PAPAL_RETRY_TURNS`), scaled to game speed. All
+  accumulated refusal penalties disappear when the owner accepts either Papal
+  founding option or loses Rome (including gifting or razing it).
+- An owner already using **Theocracy and Holy State** may instead become the Papal
+  State, retaining its territory, government and human player control.
+- Independent Rome flips to the Papal State automatically. Barbarian ownership,
+  non-Christian ownership, Tolerance and State Atheism prevent the event.
+
+A newly established Papal State receives Rome, its own player slot, a capital and
+two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
+Papal identity is separate from the Independent Crusader States.
+
+While Rome belongs to the Papal State, its eight adjacent non-city tiles remain
+Papal territory regardless of foreign culture or fort garrisons. Rome itself
+cannot suffer cultural revolts or cultural unhappiness. These protections also
+apply under Tolerance; Rome can still be lost through military conquest.
+
+The Papal State cannot change its state religion or legitimation civic while it
+is not using **Tolerance**. **State Atheism is always unavailable**. Adopting
+Tolerance disables the Palace, council voting and all Palace effects, including
+cached religious-building yields and the Palace's own commerce/Great Person effects.
+Returning to Christian religious rule reactivates them; secularization is reversible.
+The Palace is also inactive when the Papal State no longer controls Rome.
+After losing Rome, the Papal State has **10 turns** to recover it. Recovery resets
+this deadline; a later loss starts a new ten-turn period. If it fails, its remaining
+cities become Independent and its army disbands. A cityless Papal State with
+surviving units keeps its recovery opportunity. A new founding event cannot fire
+while any existing Papal State survives, including during the recovery period.
+After elimination or dissolution, an eligible Rome event may restore the Papacy.
+
+Every founding or restoration starts the Papal AI with a strong preference for
+**Theocracy and Holy State**, and against Tolerance and Ancestor Worship. Once the
+world reaches the **Modern era**, this preference fades to zero over **30 turns
+at Normal speed**, scaled to game speed. A modern-era restoration renews the full
+preference and restarts the fade. This AI preference adds no civic restrictions
+to human players beyond the existing Papal rules.
+
+The Papal unique power, **The Power of the Holy See**, is active while the Papal
+State controls an active Apostolic Palace. Rome gains **+2 base gold per foreign
+city containing Christianity**, regardless of that city's owner's state religion;
+Rome's gold modifiers amplify this income. Papal cities containing Christianity
+receive **+50% city defense**, reduced normally by bombardment. These bonuses
+stop when the Palace is inactive, including under Tolerance or after losing Rome,
+and return when it reactivates. They apply equally to human and AI Papal States,
+including countries that choose to become the Papacy.
+
+Only nations with Christianity as their state religion participate in council votes.
+The Papal State chairs the council. The UN retains its existing rules.
+
+Councils occur about every 30 turns, scaled to game speed, with no overlapping
+ballots. Capital distance from the Palace gives a courier delay of 1 turn below
+12 tiles, 2 below 24, and 3 beyond that. Ballots close 3 turns after the last
+scheduled delivery. Christian-population vote weights are fixed at opening;
+uncast ballots become abstentions. The main interface displays vote weights,
+nation counts, cast/total votes and green/charcoal/red/light-gray segments for
+Yes/Abstain/No/outstanding. All participating nations see the same live tally.
+
+| Resolution | Binding effect | Threshold |
+| --- | --- | --- |
+| Crusade | All members join a regional campaign against all non-Christian nations with cities in the region, including Independents and required allies. Coalition peace, temporary military passage and a shared peace lock apply until the event ends. Regional combat victories earn 25 gold, up to 10 rewards per nation. | At least two-thirds of all vote weight |
+| Holy League | Mutual defensive pacts, following normal cancellation/war rules; unavailable if a member cannot join. | At least two-thirds of all vote weight |
+| Truce of God | Immediate peace between the named member and every other member; future wars remain possible. | More than half of all vote weight |
+| Pilgrimage Charter | Mutual open borders and removal of bilateral trade embargoes; normal cancellation rules. | More Yes than No |
+| Relief Tithe | All except the poorest member transfer 10% of their current treasury to that member. Requires a 100-gold treasury gap and at least one treasury of 100. Ties favor the lowest player number. | More than half of all vote weight |
+| College of Christendom | Each member pays 50 gold; each team gains 20% of its current technology's cost as research if another member already knows it. Requires all to afford the levy and at least one potential learner. | More Yes than No |
+| Reaffirm Christian Rule | All participating nations immediately adopt Theocracy and Holy State without anarchy. Future civic changes remain possible under normal rules. | At least two-thirds of all vote weight |
+
+Crusade regions use named geographic fronts on the RFC world map. An eligible
+front must contain a land border between a Christian nation and a non-Christian
+nation that owns a city in that region. Target lists include Independents and
+necessary masters, vassals and defensive allies. The proposal names the region
+and target nations; targets are re-evaluated when the vote passes and then fixed
+for that campaign. War itself remains team-wide; only activity and plunder in
+the target region count toward the Crusade's timer and rewards.
+
+At Normal speed the initial travel window is **30 turns (X)**. Combat, effective
+bombardment, pillaging or conquest between opposing Crusade sides in the target
+region raises the remaining time to **8 turns (Y)** if it was lower. Activity never
+shortens the remaining duration; movement alone does not count. Both values scale
+with game speed and are configurable through `AP_CRUSADE_BASE_TURNS` and
+`AP_CRUSADE_INACTIVITY_TURNS` in `GlobalDefines.xml`.
+
+Passing a Crusade ends wars inside the coalition and prevents new wars between
+its members. Combat units and ships gain temporary passage through coalition
+territory without creating trade treaties. Separate peace, peace-brokering trades,
+peace events, capitulation and new vassal/alliance deals that evade the obligation
+are blocked. These protections also cover direct scripted war/peace changes.
+When the event expires (or a side is eliminated), peace is restored between all
+coalition members and all Crusade targets, including wars that predated the vote.
+The coalition's internal war prohibition and special passage expire; normal
+agreements remain in force and invalid foreign units are relocated normally.
+
+AI participants give cities in the Crusade region triple normal targeting weight.
+When fighting no unrelated non-barbarian war, quiet cities outside occupation
+reduce their garrison demand to one defender, or two in the capital. The best
+local defender stays; healthy surplus city-defense units can become assault
+troops when their landmass's selected Crusade target is revealed and reachable.
+Threatened cities retain normal defense demands. Reduced garrison demands end
+with the Crusade; reassigned troops continue under ordinary assault AI.
+
+Crusade conquests in the target region are mandatory settlements. The capturing
+nation receives its ordinary conquest rewards and plunder; the city is then
+assigned before any keep/raze/relocate choice, in this order:
+
+1. A Christian or extinct historical nation whose birth/flip zone includes the
+   city. Overlaps favor the closest historical capital, then the lowest player ID.
+   The conqueror is excluded. Human-controlled extinct slots are not repurposed.
+2. The nearest Christian nation sharing a land border with the defeated nation
+   in this region, measured from its nearest city; ties favor the lowest player ID.
+3. The dedicated Independent Crusader States player, separate from both ordinary
+   Independent players and their cities elsewhere in the world.
+
+An extinct claimant returns as a Christian kingdom using Monarchy, Theocratic
+Legitimacy and Holy State. It receives the sponsor's known technologies, establishes
+a capital and two defensive units, and joins the Crusade. Existing Christian
+recipients and the independent fallback join the coalition too, with the same
+military passage and war/peace obligations. A revived kingdom's normal historical
+birth is suppressed so it cannot spawn a second time. These kingdoms and their
+settlements survive the end of the Crusade.
+
+The Mississippians use their own major player/team slot 31. The Crusader state
+reserves slot 36, the Papal State reserves slot 37, and the barbarian identity
+is 38. Existing major slots, including the Huns, stay fixed. All shipped scenarios and
+scenario-slot maintenance use this layout. New games are required.
+
+A persistent main-interface reminder shows the region, remaining turns, the
+player's plunder and total coalition plunder. Plunder counts regional pillage gold,
+city-capture gold and Crusade victory rewards. Coalition membership remains binding
+for the campaign even if a participant changes religion. Only Yes, No and Abstain
+are available, and every member adheres to a passed result.
+
+Treaties passed by the council bypass their ordinary technology requirement.
+There is no defiance veto: No and Abstain voters are bound by passed resolutions.
+Old papal elections, religious victory, embargo and city-assignment proposals are
+disabled. The Palace owner selects from proposals with an actual available effect.
+Theocratic Legitimacy, God State and Warrior Society push AI votes toward military
+intervention; Tolerance, Rule of Law and Democracy favor moderate cooperation.
+Military strength, existing wars, diplomatic attitudes, treasury and research also matter.
+
+The military coalition draws on the [Holy League at Lepanto](https://www.um.edu.mt/library/oar/handle/123456789/47341).
+The peace proposal is a gameplay adaptation of the [Peace and Truce of God](https://onlinelibrary.wiley.com/doi/abs/10.1002/9781444338232.wbeow475),
+which sought to restrain violence rather than end all international wars.
+The charter, coordinated relief fund and formal research college are alternate-history
+extensions of pilgrimage, Christian charity and transnational scholarly cooperation.
+
+Council schedules, electorate and crusade rewards are saved and synchronized;
+popups remain player-addressed and choices use native network messages.
+Requires a new game. Source review and the legacy build do not establish in-game
+or multiplayer runtime validation.
+
+Ancestor Worship allows a state religion, but applies -1 state-religion happiness,
+canceling the normal +1 happiness in cities with that religion. Its monument
+culture bonus remains active.
+
+Italy's resurrection flips only northern Italy (x=57-62, y=46-47). City claims,
+former-colony claims, local culture conversion and nearby unit flips stay within
+these bounds, excluding Rome (60,44) and its adjacent tiles. Ancient Rome's birth
+area and stability regions are unchanged.
+
 ## Cultural border expansion
 
 Cities begin with their center and eight neighboring tiles. Further culture
@@ -444,6 +610,41 @@ Tribal System and Conscription's production bonuses include workers, settlers,
 and missionaries. Conscription's food conversion is limited to military land units;
 it does not grant an additional drafting ability.
 
+### Indigenous American starts
+
+The 800 BC start includes a small Preclassic Maya settlement at Nakbe. In
+600 AD and 900 AD, Maya control Yax Mutal and Chich'en Itza, including the
+existing local units, rather than leaving these towns under the generic Native
+faction. These authored Maya starts do not trigger a second historical birth.
+
+**Mississippian Chiefdoms** represent the related eastern North American
+chiefdoms collectively. They use the existing Native American civilization's
+art and units, with a generic **Paramount Chief** title. They have a dedicated
+major slot and a **900 AD birth** in earlier games; the Huns can still spawn
+independently. The 900 AD map starts with a small Cahokia settlement. The
+1453 AD map uses Etowah and Natchez, with Etowah as capital, rather than
+repopulating abandoned Cahokia. Their homeland, expansion priorities and city
+names cover the Mississippi basin and southeast. They use standard victories.
+See the [Etowah site](https://gastateparks.org/EtowahIndianMounds) for its
+continued occupation through this later period.
+
+These changes require a new game because the player-slot layout has expanded.
+
+### Medieval ships
+
+Triremes have **3 strength** and no longer receive a special bonus against
+Galleys. They upgrade to the **War Galley**, which requires Machinery and
+Sailing and has **4 strength, 3 movement, no cargo**, and a base cost of 60.
+War Galleys upgrade to Frigates, keeping the Caravel's exploration role separate.
+
+Galleys upgrade to the **Cog**, available with Guilds and Sailing, with
+**3 strength, 3 movement, 3 cargo**, and a base cost of 60. Cogs upgrade to
+Galleons. Both medieval ships retain the Galley's ocean restriction.
+Caravels, Galleons and later ships retain their existing technologies and stats.
+The new ships have distinct [Dromon and Hanseatic Cog models](NavalUnitArt.md).
+Start a new game after installing these units: the additional unit and unit-class
+entries change Civ4's saved array sizes, making earlier saves incompatible.
+
 ### Islamic expansion event
 
 Arabia's birth flips are confined to the Arabian Peninsula (x=73-82, y=30-37, intersected with the normal birth area). Egypt, Sinai, the Levant and Iraq must be conquered. This applies to city, culture and unit flips, warnings and map hints without changing the stability core. AI Arabia retains its extra 60 war-target points per Egyptian-region city.
@@ -474,7 +675,7 @@ The **full jihad event, for any recipient civilization**, provides three named c
 
 Khalid's minimum army is **3 Swordsmen, 2 Camel Archers, 2 Catapults and 1 Spearman**. Amr receives **one additional Swordsman and one additional Catapult**, giving a minimum of **10 units**; Sa'd receives one fewer Catapult, giving a minimum of **7 units** (3 Swordsmen, 2 Camel Archers, 1 Catapult and 1 Spearman). These fixed adjustments apply after population scaling; restoring one Swordsman to Sa'd adds one unit to the previous three-army allocation. The initial army reuses eligible starting troops at the capital and fills shortages. Later armies incorporate the unlocking capture's normal population-scaled recruitment, topping up each unit type to the minimum instead of also awarding a separate capture army. They assemble in an owned city nearest their regional front. Each general immediately attaches to a Swordsman, granting the normal Warlord promotion and standard shared Great General XP to eligible friendly units on that tile. Campaign troops cannot move on arrival.
 
-Only first military captures of previously unacquired city locations during the active event count. Birth flips, gifts, trades, recaptures and pre-event conquests do not advance the unlocks. Each general arrives once. AI armies pursue reachable, revealed enemy cities in their assigned regions, then help elsewhere when no regional target is reachable. Campaigns do not declare additional wars. Routine garrison selection never detaches an attached jihad general. Campaign armies supply at most one dedicated local guard, or two under immediate local threat, and retain at least four troops in the field group. Detached guards leave their campaign and become city-defense units, so later armies count them toward the same local limit. A smaller army may hold together to defend an otherwise undefended city in a local emergency; it is not split into further guards. Different campaign armies do not automatically merge; nearby unassigned reinforcements can join, and conquest recruits inherit the nearest surviving campaign on their landmass. Orders persist after a general dies, without a replacement reward, and end when the event expires. Amr prioritizes Thebes and Kem Kasir, then other northern Egyptian cities, then the Mediterranean coast westward into Libya and Tunisia. These reachable, revealed enemy targets take precedence over generic staging and opportunistic movement; Nubia and inland Africa are secondary once no such target is reachable. Local defense, healing and assaults at the ordered target remain available. Egyptian conquest recruits prefer his surviving field campaign on the same landmass, falling back to the nearest campaign if none remains. Amr also receives one separate Longbowman and one separate Spearman as city-defense escorts, beyond his field-army allocation. AI escorts follow his campaign and settle in Egyptian cities needing a garrison; they have no campaign assignment and do not merge into his army. Human recipients control the same extra units freely. Escorts revert to ordinary city-defense behavior when the campaign is gone or the event ends. Unlocks and assignments are saved. Human recipients receive the same armies, attached generals and XP with free movement control. In-game balance and multiplayer validation remain pending.
+Only first military captures of previously unacquired city locations during the active event count. Birth flips, gifts, trades, recaptures and pre-event conquests do not advance the unlocks. Each general arrives once. AI armies pursue reachable, revealed enemy cities in their assigned regions, then help elsewhere when no regional target is reachable. Campaigns do not declare additional wars. Routine garrison selection never detaches an attached jihad general. Campaign armies supply at most one dedicated local guard, or two under immediate local threat, and retain at least four troops in the field group. Detached guards leave their campaign and become city-defense units, so later armies count them toward the same local limit. A smaller army may hold together to defend an otherwise undefended city in a local emergency; it is not split into further guards. Different campaign armies do not automatically merge; nearby unassigned reinforcements can join, and conquest recruits inherit the nearest surviving campaign on their landmass. Orders persist after a general dies, without a replacement reward, and end when the event expires. Amr prioritizes Thebes and Kem Kasir, then other northern Egyptian cities, then the Mediterranean coast westward into Libya and Tunisia. These reachable, revealed enemy targets take precedence over generic staging and opportunistic movement; Nubia and inland Africa are secondary once no such target is reachable. Local defense, healing and assaults at the ordered target remain available. Egyptian conquest recruits prefer his surviving field campaign on the same landmass, falling back to the nearest campaign if none remains. Amr and Sa'd each receive one separate Longbowman and one separate Spearman as city-defense escorts, beyond their field-army allocations. AI escorts follow their assigned general's campaign and settle in Egyptian cities for Amr, or Iraqi/Persian cities for Sa'd, when a garrison is needed; they have no campaign assignment and do not merge into the field army. Human recipients control the same extra units freely. Escorts revert to ordinary city-defense behavior when the campaign is gone or the event ends. Unlocks and assignments are saved. Human recipients receive the same armies, attached generals and XP with free movement control. In-game balance and multiplayer validation remain pending.
 
 These are compressed early-conquest campaigns, not exact dated reenactments. The peninsula-first approach follows the broad expansion from Arabia into Byzantine and Sasanian lands described by [the Metropolitan Museum of Art](https://www.metmuseum.org/essays/the-birth-of-islam).
 
@@ -493,7 +694,7 @@ The canonical partition causes neither city-loss stability penalties nor conques
 
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
-| **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. |
+| **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. Allows a state religion; -1 state-religion happiness cancels its normal +1 bonus. |
 | **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
 | **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |

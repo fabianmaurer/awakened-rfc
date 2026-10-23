@@ -62,6 +62,7 @@ public:
 	void setCivDescription(std::wstring szNewDesc);																														// Exposed to Python
 	//Rhye (jdog) -  end -----------------------
 	std::wstring getCivilizationDescriptionKey();
+	void processCivNames();
 	std::wstring getCivilizationShortDescription(int iForm);
 	std::wstring getCivilizationShortDescriptionKey();
 	std::wstring getCivilizationAdjective(int iForm);

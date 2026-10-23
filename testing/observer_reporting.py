@@ -35,6 +35,8 @@ def enrich(run, records):
     previous_cities = {}
     timeline, collapses, scores = [], [], []
     modern = False
+    apostolic_events, apostolic_last = [], None
+    apostolic_counts = Counter()
     last = None
 
     def close(pid, turn, cause):
@@ -72,6 +74,17 @@ def enrich(run, records):
         for event in event_list:
             pid, et = event.get('player'), event.get('turn', turn)
             kind = event['event']
+            if kind == 'apostolic_state':
+                apostolic_last = event
+                apostolic_counts['observed_turns'] += 1
+                apostolic_counts['eligible_turns'] += bool(event['founding_eligible'])
+                apostolic_counts['palace_active_turns'] += bool(event['palace_active'])
+                apostolic_counts['crusade_active_turns'] += event['crusade_region'] >= 0
+            elif kind.startswith(('papal_', 'papacy_', 'council_', 'crusade_', 'apostolic_')):
+                apostolic_events.append(event)
+                apostolic_counts[kind] += 1
+                if kind == 'crusade_plunder':
+                    apostolic_counts['plunder_gold'] += event['amount']
             if kind == 'first_established' and pid in players:
                 open_civics(pid, event.get('civics', first_before.get(pid, players[pid]['civics'])), et, 'establishment')
             elif kind == 'civics_changed' and pid in established:
@@ -148,6 +161,8 @@ def enrich(run, records):
             timeline.append(dict(turn=turn, elapsed=elapsed, year=record['year'], players=points))
     for spell in active.values():
         spells.append(dict(spell, end=last + 1, duration=last + 1 - spell['start'], end_reason='run_end_censored'))
+    run['apostolic'] = dict(version=run['metadata'].get('apostolic_recording_version'),
+                             counts=dict(apostolic_counts), events=apostolic_events, last_state=apostolic_last)
     run.update(civic_spells=spells, food_by_size=dict(food), slavery_usage=dict(slaves),
                timeline=timeline, collapse_triggers=collapses, labor_score_samples=scores,
                economic_context_available=modern,
@@ -301,6 +316,27 @@ def render_report(runs):
             if status == 'gameplay errors':
                 lines += ['', '**Affected games: descriptive results only; subsequent state may be altered by exceptions.**']
             lines += render_tables(usable)
+    lines += ['', '## Apostolic Palace and Crusades', '',
+              'Native events retain decisions, courier delivery, weighted ballots, resolution effects, '
+              'Crusade activity, rewards, settlement claims and refusal refunds in summary.json. '
+              'Per-turn native state remains in recordings, including dedicated Papal/Crusader slots. '
+              'Counts show observed coverage; zero occurrences do not validate an unexercised rule.', '',
+              '| Run | Observed turns | Eligible / active Palace turns | Foundations / refusals / refunds | Ballots opened / results | Crusades started / ended | Settlements selected / completed | Plunder gold | Violations |',
+              '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
+    for r in runs:
+        ap = r['apostolic']
+        c = ap['counts']
+        if not ap['version']:
+            lines.append(f'| {r["run"]} | unavailable (older recording) | - | - | - | - | - | - | - |')
+            continue
+        def n(key):
+            return c.get(key, 0)
+        lines.append(f'| {r["run"]} | {n("observed_turns")} | {n("eligible_turns")} / {n("palace_active_turns")} | '
+                     f'{n("papacy_founded")} / {sum(e["event"] == "papal_decision" and e["choice"] == 1 for e in ap["events"])} / {n("papal_penalty_cleared")} | '
+                     f'{n("council_opened")} / {n("council_result")} | {n("crusade_started")} / {n("crusade_ended")} | '
+                     f'{n("crusade_settlement_selected")} / {n("crusade_settlement_completed")} | {n("plunder_gold")} | {n("apostolic_violation")} |')
+    lines += ['', 'Refund counts are per affected diplomatic relationship. Plunder includes combat bounties. '
+              'Observer recordings cannot validate the multiplayer popup delivery path or the rendered HUD.']
     lines += ['', '## Run integrity', '', '| Run | Seed | Status | First error turn | Errors | Recording issues |',
               '| --- | ---: | --- | ---: | ---: | ---: |']
     for r in runs:

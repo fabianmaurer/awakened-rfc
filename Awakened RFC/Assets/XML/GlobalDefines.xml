@@ -1730,4 +1730,7 @@
     <Define><DefineName>RFCMP_GROWTH_TECH_REDUCTION_TIMES100</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_GLOBAL_RESEARCH_COST_PERCENT</DefineName><iDefineIntVal>110</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_GREAT_WALL_CROSSING_DAMAGE</DefineName><iDefineIntVal>20</iDefineIntVal></Define>
+	<Define><DefineName>AP_CRUSADE_BASE_TURNS</DefineName><iDefineIntVal>30</iDefineIntVal></Define>
+	<Define><DefineName>AP_CRUSADE_INACTIVITY_TURNS</DefineName><iDefineIntVal>8</iDefineIntVal></Define>
+	<Define><DefineName>AP_PAPAL_RETRY_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
 </Civ4Defines>

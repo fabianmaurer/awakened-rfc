@@ -1908,6 +1908,10 @@ tWarsMap += (tWarsMap[con.iArabia], tWarsMap[con.iArabia],
                     for x in range(124)) for y in range(68)))
 
 
+tWarsMap += (tuple(tuple(8 if 20 <= x <= 27 and 42 <= 67-y <= 48 else
+                         3 if 18 <= x <= 29 and 40 <= 67-y <= 50 else 0
+                         for x in range(124)) for y in range(68)),)
+
 class AIWars:
 
         def getAttackingCivsArray( self, iCiv ):

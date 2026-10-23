@@ -10,6 +10,8 @@ import Congresses
 import Slavery
 import Islam
 import Caliphate
+from CvPythonExtensions import CyGlobalContext
+import NativeAmerica
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -183,7 +185,16 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
     # TODO: this probably needs to be more complex
     def _handleOnLoadEvent(self, eventType, argsList):
         """Handles OnLoad events."""
-        return self._handleDefaultEvent(eventType, argsList)
+        result = self._handleDefaultEvent(eventType, argsList)
+        NativeAmerica.configureRegions()
+        # Refresh only after all saved players and load-time identities are ready.
+        # The native naming rules preserve authored minor and successor names.
+        gc = CyGlobalContext()
+        for iPlayer in range(gc.getMAX_CIV_PLAYERS()):
+            player = gc.getPlayer(iPlayer)
+            if player.isAlive():
+                player.processCivNames()
+        return result
 
     # popup event handlers
     def beginEvent( self, context, argsList=-1 ):

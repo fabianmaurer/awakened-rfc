@@ -1153,6 +1153,7 @@ void CvUnit::updateAirCombat(bool bQuick)
 
 void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition& kBattle)
 {
+	if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality()) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pDefender->getTeam(), pPlot);
 	CombatDetails cdAttackerDetails;
 	CombatDetails cdDefenderDetails;
 
@@ -1551,6 +1552,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
+			GC.getGameINLINE().rewardCrusadeCombat(pDefender, this);
 			CvEventReporter::getInstance().combatResult(pDefender, this);
 		}
 		else if (pDefender->isDead())
@@ -1581,6 +1583,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer,GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
+			GC.getGameINLINE().rewardCrusadeCombat(this, pDefender);
 			CvEventReporter::getInstance().combatResult(this, pDefender);
 
 			bool bAdvance = false;
@@ -2285,6 +2288,7 @@ bool CvUnit::generatePath(const CvPlot* pToPlot, int iFlags, bool bReuse, int* p
 
 bool CvUnit::canEnterTerritory(TeamTypes eTeam, bool bIgnoreRightOfPassage) const
 {
+	if (!bIgnoreRightOfPassage && GC.getGameINLINE().hasCrusadeAccess(getTeam(), eTeam) && (canFight() || getDomainType() == DOMAIN_SEA)) return true;
 	if (GET_TEAM(getTeam()).isFriendlyTerritory(eTeam))
 	{
 		return true;
@@ -4445,7 +4449,9 @@ bool CvUnit::airBomb(int iX, int iY)
 
 	if (pCity != NULL)
 	{
+		int iCrusadeDefense = pCity->getDefenseModifier(false);
 		pCity->changeDefenseModifier(-airBombCurrRate());
+		if (pCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 
 		szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_DEFENSES_REDUCED_TO", pCity->getNameKey(), pCity->getDefenseModifier(false), getNameKey());
 		gDLL->getInterfaceIFace()->addMessage(pCity->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_BOMBARDED", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pCity->getX_INLINE(), pCity->getY_INLINE(), true, true);
@@ -4469,6 +4475,7 @@ bool CvUnit::airBomb(int iX, int iY)
 					gDLL->getInterfaceIFace()->addMessage(pPlot->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_PILLAGED", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE(), true, true);
 				}
 
+				GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 				pPlot->setImprovementType((ImprovementTypes)(GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementPillage()));
 			}
 			else
@@ -4600,7 +4607,9 @@ bool CvUnit::bombard()
 		iBombardModifier -= pBombardCity->getBuildingBombardDefense();
 	}
 
+	int iCrusadeDefense = pBombardCity->getDefenseModifier(false);
 	pBombardCity->changeDefenseModifier(-(bombardRate() * std::max(0, 100 + iBombardModifier)) / 100);
+	if (pBombardCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pTargetPlot->getTeam(), pTargetPlot);
 
 	setMadeAttack(true);
 	changeMoves(GC.getMOVE_DENOMINATOR());
@@ -4752,6 +4761,7 @@ bool CvUnit::pillage()
 			if (iPillageGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iPillageGold);
+				GC.getGameINLINE().recordCrusadePlunder(getOwnerINLINE(), pPlot->getTeam(), pPlot, iPillageGold);
 
 				szBuffer = gDLL->getText("TXT_KEY_MISC_PLUNDERED_GOLD_FROM_IMP", iPillageGold, GC.getImprovementInfo(pPlot->getImprovementType()).getTextKeyWide());
 				gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_PILLAGE", MESSAGE_TYPE_INFO, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
@@ -4806,6 +4816,7 @@ bool CvUnit::pillage()
 
 	if (eTempImprovement != NO_IMPROVEMENT || eTempRoute != NO_ROUTE)
 	{
+		GC.getGameINLINE().recordCrusadeActivity(getTeam(), pPlot->getTeam(), pPlot);
 		CvEventReporter::getInstance().unitPillage(this, eTempImprovement, eTempRoute, getOwnerINLINE());
 	}
 
@@ -9822,6 +9833,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 				GET_TEAM(getTeam()).AI_changeWarSuccess(pNewCity->getTeam(), GC.getDefineINT("WAR_SUCCESS_CITY_CAPTURING"));
 
 				PlayerTypes eNewOwner = GET_PLAYER(getOwnerINLINE()).pickConqueredCityOwner(*pNewCity);
+				if (GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pNewCity)) eNewOwner = getOwnerINLINE();
 
 				if (NO_PLAYER != eNewOwner)
 				{
@@ -12429,6 +12441,7 @@ bool CvUnit::airStrike(CvPlot* pPlot)
 
 	collateralCombat(pPlot, pDefender);
 
+	if (iUnitDamage > pDefender->getDamage()) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pDefender->getTeam(), pPlot);
 	pDefender->setDamage(iUnitDamage, getOwnerINLINE());
 
 	return true;

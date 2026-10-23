@@ -56,3 +56,15 @@ def onCaliphatePartition(argsList):
     if REPORTING_ENABLED: CvUtil.pyPrint('Caliphate: native callback entered')
     import Caliphate
     Caliphate.onPartition()
+
+
+def recordApostolicMechanic(argsList):
+    if REPORTING_ENABLED:
+        import GameObserver
+        GameObserver.record_apostolic_mechanic(*argsList)
+
+
+def recordApostolicState(argsList):
+    if REPORTING_ENABLED:
+        import GameObserver
+        GameObserver.record_apostolic_state(*argsList)

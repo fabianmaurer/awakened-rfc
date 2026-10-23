@@ -225,6 +225,14 @@
     <Spanish>Danjong</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_LEADER_31</Tag>
+    <English>Paramount Chief</English>
+    <French>Paramount Chief</French>
+    <German>Oberhaupt</German>
+    <Italian>Paramount Chief</Italian>
+    <Spanish>Paramount Chief</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_RFCMP_1453_INTRO_0</Tag>
     <English>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</English>
     <French>1453: From Cairo, the Mamluk sultanate holds Egypt and the Levant. The Nile sustains your cities, while Mediterranean and Red Sea connections bring wealth. The Ottomans have taken Constantinople. Secure your northern frontier and preserve the strength of your sultanate.</French>
@@ -431,5 +439,13 @@
     <German>1453 n. Chr.: Joseon unter Danjong. Sichert die Nordgrenze, entwickelt eure Kuestenstaedte und Seowon und schuetzt die Halbinsel mit Hwacha-Artillerie.</German>
     <Italian>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</Italian>
     <Spanish>1453 AD: Joseon under Danjong. Defend the northern frontier, develop your coastal cities and Seowon, and use Hwacha artillery to protect the peninsula.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RFCMP_1453_INTRO_31</Tag>
+    <English>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</English>
+    <French>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</French>
+    <German>Fuehrt die Mississippi-Haeuptlingstuemer Nordamerikas. Entwickelt eure Flussstaedte und verteidigt ihre Unabhaengigkeit.</German>
+    <Italian>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</Italian>
+    <Spanish>Lead the Mississippian chiefdoms of eastern North America. Develop your river towns and defend their independence.</Spanish>
   </TEXT>
 </Civ4GameText>

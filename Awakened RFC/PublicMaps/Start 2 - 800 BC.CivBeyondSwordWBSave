@@ -31,6 +31,16 @@ EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
+
+	Tech=TECH_AGRICULTURE
+
+	Tech=TECH_THE_WHEEL
+
+	Tech=TECH_POTTERY
+
+	Tech=TECH_HUNTING
+
+	Tech=TECH_MYSTICISM
 EndTeam
 BeginTeam                 
 EndTeam
@@ -84,6 +94,8 @@ BeginTeam
 	ContactWithTeam=8
 EndTeam
 BeginTeam
+EndTeam
+BeginTeam
 	Tech=TECH_AGRICULTURE
 	Tech=TECH_ANIMAL_HUSBANDRY
 	Tech=TECH_ARCHERY
@@ -112,6 +124,10 @@ EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 EndTeam
 BeginPlayer
 	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_0
@@ -196,8 +212,9 @@ BeginPlayer
 	LeaderType=LEADER_PACAL
 	CivType=CIVILIZATION_MAYA                 
 	Team=10                 
-	PlayableCiv=0                 
-	Handicap=HANDICAP_PRINCE                 
+	PlayableCiv=1
+	Handicap=HANDICAP_PRINCE
+	MinorNationStatus=0
 EndPlayer
 BeginPlayer
 	LeaderType=LEADER_RAGNAR
@@ -344,11 +361,25 @@ BeginPlayer
 	StartingY=48
 	StartingGold=80
 EndPlayer
+BeginPlayer
+	Team=31
+	CivType=CIVILIZATION_NATIVE_AMERICA
+	LeaderType=LEADER_SITTING_BULL
+	PlayableCiv=1
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	CivDesc=TXT_KEY_MISS_DESC
+	CivShortDesc=TXT_KEY_MISS
+	CivAdjective=TXT_KEY_MISS_ADJ
+	LeaderName=TXT_KEY_MISS_LEADER
+	StartingX=23
+	StartingY=45
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=31
+	Team=32
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -357,7 +388,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=32
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -366,7 +397,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=33
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -374,10 +405,24 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=34
+	Team=35
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=1
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
 EndPlayer
 
 BeginMap
@@ -8520,6 +8565,35 @@ BeginPlot
 	x=22,y=35
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+
+	BeginCity
+		CityOwner=10
+		CityName=Nakbe
+		CityPopulation=2
+		BuildingType=BUILDING_GRANARY
+		BuildingType=BUILDING_OBELISK
+		BuildingType=BUILDING_PALACE
+		Player10Culture=100
+	EndCity
+
+	BeginUnit
+		UnitType=UNIT_WARRIOR, UnitOwner=10
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_WARRIOR, UnitOwner=10
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=10
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_SCOUT, UnitOwner=10
+		UnitAIType=UNITAI_EXPLORE
+	EndUnit
 EndPlot
 BeginPlot
 	x=22,y=36
@@ -22261,11 +22335,11 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=34
+		UnitType=UNIT_ARCHER, UnitOwner=35
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=34
+		CityOwner=35
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -27798,16 +27872,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitType=UNIT_ARCHER, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
-		Player32Culture=10
+		Player33Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -32407,11 +32481,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=31
+		UnitType=UNIT_ARCHER, UnitOwner=32
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=31
+		CityOwner=32
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity

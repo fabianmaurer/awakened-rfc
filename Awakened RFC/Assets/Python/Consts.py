@@ -10,25 +10,27 @@ l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 0, 0
 ,
 0,
-0 # Korea
+0, # Korea
  # Xiongnu
+0,
 ]
 l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
 ,
 0,
-0 # Korea
+0, # Korea
  # Xiongnu
+0,
 ]
-l0ArrayTotal =  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-0, 0, 0, 0]
+l0ArrayTotal = [0] * 38
 
 lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, -1
 ,
 -1,
--1 # Korea
+-1, # Korea
  # Xiongnu
+-1,
 ]
 
 # initialise player variables to player IDs from WBS
@@ -64,16 +66,19 @@ iCaliphateSlot1 = 27
 iCaliphateSlot2 = 28
 iXiongnu = 29
 iKorea = 30
-iNumPlayers = 31
-iNumMajorPlayers = 31
-iNumActivePlayers = 31
-iIndependent = 31
-iIndependent2 = 32
-iNative = 33
-iCeltia = 34
-iNumTotalPlayers = 35
-iBarbarian = 35
-iNumTotalPlayersB = 36
+iMississippians = 31
+iNumPlayers = 32
+iNumMajorPlayers = 32
+iNumActivePlayers = 32
+iIndependent = 32
+iIndependent2 = 33
+iNative = 34
+iCeltia = 35
+iCrusaderState = 36
+iPapalState = 37
+iNumTotalPlayers = 38
+iBarbarian = 38
+iNumTotalPlayersB = 39
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
@@ -152,8 +157,9 @@ lNeighbours = [
 [], []
 ,
 [iChina, iMongolia],
-[iChina, iJapan, iMongolia] # Korea
+[iChina, iJapan, iMongolia], # Korea
  # Xiongnu
+[iMaya, iAztecs, iAmerica],
 ]
 
 #for stability hit on spawn
@@ -189,8 +195,9 @@ lOlderNeighbours = [
 [], []
 ,
 [],
-[iChina] # Korea
+[iChina], # Korea
  # Xiongnu
+[iMaya],
 ]
 
 # civ birth dates
@@ -224,11 +231,14 @@ tBirth = (
 249, #1280AD (1071AD)
 346, #1775AD #332 for 1733AD
 -10000, -10000, 127, 87,
-0,
-0,
-0,
-0,
-0)
+211,
+0, #Independent
+0, #Independent2
+0, #Native
+0, #Celtia
+0, #Crusader State
+0, #Papal State
+0) #Barbarian
 
 
 tYear = (
@@ -262,8 +272,9 @@ tYear = (
 1020, 1020
 ,
 ("210 ", "TXT_KEY_BC"),
-("800 ", "TXT_KEY_BC") # Korea
+("800 ", "TXT_KEY_BC"), # Korea
  # Xiongnu
+("900 ", "TXT_KEY_AD"),
 )
 
 tGoals = (
@@ -298,8 +309,9 @@ tGoals = (
 ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"), ("TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3")
 ,
 ("", "", ""),
-("TXT_KEY_UHV_KOR1", "TXT_KEY_UHV_KOR2", "TXT_KEY_UHV_KOR3") # Korea
+("TXT_KEY_UHV_KOR1", "TXT_KEY_UHV_KOR2", "TXT_KEY_UHV_KOR3"), # Korea
  # Xiongnu
+("TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3"),
 )
 
 
@@ -415,8 +427,9 @@ tCapitals = (
 (75, 33), (75, 33)
 ,
 (99, 51),
-(109, 48) # Korea
+(109, 48), # Korea
  # Xiongnu
+(23, 45),
 ) 
 
 #for minor civs
@@ -452,8 +465,9 @@ tReserveCapitals = (
 (), ()
 ,
 (),
-(109, 46) # Korea
+(109, 46), # Korea
  # Xiongnu
+(25, 44),
 )
 
 #core areas (for RiseAndFall and Victory)
@@ -490,8 +504,9 @@ tCoreAreasTL = (
 (73, 30), (73, 30)
 ,
 (96, 50),
-(108, 45) # Korea
+(108, 45), # Korea
  # Xiongnu
+(20, 42),
 ) 
 
 tCoreAreasBR = (
@@ -526,8 +541,9 @@ tCoreAreasBR = (
 (81, 39), (81, 39)
 ,
 (103, 54),
-(110, 49) # Korea
+(110, 49), # Korea
  # Xiongnu
+(27, 48),
 ) 
 
 
@@ -562,8 +578,9 @@ tExceptions = (  #for RiseAndFall
 ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)), ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37))
 ,
 (),
-() # Korea
+(), # Korea
  # Xiongnu
+(),
 ) #America
 
 
@@ -614,6 +631,10 @@ def getBirthFlipMask(argsList):
 
 #normal areas (for Victory and resurrection)
 
+# Italy's resurrection is northern Italy only; Rome (60,44) and its
+# adjacent tiles are outside these inclusive bounds. Ancient Roman areas stay intact.
+tItalyRespawnArea = (57, 46, 62, 47)
+
 tNormalAreasTL = (
 (65, 30), #Egypt
 (86, 29), #India
@@ -646,8 +667,9 @@ tNormalAreasTL = (
 (73, 30), (73, 30)
 ,
 (94, 48),
-(107, 44) # Korea
+(107, 44), # Korea
  # Xiongnu
+(18, 40),
 ) 
 
 tNormalAreasBR = (
@@ -682,8 +704,9 @@ tNormalAreasBR = (
 (82, 38), (82, 38)
 ,
 (105, 55),
-(111, 50) # Korea
+(111, 50), # Korea
  # Xiongnu
+(29, 50),
 ) 
 
 
@@ -718,8 +741,9 @@ tNormalAreasSubtract = (  #for resurrection and stability
 ((81, 38), (82, 38), (82, 37)), ((81, 38), (82, 38), (82, 37))
 ,
 (),
-() # Korea
+(), # Korea
  # Xiongnu
+(),
 ) #America
 
 
@@ -758,8 +782,9 @@ tBroaderAreasTL = (
 (64, 30), (64, 30)
 ,
 (96, 50),
-(107, 44) # Korea
+(107, 44), # Korea
  # Xiongnu
+(15, 35),
 )
 
 tBroaderAreasBR = (
@@ -793,8 +818,9 @@ tBroaderAreasBR = (
 (85, 44), (85, 44)
 ,
 (103, 54),
-(111, 50) # Korea
+(111, 50), # Korea
  # Xiongnu
+(32, 53),
 ) #America
 
 
@@ -829,6 +855,7 @@ tHire = (
 50, #Turkey
 50, #America
 50, 50, 100, 30,
+30,
 100,
 100,
 100,
@@ -870,8 +897,9 @@ lEnemyCivsOnSpawn = [
 [], []
 ,
 [],
-[] # Korea
+[], # Korea
  # Xiongnu
+[],
 ]
 
 
@@ -905,6 +933,7 @@ tAggressionLevel = (
 2, #Turkey
 2, #America
 2, 2, 2, 0,
+0,
 0) #Barbs
 
 
@@ -938,6 +967,7 @@ tAIStopBirthThreshold = (
     70, #Turkey
     50, #America
     80, 80, 80, 30,
+80,
 100,
     100,
     100,
@@ -977,6 +1007,7 @@ tResurrectionProb = (
 #    100, #Holland
 #    100, #Portugal
 0, 0, 0, 100,
+30,
 100) #Barbs
 
 
@@ -1010,6 +1041,7 @@ tPatienceThreshold = (
 35, #Turkey
 30, #America
 30, 30, 30, 35,
+35,
 100) #Barbs
 
 
@@ -1045,8 +1077,9 @@ tMaxColonists = (
 0, 0
 ,
 0,
-0 # Korea
+0, # Korea
  # Xiongnu
+0,
 ) #America
 
 
@@ -1716,8 +1749,9 @@ tLeaders = (
 (iSaladin,), (iSaladin,)
 ,
 (iModu,),
-(iWangkon,) # Korea
+(iWangkon,), # Korea
  # Xiongnu
+(gc.getInfoTypeForString("LEADER_SITTING_BULL"),),
 )
 
 tEarlyLeaders = (
@@ -1751,8 +1785,9 @@ tEarlyLeaders = (
 iSaladin, iSaladin
 ,
 iModu,
-iWangkon # Korea
+iWangkon, # Korea
  # Xiongnu
+gc.getInfoTypeForString("LEADER_SITTING_BULL"),
 )
 
 #RFCMP
@@ -1794,8 +1829,9 @@ tRomanLateLeaders,
 (iSaladin,), (iSaladin,)
 ,
 (iModu,),
-(iWangkon,) # Korea
+(iWangkon,), # Korea
  # Xiongnu
+(),
 )
 
 
@@ -1828,6 +1864,7 @@ tIsActiveOnLateStart = (
 1,
 1,
 False, False, False, 1,
+False,
 1,
 1,
 1,
@@ -1845,3 +1882,37 @@ lCivBioOldWorld.append(iKorea)
 lNeighbours[iChina].append(iKorea)
 lNeighbours[iJapan].append(iKorea)
 lCivStabilityGroups[1].append(iKorea)
+
+
+def getCrusadeFlipRecipient(argsList):
+        # The same flip rectangles and exception tiles as historical births,
+        # without a birth-date restriction: extinct kingdoms can be restored.
+        iX, iY, iConqueror = argsList
+        candidates = []
+        for iCiv in range(iNumMajorPlayers):
+                if iCiv == iConqueror or iCiv in (iCaliphateSlot1, iCaliphateSlot2):
+                        continue
+                player = gc.getPlayer(iCiv)
+                if player.getCivilizationType() < 0 or player.isBarbarian():
+                        continue
+                if player.isAlive():
+                        if player.getStateReligion() != iChristianity:
+                                continue
+                elif player.isHuman() or player.getNumCities() or player.getNumUnits():
+                        continue
+                if iCiv == iMongolia and isMongolianBirthReplaced():
+                        continue
+                tTL, tBR = getBirthFlipArea(iCiv)
+                if ((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
+                    (iX, iY) in getBirthFlipExceptions(iCiv)):
+                        tCapital = tCapitals[iCiv]
+                        candidates.append((plotDistance(iX, iY, tCapital[0], tCapital[1]), iCiv))
+        if candidates:
+                candidates.sort()
+                return candidates[0][1]
+        return -1
+
+# Mississippian chiefdoms have their own American major slot.
+lCivGroups[5].append(iMississippians)
+lCivStabilityGroups[4].append(iMississippians)
+lCivBioNewWorld.append(iMississippians)

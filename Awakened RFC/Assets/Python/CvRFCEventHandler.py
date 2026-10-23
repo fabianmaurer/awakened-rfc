@@ -142,6 +142,8 @@ class CvRFCEventHandler:
                 self.rnf.setup()
                 import Korea
                 Korea.setup(self.vic)
+                import NativeAmerica
+                NativeAmerica.setup()
                 self.rel.setup()
                 self.pla.setup()
                 self.sta.setup()
@@ -167,8 +169,10 @@ class CvRFCEventHandler:
 
                 self.sta.onCityAcquired(owner,playerType,city,bConquest,bTrade)
 
+                # Voluntary cession to the Pope is not a Byzantine military collapse.
                 #kill byzantium
-                if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4):  #late start condition (RFCMP)
+                if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and
+                    not (bTrade and not bConquest and gc.getGame().isPapalState(playerType))):  #late start condition (RFCMP)
                         if (owner == iCeltia and gc.getPlayer(iCeltia).isAlive()):
                                 if ((city.getX() == 68 and city.getY() == 45) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
                                         print ("killed Byzantium")
