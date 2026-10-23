@@ -1991,6 +1991,10 @@ int CvTeam::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 
 bool CvTeam::isVotingMember(VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource))
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			if (GET_PLAYER((PlayerTypes)i).getTeam() == getID() && GC.getGameINLINE().isPapalState((PlayerTypes)i))
+				return getVotes(NO_VOTE, eVoteSource) > 0;
 	//Rhye - start
 	if (isMinorCiv() || isBarbarian())
 		return false;
@@ -2001,6 +2005,10 @@ bool CvTeam::isVotingMember(VoteSourceTypes eVoteSource) const
 
 bool CvTeam::isFullMember(VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource))
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+			if (GET_PLAYER((PlayerTypes)i).getTeam() == getID() && GC.getGameINLINE().isPapalState((PlayerTypes)i))
+				return GET_PLAYER((PlayerTypes)i).isFullMember(eVoteSource);
 	//Rhye - start
 	if (isMinorCiv() || isBarbarian())
 		return false;

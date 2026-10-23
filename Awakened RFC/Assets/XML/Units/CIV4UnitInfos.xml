@@ -25827,7 +25827,7 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<PrereqTech>TECH_MACHINERY</PrereqTech>
+			<PrereqTech>TECH_COMPASS</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_SAILING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>

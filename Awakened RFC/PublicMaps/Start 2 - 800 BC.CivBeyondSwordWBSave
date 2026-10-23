@@ -25050,11 +25050,11 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=4
+		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=4
+		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 EndPlot
@@ -25487,11 +25487,11 @@ BeginPlot
 		UnitAIType=UNITAI_ASSAULT_SEA
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=4
+		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=4
+		UnitType=UNIT_GREEK_PHALANX, UnitOwner=4
 		UnitAIType=UNITAI_COUNTER
 	EndUnit
 	BeginUnit
@@ -27881,6 +27881,7 @@ BeginPlot
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
+		BuildingType=BUILDING_JEWISH_SHRINE
 		Player33Culture=10
 	EndCity
 EndPlot
@@ -39385,7 +39386,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_CHARIOT, UnitOwner=2
+		UnitType=UNIT_CATAPULT, UnitOwner=2
 		UnitAIType=UNITAI_ATTACK
 	EndUnit
 	BeginCity

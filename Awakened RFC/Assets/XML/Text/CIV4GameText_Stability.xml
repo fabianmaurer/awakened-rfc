@@ -179,4 +179,12 @@
 		<Italian>ESPANSIONE</Italian>
 		<Spanish>EXPANSI&#211;N</Spanish>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_DYNASTIC_INHERITANCE</Tag>
+		<English>Dynastic inheritance: %s2_Heir inherits all cities and units of %s1_Collapsed. This realm is inherited instead of breaking up into independent states.</English>
+		<French>Succession dynastique : %s2_Heir h&#233;rite de toutes les villes et unit&#233;s de %s1_Collapsed. Ce pays est transmis par h&#233;ritage au lieu de se fragmenter en &#201;tats ind&#233;pendants.</French>
+		<German>Dynastische Erbfolge: %s2_Heir erbt alle St&#228;dte und Einheiten von %s1_Collapsed. Dieses Reich wird vererbt, statt in unabh&#228;ngige Staaten zu zerfallen.</German>
+		<Italian>Successione dinastica: %s2_Heir eredita tutte le citt&#224; e le unit&#224; di %s1_Collapsed. Questo paese viene ereditato invece di dividersi in stati indipendenti.</Italian>
+		<Spanish>Sucesi&#243;n din&#225;stica: %s2_Heir hereda todas las ciudades y unidades de %s1_Collapsed. Este pa&#237;s se transmite por herencia en lugar de dividirse en estados independientes.</Spanish>
+	</TEXT>
 </Civ4GameText>

@@ -7,46 +7,42 @@ status; alternate governments retain their own identities.
 
 | Start | Civilization | Starting-profile name |
 | --- | --- | --- |
-| 3000 BC | Egypt | Völker des Niltals |
-| 3000 BC | India | Induskulturen |
-| 3000 BC | China | Frühe chinesische Kulturen |
-| 3000 BC | Babylonia | Stadtstaaten Mesopotamiens |
+| 3000 BC | Egypt | Ägypten |
+| 3000 BC | India | Harappa |
+| 3000 BC | China | China |
+| 3000 BC | Babylonia | Sumer |
 | 800 BC | Egypt | Königreich Ägypten |
-| 800 BC | India | Indische Königreiche |
-| 800 BC | China | Reich der Mitte |
+| 800 BC | India | Kuru und Panchala |
+| 800 BC | China | Zhou-Reich |
 | 800 BC | Babylonia | Königreich Babylon |
-| 800 BC | Greece | Griechische Stadtstaaten |
+| 800 BC | Greece | Griechenland |
 | 800 BC | Persia | Königreich Persien |
 | 800 BC | Carthage | Karthago |
 | 800 BC | Rome | SPQR |
-| 800 BC | Japan | Völker der japanischen Inseln |
+| 800 BC | Japan | Japan |
 | 600 AD | China | Reich der Mitte |
 | 600 AD | Japan | Reich von Yamato |
-| 600 AD | Vikings | Skandinavische Königreiche |
-| 600 AD | Arabia | Arabische Königreiche |
+| 600 AD | Vikings | Skandinavien |
+| 600 AD | Arabia | Arabien |
 
 ## Period rules
 
 Ordinary monarchies retain appropriate alternate religious and constitutional
 names. France uses a Frankish identity before 800, the Carolingian Empire from
 800 until 843, West Francia until 987, then
-its existing civic names. East Francia ends at 962. England uses Anglo-Saxon
-Kingdoms before 927. Spain uses Iberian Kingdoms
-(Christian Kingdoms of Iberia with Christianity) from 718 until 1479.
+its existing civic names. East Francia ends at 962. England uses Wessex before
+927. Spain uses Asturias, León and Castile within their existing dated windows.
 
-The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430,
-regardless of the generic six-city empire threshold. Later Cambodia and
-alternate governments retain their existing names. Early Japan uses a neutral
-island-peoples identity before 300 and Yamato from 300 to 709. Scandinavian
-monarchies use a collective kingdom name before 1000. Arabia without a state
-religion uses Arabian Kingdoms before 622; Islamic names retain priority.
+The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430.
+Early Japan uses Japan before 300 and Yamato from 300 to 709. Scandinavian
+monarchies use Scandinavia before the Kalmar period. Arabia without a state
+religion uses Arabia before 622; Islamic names retain priority.
 
-Very early Indian, Chinese and Mesopotamian tribal/ordinary monarchical states
-use regional culture or city-state names before 1900 BC, 1600 BC and 1900 BC
-respectively. Small ordinary Indian monarchies before 322 BC use a plural
-kingdom name. Early ordinary Greek kingdoms and ordinary republics before
-323 BC use Greek City-States. These dates are game naming boundaries, not
-claims that every real society changed identity simultaneously.
+Early Indian, Chinese and Mesopotamian states use Harappa, China and Sumer.
+Small Indian monarchies use Kuru and Panchala in the Vedic window, then Magadha
+before 322 BC. Early Greek states use Greece. Korean period labels use Gojoseon,
+Goguryeo, Silla, Goryeo and Joseon. Other tribal collective labels use concrete
+geographic names. These names change no city ownership or political boundaries.
 
 SPQR remains the user's chosen Roman republican name. The scenario's early
 spawn dates and alternate civic outcomes are preserved. Generic Middle Kingdom,

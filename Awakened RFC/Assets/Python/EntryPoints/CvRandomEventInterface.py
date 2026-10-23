@@ -2938,6 +2938,8 @@ def canApplySportsLeagueDone3(argsList):
 ######## CRUSADE ###########
 
 def canTriggerCrusade(argsList):
+	if not gc.getGame().isReligionFounded(gc.getInfoTypeForString("RELIGION_ISLAM")):
+		return false
 	kTriggeredData = argsList[0]
 	trigger = gc.getEventTriggerInfo(kTriggeredData.eTrigger)
 	player = gc.getPlayer(kTriggeredData.ePlayer)

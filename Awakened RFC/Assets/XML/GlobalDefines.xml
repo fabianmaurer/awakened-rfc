@@ -1725,6 +1725,9 @@
     <Define><DefineName>RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
     <!-- Eligible same-religion monarchies can inherit a collapsed monarchy. -->
     <Define><DefineName>RFCMP_MONARCHY_INHERITANCE_CHANCE</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE</DefineName><iDefineIntVal>12</iDefineIntVal></Define>
+    <!-- No voluntary AI vassalization for this many turns after each birth. -->
+    <Define><DefineName>RFCMP_SPAWN_VASSAL_PROTECTION_TURNS</DefineName><iDefineIntVal>30</iDefineIntVal></Define>
     <!-- Growth only: 30% initial penalty, reduced by 0.5 percentage points per known tech. -->
     <Define><DefineName>RFCMP_GROWTH_BASE_PENALTY_TIMES100</DefineName><iDefineIntVal>3000</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_GROWTH_TECH_REDUCTION_TIMES100</DefineName><iDefineIntVal>50</iDefineIntVal></Define>

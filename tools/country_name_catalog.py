@@ -11,7 +11,7 @@ FAMILIES = (
 
 CATALOG = """
 EGY
-Peoples of the Nile Valley | Völker des Niltals
+Egypt | Ägypten
 Kingdom of Egypt | Königreich Ägypten
 Egyptian Empire | Ägyptisches Reich
 Republic of Egypt | Republik Ägypten
@@ -21,7 +21,7 @@ Egyptian People's Republic | Ägyptische Volksrepublik
 Egyptian State | Ägyptischer Staat
 Realm of the Pharaohs | Reich der Pharaonen
 IND
-Peoples of Bharat | Völker Bharats
+Bharat | Bharat
 Kingdom of India | Königreich Indien
 Empire of India | Kaiserreich Indien
 Republic of India | Republik Indien
@@ -41,7 +41,7 @@ People's Republic of China | Volksrepublik China
 Chinese State | Chinesischer Staat
 Heavenly Kingdom of Great Peace | Himmlisches Reich des Großen Friedens
 BAB
-Peoples of Mesopotamia | Völker Mesopotamiens
+Mesopotamia | Mesopotamien
 Kingdom of Babylon | Königreich Babylon
 Babylonian Empire | Babylonisches Reich
 Republic of Babylon | Republik Babylon
@@ -51,7 +51,7 @@ Mesopotamian Union | Mesopotamische Union
 Babylonian State | Babylonischer Staat
 Sacred Realm of Babylon | Heiliges Reich Babylon
 GRE
-Achaean Tribes | Achäische Stämme
+Achaea | Achaia
 Kingdom of Greece | Königreich Griechenland
 Hellenic Empire | Hellenisches Reich
 Hellenic Republic | Griechische Republik
@@ -61,7 +61,7 @@ Hellenic Union | Hellenische Union
 Hellenic State | Griechischer Staat
 Sacred League of Hellas | Heiliger Bund von Hellas
 PER
-Iranian Tribes | Iranische Stämme
+Iran | Iran
 Kingdom of Persia | Königreich Persien
 Persian Empire | Persisches Reich
 Republic of Iran | Republik Iran
@@ -81,7 +81,7 @@ Punic Commonwealth | Punisches Gemeinwesen
 Punic State | Punischer Staat
 Sacred Council of Carthage | Heiliger Rat von Karthago
 ROM
-Latin Tribes | Latinische Stämme
+Latium | Latium
 Kingdom of Rome | Königreich Rom
 Roman Empire | Römisches Reich
 SPQR | SPQR
@@ -91,7 +91,7 @@ Roman Commune | Römische Kommune
 Roman State | Römischer Staat
 Sacred Roman Commonwealth | Heiliges Römisches Gemeinwesen
 JAP
-Yamato Clans | Yamato-Sippen
+Yamato | Yamato
 Empire of Japan | Kaiserreich Japan
 Empire of Japan | Kaiserreich Japan
 Republic of Japan | Republik Japan
@@ -101,7 +101,7 @@ Japanese People's Republic | Japanische Volksrepublik
 Japanese State | Japanischer Staat
 Sacred Realm of Yamato | Heiliges Yamato-Reich
 ETH
-Peoples of the Horn | Völker am Horn von Afrika
+Ethiopia | Äthiopien
 Kingdom of Aksum | Königreich Aksum
 Ethiopian Empire | Äthiopisches Kaiserreich
 Republic of Ethiopia | Republik Äthiopien
@@ -111,8 +111,8 @@ People's Republic of Ethiopia | Volksrepublik Äthiopien
 Ethiopian State | Äthiopischer Staat
 Sacred Kingdom of Abyssinia | Heiliges Königreich Abessinien
 MAY
-Maya Peoples | Völker der Maya
-Maya Kingdoms | Königreiche der Maya
+Maya | Maya
+Tikal | Tikal
 Maya Empire | Mayareich
 League of Mayapan | Bund von Mayapán
 United Maya States | Vereinigte Maya-Staaten
@@ -121,7 +121,7 @@ Maya Commune | Kommune der Maya
 Maya State | Staat der Maya
 Sacred League of the Maya | Heiliger Bund der Maya
 VIK
-Norse Clans | Nordische Sippen
+Scandinavia | Skandinavien
 Kingdom of the North | Königreich des Nordens
 North Sea Empire | Nordseereich
 Nordic Commonwealth | Nordisches Gemeinwesen
@@ -131,7 +131,7 @@ Nordic People's Union | Nordische Volksunion
 Scandinavian State | Skandinavischer Staat
 Sacred Realm of the North | Heiliges Nordreich
 ARA
-Bedouin Tribes | Beduinenstämme
+Arabia | Arabien
 Kingdom of Arabia | Königreich Arabien
 Arabian Empire | Arabisches Reich
 Arab Republic | Arabische Republik
@@ -141,7 +141,7 @@ Arab People's Republic | Arabische Volksrepublik
 Arab Union | Arabische Union
 Sacred Realm of Arabia | Heiliges Reich Arabien
 KHM
-Khmer Peoples | Völker der Khmer
+Cambodia | Kambodscha
 Kingdom of Cambodia | Königreich Kambodscha
 Khmer Empire | Khmerreich
 Khmer Republic | Republik der Khmer
@@ -151,7 +151,7 @@ People's Republic of Kampuchea | Volksrepublik Kampuchea
 State of Cambodia | Staat Kambodscha
 Sacred Kingdom of Angkor | Heiliges Königreich Angkor
 SPA
-Iberian Peoples | Iberische Völker
+Iberia | Iberien
 Kingdom of Spain | Königreich Spanien
 Spanish Empire | Spanisches Weltreich
 Spanish Republic | Spanische Republik
@@ -161,7 +161,7 @@ Iberian Commune | Iberische Kommune
 Spanish State | Spanischer Staat
 Sacred Crown of Iberia | Heilige Krone Iberiens
 FRA
-Frankish Tribes | Fränkische Stämme
+Francia | Franken
 Kingdom of France | Königreich Frankreich
 French Empire | Französisches Kaiserreich
 French Republic | Französische Republik
@@ -171,7 +171,7 @@ French Commune | Französische Kommune
 French State | Französischer Staat
 Sacred Crown of France | Heilige Krone Frankreichs
 ENG
-Briton Peoples | Völker Britanniens
+Britain | Britannien
 Kingdom of England | Königreich England
 British Empire | Britisches Weltreich
 Commonwealth of England | Commonwealth von England
@@ -181,7 +181,7 @@ Union of Britain | Britische Union
 British Protectorate | Britisches Protektorat
 Sacred Crown of Britain | Heilige Krone Britanniens
 GER
-Germanic Tribes | Germanische Stämme
+Germania | Germanien
 Kingdom of the Germans | Königreich der Deutschen
 German Empire | Deutsches Kaiserreich
 German Republic | Deutsche Republik
@@ -191,7 +191,7 @@ German Democratic Republic | Deutsche Demokratische Republik
 German Reich | Deutsches Reich
 Sacred German Empire | Heiliges Deutsches Reich
 RUS
-Slavic Tribes | Slawische Stämme
+Rus | Rus
 Tsardom of Russia | Russisches Zarenreich
 Russian Empire | Russisches Kaiserreich
 Russian Republic | Russische Republik
@@ -201,7 +201,7 @@ Russian Soviet Republic | Russische Sowjetrepublik
 Russian State | Russischer Staat
 Sacred Realm of Rus | Heiliges Reich der Rus
 NED
-Batavian Tribes | Batavische Stämme
+Batavia | Batavien
 Kingdom of the Netherlands | Königreich der Niederlande
 Dutch Empire | Niederländisches Reich
 Batavian Republic | Batavische Republik
@@ -211,7 +211,7 @@ Dutch People's Republic | Niederländische Volksrepublik
 Dutch State | Niederländischer Staat
 Sacred Union of the Low Countries | Heiliger Bund der Niederlande
 MAL
-Mande Peoples | Mande-Völker
+Mande | Mande
 Kingdom of Mali | Königreich Mali
 Mali Empire | Malireich
 Republic of Mali | Republik Mali
@@ -221,7 +221,7 @@ Malian People's Union | Malische Volksunion
 Malian State | Malischer Staat
 Sacred Realm of Mali | Heiliges Reich Mali
 POR
-Lusitanian Tribes | Lusitanische Stämme
+Lusitania | Lusitanien
 Kingdom of Portugal | Königreich Portugal
 Portuguese Empire | Portugiesisches Weltreich
 Portuguese Republic | Portugiesische Republik
@@ -231,7 +231,7 @@ Lusitanian Commune | Lusitanische Kommune
 Estado Novo | Estado Novo
 Sacred Crown of Portugal | Heilige Krone Portugals
 INC
-Andean Peoples | Andenvölker
+Andes | Anden
 Kingdom of Cusco | Königreich Cusco
 Land of the Four Quarters | Land der vier Weltgegenden
 Andean Republic | Andenrepublik
@@ -241,7 +241,7 @@ Andean People's Union | Andinische Volksunion
 Andean State | Andenstaat
 Sacred Realm of the Andes | Heiliges Andenreich
 MON
-Mongol Clans | Mongolische Sippen
+Mongolia | Mongolei
 Mongol Khanate | Mongolisches Khanat
 Mongol Empire | Mongolisches Weltreich
 Republic of Mongolia | Republik Mongolei
@@ -251,7 +251,7 @@ Mongolian People's Republic | Mongolische Volksrepublik
 Mongol State | Mongolischer Staat
 Sacred Realm of the Steppe | Heiliges Steppenreich
 AZT
-Mexica Peoples | Völker der Mexica
+Mexico | Mexiko
 Kingdom of Tenochtitlan | Königreich Tenochtitlán
 Aztec Triple Alliance | Aztekischer Dreibund
 Mexican Republic | Mexikanische Republik
@@ -261,7 +261,7 @@ Mexican People's Republic | Mexikanische Volksrepublik
 Mexican State | Mexikanischer Staat
 Sacred Realm of Anahuac | Heiliges Reich Anáhuac
 TUR
-Turkic Tribes | Turkstämme
+Anatolia | Anatolien
 Ottoman Empire | Osmanenreich
 Ottoman Empire | Osmanenreich
 Republic of Turkey | Republik Türkei
@@ -457,7 +457,7 @@ SPECIAL_NAMES = {
     ('NED', 'HABSBURG'): ('Habsburg Netherlands', 'Habsburgische Niederlande'),
     ('MON', 'NORTHERN_YUAN'): ('Northern Yuan', 'Nördliche Yuan'),
     ('AZT', 'TRIPLE_ALLIANCE'): ('Aztec Triple Alliance', 'Aztekischer Dreibund'),
-    ('ROM', 'ITALIAN_STATES'): ('Italian City-States', 'Italienische Stadtstaaten'),
+    ('ROM', 'ITALIAN_STATES'): ('Italy', 'Italien'),
     ('ROM', 'VENICE'): ('Republic of Venice', 'Republik Venedig'),
     ('SPA', 'ASTURIAS'): ('Kingdom of Asturias', 'Königreich Asturien'),
     ('SPA', 'LEON'): ('Kingdom of León', 'Königreich León'),
@@ -470,18 +470,18 @@ SPECIAL_NAMES = {
     ('FRA', 'WEST_FRANCIA'): ('West Francia', 'Westfränkisches Reich'),
     ('KHM', 'CHENLA'): ('Chenla', 'Reich von Chenla'),
     ('KHM', 'ANGKOR'): ('Khmer Empire', 'Khmerreich'),
-    ('SPA', 'CHRISTIAN_IBERIA'): ('Christian Kingdoms of Iberia', 'Christliche Reiche Iberiens'),
-    ('SPA', 'IBERIAN_KINGDOMS'): ('Iberian Kingdoms', 'Iberische Königreiche'),
-    ('ENG', 'ANGLO_SAXON'): ('Anglo-Saxon Kingdoms', 'Angelsächsische Königreiche'),
-    ('VIK', 'NORSE_KINGDOMS'): ('Scandinavian Kingdoms', 'Skandinavische Königreiche'),
-    ('JAP', 'EARLY_JAPAN'): ('Peoples of the Japanese Islands', 'Völker der japanischen Inseln'),
+    ('SPA', 'CHRISTIAN_IBERIA'): ('Castile', 'Kastilien'),
+    ('SPA', 'IBERIAN_KINGDOMS'): ('Castile', 'Kastilien'),
+    ('ENG', 'ANGLO_SAXON'): ('Wessex', 'Wessex'),
+    ('VIK', 'NORSE_KINGDOMS'): ('Scandinavia', 'Skandinavien'),
+    ('JAP', 'EARLY_JAPAN'): ('Japan', 'Japan'),
     ('JAP', 'YAMATO'): ('Yamato Realm', 'Reich von Yamato'),
-    ('IND', 'INDUS'): ('Indus Valley Cultures', 'Induskulturen'),
-    ('IND', 'INDIAN_KINGDOMS'): ('Indian Kingdoms', 'Indische Königreiche'),
-    ('CHI', 'EARLY_CHINA'): ('Early Chinese Cultures', 'Frühe chinesische Kulturen'),
-    ('BAB', 'EARLY_MESOPOTAMIA'): ('Mesopotamian City-States', 'Stadtstaaten Mesopotamiens'),
-    ('GRE', 'POLEIS'): ('Greek City-States', 'Griechische Stadtstaaten'),
-    ('ARA', 'EARLY_ARABIA'): ('Arabian Kingdoms', 'Arabische Königreiche'),
+    ('IND', 'INDUS'): ('Harappa', 'Harappa'),
+    ('IND', 'INDIAN_KINGDOMS'): ('Magadha', 'Magadha'),
+    ('CHI', 'EARLY_CHINA'): ('China', 'China'),
+    ('BAB', 'EARLY_MESOPOTAMIA'): ('Sumer', 'Sumer'),
+    ('GRE', 'POLEIS'): ('Greece', 'Griechenland'),
+    ('ARA', 'EARLY_ARABIA'): ('Arabia', 'Arabien'),
     # Literary and historical identities, selected by existing civic families.
     # America represents a settler-founded nation, not an indigenous tribal group.
     # Religious names are historical inspirations, not denominational checks.

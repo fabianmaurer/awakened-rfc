@@ -564,7 +564,7 @@ Die kanonische Teilung verursacht weder Stabilitätsabzüge für verlorene Städ
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
-| **Staatsreligion** | Priestertum | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
+| **Staatsreligion** | Monotheismus | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
 | **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
 | **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. Erlaubt die Ausbildung von Missionaren aller Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
@@ -643,12 +643,21 @@ Stabilitätsmalus für den Übergang.
 
 ### Dynastische Erbfolge
 
+Unabhängige und andere Nebenstaaten sind von der Erbfolge ausgeschlossen.
+Beteiligte menschliche Spieler und solche mit Kontakt zum kollabierenden Land
+erhalten eine ausdrückliche Erbfolgemeldung; der menschliche Erbe erhält
+zusätzlich ein adressiertes Hinweis-Popup.
+
 Wenn eine Monarchie mit Staatsreligion kollabiert, kann sie mit **50%**
 Wahrscheinlichkeit vererbt werden, statt zu zerfallen. Ein Erbe muss eine
 lebende Monarchie mit derselben Staatsreligion, mindestens **0 Stabilität** und
 mindestens einer Stadt auf dem Kontinent der Hauptstadt der kollabierenden
 Monarchie sein. Ein zulässiger Erbe wird deterministisch ausgewählt; eine
-Größenvoraussetzung gibt es nicht. Der Erbe erhält alle Städte und Einheiten
+Größenvoraussetzung gibt es nicht. Die Hauptstädte dürfen höchstens **12 Kartenfelder**
+auseinanderliegen. Außerdem muss jede zu erbende Stadt höchstens **12 Felder**
+von einer bereits vorhandenen Stadt des Erben entfernt sein
+(`RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE`). Ist auch nur eine Stadt zu weit
+entfernt, scheidet dieser Erbe aus. Der Erbe erhält alle Städte und Einheiten
 des kollabierten Reichs. Ohne zulässigen Erben oder bei fehlgeschlagenem Wurf
 gelten die normalen Kollapsregeln.
 
@@ -697,6 +706,12 @@ Hintergründe und Verhalten in Spielständen stehen in
 [CivicEffects.md](CivicEffects.md).
 
 ## Neue Zivilisationen und Gebietswechsel
+
+KI-Länder können in den ersten **30 Runden** nach Gründung oder Wiedergründung
+keine freiwillige Vasallisierung anbieten oder annehmen
+(`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). Dies gilt auch für die ersten 30 Runden
+eines Szenarios. Kapitulation im Krieg und freiwillige Entscheidungen menschlich
+gesteuerter Teams folgen weiterhin den bisherigen Regeln.
 
 ### Garnisonen in Festungen
 

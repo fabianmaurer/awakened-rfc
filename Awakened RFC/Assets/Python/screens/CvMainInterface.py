@@ -2910,8 +2910,7 @@ class CvMainInterface:
 							ePlayer = gc.getGame().getRankPlayer(j)
 
 							if (gc.getGame().isObserverAutoPlay() or not CyInterface().isScoresMinimized() or gc.getGame().getActivePlayer() == ePlayer):
-                                                                #if (gc.getPlayer(ePlayer).isAlive() and not gc.getPlayer(ePlayer).isMinorCiv()): #Rhye
-                                                                if (gc.getPlayer(ePlayer).isEverAlive() and not gc.getPlayer(ePlayer).isMinorCiv()):
+                                                                if (gc.getPlayer(ePlayer).isAlive() and not gc.getPlayer(ePlayer).isMinorCiv()):
 
                                                                         if (gc.getPlayer(ePlayer).getTeam() == eTeam):
                                                                                 szBuffer = u"<font=2>"

@@ -79,9 +79,11 @@ remain available before that date.
 The period rules and the audit of the starting scenarios are recorded in
 `docs/ScenarioCountryNamesAudit.md`. They change names only, preserve vassal
 priority, and retain alternate civic and religious outcomes.
-Germany uses the Holy Roman Empire for a Christian religious monarchy. Rome
-uses the Papal States for a Christian religious government which is not a
-Republic or Democracy. Other state religions use the ordinary country entries.
+Germany uses the Holy Roman Empire for a Christian religious monarchy. The
+Papal State name is reserved for the dedicated minor state; Roman major powers
+retain their ordinary civic names. Other state religions use the ordinary entries.
+Collective labels such as kingdoms, tribes and cultures have been replaced with
+concrete geographic or polity names; internal naming-rule keys remain stable.
 
 China uses **Celestial Empire** for a monarchy with more than six cities, and
 **Heavenly Kingdom of Great Peace** for a non-Islamic religious monarchy or

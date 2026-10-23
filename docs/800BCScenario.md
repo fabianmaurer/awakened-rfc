@@ -56,7 +56,7 @@ The other technology packages were revised on 2026-10-21:
 | China | Bronze Working, Metal Casting, Sailing, Priesthood | None |
 | Babylonia | Animal Husbandry, Mathematics, Calendar, Fishing, Sailing, Metal Casting, Iron Working | None |
 | Persia | Agriculture, Iron Working | Writing, Monarchy, Monotheism |
-| Carthage | Agriculture, Iron Working | Horseback Riding |
+| Carthage | Agriculture, Iron Working | None |
 | Rome | Agriculture | Writing, Mathematics, Alphabet |
 | Japan | Hunting, Archery | Bronze Working, Metal Casting, Meditation, Priesthood, Masonry, Monarchy, Writing |
 
@@ -69,15 +69,15 @@ Calendar recipients also have its Sailing and Mathematics prerequisites; the
 calendar and mathematics technologies represent broad practical knowledge.
 China also receives Priesthood to complete its existing Monarchy prerequisites.
 
-Starting-unit counts are preserved, with earlier troop types replacing later
-formations: China's catapult becomes a chariot; Greece's four phalanxes,
-Persia's six Immortals, Carthage's three Numidian cavalry and Rome's four
-Praetorians become spearmen. Carthage's trireme becomes a galley, and Japan's
-two swordsmen become warriors. Japan keeps its two archers and now has their
-required technology. Civilian units and existing ship assignments are retained.
-These replacements reduce some starting armies' strength; balance and
-multiplayer behavior remain unverified. Unique units remain available through
-the normal technology and resource requirements.
+The 800 BC starting armies retain their original troop types: Greece has four
+Phalanxes, Persia six Immortals, Carthage three Numidian Cavalry and an escort
+Trireme, Rome four Praetorians, and China one Catapult. Japan starts with two
+Warriors rather than Swordsmen, matching its lack of Iron Working in 800 BC.
+The other troop substitutions from commit `1298cb9e` were reverted on 2026-10-23;
+unit counts, placements and AI roles are preserved. Starting technologies and
+civilian units are unchanged by this restoration. Carthage also starts with
+Horseback Riding so its restored Numidian Cavalry match its technologies. In-game balance and
+multiplayer behavior remain unverified.
 
 ## Independent starting technologies
 
@@ -94,14 +94,14 @@ archery and bronze working. It has no starting Writing, Iron Working or wonder.
 | Scenario | Korean position |
 | --- | --- |
 | 3000 BC | Not selectable; AI civilization with ordinary RFC birth around 800 BC, with one settler, one worker, three archers, two spearmen and a work boat. |
-| 800 BC | Korean Chiefdoms with one settler near Pyongyang and no pre-founded city; choose the capital site. |
-| 600 AD | Korean Kingdoms under Yeongyang, capital Pyongyang; Gyeongju aggregates the southern kingdoms. This is not a claim that Goguryeo ruled the whole peninsula. |
+| 800 BC | Gojoseon with one settler near Pyongyang and no pre-founded city; choose the capital site. |
+| 600 AD | Goguryeo under Yeongyang, capital Pyongyang; Gyeongju aggregates the southern kingdoms. This is not a claim that Goguryeo ruled the whole peninsula. |
 | 900 AD | Silla under Hyogong, capital Gyeongju, with Pyongyang as the northern regional center. The slot aggregates the fragmented Korean states. |
 | 1453 AD | Joseon under Danjong, capital Hanseong, with Uiju guarding the northern frontier; Seowon and Hwacha are available. |
 
 The existing Korean art, leaderhead, Hwacha and Seowon are reused. Ruler labels
 and briefings distinguish the historical starts from the shared leaderhead.
-Country names progress through chiefdoms, Gojoseon, Korean Kingdoms, Silla,
+Country names progress through Gojoseon, Goguryeo, Silla,
 Goryeo and Joseon where the date and institutions fit; republican and other
 civic-driven names remain available. There is no additional cost modifier or
 new unique-power mechanic.
@@ -179,3 +179,8 @@ Normal later leaderhead replacements can replace the displayed ruler name.
   in the 3000 BC scenario before its later AI birth.
 
 No gameplay or multiplayer test was run. New-game load validation is pending.
+
+Jerusalem starts with Solomon's Temple (`BUILDING_JEWISH_SHRINE`) as well as
+Judaism's holy city. The First Temple belongs in the 800 BC start; its traditional
+dating precedes the scenario and its destruction was in 587/586 BC
+([Getty record](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039)).

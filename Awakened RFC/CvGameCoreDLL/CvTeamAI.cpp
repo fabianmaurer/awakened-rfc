@@ -1533,6 +1533,22 @@ DenialTypes CvTeamAI::AI_vassalTrade(TeamTypes eTeam) const
 {
 	FAssertMsg(eTeam != getID(), "shouldn't call this function on ourselves");
 
+	// New and restored AI countries get time to establish themselves before
+	// offering voluntary submission. Wartime capitulation has its own path.
+	if (!isHuman())
+	{
+		const int iProtectionTurns = GC.getDefineINT("RFCMP_SPAWN_VASSAL_PROTECTION_TURNS");
+		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+		{
+			const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+			if (!kPlayer.isAlive() || kPlayer.getTeam() != getID()) continue;
+			// WB scenarios may set their start turn after players become alive.
+			const int iBirthTurn = std::max(kPlayer.getLastBirthTurn(), GC.getGameINLINE().getStartTurn());
+			if (GC.getGameINLINE().getGameTurn() - iBirthTurn < iProtectionTurns)
+				return DENIAL_NO_GAIN;
+		}
+	}
+
 	CvTeamAI& kMasterTeam = GET_TEAM(eTeam);
 
 	for (int iLoopTeam = 0; iLoopTeam < MAX_TEAMS; iLoopTeam++)

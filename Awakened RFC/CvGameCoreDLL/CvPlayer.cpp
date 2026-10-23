@@ -464,6 +464,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iCoastalTradeRoutes = 0;
 	m_iTradeRoutes = 0;
 	m_iRevolutionTimer = 0;
+	m_iLastBirthTurn = -1;
 	m_iConversionTimer = 0;
 	m_iStateReligionCount = 0;
 	m_iNoNonStateReligionSpreadCount = 0;
@@ -5707,6 +5708,7 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()) && GC.getUnitInfo(eUnit).isFound()) return false;
     // Apply to humans, AI and ongoing production, including visibility checks.
     if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
     {
@@ -11345,6 +11347,11 @@ bool CvPlayer::isEverAlive() const
 }
 
 
+int CvPlayer::getLastBirthTurn() const
+{
+	return m_iLastBirthTurn;
+}
+
 void CvPlayer::setAlive(bool bNewValue)
 {
 	CvWString szBuffer;
@@ -11353,6 +11360,7 @@ void CvPlayer::setAlive(bool bNewValue)
 	if (isAlive() != bNewValue)
 	{
 		m_bAlive = bNewValue;
+		if (bNewValue) m_iLastBirthTurn = GC.getGameINLINE().getGameTurn();
 
 		GET_TEAM(getTeam()).changeAliveCount((isAlive()) ? 1 : -1);
 
@@ -18025,6 +18033,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iCoastalTradeRoutes);
 	pStream->Read(&m_iTradeRoutes);
 	pStream->Read(&m_iRevolutionTimer);
+	pStream->Read(&m_iLastBirthTurn);
 	pStream->Read(&m_iConversionTimer);
 	pStream->Read(&m_iStateReligionCount);
 	pStream->Read(&m_iNoNonStateReligionSpreadCount);
@@ -18519,6 +18528,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iCoastalTradeRoutes);
 	pStream->Write(m_iTradeRoutes);
 	pStream->Write(m_iRevolutionTimer);
+	pStream->Write(m_iLastBirthTurn);
 	pStream->Write(m_iConversionTimer);
 	pStream->Write(m_iStateReligionCount);
 	pStream->Write(m_iNoNonStateReligionSpreadCount);
@@ -22309,7 +22319,7 @@ void CvPlayer::processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive)
 
 int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
-	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || isMinorCiv() || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || (isMinorCiv() && !GC.getGameINLINE().isPapalState(getID())) || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
 	int iVotes = 0;
 
 	ReligionTypes eReligion = GC.getGameINLINE().getVoteSourceReligion(eVoteSource);
@@ -22642,6 +22652,8 @@ bool CvPlayer::isFullMember(VoteSourceTypes eVoteSource) const
 
 bool CvPlayer::isVotingMember(VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && GC.getGameINLINE().isPapalState(getID()))
+		return getVotes(NO_VOTE, eVoteSource) > 0;
 	//Rhye - start
 	if (isMinorCiv() || isBarbarian())
 		return false;
@@ -24103,8 +24115,6 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	{
 		if (iPlayer == GERMANY && bMonarchy)
 			szForm = L"HOLY_ROMAN";
-		else if (iPlayer == ROME && !bRepublic && !bDemocracy)
-			szForm = L"PAPAL_STATES";
 	}
 
 	// Period names describe the polities represented by the scenario slots.

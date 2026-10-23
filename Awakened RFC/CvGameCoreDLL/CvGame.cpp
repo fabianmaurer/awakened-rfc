@@ -8114,6 +8114,8 @@ int CvGame::calculateSyncChecksum()
                 (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
 	iValue += (m_iPapalPlayer + 1) * 269 + m_iPapalRetryTurn * 271 + m_iPapalDecisionSerial * 277 + m_bPapalPalaceEffects * 281;
+	for (int iBirth = 0; iBirth < MAX_CIV_PLAYERS; ++iBirth)
+		iValue += (GET_PLAYER((PlayerTypes)iBirth).getLastBirthTurn() + 1) * (iBirth + 1) * 317;
 	iValue += (m_iPapalRefuser + 1) * 283;
 	iValue += (m_iPapalFirstCouncilTurn + 1) * 313;
 	iValue += (m_iPapalRomeDeadline + 1) * 307 + (m_iPapalDevotionFadeStart + 1) * 311;
@@ -9624,7 +9626,8 @@ bool CvGame::canFoundPapacy(PlayerTypes ePlayer) const
 
 bool CvGame::canBecomePapacy(PlayerTypes ePlayer) const
 {
-	return canFoundPapacy(ePlayer) && GET_PLAYER(ePlayer).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(ePlayer).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_THEOCRATIC_LEGITIMACY"));
+	// Rome may form a minor Papal State; a major empire cannot become one.
+	return false;
 }
 
 bool CvGame::isPapalDecisionValid(PlayerTypes ePlayer, int iDecision) const
@@ -9888,7 +9891,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	PlayerTypes ePope = bBecome ? eOwner : (PlayerTypes)PAPAL_STATE;
 	if (!bBecome)
 	{
-		GC.getInitCore().setMinorNationCiv(ePope, false);
+		GC.getInitCore().setMinorNationCiv(ePope, true);
 		addPlayer(ePope, (LeaderHeadTypes)GC.getInfoTypeForString("LEADER_INDEPENDENT"), (CivilizationTypes)GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT"));
 	}
 	m_iPapalPlayer = ePope;
@@ -10050,6 +10053,7 @@ bool CvGame::getCrusadeTargets(int iRegion, bool* abTargets) const
 
 bool CvGame::canStartCrusade(int iRegion) const
 {
+	if (!GC.getGameINLINE().isReligionFounded((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM"))) return false;
 	if (m_iCrusadeRegion >= 0 || isOption(GAMEOPTION_ALWAYS_PEACE) || isOption(GAMEOPTION_ALWAYS_WAR) || isOption(GAMEOPTION_NO_CHANGING_WAR_PEACE)) return false;
 	bool abTargets[MAX_TEAMS];
 	if (!getCrusadeTargets(iRegion, abTargets)) return false;
@@ -10308,7 +10312,7 @@ PlayerTypes CvGame::getCrusadeCityRecipient(PlayerTypes eConqueror, const CvCity
 		for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
 		{
 			CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)p);
-			if (p == eConqueror || !kPlayer.isAlive() || !abNeighbors[kPlayer.getTeam()] || kPlayer.getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) continue;
+			if (p == eConqueror || !kPlayer.isAlive() || kPlayer.isMinorCiv() || !abNeighbors[kPlayer.getTeam()] || kPlayer.getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) continue;
 			int iLoop;
 			for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity; pCity = kPlayer.nextCity(&iLoop))
 			{

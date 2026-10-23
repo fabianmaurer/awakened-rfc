@@ -3330,11 +3330,11 @@ class RiseAndFall:
 
         def create800BCstartingUnits( self ): #RFCMP
 
-                # Early regional starting forces; normal unique-unit rules still apply.
+                # Preserve the scenario starting armies, including civilization unique units.
 
                 utils.makeUnit(con.iSettler, iPersia, tCapitals[iPersia], 2)
                 utils.makeUnit(con.iArcher, iPersia, tCapitals[iPersia], 4)
-                utils.makeUnit(con.iSpearman, iPersia, tCapitals[iPersia], 6)
+                utils.makeUnit(con.iPersiaImmortal, iPersia, tCapitals[iPersia], 6)
                 utils.makeUnit(con.iChariot, iPersia, tCapitals[iPersia], 4)
                 utils.makeUnit(con.iWorker, iPersia, tCapitals[iPersia], 2)
 
@@ -3342,7 +3342,7 @@ class RiseAndFall:
                 utils.makeUnit(con.iArcher, iCarthage, tCapitals[iCarthage], 3)
                 utils.makeUnit(con.iSpearman, iCarthage, tCapitals[iCarthage], 1)
                 pCarthage.initUnit(con.iSpearman, tCapitals[iCarthage][0], tCapitals[iCarthage][1], UnitAITypes.UNITAI_CITY_DEFENSE, DirectionTypes.DIRECTION_SOUTH)
-                utils.makeUnit(con.iSpearman, iCarthage, tCapitals[iCarthage], 3)
+                utils.makeUnit(con.iCarthageNumidianCavalry, iCarthage, tCapitals[iCarthage], 3)
                 utils.makeUnit(con.iWorker, iCarthage, tCapitals[iCarthage], 2)
                 tSeaPlot = self.findSeaPlots(tCapitals[iCarthage], 1, iCarthage)
                 if (tSeaPlot):                                
@@ -3351,11 +3351,11 @@ class RiseAndFall:
                         utils.makeUnit(con.iSettler, iCarthage, tSeaPlot, 1)
                         utils.makeUnit(con.iArcher, iCarthage, tSeaPlot, 1)
                         pCarthage.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ASSAULT_SEA, DirectionTypes.DIRECTION_SOUTH)
-                        pCarthage.initUnit(con.iGalley, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ESCORT_SEA, DirectionTypes.DIRECTION_SOUTH)
+                        pCarthage.initUnit(con.iTrireme, tSeaPlot[0], tSeaPlot[1], UnitAITypes.UNITAI_ESCORT_SEA, DirectionTypes.DIRECTION_SOUTH)
 
                 utils.makeUnit(con.iSettler, iRome, tCapitals[iRome], 3)
                 utils.makeUnit(con.iArcher, iRome, tCapitals[iRome], 3)
-                utils.makeUnit(con.iSpearman, iRome, tCapitals[iRome], 4)
+                utils.makeUnit(con.iRomePraetorian, iRome, tCapitals[iRome], 4)
                 utils.makeUnit(con.iWorker, iRome, tCapitals[iRome], 2)
                 tSeaPlot = self.findSeaPlots(tCapitals[iRome], 1, iRome)
                 if (tSeaPlot):                                
@@ -3869,6 +3869,7 @@ class RiseAndFall:
                 teamCarthage.setHasTech(con.iHunting, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iArchery, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iAnimalHusbandry, True, iCiv, False, False)
+                teamCarthage.setHasTech(con.iHorsebackRiding, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iAgriculture, True, iCiv, False, False)
                 teamCarthage.setHasTech(con.iIronWorking, True, iCiv, False, False)
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT><Tag>TXT_KEY_DN_KOR_TRIBAL</Tag>
-    <English>Korean Chiefdoms</English>
-    <French>Korean Chiefdoms</French>
-    <German>Koreanische Stammesgebiete</German>
-    <Italian>Korean Chiefdoms</Italian>
-    <Spanish>Korean Chiefdoms</Spanish>
+    <English>Gojoseon</English>
+    <French>Gojoseon</French>
+    <German>Gojoseon</German>
+    <Italian>Gojoseon</Italian>
+    <Spanish>Gojoseon</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_DN_KOR_KINGDOM</Tag>
     <English>Kingdom of Korea</English>
@@ -176,11 +176,11 @@
     <Spanish>Korea</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_DN_KOR_CHIEFDOMS</Tag>
-    <English>Korean Chiefdoms</English>
-    <French>Korean Chiefdoms</French>
-    <German>Koreanische Stammesgebiete</German>
-    <Italian>Korean Chiefdoms</Italian>
-    <Spanish>Korean Chiefdoms</Spanish>
+    <English>Gojoseon</English>
+    <French>Gojoseon</French>
+    <German>Gojoseon</German>
+    <Italian>Gojoseon</Italian>
+    <Spanish>Gojoseon</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_DN_KOR_GOJOSEON</Tag>
     <English>Gojoseon</English>
@@ -190,11 +190,11 @@
     <Spanish>Gojoseon</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_DN_KOR_KINGDOMS</Tag>
-    <English>Korean Kingdoms</English>
-    <French>Korean Kingdoms</French>
-    <German>Koreanische K&#246;nigreiche</German>
-    <Italian>Korean Kingdoms</Italian>
-    <Spanish>Korean Kingdoms</Spanish>
+    <English>Goguryeo</English>
+    <French>Goguryeo</French>
+    <German>Goguryeo</German>
+    <Italian>Goguryeo</Italian>
+    <Spanish>Goguryeo</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_DN_KOR_SILLA</Tag>
     <English>Silla</English>

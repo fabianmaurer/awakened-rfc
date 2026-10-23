@@ -19,19 +19,20 @@ the city of Rome at (60,44), the Papal State founding event becomes eligible:
 - A Christian owner may cede Rome to a new Papal State, or refuse for a stacking
   **-2 relations penalty from every other Christian nation**. Refusal repeats after
   10 turns at Normal speed (`AP_PAPAL_RETRY_TURNS`), scaled to game speed. All
-  accumulated refusal penalties disappear when the owner accepts either Papal
-  founding option or loses Rome (including gifting or razing it).
-- An owner already using **Theocracy and Holy State** may instead become the Papal
-  State, retaining its territory, government and human player control.
+  accumulated refusal penalties disappear when the owner cedes Rome or loses Rome (including gifting or razing it).
 - Independent Rome flips to the Papal State automatically. Barbarian ownership,
   non-Christian ownership, Tolerance and State Atheism prevent the event.
+
+The Papal State is a minor state, excluded from normal major-power diplomacy and
+victory competition. It cannot train settlers or receive neighboring Crusade
+settlements, but retains its seat and chairmanship in the Apostolic council.
+A major civilization cannot turn its whole empire into the Papal State.
 
 A newly established Papal State receives Rome, its own player slot, a capital and
 two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
 Papal identity is separate from the Independent Crusader States. The leader is
-named Pope. The dedicated Papal slot has no historical victory goals: its score
-row shows an unavailable-goals marker and a stability icon based on holding Rome
-(secure) or needing to recover it (endangered).
+named Pope. Like other minor states, it has no scoreboard entry or ordinary
+diplomacy and does not compete for historical victory goals.
 
 Founding, refusal and dissolution are announced as events concerning the Council
 of Rome to all living Christian-affiliated nations, including those using Tolerance.
@@ -70,7 +71,7 @@ city containing Christianity**, regardless of that city's owner's state religion
 Rome's gold modifiers amplify this income. Papal cities containing Christianity
 receive **+50% city defense**, reduced normally by bombardment. These bonuses
 stop when the Palace is inactive, including under Tolerance or after losing Rome,
-and return when it reactivates. They apply equally to human and AI Papal States,
+and return when it reactivates. They apply to the Papal State,
 including countries that choose to become the Papacy.
 
 Only nations with Christianity as their state religion participate in council votes.
@@ -96,6 +97,8 @@ Yes/Abstain/No/outstanding. All participating nations see the same live tally.
 | Relief Tithe | All except the poorest member transfer 10% of their current treasury to that member. Requires a 100-gold treasury gap and at least one treasury of 100. Ties favor the lowest player number. | More than half of all vote weight |
 | College of Christendom | Each member pays 50 gold; each team gains 20% of its current technology's cost as research if another member already knows it. Requires all to afford the levy and at least one potential learner. | More Yes than No |
 | Reaffirm Christian Rule | All participating nations immediately adopt Theocracy and Holy State without anarchy. Future civic changes remain possible under normal rules. | At least two-thirds of all vote weight |
+
+Crusades become available only after Islam has been founded.
 
 Crusade regions use named geographic fronts on the RFC world map. An eligible
 front must contain a land border between a Christian nation and a non-Christian
@@ -653,7 +656,7 @@ These changes require a new game because the player-slot layout has expanded.
 ### Medieval ships
 
 Triremes have **3 strength** and no longer receive a special bonus against
-Galleys. They upgrade to the **War Galley**, which requires Machinery and
+Galleys. They upgrade to the **War Galley**, which requires Compass and
 Sailing and has **4 strength, 3 movement, no cargo**, and a base cost of 60.
 War Galleys upgrade to Frigates, keeping the Caravel's exploration role separate.
 
@@ -715,7 +718,7 @@ The canonical partition causes neither city-loss stability penalties nor conques
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. Allows a state religion; -1 state-religion happiness cancels its normal +1 bonus. |
-| **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
+| **State Religion** | Monotheism | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
 | **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
@@ -791,11 +794,19 @@ stability penalty.
 
 ### Dynastic inheritance
 
+Independent and other minor states cannot inherit or be inherited. Human players
+receive an explicit inheritance announcement when involved or in contact with
+the collapsing country; this distinguishes inheritance from fragmentation.
+The human heir also receives an addressed acknowledgement popup.
+
 When a monarchy with a state religion collapses, it has a **50%** chance to be
 inherited instead of fragmenting. An heir must be a living monarchy with the
 same state religion, at least **0 stability**, and at least one city on the
 continent of the collapsing monarchy's capital. One eligible heir is selected
-deterministically; there is no size requirement. The heir receives every city
+deterministically; there is no size requirement. Capitals must be within **12 map
+tiles**, and every inherited city must be within **12 tiles** of a city already
+owned by the heir (`RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE`). If even one city
+is too distant, that candidate cannot inherit the realm. The heir receives every city
 and unit of the collapsed realm. If no heir qualifies or the chance fails, the
 normal collapse rules apply.
 
@@ -846,6 +857,11 @@ See [CivicStability.md](CivicStability.md) for the reasoning and save-game
 behavior, and [CivicEffects.md](CivicEffects.md) for implementation details.
 
 ## Civilization spawns and flips
+
+AI countries cannot offer or accept voluntary vassalization for **30 turns**
+after founding or restoration (`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). This
+also covers the first 30 turns of a scenario. Wartime capitulation and voluntary
+choices by human-controlled teams retain their existing rules.
 
 ### Tile tooltips
 
