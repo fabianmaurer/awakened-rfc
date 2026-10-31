@@ -4794,5 +4794,63 @@
 			<CivilizationSelectionSound>AS3D_NATIVE_AMERICA_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_NATIVE_AMERICA_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
+			<CivilizationInfo>
+			<Type>CIVILIZATION_ADENA</Type>
+			<Description>TXT_KEY_ADENA_DESC</Description>
+			<ShortDescription>TXT_KEY_ADENA</ShortDescription>
+			<Adjective>TXT_KEY_ADENA_ADJ</Adjective>
+			<Civilopedia>TXT_KEY_ADENA_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_LIGHT_BROWN</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_NATIVE_AMERICA</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_SOUTH_AMERICA</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_SOUTH_AMERICA</UnitArtStyleType>
+			<bPlayable>1</bPlayable>
+			<bAIPlayable>1</bAIPlayable>
+			<Cities><City>Scioto</City><City>Hocking</City><City>Kanawha</City><City>Miami</City><City>Licking</City><City>Muskingum</City></Cities>
+			<Buildings>
+				<Building>
+					<BuildingClassType>BUILDINGCLASS_OBELISK</BuildingClassType>
+					<BuildingType>BUILDING_ADENA_BURIAL_MOUND</BuildingType>
+				</Building>
+			</Buildings>
+			<Units>
+				<Unit>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<UnitType>UNIT_ADENA_WOODLAND_WARRIOR</UnitType>
+				</Unit>
+			</Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_SITTING_BULL</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+			<DerivativeCiv>CIVILIZATION_AMERICA</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_NATIVE_AMERICA_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_NATIVE_AMERICA_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>

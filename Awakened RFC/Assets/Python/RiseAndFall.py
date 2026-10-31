@@ -1801,6 +1801,8 @@ class RiseAndFall:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
+                if gc.getPlayer(iCiv).getCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ADENA"):
+                        return # Adena are already present and do not receive a second birth.
                 if iCiv == con.iEskimos:
                         import Arctic
                         Arctic.spawn(iCurrentTurn)

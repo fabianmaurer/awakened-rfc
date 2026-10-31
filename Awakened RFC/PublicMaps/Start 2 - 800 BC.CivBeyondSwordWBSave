@@ -94,6 +94,16 @@ BeginTeam
 	ContactWithTeam=8
 EndTeam
 BeginTeam
+
+	Tech=TECH_AGRICULTURE
+
+	Tech=TECH_THE_WHEEL
+
+	Tech=TECH_POTTERY
+
+	Tech=TECH_HUNTING
+
+	Tech=TECH_MYSTICISM
 EndTeam
 BeginTeam
 	Tech=TECH_FISHING
@@ -367,17 +377,18 @@ BeginPlayer
 EndPlayer
 BeginPlayer
 	Team=31
-	CivType=CIVILIZATION_NATIVE_AMERICA
+	CivType=CIVILIZATION_ADENA
 	LeaderType=LEADER_SITTING_BULL
 	PlayableCiv=1
 	MinorNationStatus=0
 	Handicap=HANDICAP_PRINCE
-	CivDesc=TXT_KEY_MISS_DESC
-	CivShortDesc=TXT_KEY_MISS
-	CivAdjective=TXT_KEY_MISS_ADJ
-	LeaderName=TXT_KEY_MISS_LEADER
-	StartingX=23
+	CivDesc=TXT_KEY_ADENA_DESC
+	CivShortDesc=TXT_KEY_ADENA
+	CivAdjective=TXT_KEY_ADENA_ADJ
+	LeaderName=TXT_KEY_ADENA_LEADER
+	StartingX=26
 	StartingY=45
+	StartingGold=40
 EndPlayer
 BeginPlayer
 	Team=32
@@ -10166,6 +10177,31 @@ BeginPlot
 	x=26,y=45
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+
+	BeginUnit
+		UnitType=UNIT_SETTLER, UnitOwner=31
+		UnitAIType=UNITAI_SETTLE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=31
+		UnitAIType=UNITAI_WORKER
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ADENA_WOODLAND_WARRIOR, UnitOwner=31
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ADENA_WOODLAND_WARRIOR, UnitOwner=31
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_SCOUT, UnitOwner=31
+		UnitAIType=UNITAI_EXPLORE
+	EndUnit
 EndPlot
 BeginPlot
 	x=26,y=46

@@ -643,13 +643,32 @@ faction. These authored Maya starts do not trigger a second historical birth.
 **Mississippian Chiefdoms** represent the related eastern North American
 chiefdoms collectively. They use the existing Native American civilization's
 art and units, with a generic **Paramount Chief** title. They have a dedicated
-major slot and a **900 AD birth** in earlier games; the Huns can still spawn
+major slot and a **900 AD birth** in the 3000 BC and 600 AD games, where they are
+not selectable; the Huns can still spawn
 independently. The 900 AD map starts with a small Cahokia settlement. The
 1453 AD map uses Etowah and Natchez, with Etowah as capital, rather than
 repopulating abandoned Cahokia. Their homeland, expansion priorities and city
 names cover the Mississippi basin and southeast. They use standard victories.
 See the [Etowah site](https://gastateparks.org/EtowahIndianMounds) for its
 continued occupation through this later period.
+
+**Adena Tribes** are playable in the **800 BC** scenario, using that regional
+slot with a distinct civilization identity. A settler, worker, two Woodland
+Warriors, scout and 40 gold begin in the Ohio Valley at (26,45). Starting
+technologies are Agriculture, The Wheel, Pottery, Hunting and Mysticism; The
+Wheel is retained as Pottery's game-tree prerequisite. Institutions are Tribal
+System, Despotism, Self-sufficiency, Warrior Society and Ancestor Cult.
+**Earthwork Builders** grants +1 production from river farms. The **Woodland
+Warrior** replaces the Warrior at the same cost and strength, adding +50%
+forest defense. The **Burial Mound** replaces the Monument and adds +1
+happiness, retaining its cost, culture and Calendar obsolescence. Existing
+Native American art is reused. Geographic river names represent settlements
+whose ancient names are unknown. Adena represents Early Woodland communities,
+not a documented unified state. It remains Adena, uses standard victories and
+does not receive a second birth in 900 AD. It does not coexist with the
+Mississippians in this scenario. Its country name changes from Adena Tribes to
+Adena Confederation under Republic or Democracy, Adena Kingdom under Monarchy,
+and Adena State under Dictatorship. See the [NPS overview](https://www.nps.gov/articles/000/ohio-s-prehistoric-past.htm).
 
 These changes require a new game because the player-slot layout has expanded.
 

@@ -45,7 +45,7 @@ int startingTurn[33] = {
 }; //332 for 1733
 
 //Alphabetical order:		  	  AME		ARA		AZT		BAB		XXX		CAR		XXX		CHI		EGY		 ENG	 ETH	 FRA	  GER	  GRE	   XXX	    INC		IND		JAP		KHM	    XXX	    MAL		MAY	     MON	 XXX     HOL      TUR	  PER	  POR     ROM	 RUS	 SPA	 XXX    VIK		XXX
-char loadingTime[44][4] =     {
+char loadingTime[45][4] =     {
 "60",
 "20",
 "35",
@@ -89,9 +89,10 @@ char loadingTime[44][4] =     {
 "20",
 "20",
 "5",
+"0",
 "0"
 };
-char loadingTime600AD[44][4] = {
+char loadingTime600AD[45][4] = {
 "30",
 "0",
 "15",
@@ -135,9 +136,10 @@ char loadingTime600AD[44][4] = {
 "0",
 "0",
 "X",
+"0",
 "0"
 };
-char startingYear[44][6] =      {
+char startingYear[45][6] =      {
 "1775 ",
 "620 ",
 "1200 ",
@@ -181,9 +183,10 @@ char startingYear[44][6] =      {
 "620 ",
 "620 ",
 "210 ",
-"3000"
+"3000",
+"800 "
 };
-bool startingEra[44] =		    {
+bool startingEra[45] =		    {
 true,
 true,
 true,
@@ -227,9 +230,10 @@ true,
 true,
 true,
 false,
-false
+false,
+true
 };   //AD or BC
-char startingYear600AD[44][6] = {
+char startingYear600AD[45][6] = {
 "1775 ",
 "600 ",
 "1200 ",
@@ -273,9 +277,10 @@ char startingYear600AD[44][6] = {
 "600 ",
 "600 ",
 "210 ",
-"3000"
+"3000",
+"800 "
 };
-bool startingEra600AD[44] =		{
+bool startingEra600AD[45] =		{
 true,
 true,
 true,
@@ -319,11 +324,12 @@ true,
 true,
 true,
 false,
-false
+false,
+true
 };   //AD or BC
 
 
-char uniquePower[44][2][16]  = {
+char uniquePower[45][2][16]  = {
 {"TXT_KEY_UP_AME", "TXT_KEY_UP_AME2"},
 {"TXT_KEY_UP_ARA", "TXT_KEY_UP_ARA2"},
 {"TXT_KEY_UP_AZT", "TXT_KEY_UP_AZT2"},
@@ -367,11 +373,12 @@ char uniquePower[44][2][16]  = {
 {"TXT_KEY_UP_FAT", "TXT_KEY_UP_FAT2"},
 {"TXT_KEY_UP_UMA", "TXT_KEY_UP_UMA2"},
 {"TXT_KEY_UP_HUN", "TXT_KEY_UP_HUN2"},
-{"TXT_KEY_UP_ESK0", "TXT_KEY_UP_ESK1"}
+{"TXT_KEY_UP_ESK0", "TXT_KEY_UP_ESK1"},
+{"TXT_KEY_UP_ADN", "TXT_KEY_UP_ADN2"}
 };
 
 
-char uniqueGoals[44][3][18]  = {
+char uniqueGoals[45][3][18]  = {
 {"TXT_KEY_UHV_AME1", "TXT_KEY_UHV_AME2", "TXT_KEY_UHV_AME3"},
 {"TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"},
 {"TXT_KEY_UHV_AZT1", "TXT_KEY_UHV_AZT2", "TXT_KEY_UHV_AZT3"},
@@ -415,12 +422,13 @@ char uniqueGoals[44][3][18]  = {
 { "TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3" },
 { "TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3" },
 {"XXX", "XXX", "XXX"},
-{"TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL"}
+{"TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL"},
+{"XXX", "XXX", "XXX"}
 };
 
 
 
-char rating[44][6][15]  = {
+char rating[45][6][15]  = {
 //		    TRA				 PRO				CUL					GRO				S.S.
 //America
 	{"TXT_KEY_4STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_1STAR" },
@@ -499,7 +507,8 @@ char rating[44][6][15]  = {
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
 {"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_2STARS"},
-{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"}
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
+{"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS"}
 };
 
 

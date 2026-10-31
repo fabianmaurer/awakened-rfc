@@ -185,16 +185,16 @@
 
 
 extern int startingTurn[];
-extern char loadingTime[44][4];
-extern char loadingTime600AD[44][4];
-extern char startingYear[44][6];
-extern bool startingEra[44];
-extern char startingYear600AD[44][6];
-extern bool startingEra600AD[44];
+extern char loadingTime[45][4];
+extern char loadingTime600AD[45][4];
+extern char startingYear[45][6];
+extern bool startingEra[45];
+extern char startingYear600AD[45][6];
+extern bool startingEra600AD[45];
 //extern int militaryBonus[2][18];
-extern char uniquePower[44][2][16];
-extern char uniqueGoals[44][3][18];
-extern char rating[44][6][15];
+extern char uniquePower[45][2][16];
+extern char uniqueGoals[45][3][18];
+extern char rating[45][6][15];
 
 extern int turnPlayed[MAX_PLAYERS];
 extern int civSpreadFactor[MAX_PLAYERS][7];

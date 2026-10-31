@@ -17,6 +17,7 @@ rather than player slots, and are independent of civics except where stated.
 | Holy Roman Empire | Imperial Church | +100% production of non-wonder buildings belonging to its current state religion. No benefit without a state religion. |
 | Korea | Scholarly Institutions | +100% production of non-wonder buildings with a percentage research modifier, including the Seowon. Replaces the unique-unit/building placeholder. |
 | Mississippians | Mound Builders | +1 production from owned farms beside rivers. |
+| Adena | Earthwork Builders | +1 production from owned farms beside rivers; a separate civilization in the 800 BC regional slot. |
 | Sumeria | Temple Cities | Priest specialists yield +1 production and +1 commerce. |
 | Zulu | Buffalo Horns | Melee units have +1 movement point. Applies to existing and new units; upgrades out of the melee class lose it. |
 | Abbasids | House of Wisdom | All specialists, including settled Great People, yield +2 research. |

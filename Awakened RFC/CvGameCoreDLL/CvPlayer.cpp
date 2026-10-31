@@ -24091,6 +24091,14 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	}
 	if (iPlayer == MISSISSIPPIANS)
 	{
+		if (GET_PLAYER((PlayerTypes)iPlayer).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ADENA"))
+		{
+			if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
+				return L"TXT_KEY_ADENA_REPUBLIC";
+			if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_ADENA_KINGDOM";
+			if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) return L"TXT_KEY_ADENA_STATE";
+			return L"TXT_KEY_ADENA_DESC";
+		}
 		if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
 			return L"TXT_KEY_MISS_REPUBLIC";
 		if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_MISS_KINGDOM";
@@ -24354,6 +24362,8 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+	if (getID() == MISSISSIPPIANS)
+		startingTurn[MISSISSIPPIANS] = (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ADENA")) ? 87 : 211;
 	if (GC.getGameINLINE().isPapalState(getID())) { setCivDescription(L"TXT_KEY_AP_PAPAL_STATE"); return; }
     if (GC.getGameINLINE().isCrusadeHolyState(getID()) && getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
     {

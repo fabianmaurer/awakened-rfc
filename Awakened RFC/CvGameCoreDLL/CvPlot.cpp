@@ -6587,7 +6587,8 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 			++iYield; // Sacred Groves: reward preserving forests.
 		if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_FARM"))
 		{
-			if (eCiv == GC.getInfoTypeForString("CIVILIZATION_NATIVE_AMERICA") &&
+			if ((eCiv == GC.getInfoTypeForString("CIVILIZATION_NATIVE_AMERICA") ||
+				eCiv == GC.getInfoTypeForString("CIVILIZATION_ADENA")) &&
 				eYield == YIELD_PRODUCTION && isRiver())
 				++iYield; // Mound Builders.
 			if (eCiv == GC.getInfoTypeForString("CIVILIZATION_FATIMID") &&

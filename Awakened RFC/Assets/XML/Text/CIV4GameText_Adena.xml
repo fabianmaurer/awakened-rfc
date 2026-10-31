@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_ADENA</Tag>
+        <English>Adena</English>
+        <French>Adena</French>
+        <German>Adena</German>
+        <Italian>Adena</Italian>
+        <Spanish>Adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_DESC</Tag>
+        <English>Adena Tribes</English>
+        <French>Tribus adena</French>
+        <German>Adena-St&#228;mme</German>
+        <Italian>Trib&#249; adena</Italian>
+        <Spanish>Tribus adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_ADJ</Tag>
+        <English>Adena</English>
+        <French>adena</French>
+        <German>adenisch</German>
+        <Italian>adena</Italian>
+        <Spanish>adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_REPUBLIC</Tag>
+        <English>Adena Confederation</English>
+        <French>Conf&#233;d&#233;ration adena</French>
+        <German>Adena-Konf&#246;deration</German>
+        <Italian>Confederazione adena</Italian>
+        <Spanish>Confederaci&#243;n adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_KINGDOM</Tag>
+        <English>Adena Kingdom</English>
+        <French>Royaume adena</French>
+        <German>Adena-K&#246;nigreich</German>
+        <Italian>Regno adena</Italian>
+        <Spanish>Reino adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_STATE</Tag>
+        <English>Adena State</English>
+        <French>&#201;tat adena</French>
+        <German>Adena-Staat</German>
+        <Italian>Stato adena</Italian>
+        <Spanish>Estado adena</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_LEADER</Tag>
+        <English>Chief</English>
+        <French>Chef</French>
+        <German>H&#228;uptling</German>
+        <Italian>Capo</Italian>
+        <Spanish>Cacique</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UP_ADN</Tag>
+        <English>Earthwork Builders</English>
+        <French>B&#226;tisseurs de terrassements</French>
+        <German>Erdbauer</German>
+        <Italian>Costruttori di terrapieni</Italian>
+        <Spanish>Constructores de terraplenes</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UP_ADN2</Tag>
+        <English>River farms yield +1 [ICON_PRODUCTION].</English>
+        <French>Les fermes riveraines produisent +1 [ICON_PRODUCTION].</French>
+        <German>Bauernh&#246;fe an Fl&#252;ssen liefern +1 [ICON_PRODUCTION].</German>
+        <Italian>Le fattorie lungo i fiumi producono +1 [ICON_PRODUCTION].</Italian>
+        <Spanish>Las granjas junto a r&#237;os producen +1 [ICON_PRODUCTION].</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_ADENA_WOODLAND_WARRIOR</Tag>
+        <English>Woodland Warrior</English>
+        <French>Guerrier des bois</French>
+        <German>Waldkrieger</German>
+        <Italian>Guerriero dei boschi</Italian>
+        <Spanish>Guerrero del bosque</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_ADENA_WOODLAND_WARRIOR_STRATEGY</Tag>
+        <English>Replaces the Warrior. Gains +50% forest defense.</English>
+        <French>Remplace le guerrier. Gagne +50% de d&#233;fense en for&#234;t.</French>
+        <German>Ersetzt den Krieger. Erh&#228;lt +50% Waldverteidigung.</German>
+        <Italian>Sostituisce il guerriero. Ottiene +50% difesa nelle foreste.</Italian>
+        <Spanish>Sustituye al guerrero. Obtiene +50% de defensa en bosques.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILDING_ADENA_BURIAL_MOUND</Tag>
+        <English>Burial Mound</English>
+        <French>Tumulus fun&#233;raire</French>
+        <German>Grabh&#252;gel</German>
+        <Italian>Tumulo funerario</Italian>
+        <Spanish>T&#250;mulo funerario</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILDING_ADENA_BURIAL_MOUND_STRATEGY</Tag>
+        <English>Replaces the Monument. Provides +1 happiness.</English>
+        <French>Remplace le monument. Apporte +1 bonheur.</French>
+        <German>Ersetzt das Monument. Gew&#228;hrt +1 Zufriedenheit.</German>
+        <Italian>Sostituisce il monumento. Fornisce +1 felicit&#224;.</Italian>
+        <Spanish>Sustituye al monumento. Proporciona +1 felicidad.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_INTRO</Tag>
+        <English>Lead the Adena communities of the Ohio Valley. Settle beside the rivers, cultivate native crops and build the earthworks that unite your people.</English>
+        <French>Dirigez les communaut&#233;s adena de la vall&#233;e de l'Ohio. Installez-vous pr&#232;s des rivi&#232;res, cultivez les plantes locales et construisez les tertres qui unissent votre peuple.</French>
+        <German>F&#252;hrt die Adena-Gemeinschaften des Ohiotals. Siedelt an Fl&#252;ssen, baut heimische Nutzpflanzen an und errichtet die Erdbauten, die euer Volk verbinden.</German>
+        <Italian>Guidate le comunit&#224; adena della valle dell'Ohio. Insediatevi lungo i fiumi, coltivate piante locali e costruite i terrapieni che uniscono il vostro popolo.</Italian>
+        <Spanish>Gu&#237;a a las comunidades adena del valle del Ohio. Asi&#233;ntate junto a los r&#237;os, cultiva plantas nativas y construye los terraplenes que unen a tu pueblo.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_ADENA_PEDIA</Tag>
+        <English>Adena is an archaeological name for Early Woodland communities of the Ohio Valley and neighboring regions. These communities cultivated native plants, traded over long distances and built burial mounds. This civilization represents related communities rather than a single documented state. In the 800 BC scenario it shares the regional player slot used by the Mississippians in other scenarios, but remains Adena throughout the game and uses standard victories. Its river-farm production bonus represents community labor. The Wheel is included only as a game-tree prerequisite for Pottery.</English>
+        <French>Adena is an archaeological name for Early Woodland communities of the Ohio Valley and neighboring regions. These communities cultivated native plants, traded over long distances and built burial mounds. This civilization represents related communities rather than a single documented state. In the 800 BC scenario it shares the regional player slot used by the Mississippians in other scenarios, but remains Adena throughout the game and uses standard victories. Its river-farm production bonus represents community labor. The Wheel is included only as a game-tree prerequisite for Pottery.</French>
+        <German>Adena is an archaeological name for Early Woodland communities of the Ohio Valley and neighboring regions. These communities cultivated native plants, traded over long distances and built burial mounds. This civilization represents related communities rather than a single documented state. In the 800 BC scenario it shares the regional player slot used by the Mississippians in other scenarios, but remains Adena throughout the game and uses standard victories. Its river-farm production bonus represents community labor. The Wheel is included only as a game-tree prerequisite for Pottery.</German>
+        <Italian>Adena is an archaeological name for Early Woodland communities of the Ohio Valley and neighboring regions. These communities cultivated native plants, traded over long distances and built burial mounds. This civilization represents related communities rather than a single documented state. In the 800 BC scenario it shares the regional player slot used by the Mississippians in other scenarios, but remains Adena throughout the game and uses standard victories. Its river-farm production bonus represents community labor. The Wheel is included only as a game-tree prerequisite for Pottery.</Italian>
+        <Spanish>Adena is an archaeological name for Early Woodland communities of the Ohio Valley and neighboring regions. These communities cultivated native plants, traded over long distances and built burial mounds. This civilization represents related communities rather than a single documented state. In the 800 BC scenario it shares the regional player slot used by the Mississippians in other scenarios, but remains Adena throughout the game and uses standard victories. Its river-farm production bonus represents community labor. The Wheel is included only as a game-tree prerequisite for Pottery.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_ADENA_WOODLAND_WARRIOR_PEDIA</Tag>
+        <English>The Woodland Warrior represents local fighters familiar with the wooded valleys of eastern North America. It is a gameplay abstraction, not a documented Adena military order. It replaces the Warrior at the same cost and strength, with an additional 50% defense in forests.</English>
+        <French>The Woodland Warrior represents local fighters familiar with the wooded valleys of eastern North America. It is a gameplay abstraction, not a documented Adena military order. It replaces the Warrior at the same cost and strength, with an additional 50% defense in forests.</French>
+        <German>The Woodland Warrior represents local fighters familiar with the wooded valleys of eastern North America. It is a gameplay abstraction, not a documented Adena military order. It replaces the Warrior at the same cost and strength, with an additional 50% defense in forests.</German>
+        <Italian>The Woodland Warrior represents local fighters familiar with the wooded valleys of eastern North America. It is a gameplay abstraction, not a documented Adena military order. It replaces the Warrior at the same cost and strength, with an additional 50% defense in forests.</Italian>
+        <Spanish>The Woodland Warrior represents local fighters familiar with the wooded valleys of eastern North America. It is a gameplay abstraction, not a documented Adena military order. It replaces the Warrior at the same cost and strength, with an additional 50% defense in forests.</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILDING_ADENA_BURIAL_MOUND_PEDIA</Tag>
+        <English>Adena communities constructed earthen burial mounds associated with mortuary ceremonies and community gathering. The Burial Mound replaces the Monument, retaining its culture and adding one happiness. It has the same cost, Mysticism requirement and Calendar obsolescence as the Monument.</English>
+        <French>Adena communities constructed earthen burial mounds associated with mortuary ceremonies and community gathering. The Burial Mound replaces the Monument, retaining its culture and adding one happiness. It has the same cost, Mysticism requirement and Calendar obsolescence as the Monument.</French>
+        <German>Adena communities constructed earthen burial mounds associated with mortuary ceremonies and community gathering. The Burial Mound replaces the Monument, retaining its culture and adding one happiness. It has the same cost, Mysticism requirement and Calendar obsolescence as the Monument.</German>
+        <Italian>Adena communities constructed earthen burial mounds associated with mortuary ceremonies and community gathering. The Burial Mound replaces the Monument, retaining its culture and adding one happiness. It has the same cost, Mysticism requirement and Calendar obsolescence as the Monument.</Italian>
+        <Spanish>Adena communities constructed earthen burial mounds associated with mortuary ceremonies and community gathering. The Burial Mound replaces the Monument, retaining its culture and adding one happiness. It has the same cost, Mysticism requirement and Calendar obsolescence as the Monument.</Spanish>
+    </TEXT>
+</Civ4GameText>

@@ -374,7 +374,7 @@ BeginPlayer
 	Team=31
 	CivType=CIVILIZATION_NATIVE_AMERICA
 	LeaderType=LEADER_SITTING_BULL
-	PlayableCiv=1
+	PlayableCiv=0
 	MinorNationStatus=0
 	Handicap=HANDICAP_PRINCE
 	CivDesc=TXT_KEY_MISS_DESC

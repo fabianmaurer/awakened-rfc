@@ -1,5 +1,11 @@
 # 800 BC starting institutions and identities
 
+Adena Tribes now provide a playable Early Woodland start in the Ohio Valley,
+using the regional slot occupied by Mississippians in later scenarios. They
+start with a settler, worker, two Woodland Warriors, scout and 40 gold. Their
+Earthwork Builders power improves river farms; their unique unit and Burial
+Mound support forest defense and happiness. See `Gameplay.en.md` for the rules.
+
 The scenario starts on turn 87. Its ten initial major players include five
 settler starts (Persia, Carthage, Rome, Japan and Korea). They are intentional early
 starts, rather than proof that their later empires already existed in 800 BC.

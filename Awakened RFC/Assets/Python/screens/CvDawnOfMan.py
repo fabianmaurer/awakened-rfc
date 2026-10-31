@@ -166,6 +166,8 @@ class CvDawnOfMan:
 ##Rhye - end		
 		if self.player.getID() == con.iKorea:
 			bodyString = localText.getText("TXT_KEY_KOREA_INTRO_" + str(gc.getGame().getStartTurn()), ())
+		if self.player.getCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ADENA"):
+			bodyString = localText.getText("TXT_KEY_ADENA_INTRO", ())
 		screen.addMultilineText( "BodyText", bodyString, self.X_TEXT_PANEL + self.iMarginSpace, self.Y_TEXT_PANEL + self.iMarginSpace + self.iTEXT_PANEL_MARGIN, self.W_TEXT_PANEL - (self.iMarginSpace * 2), self.H_TEXT_PANEL - (self.iMarginSpace * 2) - 75, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 		screen.setButtonGFC("Exit", self.EXIT_TEXT, "", self.X_EXIT, self.Y_EXIT, self.W_EXIT, self.H_EXIT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD )

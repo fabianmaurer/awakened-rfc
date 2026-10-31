@@ -77,7 +77,7 @@ def migrate_slots(text):
     if len(players) == 39 and re.search(r'\bCivType=(?:CIVILIZATION_ESKIMO|NONE)\b', players[32]):
         return text
     if len(players) == 38:
-        if 'CIVILIZATION_KOREA' not in players[30] or 'CIVILIZATION_NATIVE_AMERICA' not in players[31]:
+        if 'CIVILIZATION_KOREA' not in players[30] or not re.search(r'\bCivType=CIVILIZATION_(?:NATIVE_AMERICA|ADENA)\b', players[31]):
             raise ValueError('Unexpected major-player layout')
         return text
     if len(players) in (35, 36, 37):
