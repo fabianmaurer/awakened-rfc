@@ -1111,3 +1111,116 @@ suppression calculations use the strongest tier the owner has unlocked.
 All slave tiers share the unarmed slave's distinctive body, with era-specific
 weapons and animations, mixed figure variants and irregular formations. See [slave unit art](SlaveUnitArt.md)
 for the tier roster, source credits and a static preview.
+
+## Eskimos and the frozen north
+
+The Eskimos are a fantastical umbrella civilization, selectable only in the 800 BC start.
+They begin on the eastern Siberian coast at (122, 61), with one Settler and three Arctic Hunters. Their homeland and preferred polar-bear spawning region cover northeastern Siberia. Sparse deer, fur, fish and silver deposits enrich the Arctic without replacing existing resources. Nanuk is a fictional ruler using the existing Sitting Bull portrait.
+They start with only Fishing and Hunting in both cases. In the 3000 BC
+scenario, they are not selectable and appear in 800 BC with the same three units.
+They are absent from later starts.
+They use standard victories rather than another civilization's historical goals.
+
+- The **Cooling house** replaces the Granary, retaining its food storage but providing no health bonus. It adds one food to each tundra or snow land tile worked by its city.
+  Lakes qualify; overlapping terrain categories and city radii do not stack.
+- Sea tiles provide one extra production; lakes do not qualify for this power.
+- Cities founded outside snow or tundra produce half their normal local
+  food, before consumption. Food shipments retain their ordinary transferred amounts.
+- Eskimos may found cities on any snow or tundra tile, with the same minimum
+  spacing of one tile as other civilizations. Ownership, peaks and other normal
+  restrictions still apply.
+- Ordinary improvements follow the standard terrain and irrigation rules;
+  the former Eskimo exception for ordinary Arctic improvements is removed.
+  Legal farms and mines still use snowy art on cold terrain.
+- All civilizations gain +1 food and +1 commerce on snow or tundra land next
+  to any sea or lake tile, representing seals and walruses. Diagonal water
+  counts, the bonus applies once per land tile, and peaks receive no bonus.
+- Cities on tundra gain +1 health; cities on ice (snow terrain) gain +2 health.
+  This cold-climate bonus applies to all civilizations.
+- The **Arctic hunter** replaces the Scout: strength 2, two moves, cost 30,
+  available from the start and trainable in every era, even when ordinary
+  Scouts become obsolete. It uses recon promotions, has no upgrade successors, and
+  has a 50% withdrawal chance against animals when attacking or defending.
+  Defensive withdrawal prevents the lethal blow and leaves the hunter on its
+  current tile.
+- Only Arctic hunters can build **Hunting grounds** (Hunting) and **Deep
+  archives** (Mining), and only for Eskimos. The unit is consumed when the
+  improvement finishes, not when construction starts. The three starting hunters are
+  assigned building, city defense and reserve duties by the AI. Spare hunters
+  can build nearby improvements, while idle builders return to military service.
+  Hunters can also be trained for ordinary attack, reserve and garrison roles.
+  AI construction values account for yield losses on neighboring Hunting grounds;
+  optional road coverage preserves their supporting habitat.
+- Workers (including unique replacements) and Arctic hunters can use **Pillage**
+  to remove their own non-permanent improvements completely. This costs normal
+  pillaging movement, gives no gold and does not consume the unit. If no
+  improvement remains, another Pillage action removes the road or railroad.
+- **Hunting grounds** can be built on flat snow or tundra. Each
+  pair of adjacent snow or tundra tiles gives +1 food, +1 production and +1
+  commerce if neither has an improvement, road, railroad or city and neither
+  is a peak. All eight surrounding tiles count, including diagonals; odd
+  counts are rounded down. Ownership and features do not affect eligibility.
+  Neighbour changes update yields immediately.
+  Other civilizations receive zero yields from the Hunting grounds tile,
+  including its natural terrain yields. Its art combines a natural-wood Camp with
+  winter-coated reindeer. Worked Hunting grounds show one reindeer per point
+  of their improvement bonus (up to four); unworked tiles show no herd.
+- **Deep archives** can only be built on snow hills. Each worked archive adds
+  3 direct research and 1 Great Scientist point to its working Eskimo city.
+  A city of another civilization gets 5 research and no Great Person points.
+  Improvement and tile tooltips show these direct outputs. Yield display mode
+  adds a beaker/Great Person badge alongside the normal tile yields.
+  Its mystical bunker model has no cart, tracks or chimney. Stepped stonework
+  frames ancient metal doors with luminous blue inlays and layered blue sparkles.
+  Research does not depend on the slider. Standard research/Great Person rate
+  modifiers apply. Unworked archives yield neither research nor points, and
+  overlapping cities cannot share the same archive. Mines with blue emissive
+  highlights and crystals represent these sites.
+- Ordinary Eskimo city houses are igloos in the Ancient/Classical eras,
+  recolored European medieval ice houses in the Medieval/Renaissance eras,
+  and recolored European ice towers from the Industrial era onward. Igloos
+  have blue-grey block seams and lower ice courses for contrast. Arctic palaces
+  are larger ceremonial igloo halls. Their city lots use translucent grey snow
+  dust instead of stone paving, without changing other civilizations' paving.
+  Other buildings use pale blue icy versions of their ordinary textures in
+  Arctic cities, preserving their shapes and effects. The Eskimo banner bears
+  an angular gateway rune inside a broken polar halo.
+- Roads on tundra and snow use a compacted snowy path, with ordinary road
+  movement and connections.
+- Snow deals **10 damage per unit turn after healing**, even in friendly
+  territory and cities. Civilians are affected, and damage can kill. Eskimo
+  units and animals are immune. This rule concerns snow land, not sea ice.
+- **Ice bears** have strength 6 and prioritize attacks on cities within
+  two tiles. They destroy cities once their defenders are defeated, including
+  cities that are already undefended, without ever taking ownership. They can
+  enter settled territory, but cannot board transports or move/attack beyond
+  snow and tundra. Animals move independently and cannot join movement
+  groups. Their patrol choices use independent synchronized random draws;
+  they can still share tiles or converge on the same target.
+  Every six turns, up to four replenish on empty cold land, including visible tiles,
+  at least two tiles from owned territory (including diagonals), targeting
+  one per 18 cold land tiles (maximum 48), with priority for six in the Arctic
+  northeastern Siberian homeland. They persist beyond the ordinary animal era. No Barbarians
+  disables replenishment.
+
+Country names follow government: Eskimo Tribes, Kingdom, Republic or State.
+Astronomy adds **Hyperborea**; Electricity replaces it with **Agartha**. These later names omit the Eskimo prefix. These identities and the early settler
+starts are fantasy choices, not historical claims.
+
+Seven civic combinations override the ordinary government title. Each has a
+different name for the Eskimo, Hyperborean and Agarthan technology stages;
+the first matching combination below wins. All names are in
+[CountryNames.csv](CountryNames.csv), under `ESK`.
+
+| Priority | Civic combination | Example name |
+| --- | --- | --- |
+| 1 | Monarchy + God State, with a state religion | Solar Hyperborea |
+| 2 | Dictatorship + Professional Army or Conscription | Obsidian Council |
+| 3 | Monarchy + Planned Economy | Frostcrown |
+| 4 | Democracy + Planned Economy | Crystal Commune |
+| 5 | Republic or Democracy + State Atheism | Agarthan Academies |
+| 6 | Plutocracy + Naval Warfare | Eskimo Iceleague |
+| 7 | Tribal System + Ancestor Cult, with a non-starting legitimacy, labor or military civic | Eskimo Fireleague |
+
+The VC7.1 DLL builds successfully; gameplay, art rendering and multiplayer
+balance still require user-operated in-game validation.

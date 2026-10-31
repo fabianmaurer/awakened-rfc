@@ -233,5 +233,41 @@
 			<KFM>Art/Structures/Improvements/ForestPreserve/ForestPreserve.kfm</KFM>
 			<Button>,Art/Interface/Buttons/TechTree/Corporation.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,4,14</Button>
 		</ImprovementArtInfo>
+	<ImprovementArtInfo>
+			<Type>ART_DEF_IMPROVEMENT_ICY_FARM</Type>
+			<bExtraAnimations>1</bExtraAnimations>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<NIF>Art/Arctic/Farm/an_eu_farm01.nif</NIF>
+			<KFM>Art/Arctic/Farm/an_eu_farm01.kfm</KFM>
+			<Button>,Art/Interface/Buttons/Builds/BuildFarm.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,3,7</Button>
+		</ImprovementArtInfo>
+	<ImprovementArtInfo>
+			<Type>ART_DEF_IMPROVEMENT_ICY_MINE</Type>
+			<bExtraAnimations>0</bExtraAnimations>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<NIF>Art/Arctic/Mine/mine.nif</NIF>
+			<KFM>Art/Arctic/Mine/mine.kfm</KFM>
+			<Button>,Art/Interface/Buttons/Builds/BuildMine.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,7</Button>
+		</ImprovementArtInfo>
+	<ImprovementArtInfo>
+			<Type>ART_DEF_IMPROVEMENT_HUNTING_GROUNDS</Type>
+			<bExtraAnimations>0</bExtraAnimations>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<NIF>Art/Arctic/HuntingGrounds/hunting_grounds.nif</NIF>
+			<KFM></KFM>
+			<Button>,Art/Interface/Buttons/Builds/BuildCamp.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,1,7</Button>
+		</ImprovementArtInfo>
+	<ImprovementArtInfo>
+			<Type>ART_DEF_IMPROVEMENT_DEEP_ARCHIVE</Type>
+			<bExtraAnimations>0</bExtraAnimations>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<NIF>Art/Arctic/DeepArchive/deep_archive.nif</NIF>
+			<KFM></KFM>
+			<Button>,Art/Interface/Buttons/Builds/BuildMine.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,7</Button>
+		</ImprovementArtInfo>
 	</ImprovementArtInfos>
 </Civ4ArtDefines>

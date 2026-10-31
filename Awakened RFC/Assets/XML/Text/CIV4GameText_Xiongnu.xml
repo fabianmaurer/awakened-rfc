@@ -82,10 +82,10 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_UP_HUN2</Tag>
-    <English>Mounted units heal up to 25 HP when destroying or downgrading an improvement in enemy-owned territory during war, once per unit per turn. Roads and railroads grant no healing. No extra movement or attacks.</English>
-    <French>Les unit&#233;s mont&#233;es r&#233;cup&#232;rent jusqu&#8217;&#224; 25 PV en d&#233;truisant ou en d&#233;gradant un am&#233;nagement en territoire ennemi pendant une guerre, une fois par unit&#233; et par tour. Les routes et voies ferr&#233;es ne soignent pas. Aucun mouvement ni aucune attaque suppl&#233;mentaire.</French>
-    <German>Berittene Einheiten heilen beim Zerst&#246;ren oder Herabstufen einer Modernisierung in feindlichem Gebiet w&#228;hrend eines Krieges bis zu 25 TP, einmal je Einheit und Runde. Stra&#223;en und Eisenbahnen heilen nicht. Keine zus&#228;tzliche Bewegung oder Angriffe.</German>
-    <Italian>Le unit&#224; a cavallo recuperano fino a 25 PF distruggendo o degradando un miglioramento in territorio nemico durante una guerra, una volta per unit&#224; e per turno. Strade e ferrovie non curano. Nessun movimento o attacco aggiuntivo.</Italian>
-    <Spanish>Las unidades montadas recuperan hasta 25 PV al destruir o degradar una mejora en territorio enemigo durante una guerra, una vez por unidad y turno. Las carreteras y v&#237;as f&#233;rreas no curan. Sin movimientos ni ataques adicionales.</Spanish>
+    <English>Mounted units heal up to 25 HP by pillaging enemy improvements, once per unit per turn.</English>
+    <French>Les unit&#233;s mont&#233;es r&#233;cup&#232;rent jusqu&#8217;&#224; 25 PV en pillant les am&#233;nagements ennemis, une fois par unit&#233; et par tour.</French>
+    <German>Berittene Einheiten heilen beim Pl&#252;ndern feindlicher Modernisierungen bis zu 25 TP, einmal je Einheit und Runde.</German>
+    <Italian>Le unit&#224; a cavallo recuperano fino a 25 PF saccheggiando miglioramenti nemici, una volta per unit&#224; e per turno.</Italian>
+    <Spanish>Las unidades montadas recuperan hasta 25 PV al saquear mejoras enemigas, una vez por unidad y turno.</Spanish>
   </TEXT>
 </Civ4GameText>

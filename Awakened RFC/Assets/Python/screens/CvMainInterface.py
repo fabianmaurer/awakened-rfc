@@ -3103,7 +3103,9 @@ class CvMainInterface:
 		if ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_HIDE_ALL ):
 			screen.setHelpTextString( "" )
 		else:
-			screen.setHelpTextString( CyInterface().getHelpString() )
+			# Keep native help generation separate from rendering in error traces.
+			helpString = CyInterface().getHelpString()
+			screen.setHelpTextString( helpString )
 		
 		return 0
 		
@@ -3368,6 +3370,10 @@ class CvMainInterface:
 
 	# Will handle the input for this screen...
 	def handleInput (self, inputClass):
+		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
+			import DebugExceptions
+			DebugExceptions.help_widget = (inputClass.getFunctionName(),
+				inputClass.getButtonType(), inputClass.getData1(), inputClass.getData2())
 		return 0
 	
 	def updateApostolicCouncil(self):

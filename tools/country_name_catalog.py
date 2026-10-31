@@ -61,7 +61,7 @@ Hellenic Union | Hellenische Union
 Hellenic State | Griechischer Staat
 Sacred League of Hellas | Heiliger Bund von Hellas
 PER
-Iran | Iran
+Persian Tribes | Persische Stämme
 Kingdom of Persia | Königreich Persien
 Persian Empire | Persisches Reich
 Republic of Iran | Republik Iran
@@ -112,7 +112,7 @@ Ethiopian State | Äthiopischer Staat
 Sacred Kingdom of Abyssinia | Heiliges Königreich Abessinien
 MAY
 Maya | Maya
-Tikal | Tikal
+Maya Kingdoms | Königreiche der Maya
 Maya Empire | Mayareich
 League of Mayapan | Bund von Mayapán
 United Maya States | Vereinigte Maya-Staaten
@@ -473,14 +473,17 @@ SPECIAL_NAMES = {
     ('SPA', 'CHRISTIAN_IBERIA'): ('Castile', 'Kastilien'),
     ('SPA', 'IBERIAN_KINGDOMS'): ('Castile', 'Kastilien'),
     ('ENG', 'ANGLO_SAXON'): ('Wessex', 'Wessex'),
-    ('VIK', 'NORSE_KINGDOMS'): ('Scandinavia', 'Skandinavien'),
-    ('JAP', 'EARLY_JAPAN'): ('Japan', 'Japan'),
+    ('VIK', 'NORSE_KINGDOMS'): ('Vikings', 'Wikinger'),
+    ('JAP', 'JOMON'): ('Jomon', 'Jomon'),
+    ('JAP', 'EARLY_JAPAN'): ('Yayoi', 'Yayoi'),
     ('JAP', 'YAMATO'): ('Yamato Realm', 'Reich von Yamato'),
-    ('IND', 'INDUS'): ('Harappa', 'Harappa'),
+    # Keep the early labels aligned with the playable civilizations.
+    ('IND', 'INDUS'): ('Hindu Peoples', 'Hinduvölker'),
     ('IND', 'INDIAN_KINGDOMS'): ('Magadha', 'Magadha'),
     ('CHI', 'EARLY_CHINA'): ('China', 'China'),
-    ('BAB', 'EARLY_MESOPOTAMIA'): ('Sumer', 'Sumer'),
-    ('GRE', 'POLEIS'): ('Greece', 'Griechenland'),
+    ('BAB', 'EARLY_MESOPOTAMIA'): ('The Babylonians', 'Babylonier'),
+    ('RUS', 'EARLY_RUS'): ('Rus', 'Rus'),
+    ('GRE', 'POLEIS'): ('Hellas', 'Hellas'),
     ('ARA', 'EARLY_ARABIA'): ('Arabia', 'Arabien'),
     # Literary and historical identities, selected by existing civic families.
     # America represents a settler-founded nation, not an indigenous tribal group.

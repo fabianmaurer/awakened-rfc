@@ -103,12 +103,14 @@ class StoredData:
                                     'lStabilityParameters': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #2+3+2+3+3
                                     'lLastRecordedStabilityStuff': [0, 0, 0, 0, 0, 0], # total + 5 parameters
 				}
-                # Allocate the added major entry when creating a new game.
+                # Allocate all major slots when creating a new game.
                 import copy
                 for key, value in scriptDict.items():
                         if isinstance(value, list) and len(value) == 31:
                                 for row in value:
                                         if isinstance(row, list) and len(row) == 31:
-                                                row.append(copy.deepcopy(row[-1]))
-                                value.append(copy.deepcopy(value[-1]))
+                                                while len(row) < con.iNumMajorPlayers:
+                                                        row.append(copy.deepcopy(row[-1]))
+                                while len(value) < con.iNumMajorPlayers:
+                                        value.append(copy.deepcopy(value[-1]))
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )

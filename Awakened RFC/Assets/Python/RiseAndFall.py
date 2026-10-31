@@ -1479,6 +1479,8 @@ class RiseAndFall:
                 cityList = []
                 bDeadCivFound = False
                 for iDeadCiv in candidates:
+                        if iDeadCiv == con.iEskimos and gc.getGame().getStartTurn() > 87:
+                                continue
                         if iDeadCiv == iMongolia and con.isMongolianBirthReplaced():
                                 continue
                         cityList = []
@@ -1799,6 +1801,10 @@ class RiseAndFall:
                         self.startFlipUnrest(iCiv, tCoreAreasTL[iCiv], tCoreAreasBR[iCiv], iFlipTurn - iGameTurn, False)
 
         def initBirth(self, iCurrentTurn, iBirthYear, iCiv):
+                if iCiv == con.iEskimos:
+                        import Arctic
+                        Arctic.spawn(iCurrentTurn)
+                        return # The 800 BC start already contains its Arctic units.
                 if iCiv == con.iMaya and gc.getGame().getStartTurn() == 87:
                         return # Preclassic Maya are already settled in this start.
                 if iCiv == con.iMississippians and gc.getGame().getStartTurn() >= 211:

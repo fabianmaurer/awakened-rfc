@@ -644,7 +644,9 @@ std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::
 	if (iCount > 0)
 		choices.assign(pCivics, pCivics + iCount);
 	delete [] pCivics;
-	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear, iLandPlots);
+	// Authored Eskimo starts have neither Astronomy nor Electricity; previews
+	// use that initial naming stage without requiring a live player/team.
+	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear, iLandPlots, false);
 	if (szKey.empty())
 		return L"";
 	const CvWString szName = gDLL->getText(szKey);

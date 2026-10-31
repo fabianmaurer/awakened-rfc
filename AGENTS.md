@@ -126,6 +126,12 @@ require an agent session. Analyze recordings only when the user explicitly
 asks afterward. A request to prepare a test run authorizes script creation,
 not execution. This applies to single runs and batches.
 
+## In-game writing
+
+- Keep in-game descriptions and tooltips brief and natural. Prefer short, readable sentences such as "Specialists gain +2 research." Do not compress them into terse labels or fragments just to save words. Lead with the main effect.
+- Include only conditions and exceptions that affect the player's decision. Omit implementation details, exhaustive examples, redundant ownership qualifiers and explanations of unchanged mechanics.
+- Put full rules, edge cases and technical explanations in the gameplay documentation or Civilopedia, not hover text. Keep every translation equally concise. Review length whenever adding or changing player-facing text.
+
 ## Text XML localization
 
 - Every `<TEXT>` entry in every loaded text XML must contain all five language elements: `<English>`, `<French>`, `<German>`, `<Italian>`, and `<Spanish>`. Civ IV uses numeric language indexes (English 0, French 1, German 2, Italian 3, Spanish 4) and derives its available language count from the least complete text entry. One entry missing a language can therefore make menu labels disappear for that language across the entire mod, even when the XML parses successfully.

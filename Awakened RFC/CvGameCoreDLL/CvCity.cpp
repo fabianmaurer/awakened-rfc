@@ -4240,6 +4240,9 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 	updateCommerce();
 	GET_PLAYER(getOwnerINLINE()).AI_makeAssignWorkDirty();
 	setLayoutDirty(true);
+
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_COOLING_HOUSE"))
+		updateYield();
 }
 
 
@@ -4343,8 +4346,20 @@ CitySizeTypes CvCity::getCitySizeType() const
 	return ((CitySizeTypes)(range((getPopulation() / 7), 0, (NUM_CITYSIZE_TYPES - 1))));
 }
 
+// Display proxies never become real city buildings or change their effects.
+static BuildingTypes arcticBuildingDisplay(BuildingTypes eBuilding)
+{
+	if (GC.getBuildingInfo(eBuilding).getBuildingClassType() == GC.getInfoTypeForString("BUILDINGCLASS_PALACE"))
+		return (BuildingTypes)GC.getInfoTypeForString("BUILDING_ARCTIC_PALACE_DISPLAY");
+	CvString szDisplay = CvString::format("%s_ARCTIC_DISPLAY", GC.getBuildingInfo(eBuilding).getType());
+	int iDisplay = GC.getInfoTypeForString(szDisplay.c_str(), true);
+	return iDisplay == -1 ? eBuilding : (BuildingTypes)iDisplay;
+}
+
 const CvArtInfoBuilding* CvCity::getBuildingArtInfo(BuildingTypes eBuilding) const
 {
+	if (getArtStyleType() == GC.getTypesEnum("ARTSTYLE_ARCTIC"))
+		eBuilding = arcticBuildingDisplay(eBuilding);
 	return GC.getBuildingInfo(eBuilding).getArtInfo();
 }
 
@@ -4850,12 +4865,21 @@ int CvCity::totalBadBuildingHealth() const
 }
 
 
+int CvCity::getColdClimateHealth() const
+{
+	const TerrainTypes eTerrain = plot()->getTerrainType();
+	if (eTerrain == GC.getInfoTypeForString("TERRAIN_SNOW")) return 2;
+	if (eTerrain == GC.getInfoTypeForString("TERRAIN_TUNDRA")) return 1;
+	return 0;
+}
+
+
 int CvCity::goodHealth() const
 {
 	int iTotalHealth;
 	int iHealth;
 
-	iTotalHealth = 0;
+	iTotalHealth = getColdClimateHealth();
 
 	iHealth = getFreshWaterGoodHealth();
 	if (iHealth > 0)
@@ -5691,9 +5715,22 @@ void CvCity::changeNumGreatPeople(int iChange)
 }
 
 
+int CvCity::countWorkedDeepArchives() const
+{
+	int iCount = 0;
+	const int iArchive = GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE");
+	for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+	{
+		const CvPlot* pPlot = getCityIndexPlot(i);
+		if (isWorkingPlot(i) && pPlot != NULL && pPlot->getWorkingCity() == this &&
+			pPlot->getOwnerINLINE() == getOwnerINLINE() && pPlot->getImprovementType() == iArchive) ++iCount;
+	}
+	return iCount;
+}
+
 int CvCity::getBaseGreatPeopleRate() const
 {
-	return m_iBaseGreatPeopleRate;
+	return m_iBaseGreatPeopleRate + (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? countWorkedDeepArchives() : 0);
 }
 
 
@@ -8299,7 +8336,12 @@ int CvCity::getBaseYieldRateModifier(YieldTypes eIndex, int iExtra) const
 	// note: player->invalidateYieldRankCache() must be called for anything that is checked here
 	// so if any extra checked things are added here, the cache needs to be invalidated
 
-	return std::max(0, (iModifier + 100));
+	int iResult = std::max(0, (iModifier + 100));
+	if (eIndex == YIELD_FOOD && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") &&
+		plot()->getTerrainType() != GC.getInfoTypeForString("TERRAIN_SNOW") &&
+		plot()->getTerrainType() != GC.getInfoTypeForString("TERRAIN_TUNDRA"))
+		iResult /= 2;
+	return iResult;
 }
 
 
@@ -8680,6 +8722,11 @@ int CvCity::totalTradeModifier(CvCity* pOtherCity) const
 
 	if (NULL != pOtherCity)
 	{
+		// Imperial Crossroads rewards routes within Byzantium's own empire.
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_BYZANTIUM") &&
+			pOtherCity->getOwnerINLINE() == getOwnerINLINE())
+			iModifier += 50;
+
 		if (area() != pOtherCity->area())
 		{
 			iModifier += GC.getDefineINT("OVERSEAS_TRADE_MODIFIER");
@@ -9047,6 +9094,8 @@ int CvCity::getBaseCommerceRateTimes100(CommerceTypes eIndex) const
 	iBaseCommerceRate += 100 * ((getSpecialistPopulation() + getNumGreatPeople()) * GET_PLAYER(getOwnerINLINE()).getSpecialistExtraCommerce(eIndex));
 	iBaseCommerceRate += 100 * (getBuildingCommerce(eIndex) + getSpecialistCommerce(eIndex) + getReligionCommerce(eIndex) + getCorporationCommerce(eIndex) + GET_PLAYER(getOwnerINLINE()).getFreeCityCommerce(eIndex));
 	if (eIndex == COMMERCE_GOLD) iBaseCommerceRate += 100 * getPapalTributeGold();
+	if (eIndex == COMMERCE_RESEARCH)
+		iBaseCommerceRate += 100 * countWorkedDeepArchives() * (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 3 : 5);
 
 	if (eIndex == COMMERCE_CULTURE)
 	{
@@ -10481,7 +10530,8 @@ int CvCity::getGreatPeopleUnitRate(UnitTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
-	return m_paiGreatPeopleUnitRate[eIndex];
+	return m_paiGreatPeopleUnitRate[eIndex] +
+		(eIndex == GC.getInfoTypeForString("UNIT_SCIENTIST") && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? countWorkedDeepArchives() : 0);
 }
 
 
@@ -10501,7 +10551,7 @@ void CvCity::setGreatPeopleUnitRate(UnitTypes eIndex, int iNewValue)
 
 void CvCity::changeGreatPeopleUnitRate(UnitTypes eIndex, int iChange)									 
 {
-	setGreatPeopleUnitRate(eIndex, (getGreatPeopleUnitRate(eIndex) + iChange));
+	setGreatPeopleUnitRate(eIndex, (m_paiGreatPeopleUnitRate[eIndex] + iChange));
 }
 
 
@@ -11033,6 +11083,10 @@ void CvCity::setWorkingPlot(int iIndex, bool bNewValue)
 			if ((getTeam() == GC.getGameINLINE().getActiveTeam()) || GC.getGameINLINE().isDebugMode())
 			{
 				pPlot->updateSymbolDisplay();
+			}
+			else
+			{
+				pPlot->updateHuntingGroundsHerd();
 			}			
 		}
 
@@ -11043,6 +11097,8 @@ void CvCity::setWorkingPlot(int iIndex, bool bNewValue)
 			gDLL->getInterfaceIFace()->setDirty(ColoredPlots_DIRTY_BIT, true);
 		}
 	}
+
+	updateCommerce(COMMERCE_RESEARCH);
 }
 
 
@@ -13894,7 +13950,10 @@ void CvCity::getVisibleBuildings(std::list<BuildingTypes>& kChosenVisible, int& 
 	iChosenNumGenerics = iNumGenerics;
 	for(int i = 0; i < iNumUniques; i++)
 	{
-		kChosenVisible.push_back(kVisible[i]);
+		BuildingTypes eVisible = kVisible[i];
+		if (getArtStyleType() == GC.getTypesEnum("ARTSTYLE_ARCTIC"))
+			eVisible = arcticBuildingDisplay(eVisible);
+		kChosenVisible.push_back(eVisible);
 	}
 }
 

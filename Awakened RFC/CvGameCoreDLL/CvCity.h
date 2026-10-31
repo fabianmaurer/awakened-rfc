@@ -209,6 +209,7 @@ public:
 	int unhealthyPopulation(bool bNoAngry = false, int iExtra = 0) const;	// Exposed to Python
 	int totalGoodBuildingHealth() const;																		// Exposed to Python
 	int totalBadBuildingHealth() const;														// Exposed to Python
+	int getColdClimateHealth() const;
 	int goodHealth() const;																				// Exposed to Python
 	int badHealth(bool bNoAngry = false, int iExtra = 0) const;		// Exposed to Python
 	int healthRate(bool bNoAngry = false, int iExtra = 0) const;	// Exposed to Python
@@ -295,6 +296,7 @@ public:
 	int getNumGreatPeople() const;																				// Exposed to Python
 	void changeNumGreatPeople(int iChange);															
 
+	int countWorkedDeepArchives() const;
 	int getBaseGreatPeopleRate() const;																		// Exposed to Python
 	int getGreatPeopleRate() const;																				// Exposed to Python
 	int getTotalGreatPeopleRateModifier() const;													// Exposed to Python

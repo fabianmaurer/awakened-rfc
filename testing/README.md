@@ -494,6 +494,15 @@ the log to `turns.jsonl.gz` after its child game exits. If the launcher itself
 is interrupted or compression fails, plain JSONL remains usable. The analyzer
 accepts both formats and reports incomplete trailing records.
 
+City acquisition events include `old_owner`, `new_owner` and `conquest`;
+`new_owner` identifies the conqueror when `conquest` is true. City razing events
+include `razer`, taken from the engine event rather than the city's current
+owner. City events also include civilization XML names for each recorded owner
+and razer (`owner_civilization`, etc.); unknown players use null. These fields
+are recorded in both balance and diagnostics mode. A barbarian razer identifies
+the barbarian player, not the attacking unit type. Older recordings lack the
+new attribution fields.
+
 Events retain their actual game turn/year and are collected between snapshots.
 Lightweight per-turn tracking preserves civic usage counts, first-establishment
 dates and 0/10/25/50-turn establishment checkpoints even with sparse snapshots.

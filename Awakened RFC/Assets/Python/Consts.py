@@ -13,6 +13,8 @@ l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 0, # Korea
  # Xiongnu
 0,
+
+0, # Eskimos
 ]
 l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0, 0
@@ -21,8 +23,10 @@ l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 0, # Korea
  # Xiongnu
 0,
+
+0, # Eskimos
 ]
-l0ArrayTotal = [0] * 38
+l0ArrayTotal = [0] * 39
 
 lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, -1
@@ -31,6 +35,8 @@ lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, # Korea
  # Xiongnu
 -1,
+
+-1, # Eskimos
 ]
 
 # initialise player variables to player IDs from WBS
@@ -67,18 +73,19 @@ iCaliphateSlot2 = 28
 iXiongnu = 29
 iKorea = 30
 iMississippians = 31
-iNumPlayers = 32
-iNumMajorPlayers = 32
-iNumActivePlayers = 32
-iIndependent = 32
-iIndependent2 = 33
-iNative = 34
-iCeltia = 35
-iCrusaderState = 36
-iPapalState = 37
-iNumTotalPlayers = 38
-iBarbarian = 38
-iNumTotalPlayersB = 39
+iEskimos = 32
+iNumPlayers = 33
+iNumMajorPlayers = 33
+iNumActivePlayers = 33
+iIndependent = 33
+iIndependent2 = 34
+iNative = 35
+iCeltia = 36
+iCrusaderState = 37
+iPapalState = 38
+iNumTotalPlayers = 39
+iBarbarian = 39
+iNumTotalPlayersB = 40
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
@@ -160,6 +167,8 @@ lNeighbours = [
 [iChina, iJapan, iMongolia], # Korea
  # Xiongnu
 [iMaya, iAztecs, iAmerica],
+
+[iVikings, iRussia, iMississippians], # Eskimos
 ]
 
 #for stability hit on spawn
@@ -198,6 +207,8 @@ lOlderNeighbours = [
 [iChina], # Korea
  # Xiongnu
 [iMaya],
+
+[], # Eskimos
 ]
 
 # civ birth dates
@@ -232,6 +243,7 @@ tBirth = (
 346, #1775AD #332 for 1733AD
 -10000, -10000, 127, 87,
 211,
+87, # Eskimos: 800 BC
 0, #Independent
 0, #Independent2
 0, #Native
@@ -275,6 +287,8 @@ tYear = (
 ("800 ", "TXT_KEY_BC"), # Korea
  # Xiongnu
 ("900 ", "TXT_KEY_AD"),
+
+("800 ", "TXT_KEY_BC"), # Eskimos
 )
 
 tGoals = (
@@ -312,6 +326,8 @@ tGoals = (
 ("TXT_KEY_UHV_KOR1", "TXT_KEY_UHV_KOR2", "TXT_KEY_UHV_KOR3"), # Korea
  # Xiongnu
 ("TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3"),
+
+("TXT_KEY_ESK_GOAL",)*3, # Eskimos
 )
 
 
@@ -430,6 +446,8 @@ tCapitals = (
 (109, 48), # Korea
  # Xiongnu
 (23, 45),
+
+(122, 61), # Eskimos
 ) 
 
 #for minor civs
@@ -468,6 +486,8 @@ tReserveCapitals = (
 (109, 46), # Korea
  # Xiongnu
 (25, 44),
+
+(115, 64), # Eskimos
 )
 
 #core areas (for RiseAndFall and Victory)
@@ -507,6 +527,8 @@ tCoreAreasTL = (
 (108, 45), # Korea
  # Xiongnu
 (20, 42),
+
+(110, 59), # Eskimos
 ) 
 
 tCoreAreasBR = (
@@ -544,6 +566,8 @@ tCoreAreasBR = (
 (110, 49), # Korea
  # Xiongnu
 (27, 48),
+
+(123, 65), # Eskimos
 ) 
 
 
@@ -581,6 +605,8 @@ tExceptions = (  #for RiseAndFall
 (), # Korea
  # Xiongnu
 (),
+
+(), # Eskimos
 ) #America
 
 
@@ -626,6 +652,10 @@ def getBirthFlipMask(argsList):
                 if ((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
                     (iX, iY) in getBirthFlipExceptions(iCiv)):
                         iMask |= 1 << iCiv
+        # The DLL callback extracts a signed 32-bit long. Slot 31 sets its sign
+        # bit; return the same bit pattern without overflowing that conversion.
+        if iMask >= 0x80000000:
+                iMask -= 0x100000000
         return iMask
 
 
@@ -670,6 +700,8 @@ tNormalAreasTL = (
 (107, 44), # Korea
  # Xiongnu
 (18, 40),
+
+(98, 56), # Eskimos
 ) 
 
 tNormalAreasBR = (
@@ -707,6 +739,8 @@ tNormalAreasBR = (
 (111, 50), # Korea
  # Xiongnu
 (29, 50),
+
+(123, 67), # Eskimos
 ) 
 
 
@@ -744,6 +778,8 @@ tNormalAreasSubtract = (  #for resurrection and stability
 (), # Korea
  # Xiongnu
 (),
+
+(), # Eskimos
 ) #America
 
 
@@ -785,6 +821,8 @@ tBroaderAreasTL = (
 (107, 44), # Korea
  # Xiongnu
 (15, 35),
+
+(88, 53), # Eskimos
 )
 
 tBroaderAreasBR = (
@@ -821,6 +859,8 @@ tBroaderAreasBR = (
 (111, 50), # Korea
  # Xiongnu
 (32, 53),
+
+(123, 67), # Eskimos
 ) #America
 
 
@@ -856,6 +896,7 @@ tHire = (
 50, #America
 50, 50, 100, 30,
 30,
+100, # Eskimos
 100,
 100,
 100,
@@ -900,6 +941,8 @@ lEnemyCivsOnSpawn = [
 [], # Korea
  # Xiongnu
 [],
+
+[], # Eskimos
 ]
 
 
@@ -934,6 +977,7 @@ tAggressionLevel = (
 2, #America
 2, 2, 2, 0,
 0,
+0, # Eskimos
 0) #Barbs
 
 
@@ -968,6 +1012,7 @@ tAIStopBirthThreshold = (
     50, #America
     80, 80, 80, 30,
 80,
+80, # Eskimos
 100,
     100,
     100,
@@ -1008,6 +1053,7 @@ tResurrectionProb = (
 #    100, #Portugal
 0, 0, 0, 100,
 30,
+30, # Eskimos
 100) #Barbs
 
 
@@ -1042,6 +1088,7 @@ tPatienceThreshold = (
 30, #America
 30, 30, 30, 35,
 35,
+35, # Eskimos
 100) #Barbs
 
 
@@ -1080,6 +1127,8 @@ tMaxColonists = (
 0, # Korea
  # Xiongnu
 0,
+
+0, # Eskimos
 ) #America
 
 
@@ -1752,6 +1801,8 @@ tLeaders = (
 (iWangkon,), # Korea
  # Xiongnu
 (gc.getInfoTypeForString("LEADER_SITTING_BULL"),),
+
+(gc.getInfoTypeForString("LEADER_ESKIMO"),), # Eskimos
 )
 
 tEarlyLeaders = (
@@ -1788,6 +1839,8 @@ iModu,
 iWangkon, # Korea
  # Xiongnu
 gc.getInfoTypeForString("LEADER_SITTING_BULL"),
+
+gc.getInfoTypeForString("LEADER_ESKIMO"), # Eskimos
 )
 
 #RFCMP
@@ -1832,6 +1885,8 @@ tRomanLateLeaders,
 (iWangkon,), # Korea
  # Xiongnu
 (),
+
+(), # Eskimos
 )
 
 
@@ -1865,6 +1920,7 @@ tIsActiveOnLateStart = (
 1,
 False, False, False, 1,
 False,
+1, # Eskimos
 1,
 1,
 1,
@@ -1916,3 +1972,8 @@ def getCrusadeFlipRecipient(argsList):
 lCivGroups[5].append(iMississippians)
 lCivStabilityGroups[4].append(iMississippians)
 lCivBioNewWorld.append(iMississippians)
+
+# Siberian Arctic communities share East Asian diplomacy and Old World contact.
+lCivGroups[1].append(iEskimos)
+lCivStabilityGroups[1].append(iEskimos)
+lCivBioOldWorld.append(iEskimos)

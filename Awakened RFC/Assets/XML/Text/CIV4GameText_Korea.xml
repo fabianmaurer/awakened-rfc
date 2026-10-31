@@ -274,18 +274,18 @@
     <Spanish>Lose no city to conquest before 1900 AD; in 1900, be independent and control at least two cities in the Korean core.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UP_KOR</Tag>
-    <English>Korean Heritage</English>
-    <French>Korean Heritage</French>
-    <German>Koreanisches Erbe</German>
-    <Italian>Korean Heritage</Italian>
-    <Spanish>Korean Heritage</Spanish>
+    <English>Scholarly Institutions</English>
+    <French>Institutions savantes</French>
+    <German>Gelehrteninstitutionen</German>
+    <Italian>Istituzioni accademiche</Italian>
+    <Spanish>Instituciones del saber</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UP_KOR2</Tag>
-    <English>Hwacha replaces the Catapult; Seowon replaces the University.</English>
-    <French>Hwacha replaces the Catapult; Seowon replaces the University.</French>
-    <German>Hwacha ersetzt das Katapult; Seowon ersetzt die Universitaet.</German>
-    <Italian>Hwacha replaces the Catapult; Seowon replaces the University.</Italian>
-    <Spanish>Hwacha replaces the Catapult; Seowon replaces the University.</Spanish>
+    <English>+100% production of research buildings (except wonders).</English>
+    <French>+100% de production des b&#226;timents de recherche (hors merveilles).</French>
+    <German>+100% Produktion f&#252;r Forschungsgeb&#228;ude (keine Wunder).</German>
+    <Italian>+100% produzione di edifici di ricerca (escluse meraviglie).</Italian>
+    <Spanish>+100% producci&#243;n de edificios de investigaci&#243;n (excepto maravillas).</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_KOREA_INTRO_0</Tag>
     <English>Your chiefdom rises in the Korean peninsula around 800 BC. Develop your northern capital, settle the south, and connect your food and copper. Trade across the seas with Japan while defending the mainland frontier. Bronze Age chiefdoms are represented collectively; a unified kingdom is not assumed.</English>

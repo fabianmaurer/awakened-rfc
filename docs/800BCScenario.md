@@ -12,12 +12,12 @@ settler counts and expansion rules remain unchanged.
 | India | Kuru and Panchala | Kesin Dalbhya | Monarchy | Self-sufficiency | Warrior Society | State Religion |
 | China | Zhou Kingdom | Xuan of Zhou | Monarchy | Self-sufficiency | Warrior Society | Ancestor Cult |
 | Babylonia | Kingdom of Babylon | Ninurta-apla-X | Monarchy | Slavery | Warrior Society | State Religion |
-| Greece | Greek City-States | Ariphron | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
-| Persia | Iranian Tribes | Achaemenes | Tribal System | Slavery | Warrior Society | Ancestor Cult |
+| Greece | Hellas | Ariphron | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
+| Persia | Persian Tribes | Achaemenes | Tribal System | Slavery | Warrior Society | Ancestor Cult |
 | Carthage | Kingdom of Carthage | Dido | Monarchy | Slavery | Naval Warfare | Ancestor Cult |
 | Rome | Rome | Romulus | Tribal System | Slavery | Warrior Society | Ancestor Cult |
-| Japan | Peoples of the Japanese Islands | Jimmu | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
-| Korea | Korean Chiefdoms | Dangun | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
+| Japan | Jomon | Jimmu | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
+| Korea | Gojoseon | Dangun | Tribal System | Self-sufficiency | Warrior Society | Ancestor Cult |
 
 Carthage, Persia and Rome use Ancestor Cult rather than State Religion in this
 start. For Persia and Rome this represents local and clan cults before their

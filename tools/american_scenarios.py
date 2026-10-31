@@ -22,6 +22,8 @@ def field(block, key, value):
 
 def migrate_slots(text):
     players = re.findall(r'BeginPlayer\b(.*?)EndPlayer', text, re.S)
+    if len(players) == 39 and re.search(r'\bCivType=(?:CIVILIZATION_ESKIMO|NONE)\b', players[32]):
+        return text
     if len(players) == 38:
         if 'CIVILIZATION_NATIVE_AMERICA' not in players[31]:
             raise ValueError('Mississippian slot is occupied')
@@ -66,7 +68,7 @@ def city(name, owner, population, capital=False):
 def apply_american_starts(text):
     text = migrate_slots(text)
     turn = int(re.search(r'\bGameTurn=(\d+)', text)[1])
-    players = iter(range(38))
+    players = iter(range(len(re.findall(r'BeginPlayer\b', text))))
     def player(match):
         owner = next(players)
         block = match[1]
@@ -84,7 +86,7 @@ def apply_american_starts(text):
                 block = field(block, key, value)
         return 'BeginPlayer' + block + 'EndPlayer'
     text = re.sub(r'BeginPlayer\b(.*?)EndPlayer', player, text, flags=re.S)
-    teams = iter(range(38))
+    teams = iter(range(len(re.findall(r'BeginTeam\b', text))))
     def team(match):
         owner = next(teams)
         block = match[1]

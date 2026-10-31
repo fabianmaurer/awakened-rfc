@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_MISC_HEALTH_FROM_COLD_CLIMATE</Tag>
+    <English>%D1_Num[ICON_HEALTHY] from cold climate</English>
+    <French>%D1_Num[ICON_HEALTHY] du climat froid</French>
+    <German>%D1_Num[ICON_HEALTHY] durch kaltes Klima</German>
+    <Italian>%D1_Num[ICON_HEALTHY] dal clima freddo</Italian>
+    <Spanish>%D1_Num[ICON_HEALTHY] por el clima fr&#237;o</Spanish>
+  </TEXT>
+</Civ4GameText>

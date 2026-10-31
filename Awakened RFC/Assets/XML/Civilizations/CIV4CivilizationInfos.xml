@@ -4751,5 +4751,48 @@
 			<CivilizationSelectionSound>AS3D_MONGOL_SELECT</CivilizationSelectionSound>
 			<CivilizationActionSound>AS3D_MONGOL_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
+	<CivilizationInfo>
+			<Type>CIVILIZATION_ESKIMO</Type>
+			<Description>TXT_KEY_ESK_DESC</Description>
+			<ShortDescription>TXT_KEY_ESK</ShortDescription>
+			<Adjective>TXT_KEY_ESK_ADJ</Adjective>
+			<Civilopedia>TXT_KEY_ESK_PEDIA</Civilopedia>
+			<DefaultPlayerColor>PLAYERCOLOR_LIGHT_BLUE</DefaultPlayerColor>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ESKIMO</ArtDefineTag>
+			<ArtStyleType>ARTSTYLE_ARCTIC</ArtStyleType>
+			<UnitArtStyleType>UNIT_ARTSTYLE_ASIAN</UnitArtStyleType>
+			<bPlayable>1</bPlayable>
+			<bAIPlayable>1</bAIPlayable>
+			<Cities><City>Iqaluit</City><City>Agaruk</City><City>Nanuk</City><City>Tasiilaq</City><City>Frosthaven</City><City>Borealis</City><City>Qaanaaq</City><City>Nanuvik</City><City>Thule</City><City>Auroria</City><City>Agartha</City><City>Hyperborea</City></Cities>
+			<Buildings><Building><BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType><BuildingType>BUILDING_COOLING_HOUSE</BuildingType></Building></Buildings>
+			<Units><Unit><UnitClassType>UNITCLASS_SCOUT</UnitClassType><UnitType>UNIT_ARCTIC_HUNTER</UnitType></Unit></Units>
+			<FreeUnitClasses>
+				<FreeUnitClass>
+					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<iFreeUnits>1</iFreeUnits>
+				</FreeUnitClass>
+			</FreeUnitClasses>
+			<FreeBuildingClasses>
+				<FreeBuildingClass>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<bFreeBuildingClass>1</bFreeBuildingClass>
+				</FreeBuildingClass>
+			</FreeBuildingClasses>
+			<!-- Rhye -->
+			<FreeTechs/>
+			<DisableTechs/>
+			<InitialCivics>
+				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>
+				<CivicType>CIVIC_DESPOTISM</CivicType>
+				<CivicType>CIVIC_SELF_SUFFICIENCY</CivicType>
+				<CivicType>CIVIC_WARRIOR_SOCIETY</CivicType>
+				<CivicType>CIVIC_ANCESTOR_CULT</CivicType>
+				<!-- Rhye -->
+			</InitialCivics>
+			<Leaders><Leader><LeaderName>LEADER_ESKIMO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader></Leaders>
+			<DerivativeCiv>NONE</DerivativeCiv>
+			<CivilizationSelectionSound>AS3D_NATIVE_AMERICA_SELECT</CivilizationSelectionSound>
+			<CivilizationActionSound>AS3D_NATIVE_AMERICA_ORDER</CivilizationActionSound>
+		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>

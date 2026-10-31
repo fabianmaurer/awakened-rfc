@@ -26,6 +26,9 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
   Food production and population consumption remain unchanged.
 - **Land reclamation:** farms are available on flood plains with Agriculture;
   workers can drain marshes into grassland from Engineering.
+- **Fantastical Eskimos:** settle the Arctic with Cooling houses and icy
+  improvements, face persistent ice bears, and discover Hyperborea and Agartha.
+  Snow damages other civilizations' units each turn. See [the Arctic rules](docs/Gameplay.en.md#eskimos-and-the-frozen-north).
 - **Trade without roads or border agreements:** 50% efficiency through distance 5,
   declining linearly to zero at 15. Roads enable 100% at any distance; water connections require
   Sailing and have a twelve-tile limit until Astronomy. Water trade is halved
@@ -133,6 +136,12 @@ culture and espionage, distinct from gold income.
 Start a new game after changes
 to civic XML modifiers. Multiplayer runtime validation of the overhaul is pending.
 
+Python exceptions share one error window. **Ctrl+Shift+F12** (or **Dismiss all
+errors**) closes it and mutes further error windows until the game restarts.
+Tracebacks continue in `%TEMP%\AwakenedRFC-PythonErrors.log` and the engine's
+Python debug stream. This shortcut applies to the new error window; restart
+once after installing it to replace the stock exception dialogs.
+
 ## Details and development
 
 [Full gameplay rules](docs/Gameplay.en.md) · [Starting civics](docs/StartingCivics.md) ·
@@ -141,6 +150,14 @@ to civic XML modifiers. Multiplayer runtime validation of the overhaul is pendin
 
 DLL builds require the original **32-bit VC7.1** toolchain. See
 [build instructions](<Awakened RFC/CvGameCoreDLL/BUILDING.md>) and [AGENTS.md](AGENTS.md).
+
+### In-game text style
+
+Keep descriptions and tooltips brief and natural. Prefer short, readable
+sentences over terse labels or fragments. Include essential conditions; leave
+implementation details, examples and edge cases in the gameplay documentation
+or Civilopedia. Apply the same rule to every translation. For example:
+**"Specialists gain +2 research."**
 
 ### Package a playable release
 

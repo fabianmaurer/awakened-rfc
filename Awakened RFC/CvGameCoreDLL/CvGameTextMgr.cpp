@@ -1225,6 +1225,12 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
             szString.append(szTempBuffer);
         }
 	}
+
+	if (pUnit != NULL && pUnit->getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER") && !bOneLine && !bShort)
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText("TXT_KEY_ARCTIC_HUNTER_HELP"));
+	}
 }
 
 
@@ -1745,7 +1751,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					iWithdrawal += 100 * iCombatOdds;
 				}
 
-				iWithdrawal += std::min(100, pAttacker->withdrawalProbability()) * (1000 - iCombatOdds);
+				iWithdrawal += std::min(100, pAttacker->withdrawalProbability(pDefender)) * (1000 - iCombatOdds);
 
 				if (iWithdrawal > 0 || pAttacker->combatLimit() < GC.getMAX_HIT_POINTS())
 				{
@@ -2826,7 +2832,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		for (int iCiv = 0; iCiv < NUM_MAJOR_PLAYERS; ++iCiv)
 		{
 			if (iCiv != GC.getGameINLINE().getActivePlayer() && !GET_PLAYER((PlayerTypes)iCiv).isAlive() &&
-				(lBirthFlipMask & (1L << iCiv)) != 0)
+				(static_cast<unsigned long>(lBirthFlipMask) & (1UL << iCiv)) != 0)
 			{
 				szString.append(CvWString::format(SETCOLR L"%s\n" ENDCOLR, GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorR(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorG(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorB(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorA(), GC.getCivilizationInfo(GET_PLAYER((PlayerTypes)iCiv).getCivilizationType()).getShortDescription()));
 			}
@@ -2919,6 +2925,14 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 				}
 			}
 		}
+
+			if (pPlot->getRevealedImprovementType(GC.getGameINLINE().getActiveTeam(), true) == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+			{
+				PlayerTypes eArchiveOwner = eRevealOwner;
+				if (eArchiveOwner == NO_PLAYER) eArchiveOwner = GC.getGameINLINE().getActivePlayer();
+				const bool bEskimo = eArchiveOwner == NO_PLAYER || GET_PLAYER(eArchiveOwner).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO");
+				szString.append(gDLL->getText(bEskimo ? "TXT_KEY_ARCHIVE_INLINE_OUTPUT" : "TXT_KEY_ARCHIVE_INLINE_RESEARCH", bEskimo ? 3 : 5));
+			}
 
 		if (pPlot->isFreshWater())
 		{
@@ -3042,6 +3056,8 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		{
 			szString.append(NEWLINE);
 			szString.append(GC.getImprovementInfo(eImprovement).getDescription());
+
+
 
 			bFound = false;
 
@@ -6725,6 +6741,18 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 			}
 		}
 	}
+
+	if (eUnit == GC.getInfoTypeForString("UNIT_ICE_BEAR"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_ICE_BEAR_HELP"));
+	}
+
+	if (eUnit == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_ARCTIC_HUNTER_HELP"));
+	}
 }
 
 void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CvCity* pCity)
@@ -7924,6 +7952,12 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	}
 	}*/
 	//Rhye - end comment 
+
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_COOLING_HOUSE"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_COOLING_HOUSE_HELP"));
+	}
 }
 
 void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bTechChooserText, const CvCity* pCity)
@@ -8645,6 +8679,13 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 
 	if (city.goodHealth() > 0)
 	{
+		iHealth = city.getColdClimateHealth();
+		if (iHealth > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HEALTH_FROM_COLD_CLIMATE", iHealth));
+			szBuffer.append(NEWLINE);
+		}
+
 		iHealth = city.getFreshWaterGoodHealth();
 		if (iHealth > 0)
 		{
@@ -10709,6 +10750,13 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		szBuffer.append(szTempBuffer);
 
 		setYieldChangeHelp(szBuffer, L", ", L"", L"", info.getYieldChangeArray(), false, false);
+		if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+		{
+			const PlayerTypes ePlayer = GC.getGameINLINE().getActivePlayer();
+			const bool bEskimo = ePlayer == NO_PLAYER || GET_PLAYER(ePlayer).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO");
+			szBuffer.append(gDLL->getText(bEskimo ? "TXT_KEY_ARCHIVE_INLINE_OUTPUT" : "TXT_KEY_ARCHIVE_INLINE_RESEARCH", bEskimo ? 3 : 5));
+		}
+
 
 		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_WITH_IRRIGATION").c_str(), info.getIrrigatedYieldChangeArray());
 		setYieldChangeHelp(szBuffer, L"", L"", gDLL->getText("TXT_KEY_MISC_ON_HILLS").c_str(), info.getHillsYieldChangeArray());
@@ -10829,6 +10877,12 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_IMPROVEMENT_PILLAGE_YIELDS", info.getPillageGold()));
 		}
+	}
+
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS") || eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText(eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS") ? "TXT_KEY_HUNTING_GROUNDS_HELP" : "TXT_KEY_DEEP_ARCHIVE_HELP"));
 	}
 }
 
@@ -11364,6 +11418,18 @@ void CvGameTextMgr::setTerrainHelp(CvWStringBuffer &szBuffer, TerrainTypes eTerr
 			szBuffer.append(gDLL->getText("TXT_KEY_TERRAIN_FRESH_WATER_CITIES"));
 			bFirst = false;
 		}
+	}
+
+	if (eTerrain == GC.getInfoTypeForString("TERRAIN_SNOW"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_ICE_EXPOSURE"));
+	}
+
+	if (eTerrain == GC.getInfoTypeForString("TERRAIN_SNOW") || eTerrain == GC.getInfoTypeForString("TERRAIN_TUNDRA"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_ARCTIC_SHORE_HELP"));
 	}
 }
 
@@ -12020,6 +12086,13 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	}
 
 
+	if (eCommerceType == COMMERCE_RESEARCH && city.countWorkedDeepArchives() > 0)
+	{
+		const int iResearch = city.countWorkedDeepArchives() * (city.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 3 : 5);
+		szBuffer.append(gDLL->getText("TXT_KEY_ARCHIVE_CITY_RESEARCH", iResearch));
+		szBuffer.append(NEWLINE);
+		iBaseCommerceRate += 100 * iResearch;
+	}
 	FAssertMsg(city.getBaseCommerceRateTimes100(eCommerceType) == iBaseCommerceRate, "Base Commerce rate does not agree with actual value");
 	
 	int iModifier = 100;
@@ -12543,6 +12616,12 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	szBuffer.append(NEWLINE);
 	*/
 	//Rhye - end comment
+
+	if (city.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") && city.countWorkedDeepArchives() > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_ARCHIVE_CITY_GPP", city.countWorkedDeepArchives()));
+	}
 }
 
 

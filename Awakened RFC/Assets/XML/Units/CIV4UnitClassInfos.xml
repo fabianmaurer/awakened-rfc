@@ -898,5 +898,14 @@
 			<iInstanceCostModifier>0</iInstanceCostModifier>
 			<DefaultUnit>UNIT_COG</DefaultUnit>
 		</UnitClassInfo>
-</UnitClassInfos>
+<UnitClassInfo>
+			<Type>UNITCLASS_ICE_BEAR</Type>
+			<Description>TXT_KEY_ICE_BEAR</Description>
+			<iMaxGlobalInstances>-1</iMaxGlobalInstances>
+			<iMaxTeamInstances>-1</iMaxTeamInstances>
+			<iMaxPlayerInstances>-1</iMaxPlayerInstances>
+			<iInstanceCostModifier>0</iInstanceCostModifier>
+			<DefaultUnit>UNIT_ICE_BEAR</DefaultUnit>
+		</UnitClassInfo>
+	</UnitClassInfos>
 </Civ4UnitClassInfos>

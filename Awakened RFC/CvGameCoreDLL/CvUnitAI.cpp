@@ -163,6 +163,18 @@ bool CvUnitAI::AI_update()
 		return false;
 	}
 
+	if (!isHuman() && getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"))
+	{
+		CvCity* pHunterCity = plot()->getPlotCity();
+		const bool bLastDefender = pHunterCity != NULL && pHunterCity->getOwnerINLINE() == getOwnerINLINE() &&
+			plot()->plotCount(PUF_canDefend, -1, -1, getOwnerINLINE()) <= 1;
+		if (bLastDefender && AI_getUnitAIType() == UNITAI_WORKER)
+			AI_setUnitAIType(UNITAI_CITY_DEFENSE);
+		if (!bLastDefender && getGroup()->getNumUnits() == 1 && (AI_getUnitAIType() == UNITAI_EXPLORE || AI_getUnitAIType() == UNITAI_RESERVE) &&
+			!GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2, true, true) &&
+			AI_improveLocalPlot(3, NULL)) return false;
+	}
+
 	if (AI_afterAttack())
 	{
 		return false;
@@ -869,7 +881,7 @@ int CvUnitAI::AI_attackOdds(const CvPlot* pPlot, bool bPotentialEnemy) const
 	}
 
 	int iOdds = (((iOurStrength * 100) / (iOurStrength + iTheirStrength)));
-	iOdds += ((100 - iOdds) * withdrawalProbability()) / 100;
+	iOdds += ((100 - iOdds) * withdrawalProbability(pDefender)) / 100;
 	iOdds += GET_PLAYER(getOwnerINLINE()).AI_getAttackOddsChange();
 
 	return std::max(1, std::min(iOdds, 99));
@@ -1149,7 +1161,14 @@ void CvUnitAI::AI_animalMove()
 {
 	PROFILE_FUNC();
 
-	if (GC.getGameINLINE().getSorenRandNum(100, "Animal Attack") < GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAnimalAttackProb())
+	// Polar bears seek nearby defended settlements instead of only wandering.
+	// Normal movement checks keep the entire approach on snow or tundra.
+	if (getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR") && AI_cityAttack(2, 0))
+	{
+		return;
+	}
+
+	if (getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR") || GC.getGameINLINE().getSorenRandNum(100, "Animal Attack") < GC.getHandicapInfo(GC.getGameINLINE().getHandicapType()).getAnimalAttackProb())
 	{
 		if (AI_anyAttack(1, 0))
 		{
@@ -1685,6 +1704,13 @@ void CvUnitAI::AI_workerMove()
 	if (AI_improveLocalPlot(3, NULL))
 	{
 		return;		
+	}
+
+	if (!isHuman() && getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"))
+	{
+		AI_setUnitAIType(UNITAI_RESERVE);
+		AI_reserveMove();
+		return;
 	}
 
 	if (!(isHuman()) && (AI_getUnitAIType() == UNITAI_WORKER))
@@ -10565,9 +10591,11 @@ bool CvUnitAI::AI_patrol()
 					{
 						//iValue = (1 + GC.getGameINLINE().getSorenRandNum(10000, "AI Patrol"));
 						//Rhye - RFCMP
-						iValue = (1 + GC.getGameINLINE().getFakeBigRandNum(10000));
+						// Animals make independent choices using the synchronized game RNG.
+						iValue = 1 + (isAnimal() ? GC.getGameINLINE().getSorenRandNum(10000, "Animal Patrol") :
+							GC.getGameINLINE().getFakeBigRandNum(10000));
 
-						if (isBarbarian())
+						if (isBarbarian() && getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR"))
 						{
 							if (!(pAdjacentPlot->isOwned()))
 							{
@@ -11775,7 +11803,7 @@ bool CvUnitAI::AI_cityAttack(int iRange, int iOddsThreshold, bool bFollow)
 	}
 	else
 	{
-		iSearchRange = AI_searchRange(iRange);
+		iSearchRange = (getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR")) ? iRange : AI_searchRange(iRange);
 	}
 
 	iBestValue = 0;
@@ -15102,7 +15130,7 @@ BuildTypes CvUnitAI::AI_betterPlotBuild(CvPlot* pPlot, BuildTypes eBuild)
 		}
 	}
 	
-	if (pPlot->getRouteType() != NO_ROUTE)
+	if (pPlot->getRouteType() != NO_ROUTE || pPlot->getHuntingGroundsYieldLoss(getOwnerINLINE()) > 0)
 	{
 		bBuildRoute = false;
 	}
@@ -15352,6 +15380,9 @@ bool CvUnitAI::AI_routeTerritory(bool bImprovementOnly)
 	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
 	{
 		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+
+		// Do not road over productive hunting habitat merely for coverage.
+		if (pLoopPlot->getHuntingGroundsYieldLoss(getOwnerINLINE()) > 0) continue;
 
 		if (AI_plotValid(pLoopPlot))
 		{

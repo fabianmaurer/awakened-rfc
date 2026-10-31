@@ -1,29 +1,42 @@
 # Scenario country names
 
-The audit covers all initially selectable major civilizations in the four original
-authored starts. The following German names describe the intended starting
+The source review covers all 65 selectable civilization entries across the five
+authored starts: 3000 BC (4), 800 BC (12), 600 AD (7), 900 AD (15), and 1453 AD (27).
+It checks scenario rosters, preview overrides, starting civic profiles, naming
+branches and their text entries; it is not an in-game menu check.
+The following German names describe the intended starting
 profiles. Live names still follow actual civics, religion, city count and vassal
 status; alternate governments retain their own identities.
 
 | Start | Civilization | Starting-profile name |
 | --- | --- | --- |
-| 3000 BC | Egypt | Ägypten |
-| 3000 BC | India | Harappa |
+| 3000 BC | Egypt | Pharaonenreich |
+| 3000 BC | India | Hinduvölker |
 | 3000 BC | China | China |
-| 3000 BC | Babylonia | Sumer |
-| 800 BC | Egypt | Königreich Ägypten |
+| 3000 BC | Babylonia | Babylonier |
+| 800 BC | Egypt | Pharaonenreich |
 | 800 BC | India | Kuru und Panchala |
 | 800 BC | China | Zhou-Reich |
 | 800 BC | Babylonia | Königreich Babylon |
-| 800 BC | Greece | Griechenland |
-| 800 BC | Persia | Königreich Persien |
-| 800 BC | Carthage | Karthago |
-| 800 BC | Rome | SPQR |
-| 800 BC | Japan | Japan |
+| 800 BC | Greece | Hellas |
+| 800 BC | Persia | Persische Stämme |
+| 800 BC | Carthage | Königreich Karthago |
+| 800 BC | Rome | Rom |
+| 800 BC | Japan | Jomon |
 | 600 AD | China | Reich der Mitte |
 | 600 AD | Japan | Reich von Yamato |
-| 600 AD | Vikings | Skandinavien |
+| 600 AD | Vikings | Wikinger |
 | 600 AD | Arabia | Arabien |
+| 600 / 900 AD | Maya | Königreiche der Maya |
+| 900 AD | Fatimids | Fatimidenkalifat |
+| 900 AD | Russia | Rus |
+
+The 900 AD Fatimid civilization retains its own identity in selection; the legacy
+Tulunid override applies only when that slot actually contains Egypt. Early Rus
+uses Rus before 1283, then its existing Muscovy naming window. Maya Kingdoms
+replaces the recent Tikal label, which incorrectly named the whole civilization
+after one of its cities. The other selectable entries retain their existing
+period and civilization identities.
 
 ## Period rules
 
@@ -34,13 +47,21 @@ its existing civic names. East Francia ends at 962. England uses Wessex before
 927. Spain uses Asturias, León and Castile within their existing dated windows.
 
 The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430.
-Early Japan uses Japan before 300 and Yamato from 300 to 709. Scandinavian
-monarchies use Scandinavia before the Kalmar period. Arabia without a state
+Early Japan uses Jomon before 300 BC, Yayoi from 300 BC to AD 299,
+and Yamato from AD 300 to 709. Scandinavian
+monarchies use Vikings (Wikinger) before 1000. Arabia without a state
 religion uses Arabia before 622; Islamic names retain priority.
 
-Early Indian, Chinese and Mesopotamian states use Harappa, China and Sumer.
+The displayed spelling is **Jomon**, without the macron. The user's in-game
+check displayed **Jōmon** as **J**; ASCII avoids the suspected legacy character
+conversion problem.
+
+Early India uses Hindu Peoples (Hinduvölker), and Babylonia uses The Babylonians
+(Babylonier), preserving the playable civilizations' identities. These labels
+replace the misleading Harappa and Sumer substitutions. Early China uses China.
 Small Indian monarchies use Kuru and Panchala in the Vedic window, then Magadha
-before 322 BC. Early Greek states use Greece. Korean period labels use Gojoseon,
+before 322 BC. Early Greek states use Hellas. Tribal Persia uses Persian Tribes
+(Persische Stämme), rather than modern-sounding Iran. Korean period labels use Gojoseon,
 Goguryeo, Silla, Goryeo and Joseon. Other tribal collective labels use concrete
 geographic names. These names change no city ownership or political boundaries.
 
@@ -60,6 +81,8 @@ are naming windows, not scripted changes of government or city ownership.
 
 ## Historical references
 
+- [Met: Jōmon chronology and the transition to Yayoi](https://www.metmuseum.org/fr/essays/jomon-culture-ca-10500-ca-300-b-c). The 300 BC naming boundary is a broad scenario convention, not a claim that the transition occurred everywhere at once.
+- [Met: Medes and Persians in the ninth century BC](https://www.metmuseum.org/de/toah/ht/04/wai). Persian Tribes describes the early tribal slot without implying a later unified Iranian state.
 - [DHM: Strasbourg oaths and the Frankish realms](https://www.dhm.de/mediathek/der-rhein-von-basel-bis-koblenz/deutsch-franzoesische-geschichte-am-rhein/strassburger-eide/)
 - [UNESCO: Angkor and the Khmer Empire](https://whc.unesco.org/en/list/668/)
 - [Historic Royal Palaces: England united in 927](https://www.hrp.org.uk/tower-of-london/history-and-stories/william-the-conqueror/)

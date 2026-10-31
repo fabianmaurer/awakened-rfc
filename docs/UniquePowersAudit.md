@@ -4,6 +4,39 @@ Compared the current DLL and Python sources with the original installed **Rhye's
 
 General civilization cost/threshold tuning stays removed. Named unique powers are separate mechanics.
 
+## Additional powers (2026-10-24)
+
+Civilizations with missing or placeholder powers now have the following permanent
+abilities. These apply equally to AI and human players, use civilization identity
+rather than player slots, and are independent of civics except where stated.
+
+| Civilization | Power | Effect |
+| --- | --- | --- |
+| Byzantium | Imperial Crossroads | +50 percentage points to the trade-income modifier for routes between its own cities. Normal infrastructure and range rules still apply. |
+| Celtia | Sacred Groves | +1 food on owned forest tiles. |
+| Holy Roman Empire | Imperial Church | +100% production of non-wonder buildings belonging to its current state religion. No benefit without a state religion. |
+| Korea | Scholarly Institutions | +100% production of non-wonder buildings with a percentage research modifier, including the Seowon. Replaces the unique-unit/building placeholder. |
+| Mississippians | Mound Builders | +1 production from owned farms beside rivers. |
+| Sumeria | Temple Cities | Priest specialists yield +1 production and +1 commerce. |
+| Zulu | Buffalo Horns | Melee units have +1 movement point. Applies to existing and new units; upgrades out of the melee class lose it. |
+| Abbasids | House of Wisdom | All specialists, including settled Great People, yield +2 research. |
+| Fatimids | The Nile's Bounty | +1 food from owned desert farms beside rivers, including flood plains. |
+| Umayyads | Gardens of al-Andalus | +1 commerce from owned irrigated farms. |
+
+The three caliphate successor powers replace the inheritance-only description;
+their partition inheritance remains unchanged. Independents, generic Natives,
+Minor and Barbarian entries are administrative factions, not additional named
+civilizations. The existing Hunnic and Papal powers remain unchanged. Several
+base-game civilization entries are not assigned a historical major-player slot;
+their new powers apply whenever those civilizations are used.
+
+Implementation: `CvPlayer` (construction and specialists), `CvCity`
+(trade-income modifier), `CvPlot` (tile yields), `CvUnit` (movement) and
+`CvRhyes` (civilization help). Descriptions are provided in all five languages.
+These additions have not been validated in gameplay or multiplayer.
+
+## Existing powers
+
 | Power | Implementation |
 | --- | --- |
 | China — Myriads | Melee and gunpowder units cost two-thirds of the shared production cost, giving the advertised 1.5x training speed. Applied outside the bypassed civilization cost switch in `CvPlayer::getProductionNeeded(UnitTypes)`. |

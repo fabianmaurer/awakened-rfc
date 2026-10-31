@@ -1937,6 +1937,9 @@ tCityMap = tCityMap[:30] + (Korea.cityNameMap(tCityMap[iChina]),) + tCityMap[30:
 import NativeAmerica
 tCityMap = tCityMap[:31] + (NativeAmerica.cityNameMap(),) + tCityMap[31:]
 
+import Arctic
+tCityMap = tCityMap[:32] + (Arctic.cityNameMap(),) + tCityMap[32:]
+
 class CityNameManager:
 
         def assignName(self, city):

@@ -842,11 +842,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_TRIBAL</Tag>
-    <English>Iran</English>
-    <French>Iran</French>
-    <German>Iran</German>
-    <Italian>Iran</Italian>
-    <Spanish>Iran</Spanish>
+    <English>Persian Tribes</English>
+    <French>Persian Tribes</French>
+    <German>Persische St&#228;mme</German>
+    <Italian>Persian Tribes</Italian>
+    <Spanish>Persian Tribes</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_KINGDOM</Tag>
@@ -1690,11 +1690,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_KINGDOM</Tag>
-    <English>Tikal</English>
-    <French>Tikal</French>
-    <German>Tikal</German>
-    <Italian>Tikal</Italian>
-    <Spanish>Tikal</Spanish>
+    <English>Maya Kingdoms</English>
+    <French>Maya Kingdoms</French>
+    <German>K&#246;nigreiche der Maya</German>
+    <Italian>Maya Kingdoms</Italian>
+    <Spanish>Maya Kingdoms</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_EMPIRE</Tag>
@@ -1706,11 +1706,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_CONSTITUTIONAL</Tag>
-    <English>Tikal</English>
-    <French>Tikal</French>
-    <German>Tikal</German>
-    <Italian>Tikal</Italian>
-    <Spanish>Tikal</Spanish>
+    <English>Maya Kingdoms</English>
+    <French>Maya Kingdoms</French>
+    <German>K&#246;nigreiche der Maya</German>
+    <Italian>Maya Kingdoms</Italian>
+    <Spanish>Maya Kingdoms</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_REPUBLIC</Tag>
@@ -5794,19 +5794,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_NORSE_KINGDOMS</Tag>
-    <English>Scandinavia</English>
-    <French>Scandinavia</French>
-    <German>Skandinavien</German>
-    <Italian>Scandinavia</Italian>
-    <Spanish>Scandinavia</Spanish>
+    <English>Vikings</English>
+    <French>Vikings</French>
+    <German>Wikinger</German>
+    <Italian>Vikings</Italian>
+    <Spanish>Vikings</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_JOMON</Tag>
+    <English>Jomon</English>
+    <French>Jomon</French>
+    <German>Jomon</German>
+    <Italian>Jomon</Italian>
+    <Spanish>Jomon</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_EARLY_JAPAN</Tag>
-    <English>Japan</English>
-    <French>Japan</French>
-    <German>Japan</German>
-    <Italian>Japan</Italian>
-    <Spanish>Japan</Spanish>
+    <English>Yayoi</English>
+    <French>Yayoi</French>
+    <German>Yayoi</German>
+    <Italian>Yayoi</Italian>
+    <Spanish>Yayoi</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_YAMATO</Tag>
@@ -5818,11 +5826,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_INDUS</Tag>
-    <English>Harappa</English>
-    <French>Harappa</French>
-    <German>Harappa</German>
-    <Italian>Harappa</Italian>
-    <Spanish>Harappa</Spanish>
+    <English>Hindu Peoples</English>
+    <French>Hindu Peoples</French>
+    <German>Hinduv&#246;lker</German>
+    <Italian>Hindu Peoples</Italian>
+    <Spanish>Hindu Peoples</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_INDIAN_KINGDOMS</Tag>
@@ -5842,19 +5850,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_EARLY_MESOPOTAMIA</Tag>
-    <English>Sumer</English>
-    <French>Sumer</French>
-    <German>Sumer</German>
-    <Italian>Sumer</Italian>
-    <Spanish>Sumer</Spanish>
+    <English>The Babylonians</English>
+    <French>The Babylonians</French>
+    <German>Babylonier</German>
+    <Italian>The Babylonians</Italian>
+    <Spanish>The Babylonians</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_EARLY_RUS</Tag>
+    <English>Rus</English>
+    <French>Rus</French>
+    <German>Rus</German>
+    <Italian>Rus</Italian>
+    <Spanish>Rus</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_POLEIS</Tag>
-    <English>Greece</English>
-    <French>Greece</French>
-    <German>Griechenland</German>
-    <Italian>Greece</Italian>
-    <Spanish>Greece</Spanish>
+    <English>Hellas</English>
+    <French>Hellas</French>
+    <German>Hellas</German>
+    <Italian>Hellas</Italian>
+    <Spanish>Hellas</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_EARLY_ARABIA</Tag>

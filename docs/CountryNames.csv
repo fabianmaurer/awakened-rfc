@@ -1,4 +1,4 @@
-﻿Civilization,Naming rule,English,German
+Civilization,Naming rule,English,German
 EGY,TRIBAL,Egypt,Ägypten
 EGY,KINGDOM,Kingdom of Egypt,Königreich Ägypten
 EGY,EMPIRE,Realm of the Two Lands,Reich der beiden Länder
@@ -104,7 +104,7 @@ GRE,ISLAMIC_REPUBLIC,Islamic Republic of Greece,Islamische Republik Griechenland
 GRE,CALIPHATE,Caliphate of Greece,Kalifat Griechenland
 GRE,SULTANATE,Sultanate of Greece,Sultanat Griechenland
 GRE,SECULAR_REPUBLIC,Hellas,Hellas
-PER,TRIBAL,Iran,Iran
+PER,TRIBAL,Persian Tribes,Persische Stämme
 PER,KINGDOM,Kingdom of Persia,Königreich Persien
 PER,EMPIRE,Empire of the King of Kings,Reich des Königs der Könige
 PER,CONSTITUTIONAL,Kingdom of Persia,Königreich Persien
@@ -210,9 +210,9 @@ ETH,CALIPHATE,Caliphate of Ethiopia,Kalifat Äthiopien
 ETH,SULTANATE,Sultanate of Ethiopia,Sultanat Äthiopien
 ETH,SECULAR_REPUBLIC,Ethiopia,Äthiopien
 MAY,TRIBAL,Maya,Maya
-MAY,KINGDOM,Tikal,Tikal
+MAY,KINGDOM,Maya Kingdoms,Königreiche der Maya
 MAY,EMPIRE,Maya Empire,Mayareich
-MAY,CONSTITUTIONAL,Tikal,Tikal
+MAY,CONSTITUTIONAL,Maya Kingdoms,Königreiche der Maya
 MAY,REPUBLIC,League of Mayapan,Bund von Mayapán
 MAY,DEMOCRACY,United Maya States,Vereinigte Maya-Staaten
 MAY,MERCHANT_REPUBLIC,League of the Jade Cities,Bund der Jadestädte
@@ -723,16 +723,51 @@ KHM,ANGKOR,Khmer Empire,Khmerreich
 SPA,CHRISTIAN_IBERIA,Castile,Kastilien
 SPA,IBERIAN_KINGDOMS,Castile,Kastilien
 ENG,ANGLO_SAXON,Wessex,Wessex
-VIK,NORSE_KINGDOMS,Scandinavia,Skandinavien
-JAP,EARLY_JAPAN,Japan,Japan
+VIK,NORSE_KINGDOMS,Vikings,Wikinger
+JAP,JOMON,Jomon,Jomon
+JAP,EARLY_JAPAN,Yayoi,Yayoi
 JAP,YAMATO,Yamato Realm,Reich von Yamato
-IND,INDUS,Harappa,Harappa
+IND,INDUS,Hindu Peoples,Hinduvölker
 IND,INDIAN_KINGDOMS,Magadha,Magadha
 CHI,EARLY_CHINA,China,China
-BAB,EARLY_MESOPOTAMIA,Sumer,Sumer
-GRE,POLEIS,Greece,Griechenland
+BAB,EARLY_MESOPOTAMIA,The Babylonians,Babylonier
+RUS,EARLY_RUS,Rus,Rus
+GRE,POLEIS,Hellas,Hellas
 ARA,EARLY_ARABIA,Arabia,Arabien
 GER,GREATER_GERMAN,Greater German Reich,Großdeutsches Reich
 GER,EAST_FRANCIA,East Francia,Ostfränkisches Reich
 GER,HOLY_ROMAN,Holy Roman Empire,Heiliges Römisches Reich
 ROM,PAPAL_STATES,Papal States,Kirchenstaat
+ESK,TRIBES,Eskimo Tribes,Eskimo-Stämme
+ESK,KINGDOM,Eskimo Kingdom,Eskimo-Königreich
+ESK,REPUBLIC,Eskimo Republic,Eskimo-Republik
+ESK,STATE,Eskimo State,Eskimo-Staat
+ESK,SUN_THRONE,Eskimo Sunrealm,Eskimo-Sonnenreich
+ESK,IRON_WATCH,Eskimo Ironwatch,Eskimo-Eisenwacht
+ESK,FROST_CROWN,Eskimo Storecrown,Eskimo-Speicherkrone
+ESK,WINTER_COMMUNE,Eskimo Winterunion,Eskimo-Winterbund
+ESK,STAR_COUNCIL,Eskimo Starcouncil,Eskimo-Sternenrat
+ESK,SEA_LEAGUE,Eskimo Iceleague,Eskimo-Eisliga
+ESK,HEARTH_COUNCIL,Eskimo Fireleague,Eskimo-Feuerbund
+ESK,HYPERBOREA_TRIBES,Hyperborean Tribes,Stammesbund Hyperborea
+ESK,HYPERBOREA_KINGDOM,Hyperborean Kingdom,Königreich Hyperborea
+ESK,HYPERBOREA_REPUBLIC,Hyperborean Republic,Republik Hyperborea
+ESK,HYPERBOREA_STATE,Hyperborean State,Hyperborea
+ESK,HYPERBOREA_SUN_THRONE,Solar Hyperborea,Sonnenhyperborea
+ESK,HYPERBOREA_IRON_WATCH,Frostwatch,Frostwacht
+ESK,HYPERBOREA_FROST_CROWN,Frostcrown,Frostkrone
+ESK,HYPERBOREA_WINTER_COMMUNE,Aurora Commune,Aurorakommune
+ESK,HYPERBOREA_STAR_COUNCIL,Astral Hyperborea,Astralhyperborea
+ESK,HYPERBOREA_SEA_LEAGUE,Amber League,Bernsteinliga
+ESK,HYPERBOREA_HEARTH_COUNCIL,Aurora Council,Nordlichtrat
+ESK,AGARTHA_TRIBES,Agarthan Tribes,Stammesbund Agartha
+ESK,AGARTHA_KINGDOM,Agarthan Kingdom,Königreich Agartha
+ESK,AGARTHA_REPUBLIC,Agarthan Republic,Republik Agartha
+ESK,AGARTHA_STATE,Agarthan State,Agartha
+ESK,AGARTHA_SUN_THRONE,Luminous Agartha,Lichtagartha
+ESK,AGARTHA_IRON_WATCH,Obsidian Council,Obsidianrat
+ESK,AGARTHA_FROST_CROWN,Crystal Crown,Kristallkrone
+ESK,AGARTHA_WINTER_COMMUNE,Crystal Commune,Kristallkommune
+ESK,AGARTHA_STAR_COUNCIL,Agarthan Academies,Agarthische Akademien
+ESK,AGARTHA_SEA_LEAGUE,Sapphire League,Saphirbund
+ESK,AGARTHA_HEARTH_COUNCIL,Ember Agartha,Glutagartha

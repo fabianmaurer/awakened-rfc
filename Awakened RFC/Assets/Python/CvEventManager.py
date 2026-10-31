@@ -231,6 +231,10 @@ class CvEventManager:
 		'keypress handler - return 1 if the event was consumed'
 
 		eventType,key,mx,my,px,py = argsList
+		if eventType == self.EventKeyDown:
+			import DebugExceptions
+			if DebugExceptions.shortcut(int(key), self.bCtrl, self.bShift):
+				return 1
 		game = gc.getGame()
 		
 		if (self.bAllowCheats):
@@ -374,6 +378,8 @@ class CvEventManager:
 		'Called at the beginning of the end of each turn'
 		iGameTurn = argsList[0]
 		CvTopCivs.CvTopCivs().turnChecker(iGameTurn)
+		import Arctic
+		Arctic.wildlife(iGameTurn)
 
 	def onEndGameTurn(self, argsList):
 		'Called at the end of the end of each turn'

@@ -49,6 +49,7 @@
 		<ArtStyleType>ARTSTYLE_BARBARIAN</ArtStyleType>
 		<!-- Rhye -->
 		<ArtStyleType>ARTSTYLE_AFRICAN</ArtStyleType>
+		<ArtStyleType>ARTSTYLE_ARCTIC</ArtStyleType>
 	</ArtStyleTypes>
 	<CitySizeTypes>
 		<CitySizeType>CITYSIZE_SMALL</CitySizeType>

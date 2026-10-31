@@ -7206,7 +7206,7 @@ void CvGame::createBarbarianUnits()
 
 		for (pLoopUnit = GET_PLAYER(BARBARIAN_PLAYER).firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = GET_PLAYER(BARBARIAN_PLAYER).nextUnit(&iLoop))
 		{
-			if (pLoopUnit->isAnimal())
+			if (pLoopUnit->isAnimal() && pLoopUnit->getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR"))
 			{
 				pLoopUnit->kill(false);
 				break;

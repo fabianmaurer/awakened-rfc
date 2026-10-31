@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_DEBUG_ERROR_TITLE</Tag>
+    <English>Python exception</English>
+    <French>Exception Python</French>
+    <German>Python-Fehler</German>
+    <Italian>Eccezione Python</Italian>
+    <Spanish>Excepci&#243;n de Python</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEBUG_ERROR_HINT</Tag>
+    <English>Ctrl+Shift+F12 closes all error windows and mutes them until restart. Tracebacks are saved to AwakenedRFC-PythonErrors.log in your Windows temporary folder.</English>
+    <French>Ctrl+Maj+F12 ferme les erreurs et les masque jusqu'au red&#233;marrage. Les traces sont dans AwakenedRFC-PythonErrors.log, dans le dossier temporaire Windows.</French>
+    <German>Strg+Umschalt+F12 schlie&#223;t die Fehlerfenster und blendet sie bis zum Neustart aus. Fehlerprotokoll: AwakenedRFC-PythonErrors.log im tempor&#228;ren Windows-Ordner.</German>
+    <Italian>Ctrl+Maiusc+F12 chiude gli errori e li nasconde fino al riavvio. I dettagli sono in AwakenedRFC-PythonErrors.log nella cartella temporanea di Windows.</Italian>
+    <Spanish>Ctrl+May&#250;s+F12 cierra los errores y los oculta hasta reiniciar. Los detalles se guardan en AwakenedRFC-PythonErrors.log en la carpeta temporal de Windows.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEBUG_ERROR_DISMISS</Tag>
+    <English>Dismiss all errors</English>
+    <French>Masquer toutes les erreurs</French>
+    <German>Alle Fehler ausblenden</German>
+    <Italian>Nascondi tutti gli errori</Italian>
+    <Spanish>Ocultar todos los errores</Spanish>
+  </TEXT>
+</Civ4GameText>

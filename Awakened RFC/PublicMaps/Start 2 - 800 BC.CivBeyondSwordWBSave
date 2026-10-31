@@ -96,6 +96,10 @@ EndTeam
 BeginTeam
 EndTeam
 BeginTeam
+	Tech=TECH_FISHING
+	Tech=TECH_HUNTING
+EndTeam
+BeginTeam
 	Tech=TECH_AGRICULTURE
 	Tech=TECH_ANIMAL_HUSBANDRY
 	Tech=TECH_ARCHERY
@@ -375,11 +379,23 @@ BeginPlayer
 	StartingX=23
 	StartingY=45
 EndPlayer
+BeginPlayer
+	Team=32
+	CivType=CIVILIZATION_ESKIMO
+	LeaderType=LEADER_ESKIMO
+	LeaderName=TXT_KEY_ESK_LEADER
+	PlayableCiv=1
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=122
+	StartingY=61
+	StartingGold=80
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=32
+	Team=33
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -388,7 +404,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=33
+	Team=34
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -397,7 +413,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=34
+	Team=35
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -405,20 +421,20 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=35
+	Team=36
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
-	Team=36
+	Team=37
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
 	MinorNationStatus=1
 EndPlayer
 BeginPlayer
-	Team=37
+	Team=38
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
@@ -7227,6 +7243,7 @@ BeginPlot
 	x=18,y=61
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=18,y=62
@@ -9500,6 +9517,7 @@ BeginPlot
 	x=24,y=61
 	TerrainType=TERRAIN_SNOW
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=24,y=62
@@ -22335,11 +22353,11 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=35
+		UnitType=UNIT_ARCHER, UnitOwner=36
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=35
+		CityOwner=36
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -27872,17 +27890,17 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
 		BuildingType=BUILDING_JEWISH_SHRINE
-		Player33Culture=10
+		Player34Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -28042,6 +28060,7 @@ BeginPlot
 	x=73,y=63
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=73,y=64
@@ -29208,6 +29227,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=2
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=76,y=62
@@ -32482,11 +32502,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitType=UNIT_ARCHER, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity
@@ -36038,6 +36058,7 @@ BeginPlot
 	x=94,y=64
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=94,y=65
@@ -38303,6 +38324,7 @@ BeginPlot
 	x=100,y=63
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=100,y=64
@@ -42628,6 +42650,7 @@ BeginPlot
 	x=111,y=64
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=111,y=65
@@ -44108,6 +44131,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=2
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=115,y=64
@@ -45170,6 +45194,7 @@ BeginPlot
 	x=118,y=60
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=118,y=61
@@ -45180,6 +45205,7 @@ BeginPlot
 	x=118,y=62
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=1
+	BonusType=BONUS_SILVER
 EndPlot
 BeginPlot
 	x=118,y=63
@@ -45518,6 +45544,7 @@ BeginPlot
 	x=119,y=59
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=119,y=60
@@ -46582,11 +46609,32 @@ BeginPlot
 	x=122,y=61
 	TerrainType=TERRAIN_SNOW
 	PlotType=2
+
+	BeginUnit
+		UnitType=UNIT_SETTLER, UnitOwner=32
+		UnitAIType=UNITAI_SETTLE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCTIC_HUNTER, UnitOwner=32
+		UnitAIType=UNITAI_WORKER
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCTIC_HUNTER, UnitOwner=32
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_ARCTIC_HUNTER, UnitOwner=32
+		UnitAIType=UNITAI_RESERVE
+	EndUnit
 EndPlot
 BeginPlot
 	x=122,y=62
 	TerrainType=TERRAIN_SNOW
 	PlotType=1
+	BonusType=BONUS_SILVER
 EndPlot
 BeginPlot
 	x=122,y=63
