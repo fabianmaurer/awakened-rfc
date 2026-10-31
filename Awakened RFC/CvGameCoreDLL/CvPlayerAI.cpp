@@ -1836,7 +1836,10 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 			{
 				iBadTile += 2;
 			}
-			else if (!(pLoopPlot->isFreshWater()) && !(pLoopPlot->isHills()))
+			else if (!(pLoopPlot->isFreshWater()) && !(pLoopPlot->isHills()) &&
+				!(getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") &&
+				  (pLoopPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") ||
+				   pLoopPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA"))))
 			{
 				if ((pLoopPlot->calculateBestNatureYield(YIELD_FOOD, getTeam()) == 0) || (pLoopPlot->calculateTotalBestNatureYield(getTeam()) <= 1))
 				{
@@ -9144,6 +9147,25 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, CvArea* pArea
 				iValue += 50;
 			}
 		}
+		if (eUnit == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"))
+		{
+			// Ordinary workers cannot perform these builds. Recruit consumable
+			// hunters when the city's cached improvement plan actually needs one.
+			int iHunterBuilds = 0;
+			int iCityLoop;
+			for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))
+			{
+				if (pArea != NULL && pCity->area() != pArea) continue;
+				for (int iPlot = 1; iPlot < NUM_CITY_PLOTS; ++iPlot)
+				{
+					const BuildTypes eBuild = pCity->AI_getBestBuild(iPlot);
+					if (eBuild != NO_BUILD && GC.getUnitInfo(eUnit).getBuilds(eBuild)) ++iHunterBuilds;
+				}
+			}
+			if (iHunterBuilds == 0) return 0;
+			iValue += 2000 + 100 * std::min(6, iHunterBuilds);
+		}
+
 		iValue += (GC.getUnitInfo(eUnit).getMoves() * 100);
 		break;
 

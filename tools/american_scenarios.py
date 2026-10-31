@@ -10,6 +10,7 @@ CLASSICAL_TECHS = EARLY_TECHS + ('FISHING', 'ARCHERY', 'MINING', 'MASONRY',
                                 'WRITING', 'POLYTHEISM', 'PRIESTHOOD', 'CALENDAR',
                                 'MONARCHY', 'MATHEMATICS', 'CONSTRUCTION')
 MISSISSIPPIAN_TECHS = EARLY_TECHS + ('FISHING', 'ARCHERY', 'MINING', 'MASONRY')
+ADENA_START = (26, 45)
 
 
 def field(block, key, value):
@@ -22,6 +23,8 @@ def field(block, key, value):
 
 def migrate_slots(text):
     players = re.findall(r'BeginPlayer\b(.*?)EndPlayer', text, re.S)
+    if len(players) == 39 and re.search(r'\bCivType=(?:CIVILIZATION_ESKIMO|NONE)\b', players[32]):
+        return text
     if len(players) == 38:
         if 'CIVILIZATION_NATIVE_AMERICA' not in players[31]:
             raise ValueError('Mississippian slot is occupied')
@@ -66,7 +69,7 @@ def city(name, owner, population, capital=False):
 def apply_american_starts(text):
     text = migrate_slots(text)
     turn = int(re.search(r'\bGameTurn=(\d+)', text)[1])
-    players = iter(range(38))
+    players = iter(range(len(re.findall(r'BeginPlayer\b', text))))
     def player(match):
         owner = next(players)
         block = match[1]
@@ -74,17 +77,22 @@ def apply_american_starts(text):
             block = field(block, 'PlayableCiv', 1)
             block = field(block, 'MinorNationStatus', 0)
         if owner == MISSISSIPPIANS:
-            for key, value in (('PlayableCiv', int(turn != 0)), ('MinorNationStatus', 0),
-                               ('CivDesc', 'TXT_KEY_MISS_DESC'),
-                               ('CivShortDesc', 'TXT_KEY_MISS'),
-                               ('CivAdjective', 'TXT_KEY_MISS_ADJ'),
-                               ('LeaderName', 'TXT_KEY_MISS_LEADER'),
-                               ('StartingX', 25 if turn == 271 else 23),
-                               ('StartingY', 44 if turn == 271 else 45)):
+            # Adena occupy this regional slot only in the 800 BC scenario.
+            root = 'ADENA' if turn == 87 else 'MISS'
+            start = ADENA_START if turn == 87 else ((25, 44) if turn == 271 else (23, 45))
+            for key, value in (('CivType', 'CIVILIZATION_ADENA' if turn == 87 else 'CIVILIZATION_NATIVE_AMERICA'),
+                               ('PlayableCiv', int(turn == 87 or turn >= 211)), ('MinorNationStatus', 0),
+                               ('CivDesc', 'TXT_KEY_' + root + '_DESC'),
+                               ('CivShortDesc', 'TXT_KEY_' + root),
+                               ('CivAdjective', 'TXT_KEY_' + root + '_ADJ'),
+                               ('LeaderName', 'TXT_KEY_' + root + '_LEADER'),
+                               ('StartingX', start[0]), ('StartingY', start[1])):
                 block = field(block, key, value)
+            if turn == 87:
+                block = field(block, 'StartingGold', 40)
         return 'BeginPlayer' + block + 'EndPlayer'
     text = re.sub(r'BeginPlayer\b(.*?)EndPlayer', player, text, flags=re.S)
-    teams = iter(range(38))
+    teams = iter(range(len(re.findall(r'BeginTeam\b', text))))
     def team(match):
         owner = next(teams)
         block = match[1]
@@ -93,6 +101,8 @@ def apply_american_starts(text):
             techs = EARLY_TECHS if turn == 87 else CLASSICAL_TECHS
         if owner == MISSISSIPPIANS and turn >= 211:
             techs = MISSISSIPPIAN_TECHS
+        elif owner == MISSISSIPPIANS and turn == 87:
+            techs = EARLY_TECHS
         for tech in techs:
             if not re.search(r'\bTech=TECH_' + tech + r'\b', block):
                 block += '\n\tTech=TECH_' + tech + '\n'
@@ -109,6 +119,16 @@ def apply_american_starts(text):
     def plot(match):
         block = match[1]
         pos = tuple(map(int, re.search(r'x=(\d+),y=(\d+)', block).groups()))
+        if turn == 87:
+            # Replace only Adena's authored units, preserving other plot contents.
+            block = re.sub(r'\s*BeginUnit\b(?:(?!EndUnit).)*\bUnitOwner=31\b.*?EndUnit', '', block, flags=re.S)
+            if pos == ADENA_START:
+                if not re.search(r'PlotType=[12]\b', block):
+                    raise ValueError('Adena start must be passable land')
+                block += unit('SETTLER', MISSISSIPPIANS, 'SETTLE')
+                block += unit('WORKER', MISSISSIPPIANS, 'WORKER')
+                block += unit('ADENA_WOODLAND_WARRIOR', MISSISSIPPIANS, 'CITY_DEFENSE') * 2
+                block += unit('SCOUT', MISSISSIPPIANS, 'EXPLORE')
         # Transfer the two established Maya settlements and their own garrisons.
         if turn in (181, 211) and ('CityName=Yax Mutal' in block or 'CityName=Chich' in block):
             block = re.sub(r'(CityOwner|UnitOwner)=34\b', r'\g<1>=10', block)

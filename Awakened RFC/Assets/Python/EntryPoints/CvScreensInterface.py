@@ -45,6 +45,7 @@ import CvEventInterface
 import CvPopupInterface
 import CvScreenUtilsInterface
 import ScreenInput as PyScreenInput
+import DebugExceptions
 from CvScreenEnums import *
 from CvPythonExtensions import *
 
@@ -65,6 +66,7 @@ def onCrusadeStateFounded(argsList):
         if iPlayer >= con.iNumMajorPlayers:
                 return
         import cPickle as pickle
+        gc = CyGlobalContext()
         raw = gc.getGame().getScriptData()
         if not raw:
                 return
@@ -925,7 +927,10 @@ HandleCloseMap = {  DAWN_OF_MAN : dawnOfMan,
 #######################################################################################
 ## Handle Input Map
 #######################################################################################
-HandleInputMap = {  MAIN_INTERFACE : mainInterface,
+DebugExceptions.install()
+
+HandleInputMap = {  DebugExceptions.SCREEN_ID : DebugExceptions,
+					MAIN_INTERFACE : mainInterface,
 					DOMESTIC_ADVISOR : domesticAdvisor,
 					RELIGION_SCREEN : religionScreen,
 					CORPORATION_SCREEN : corporationScreen,

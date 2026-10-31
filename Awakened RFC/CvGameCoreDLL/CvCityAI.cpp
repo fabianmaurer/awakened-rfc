@@ -1095,6 +1095,35 @@ void CvCityAI::AI_chooseProduction()
 		}
 	}
 	
+	// A normal worker cannot replace a hunter consumed by an Arctic build.
+	// Keep one builder available in the area when a defended city needs one.
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") && !bDanger && AI_isDefended())
+	{
+		const UnitTypes eHunter = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER");
+		bool bHasBuilder = false;
+		int iLoop;
+		for (CvUnit* pUnit = kPlayer.firstUnit(&iLoop); pUnit != NULL; pUnit = kPlayer.nextUnit(&iLoop))
+		{
+			if (pUnit->getUnitType() == eHunter && pUnit->area() == area() &&
+				(pUnit->AI_getUnitAIType() == UNITAI_WORKER || pUnit->getGroup()->AI_getMissionAIType() == MISSIONAI_BUILD))
+				bHasBuilder = true;
+		}
+		for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity != NULL; pCity = kPlayer.nextCity(&iLoop))
+		{
+			if (pCity->area() == area() && pCity->getProductionUnit() == eHunter &&
+				pCity->getProductionUnitAI() == UNITAI_WORKER) bHasBuilder = true;
+		}
+		if (!bHasBuilder)
+		{
+			for (int iPlot = 1; iPlot < NUM_CITY_PLOTS; ++iPlot)
+			{
+				const BuildTypes eBuild = AI_getBestBuild(iPlot);
+				if (eBuild != NO_BUILD && GC.getUnitInfo(eHunter).getBuilds(eBuild) &&
+					AI_chooseUnit(eHunter, UNITAI_WORKER)) return;
+			}
+		}
+	}
+
 	if (isBarbarian())
 	{
 		if (!AI_isDefended(plot()->plotCount(PUF_isUnitAIType, UNITAI_ATTACK, -1, getOwnerINLINE()))) // XXX check for other team's units?
@@ -8375,6 +8404,8 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 	}
 
 	eCurrentImprovement = pPlot->getImprovementType();
+	if (eCurrentImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+		aiYields[YIELD_COMMERCE] += getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 4 : 5;
 	eFinalImprovement = NO_IMPROVEMENT;
 
 	if (eCurrentImprovement != NO_IMPROVEMENT)
@@ -8851,11 +8882,21 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 						aiDiffYields[iJ] = (aiFinalYields[iJ] - (2 * pPlot->getYield(((YieldTypes)iJ))));
 					}
 
+					const int iArchiveValue = getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 4 : 5;
+					if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+						aiDiffYields[YIELD_COMMERCE] += 2 * iArchiveValue;
+					if (pPlot->getImprovementType() == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+						aiDiffYields[YIELD_COMMERCE] -= 2 * iArchiveValue;
 					iValue += (aiDiffYields[YIELD_FOOD] * ((100 * iFoodPriority) / 100));
 					iValue += (aiDiffYields[YIELD_PRODUCTION] * ((60 * iProductionPriority) / 100));
 					iValue += (aiDiffYields[YIELD_COMMERCE] * ((40 * iCommercePriority) / 100));
 
 					iValue /= 2;
+					// Charge the rounded loss on neighbouring grounds separately
+					// from the candidate tile's own yields.
+					iValue -= pPlot->getHuntingGroundsYieldLoss(getOwnerINLINE()) *
+						(iFoodPriority + 60 * iProductionPriority / 100 + 40 * iCommercePriority / 100);
+
 
                     for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 					{
@@ -9178,6 +9219,9 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 				}
             }
                                 
+			if (eOldRoute == NO_ROUTE)
+				iTempValue -= pPlot->getHuntingGroundsYieldLoss(getOwnerINLINE()) *
+					(iFoodPriority + 60 * iProductionPriority / 100 + 40 * iCommercePriority / 100);
 			if (iTempValue > 0)
 			{
 				for (iJ = 0; iJ < GC.getNumBuildInfos(); iJ++)

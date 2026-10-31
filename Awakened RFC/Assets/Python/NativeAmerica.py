@@ -7,15 +7,20 @@ import cPickle as pickle
 CITY_NAMES = ((23, 45, "Cahokia"), (25, 44, "Etowah"), (22, 43, "Natchez"),
               (21, 45, "Spiro"), (24, 44, "Moundville"), (25, 43, "Ocmulgee"),
               (24, 47, "Angel Mounds"), (23, 44, "Kincaid"))
+ADENA_CITY_NAMES = ((26, 45, "Scioto"), (27, 45, "Hocking"), (27, 44, "Kanawha"),
+                    (25, 46, "Miami"), (25, 45, "Licking"), (26, 47, "Muskingum"))
 
 
-def cityNameMap():
+def cityNameMap(adena=False):
+    names = CITY_NAMES
+    if adena:
+        names = ADENA_CITY_NAMES
     result = [["-1" for x in range(124)] for y in range(68)]
     for x in range(18, 30):
         for y in range(40, 51):
-            best = CITY_NAMES[0]
+            best = names[0]
             distance = 100000
-            for anchor in CITY_NAMES:
+            for anchor in names:
                 value = (x-anchor[0])*(x-anchor[0]) + (y-anchor[1])*(y-anchor[1])
                 if value < distance:
                     best, distance = anchor, value
@@ -26,6 +31,8 @@ def cityNameMap():
 def grantTechs():
     gc = CyGlobalContext()
     player = gc.getPlayer(con.iMississippians)
+    if player.getCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ADENA"):
+        return # The scenario supplies the smaller Early Woodland technology package.
     team = gc.getTeam(player.getTeam())
     for name in ("AGRICULTURE", "THE_WHEEL", "POTTERY", "HUNTING", "MYSTICISM",
                  "FISHING", "ARCHERY", "MINING", "MASONRY"):
@@ -34,12 +41,22 @@ def grantTechs():
 
 
 def configureRegions(argsList=None):
-    # The 1453 capital is southeastern; earlier games begin around Cahokia.
+    # Restore scenario-specific birth and naming data on both new games and loads.
     gc = CyGlobalContext()
+    adena = gc.getPlayer(con.iMississippians).getCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_ADENA")
+    birth = 211
+    capital = (23, 45)
+    if adena:
+        birth = 87
+        capital = (26, 45)
+    con.tBirth = con.tBirth[:con.iMississippians] + (birth,) + con.tBirth[con.iMississippians+1:]
+    import CityNameManager
+    CityNameManager.tCityMap = CityNameManager.tCityMap[:31] + (cityNameMap(adena),) + CityNameManager.tCityMap[32:]
     city = gc.getPlayer(con.iMississippians).getCapitalCity()
     if not city.isNone():
-        con.tCapitals[con.iMississippians] = (city.getX(), city.getY())
-        con.tReserveCapitals[con.iMississippians] = con.tCapitals[con.iMississippians]
+        capital = (city.getX(), city.getY())
+    con.tCapitals[con.iMississippians] = capital
+    con.tReserveCapitals[con.iMississippians] = capital
 
 
 def setup():

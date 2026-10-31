@@ -19,19 +19,20 @@ the city of Rome at (60,44), the Papal State founding event becomes eligible:
 - A Christian owner may cede Rome to a new Papal State, or refuse for a stacking
   **-2 relations penalty from every other Christian nation**. Refusal repeats after
   10 turns at Normal speed (`AP_PAPAL_RETRY_TURNS`), scaled to game speed. All
-  accumulated refusal penalties disappear when the owner accepts either Papal
-  founding option or loses Rome (including gifting or razing it).
-- An owner already using **Theocracy and Holy State** may instead become the Papal
-  State, retaining its territory, government and human player control.
+  accumulated refusal penalties disappear when the owner cedes Rome or loses Rome (including gifting or razing it).
 - Independent Rome flips to the Papal State automatically. Barbarian ownership,
   non-Christian ownership, Tolerance and State Atheism prevent the event.
+
+The Papal State is a minor state, excluded from normal major-power diplomacy and
+victory competition. It cannot train settlers or receive neighboring Crusade
+settlements, but retains its seat and chairmanship in the Apostolic council.
+A major civilization cannot turn its whole empire into the Papal State.
 
 A newly established Papal State receives Rome, its own player slot, a capital and
 two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
 Papal identity is separate from the Independent Crusader States. The leader is
-named Pope. The dedicated Papal slot has no historical victory goals: its score
-row shows an unavailable-goals marker and a stability icon based on holding Rome
-(secure) or needing to recover it (endangered).
+named Pope. Like other minor states, it has no scoreboard entry or ordinary
+diplomacy and does not compete for historical victory goals.
 
 Founding, refusal and dissolution are announced as events concerning the Council
 of Rome to all living Christian-affiliated nations, including those using Tolerance.
@@ -70,7 +71,7 @@ city containing Christianity**, regardless of that city's owner's state religion
 Rome's gold modifiers amplify this income. Papal cities containing Christianity
 receive **+50% city defense**, reduced normally by bombardment. These bonuses
 stop when the Palace is inactive, including under Tolerance or after losing Rome,
-and return when it reactivates. They apply equally to human and AI Papal States,
+and return when it reactivates. They apply to the Papal State,
 including countries that choose to become the Papacy.
 
 Only nations with Christianity as their state religion participate in council votes.
@@ -96,6 +97,8 @@ Yes/Abstain/No/outstanding. All participating nations see the same live tally.
 | Relief Tithe | All except the poorest member transfer 10% of their current treasury to that member. Requires a 100-gold treasury gap and at least one treasury of 100. Ties favor the lowest player number. | More than half of all vote weight |
 | College of Christendom | Each member pays 50 gold; each team gains 20% of its current technology's cost as research if another member already knows it. Requires all to afford the levy and at least one potential learner. | More Yes than No |
 | Reaffirm Christian Rule | All participating nations immediately adopt Theocracy and Holy State without anarchy. Future civic changes remain possible under normal rules. | At least two-thirds of all vote weight |
+
+Crusades become available only after Islam has been founded.
 
 Crusade regions use named geographic fronts on the RFC world map. An eligible
 front must contain a land border between a Christian nation and a non-Christian
@@ -640,7 +643,8 @@ faction. These authored Maya starts do not trigger a second historical birth.
 **Mississippian Chiefdoms** represent the related eastern North American
 chiefdoms collectively. They use the existing Native American civilization's
 art and units, with a generic **Paramount Chief** title. They have a dedicated
-major slot and a **900 AD birth** in earlier games; the Huns can still spawn
+major slot and a **900 AD birth** in the 3000 BC and 600 AD games, where they are
+not selectable; the Huns can still spawn
 independently. The 900 AD map starts with a small Cahokia settlement. The
 1453 AD map uses Etowah and Natchez, with Etowah as capital, rather than
 repopulating abandoned Cahokia. Their homeland, expansion priorities and city
@@ -648,12 +652,30 @@ names cover the Mississippi basin and southeast. They use standard victories.
 See the [Etowah site](https://gastateparks.org/EtowahIndianMounds) for its
 continued occupation through this later period.
 
+**Adena Tribes** are playable in the **800 BC** scenario, using that regional
+slot with a distinct civilization identity. A settler, worker, two Woodland
+Warriors, scout and 40 gold begin in the Ohio Valley at (26,45). Starting
+technologies are Agriculture, The Wheel, Pottery, Hunting and Mysticism; The
+Wheel is retained as Pottery's game-tree prerequisite. Institutions are Tribal
+System, Despotism, Self-sufficiency, Warrior Society and Ancestor Cult.
+**Earthwork Builders** grants +1 production from river farms. The **Woodland
+Warrior** replaces the Warrior at the same cost and strength, adding +50%
+forest defense. The **Burial Mound** replaces the Monument and adds +1
+happiness, retaining its cost, culture and Calendar obsolescence. Existing
+Native American art is reused. Geographic river names represent settlements
+whose ancient names are unknown. Adena represents Early Woodland communities,
+not a documented unified state. It remains Adena, uses standard victories and
+does not receive a second birth in 900 AD. It does not coexist with the
+Mississippians in this scenario. Its country name changes from Adena Tribes to
+Adena Confederation under Republic or Democracy, Adena Kingdom under Monarchy,
+and Adena State under Dictatorship. See the [NPS overview](https://www.nps.gov/articles/000/ohio-s-prehistoric-past.htm).
+
 These changes require a new game because the player-slot layout has expanded.
 
 ### Medieval ships
 
 Triremes have **3 strength** and no longer receive a special bonus against
-Galleys. They upgrade to the **War Galley**, which requires Machinery and
+Galleys. They upgrade to the **War Galley**, which requires Compass and
 Sailing and has **4 strength, 3 movement, no cargo**, and a base cost of 60.
 War Galleys upgrade to Frigates, keeping the Caravel's exploration role separate.
 
@@ -715,7 +737,7 @@ The canonical partition causes neither city-loss stability penalties nor conques
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. Allows a state religion; -1 state-religion happiness cancels its normal +1 bonus. |
-| **State Religion** | Priesthood | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
+| **State Religion** | Monotheism | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
 | **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
@@ -791,11 +813,19 @@ stability penalty.
 
 ### Dynastic inheritance
 
+Independent and other minor states cannot inherit or be inherited. Human players
+receive an explicit inheritance announcement when involved or in contact with
+the collapsing country; this distinguishes inheritance from fragmentation.
+The human heir also receives an addressed acknowledgement popup.
+
 When a monarchy with a state religion collapses, it has a **50%** chance to be
 inherited instead of fragmenting. An heir must be a living monarchy with the
 same state religion, at least **0 stability**, and at least one city on the
 continent of the collapsing monarchy's capital. One eligible heir is selected
-deterministically; there is no size requirement. The heir receives every city
+deterministically; there is no size requirement. Capitals must be within **12 map
+tiles**, and every inherited city must be within **12 tiles** of a city already
+owned by the heir (`RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE`). If even one city
+is too distant, that candidate cannot inherit the realm. The heir receives every city
 and unit of the collapsed realm. If no heir qualifies or the chance fails, the
 normal collapse rules apply.
 
@@ -846,6 +876,11 @@ See [CivicStability.md](CivicStability.md) for the reasoning and save-game
 behavior, and [CivicEffects.md](CivicEffects.md) for implementation details.
 
 ## Civilization spawns and flips
+
+AI countries cannot offer or accept voluntary vassalization for **30 turns**
+after founding or restoration (`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). This
+also covers the first 30 turns of a scenario. Wartime capitulation and voluntary
+choices by human-controlled teams retain their existing rules.
 
 ### Tile tooltips
 
@@ -1095,3 +1130,116 @@ suppression calculations use the strongest tier the owner has unlocked.
 All slave tiers share the unarmed slave's distinctive body, with era-specific
 weapons and animations, mixed figure variants and irregular formations. See [slave unit art](SlaveUnitArt.md)
 for the tier roster, source credits and a static preview.
+
+## Eskimos and the frozen north
+
+The Eskimos are a fantastical umbrella civilization, selectable only in the 800 BC start.
+They begin on the eastern Siberian coast at (122, 61), with one Settler and three Arctic Hunters. Their homeland and preferred polar-bear spawning region cover northeastern Siberia. Sparse deer, fur, fish and silver deposits enrich the Arctic without replacing existing resources. Nanuk is a fictional ruler using the existing Sitting Bull portrait.
+They start with only Fishing and Hunting in both cases. In the 3000 BC
+scenario, they are not selectable and appear in 800 BC with the same three units.
+They are absent from later starts.
+They use standard victories rather than another civilization's historical goals.
+
+- The **Cooling house** replaces the Granary, retaining its food storage but providing no health bonus. It adds one food to each tundra or snow land tile worked by its city.
+  Lakes qualify; overlapping terrain categories and city radii do not stack.
+- Sea tiles provide one extra production; lakes do not qualify for this power.
+- Cities founded outside snow or tundra produce half their normal local
+  food, before consumption. Food shipments retain their ordinary transferred amounts.
+- Eskimos may found cities on any snow or tundra tile, with the same minimum
+  spacing of one tile as other civilizations. Ownership, peaks and other normal
+  restrictions still apply.
+- Ordinary improvements follow the standard terrain and irrigation rules;
+  the former Eskimo exception for ordinary Arctic improvements is removed.
+  Legal farms and mines still use snowy art on cold terrain.
+- All civilizations gain +1 food and +1 commerce on snow or tundra land next
+  to any sea or lake tile, representing seals and walruses. Diagonal water
+  counts, the bonus applies once per land tile, and peaks receive no bonus.
+- Cities on tundra gain +1 health; cities on ice (snow terrain) gain +2 health.
+  This cold-climate bonus applies to all civilizations.
+- The **Arctic hunter** replaces the Scout: strength 2, two moves, cost 30,
+  available from the start and trainable in every era, even when ordinary
+  Scouts become obsolete. It uses recon promotions, has no upgrade successors, and
+  has a 50% withdrawal chance against animals when attacking or defending.
+  Defensive withdrawal prevents the lethal blow and leaves the hunter on its
+  current tile.
+- Only Arctic hunters can build **Hunting grounds** (Hunting) and **Deep
+  archives** (Mining), and only for Eskimos. The unit is consumed when the
+  improvement finishes, not when construction starts. The three starting hunters are
+  assigned building, city defense and reserve duties by the AI. Spare hunters
+  can build nearby improvements, while idle builders return to military service.
+  Hunters can also be trained for ordinary attack, reserve and garrison roles.
+  AI construction values account for yield losses on neighboring Hunting grounds;
+  optional road coverage preserves their supporting habitat.
+- Workers (including unique replacements) and Arctic hunters can use **Pillage**
+  to remove their own non-permanent improvements completely. This costs normal
+  pillaging movement, gives no gold and does not consume the unit. If no
+  improvement remains, another Pillage action removes the road or railroad.
+- **Hunting grounds** can be built on flat snow or tundra. Each
+  pair of adjacent snow or tundra tiles gives +1 food, +1 production and +1
+  commerce if neither has an improvement, road, railroad or city and neither
+  is a peak. All eight surrounding tiles count, including diagonals; odd
+  counts are rounded down. Ownership and features do not affect eligibility.
+  Neighbour changes update yields immediately.
+  Other civilizations receive zero yields from the Hunting grounds tile,
+  including its natural terrain yields. Its art combines a natural-wood Camp with
+  winter-coated reindeer. Worked Hunting grounds show one reindeer per point
+  of their improvement bonus (up to four); unworked tiles show no herd.
+- **Deep archives** can only be built on snow hills. Each worked archive adds
+  3 direct research and 1 Great Scientist point to its working Eskimo city.
+  A city of another civilization gets 5 research and no Great Person points.
+  Improvement and tile tooltips show these direct outputs. Yield display mode
+  adds a beaker/Great Person badge alongside the normal tile yields.
+  Its mystical bunker model has no cart, tracks or chimney. Stepped stonework
+  frames ancient metal doors with luminous blue inlays and layered blue sparkles.
+  Research does not depend on the slider. Standard research/Great Person rate
+  modifiers apply. Unworked archives yield neither research nor points, and
+  overlapping cities cannot share the same archive. Mines with blue emissive
+  highlights and crystals represent these sites.
+- Ordinary Eskimo city houses are igloos in the Ancient/Classical eras,
+  recolored European medieval ice houses in the Medieval/Renaissance eras,
+  and recolored European ice towers from the Industrial era onward. Igloos
+  have blue-grey block seams and lower ice courses for contrast. Arctic palaces
+  are larger ceremonial igloo halls. Their city lots use translucent grey snow
+  dust instead of stone paving, without changing other civilizations' paving.
+  Other buildings use pale blue icy versions of their ordinary textures in
+  Arctic cities, preserving their shapes and effects. The Eskimo banner bears
+  an angular gateway rune inside a broken polar halo.
+- Roads on tundra and snow use a compacted snowy path, with ordinary road
+  movement and connections.
+- Snow deals **10 damage per unit turn after healing**, even in friendly
+  territory and cities. Civilians are affected, and damage can kill. Eskimo
+  units and animals are immune. This rule concerns snow land, not sea ice.
+- **Ice bears** have strength 6 and prioritize attacks on cities within
+  two tiles. They destroy cities once their defenders are defeated, including
+  cities that are already undefended, without ever taking ownership. They can
+  enter settled territory, but cannot board transports or move/attack beyond
+  snow and tundra. Animals move independently and cannot join movement
+  groups. Their patrol choices use independent synchronized random draws;
+  they can still share tiles or converge on the same target.
+  Every six turns, up to four replenish on empty cold land, including visible tiles,
+  at least two tiles from owned territory (including diagonals), targeting
+  one per 18 cold land tiles (maximum 48), with priority for six in the Arctic
+  northeastern Siberian homeland. They persist beyond the ordinary animal era. No Barbarians
+  disables replenishment.
+
+Country names follow government: Eskimo Tribes, Kingdom, Republic or State.
+Astronomy adds **Hyperborea**; Electricity replaces it with **Agartha**. These later names omit the Eskimo prefix. These identities and the early settler
+starts are fantasy choices, not historical claims.
+
+Seven civic combinations override the ordinary government title. Each has a
+different name for the Eskimo, Hyperborean and Agarthan technology stages;
+the first matching combination below wins. All names are in
+[CountryNames.csv](CountryNames.csv), under `ESK`.
+
+| Priority | Civic combination | Example name |
+| --- | --- | --- |
+| 1 | Monarchy + God State, with a state religion | Solar Hyperborea |
+| 2 | Dictatorship + Professional Army or Conscription | Obsidian Council |
+| 3 | Monarchy + Planned Economy | Frostcrown |
+| 4 | Democracy + Planned Economy | Crystal Commune |
+| 5 | Republic or Democracy + State Atheism | Agarthan Academies |
+| 6 | Plutocracy + Naval Warfare | Eskimo Iceleague |
+| 7 | Tribal System + Ancestor Cult, with a non-starting legitimacy, labor or military civic | Eskimo Fireleague |
+
+The VC7.1 DLL builds successfully; gameplay, art rendering and multiplayer
+balance still require user-operated in-game validation.

@@ -23,7 +23,15 @@ def descriptions(description, filename):
             cityCounts[owner] = cityCounts.get(owner, 0) + 1
     for iPlayer in range(con.iNumMajorPlayers):
         player = description.playersDesc[iPlayer]
-        if description.gameDesc.gameTurn == 211 and iPlayer in (con.iEgypt, con.iCarthage):
+        if player.civType == "CIVILIZATION_ADENA":
+            names[iPlayer] = CyTranslator().getText("TXT_KEY_ADENA_DESC", ())
+            continue
+        if iPlayer == con.iEskimos and player.civType == "CIVILIZATION_ESKIMO":
+            names[iPlayer] = CyTranslator().getText("TXT_KEY_ESK_TRIBES", ())
+            continue
+        if description.gameDesc.gameTurn == 211 and (
+                (iPlayer == con.iEgypt and player.civType == "CIVILIZATION_EGYPT") or
+                (iPlayer == con.iCarthage and player.civType == "CIVILIZATION_CARTHAGE")):
             dynasty = "AGHLABID"
             if iPlayer == con.iEgypt:
                 dynasty = "TULUNID"

@@ -683,5 +683,45 @@
             <iHotKeyPriority>0</iHotKeyPriority>
             <Button>Art/Interface/Buttons/BaseTerrain/Marsh.dds</Button>
         </BuildInfo>
+	<BuildInfo>
+			<Type>BUILD_HUNTING_GROUNDS</Type>
+			<Description>TXT_KEY_BUILD_HUNTING_GROUNDS</Description>
+			<Help></Help>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
+			<!-- Rhye  -->
+			<iTime>100</iTime>
+			<iCost>0</iCost>
+			<bKill>1</bKill>
+			<ImprovementType>IMPROVEMENT_HUNTING_GROUNDS</ImprovementType>
+			<RouteType>NONE</RouteType>
+			<EntityEvent>ENTITY_EVENT_BUILD</EntityEvent>
+			<FeatureStructs></FeatureStructs>
+			<HotKey></HotKey>
+			<bAltDown>0</bAltDown>
+			<bShiftDown>0</bShiftDown>
+			<bCtrlDown>0</bCtrlDown>
+			<iHotKeyPriority>1</iHotKeyPriority>
+			<Button>,Art/Interface/Buttons/Builds/BuildCamp.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,1,7</Button>
+		</BuildInfo>
+	<BuildInfo>
+			<Type>BUILD_DEEP_ARCHIVE</Type>
+			<Description>TXT_KEY_BUILD_DEEP_ARCHIVE</Description>
+			<Help></Help>
+			<PrereqTech>TECH_MINING</PrereqTech>
+			<!-- Rhye  -->
+			<iTime>100</iTime>
+			<iCost>0</iCost>
+			<bKill>1</bKill>
+			<ImprovementType>IMPROVEMENT_DEEP_ARCHIVE</ImprovementType>
+			<RouteType>NONE</RouteType>
+			<EntityEvent>ENTITY_EVENT_MINE</EntityEvent>
+			<FeatureStructs></FeatureStructs>
+			<HotKey></HotKey>
+			<bAltDown>0</bAltDown>
+			<bShiftDown>0</bShiftDown>
+			<bCtrlDown>0</bCtrlDown>
+			<iHotKeyPriority>0</iHotKeyPriority>
+			<Button>,Art/Interface/Buttons/Builds/BuildMine.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,7</Button>
+		</BuildInfo>
 	</BuildInfos>
 </Civ4BuildInfos>

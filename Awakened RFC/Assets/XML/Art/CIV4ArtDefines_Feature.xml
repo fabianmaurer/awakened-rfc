@@ -492,5 +492,315 @@
 			</FeatureVariety>
 		</FeatureArtInfo>
 		<!-- Rhye - end -->
-	</FeatureArtInfos>
+	<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_ARCHIVE_OUTPUT_3</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_ARCHIVE_OUTPUT_5</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/ArchiveSymbols/Archive5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_HUNTING_HERD_1</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_HUNTING_HERD_2</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd2.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd2.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd2.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_HUNTING_HERD_3</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_HUNTING_HERD_4</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd4.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd4.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Arctic/HuntingGrounds/herd4.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+</FeatureArtInfos>
 </Civ4ArtDefines>

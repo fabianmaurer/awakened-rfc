@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_TRIBAL</Tag>
-    <English>Peoples of the Nile Valley</English>
-    <French>Peoples of the Nile Valley</French>
-    <German>V&#246;lker des Niltals</German>
-    <Italian>Peoples of the Nile Valley</Italian>
-    <Spanish>Peoples of the Nile Valley</Spanish>
+    <English>Egypt</English>
+    <French>Egypt</French>
+    <German>&#196;gypten</German>
+    <Italian>Egypt</Italian>
+    <Spanish>Egypt</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_EGY_KINGDOM</Tag>
@@ -170,11 +170,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_TRIBAL</Tag>
-    <English>Peoples of Bharat</English>
-    <French>Peoples of Bharat</French>
-    <German>V&#246;lker Bharats</German>
-    <Italian>Peoples of Bharat</Italian>
-    <Spanish>Peoples of Bharat</Spanish>
+    <English>Bharat</English>
+    <French>Bharat</French>
+    <German>Bharat</German>
+    <Italian>Bharat</Italian>
+    <Spanish>Bharat</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_KINGDOM</Tag>
@@ -506,11 +506,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_TRIBAL</Tag>
-    <English>Peoples of Mesopotamia</English>
-    <French>Peoples of Mesopotamia</French>
-    <German>V&#246;lker Mesopotamiens</German>
-    <Italian>Peoples of Mesopotamia</Italian>
-    <Spanish>Peoples of Mesopotamia</Spanish>
+    <English>Mesopotamia</English>
+    <French>Mesopotamia</French>
+    <German>Mesopotamien</German>
+    <Italian>Mesopotamia</Italian>
+    <Spanish>Mesopotamia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_KINGDOM</Tag>
@@ -674,11 +674,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_TRIBAL</Tag>
-    <English>Achaean Tribes</English>
-    <French>Achaean Tribes</French>
-    <German>Ach&#228;ische St&#228;mme</German>
-    <Italian>Achaean Tribes</Italian>
-    <Spanish>Achaean Tribes</Spanish>
+    <English>Achaea</English>
+    <French>Achaea</French>
+    <German>Achaia</German>
+    <Italian>Achaea</Italian>
+    <Spanish>Achaea</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_KINGDOM</Tag>
@@ -842,11 +842,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_TRIBAL</Tag>
-    <English>Iranian Tribes</English>
-    <French>Iranian Tribes</French>
-    <German>Iranische St&#228;mme</German>
-    <Italian>Iranian Tribes</Italian>
-    <Spanish>Iranian Tribes</Spanish>
+    <English>Persian Tribes</English>
+    <French>Persian Tribes</French>
+    <German>Persische St&#228;mme</German>
+    <Italian>Persian Tribes</Italian>
+    <Spanish>Persian Tribes</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_PER_KINGDOM</Tag>
@@ -1178,11 +1178,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_TRIBAL</Tag>
-    <English>Latin Tribes</English>
-    <French>Latin Tribes</French>
-    <German>Latinische St&#228;mme</German>
-    <Italian>Latin Tribes</Italian>
-    <Spanish>Latin Tribes</Spanish>
+    <English>Latium</English>
+    <French>Latium</French>
+    <German>Latium</German>
+    <Italian>Latium</Italian>
+    <Spanish>Latium</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_KINGDOM</Tag>
@@ -1346,11 +1346,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_TRIBAL</Tag>
-    <English>Yamato Clans</English>
-    <French>Yamato Clans</French>
-    <German>Yamato-Sippen</German>
-    <Italian>Yamato Clans</Italian>
-    <Spanish>Yamato Clans</Spanish>
+    <English>Yamato</English>
+    <French>Yamato</French>
+    <German>Yamato</German>
+    <Italian>Yamato</Italian>
+    <Spanish>Yamato</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_KINGDOM</Tag>
@@ -1514,11 +1514,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ETH_TRIBAL</Tag>
-    <English>Peoples of the Horn</English>
-    <French>Peoples of the Horn</French>
-    <German>V&#246;lker am Horn von Afrika</German>
-    <Italian>Peoples of the Horn</Italian>
-    <Spanish>Peoples of the Horn</Spanish>
+    <English>Ethiopia</English>
+    <French>Ethiopia</French>
+    <German>&#196;thiopien</German>
+    <Italian>Ethiopia</Italian>
+    <Spanish>Ethiopia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ETH_KINGDOM</Tag>
@@ -1682,11 +1682,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_TRIBAL</Tag>
-    <English>Maya Peoples</English>
-    <French>Maya Peoples</French>
-    <German>V&#246;lker der Maya</German>
-    <Italian>Maya Peoples</Italian>
-    <Spanish>Maya Peoples</Spanish>
+    <English>Maya</English>
+    <French>Maya</French>
+    <German>Maya</German>
+    <Italian>Maya</Italian>
+    <Spanish>Maya</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAY_KINGDOM</Tag>
@@ -1850,11 +1850,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_TRIBAL</Tag>
-    <English>Norse Clans</English>
-    <French>Norse Clans</French>
-    <German>Nordische Sippen</German>
-    <Italian>Norse Clans</Italian>
-    <Spanish>Norse Clans</Spanish>
+    <English>Scandinavia</English>
+    <French>Scandinavia</French>
+    <German>Skandinavien</German>
+    <Italian>Scandinavia</Italian>
+    <Spanish>Scandinavia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_KINGDOM</Tag>
@@ -2018,11 +2018,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_TRIBAL</Tag>
-    <English>Bedouin Tribes</English>
-    <French>Bedouin Tribes</French>
-    <German>Beduinenst&#228;mme</German>
-    <Italian>Bedouin Tribes</Italian>
-    <Spanish>Bedouin Tribes</Spanish>
+    <English>Arabia</English>
+    <French>Arabia</French>
+    <German>Arabien</German>
+    <Italian>Arabia</Italian>
+    <Spanish>Arabia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_KINGDOM</Tag>
@@ -2186,11 +2186,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_KHM_TRIBAL</Tag>
-    <English>Khmer Peoples</English>
-    <French>Khmer Peoples</French>
-    <German>V&#246;lker der Khmer</German>
-    <Italian>Khmer Peoples</Italian>
-    <Spanish>Khmer Peoples</Spanish>
+    <English>Cambodia</English>
+    <French>Cambodia</French>
+    <German>Kambodscha</German>
+    <Italian>Cambodia</Italian>
+    <Spanish>Cambodia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_KHM_KINGDOM</Tag>
@@ -2354,11 +2354,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_TRIBAL</Tag>
-    <English>Iberian Peoples</English>
-    <French>Iberian Peoples</French>
-    <German>Iberische V&#246;lker</German>
-    <Italian>Iberian Peoples</Italian>
-    <Spanish>Iberian Peoples</Spanish>
+    <English>Iberia</English>
+    <French>Iberia</French>
+    <German>Iberien</German>
+    <Italian>Iberia</Italian>
+    <Spanish>Iberia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_KINGDOM</Tag>
@@ -2522,11 +2522,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_TRIBAL</Tag>
-    <English>Frankish Tribes</English>
-    <French>Frankish Tribes</French>
-    <German>Fr&#228;nkische St&#228;mme</German>
-    <Italian>Frankish Tribes</Italian>
-    <Spanish>Frankish Tribes</Spanish>
+    <English>Francia</English>
+    <French>Francia</French>
+    <German>Franken</German>
+    <Italian>Francia</Italian>
+    <Spanish>Francia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_FRA_KINGDOM</Tag>
@@ -2690,11 +2690,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ENG_TRIBAL</Tag>
-    <English>Briton Peoples</English>
-    <French>Briton Peoples</French>
-    <German>V&#246;lker Britanniens</German>
-    <Italian>Briton Peoples</Italian>
-    <Spanish>Briton Peoples</Spanish>
+    <English>Britain</English>
+    <French>Britain</French>
+    <German>Britannien</German>
+    <Italian>Britain</Italian>
+    <Spanish>Britain</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ENG_KINGDOM</Tag>
@@ -2858,11 +2858,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_TRIBAL</Tag>
-    <English>Germanic Tribes</English>
-    <French>Germanic Tribes</French>
-    <German>Germanische St&#228;mme</German>
-    <Italian>Germanic Tribes</Italian>
-    <Spanish>Germanic Tribes</Spanish>
+    <English>Germania</English>
+    <French>Germania</French>
+    <German>Germanien</German>
+    <Italian>Germania</Italian>
+    <Spanish>Germania</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_KINGDOM</Tag>
@@ -3026,11 +3026,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_TRIBAL</Tag>
-    <English>Slavic Tribes</English>
-    <French>Slavic Tribes</French>
-    <German>Slawische St&#228;mme</German>
-    <Italian>Slavic Tribes</Italian>
-    <Spanish>Slavic Tribes</Spanish>
+    <English>Rus</English>
+    <French>Rus</French>
+    <German>Rus</German>
+    <Italian>Rus</Italian>
+    <Spanish>Rus</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_RUS_KINGDOM</Tag>
@@ -3194,11 +3194,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_NED_TRIBAL</Tag>
-    <English>Batavian Tribes</English>
-    <French>Batavian Tribes</French>
-    <German>Batavische St&#228;mme</German>
-    <Italian>Batavian Tribes</Italian>
-    <Spanish>Batavian Tribes</Spanish>
+    <English>Batavia</English>
+    <French>Batavia</French>
+    <German>Batavien</German>
+    <Italian>Batavia</Italian>
+    <Spanish>Batavia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_NED_KINGDOM</Tag>
@@ -3362,11 +3362,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAL_TRIBAL</Tag>
-    <English>Mande Peoples</English>
-    <French>Mande Peoples</French>
-    <German>Mande-V&#246;lker</German>
-    <Italian>Mande Peoples</Italian>
-    <Spanish>Mande Peoples</Spanish>
+    <English>Mande</English>
+    <French>Mande</French>
+    <German>Mande</German>
+    <Italian>Mande</Italian>
+    <Spanish>Mande</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MAL_KINGDOM</Tag>
@@ -3530,11 +3530,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_POR_TRIBAL</Tag>
-    <English>Lusitanian Tribes</English>
-    <French>Lusitanian Tribes</French>
-    <German>Lusitanische St&#228;mme</German>
-    <Italian>Lusitanian Tribes</Italian>
-    <Spanish>Lusitanian Tribes</Spanish>
+    <English>Lusitania</English>
+    <French>Lusitania</French>
+    <German>Lusitanien</German>
+    <Italian>Lusitania</Italian>
+    <Spanish>Lusitania</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_POR_KINGDOM</Tag>
@@ -3698,11 +3698,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_TRIBAL</Tag>
-    <English>Andean Peoples</English>
-    <French>Andean Peoples</French>
-    <German>Andenv&#246;lker</German>
-    <Italian>Andean Peoples</Italian>
-    <Spanish>Andean Peoples</Spanish>
+    <English>Andes</English>
+    <French>Andes</French>
+    <German>Anden</German>
+    <Italian>Andes</Italian>
+    <Spanish>Andes</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_INC_KINGDOM</Tag>
@@ -3866,11 +3866,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MON_TRIBAL</Tag>
-    <English>Mongol Clans</English>
-    <French>Mongol Clans</French>
-    <German>Mongolische Sippen</German>
-    <Italian>Mongol Clans</Italian>
-    <Spanish>Mongol Clans</Spanish>
+    <English>Mongolia</English>
+    <French>Mongolia</French>
+    <German>Mongolei</German>
+    <Italian>Mongolia</Italian>
+    <Spanish>Mongolia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_MON_KINGDOM</Tag>
@@ -4034,11 +4034,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AZT_TRIBAL</Tag>
-    <English>Mexica Peoples</English>
-    <French>Mexica Peoples</French>
-    <German>V&#246;lker der Mexica</German>
-    <Italian>Mexica Peoples</Italian>
-    <Spanish>Mexica Peoples</Spanish>
+    <English>Mexico</English>
+    <French>Mexico</French>
+    <German>Mexiko</German>
+    <Italian>Mexico</Italian>
+    <Spanish>Mexico</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_AZT_KINGDOM</Tag>
@@ -4202,11 +4202,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_TRIBAL</Tag>
-    <English>Turkic Tribes</English>
-    <French>Turkic Tribes</French>
-    <German>Turkst&#228;mme</German>
-    <Italian>Turkic Tribes</Italian>
-    <Spanish>Turkic Tribes</Spanish>
+    <English>Anatolia</English>
+    <French>Anatolia</French>
+    <German>Anatolien</German>
+    <Italian>Anatolia</Italian>
+    <Spanish>Anatolia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_TUR_KINGDOM</Tag>
@@ -5674,11 +5674,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_ITALIAN_STATES</Tag>
-    <English>Italian City-States</English>
-    <French>Italian City-States</French>
-    <German>Italienische Stadtstaaten</German>
-    <Italian>Italian City-States</Italian>
-    <Spanish>Italian City-States</Spanish>
+    <English>Italy</English>
+    <French>Italy</French>
+    <German>Italien</German>
+    <Italian>Italy</Italian>
+    <Spanish>Italy</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ROM_VENICE</Tag>
@@ -5770,43 +5770,51 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_CHRISTIAN_IBERIA</Tag>
-    <English>Christian Kingdoms of Iberia</English>
-    <French>Christian Kingdoms of Iberia</French>
-    <German>Christliche Reiche Iberiens</German>
-    <Italian>Christian Kingdoms of Iberia</Italian>
-    <Spanish>Christian Kingdoms of Iberia</Spanish>
+    <English>Castile</English>
+    <French>Castile</French>
+    <German>Kastilien</German>
+    <Italian>Castile</Italian>
+    <Spanish>Castile</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_SPA_IBERIAN_KINGDOMS</Tag>
-    <English>Iberian Kingdoms</English>
-    <French>Iberian Kingdoms</French>
-    <German>Iberische K&#246;nigreiche</German>
-    <Italian>Iberian Kingdoms</Italian>
-    <Spanish>Iberian Kingdoms</Spanish>
+    <English>Castile</English>
+    <French>Castile</French>
+    <German>Kastilien</German>
+    <Italian>Castile</Italian>
+    <Spanish>Castile</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ENG_ANGLO_SAXON</Tag>
-    <English>Anglo-Saxon Kingdoms</English>
-    <French>Anglo-Saxon Kingdoms</French>
-    <German>Angels&#228;chsische K&#246;nigreiche</German>
-    <Italian>Anglo-Saxon Kingdoms</Italian>
-    <Spanish>Anglo-Saxon Kingdoms</Spanish>
+    <English>Wessex</English>
+    <French>Wessex</French>
+    <German>Wessex</German>
+    <Italian>Wessex</Italian>
+    <Spanish>Wessex</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_VIK_NORSE_KINGDOMS</Tag>
-    <English>Scandinavian Kingdoms</English>
-    <French>Scandinavian Kingdoms</French>
-    <German>Skandinavische K&#246;nigreiche</German>
-    <Italian>Scandinavian Kingdoms</Italian>
-    <Spanish>Scandinavian Kingdoms</Spanish>
+    <English>Vikings</English>
+    <French>Vikings</French>
+    <German>Wikinger</German>
+    <Italian>Vikings</Italian>
+    <Spanish>Vikings</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_JAP_JOMON</Tag>
+    <English>Jomon</English>
+    <French>Jomon</French>
+    <German>Jomon</German>
+    <Italian>Jomon</Italian>
+    <Spanish>Jomon</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_EARLY_JAPAN</Tag>
-    <English>Peoples of the Japanese Islands</English>
-    <French>Peoples of the Japanese Islands</French>
-    <German>V&#246;lker der japanischen Inseln</German>
-    <Italian>Peoples of the Japanese Islands</Italian>
-    <Spanish>Peoples of the Japanese Islands</Spanish>
+    <English>Yayoi</English>
+    <French>Yayoi</French>
+    <German>Yayoi</German>
+    <Italian>Yayoi</Italian>
+    <Spanish>Yayoi</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_JAP_YAMATO</Tag>
@@ -5818,51 +5826,59 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_INDUS</Tag>
-    <English>Indus Valley Cultures</English>
-    <French>Indus Valley Cultures</French>
-    <German>Induskulturen</German>
-    <Italian>Indus Valley Cultures</Italian>
-    <Spanish>Indus Valley Cultures</Spanish>
+    <English>Hindu Peoples</English>
+    <French>Hindu Peoples</French>
+    <German>Hinduv&#246;lker</German>
+    <Italian>Hindu Peoples</Italian>
+    <Spanish>Hindu Peoples</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_IND_INDIAN_KINGDOMS</Tag>
-    <English>Indian Kingdoms</English>
-    <French>Indian Kingdoms</French>
-    <German>Indische K&#246;nigreiche</German>
-    <Italian>Indian Kingdoms</Italian>
-    <Spanish>Indian Kingdoms</Spanish>
+    <English>Magadha</English>
+    <French>Magadha</French>
+    <German>Magadha</German>
+    <Italian>Magadha</Italian>
+    <Spanish>Magadha</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_CHI_EARLY_CHINA</Tag>
-    <English>Early Chinese Cultures</English>
-    <French>Early Chinese Cultures</French>
-    <German>Fr&#252;he chinesische Kulturen</German>
-    <Italian>Early Chinese Cultures</Italian>
-    <Spanish>Early Chinese Cultures</Spanish>
+    <English>China</English>
+    <French>China</French>
+    <German>China</German>
+    <Italian>China</Italian>
+    <Spanish>China</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_BAB_EARLY_MESOPOTAMIA</Tag>
-    <English>Mesopotamian City-States</English>
-    <French>Mesopotamian City-States</French>
-    <German>Stadtstaaten Mesopotamiens</German>
-    <Italian>Mesopotamian City-States</Italian>
-    <Spanish>Mesopotamian City-States</Spanish>
+    <English>The Babylonians</English>
+    <French>The Babylonians</French>
+    <German>Babylonier</German>
+    <Italian>The Babylonians</Italian>
+    <Spanish>The Babylonians</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DN_RUS_EARLY_RUS</Tag>
+    <English>Rus</English>
+    <French>Rus</French>
+    <German>Rus</German>
+    <Italian>Rus</Italian>
+    <Spanish>Rus</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GRE_POLEIS</Tag>
-    <English>Greek City-States</English>
-    <French>Greek City-States</French>
-    <German>Griechische Stadtstaaten</German>
-    <Italian>Greek City-States</Italian>
-    <Spanish>Greek City-States</Spanish>
+    <English>Hellas</English>
+    <French>Hellas</French>
+    <German>Hellas</German>
+    <Italian>Hellas</Italian>
+    <Spanish>Hellas</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_ARA_EARLY_ARABIA</Tag>
-    <English>Arabian Kingdoms</English>
-    <French>Arabian Kingdoms</French>
-    <German>Arabische K&#246;nigreiche</German>
-    <Italian>Arabian Kingdoms</Italian>
-    <Spanish>Arabian Kingdoms</Spanish>
+    <English>Arabia</English>
+    <French>Arabia</French>
+    <German>Arabien</German>
+    <Italian>Arabia</Italian>
+    <Spanish>Arabia</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DN_GER_GREATER_GERMAN</Tag>

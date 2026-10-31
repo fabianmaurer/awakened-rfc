@@ -835,10 +835,10 @@
     </TEXT>
   <TEXT>
     <Tag>TXT_KEY_RFCMP_SERFDOM_HURRY_UNITS</Tag>
-    <English>Can sacrifice population to rush units only; cannot rush buildings or projects.</English>
-    <French>Permet de sacrifier de la population pour acc&#233;l&#233;rer uniquement les unit&#233;s, pas les b&#226;timents ni les projets.</French>
-    <German>Kann Bev&#246;lkerung opfern, um ausschlie&#223;lich Einheiten zu beschleunigen; keine Geb&#228;ude oder Projekte.</German>
-    <Italian>Consente di sacrificare popolazione per accelerare solo le unit&#224;, non gli edifici o i progetti.</Italian>
-    <Spanish>Permite sacrificar poblaci&#243;n para acelerar solo unidades, no edificios ni proyectos.</Spanish>
+    <English>[ICON_BULLET]Can sacrifice population to rush units.</English>
+    <French>[ICON_BULLET]Permet de sacrifier de la population pour acc&#233;l&#233;rer les unit&#233;s.</French>
+    <German>[ICON_BULLET]Kann Bev&#246;lkerung opfern, um Einheiten zu beschleunigen.</German>
+    <Italian>[ICON_BULLET]Consente di sacrificare popolazione per accelerare le unit&#224;.</Italian>
+    <Spanish>[ICON_BULLET]Permite sacrificar poblaci&#243;n para acelerar unidades.</Spanish>
   </TEXT>
 </Civ4GameText>

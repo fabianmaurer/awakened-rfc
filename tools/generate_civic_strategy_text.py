@@ -44,8 +44,8 @@ SUMMARIES = {
         'Enables slave specialists. Enslave conquered peoples.',
         'Schaltet Sklavenspezialisten frei. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
-        '+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.',
-        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev\u00f6lkerung opfern, um nur Einheiten zu beschleunigen, keine Geb\u00e4ude oder Projekte.'),
+        '+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.',
+        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev\u00f6lkerung opfern, um Einheiten zu beschleunigen.'),
     'PLANNED_ECONOMY': (
         '+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.',
         '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.'),

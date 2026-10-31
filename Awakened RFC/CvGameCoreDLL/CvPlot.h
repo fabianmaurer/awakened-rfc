@@ -63,6 +63,7 @@ public:
 	void updateFog();
 	void updateVisibility();
 
+	void updateHuntingGroundsHerd();
 	void updateSymbolDisplay();
 	void updateSymbolVisibility();
 	void updateSymbols();
@@ -342,6 +343,9 @@ public:
 	int calculateNatureYield(YieldTypes eIndex, TeamTypes eTeam, bool bIgnoreFeature = false) const;		// Exposed to Python
 	int calculateBestNatureYield(YieldTypes eIndex, TeamTypes eTeam) const;															// Exposed to Python
 	int calculateTotalBestNatureYield(TeamTypes eTeam) const;																						// Exposed to Python
+	bool isHuntingGroundsSupport() const;
+	int getHuntingGroundsSupportCount() const;
+	int getHuntingGroundsYieldLoss(PlayerTypes ePlayer) const;
 	int calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal = false) const;	// Exposed to Python
 	int calculateYield(YieldTypes eIndex, bool bDisplay = false) const;												// Exposed to Python
 	bool hasYield() const;																																		// Exposed to Python
@@ -550,6 +554,8 @@ protected:
 	short* m_paiBuildProgress;
 
 	CvFeature* m_pFeatureSymbol;
+	CvFeature* m_pHuntingHerdSymbol; // Transient worked-tile artwork.
+	CvFeature* m_pArchiveOutputSymbol; // Transient display only; never a plot feature.
 	CvRoute* m_pRouteSymbol;
 	CvRiver* m_pRiverSymbol;
 	CvFlagEntity* m_pFlagSymbol;

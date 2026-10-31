@@ -1,52 +1,69 @@
 # Scenario country names
 
-The audit covers all initially selectable major civilizations in the four original
-authored starts. The following German names describe the intended starting
+The source review covers all 65 selectable civilization entries across the five
+authored starts: 3000 BC (4), 800 BC (12), 600 AD (7), 900 AD (15), and 1453 AD (27).
+It checks scenario rosters, preview overrides, starting civic profiles, naming
+branches and their text entries; it is not an in-game menu check.
+The following German names describe the intended starting
 profiles. Live names still follow actual civics, religion, city count and vassal
 status; alternate governments retain their own identities.
 
 | Start | Civilization | Starting-profile name |
 | --- | --- | --- |
-| 3000 BC | Egypt | Völker des Niltals |
-| 3000 BC | India | Induskulturen |
-| 3000 BC | China | Frühe chinesische Kulturen |
-| 3000 BC | Babylonia | Stadtstaaten Mesopotamiens |
-| 800 BC | Egypt | Königreich Ägypten |
-| 800 BC | India | Indische Königreiche |
-| 800 BC | China | Reich der Mitte |
+| 3000 BC | Egypt | Pharaonenreich |
+| 3000 BC | India | Hinduvölker |
+| 3000 BC | China | China |
+| 3000 BC | Babylonia | Babylonier |
+| 800 BC | Egypt | Pharaonenreich |
+| 800 BC | India | Kuru und Panchala |
+| 800 BC | China | Zhou-Reich |
 | 800 BC | Babylonia | Königreich Babylon |
-| 800 BC | Greece | Griechische Stadtstaaten |
-| 800 BC | Persia | Königreich Persien |
-| 800 BC | Carthage | Karthago |
-| 800 BC | Rome | SPQR |
-| 800 BC | Japan | Völker der japanischen Inseln |
+| 800 BC | Greece | Hellas |
+| 800 BC | Persia | Persische Stämme |
+| 800 BC | Carthage | Königreich Karthago |
+| 800 BC | Rome | Rom |
+| 800 BC | Japan | Jomon |
 | 600 AD | China | Reich der Mitte |
 | 600 AD | Japan | Reich von Yamato |
-| 600 AD | Vikings | Skandinavische Königreiche |
-| 600 AD | Arabia | Arabische Königreiche |
+| 600 AD | Vikings | Wikinger |
+| 600 AD | Arabia | Arabien |
+| 600 / 900 AD | Maya | Königreiche der Maya |
+| 900 AD | Fatimids | Fatimidenkalifat |
+| 900 AD | Russia | Rus |
+
+The 900 AD Fatimid civilization retains its own identity in selection; the legacy
+Tulunid override applies only when that slot actually contains Egypt. Early Rus
+uses Rus before 1283, then its existing Muscovy naming window. Maya Kingdoms
+replaces the recent Tikal label, which incorrectly named the whole civilization
+after one of its cities. The other selectable entries retain their existing
+period and civilization identities.
 
 ## Period rules
 
 Ordinary monarchies retain appropriate alternate religious and constitutional
 names. France uses a Frankish identity before 800, the Carolingian Empire from
 800 until 843, West Francia until 987, then
-its existing civic names. East Francia ends at 962. England uses Anglo-Saxon
-Kingdoms before 927. Spain uses Iberian Kingdoms
-(Christian Kingdoms of Iberia with Christianity) from 718 until 1479.
+its existing civic names. East Francia ends at 962. England uses Wessex before
+927. Spain uses Asturias, León and Castile within their existing dated windows.
 
-The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430,
-regardless of the generic six-city empire threshold. Later Cambodia and
-alternate governments retain their existing names. Early Japan uses a neutral
-island-peoples identity before 300 and Yamato from 300 to 709. Scandinavian
-monarchies use a collective kingdom name before 1000. Arabia without a state
-religion uses Arabian Kingdoms before 622; Islamic names retain priority.
+The Khmer monarchy uses Chenla before 802 and Khmer Empire from 802 to 1430.
+Early Japan uses Jomon before 300 BC, Yayoi from 300 BC to AD 299,
+and Yamato from AD 300 to 709. Scandinavian
+monarchies use Vikings (Wikinger) before 1000. Arabia without a state
+religion uses Arabia before 622; Islamic names retain priority.
 
-Very early Indian, Chinese and Mesopotamian tribal/ordinary monarchical states
-use regional culture or city-state names before 1900 BC, 1600 BC and 1900 BC
-respectively. Small ordinary Indian monarchies before 322 BC use a plural
-kingdom name. Early ordinary Greek kingdoms and ordinary republics before
-323 BC use Greek City-States. These dates are game naming boundaries, not
-claims that every real society changed identity simultaneously.
+The displayed spelling is **Jomon**, without the macron. The user's in-game
+check displayed **Jōmon** as **J**; ASCII avoids the suspected legacy character
+conversion problem.
+
+Early India uses Hindu Peoples (Hinduvölker), and Babylonia uses The Babylonians
+(Babylonier), preserving the playable civilizations' identities. These labels
+replace the misleading Harappa and Sumer substitutions. Early China uses China.
+Small Indian monarchies use Kuru and Panchala in the Vedic window, then Magadha
+before 322 BC. Early Greek states use Hellas. Tribal Persia uses Persian Tribes
+(Persische Stämme), rather than modern-sounding Iran. Korean period labels use Gojoseon,
+Goguryeo, Silla, Goryeo and Joseon. Other tribal collective labels use concrete
+geographic names. These names change no city ownership or political boundaries.
 
 SPQR remains the user's chosen Roman republican name. The scenario's early
 spawn dates and alternate civic outcomes are preserved. Generic Middle Kingdom,
@@ -64,6 +81,8 @@ are naming windows, not scripted changes of government or city ownership.
 
 ## Historical references
 
+- [Met: Jōmon chronology and the transition to Yayoi](https://www.metmuseum.org/fr/essays/jomon-culture-ca-10500-ca-300-b-c). The 300 BC naming boundary is a broad scenario convention, not a claim that the transition occurred everywhere at once.
+- [Met: Medes and Persians in the ninth century BC](https://www.metmuseum.org/de/toah/ht/04/wai). Persian Tribes describes the early tribal slot without implying a later unified Iranian state.
 - [DHM: Strasbourg oaths and the Frankish realms](https://www.dhm.de/mediathek/der-rhein-von-basel-bis-koblenz/deutsch-franzoesische-geschichte-am-rhein/strassburger-eide/)
 - [UNESCO: Angkor and the Khmer Empire](https://whc.unesco.org/en/list/668/)
 - [Historic Royal Palaces: England united in 927](https://www.hrp.org.uk/tower-of-london/history-and-stories/william-the-conqueror/)

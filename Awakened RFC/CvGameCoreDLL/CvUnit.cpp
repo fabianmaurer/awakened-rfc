@@ -359,6 +359,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iAttackPlotX = INVALID_PLOT_COORD;
 	m_iAttackPlotY = INVALID_PLOT_COORD;
 	m_iCombatTimer = 0;
+	m_bArcticDefensiveWithdrawal = false;
 	m_iCombatFirstStrikes = 0;
 	m_iFortifyTurns = 0;
 	m_iBlitzCount = 0;
@@ -828,6 +829,13 @@ void CvUnit::doTurn()
 		}
 	}
 
+	if (!isAnimal() && getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ESKIMO") &&
+		plot()->getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW"))
+	{
+		changeDamage(10, NO_PLAYER);
+		if (isDead()) return;
+	}
+
 	changeImmobileTimer(-1);
 
 	setMadeAttack(false);
@@ -1153,6 +1161,7 @@ void CvUnit::updateAirCombat(bool bQuick)
 
 void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition& kBattle)
 {
+	m_bArcticDefensiveWithdrawal = false;
 	if (!m_pUnitInfo->isHiddenNationality() && !pDefender->getUnitInfo().isHiddenNationality()) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pDefender->getTeam(), pPlot);
 	CombatDetails cdAttackerDetails;
 	CombatDetails cdDefenderDetails;
@@ -1165,7 +1174,7 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 	int iDefenderOdds;
 
 	getDefenderCombatValues(*pDefender, pPlot, iAttackerStrength, iAttackerFirepower, iDefenderOdds, iDefenderStrength, iAttackerDamage, iDefenderDamage, &cdDefenderDetails);
-	int iAttackerKillOdds = iDefenderOdds * (100 - withdrawalProbability()) / 100;
+	int iAttackerKillOdds = iDefenderOdds * (100 - withdrawalProbability(pDefender)) / 100;
 	// Only a healthy attacker defeating a weaker land combatant can capture
 	// slaves. Defender first-strike damage does not disqualify the victory.
 	bool bSlaveCapture = getDamage() == 0 && getDomainType() == DOMAIN_LAND &&
@@ -1192,7 +1201,7 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 		{
 			if (getCombatFirstStrikes() == 0)
 			{
-				if (getDamage() + iAttackerDamage >= maxHitPoints() && GC.getGameINLINE().getSorenRandNum(100, "Withdrawal") < withdrawalProbability())
+				if (getDamage() + iAttackerDamage >= maxHitPoints() && GC.getGameINLINE().getSorenRandNum(100, "Withdrawal") < withdrawalProbability(pDefender))
 				{
 					flankingStrikeCombat(pPlot, iAttackerStrength, iAttackerFirepower, iAttackerKillOdds, iDefenderDamage, pDefender);
 
@@ -1234,6 +1243,15 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					break;
 				}
 
+				if (isAnimal() && pDefender->getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER") &&
+					pDefender->getDamage() + iDefenderDamage >= pDefender->maxHitPoints())
+				{
+					if (GC.getGameINLINE().getSorenRandNum(100, "Arctic hunter withdrawal") < 50)
+					{
+						m_bArcticDefensiveWithdrawal = true;
+						break;
+					}
+				}
 				pDefender->changeDamage(iDefenderDamage, getOwnerINLINE());
 
 				if (getCombatFirstStrikes() > 0 && isRanged())
@@ -1625,6 +1643,14 @@ void CvUnit::updateCombat(bool bQuick)
 
 			// This is is put before the plot advancement, the unit will always try to walk back
 			// to the square that they came from, before advancing.
+			getGroup()->clearMissionQueue();
+		}
+		else if (m_bArcticDefensiveWithdrawal)
+		{
+			m_bArcticDefensiveWithdrawal = false;
+			szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_UNIT_WITHDRAW", pDefender->getNameKey(), getNameKey());
+			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_OUR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pDefender->getX_INLINE(), pDefender->getY_INLINE());
+			changeMoves(std::max(GC.getMOVE_DENOMINATOR(), pPlot->movementCost(this, plot())));
 			getGroup()->clearMissionQueue();
 		}
 		else
@@ -2579,7 +2605,12 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		break;
 	}
 
-	if (isAnimal())
+	const bool bIceBear = getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR");
+	if (bIceBear && pPlot->getTerrainType() != GC.getInfoTypeForString("TERRAIN_SNOW") &&
+		pPlot->getTerrainType() != GC.getInfoTypeForString("TERRAIN_TUNDRA"))
+		return false;
+
+	if (isAnimal() && !bIceBear)
 	{
 		if (pPlot->isOwned())
 		{
@@ -2605,7 +2636,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 		}
 	}
 
-	if (isNoCapture())
+	if (isNoCapture() && !bIceBear)
 	{
 		if (!bAttack)
 		{
@@ -3241,6 +3272,8 @@ void CvUnit::gift(bool bTestTransport)
 
 bool CvUnit::canLoadUnit(const CvUnit* pUnit, const CvPlot* pPlot) const
 {
+	if (getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR")) return false;
+
 	FAssert(pUnit != NULL);
 	FAssert(pPlot != NULL);
 
@@ -4640,7 +4673,11 @@ bool CvUnit::bombard()
 
 bool CvUnit::canPillage(const CvPlot* pPlot) const
 {
-	if (!(m_pUnitInfo->isPillage()))
+	const bool bClearOwnPlot = pPlot->getOwnerINLINE() == getOwnerINLINE() &&
+		(pPlot->getImprovementType() != NO_IMPROVEMENT || pPlot->isRoute()) &&
+		(getUnitClassType() == GC.getInfoTypeForString("UNITCLASS_WORKER") ||
+		 getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"));
+	if (!m_pUnitInfo->isPillage() && !bClearOwnPlot)
 	{
 		return false;
 	}
@@ -4669,7 +4706,7 @@ bool CvUnit::canPillage(const CvPlot* pPlot) const
 	{
 		if (!potentialWarAction(pPlot))
 		{
-			if ((pPlot->getImprovementType() == NO_IMPROVEMENT) || (pPlot->getOwnerINLINE() != getOwnerINLINE()))
+			if (!bClearOwnPlot && ((pPlot->getImprovementType() == NO_IMPROVEMENT) || (pPlot->getOwnerINLINE() != getOwnerINLINE())))
 			{
 				return false;
 			}
@@ -4694,6 +4731,9 @@ bool CvUnit::pillage()
 	RouteTypes eTempRoute = NO_ROUTE;
 
 	CvPlot* pPlot = plot();
+	const bool bClearOwnRoute = pPlot->getOwnerINLINE() == getOwnerINLINE() && pPlot->isRoute() &&
+		(getUnitClassType() == GC.getInfoTypeForString("UNITCLASS_WORKER") ||
+		 getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"));
 
 	if (!canPillage(pPlot))
 	{
@@ -4705,7 +4745,7 @@ bool CvUnit::pillage()
 		// we should not be calling this without declaring war first, so do not declare war here
 		if (!isEnemy(pPlot->getTeam(), pPlot))
 		{
-			if ((pPlot->getImprovementType() == NO_IMPROVEMENT) || (pPlot->getOwnerINLINE() != getOwnerINLINE()))
+			if (!bClearOwnRoute && ((pPlot->getImprovementType() == NO_IMPROVEMENT) || (pPlot->getOwnerINLINE() != getOwnerINLINE())))
 			{
 				return false;
 			}
@@ -4774,7 +4814,12 @@ bool CvUnit::pillage()
 			}
 		}
 
-		pPlot->setImprovementType((ImprovementTypes)(GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementPillage()));
+		// Builders clear their own improvement completely, preserving routes.
+		const bool bClearOwnImprovement = pPlot->getOwnerINLINE() == getOwnerINLINE() &&
+			(getUnitClassType() == GC.getInfoTypeForString("UNITCLASS_WORKER") ||
+			 getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER"));
+		pPlot->setImprovementType(bClearOwnImprovement ? NO_IMPROVEMENT :
+			(ImprovementTypes)GC.getImprovementInfo(pPlot->getImprovementType()).getImprovementPillage());
 	}
 	else if (pPlot->isRoute())
 	{
@@ -7500,7 +7545,10 @@ int CvUnit::visibilityRange() const
 
 int CvUnit::baseMoves() const
 {
-	return (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()));
+	// The Buffalo Horns follows ownership and unit class through captures/upgrades.
+	const int iUniqueMoves = (GET_PLAYER(getOwnerINLINE()).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ZULU") &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE")) ? 1 : 0;
+	return (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()) + iUniqueMoves);
 }
 
 
@@ -9055,14 +9103,15 @@ int CvUnit::evasionProbability() const
 }
 
 
-int CvUnit::withdrawalProbability() const
+int CvUnit::withdrawalProbability(const CvUnit* pOpponent) const
 {
 	if (getDomainType() == DOMAIN_LAND && plot()->isWater())
 	{
 		return 0;
 	}
 
-	return std::max(0, (m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal()));
+	return std::min(100, std::max(0, m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal() +
+		(pOpponent != NULL && pOpponent->isAnimal() && getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER") ? 50 : 0)));
 }
 
 
@@ -9397,6 +9446,13 @@ int CvUnit::getJihadGroupCampaign() const
 bool CvUnit::canJoinGroup(const CvPlot* pPlot, CvSelectionGroup* pSelectionGroup) const
 {
 	CvUnit* pHeadUnit;
+
+	// Animals may share a tile, but never share movement orders.
+	if (pSelectionGroup->getNumUnits() > 0 && pSelectionGroup != getGroup() &&
+		(isAnimal() || (pSelectionGroup->getHeadUnit() != NULL && pSelectionGroup->getHeadUnit()->isAnimal())))
+	{
+		return false;
+	}
 	
     if (!isHuman() && pSelectionGroup->getHeadUnit() != NULL)
     {
@@ -9829,16 +9885,44 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		{
 			if (isEnemy(pNewCity->getTeam()) && !canCoexistWithEnemyUnit(pNewCity->getTeam()) && canFight())
 			{
-				GET_TEAM(getTeam()).changeWarWeariness(pNewCity->getTeam(), *pNewPlot, GC.getDefineINT("WW_CAPTURED_CITY"));
-				GET_TEAM(getTeam()).AI_changeWarSuccess(pNewCity->getTeam(), GC.getDefineINT("WAR_SUCCESS_CITY_CAPTURING"));
-
-				PlayerTypes eNewOwner = GET_PLAYER(getOwnerINLINE()).pickConqueredCityOwner(*pNewCity);
-				if (GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pNewCity)) eNewOwner = getOwnerINLINE();
-
-				if (NO_PLAYER != eNewOwner)
+				if (getUnitType() == GC.getInfoTypeForString("UNIT_ICE_BEAR"))
 				{
-					GET_PLAYER(eNewOwner).acquireCity(pNewCity, true, false, true); // will delete the pointer
-					pNewCity = NULL;
+					// Destroy in the original owner's hands: no acquisition, loot,
+					// occupation or keep-city popup is ever generated for an animal.
+					if (pNewPlot->getNumVisibleEnemyDefenders(this) == 0 &&
+						(pNewPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") ||
+						 pNewPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA")))
+					{
+						const PlayerTypes eCityOwner = pNewCity->getOwnerINLINE();
+						const CvWString szMessage = gDLL->getText("TXT_KEY_ICE_BEAR_DESTROYED_CITY", pNewCity->getNameKey());
+						for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+						{
+							if (GET_PLAYER((PlayerTypes)iPlayer).isAlive() &&
+								(iPlayer == eCityOwner || pNewCity->isRevealed(GET_PLAYER((PlayerTypes)iPlayer).getTeam(), false)))
+								gDLL->getInterfaceIFace()->addMessage((PlayerTypes)iPlayer, false, GC.getEVENT_MESSAGE_TIME(), szMessage,
+									"AS2D_CITYRAZED", MESSAGE_TYPE_MAJOR_EVENT, getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_RED"),
+									pNewPlot->getX_INLINE(), pNewPlot->getY_INLINE(), true, true);
+						}
+						GC.getGameINLINE().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, eCityOwner, szMessage,
+							pNewPlot->getX_INLINE(), pNewPlot->getY_INLINE(), (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+						CvEventReporter::getInstance().cityRazed(pNewCity, getOwnerINLINE());
+						GET_PLAYER(eCityOwner).disband(pNewCity);
+						pNewCity = NULL;
+					}
+				}
+				else
+				{
+					GET_TEAM(getTeam()).changeWarWeariness(pNewCity->getTeam(), *pNewPlot, GC.getDefineINT("WW_CAPTURED_CITY"));
+					GET_TEAM(getTeam()).AI_changeWarSuccess(pNewCity->getTeam(), GC.getDefineINT("WAR_SUCCESS_CITY_CAPTURING"));
+
+					PlayerTypes eNewOwner = GET_PLAYER(getOwnerINLINE()).pickConqueredCityOwner(*pNewCity);
+					if (GC.getGameINLINE().isCrusadeConquest(getOwnerINLINE(), *pNewCity)) eNewOwner = getOwnerINLINE();
+
+					if (NO_PLAYER != eNewOwner)
+					{
+						GET_PLAYER(eNewOwner).acquireCity(pNewCity, true, false, true); // will delete the pointer
+						pNewCity = NULL;
+					}
 				}
 			}
 		}
@@ -11898,6 +11982,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iAttackPlotX);
 	pStream->Read(&m_iAttackPlotY);
 	pStream->Read(&m_iCombatTimer);
+	pStream->Read(&m_bArcticDefensiveWithdrawal);
 	pStream->Read(&m_iCombatFirstStrikes);
 	if (uiFlag < 2)
 	{
@@ -11987,7 +12072,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=2;
+	uint uiFlag=3;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12009,6 +12094,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iAttackPlotX);
 	pStream->Write(m_iAttackPlotY);
 	pStream->Write(m_iCombatTimer);
+	pStream->Write(m_bArcticDefensiveWithdrawal);
 	pStream->Write(m_iCombatFirstStrikes);
 	pStream->Write(m_iFortifyTurns);
 	pStream->Write(m_iBlitzCount);
@@ -12090,7 +12176,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 bool CvUnit::canAdvance(const CvPlot* pPlot, int iThreshold) const
 {
 	FAssert(canFight());
-	FAssert(!(isAnimal() && pPlot->isCity()));
+	FAssert(!(isAnimal() && pPlot->isCity() && getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR")));
 	FAssert(getDomainType() != DOMAIN_AIR);
 	FAssert(getDomainType() != DOMAIN_IMMOBILE);
 
@@ -12099,7 +12185,7 @@ bool CvUnit::canAdvance(const CvPlot* pPlot, int iThreshold) const
 		return false;
 	}
 
-	if (isNoCapture())
+	if (isNoCapture() && getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR"))
 	{
 		if (pPlot->isEnemyCity(*this))
 		{

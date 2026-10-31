@@ -635,6 +635,7 @@ public:
 	DllExport bool isAlive() const;																																						// Exposed to Python			
 	DllExport bool isEverAlive() const;																																				// Exposed to Python			
 	void setAlive(bool bNewValue);
+	int getLastBirthTurn() const;
 	void verifyAlive();
 
 	DllExport bool isTurnActive() const;																			
@@ -1167,6 +1168,7 @@ protected:
 	int m_iCoastalTradeRoutes;
 	int m_iTradeRoutes;
 	int m_iRevolutionTimer;
+	int m_iLastBirthTurn;
 	int m_iConversionTimer;
 	int m_iStateReligionCount;
 	int m_iNoNonStateReligionSpreadCount;

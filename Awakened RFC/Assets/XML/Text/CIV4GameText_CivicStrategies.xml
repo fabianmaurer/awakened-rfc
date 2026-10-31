@@ -98,11 +98,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
-        <English>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</English>
-        <French>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</French>
-        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev&#246;lkerung opfern, um nur Einheiten zu beschleunigen, keine Geb&#228;ude oder Projekte.</German>
-        <Italian>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</Italian>
-        <Spanish>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units only, not buildings or projects.</Spanish>
+        <English>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</English>
+        <French>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev&#246;lkerung opfern, um Einheiten zu beschleunigen.</German>
+        <Italian>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</Italian>
+        <Spanish>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>

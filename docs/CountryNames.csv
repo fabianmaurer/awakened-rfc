@@ -1,5 +1,5 @@
-﻿Civilization,Naming rule,English,German
-EGY,TRIBAL,Peoples of the Nile Valley,Völker des Niltals
+Civilization,Naming rule,English,German
+EGY,TRIBAL,Egypt,Ägypten
 EGY,KINGDOM,Kingdom of Egypt,Königreich Ägypten
 EGY,EMPIRE,Realm of the Two Lands,Reich der beiden Länder
 EGY,CONSTITUTIONAL,Kingdom of Egypt,Königreich Ägypten
@@ -20,7 +20,7 @@ EGY,ISLAMIC_REPUBLIC,Islamic Republic of Egypt,Islamische Republik Ägypten
 EGY,CALIPHATE,Caliphate of the Nile,Nilkalifat
 EGY,SULTANATE,Sultanate of Egypt,Sultanat Ägypten
 EGY,SECULAR_REPUBLIC,Egypt,Ägypten
-IND,TRIBAL,Peoples of Bharat,Völker Bharats
+IND,TRIBAL,Bharat,Bharat
 IND,KINGDOM,Kingdom of India,Königreich Indien
 IND,EMPIRE,Empire of India,Kaiserreich Indien
 IND,CONSTITUTIONAL,Kingdom of India,Königreich Indien
@@ -62,7 +62,7 @@ CHI,ISLAMIC_REPUBLIC,Islamic Republic of China,Islamische Republik China
 CHI,CALIPHATE,Caliphate of China,Kalifat China
 CHI,SULTANATE,Sultanate of China,Sultanat China
 CHI,SECULAR_REPUBLIC,China,China
-BAB,TRIBAL,Peoples of Mesopotamia,Völker Mesopotamiens
+BAB,TRIBAL,Mesopotamia,Mesopotamien
 BAB,KINGDOM,Kingdom of Babylon,Königreich Babylon
 BAB,EMPIRE,Babylonian Empire,Babylonisches Reich
 BAB,CONSTITUTIONAL,Kingdom of Babylon,Königreich Babylon
@@ -83,7 +83,7 @@ BAB,ISLAMIC_REPUBLIC,Islamic Republic of Babylon,Islamische Republik Babylon
 BAB,CALIPHATE,Caliphate of Babylon,Kalifat Babylon
 BAB,SULTANATE,Sultanate of Babylon,Sultanat Babylon
 BAB,SECULAR_REPUBLIC,Mesopotamian Federation,Mesopotamischer Bund
-GRE,TRIBAL,Achaean Tribes,Achäische Stämme
+GRE,TRIBAL,Achaea,Achaia
 GRE,KINGDOM,Kingdom of Greece,Königreich Griechenland
 GRE,EMPIRE,Hellenic Empire,Hellenisches Reich
 GRE,CONSTITUTIONAL,Kingdom of Greece,Königreich Griechenland
@@ -104,7 +104,7 @@ GRE,ISLAMIC_REPUBLIC,Islamic Republic of Greece,Islamische Republik Griechenland
 GRE,CALIPHATE,Caliphate of Greece,Kalifat Griechenland
 GRE,SULTANATE,Sultanate of Greece,Sultanat Griechenland
 GRE,SECULAR_REPUBLIC,Hellas,Hellas
-PER,TRIBAL,Iranian Tribes,Iranische Stämme
+PER,TRIBAL,Persian Tribes,Persische Stämme
 PER,KINGDOM,Kingdom of Persia,Königreich Persien
 PER,EMPIRE,Empire of the King of Kings,Reich des Königs der Könige
 PER,CONSTITUTIONAL,Kingdom of Persia,Königreich Persien
@@ -146,7 +146,7 @@ CAR,ISLAMIC_REPUBLIC,Islamic Republic of Carthage,Islamische Republik Karthago
 CAR,CALIPHATE,Caliphate of Carthage,Kalifat Karthago
 CAR,SULTANATE,Sultanate of Carthage,Sultanat Karthago
 CAR,SECULAR_REPUBLIC,Punic Federation,Punischer Bund
-ROM,TRIBAL,Latin Tribes,Latinische Stämme
+ROM,TRIBAL,Latium,Latium
 ROM,KINGDOM,Kingdom of Rome,Königreich Rom
 ROM,EMPIRE,Roman Empire,Römisches Reich
 ROM,CONSTITUTIONAL,Regno d'Italia,Königreich Italien
@@ -167,7 +167,7 @@ ROM,ISLAMIC_REPUBLIC,Islamic Republic of Rome,Islamische Republik Rom
 ROM,CALIPHATE,Caliphate of Rome,Kalifat Rom
 ROM,SULTANATE,Sultanate of Rome,Sultanat Rom
 ROM,SECULAR_REPUBLIC,Roman Republic,Römische Republik
-JAP,TRIBAL,Yamato Clans,Yamato-Sippen
+JAP,TRIBAL,Yamato,Yamato
 JAP,KINGDOM,Empire of Japan,Kaiserreich Japan
 JAP,EMPIRE,Empire of Japan,Kaiserreich Japan
 JAP,CONSTITUTIONAL,Empire of Japan,Kaiserreich Japan
@@ -188,7 +188,7 @@ JAP,ISLAMIC_REPUBLIC,Islamic Republic of Japan,Islamische Republik Japan
 JAP,CALIPHATE,Caliphate of Japan,Kalifat Japan
 JAP,SULTANATE,Sultanate of Japan,Sultanat Japan
 JAP,SECULAR_REPUBLIC,Japan,Japan
-ETH,TRIBAL,Peoples of the Horn,Völker am Horn von Afrika
+ETH,TRIBAL,Ethiopia,Äthiopien
 ETH,KINGDOM,Kingdom of Aksum,Königreich Aksum
 ETH,EMPIRE,Ethiopian Empire,Äthiopisches Kaiserreich
 ETH,CONSTITUTIONAL,Kingdom of Aksum,Königreich Aksum
@@ -209,7 +209,7 @@ ETH,ISLAMIC_REPUBLIC,Islamic Republic of Ethiopia,Islamische Republik Äthiopien
 ETH,CALIPHATE,Caliphate of Ethiopia,Kalifat Äthiopien
 ETH,SULTANATE,Sultanate of Ethiopia,Sultanat Äthiopien
 ETH,SECULAR_REPUBLIC,Ethiopia,Äthiopien
-MAY,TRIBAL,Maya Peoples,Völker der Maya
+MAY,TRIBAL,Maya,Maya
 MAY,KINGDOM,Maya Kingdoms,Königreiche der Maya
 MAY,EMPIRE,Maya Empire,Mayareich
 MAY,CONSTITUTIONAL,Maya Kingdoms,Königreiche der Maya
@@ -230,7 +230,7 @@ MAY,ISLAMIC_REPUBLIC,Maya Islamic Republic,Islamische Republik der Maya
 MAY,CALIPHATE,Caliphate of the Maya,Kalifat der Maya
 MAY,SULTANATE,Sultanate of the Maya,Sultanat der Maya
 MAY,SECULAR_REPUBLIC,United Maya States,Vereinigte Maya-Staaten
-VIK,TRIBAL,Norse Clans,Nordische Sippen
+VIK,TRIBAL,Scandinavia,Skandinavien
 VIK,KINGDOM,Kingdom of the North,Königreich des Nordens
 VIK,EMPIRE,North Sea Empire,Nordseereich
 VIK,CONSTITUTIONAL,Nordic Union,Nordische Union
@@ -251,7 +251,7 @@ VIK,ISLAMIC_REPUBLIC,Islamic Republic of Scandinavia,Islamische Republik Skandin
 VIK,CALIPHATE,Caliphate of Scandinavia,Kalifat Skandinavien
 VIK,SULTANATE,Sultanate of Scandinavia,Sultanat Skandinavien
 VIK,SECULAR_REPUBLIC,Scandinavian Union,Skandinavische Union
-ARA,TRIBAL,Bedouin Tribes,Beduinenstämme
+ARA,TRIBAL,Arabia,Arabien
 ARA,KINGDOM,Kingdom of Arabia,Königreich Arabien
 ARA,EMPIRE,Arabian Empire,Arabisches Reich
 ARA,CONSTITUTIONAL,Kingdom of Arabia,Königreich Arabien
@@ -272,7 +272,7 @@ ARA,ISLAMIC_REPUBLIC,Islamic Republic of Arabia,Islamische Republik Arabien
 ARA,CALIPHATE,Arab Caliphate,Arabisches Kalifat
 ARA,SULTANATE,Sultanate of Arabia,Sultanat Arabien
 ARA,SECULAR_REPUBLIC,Arabian Federation,Arabischer Bund
-KHM,TRIBAL,Khmer Peoples,Völker der Khmer
+KHM,TRIBAL,Cambodia,Kambodscha
 KHM,KINGDOM,Kingdom of Cambodia,Königreich Kambodscha
 KHM,EMPIRE,Khmer Empire,Khmerreich
 KHM,CONSTITUTIONAL,Kingdom of Cambodia,Königreich Kambodscha
@@ -293,7 +293,7 @@ KHM,ISLAMIC_REPUBLIC,Islamic Republic of Cambodia,Islamische Republik Kambodscha
 KHM,CALIPHATE,Caliphate of Cambodia,Kalifat Kambodscha
 KHM,SULTANATE,Sultanate of Cambodia,Sultanat Kambodscha
 KHM,SECULAR_REPUBLIC,Cambodia,Kambodscha
-SPA,TRIBAL,Iberian Peoples,Iberische Völker
+SPA,TRIBAL,Iberia,Iberien
 SPA,KINGDOM,Kingdom of Spain,Königreich Spanien
 SPA,EMPIRE,Spanish Empire,Spanisches Weltreich
 SPA,CONSTITUTIONAL,Kingdom of Spain,Königreich Spanien
@@ -314,7 +314,7 @@ SPA,ISLAMIC_REPUBLIC,Islamic Republic of Spain,Islamische Republik Spanien
 SPA,CALIPHATE,Caliphate of Spain,Kalifat Spanien
 SPA,SULTANATE,Sultanate of Spain,Sultanat Spanien
 SPA,SECULAR_REPUBLIC,Spain,Spanien
-FRA,TRIBAL,Frankish Tribes,Fränkische Stämme
+FRA,TRIBAL,Francia,Franken
 FRA,KINGDOM,Kingdom of France,Königreich Frankreich
 FRA,EMPIRE,French Empire,Französisches Kaiserreich
 FRA,CONSTITUTIONAL,Kingdom of France,Königreich Frankreich
@@ -335,7 +335,7 @@ FRA,ISLAMIC_REPUBLIC,Islamic Republic of France,Islamische Republik Frankreich
 FRA,CALIPHATE,Caliphate of France,Kalifat Frankreich
 FRA,SULTANATE,Sultanate of France,Sultanat Frankreich
 FRA,SECULAR_REPUBLIC,France,Frankreich
-ENG,TRIBAL,Briton Peoples,Völker Britanniens
+ENG,TRIBAL,Britain,Britannien
 ENG,KINGDOM,Kingdom of England,Königreich England
 ENG,EMPIRE,British Empire,Britisches Weltreich
 ENG,CONSTITUTIONAL,United Kingdom,Vereinigtes Königreich
@@ -356,7 +356,7 @@ ENG,ISLAMIC_REPUBLIC,Islamic Republic of Britain,Islamische Republik Großbritan
 ENG,CALIPHATE,Caliphate of Britain,Kalifat Großbritannien
 ENG,SULTANATE,Sultanate of Britain,Sultanat Großbritannien
 ENG,SECULAR_REPUBLIC,British Commonwealth,Britisches Commonwealth
-GER,TRIBAL,Germanic Tribes,Germanische Stämme
+GER,TRIBAL,Germania,Germanien
 GER,KINGDOM,Kingdom of the Germans,Königreich der Deutschen
 GER,EMPIRE,German Empire,Deutsches Kaiserreich
 GER,CONSTITUTIONAL,German Reich,Deutsches Reich
@@ -377,7 +377,7 @@ GER,ISLAMIC_REPUBLIC,Islamic Republic of Germany,Islamische Republik Deutschland
 GER,CALIPHATE,Caliphate of Germany,Kalifat Deutschland
 GER,SULTANATE,Sultanate of Germany,Sultanat Deutschland
 GER,SECULAR_REPUBLIC,Federal Republic of Germany,Bundesrepublik Deutschland
-RUS,TRIBAL,Slavic Tribes,Slawische Stämme
+RUS,TRIBAL,Rus,Rus
 RUS,KINGDOM,Tsardom of Russia,Russisches Zarenreich
 RUS,EMPIRE,Russian Empire,Russisches Kaiserreich
 RUS,CONSTITUTIONAL,Tsardom of Russia,Russisches Zarenreich
@@ -398,7 +398,7 @@ RUS,ISLAMIC_REPUBLIC,Islamic Republic of Russia,Islamische Republik Russland
 RUS,CALIPHATE,Caliphate of Russia,Kalifat Russland
 RUS,SULTANATE,Sultanate of Russia,Sultanat Russland
 RUS,SECULAR_REPUBLIC,Russian Federation,Russische Föderation
-NED,TRIBAL,Batavian Tribes,Batavische Stämme
+NED,TRIBAL,Batavia,Batavien
 NED,KINGDOM,Kingdom of the Netherlands,Königreich der Niederlande
 NED,EMPIRE,Dutch Empire,Niederländisches Reich
 NED,CONSTITUTIONAL,Kingdom of the Netherlands,Königreich der Niederlande
@@ -419,7 +419,7 @@ NED,ISLAMIC_REPUBLIC,Islamic Republic of the Netherlands,Islamische Republik der
 NED,CALIPHATE,Caliphate of the Netherlands,Kalifat der Niederlande
 NED,SULTANATE,Sultanate of the Netherlands,Sultanat der Niederlande
 NED,SECULAR_REPUBLIC,Netherlands,Niederlande
-MAL,TRIBAL,Mande Peoples,Mande-Völker
+MAL,TRIBAL,Mande,Mande
 MAL,KINGDOM,Kingdom of Mali,Königreich Mali
 MAL,EMPIRE,Mali Empire,Malireich
 MAL,CONSTITUTIONAL,Kingdom of Mali,Königreich Mali
@@ -440,7 +440,7 @@ MAL,ISLAMIC_REPUBLIC,Islamic Republic of Mali,Islamische Republik Mali
 MAL,CALIPHATE,Caliphate of Mali,Kalifat Mali
 MAL,SULTANATE,Sultanate of Mali,Sultanat Mali
 MAL,SECULAR_REPUBLIC,Mali Federation,Mali-Föderation
-POR,TRIBAL,Lusitanian Tribes,Lusitanische Stämme
+POR,TRIBAL,Lusitania,Lusitanien
 POR,KINGDOM,Kingdom of Portugal,Königreich Portugal
 POR,EMPIRE,Portuguese Empire,Portugiesisches Weltreich
 POR,CONSTITUTIONAL,Kingdom of Portugal,Königreich Portugal
@@ -461,7 +461,7 @@ POR,ISLAMIC_REPUBLIC,Islamic Republic of Portugal,Islamische Republik Portugal
 POR,CALIPHATE,Caliphate of Portugal,Kalifat Portugal
 POR,SULTANATE,Sultanate of Portugal,Sultanat Portugal
 POR,SECULAR_REPUBLIC,Portugal,Portugal
-INC,TRIBAL,Andean Peoples,Andenvölker
+INC,TRIBAL,Andes,Anden
 INC,KINGDOM,Kingdom of Cusco,Königreich Cusco
 INC,EMPIRE,Land of the Four Quarters,Land der vier Weltgegenden
 INC,CONSTITUTIONAL,Kingdom of Cusco,Königreich Cusco
@@ -482,7 +482,7 @@ INC,ISLAMIC_REPUBLIC,Andean Islamic Republic,Islamische Andenrepublik
 INC,CALIPHATE,Caliphate of the Andes,Andenkalifat
 INC,SULTANATE,Sultanate of the Andes,Andensultanat
 INC,SECULAR_REPUBLIC,Andean Federation,Andenbund
-MON,TRIBAL,Mongol Clans,Mongolische Sippen
+MON,TRIBAL,Mongolia,Mongolei
 MON,KINGDOM,Mongol Khanate,Mongolisches Khanat
 MON,EMPIRE,Mongol Empire,Mongolisches Weltreich
 MON,CONSTITUTIONAL,Mongol Khanate,Mongolisches Khanat
@@ -503,7 +503,7 @@ MON,ISLAMIC_REPUBLIC,Islamic Republic of Mongolia,Islamische Republik Mongolei
 MON,CALIPHATE,Caliphate of Mongolia,Kalifat Mongolei
 MON,SULTANATE,Sultanate of Mongolia,Sultanat Mongolei
 MON,SECULAR_REPUBLIC,Mongolia,Mongolei
-AZT,TRIBAL,Mexica Peoples,Völker der Mexica
+AZT,TRIBAL,Mexico,Mexiko
 AZT,KINGDOM,Kingdom of Tenochtitlan,Königreich Tenochtitlán
 AZT,EMPIRE,Aztec Triple Alliance,Aztekischer Dreibund
 AZT,CONSTITUTIONAL,Kingdom of Tenochtitlan,Königreich Tenochtitlán
@@ -524,7 +524,7 @@ AZT,ISLAMIC_REPUBLIC,Islamic Republic of Mexico,Islamische Republik Mexiko
 AZT,CALIPHATE,Caliphate of Mexico,Kalifat Mexiko
 AZT,SULTANATE,Sultanate of Mexico,Sultanat Mexiko
 AZT,SECULAR_REPUBLIC,United Mexican States,Vereinigte Mexikanische Staaten
-TUR,TRIBAL,Turkic Tribes,Turkstämme
+TUR,TRIBAL,Anatolia,Anatolien
 TUR,KINGDOM,Ottoman Empire,Osmanenreich
 TUR,EMPIRE,Ottoman Empire,Osmanenreich
 TUR,CONSTITUTIONAL,Ottoman Empire,Osmanenreich
@@ -708,7 +708,7 @@ NED,BURGUNDIAN,Burgundian Netherlands,Burgundische Niederlande
 NED,HABSBURG,Habsburg Netherlands,Habsburgische Niederlande
 MON,NORTHERN_YUAN,Northern Yuan,Nördliche Yuan
 AZT,TRIPLE_ALLIANCE,Aztec Triple Alliance,Aztekischer Dreibund
-ROM,ITALIAN_STATES,Italian City-States,Italienische Stadtstaaten
+ROM,ITALIAN_STATES,Italy,Italien
 ROM,VENICE,Republic of Venice,Republik Venedig
 SPA,ASTURIAS,Kingdom of Asturias,Königreich Asturien
 SPA,LEON,Kingdom of León,Königreich León
@@ -720,19 +720,54 @@ FRA,FRANKISH_REALM,Frankish Realm,Reich der Franken
 FRA,WEST_FRANCIA,West Francia,Westfränkisches Reich
 KHM,CHENLA,Chenla,Reich von Chenla
 KHM,ANGKOR,Khmer Empire,Khmerreich
-SPA,CHRISTIAN_IBERIA,Christian Kingdoms of Iberia,Christliche Reiche Iberiens
-SPA,IBERIAN_KINGDOMS,Iberian Kingdoms,Iberische Königreiche
-ENG,ANGLO_SAXON,Anglo-Saxon Kingdoms,Angelsächsische Königreiche
-VIK,NORSE_KINGDOMS,Scandinavian Kingdoms,Skandinavische Königreiche
-JAP,EARLY_JAPAN,Peoples of the Japanese Islands,Völker der japanischen Inseln
+SPA,CHRISTIAN_IBERIA,Castile,Kastilien
+SPA,IBERIAN_KINGDOMS,Castile,Kastilien
+ENG,ANGLO_SAXON,Wessex,Wessex
+VIK,NORSE_KINGDOMS,Vikings,Wikinger
+JAP,JOMON,Jomon,Jomon
+JAP,EARLY_JAPAN,Yayoi,Yayoi
 JAP,YAMATO,Yamato Realm,Reich von Yamato
-IND,INDUS,Indus Valley Cultures,Induskulturen
-IND,INDIAN_KINGDOMS,Indian Kingdoms,Indische Königreiche
-CHI,EARLY_CHINA,Early Chinese Cultures,Frühe chinesische Kulturen
-BAB,EARLY_MESOPOTAMIA,Mesopotamian City-States,Stadtstaaten Mesopotamiens
-GRE,POLEIS,Greek City-States,Griechische Stadtstaaten
-ARA,EARLY_ARABIA,Arabian Kingdoms,Arabische Königreiche
+IND,INDUS,Hindu Peoples,Hinduvölker
+IND,INDIAN_KINGDOMS,Magadha,Magadha
+CHI,EARLY_CHINA,China,China
+BAB,EARLY_MESOPOTAMIA,The Babylonians,Babylonier
+RUS,EARLY_RUS,Rus,Rus
+GRE,POLEIS,Hellas,Hellas
+ARA,EARLY_ARABIA,Arabia,Arabien
 GER,GREATER_GERMAN,Greater German Reich,Großdeutsches Reich
 GER,EAST_FRANCIA,East Francia,Ostfränkisches Reich
 GER,HOLY_ROMAN,Holy Roman Empire,Heiliges Römisches Reich
 ROM,PAPAL_STATES,Papal States,Kirchenstaat
+ESK,TRIBES,Eskimo Tribes,Eskimo-Stämme
+ESK,KINGDOM,Eskimo Kingdom,Eskimo-Königreich
+ESK,REPUBLIC,Eskimo Republic,Eskimo-Republik
+ESK,STATE,Eskimo State,Eskimo-Staat
+ESK,SUN_THRONE,Eskimo Sunrealm,Eskimo-Sonnenreich
+ESK,IRON_WATCH,Eskimo Ironwatch,Eskimo-Eisenwacht
+ESK,FROST_CROWN,Eskimo Storecrown,Eskimo-Speicherkrone
+ESK,WINTER_COMMUNE,Eskimo Winterunion,Eskimo-Winterbund
+ESK,STAR_COUNCIL,Eskimo Starcouncil,Eskimo-Sternenrat
+ESK,SEA_LEAGUE,Eskimo Iceleague,Eskimo-Eisliga
+ESK,HEARTH_COUNCIL,Eskimo Fireleague,Eskimo-Feuerbund
+ESK,HYPERBOREA_TRIBES,Hyperborean Tribes,Stammesbund Hyperborea
+ESK,HYPERBOREA_KINGDOM,Hyperborean Kingdom,Königreich Hyperborea
+ESK,HYPERBOREA_REPUBLIC,Hyperborean Republic,Republik Hyperborea
+ESK,HYPERBOREA_STATE,Hyperborean State,Hyperborea
+ESK,HYPERBOREA_SUN_THRONE,Solar Hyperborea,Sonnenhyperborea
+ESK,HYPERBOREA_IRON_WATCH,Frostwatch,Frostwacht
+ESK,HYPERBOREA_FROST_CROWN,Frostcrown,Frostkrone
+ESK,HYPERBOREA_WINTER_COMMUNE,Aurora Commune,Aurorakommune
+ESK,HYPERBOREA_STAR_COUNCIL,Astral Hyperborea,Astralhyperborea
+ESK,HYPERBOREA_SEA_LEAGUE,Amber League,Bernsteinliga
+ESK,HYPERBOREA_HEARTH_COUNCIL,Aurora Council,Nordlichtrat
+ESK,AGARTHA_TRIBES,Agarthan Tribes,Stammesbund Agartha
+ESK,AGARTHA_KINGDOM,Agarthan Kingdom,Königreich Agartha
+ESK,AGARTHA_REPUBLIC,Agarthan Republic,Republik Agartha
+ESK,AGARTHA_STATE,Agarthan State,Agartha
+ESK,AGARTHA_SUN_THRONE,Luminous Agartha,Lichtagartha
+ESK,AGARTHA_IRON_WATCH,Obsidian Council,Obsidianrat
+ESK,AGARTHA_FROST_CROWN,Crystal Crown,Kristallkrone
+ESK,AGARTHA_WINTER_COMMUNE,Crystal Commune,Kristallkommune
+ESK,AGARTHA_STAR_COUNCIL,Agarthan Academies,Agarthische Akademien
+ESK,AGARTHA_SEA_LEAGUE,Sapphire League,Saphirbund
+ESK,AGARTHA_HEARTH_COUNCIL,Ember Agartha,Glutagartha

@@ -464,6 +464,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iCoastalTradeRoutes = 0;
 	m_iTradeRoutes = 0;
 	m_iRevolutionTimer = 0;
+	m_iLastBirthTurn = -1;
 	m_iConversionTimer = 0;
 	m_iStateReligionCount = 0;
 	m_iNoNonStateReligionSpreadCount = 0;
@@ -5405,7 +5406,10 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 		return false;
 	}
 
-	bValid = false;
+	const bool bArcticFounding = getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") &&
+		(pPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") ||
+		 pPlot->getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA"));
+	bValid = bArcticFounding;
 
 	if (!bValid)
 	{
@@ -5707,6 +5711,7 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+	if (GC.getGameINLINE().isPapalState(getID()) && GC.getUnitInfo(eUnit).isFound()) return false;
     // Apply to humans, AI and ongoing production, including visibility checks.
     if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
     {
@@ -6929,6 +6934,17 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 {
 	int iMultiplier = 0;
+	// Named unique powers, independent of the removed civilization cost tuning.
+	const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	if (!isLimitedWonderClass((BuildingClassTypes)kBuilding.getBuildingClassType()))
+	{
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_KOREA") &&
+			kBuilding.getCommerceModifier(COMMERCE_RESEARCH) > 0)
+			iMultiplier += 100; // Scholarly Institutions: includes the Seowon.
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HOLY_ROMAN") &&
+			getStateReligion() != NO_RELIGION && kBuilding.getReligionType() == getStateReligion())
+			iMultiplier += 100; // Imperial Church: temples, monasteries and cathedrals.
+	}
 	for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
 	{
 		if (hasTrait((TraitTypes)iI))
@@ -11345,6 +11361,11 @@ bool CvPlayer::isEverAlive() const
 }
 
 
+int CvPlayer::getLastBirthTurn() const
+{
+	return m_iLastBirthTurn;
+}
+
 void CvPlayer::setAlive(bool bNewValue)
 {
 	CvWString szBuffer;
@@ -11353,6 +11374,7 @@ void CvPlayer::setAlive(bool bNewValue)
 	if (isAlive() != bNewValue)
 	{
 		m_bAlive = bNewValue;
+		if (bNewValue) m_iLastBirthTurn = GC.getGameINLINE().getGameTurn();
 
 		GET_TEAM(getTeam()).changeAliveCount((isAlive()) ? 1 : -1);
 
@@ -12609,7 +12631,9 @@ int CvPlayer::getSpecialistExtraCommerce(CommerceTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex is expected to be within maximum bounds (invalid Index)");
-	return m_aiSpecialistExtraCommerce[eIndex];
+	// House of Wisdom also benefits settled great people, like other specialist bonuses.
+	return m_aiSpecialistExtraCommerce[eIndex] +
+		((eIndex == COMMERCE_RESEARCH && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ABBASID")) ? 2 : 0);
 }
 
 
@@ -13756,6 +13780,9 @@ int CvPlayer::getSpecialistExtraYield(SpecialistTypes eIndex1, YieldTypes eIndex
 	FAssertMsg(eIndex2 >= 0, "eIndex2 expected to be >= 0");
 	FAssertMsg(eIndex2 < NUM_YIELD_TYPES, "eIndex2 expected to be < NUM_YIELD_TYPES");
 	return m_ppaaiSpecialistExtraYield[eIndex1][eIndex2] +
+		((getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_SUMERIA") &&
+		  eIndex1 == GC.getInfoTypeForString("SPECIALIST_PRIEST") &&
+		  (eIndex2 == YIELD_PRODUCTION || eIndex2 == YIELD_COMMERCE)) ? 1 : 0) +
 		((eIndex2 == YIELD_COMMERCE && isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY"))) ? 1 : 0);
 }
 
@@ -18025,6 +18052,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iCoastalTradeRoutes);
 	pStream->Read(&m_iTradeRoutes);
 	pStream->Read(&m_iRevolutionTimer);
+	pStream->Read(&m_iLastBirthTurn);
 	pStream->Read(&m_iConversionTimer);
 	pStream->Read(&m_iStateReligionCount);
 	pStream->Read(&m_iNoNonStateReligionSpreadCount);
@@ -18519,6 +18547,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iCoastalTradeRoutes);
 	pStream->Write(m_iTradeRoutes);
 	pStream->Write(m_iRevolutionTimer);
+	pStream->Write(m_iLastBirthTurn);
 	pStream->Write(m_iConversionTimer);
 	pStream->Write(m_iStateReligionCount);
 	pStream->Write(m_iNoNonStateReligionSpreadCount);
@@ -22309,7 +22338,7 @@ void CvPlayer::processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive)
 
 int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
-	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || isMinorCiv() || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || (isMinorCiv() && !GC.getGameINLINE().isPapalState(getID())) || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
 	int iVotes = 0;
 
 	ReligionTypes eReligion = GC.getGameINLINE().getVoteSourceReligion(eVoteSource);
@@ -22642,6 +22671,8 @@ bool CvPlayer::isFullMember(VoteSourceTypes eVoteSource) const
 
 bool CvPlayer::isVotingMember(VoteSourceTypes eVoteSource) const
 {
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && GC.getGameINLINE().isPapalState(getID()))
+		return getVotes(NO_VOTE, eVoteSource) > 0;
 	//Rhye - start
 	if (isMinorCiv() || isBarbarian())
 		return false;
@@ -24010,10 +24041,64 @@ static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
 	return iCivic >= 0 && std::find(civics.begin(), civics.end(), iCivic) != civics.end();
 }
 
-CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
+CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots, bool bUseLiveTechnology)
 {
+	if (iPlayer == ESKIMOS)
+	{
+		const wchar* szRoot = L"ESK";
+		// Scenario selection has no initialized players or teams. Never consult
+		// a previous game's technology state when producing the menu preview.
+		if (bUseLiveTechnology && GC.getGameINLINE().isFinalInitialized())
+		{
+			const TeamTypes eTeam = GET_PLAYER((PlayerTypes)iPlayer).getTeam();
+			if (eTeam != NO_TEAM)
+			{
+				const CvTeam& kTeam = GET_TEAM(eTeam);
+				if (kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_ELECTRICITY"))) szRoot = L"AGARTHA";
+				else if (kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_ASTRONOMY"))) szRoot = L"HYPERBOREA";
+			}
+		}
+		const wchar* szForm = L"TRIBES";
+		if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY")) szForm = L"REPUBLIC";
+		else if (hasCountryCivic(civics, "CIVIC_MONARCHY")) szForm = L"KINGDOM";
+		else if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) szForm = L"STATE";
+		// Specific combinations take priority over the ordinary government title.
+		const bool bMonarchy = hasCountryCivic(civics, "CIVIC_MONARCHY");
+		const bool bDemocracy = hasCountryCivic(civics, "CIVIC_DEMOCRACY");
+		const bool bRepublic = hasCountryCivic(civics, "CIVIC_REPUBLIC");
+		const bool bPlanned = hasCountryCivic(civics, "CIVIC_PLANNED_ECONOMY");
+		if (bMonarchy && iReligion != NO_RELIGION && hasCountryCivic(civics, "CIVIC_GOD_STATE"))
+			szForm = L"SUN_THRONE";
+		else if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP") &&
+			(hasCountryCivic(civics, "CIVIC_PROFESSIONAL_ARMY") || hasCountryCivic(civics, "CIVIC_CONSCRIPTION")))
+			szForm = L"IRON_WATCH";
+		else if (bMonarchy && bPlanned)
+			szForm = L"FROST_CROWN";
+		else if (bDemocracy && bPlanned)
+			szForm = L"WINTER_COMMUNE";
+		else if ((bRepublic || bDemocracy) && hasCountryCivic(civics, "CIVIC_STATE_ATHEISM"))
+			szForm = L"STAR_COUNCIL";
+		else if (hasCountryCivic(civics, "CIVIC_PLUTOCRACY") && hasCountryCivic(civics, "CIVIC_NAVAL_WARFARE"))
+			szForm = L"SEA_LEAGUE";
+		// The five starting civics retain the ordinary tribal name.
+		else if (hasCountryCivic(civics, "CIVIC_TRIBAL_SYSTEM") && hasCountryCivic(civics, "CIVIC_ANCESTOR_CULT") &&
+			!(hasCountryCivic(civics, "CIVIC_DESPOTISM") && hasCountryCivic(civics, "CIVIC_SELF_SUFFICIENCY") &&
+			  hasCountryCivic(civics, "CIVIC_WARRIOR_SOCIETY")))
+			szForm = L"HEARTH_COUNCIL";
+		CvWString szKey;
+		szKey.Format(L"TXT_KEY_%s_%s", szRoot, szForm);
+		return szKey;
+	}
 	if (iPlayer == MISSISSIPPIANS)
 	{
+		if (GET_PLAYER((PlayerTypes)iPlayer).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ADENA"))
+		{
+			if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
+				return L"TXT_KEY_ADENA_REPUBLIC";
+			if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_ADENA_KINGDOM";
+			if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) return L"TXT_KEY_ADENA_STATE";
+			return L"TXT_KEY_ADENA_DESC";
+		}
 		if (hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY"))
 			return L"TXT_KEY_MISS_REPUBLIC";
 		if (hasCountryCivic(civics, "CIVIC_MONARCHY")) return L"TXT_KEY_MISS_KINGDOM";
@@ -24103,8 +24188,6 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	{
 		if (iPlayer == GERMANY && bMonarchy)
 			szForm = L"HOLY_ROMAN";
-		else if (iPlayer == ROME && !bRepublic && !bDemocracy)
-			szForm = L"PAPAL_STATES";
 	}
 
 	// Period names describe the polities represented by the scenario slots.
@@ -24126,7 +24209,7 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 	else if (iPlayer == VIKING && bOrdinaryMonarchy && iYear < 1000)
 		szForm = L"NORSE_KINGDOMS";
 	else if (iPlayer == JAPAN && ((bTribal && !bTheocracy) || bOrdinaryMonarchy) && iYear < 710)
-		szForm = iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
+		szForm = iYear < -300 ? L"JOMON" : iYear < 300 ? L"EARLY_JAPAN" : L"YAMATO";
 	else if (iPlayer == KOREA && ((bTribal && !bTheocracy) || bOrdinaryMonarchy))
 		szForm = iYear < -400 ? L"CHIEFDOMS" : iYear < -108 ? L"GOJOSEON" :
 			(iYear < 668 ? L"KINGDOMS" : iYear < 918 ? L"SILLA" :
@@ -24174,8 +24257,8 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 			szForm = L"ASHIKAGA";
 		else if (iPlayer == GREECE && bChristianMonarchy && iNumCities <= 2 && iYear >= 1204 && iYear < 1832)
 			szForm = iYear >= 1349 && iYear < 1460 ? L"MOREA" : L"DESPOTATE";
-		else if (iPlayer == RUSSIA && bChristianMonarchy && iYear >= 1283 && iYear < 1547)
-			szForm = L"MUSCOVY";
+		else if (iPlayer == RUSSIA && bChristianMonarchy && iYear < 1547)
+			szForm = iYear < 1283 ? L"EARLY_RUS" : L"MUSCOVY";
 		else if (iPlayer == ETHIOPIA && bChristianMonarchy && iYear >= 1270 && iYear < 1974)
 			szForm = L"ABYSSINIA";
 		else if (iPlayer == NETHERLANDS && bChristianMonarchy && iYear >= 1384 && iYear < 1581)
@@ -24279,6 +24362,8 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+	if (getID() == MISSISSIPPIANS)
+		startingTurn[MISSISSIPPIANS] = (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ADENA")) ? 87 : 211;
 	if (GC.getGameINLINE().isPapalState(getID())) { setCivDescription(L"TXT_KEY_AP_PAPAL_STATE"); return; }
     if (GC.getGameINLINE().isCrusadeHolyState(getID()) && getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
     {

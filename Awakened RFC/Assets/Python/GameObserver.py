@@ -945,6 +945,19 @@ class Observer:
                 item.update({'name': city.getName(), 'owner': city.getOwner(), 'x': city.getX(), 'y': city.getY()})
                 if event == 'cityAcquired':
                     item.update({'old_owner': args[0], 'new_owner': args[1], 'conquest': bool(args[3])})
+                elif event == 'cityRazed':
+                    # The city still belongs to its victim for direct bear
+                    # destruction; the event's second argument is the razer.
+                    item['razer'] = args[1]
+                for role in ('owner', 'old_owner', 'new_owner', 'razer'):
+                    if role in item:
+                        iPlayer = item[role]
+                        civilization = None
+                        if 0 <= iPlayer < self.gc.getMAX_PLAYERS():
+                            iCivilization = self.gc.getPlayer(iPlayer).getCivilizationType()
+                            if iCivilization >= 0:
+                                civilization = self.gc.getCivilizationInfo(iCivilization).getType()
+                        item[role + '_civilization'] = civilization
             elif event == 'religionSpread':
                 item.update({'religion': args[0], 'player': args[1], 'city': args[2].getID(),
                              'x': args[2].getX(), 'y': args[2].getY()})

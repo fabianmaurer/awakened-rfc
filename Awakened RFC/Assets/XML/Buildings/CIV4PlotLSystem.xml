@@ -313,11 +313,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_01</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::1x1_02</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_02</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -333,11 +353,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_03</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::1x1_04</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_04</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -353,11 +393,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_05</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::1x1_06</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT,ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_06</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -367,6 +427,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_07</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT</Attribute>
@@ -375,6 +445,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_08</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT</Attribute>
@@ -383,6 +463,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x1_09</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<!-- MEDIEVAL -->
 		<ArtRef Name="art:building">
@@ -398,11 +488,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x1x1_01</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x1x1_02</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x1x1_02</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -418,6 +528,16 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x1x2_01</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x1x2_02</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
@@ -428,11 +548,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x1x2_02</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x1x2_03</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x1x2_03</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<!-- Rhye - start -->
@@ -498,11 +638,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::park_1x1</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.5</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::1x1_02</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x1_02</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -518,11 +678,31 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x1_03</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::1x1_04</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x1_04</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 
@@ -672,6 +852,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x1_01</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -680,6 +870,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x1_02</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -688,6 +888,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x1_03</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -696,6 +906,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x1_04</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -704,6 +924,16 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x1_05</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		
 		<!-- Asian -->
@@ -869,6 +1099,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x2_01</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT</Attribute>
@@ -878,6 +1119,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x2_02</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT</Attribute>
@@ -887,6 +1139,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_01</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_ANCIENT</Attribute>
@@ -896,6 +1159,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_ANCIENT</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_02</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		
 		<ArtRef Name="art:building">
@@ -912,12 +1186,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x2_01</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::1x2_02</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::1x2_02</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -934,12 +1230,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_01</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::2x1_02</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_02</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -956,12 +1274,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_03</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/an_eu.nif::2x1_04</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_an_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_igloos.nif::2x1_04</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_an_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 			
@@ -980,12 +1320,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x2x2_01</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x2x2_02</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x2x2_02</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -1002,6 +1364,17 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x2x2_03</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x2x2_04</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
@@ -1013,12 +1386,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x2x2_04</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::1x2x2_05</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::1x2x2_05</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 
@@ -1036,12 +1431,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::2x1x2_01</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::2x1x2_02</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::2x1x2_02</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -1058,12 +1475,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::2x1x2_03</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/med_eu.nif::2x1x2_04</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_med_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_CLASSICAL,ERA_MEDIEVAL</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_medieval.nif::2x1x2_04</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_med_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<!-- Rhye - start -->
@@ -1177,12 +1616,35 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::park_2x1</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+			<Rotate>90</Rotate>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::1x2_01</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x2_01</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -1199,12 +1661,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x2_02</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::1x2_03</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x2_03</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -1221,12 +1705,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x2_04</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::1x2_05</Attribute>
 			<Attribute Class="Rotation">90,270</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::1x2_05</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 
@@ -1239,6 +1745,17 @@
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::park_2x1</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>		
 		<ArtRef Name="art:building">
@@ -1255,12 +1772,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::park_2x1_05</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::2x1_01</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::2x1_01</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<ArtRef Name="art:building">
@@ -1277,6 +1816,17 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::2x1_02</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::2x1_03</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
@@ -1288,12 +1838,34 @@
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
 			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::2x1_03</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
 			<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_BARBARIAN</Attribute>
 			<Attribute Class="Scalar">NIF:Art/Structures/Cities/ren_eu.nif::2x1_04</Attribute>
 			<Attribute Class="Rotation">0,180</Attribute>
 			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_ren_eu</Attribute>
+			<Scale>0.35</Scale>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_RENAISSANCE</Attribute>
+			<!-- Rhye -->
+			<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_renaissance.nif::2x1_04</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_ren_eu</Attribute>
 			<Scale>0.35</Scale>
 		</ArtRef>
 		<!-- Rhye - start -->
@@ -1539,6 +2111,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x2_01</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1548,6 +2131,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x2_02</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1557,6 +2151,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x2_03</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1566,6 +2171,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::1x2_04</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1576,6 +2192,18 @@
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
 			<Rotate>90</Rotate>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::park_2x1</Attribute>
+			<Attribute Class="Rotation">90,270</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+			<Rotate>90</Rotate>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 
 
@@ -1587,6 +2215,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::2x1_01</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1596,6 +2235,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::2x1_02</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1605,6 +2255,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::2x1_03</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		<ArtRef Name="art:building">
 			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
@@ -1614,6 +2275,17 @@
 			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
 			<Attribute Class="Scalar">szBatchGroup:buildings_mod_eu</Attribute>
 			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_EUROPEAN,ARTSTYLE_ASIAN,ARTSTYLE_SOUTH_AMERICA,ARTSTYLE_MIDDLE_EAST,ARTSTYLE_GRECO_ROMAN,ARTSTYLE_BARBARIAN,ARTSTYLE_AFRICAN</Attribute>
+		</ArtRef>
+		<ArtRef Name="art:building">
+			<Attribute Class="Era">ERA_MODERN,ERA_FUTURE</Attribute>
+			<Attribute Class="Scalar">NIF:Art/Structures/Cities/arctic_modern.nif::park_2x1</Attribute>
+			<Attribute Class="Rotation">0,180</Attribute>
+			<Attribute Class="Improvement">IMPROVEMENT_COTTAGE,IMPROVEMENT_HAMLET,IMPROVEMENT_VILLAGE,IMPROVEMENT_TOWN</Attribute>
+			<Attribute Class="Scalar">szForceContourNode:BUILDING</Attribute>
+			<Attribute Class="Scalar">szBatchGroup:arctic_buildings_mod_eu</Attribute>
+			<Scale>0.35</Scale>
+		<Attribute Class="ArtStyle">ARTSTYLE_ARCTIC</Attribute>
 		</ArtRef>
 		
 		<!-- Asian -->

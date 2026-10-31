@@ -290,5 +290,11 @@
 			<Path>Art/Interface/TeamColor/FlagDECAL_Umayyad.dds</Path>
 			<bWhiteFlag>1</bWhiteFlag>
 		</CivilizationArtInfo>
+	<CivilizationArtInfo>
+			<Type>ART_DEF_CIVILIZATION_ESKIMO</Type>
+			<Button>,Art/Interface/Buttons/Civilizations/Aztec.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,7,4</Button>
+			<Path>Art/Interface/TeamColor/FlagDECAL_Eskimo.dds</Path>
+			<bWhiteFlag>0</bWhiteFlag>
+		</CivilizationArtInfo>
 	</CivilizationArtInfos>
 </Civ4ArtDefines>

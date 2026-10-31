@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT><Tag>TXT_KEY_UP_BYZ</Tag>
+    <English>Imperial Crossroads</English>
+    <French>Carrefour imp&#233;rial</French>
+    <German>Kaiserlicher Knotenpunkt</German>
+    <Italian>Crocevia imperiale</Italian>
+    <Spanish>Encrucijada imperial</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_BYZ2</Tag>
+    <English>+50% income from domestic trade routes.</English>
+    <French>+50% de revenus des routes commerciales int&#233;rieures.</French>
+    <German>+50% Ertrag aus inl&#228;ndischen Handelswegen.</German>
+    <Italian>+50% ricavi dalle rotte commerciali interne.</Italian>
+    <Spanish>+50% de ingresos de las rutas comerciales internas.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_CEL</Tag>
+    <English>Sacred Groves</English>
+    <French>Bosquets sacr&#233;s</French>
+    <German>Heilige Haine</German>
+    <Italian>Boschi sacri</Italian>
+    <Spanish>Arboledas sagradas</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_CEL2</Tag>
+    <English>Forests yield +1 [ICON_FOOD].</English>
+    <French>Les for&#234;ts produisent +1 [ICON_FOOD].</French>
+    <German>W&#228;lder liefern +1 [ICON_FOOD].</German>
+    <Italian>Le foreste producono +1 [ICON_FOOD].</Italian>
+    <Spanish>Los bosques producen +1 [ICON_FOOD].</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_HRE</Tag>
+    <English>Imperial Church</English>
+    <French>&#201;glise imp&#233;riale</French>
+    <German>Reichskirche</German>
+    <Italian>Chiesa imperiale</Italian>
+    <Spanish>Iglesia imperial</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_HRE2</Tag>
+    <English>+100% production of state religion buildings (except wonders).</English>
+    <French>+100% de production des b&#226;timents de la religion officielle (hors merveilles).</French>
+    <German>+100% Produktion f&#252;r Geb&#228;ude der Staatsreligion (keine Wunder).</German>
+    <Italian>+100% produzione di edifici della religione di stato (escluse meraviglie).</Italian>
+    <Spanish>+100% producci&#243;n de edificios de la religi&#243;n estatal (excepto maravillas).</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_MIS</Tag>
+    <English>Mound Builders</English>
+    <French>B&#226;tisseurs de tertres</French>
+    <German>H&#252;gelbauer</German>
+    <Italian>Costruttori di tumuli</Italian>
+    <Spanish>Constructores de mont&#237;culos</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_MIS2</Tag>
+    <English>River farms yield +1 [ICON_PRODUCTION].</English>
+    <French>Les fermes riveraines produisent +1 [ICON_PRODUCTION].</French>
+    <German>Bauernh&#246;fe an Fl&#252;ssen liefern +1 [ICON_PRODUCTION].</German>
+    <Italian>Le fattorie lungo i fiumi producono +1 [ICON_PRODUCTION].</Italian>
+    <Spanish>Las granjas junto a r&#237;os producen +1 [ICON_PRODUCTION].</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_SUM</Tag>
+    <English>Temple Cities</English>
+    <French>Cit&#233;s des temples</French>
+    <German>Tempelst&#228;dte</German>
+    <Italian>Citt&#224; dei templi</Italian>
+    <Spanish>Ciudades de templos</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_SUM2</Tag>
+    <English>Priests gain +1 [ICON_PRODUCTION] and +1 [ICON_COMMERCE].</English>
+    <French>Les pr&#234;tres gagnent +1 [ICON_PRODUCTION] et +1 [ICON_COMMERCE].</French>
+    <German>Priester erhalten +1 [ICON_PRODUCTION] und +1 [ICON_COMMERCE].</German>
+    <Italian>I sacerdoti ottengono +1 [ICON_PRODUCTION] e +1 [ICON_COMMERCE].</Italian>
+    <Spanish>Los sacerdotes obtienen +1 [ICON_PRODUCTION] y +1 [ICON_COMMERCE].</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_ZUL</Tag>
+    <English>Buffalo Horns</English>
+    <French>Cornes du buffle</French>
+    <German>B&#252;ffelh&#246;rner</German>
+    <Italian>Corna del bufalo</Italian>
+    <Spanish>Cuernos del b&#250;falo</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_ZUL2</Tag>
+    <English>Melee units gain +1 movement.</English>
+    <French>Les unit&#233;s de m&#234;l&#233;e gagnent +1 mouvement.</French>
+    <German>Nahkampfeinheiten erhalten +1 Bewegung.</German>
+    <Italian>Le unit&#224; da mischia ottengono +1 movimento.</Italian>
+    <Spanish>Las unidades cuerpo a cuerpo obtienen +1 movimiento.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_ABB</Tag>
+    <English>House of Wisdom</English>
+    <French>Maison de la sagesse</French>
+    <German>Haus der Weisheit</German>
+    <Italian>Casa della saggezza</Italian>
+    <Spanish>Casa de la Sabidur&#237;a</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_ABB2</Tag>
+    <English>Specialists gain +2 [ICON_RESEARCH].</English>
+    <French>Les sp&#233;cialistes gagnent +2 [ICON_RESEARCH].</French>
+    <German>Spezialisten erhalten +2 [ICON_RESEARCH].</German>
+    <Italian>Gli specialisti ottengono +2 [ICON_RESEARCH].</Italian>
+    <Spanish>Los especialistas obtienen +2 [ICON_RESEARCH].</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_FAT</Tag>
+    <English>The Nile's Bounty</English>
+    <French>Abondance du Nil</French>
+    <German>Die Gaben des Nils</German>
+    <Italian>Abbondanza del Nilo</Italian>
+    <Spanish>Abundancia del Nilo</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_FAT2</Tag>
+    <English>Desert river farms yield +1 [ICON_FOOD].</English>
+    <French>Les fermes d&#233;sertiques riveraines produisent +1 [ICON_FOOD].</French>
+    <German>W&#252;stenbauernh&#246;fe an Fl&#252;ssen liefern +1 [ICON_FOOD].</German>
+    <Italian>Le fattorie desertiche lungo i fiumi producono +1 [ICON_FOOD].</Italian>
+    <Spanish>Las granjas des&#233;rticas junto a r&#237;os producen +1 [ICON_FOOD].</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_UMA</Tag>
+    <English>Gardens of al-Andalus</English>
+    <French>Jardins d'al-Andalus</French>
+    <German>Die G&#228;rten von al-Andalus</German>
+    <Italian>Giardini di al-Andalus</Italian>
+    <Spanish>Jardines de al-Andalus</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_UMA2</Tag>
+    <English>Irrigated farms yield +1 [ICON_COMMERCE].</English>
+    <French>Les fermes irrigu&#233;es produisent +1 [ICON_COMMERCE].</French>
+    <German>Bew&#228;sserte Bauernh&#246;fe liefern +1 [ICON_COMMERCE].</German>
+    <Italian>Le fattorie irrigate producono +1 [ICON_COMMERCE].</Italian>
+    <Spanish>Las granjas irrigadas producen +1 [ICON_COMMERCE].</Spanish>
+  </TEXT>
+</Civ4GameText>

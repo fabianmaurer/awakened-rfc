@@ -74,8 +74,10 @@ def ensure_crusader_slot(text):
 def migrate_slots(text):
     """Insert Korea before minor players, once. Existing major IDs stay fixed."""
     players = re.findall(r'BeginPlayer\b(.*?)EndPlayer', text, re.S)
+    if len(players) == 39 and re.search(r'\bCivType=(?:CIVILIZATION_ESKIMO|NONE)\b', players[32]):
+        return text
     if len(players) == 38:
-        if 'CIVILIZATION_KOREA' not in players[30] or 'CIVILIZATION_NATIVE_AMERICA' not in players[31]:
+        if 'CIVILIZATION_KOREA' not in players[30] or not re.search(r'\bCivType=CIVILIZATION_(?:NATIVE_AMERICA|ADENA)\b', players[31]):
             raise ValueError('Unexpected major-player layout')
         return text
     if len(players) in (35, 36, 37):
@@ -237,6 +239,9 @@ def main():
         # Keep the generator's historical base on the same slot/resource layout.
         from american_scenarios import apply_american_starts
         result = apply_american_starts(apply_korea(text))
+        from eskimo_scenarios import apply_eskimos
+        if path.parent.name == "PublicMaps":
+            result = apply_eskimos(result)
         path.write_text(result, encoding='utf-8', newline='\r\n')
         print(path.relative_to(ROOT))
 

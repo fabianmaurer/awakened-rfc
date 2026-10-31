@@ -7,6 +7,7 @@ families intentionally share the same name. This is a Python 3 development tool.
 from pathlib import Path
 import csv
 import io
+import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 from country_name_catalog import COUNTRY_NAMES, ALIASES, SPECIAL_NAMES
 
@@ -67,6 +68,26 @@ def country_name(code, form, english_country, german_country):
     return COUNTRY_NAMES[code][ALIASES.get(form, form)]
 
 
+def eskimo_country_rows():
+    # These bespoke technology/government names live in their own runtime XML.
+    # Read that source so the review CSV cannot drift from the displayed names.
+    path = ROOT / 'Awakened RFC/Assets/XML/Text/CIV4GameText_Eskimos.xml'
+    entries = {}
+    for entry in ET.parse(path).getroot():
+        fields = {child.tag.split('}')[-1]: child.text for child in entry}
+        entries[fields['Tag']] = fields
+    rows = []
+    for root in ('ESK', 'HYPERBOREA', 'AGARTHA'):
+        for form in ('TRIBES', 'KINGDOM', 'REPUBLIC', 'STATE', 'SUN_THRONE',
+                     'IRON_WATCH', 'FROST_CROWN', 'WINTER_COMMUNE',
+                     'STAR_COUNCIL', 'SEA_LEAGUE', 'HEARTH_COUNCIL'):
+            fields = entries['TXT_KEY_' + root + '_' + form]
+            rule = form if root == 'ESK' else root + '_' + form
+            rows.append(('ESK', rule,
+                         fields['English'], fields['German']))
+    return rows
+
+
 def main():
     xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<Civ4GameText xmlns="http://www.firaxis.com">']
     rows = []
@@ -94,6 +115,7 @@ def main():
     xml.append('</Civ4GameText>')
     path = ROOT / 'Awakened RFC/Assets/XML/Text/CIV4GameText_RFCMP_CountryNames.xml'
     path.write_bytes(('\n'.join(xml) + '\n').encode('ascii', 'xmlcharrefreplace'))
+    rows.extend(eskimo_country_rows())
     document = io.StringIO(newline='')
     writer = csv.writer(document)
     writer.writerow(('Civilization', 'Naming rule', 'English', 'German'))

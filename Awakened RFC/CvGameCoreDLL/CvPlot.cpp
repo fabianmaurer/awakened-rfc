@@ -54,6 +54,8 @@ CvPlot::CvPlot()
 	m_apaiInvisibleVisibilityCount = NULL;
 	
 	m_pFeatureSymbol = NULL;
+	m_pArchiveOutputSymbol = NULL;
+	m_pHuntingHerdSymbol = NULL;
 	m_pPlotBuilder = NULL;
 	m_pRouteSymbol = NULL;
 	m_pRiverSymbol = NULL;
@@ -94,6 +96,8 @@ void CvPlot::uninit()
 	SAFE_DELETE_ARRAY(m_szScriptData);
 
 	gDLL->getFeatureIFace()->destroy(m_pFeatureSymbol);
+	gDLL->getFeatureIFace()->destroy(m_pArchiveOutputSymbol);
+	gDLL->getFeatureIFace()->destroy(m_pHuntingHerdSymbol);
 	if(m_pPlotBuilder)
 	{
 		gDLL->getPlotBuilderIFace()->destroy(m_pPlotBuilder);
@@ -584,12 +588,42 @@ void CvPlot::updateVisibility()
 
 	updateSymbolVisibility();
 	updateFeatureSymbolVisibility();
+	updateHuntingGroundsHerd();
 	updateRouteSymbol();
 
 	CvCity* pCity = getPlotCity();
 	if (pCity != NULL)
 	{
 		pCity->updateVisibility();
+	}
+}
+
+
+void CvPlot::updateHuntingGroundsHerd()
+{
+	if (!GC.IsGraphicsInitialized()) return;
+	FeatureTypes eHerd = NO_FEATURE;
+	const bool bVisible = GC.getGameINLINE().getActiveTeam() != NO_TEAM && isActiveVisible(true);
+	if (bVisible && isBeingWorked() && getOwnerINLINE() != NO_PLAYER &&
+		getImprovementType() == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS"))
+	{
+		const int iCount = std::min(4, calculateImprovementYieldChange(getImprovementType(), YIELD_FOOD, getOwnerINLINE()));
+		if (iCount > 0)
+		{
+			CvString szType;
+			szType.Format("FEATURE_HUNTING_HERD_%d", iCount);
+			eHerd = (FeatureTypes)GC.getInfoTypeForString(szType.c_str());
+		}
+	}
+	if (eHerd == NO_FEATURE)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pHuntingHerdSymbol);
+	}
+	else if (m_pHuntingHerdSymbol == NULL || gDLL->getFeatureIFace()->getFeature(m_pHuntingHerdSymbol) != eHerd)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pHuntingHerdSymbol);
+		m_pHuntingHerdSymbol = gDLL->getFeatureIFace()->createFeature();
+		gDLL->getFeatureIFace()->init(m_pHuntingHerdSymbol, 0, 0, eHerd, this);
 	}
 }
 
@@ -605,6 +639,8 @@ void CvPlot::updateSymbolDisplay()
 	{
 		return;
 	}
+
+	updateHuntingGroundsHerd();
 
 	for (iLoop = 0; iLoop < getNumSymbols(); iLoop++)
 	{
@@ -624,6 +660,16 @@ void CvPlot::updateSymbolDisplay()
 			gDLL->getSymbolIFace()->updatePosition(pLoopSymbol);
 		}
 	}
+	if (m_pArchiveOutputSymbol != NULL)
+	{
+		CvSymbol* pArchiveSymbol = (CvSymbol*)m_pArchiveOutputSymbol;
+		const float fAlpha = isShowCitySymbols() ? (isVisibleWorked() ? 1.0f : 0.8f) :
+			(isVisibleWorked() ? 0.8f : 0.6f);
+		gDLL->getSymbolIFace()->setAlpha(pArchiveSymbol, fAlpha);
+		gDLL->getSymbolIFace()->setScale(pArchiveSymbol, getSymbolSize());
+		gDLL->getFeatureIFace()->updatePosition(m_pArchiveOutputSymbol);
+	}
+
 }
 
 
@@ -657,6 +703,14 @@ void CvPlot::updateSymbolVisibility()
 			}
 		}
 	}
+	if (m_pArchiveOutputSymbol != NULL)
+	{
+		const bool bShow = GC.getGameINLINE().getActiveTeam() != NO_TEAM &&
+			isRevealed(GC.getGameINLINE().getActiveTeam(), true) &&
+			(isShowCitySymbols() || (gDLL->getInterfaceIFace()->isShowYields() && !gDLL->getInterfaceIFace()->isCityScreenUp()));
+		gDLL->getFeatureIFace()->Hide(m_pArchiveOutputSymbol, !bShow);
+	}
+
 }
 
 
@@ -708,6 +762,27 @@ void CvPlot::updateSymbols()
 			pSymbol = getSymbol(i);
 			gDLL->getSymbolIFace()->init(pSymbol, gDLL->getSymbolIFace()->getID(pSymbol), i, eSymbol, this);
 		}
+	}
+
+	// A separate graphics entity leaves the engine's fixed yield icon indices intact.
+	const TeamTypes eActiveTeam = GC.getGameINLINE().getActiveTeam();
+	FeatureTypes eBadge = NO_FEATURE;
+	if (eActiveTeam != NO_TEAM && getRevealedImprovementType(eActiveTeam, true) == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+	{
+		PlayerTypes eViewerOwner = getRevealedOwner(eActiveTeam, true);
+		if (eViewerOwner == NO_PLAYER) eViewerOwner = GC.getGameINLINE().getActivePlayer();
+		const bool bEskimo = eViewerOwner == NO_PLAYER || GET_PLAYER(eViewerOwner).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO");
+		eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_OUTPUT_3" : "FEATURE_ARCHIVE_OUTPUT_5");
+	}
+	if (eBadge == NO_FEATURE)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pArchiveOutputSymbol);
+	}
+	else if (m_pArchiveOutputSymbol == NULL || gDLL->getFeatureIFace()->getFeature(m_pArchiveOutputSymbol) != eBadge)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pArchiveOutputSymbol);
+		m_pArchiveOutputSymbol = gDLL->getFeatureIFace()->createFeature();
+		gDLL->getFeatureIFace()->init(m_pArchiveOutputSymbol, 0, 0, eBadge, this);
 	}
 
 	updateSymbolDisplay();
@@ -2177,6 +2252,12 @@ bool CvPlot::canHaveImprovement(ImprovementTypes eImprovement, TeamTypes eTeam, 
 		}
 	}
 
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS"))
+		return isFlatlands() &&
+			(getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") || getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA"));
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+		return isHills() && getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW");
+
 	if ((getBonusType(eTeam) != NO_BONUS) && GC.getImprovementInfo(eImprovement).isImprovementBonusMakesValid(getBonusType(eTeam)))
 	{
 		return true;
@@ -2304,6 +2385,9 @@ bool CvPlot::canBuild(BuildTypes eBuild, PlayerTypes ePlayer, bool bTestVisible)
 	{
 		return false;
 	}
+	if ((eBuild == GC.getInfoTypeForString("BUILD_HUNTING_GROUNDS") || eBuild == GC.getInfoTypeForString("BUILD_DEEP_ARCHIVE")) &&
+		(ePlayer == NO_PLAYER || GET_PLAYER(ePlayer).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ESKIMO")))
+		return false;
 
     if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH"))
     {
@@ -5400,6 +5484,7 @@ void CvPlot::setTerrainType(TerrainTypes eNewValue, bool bRecalculate, bool bReb
 		{
 			//Update terrain graphics
 			gDLL->getEngineIFace()->RebuildPlot(getX_INLINE(), getY_INLINE(),false,true);
+			updateRouteSymbol(true, true);
 			//gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true); //minimap does a partial update
 			//gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 		}
@@ -5759,6 +5844,12 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 		}
 
 		gDLL->getInterfaceIFace()->setDirty(CitizenButtons_DIRTY_BIT, true);
+	}
+
+	if (eOldImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE") || eNewValue == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
+	{
+		CvCity* pCity = getWorkingCity();
+		if (pCity != NULL) { pCity->updateCommerce(COMMERCE_RESEARCH); pCity->AI_setAssignWorkDirty(true); }
 	}
 }
 
@@ -6140,6 +6231,19 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 	FAssertMsg(getTerrainType() != NO_TERRAIN, "TerrainType is not assigned a valid value");
 
 	iYield = GC.getTerrainInfo(getTerrainType()).getYield(eYield);
+	if (!isWater() && (getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") || getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA")))
+	{
+		for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+		{
+			const CvPlot* pNeighbour = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)iDirection);
+			if (pNeighbour != NULL && pNeighbour->isWater())
+			{
+				if (eYield == YIELD_FOOD) ++iYield;
+				if (eYield == YIELD_COMMERCE) ++iYield;
+				break;
+			}
+		}
+	}
 
 	if (isHills())
 	{
@@ -6200,6 +6304,48 @@ int CvPlot::calculateTotalBestNatureYield(TeamTypes eTeam) const
 }
 
 
+// Shared by actual yields and AI construction decisions, including diagonals.
+bool CvPlot::isHuntingGroundsSupport() const
+{
+	return !isWater() && !isPeak() && !isCity() &&
+		getImprovementType() == NO_IMPROVEMENT && getRouteType() == NO_ROUTE &&
+		(getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") ||
+		 getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA"));
+}
+
+int CvPlot::getHuntingGroundsSupportCount() const
+{
+	int iCount = 0;
+	for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+	{
+		const CvPlot* pNeighbour = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)iDirection);
+		if (pNeighbour != NULL && pNeighbour->isHuntingGroundsSupport()) ++iCount;
+	}
+	return iCount;
+}
+
+// Food, production AND commerce lost on our usable neighbouring grounds if
+// this supporting tile receives an improvement or its first road.
+int CvPlot::getHuntingGroundsYieldLoss(PlayerTypes ePlayer) const
+{
+	if (!isHuntingGroundsSupport() || ePlayer == NO_PLAYER ||
+		GET_PLAYER(ePlayer).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ESKIMO")) return 0;
+	int iLoss = 0;
+	const int iGrounds = GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS");
+	for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+	{
+		const CvPlot* pNeighbour = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)iDirection);
+		if (pNeighbour != NULL && pNeighbour->getImprovementType() == iGrounds &&
+			pNeighbour->getOwnerINLINE() == ePlayer && pNeighbour->getWorkingCity() != NULL &&
+			pNeighbour->getWorkingCity()->getOwnerINLINE() == ePlayer)
+		{
+			const int iCount = pNeighbour->getHuntingGroundsSupportCount();
+			iLoss += iCount / 2 - (iCount - 1) / 2;
+		}
+	}
+	return iLoss;
+}
+
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
 	PROFILE_FUNC();
@@ -6209,6 +6355,11 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 	int iYield;
 	int iI;
 
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS"))
+	{
+		if (ePlayer == NO_PLAYER || GET_PLAYER(ePlayer).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ESKIMO")) return 0;
+		return getHuntingGroundsSupportCount() / 2;
+	}
 	iYield = GC.getImprovementInfo(eImprovement).getYieldChange(eYield);
 
 	if (isRiverSide())
@@ -6221,7 +6372,7 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		iYield += GC.getImprovementInfo(eImprovement).getHillsYieldChange(eYield);
 	}
 
-	if ((bOptimal) ? true : isIrrigationAvailable())
+	if (bOptimal || isIrrigationAvailable())
 	{
 		iYield += GC.getImprovementInfo(eImprovement).getIrrigatedYieldChange(eYield);
 	}
@@ -6320,6 +6471,8 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		eRoute = getRouteType();
 	}
 
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS") &&
+		(ePlayer == NO_PLAYER || GET_PLAYER(ePlayer).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_ESKIMO"))) return 0;
 	iYield = calculateNatureYield(eYield, ((ePlayer != NO_PLAYER) ? GET_PLAYER(ePlayer).getTeam() : NO_TEAM));
 
 	if (eImprovement != NO_IMPROVEMENT)
@@ -6417,6 +6570,35 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		//Rhye - end UP
 
 
+		// New named powers use civilization identity, never the historical slot.
+		const CivilizationTypes eCiv = GET_PLAYER(ePlayer).getCivilizationType();
+		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") && eYield == YIELD_PRODUCTION && isWater() && !isLake())
+			++iYield;
+		if (eYield == YIELD_FOOD && !isWater() && (getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA") ||
+			getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW")))
+		{
+			CvCity* pCoolingCity = getWorkingCity();
+			if (pCoolingCity != NULL && pCoolingCity->getOwnerINLINE() == ePlayer &&
+				pCoolingCity->getNumActiveBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_COOLING_HOUSE")) > 0)
+				++iYield;
+		}
+		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_CELT") &&
+			eYield == YIELD_FOOD && getFeatureType() == GC.getInfoTypeForString("FEATURE_FOREST"))
+			++iYield; // Sacred Groves: reward preserving forests.
+		if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_FARM"))
+		{
+			if ((eCiv == GC.getInfoTypeForString("CIVILIZATION_NATIVE_AMERICA") ||
+				eCiv == GC.getInfoTypeForString("CIVILIZATION_ADENA")) &&
+				eYield == YIELD_PRODUCTION && isRiver())
+				++iYield; // Mound Builders.
+			if (eCiv == GC.getInfoTypeForString("CIVILIZATION_FATIMID") &&
+				eYield == YIELD_FOOD && getTerrainType() == GC.getInfoTypeForString("TERRAIN_DESERT") && isRiver())
+				++iYield; // The Nile's Bounty, including flood plains.
+			if (eCiv == GC.getInfoTypeForString("CIVILIZATION_UMAYYAD") &&
+				eYield == YIELD_COMMERCE && isIrrigated())
+				++iYield; // Gardens of al-Andalus.
+		}
+
 		if (GET_PLAYER(ePlayer).isGoldenAge())
 		{
 			if (iYield >= GC.getYieldInfo(eYield).getGoldenAgeYieldThreshold())
@@ -6491,6 +6673,16 @@ void CvPlot::updateYield()
 	if (bChange)
 	{
 		updateSymbols();
+	}
+
+	const int iGrounds = GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS");
+	if (getImprovementType() != iGrounds)
+	{
+		for (int iDirection = 0; iDirection < NUM_DIRECTION_TYPES; ++iDirection)
+		{
+			CvPlot* pNeighbour = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)iDirection);
+			if (pNeighbour != NULL && pNeighbour->getImprovementType() == iGrounds) pNeighbour->updateYield();
+		}
 	}
 }
 
@@ -7946,6 +8138,14 @@ void CvPlot::updateRouteSymbol(bool bForce, bool bAdjacent)
 	}
 
 	eRoute = getRevealedRouteType(GC.getGameINLINE().getActiveTeam(), true);
+	// Change only the graphics entity: map routes and movement remain roads.
+	if (eRoute == GC.getInfoTypeForString("ROUTE_ROAD") &&
+		(getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA") ||
+		 getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW")))
+	{
+		eRoute = (RouteTypes)GC.getInfoTypeForString("ROUTE_SNOW_PATH_DISPLAY");
+	}
+
 
 	if (eRoute == NO_ROUTE)
 	{
@@ -9546,6 +9746,15 @@ void CvPlot::getVisibleImprovementState(ImprovementTypes& eType, bool& bWorked)
 				}
 			}
 		}
+	}
+
+	if (getTerrainType() == GC.getInfoTypeForString("TERRAIN_SNOW") ||
+		getTerrainType() == GC.getInfoTypeForString("TERRAIN_TUNDRA"))
+	{
+		if (eType == GC.getInfoTypeForString("IMPROVEMENT_FARM"))
+			eType = (ImprovementTypes)GC.getInfoTypeForString("IMPROVEMENT_ICY_FARM");
+		else if (eType == GC.getInfoTypeForString("IMPROVEMENT_MINE"))
+			eType = (ImprovementTypes)GC.getInfoTypeForString("IMPROVEMENT_ICY_MINE");
 	}
 
 	// worked state

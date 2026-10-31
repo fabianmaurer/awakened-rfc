@@ -382,7 +382,7 @@ public:
 	int maxInterceptionProbability() const;																	// Exposed to Python
 	int currInterceptionProbability() const;																// Exposed to Python
 	int evasionProbability() const;																										// Exposed to Python
-	int withdrawalProbability() const;																			// Exposed to Python
+	int withdrawalProbability(const CvUnit* pOpponent = NULL) const;																			// Exposed to Python
 
 	int collateralDamage() const;																						// Exposed to Python
 	int collateralDamageLimit() const;																								// Exposed to Python
@@ -797,6 +797,7 @@ protected:
 	int m_iAttackPlotX;
 	int m_iAttackPlotY;
 	int m_iCombatTimer;
+	bool m_bArcticDefensiveWithdrawal;
 	int m_iCombatFirstStrikes;
 	int m_iCombatDamage;
 	int m_iFortifyTurns;

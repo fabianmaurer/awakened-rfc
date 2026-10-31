@@ -862,6 +862,10 @@ class RFCUtils:
 
         def getMonarchyInheritanceHeir(self, iCiv):
                 pCollapsed = gc.getPlayer(iCiv)
+                # Independent scenario slots are not dynasties, even if their
+                # starting civics and religion happen to match a monarchy.
+                if pCollapsed.isMinorCiv() or pCollapsed.isBarbarian():
+                        return -1
                 iGovernment = gc.getInfoTypeForString("CIVICOPTION_GOVERNMENT")
                 iMonarchy = gc.getInfoTypeForString("CIVIC_MONARCHY")
                 iReligion = pCollapsed.getStateReligion()
@@ -875,15 +879,38 @@ class RFCUtils:
                                 return -1
                         capital = cityList[0].GetCy()
                 iContinent = capital.plot().getArea()
+                iMaxDistance = max(0, gc.getDefineINT("RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE"))
+                inheritedCities = PyPlayer(iCiv).getCityList()
                 heirs = []
                 for iCandidate in range(iNumPlayers):
                         pCandidate = gc.getPlayer(iCandidate)
-                        if (iCandidate == iCiv or not pCandidate.isAlive() or pCandidate.getCivics(iGovernment) != iMonarchy or pCandidate.getStateReligion() != iReligion or self.getStability(iCandidate) < 0):
+                        if (iCandidate == iCiv or not pCandidate.isAlive() or pCandidate.isMinorCiv() or pCandidate.isBarbarian() or pCandidate.getCivics(iGovernment) != iMonarchy or pCandidate.getStateReligion() != iReligion or self.getStability(iCandidate) < 0):
                                 continue
-                        for pyCity in PyPlayer(iCandidate).getCityList():
-                                if (pyCity.GetCy().plot().getArea() == iContinent):
-                                        heirs.append(iCandidate)
+                        heirCapital = pCandidate.getCapitalCity()
+                        if heirCapital.isNone() or plotDistance(capital.getX(), capital.getY(),
+                            heirCapital.getX(), heirCapital.getY()) > iMaxDistance:
+                                continue
+                        heirCities = PyPlayer(iCandidate).getCityList()
+                        bSameContinent = False
+                        for pyCity in heirCities:
+                                if pyCity.GetCy().plot().getArea() == iContinent:
+                                        bSameContinent = True
                                         break
+                        if not bSameContinent:
+                                continue
+                        # Check the whole realm, not just its capital: a nearby
+                        # monarchy must not bring remote possessions with it.
+                        bNearby = True
+                        for pyCity in inheritedCities:
+                                city = pyCity.GetCy()
+                                iNearest = min([plotDistance(city.getX(), city.getY(),
+                                        heirCity.GetCy().getX(), heirCity.GetCy().getY())
+                                        for heirCity in heirCities])
+                                if iNearest > iMaxDistance:
+                                        bNearby = False
+                                        break
+                        if bNearby:
+                                heirs.append(iCandidate)
                 if (not len(heirs)):
                         return -1
 
@@ -899,7 +926,23 @@ class RFCUtils:
                 if (iHeir == -1):
                         return False
                 print ("MONARCHY INHERITANCE", gc.getPlayer(iCiv).getCivilizationAdjective(0), "->", gc.getPlayer(iHeir).getCivilizationAdjective(0))
+                message = CyTranslator().getText("TXT_KEY_STABILITY_DYNASTIC_INHERITANCE", (
+                        gc.getPlayer(iCiv).getCivilizationDescription(0),
+                        gc.getPlayer(iHeir).getCivilizationDescription(0)))
+                for iRecipient in range(iNumMajorPlayers):
+                        recipient = gc.getPlayer(iRecipient)
+                        if recipient.isAlive() and recipient.isHuman() and (
+                            iRecipient in (iCiv, iHeir) or recipient.canContact(iCiv)):
+                                CyInterface().addMessage(iRecipient, True, con.iDuration, message,
+                                        "", 0, "", ColorTypes(con.iOrange), -1, -1, False, False)
                 self.killCiv(iCiv, iHeir)
+                if gc.getPlayer(iHeir).isHuman():
+                        # Addressed acknowledgement only; inheritance already
+                        # happened on every peer and the click changes no state.
+                        popup = CyPopupInfo()
+                        popup.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_TEXT)
+                        popup.setText(message)
+                        popup.addPopup(iHeir)
                 return True
 
 

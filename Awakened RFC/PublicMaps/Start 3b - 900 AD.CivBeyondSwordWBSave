@@ -14,7 +14,7 @@ BeginTeam
 
 	ContactWithTeam=27
 
-	AtWar=35
+	AtWar=36
 EndTeam
 BeginTeam                 
 EndTeam
@@ -173,6 +173,8 @@ BeginTeam
 	Tech=TECH_MINING
 
 	Tech=TECH_MASONRY
+EndTeam
+BeginTeam
 EndTeam
 BeginTeam                 
 EndTeam
@@ -451,11 +453,19 @@ BeginPlayer
 	StartingX=23
 	StartingY=45
 EndPlayer
+BeginPlayer
+	Team=32
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=32
+	Team=33
 	PlayableCiv=0
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -464,7 +474,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=33
+	Team=34
 	PlayableCiv=0
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -474,7 +484,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=34
+	Team=35
 	PlayableCiv=0
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -483,21 +493,21 @@ BeginPlayer
 	LeaderType=LEADER_JUSTINIAN
 	CivType=CIVILIZATION_BYZANTIUM    
 	StateReligion=RELIGION_CHRISTIANITY                         
-	Team=35
+	Team=36
 	PlayableCiv=0
 	MinorNationStatus=1               
 	Handicap=HANDICAP_PRINCE
 	LeaderName=TXT_KEY_RFCMP_900_LEADER_35
 EndPlayer
 BeginPlayer
-	Team=36
+	Team=37
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
 	MinorNationStatus=1
 EndPlayer
 BeginPlayer
-	Team=37
+	Team=38
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
@@ -7306,6 +7316,7 @@ BeginPlot
 	x=18,y=61
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=18,y=62
@@ -9606,6 +9617,7 @@ BeginPlot
 	x=24,y=61
 	TerrainType=TERRAIN_SNOW
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=24,y=62
@@ -19467,7 +19479,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -19481,7 +19493,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -19925,25 +19937,25 @@ BeginPlot
 	PlotType=1
 
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Fes
 		CityPopulation=4
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player32Culture=1
+		Player33Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20348,7 +20360,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20357,7 +20369,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20365,7 +20377,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20736,7 +20748,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20744,7 +20756,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -20756,7 +20768,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21158,7 +21170,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21167,25 +21179,25 @@ BeginPlot
 	PlotType=2
 
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Tahert
 		CityPopulation=4
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player33Culture=1
+		Player34Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21554,7 +21566,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21563,7 +21575,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -21572,7 +21584,7 @@ BeginPlot
 	PlotType=2
 	BonusType=BONUS_WHEAT
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -23234,37 +23246,37 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=33
+		UnitType=UNIT_PIKEMAN, UnitOwner=34
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit	
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=33
+		UnitType=UNIT_PIKEMAN, UnitOwner=34
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit	
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_CHRISTIAN_MISSIONARY, UnitOwner=33
+		UnitType=UNIT_CHRISTIAN_MISSIONARY, UnitOwner=34
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=33
+		UnitType=UNIT_WORKER, UnitOwner=34
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Roma
 		CityPopulation=4
 		BuildingType=BUILDING_BARRACKS
@@ -23276,7 +23288,7 @@ BeginPlot
 		BuildingType=BUILDING_CHRISTIAN_MONASTERY
 		ReligionType=RELIGION_CHRISTIANITY
 		HolyCityReligionType=RELIGION_CHRISTIANITY
-		Player33Culture=100
+		Player34Culture=100
 	EndCity
 EndPlot
 BeginPlot
@@ -23300,38 +23312,38 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=32
+		UnitType=UNIT_PIKEMAN, UnitOwner=33
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit	
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit	
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_CROSSBOWMAN, UnitOwner=32
+		UnitType=UNIT_CROSSBOWMAN, UnitOwner=33
 		Level=3, Experience=5
 		PromotionType=PROMOTION_CITY_GARRISON1
 		PromotionType=PROMOTION_CITY_GARRISON2
 	EndUnit		
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Venetia
 		CityPopulation=2
 		BuildingType=BUILDING_HARBOR
 		BuildingType=BUILDING_STABLE
 		BuildingType=BUILDING_FORGE
 		BuildingType=BUILDING_MARKET
-		Player32Culture=1
+		Player33Culture=1
 	EndCity
 EndPlot
 BeginPlot
@@ -26147,16 +26159,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=35
+		UnitType=UNIT_WORKER, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=35
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=35
+		UnitType=UNIT_SPEARMAN, UnitOwner=36
 	EndUnit
 	BeginCity
-		CityOwner=35
+		CityOwner=36
 		CityName=Athenae
 		CityPopulation=3
 		BuildingType=BUILDING_HARBOR
@@ -26166,7 +26178,7 @@ BeginPlot
 		BuildingType=BUILDING_GREEK_ODEON
 		ReligionType=RELIGION_CHRISTIANITY
 		BuildingType=BUILDING_PARTHENON
-		Player35Culture=50
+		Player36Culture=50
 	EndCity
 EndPlot
 BeginPlot
@@ -26621,28 +26633,28 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=35
+		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=35
+		UnitType=UNIT_PIKEMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=35
+		UnitType=UNIT_PIKEMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=35
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=35
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=35
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=35
+		UnitType=UNIT_WORKER, UnitOwner=36
 	EndUnit
 	BeginCity
-		CityOwner=35
+		CityOwner=36
 		CityName=Constantinopolis
 		CityPopulation=4
 		BuildingType=BUILDING_PALACE
@@ -26658,7 +26670,7 @@ BeginPlot
 		BuildingType=BUILDING_BYZANTINE_HIPPODROME
 		ReligionType=RELIGION_CHRISTIANITY
 		BuildingType=BUILDING_HAGIA_SOPHIA
-		Player35Culture=1000
+		Player36Culture=1000
 	EndCity
 EndPlot
 BeginPlot
@@ -28177,18 +28189,18 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BeginUnit
-		UnitType=UNIT_SPEARMAN, UnitOwner=33
+		UnitType=UNIT_SPEARMAN, UnitOwner=34
 	EndUnit	
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=34
 	EndUnit	
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Aksum
 		CityPopulation=2
 		BuildingType=BUILDING_ETHIOPIAN_STELE
 		ReligionType=RELIGION_CHRISTIANITY
-		Player33Culture=50
+		Player34Culture=50
 	EndCity
 EndPlot
 BeginPlot
@@ -28268,17 +28280,17 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=35
+		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=35
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=36
 	EndUnit
 	BeginCity
-		CityOwner=35
+		CityOwner=36
 		CityName=Iconium
 		CityPopulation=2
 		BuildingType=BUILDING_MARKET
-		Player35Culture=10
+		Player36Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -28838,6 +28850,7 @@ BeginPlot
 	x=73,y=63
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=73,y=64
@@ -29553,19 +29566,19 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BeginUnit
-		UnitType=UNIT_CROSSBOWMAN, UnitOwner=35
+		UnitType=UNIT_CROSSBOWMAN, UnitOwner=36
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=35
+		UnitType=UNIT_BYZANTINE_CATAPHRACT, UnitOwner=36
 	EndUnit
 	BeginCity
-		CityOwner=35
+		CityOwner=36
 		CityName=Trapezus
 		CityPopulation=3
 		BuildingType=BUILDING_BARRACKS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_HARBOR
-		Player35Culture=10
+		Player36Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -29866,25 +29879,25 @@ BeginPlot
 	PlotType=1
 
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=San'a
 		CityPopulation=3
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player33Culture=1
+		Player34Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -30102,6 +30115,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=2
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=76,y=62
@@ -30292,7 +30306,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -30300,7 +30314,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 
-	Player33Culture=10
+	Player34Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -30719,7 +30733,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -30727,7 +30741,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -31181,7 +31195,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -31190,25 +31204,25 @@ BeginPlot
 	PlotType=2
 
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Al-Ahsa
 		CityPopulation=3
 		BuildingType=BUILDING_WALLS
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		ReligionType=RELIGION_ISLAM
-		Player32Culture=1
+		Player33Culture=1
 	EndCity
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -31598,7 +31612,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 
-	Player32Culture=10
+	Player33Culture=10
 	RouteType=ROUTE_ROAD
 EndPlot
 BeginPlot
@@ -32363,16 +32377,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=34
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Sirajis
 		CityPopulation=4
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		BuildingType=BUILDING_GROCER
-		Player33Culture=10
+		Player34Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -32773,14 +32787,14 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitType=UNIT_ARCHER, UnitOwner=33
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Merv
 		CityPopulation=2
 		BuildingType=BUILDING_STABLE
-		Player32Culture=1
+		Player33Culture=1
 	EndCity
 
 	RouteType=ROUTE_ROAD
@@ -33532,16 +33546,16 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=34
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Kandahar
 		CityPopulation=4
 		BuildingType=BUILDING_GRANARY
 		BuildingType=BUILDING_MARKET
 		BuildingType=BUILDING_GROCER
-		Player33Culture=10
+		Player34Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -33579,19 +33593,19 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=32
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Samarqand
 		CityPopulation=3
 		BuildingType=BUILDING_BARRACKS
 		BuildingType=BUILDING_STABLE
 		BuildingType=BUILDING_GRANARY
-		Player32Culture=1
+		Player33Culture=1
 	EndCity
 
 EndPlot
@@ -34670,10 +34684,10 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=32
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Mumbai
 		CityPopulation=3
 		BuildingType=BUILDING_STABLE
@@ -34683,7 +34697,7 @@ BeginPlot
 		BuildingType=BUILDING_HARBOR
 		BuildingType=BUILDING_HINDU_TEMPLE
 		ReligionType=RELIGION_HINDUISM
-		Player32Culture=100
+		Player33Culture=100
 	EndCity
 EndPlot
 BeginPlot
@@ -35470,13 +35484,13 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=32
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=32
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
 	EndUnit
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Delhi
 		CityPopulation=8
 		BuildingType=BUILDING_STABLE
@@ -35488,7 +35502,7 @@ BeginPlot
 		BuildingType=BUILDING_HINDU_TEMPLE
 		BuildingType=BUILDING_HINDU_MONASTERY
 		ReligionType=RELIGION_HINDUISM
-		Player32Culture=100
+		Player33Culture=100
 	EndCity
 EndPlot
 BeginPlot
@@ -36999,22 +37013,22 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_LONGBOWMAN, UnitOwner=33
+		UnitType=UNIT_LONGBOWMAN, UnitOwner=34
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=33
+		UnitType=UNIT_PIKEMAN, UnitOwner=34
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_PIKEMAN, UnitOwner=33
+		UnitType=UNIT_PIKEMAN, UnitOwner=34
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=34
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=34
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=34
 		CityName=Patliputra
 		CityPopulation=8
 		BuildingType=BUILDING_STABLE
@@ -37033,7 +37047,7 @@ BeginPlot
 		HolyCityReligionType=RELIGION_HINDUISM
 		ReligionType=RELIGION_BUDDHISM
 		HolyCityReligionType=RELIGION_BUDDHISM
-		Player33Culture=50
+		Player34Culture=50
 	EndCity
 EndPlot
 BeginPlot
@@ -37167,6 +37181,7 @@ BeginPlot
 	x=94,y=64
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=94,y=65
@@ -38472,16 +38487,16 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=32
+		UnitType=UNIT_ARCHER, UnitOwner=33
 	EndUnit	
 	BeginCity
-		CityOwner=32
+		CityOwner=33
 		CityName=Pagan
 		CityPopulation=4
 		BuildingType=BUILDING_BUDDHIST_TEMPLE                             
 		BuildingType=BUILDING_SHWEDAGON_PAYA
 		ReligionType=RELIGION_BUDDHISM
-		Player32Culture=10
+		Player33Culture=10
 	EndCity
 
 EndPlot
@@ -39473,6 +39488,7 @@ BeginPlot
 	x=100,y=63
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=100,y=64
@@ -43842,6 +43858,7 @@ BeginPlot
 	x=111,y=64
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_FUR
 EndPlot
 BeginPlot
 	x=111,y=65
@@ -45322,6 +45339,7 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=2
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=115,y=64
@@ -46384,6 +46402,7 @@ BeginPlot
 	x=118,y=60
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=118,y=61
@@ -46394,6 +46413,7 @@ BeginPlot
 	x=118,y=62
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=1
+	BonusType=BONUS_SILVER
 EndPlot
 BeginPlot
 	x=118,y=63
@@ -46732,6 +46752,7 @@ BeginPlot
 	x=119,y=59
 	TerrainType=TERRAIN_TUNDRA
 	PlotType=2
+	BonusType=BONUS_DEER
 EndPlot
 BeginPlot
 	x=119,y=60
@@ -47801,6 +47822,7 @@ BeginPlot
 	x=122,y=62
 	TerrainType=TERRAIN_SNOW
 	PlotType=1
+	BonusType=BONUS_SILVER
 EndPlot
 BeginPlot
 	x=122,y=63

@@ -144,6 +144,8 @@ class CvRFCEventHandler:
                 Korea.setup(self.vic)
                 import NativeAmerica
                 NativeAmerica.setup()
+                import Arctic
+                Arctic.setup()
                 self.rel.setup()
                 self.pla.setup()
                 self.sta.setup()

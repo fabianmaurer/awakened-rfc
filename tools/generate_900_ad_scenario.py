@@ -6,7 +6,7 @@ from xml.sax.saxutils import escape
 ROOT = Path(__file__).resolve().parents[1]
 MAPS = ROOT / 'Awakened RFC/PublicMaps'
 TARGET = MAPS / 'Start 3b - 900 AD.CivBeyondSwordWBSave'
-ACTIVE = (0, 2, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31)
+ACTIVE = (0, 2, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31, 32)
 # English, French, German, Italian, Spanish. Contemporary representatives of
 # aggregated RFC slots, not claims to rule every region represented by a slot.
 LEADERS = {
@@ -76,6 +76,11 @@ INTRODUCTIONS = {
     27: ("900 AD: Abd Allah rules the Umayyad emirate from Cordoba. Provincial rivals weaken central authority, and Christian rulers remain in northern Iberia. Rebuild your position from the southern core. Cordoba is still an emirate: the historical proclamation of its caliphate lies in 929.",
          "900 n. Chr.: Abd Allah regiert das Umayyadenemirat von Cordoba aus. Provinzrivalen schw\u00e4chen die Zentralgewalt, und im Norden Iberiens bestehen christliche Reiche. Festigt eure Stellung vom s\u00fcdlichen Kernland aus. Cordoba ist noch ein Emirat; die historische Ausrufung des Kalifats liegt im Jahr 929."),
 }
+
+
+# Historical city definitions above retain their pre-Eskimo minor IDs.
+CITIES = {pos: (owner + (owner >= 32), name, population)
+          for pos, (owner, name, population) in CITIES.items()}
 
 
 def city_and_units(pos, owner, name, population):
@@ -148,8 +153,9 @@ def main():
     def player(match):
         owner = next(players)
         block = field(match[1], 'PlayableCiv', int(owner in ACTIVE))
-        if owner in LEADERS:
-            block = field(block, 'LeaderName', 'TXT_KEY_RFCMP_900_LEADER_' + str(owner))
+        leader_owner = owner - int(owner >= 33)
+        if owner != 32 and leader_owner in LEADERS:
+            block = field(block, 'LeaderName', 'TXT_KEY_RFCMP_900_LEADER_' + str(leader_owner))
         if owner in CAPITALS:
             block = field(block, 'StateReligion', 'RELIGION_ISLAM')
         if owner == 12:
@@ -191,8 +197,8 @@ def main():
                 if other != owner:
                     block += '\n\tContactWithTeam=' + str(other) + '\n'
         # The combined Fatimid state inherits the unfinished Sicilian war.
-        if owner in (0, 35):
-            block += '\n\tAtWar=' + str(35 if owner == 0 else 0) + '\n'
+        if owner in (0, 36):
+            block += '\n\tAtWar=' + str(36 if owner == 0 else 0) + '\n'
         if owner in (14, 28):
             other = 28 if owner == 14 else 14
             block += '\n\tContactWithTeam=' + str(other) + '\n\tAtWar=' + str(other) + '\n'
@@ -247,6 +253,8 @@ def main():
     from korea_scenarios import apply_korea
     from american_scenarios import apply_american_starts
     text = apply_american_starts(apply_korea(text))
+    from eskimo_scenarios import apply_eskimos
+    text = apply_eskimos(text)
     TARGET.write_text(text, encoding='utf-8')
     write_leader_text()
     print(TARGET.relative_to(ROOT))

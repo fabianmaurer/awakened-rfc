@@ -8804,6 +8804,9 @@ bool CvSpecialBuildingInfo::read(CvXMLLoadUtility* pXML)
 	{
 		return false;
 	}
+	if (getType() != NULL && (strcmp(getType(), "BUILDING_ARCTIC_PALACE_DISPLAY") == 0 ||
+		strstr(getType(), "_ARCTIC_DISPLAY") != NULL)) m_bGraphicalOnly = true;
+
 
 	pXML->GetChildXmlValByName(szTextVal, "ObsoleteTech");
 	m_iObsoleteTech = pXML->FindInInfoClass(szTextVal);
@@ -11468,6 +11471,8 @@ bool CvRouteInfo::read(CvXMLLoadUtility* pXML)
 	{
 		return false;
 	}
+	if (getType() != NULL && strcmp(getType(), "ROUTE_SNOW_PATH_DISPLAY") == 0) m_bGraphicalOnly = true;
+
 
 	pXML->GetChildXmlValByName(&m_iAdvancedStartCost, "iAdvancedStartCost");
 	pXML->GetChildXmlValByName(&m_iAdvancedStartCostIncrease, "iAdvancedStartCostIncrease");
@@ -13196,6 +13201,10 @@ bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 	{
 		return false;
 	}
+
+	if (getType() != NULL && (strcmp(getType(), "FEATURE_ARCHIVE_OUTPUT_3") == 0 ||
+		strcmp(getType(), "FEATURE_ARCHIVE_OUTPUT_5") == 0 ||
+		strncmp(getType(), "FEATURE_HUNTING_HERD_", sizeof("FEATURE_HUNTING_HERD_") - 1) == 0)) m_bGraphicalOnly = true;
 
 	pXML->GetChildXmlValByName( szTextVal, "ArtDefineTag");
 	setArtDefineTag(szTextVal);
