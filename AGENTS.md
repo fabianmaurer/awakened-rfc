@@ -28,6 +28,16 @@ The repository is `git@github.com:fabianmaurer/awakened-rfc.git`. The checkout
 directory may have a different name from the mod directory. Internal `RFCMP` XML keys,
 defines and asset subdirectories remain valid identifiers.
 
+## Release ZIP naming
+
+Use `python tools/package_release.py` to create `dist/Awakened-RFC.zip` for
+ordinary release ZIP requests. When the user specifies a release version or
+tag, pass it unchanged with `--version` to produce
+`dist/Awakened-RFC-<version>.zip` (for example, `Awakened-RFC-v0.1.0.zip`).
+Do not invent version numbers or append dates, commit hashes or other labels.
+Keep the archive's top-level mod folder named `Awakened RFC`. The packager's
+`-reporting` suffix is reserved for explicitly requested development packages.
+
 ## Save compatibility
 
 The user explicitly does not require compatibility with existing saves. Implement gameplay changes for new games; do not add save migrations or preserve old mechanics solely for existing saves.
