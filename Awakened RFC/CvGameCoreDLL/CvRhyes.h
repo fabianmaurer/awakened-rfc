@@ -205,4 +205,15 @@ extern int civDynamicNamesFlag[33];
 extern int civDynamicNamesEraThreshold[33];
 extern int settlersMaps[][68][124];
 
+// Only major civilizations have authored settlement preferences. Minor-player
+// AI also queries this table; reading past it makes city sites depend on memory
+// contents and can send the same unit to different plots in multiplayer.
+inline int getSettlerMapValue(int iPlayer, int iY, int iX)
+{
+	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS ||
+		iY < 0 || iY >= EARTH_Y || iX < 0 || iX >= EARTH_X)
+		return 0;
+	return settlersMaps[iPlayer][iY][iX];
+}
+
 

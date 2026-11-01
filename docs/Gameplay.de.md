@@ -1035,6 +1035,16 @@ Figurenvarianten und unregelmäßigen Formationen.
 Die [Dokumentation zur Einheitengrafik](SlaveUnitArt.md) enthält die Modelle
 aller Waffenstufen, Quellenangaben und eine statische Vorschau.
 
+## Erfahrung durch Erkundung
+
+Späher, Entdecker und ihre einzigartigen Ersatzeinheiten erhalten 0,1 EP für
+jedes Feld, das sie erstmals für ihr Team aufdecken. Je zehn Felder ergeben
+einen nutzbaren Erfahrungspunkt. Bruchteile bleiben beim Speichern, Aufrüsten
+und Verschenken erhalten. Bereits kartierte Felder zählen nicht, auch nach
+Kartentausch. Erkundung erzeugt keine Punkte für Große Generäle.
+`SCOUT_EXPLORATION_XP_HUNDREDTHS` legt die EP je Feld in Hundertsteln fest;
+0 deaktiviert den Bonus. Die Änderung ist für neue Partien vorgesehen.
+
 ## Frühe Stammesüberfälle in Amerika
 
 Bis 1600 n. Chr. erscheinen im besiedelten Nordamerika, in Mesoamerika und

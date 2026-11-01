@@ -240,6 +240,13 @@ DETAILS = dict(zip(LANGS, (
     'I benefici sono cumulativi e valgono per le unità esistenti e future di questo tipo. Risorse ed edifici non limitano la ricerca. Un ammodernamento usa solo la maestria del nuovo tipo. I compagni di squadra condividono la ricerca. Le unità obsolete conservano i benefici acquisiti.',
     'Las ventajas se acumulan y afectan a las unidades existentes y futuras de este tipo. Los recursos y edificios no limitan la investigación. Al modernizarse se usa solo la maestría del nuevo tipo. Los compañeros de equipo comparten la investigación. Las unidades obsoletas conservan las ventajas obtenidas.',
 )))
+COMBAT_RULE = dict(zip(LANGS, (
+    'Each combat advances available mastery research for both combatants, even on defeat or withdrawal.',
+    'Chaque combat fait progresser la recherche de maîtrise disponible des deux combattants, même en cas de défaite ou de retraite.',
+    'Jeder Kampf bringt beiden Kämpfern Fortschritt bei verfügbarer Meisterschaftsforschung, auch bei Niederlage oder Rückzug.',
+    'Ogni combattimento fa avanzare la ricerca di maestria disponibile per entrambi i combattenti, anche in caso di sconfitta o ritirata.',
+    'Cada combate hace avanzar la investigación de maestría disponible de ambos combatientes, incluso en caso de derrota o retirada.',
+)))
 
 
 def load(path):
@@ -359,7 +366,8 @@ def main():
                            for lang in LANGS}
         texts.append((key + '_HELP', help_text))
         texts.append((key + '_PEDIA', {lang: help_text[lang] + '[PARAGRAPH:1]' + RULES[lang]
-                                    + '[PARAGRAPH:1]' + DETAILS[lang] for lang in LANGS}))
+                                    + '[PARAGRAPH:1]' + DETAILS[lang]
+                                    + '[PARAGRAPH:1]' + COMBAT_RULE[lang] for lang in LANGS}))
         for level, reward in enumerate(rewards, 1):
             for effect, value in effects(reward):
                 data.append('    {"%s", %d, MASTERY_%s, %d},' % (name, level, effect, value))
@@ -388,6 +396,14 @@ Reward strength does not change the multiplier. Research unlocks with all unit t
 requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.
+
+Each direct combat grants both participants' teams 1% of their exact unit type's
+next mastery level's total research cost, whether attacking, defending, losing
+or withdrawing. Mastery need not be selected for research, but must currently be
+researchable. Collateral victims and civilian captures do not grant progress.
+The XML define UNIT_MASTERY_COMBAT_RESEARCH_PERCENT controls the percentage;
+0 disables it. Awards round down to whole research points, with a minimum of 1,
+and are capped at the current level's remaining cost without research overflow.
 
 Bonuses follow the current owner's team and exact unit type. Existing and new
 units benefit; upgrading switches tracks. Surviving obsolete units retain

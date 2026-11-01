@@ -29,6 +29,7 @@ namespace UnitMastery
     int level(UnitTypes eUnit, TeamTypes eTeam);
     int modifier(UnitTypes eUnit, TeamTypes eTeam, Effect eEffect);
     bool isAvailable(const CvPlayer& kPlayer, TechTypes eTech);
+    void recordCombat(const CvUnit& kUnit);
     CvWString suffix(UnitTypes eUnit, TeamTypes eTeam);
     CvWString tooltipName(const CvUnit& kUnit);
     CvWString researchName(TechTypes eTech, TeamTypes eTeam);

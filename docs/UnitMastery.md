@@ -13,6 +13,14 @@ requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.
 
+Each direct combat grants both participants' teams 1% of their exact unit type's
+next mastery level's total research cost, whether attacking, defending, losing
+or withdrawing. Mastery need not be selected for research, but must currently be
+researchable. Collateral victims and civilian captures do not grant progress.
+The XML define UNIT_MASTERY_COMBAT_RESEARCH_PERCENT controls the percentage;
+0 disables it. Awards round down to whole research points, with a minimum of 1,
+and are capped at the current level's remaining cost without research overflow.
+
 Bonuses follow the current owner's team and exact unit type. Existing and new
 units benefit; upgrading switches tracks. Surviving obsolete units retain
 completed benefits. No promotions are added or transferred. Existing unique

@@ -1770,6 +1770,7 @@ int CvPlot::seeThroughLevel() const
 
 void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, CvUnit* pUnit, bool bUpdatePlotGroups)
 {
+	int iExploredTiles = 0;
 	bool bAerial = (pUnit != NULL && pUnit->getDomainType() == DOMAIN_AIR);
 
 	DirectionTypes eFacingDirection = NO_DIRECTION;
@@ -1820,6 +1821,8 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 						CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
 						if (NULL != pPlot)
 						{
+							if (bIncrement && pUnit != NULL && eTeam == pUnit->getTeam() && !pPlot->isRevealed(eTeam, false))
+								++iExploredTiles;
 							pPlot->changeVisibilityCount(eTeam, ((bIncrement) ? 1 : -1), aSeeInvisibleTypes[i], bUpdatePlotGroups);
 						}
 					}
@@ -1832,6 +1835,8 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 						CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
 						if (NULL != pPlot)
 						{
+							if (bIncrement && pUnit != NULL && eTeam == pUnit->getTeam() && !pPlot->isRevealed(eTeam, false))
+								++iExploredTiles;
 							pPlot->changeVisibilityCount(eTeam, 1, aSeeInvisibleTypes[i], bUpdatePlotGroups);
 							pPlot->changeVisibilityCount(eTeam, -1, aSeeInvisibleTypes[i], bUpdatePlotGroups);
 						}
@@ -1840,6 +1845,7 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 			}
 		}
 	}
+	if (iExploredTiles > 0) pUnit->awardExplorationExperience(iExploredTiles);
 }
 
 bool CvPlot::canSeePlot(CvPlot *pPlot, TeamTypes eTeam, int iRange, DirectionTypes eFacingDirection) const

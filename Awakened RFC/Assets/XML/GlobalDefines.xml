@@ -5,6 +5,16 @@
 <!-- -->
 <!-- Global Defines -->
 <Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
+	<!-- Exploration XP per newly revealed tile, in hundredths; 10 = 0.1 XP. -->
+	<Define>
+		<DefineName>SCOUT_EXPLORATION_XP_HUNDREDTHS</DefineName>
+		<iDefineIntVal>10</iDefineIntVal>
+	</Define>
+	<!-- Percent of the next mastery level's total research cost per combat; 0 disables. -->
+	<Define>
+		<DefineName>UNIT_MASTERY_COMBAT_RESEARCH_PERCENT</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	<Define>
 		<DefineName>CIV4_VERSION</DefineName>
 		<iDefineIntVal>319</iDefineIntVal>

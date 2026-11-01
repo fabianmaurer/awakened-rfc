@@ -1245,6 +1245,15 @@ the first matching combination below wins. All names are in
 The VC7.1 DLL builds successfully; gameplay, art rendering and multiplayer
 balance still require user-operated in-game validation.
 
+## Exploration experience
+
+Scouts, Explorers and their unique replacements earn 0.1 XP for each tile they
+reveal for the first time to their team. Every ten tiles grant one usable XP;
+fractions remain with the unit through saves, upgrades and gifts. Previously
+mapped tiles, including traded maps, do not count. Exploration grants no Great
+General points. `SCOUT_EXPLORATION_XP_HUNDREDTHS` sets the rate in hundredths of XP
+per tile; 0 disables it. This change is intended for new games.
+
 ## Early American tribal raids
 
 Through AD 1600, settled North America, Mesoamerica and the Andes receive

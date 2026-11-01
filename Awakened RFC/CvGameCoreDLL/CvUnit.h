@@ -68,6 +68,9 @@ class CvUnit : public CvDLLEntity
 {
 
 public:
+	void awardExplorationExperience(int iTiles);
+	int getExplorationExperienceRemainder() const { return m_iExplorationExperienceRemainder; }
+
 
 	CvUnit();
 	virtual ~CvUnit();
@@ -791,6 +794,7 @@ protected:
 	int m_iDamage;
 	int m_iMoves;
 	int m_iExperience;
+	int m_iExplorationExperienceRemainder;
 	int m_iLevel;
 	int m_iCargo;
 	int m_iCargoCapacity;

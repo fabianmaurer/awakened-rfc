@@ -355,6 +355,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iDamage = 0;
 	m_iMoves = 0;
 	m_iExperience = 0;
+	m_iExplorationExperienceRemainder = 0;
 	m_iLevel = 1;
 	m_iCargo = 0;
 	m_iAttackPlotX = INVALID_PLOT_COORD;
@@ -506,6 +507,7 @@ void CvUnit::convert(CvUnit* pUnit)
 	setMoves(pUnit->getMoves());
 
 	setLevel(pUnit->getLevel());
+	m_iExplorationExperienceRemainder = pUnit->m_iExplorationExperienceRemainder;
 	int iOldModifier = std::max(1, 100 + GET_PLAYER(pUnit->getOwnerINLINE()).getLevelExperienceModifier());
 	int iOurModifier = std::max(1, 100 + GET_PLAYER(getOwnerINLINE()).getLevelExperienceModifier());
 	setExperience(std::max(0, (pUnit->getExperience() * iOurModifier) / iOldModifier));
@@ -1491,6 +1493,9 @@ void CvUnit::updateCombat(bool bQuick)
 			kBattle.setDamage(BATTLE_UNIT_DEFENDER, BATTLE_TIME_BEGIN, pDefender->getDamage());
 
 			resolveCombat(pDefender, pPlot, kBattle);
+
+			UnitMastery::recordCombat(*this);
+			UnitMastery::recordCombat(*pDefender);
 
 			if (!bVisible)
 			{
@@ -10351,6 +10356,25 @@ int CvUnit::getExperience() const
 	return m_iExperience;
 }
 
+void CvUnit::awardExplorationExperience(int iTiles)
+{
+	const int iRate = GC.getDefineINT("SCOUT_EXPLORATION_XP_HUNDREDTHS");
+	if (iTiles <= 0 || iRate <= 0) return;
+	const UnitClassTypes eClass = getUnitClassType();
+	if (eClass != (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_SCOUT") &&
+		eClass != (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_EXPLORER")) return;
+
+	// Fixed point keeps fractional awards deterministic on every multiplayer peer.
+	const __int64 iTotal = m_iExplorationExperienceRemainder + (__int64)iTiles * iRate;
+	m_iExplorationExperienceRemainder = (int)(iTotal % 100);
+	const int iAward = (int)std::min((__int64)(MAX_INT - getExperience()), iTotal / 100);
+	if (iAward > 0)
+	{
+		changeExperience(iAward);
+		testPromotionReady();
+	}
+}
+
 void CvUnit::setExperience(int iNewValue, int iMax)
 {
 	// Slave units cannot gain experience, including direct grants and upgrades.
@@ -11991,6 +12015,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iDamage);
 	pStream->Read(&m_iMoves);
 	pStream->Read(&m_iExperience);
+	pStream->Read(&m_iExplorationExperienceRemainder);
 	pStream->Read(&m_iLevel);
 	pStream->Read(&m_iCargo);
 	pStream->Read(&m_iCargoCapacity);
@@ -12087,7 +12112,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=3;
+	uint uiFlag=4;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12103,6 +12128,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iDamage);
 	pStream->Write(m_iMoves);
 	pStream->Write(m_iExperience);
+	pStream->Write(m_iExplorationExperienceRemainder);
 	pStream->Write(m_iLevel);
 	pStream->Write(m_iCargo);
 	pStream->Write(m_iCargoCapacity);

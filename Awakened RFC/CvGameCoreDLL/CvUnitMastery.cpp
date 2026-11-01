@@ -113,6 +113,21 @@ namespace UnitMastery
         return true;
     }
 
+    void recordCombat(const CvUnit& kUnit)
+    {
+        const int percent = GC.getDefineINT("UNIT_MASTERY_COMBAT_RESEARCH_PERCENT");
+        const TechTypes eTech = techForUnit(kUnit.getUnitType());
+        CvPlayer& player = GET_PLAYER(kUnit.getOwnerINLINE());
+        if (percent <= 0 || eTech == NO_TECH || !player.canResearch(eTech)) return;
+
+        CvTeam& team = GET_TEAM(kUnit.getTeam());
+        // Award once per battle, including defeat/withdrawal. Cap at this level
+        // so combat never creates overflow for unrelated research.
+        const int progress = (int)std::min((__int64)team.getResearchLeft(eTech),
+            std::max((__int64)1, (__int64)team.getResearchCost(eTech) * percent / 100));
+        if (progress > 0) team.changeResearchProgress(eTech, progress, player.getID());
+    }
+
     CvWString suffix(UnitTypes eUnit, TeamTypes eTeam)
     {
         const int l = level(eUnit, eTeam);

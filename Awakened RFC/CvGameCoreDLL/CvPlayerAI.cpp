@@ -3017,12 +3017,12 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	int tempY = pPlot->getY_INLINE();
 
 
-	iValue *= settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX];
+	iValue *= getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX);
 	iValue /= 100;
 
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] <= 3)
+	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) <= 3)
 		iValue /= 2;
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] <= 60)
+	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) <= 60)
 		iValue /= 2;
 	/*if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] >= 200) {
 		iValue *= 11;
@@ -3032,7 +3032,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 		iValue *= 11;
 		iValue /= 10;
 	}*/
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] > 60)
+	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) > 60)
 	//	iValue += GC.getGameINLINE().getSorenRandNum(1000, "Random Value");
 	{
 		//iValue *= 100 + GC.getASyncRand().get(40, "Random Value");
@@ -3151,17 +3151,17 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 
 	//Rhye - start
 
-	if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] <= 3)
+	if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 3)
 		iValue -= 2;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] <= 20)
+	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 20)
 		iValue -= 1;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 500) //500-700
+	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 500) //500-700
 		iValue += 4;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 300) //300-400
+	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 300) //300-400
 		iValue += 3;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 150) //150-200
+	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 150) //150-200
 		iValue += 2;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 40) //40-60-90
+	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 40) //40-60-90
 		iValue += 1;
 
 	if (pCity->getOwner() >= NUM_MAJOR_PLAYERS)
@@ -8183,7 +8183,7 @@ int CvPlayerAI::AI_cityTradeVal(CvCity* pCity) const
 
 
 	if (GET_PLAYER(pCity->getOwnerINLINE()).getNumCities() > 12) 
-		if (settlersMaps[pCity->getOwnerINLINE()][EARTH_Y -1 - pCity->getY()][pCity->getX()] < 500) { //not in core area
+		if (getSettlerMapValue(pCity->getOwnerINLINE(), EARTH_Y -1 - pCity->getY(), pCity->getX()) < 500) { //not in core area
 			iValue *= 2;
 			iValue /= 3;
 		}
@@ -18278,7 +18278,7 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 			CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
 			if (pLoopPlot->isRevealed(getTeam(), false))
 			{
-				if (settlersMaps[getID()][EARTH_Y -1 - pLoopPlot->getY()][pLoopPlot->getX()] >= 90) //Rhye
+				if (getSettlerMapValue(getID(), EARTH_Y -1 - pLoopPlot->getY(), pLoopPlot->getX()) >= 90) //Rhye
 				{ //Rhye
 				iValue = pLoopPlot->getFoundValue(getID());
 				if (iValue > iMinFoundValueThreshold)
@@ -18350,7 +18350,7 @@ int CvPlayerAI::AI_browseStep(int iMinFoundValueThreshold, int iBestFoundValue, 
 	for (iJ = 0; iJ < EARTH_Y; iJ++)
 	{
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotINLINE(iI, iJ);
-		if (settlersMaps[getID()][EARTH_Y -1 -iJ][iI] == iModifier)
+		if (getSettlerMapValue(getID(), EARTH_Y -1 -iJ, iI) == iModifier)
 
 	/*for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
 	{		

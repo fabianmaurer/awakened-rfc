@@ -17839,7 +17839,7 @@ int CvPlayer::verifySettlersHalt(int threshold)
 				{
 					if (!(pLoopPlot->isOwned()))
 					{
-						if (settlersMaps[getID()][EARTH_Y -1 -iJ][iI] >= threshold)
+						if (getSettlerMapValue(getID(), EARTH_Y -1 -iJ, iI) >= threshold)
 						{
 							count++;
 
@@ -17862,7 +17862,7 @@ int CvPlayer::verifySettlersHalt(int threshold)
 
 int CvPlayer::getSettlersMaps(int y, int x)
 {
-	return settlersMaps[getID()][y][x];
+	return getSettlerMapValue(getID(), y, x);
 }
 
 /*void CvPlayer::setFlag(CvWString s)
