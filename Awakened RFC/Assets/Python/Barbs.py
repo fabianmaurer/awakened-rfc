@@ -252,26 +252,13 @@ class Barbs:
                         self.spawnUnits( iBarbarian, (48, 26), (65, 37), con.iSwordsman, 1, iGameTurn, 16, 4, utils.outerInvasion, 1)
                         self.spawnUnits( iBarbarian, (48, 22), (63, 33), con.iZuluImpi, 2, iGameTurn, 16, 10, utils.outerInvasion, 1)
 
-                #American natives
-                if (iGameTurn >= con.i600AD and iGameTurn <= con.i1100AD):
-                        self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iNativeAmericaDogSoldier, 2 + iHandicap, iGameTurn, 20, 0, utils.outerInvasion, 1)
-                        if (gc.getGame().getStartTurn() == 0):  #late start condition
-                                self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 3, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
-                        else:  #late start condition
-                                self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iAztecJaguar, 1, iGameTurn, 20 - 2*iHandicap, 10, utils.outerInvasion, 0)
-                if (iGameTurn >= con.i1300AD and iGameTurn <= con.i1600AD):
-                        self.spawnUnits( iBarbarian, (15, 38), (24, 47), con.iNativeAmericaDogSoldier, 3 + iHandicap, iGameTurn, 8, 0, utils.outerInvasion, 1)
+                # Frequent light raids replace the sparse early American armies.
+                self.checkAmericanRaids(iGameTurn)
+
+                # Later North American resistance to colonization.
                 if (iGameTurn >= con.i1400AD and iGameTurn <= con.i1800AD):
                         self.spawnUnits( iNative, (11, 44), (33, 51), con.iNativeAmericaDogSoldier, 3 + iHandicap, iGameTurn, 8, 0, utils.outerInvasion, 1)
                         self.spawnUnits( iNative, (11, 44), (33, 51), con.iNativeAmericaDogSoldier, 3 + iHandicap, iGameTurn, 8, 4, utils.outerInvasion, 1)
-                if (iGameTurn >= con.i1300AD and iGameTurn <= con.i1600AD):
-                        if (iGameTurn % 18 == 0):
-                                if (gc.getMap().plot(27, 29).getNumUnits() == 0):
-                                        self.makeUnit(con.iNativeAmericaDogSoldier, iBarbarian, (27, 29), 3 + iHandicap, 1)
-                        if (iGameTurn % 18 == 9):
-                                if (gc.getMap().plot(30, 13).getNumUnits() == 0):
-                                        self.makeUnit(con.iNativeAmericaDogSoldier, iBarbarian, (30, 13), 3 + iHandicap, 1)
-                        
                 #pirates in the Caribbean
                 if (iGameTurn >= con.i1600AD and iGameTurn <= con.i1800AD):
                         self.spawnUnits( iBarbarian, (24, 32), (35, 46), con.iPrivateer, 1, iGameTurn, 5, 0, utils.outerSeaSpawn, 0)
@@ -349,6 +336,76 @@ class Barbs:
                 self.foundCity(iBarbarian, lKazan, "Kazan", iGameTurn, 2, con.iHorseArcher, 1)
                 self.foundCity(iNative, lKongo, "Mbanza Kongo", iGameTurn, 1, con.iZuluImpi, 1)
 
+
+
+        def checkAmericanRaids(self, iGameTurn):
+                # Two weak raiders per region every three turns, through 1600.
+                # Stagger regions and allow eight turns after a scenario starts.
+                if (iGameTurn < gc.getGame().getStartTurn() + 8 or iGameTurn > con.i1600AD):
+                        return
+                if (gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_BARBARIANS)):
+                        return
+                lRegions = (((12, 40), (34, 55)),  # North America
+                            ((14, 30), (25, 39)),  # Mesoamerica
+                            ((23, 12), (33, 29)))  # Andes and nearby lowlands
+                for iRegion in range(len(lRegions)):
+                        if (iGameTurn % 3 != iRegion):
+                                continue
+                        tTL, tBR = lRegions[iRegion]
+                        lCities = []
+                        lOpen = []
+                        iRaiders = 0
+                        for x in range(tTL[0], tBR[0] + 1):
+                                for y in range(tTL[1], tBR[1] + 1):
+                                        plot = gc.getMap().plot(x, y)
+                                        for i in range(plot.getNumUnits()):
+                                                if (plot.getUnit(i).getOwner() == iBarbarian):
+                                                        iRaiders += 1
+                                        if (plot.isCity()):
+                                                city = plot.getPlotCity()
+                                                if (city.getOwner() < con.iNumPlayers
+                                                    and city.getGameTurnFounded() <= iGameTurn - 8):
+                                                        lCities.append(plot)
+                                        elif (not plot.isWater() and not plot.isPeak() and not plot.isImpassable()
+                                              and not plot.isUnit()
+                                              and (not plot.isOwned() or plot.getOwner() == iBarbarian)):
+                                                # Jungle is allowed: these are local raiders.
+                                                lOpen.append((x, y, plot.area().getID()))
+                        # Keep unattended regions from accumulating huge armies.
+                        if (not lCities or iRaiders >= 12):
+                                continue
+                        lSpawns = []
+                        for x, y, iArea in lOpen:
+                                iNearest = 1000
+                                for cityPlot in lCities:
+                                        if (cityPlot.area().getID() == iArea):
+                                                iNearest = min(iNearest, plotDistance(x, y, cityPlot.getX(), cityPlot.getY()))
+                                if (iNearest >= 3 and iNearest <= 6):
+                                        # Also protect new cities and cities beyond the region.
+                                        bNearCity = False
+                                        for iX in range(x - 2, x + 3):
+                                                for iY in range(y - 2, y + 3):
+                                                        if (gc.getMap().plot(iX, iY).isCity()):
+                                                                bNearCity = True
+                                        if (not bNearCity):
+                                                lSpawns.append((x, y))
+                        if (not lSpawns):
+                                continue
+                        tSpawn = lSpawns[utils.getFakeRandNum(len(lSpawns), 'American tribal raids')]
+                        # Alternate warrior pairs with a warrior and an archer.
+                        # Pillage AI emphasizes frontier disruption over city assaults.
+                        lUnits = [con.iWarrior, con.iWarrior]
+                        if ((iGameTurn // 3) % 2 == 1):
+                                lUnits[1] = con.iArcher
+                        for iUnit in lUnits[:min(2, 12 - iRaiders)]:
+                                self.makeUnit(iUnit, iBarbarian, tSpawn, 1, 3)
+                                if REPORTING_ENABLED:
+                                    import GameObserver
+                                    GameObserver.record_mechanic('scripted_spawn', iBarbarian,
+                                            {'unit': iUnit, 'count': 1,
+                                             'x': tSpawn[0], 'y': tSpawn[1],
+                                             'region': [tTL[0], tTL[1], tBR[0], tBR[1]],
+                                             'period': 3})
 
 
         def checkHunaInvasion(self, iGameTurn):

@@ -7156,6 +7156,13 @@ bool CvPlayer::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestEra, b
 {
 	PROFILE_FUNC();
 
+	// Bronze Working replaces slash-and-burn clearing with productive chopping.
+	if (eBuild == GC.getInfoTypeForString("BUILD_BURN_FOREST") &&
+		GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_BRONZE_WORKING")))
+	{
+		return false;
+	}
+
 	if (!(pPlot->canBuild(eBuild, getID(), bTestVisible)))
 	{
 		return false;

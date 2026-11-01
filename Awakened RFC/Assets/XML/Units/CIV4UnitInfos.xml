@@ -1022,6 +1022,10 @@
 					<bBuild>1</bBuild>
 				</Build>
 				<Build>
+					<BuildType>BUILD_BURN_FOREST</BuildType>
+					<bBuild>1</bBuild>
+				</Build>
+				<Build>
 					<BuildType>BUILD_DRAIN_MARSH</BuildType>
 					<bBuild>1</bBuild>
 				</Build>
@@ -1277,6 +1281,10 @@
 				</Build>
 				<Build>
 					<BuildType>BUILD_REMOVE_FOREST</BuildType>
+					<bBuild>1</bBuild>
+				</Build>
+				<Build>
+					<BuildType>BUILD_BURN_FOREST</BuildType>
 					<bBuild>1</bBuild>
 				</Build>
 				<Build>
