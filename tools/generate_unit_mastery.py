@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
 XML = MOD / 'Assets/XML'
 LANGS = ('English', 'French', 'German', 'Italian', 'Spanish')
-MASTERY_RESEARCH_COST_MULTIPLIER = 20
+MASTERY_RESEARCH_COST_MULTIPLIER = 8
 
 # Each tuple is an incremental reward. Earlier rewards remain active.
 # Explicit tracks keep rewards specific to the unit, including unique units.
@@ -378,10 +378,13 @@ def main():
 
 Military fighting units have three cumulative, unit-specific mastery levels.
 Each level costs twice the previous one: base, 2x base, 4x base. The base is
-20 times the unit's base XML production cost: levels I, II and III therefore
-cost 20x, 40x and 80x production. City and civilization production bonuses do
-not change this base. Reward strength does not change the multiplier.
-Normal research modifiers apply. Research unlocks with all unit technology
+8 times the unit's base XML production cost: levels I, II and III therefore
+start at 8x, 16x and 32x base production. Normal research modifiers still apply.
+This is calibrated to roughly 20x the displayed production cost for level I
+under the reported game settings (13-hammer Warrior: about 255 research).
+It is not a fixed final ratio across difficulties, teams, eras or other cost
+modifiers. City and civilization production bonuses do not change the XML base.
+Reward strength does not change the multiplier. Research unlocks with all unit technology
 requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.
