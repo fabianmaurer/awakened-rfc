@@ -1022,6 +1022,10 @@
 					<bBuild>1</bBuild>
 				</Build>
 				<Build>
+					<BuildType>BUILD_BURN_FOREST</BuildType>
+					<bBuild>1</bBuild>
+				</Build>
+				<Build>
 					<BuildType>BUILD_DRAIN_MARSH</BuildType>
 					<bBuild>1</bBuild>
 				</Build>
@@ -1277,6 +1281,10 @@
 				</Build>
 				<Build>
 					<BuildType>BUILD_REMOVE_FOREST</BuildType>
+					<bBuild>1</bBuild>
+				</Build>
+				<Build>
+					<BuildType>BUILD_BURN_FOREST</BuildType>
 					<bBuild>1</bBuild>
 				</Build>
 				<Build>
@@ -25827,10 +25835,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<PrereqTech>TECH_COMPASS</PrereqTech>
+			<PrereqTech>TECH_MACHINERY</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_SAILING</PrereqTech>
-				<PrereqTech>NONE</PrereqTech>
+				<PrereqTech>TECH_COMPASS</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>NONE</BonusType>

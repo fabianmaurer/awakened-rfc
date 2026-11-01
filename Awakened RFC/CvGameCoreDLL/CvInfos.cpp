@@ -111,7 +111,21 @@ const wchar* CvInfoBase::getDescription(uint uiForm) const
 {
 	while(m_aCachedDescriptions.size() <= uiForm)
 	{
-		m_aCachedDescriptions.push_back(gDLL->getObjectText(m_szTextKey, m_aCachedDescriptions.size()));
+        // Mastery names must use the live unit translation: standard unit
+        // names can be supplied by the base game rather than this mod's XML.
+        if (strncmp(m_szType.c_str(), "TECH_UNIT_MASTERY_", 18) == 0)
+        {
+            CvString unitName("UNIT_");
+            unitName += m_szType.c_str() + 18;
+            const UnitTypes eUnit = (UnitTypes)GC.getInfoTypeForString(unitName);
+            if (eUnit != NO_UNIT)
+            {
+                m_aCachedDescriptions.push_back(gDLL->getText("TXT_KEY_UNIT_MASTERY_NAME",
+                    GC.getUnitInfo(eUnit).getDescription(m_aCachedDescriptions.size())));
+                continue;
+            }
+        }
+        m_aCachedDescriptions.push_back(gDLL->getObjectText(m_szTextKey, m_aCachedDescriptions.size()));
 	}
 	
 	return m_aCachedDescriptions[uiForm];

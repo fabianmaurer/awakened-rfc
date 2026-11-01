@@ -385,6 +385,7 @@ growth remainder and use the new rate immediately.
 
 ## Land reclamation
 
+- **Burn forest** lets workers and Fast Workers remove forest from the start without gaining production. It takes the same time as chopping (300 base work). **Bronze Working** replaces it with normal chopping that grants production.
 - **Oases** yield **2 food and 2 commerce** and allow only **farms**, available
   with Agriculture. Farming preserves the oasis and its fresh water, normally
   yielding **3 food and 2 commerce**, or **4 food and 2 commerce** with Biology.
@@ -675,7 +676,7 @@ These changes require a new game because the player-slot layout has expanded.
 ### Medieval ships
 
 Triremes have **3 strength** and no longer receive a special bonus against
-Galleys. They upgrade to the **War Galley**, which requires Compass and
+Galleys. They upgrade to the **War Galley**, which requires Machinery, Compass and
 Sailing and has **4 strength, 3 movement, no cargo**, and a base cost of 60.
 War Galleys upgrade to Frigates, keeping the Caravel's exploration role separate.
 
@@ -1243,3 +1244,15 @@ the first matching combination below wins. All names are in
 
 The VC7.1 DLL builds successfully; gameplay, art rendering and multiplayer
 balance still require user-operated in-game validation.
+
+## Early American tribal raids
+
+Through AD 1600, settled North America, Mesoamerica and the Andes receive
+staggered barbarian raids: up to **two units every three turns per region**.
+Waves alternate between two warriors and a warrior with an archer, assigned to
+pillage. Each region stops adding raiders while it contains 12 barbarian units.
+Spawns use empty, unclaimed or barbarian land three to six tiles from an
+established major civilization's city on the same landmass, including jungle.
+The two tile rings around every city are excluded from spawning. Raids start
+at least eight turns after scenario start; new cities attract them after eight turns. Raids pause without eligible cities or spawn tiles, and respect No Barbarians.
+The later North American native resistance and Caribbean pirates remain active.

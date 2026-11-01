@@ -279,6 +279,7 @@ gespeicherten Nachkommarest und verwenden den neuen Malus sofort.
 
 ## Landerschließung
 
+- **Brandroden** erlaubt Bautrupps und schnellen Bautrupps, von Beginn an Wald ohne Produktionsgewinn zu entfernen. Es dauert genauso lange wie Abholzen (300 Basis-Arbeitspunkte). Mit **Bronzeverarbeitung** wird es durch das normale Abholzen mit Produktionsgewinn ersetzt.
 - **Oasen** liefern **2 Nahrung und 2 Handel** und erlauben ausschließlich
   **Bauernhöfe** ab Landwirtschaft. Die Oase bleibt erhalten und liefert das
   nötige Süßwasser; mit Bauernhof ergibt das normalerweise **3 Nahrung und
@@ -1033,3 +1034,19 @@ Sklaven, mit passenden Waffen und Animationen je Epoche, gemischten
 Figurenvarianten und unregelmäßigen Formationen.
 Die [Dokumentation zur Einheitengrafik](SlaveUnitArt.md) enthält die Modelle
 aller Waffenstufen, Quellenangaben und eine statische Vorschau.
+
+## Frühe Stammesüberfälle in Amerika
+
+Bis 1600 n. Chr. erscheinen im besiedelten Nordamerika, in Mesoamerika und
+in den Anden zeitlich versetzte Barbarenüberfälle: bis zu **zwei Einheiten alle
+drei Runden je Region**. Zwei Krieger wechseln sich mit einem Krieger und einem
+Bogenschützen ab. Ihre Aufgabe ist das Plündern. Ab zwölf Barbareneinheiten in
+einer Region erscheinen dort vorerst keine weiteren Räuber.
+Sie erscheinen auf freien, unbesetzten oder barbarischen Landfeldern, auch im
+Dschungel, drei bis sechs Felder von einer etablierten Stadt einer großen
+Zivilisation auf derselben Landmasse entfernt. Die zwei Feldringe um jede
+Stadt bleiben als Erscheinungsort ausgeschlossen. Überfälle beginnen frühestens
+acht Runden nach Szenariobeginn; neue Städte ziehen sie erst nach acht Runden an.
+Ohne geeignete Städte oder Felder pausieren sie; die Option „Keine Barbaren“
+unterbindet sie. Der spätere nordamerikanische Widerstand und die karibischen
+Piraten bleiben aktiv.

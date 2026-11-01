@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_BURN_FOREST</Tag>
+        <English>Burn forest</English>
+        <French>Br&#251;ler la for&#234;t</French>
+        <German>Brandroden</German>
+        <Italian>Brucia foresta</Italian>
+        <Spanish>Quemar bosque</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_BUILD_BURN_FOREST_HELP</Tag>
+        <English>Removes forest without gaining production. Replaced by chopping with Bronze Working.</English>
+        <French>Supprime la for&#234;t sans gain de production. Remplac&#233; par l&#8217;abattage avec le Travail du bronze.</French>
+        <German>Entfernt Wald ohne Produktionsgewinn. Wird mit Bronzeverarbeitung durch Abholzen ersetzt.</German>
+        <Italian>Rimuove la foresta senza ottenere produzione. Sostituito dal disboscamento con la Lavorazione del bronzo.</Italian>
+        <Spanish>Elimina el bosque sin obtener producci&#243;n. La tala lo sustituye con el Trabajo del bronce.</Spanish>
+    </TEXT>
+</Civ4GameText>

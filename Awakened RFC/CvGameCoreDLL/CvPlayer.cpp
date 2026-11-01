@@ -1,6 +1,7 @@
 // player.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvGlobals.h"
 #include "CvArea.h"
@@ -7156,6 +7157,13 @@ bool CvPlayer::canBuild(const CvPlot* pPlot, BuildTypes eBuild, bool bTestEra, b
 {
 	PROFILE_FUNC();
 
+	// Bronze Working replaces slash-and-burn clearing with productive chopping.
+	if (eBuild == GC.getInfoTypeForString("BUILD_BURN_FOREST") &&
+		GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_BRONZE_WORKING")))
+	{
+		return false;
+	}
+
 	if (!(pPlot->canBuild(eBuild, getID(), bTestVisible)))
 	{
 		return false;
@@ -7750,6 +7758,8 @@ bool CvPlayer::isResearch() const
 
 bool CvPlayer::canEverResearch(TechTypes eTech) const
 {
+	if (!UnitMastery::isAvailable(*this, eTech)) return false;
+
 	if (GC.getTechInfo(eTech).isDisable())
 	{
 		return false;
@@ -7780,6 +7790,9 @@ bool CvPlayer::canEverResearch(TechTypes eTech) const
 
 bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 {
+	if (!UnitMastery::isAvailable(*this, eTech)) return false;
+	if (bTrade && UnitMastery::unitForTech(eTech) != NO_UNIT) return false;
+
 	if (eTech == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && GET_TEAM(getTeam()).getTechCount(eTech) >= 15)
 		return false;
 

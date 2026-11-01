@@ -723,5 +723,32 @@
 			<iHotKeyPriority>0</iHotKeyPriority>
 			<Button>,Art/Interface/Buttons/Builds/BuildMine.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,7</Button>
 		</BuildInfo>
+		<BuildInfo>
+			<Type>BUILD_BURN_FOREST</Type>
+			<Description>TXT_KEY_BUILD_BURN_FOREST</Description>
+			<Help>TXT_KEY_BUILD_BURN_FOREST_HELP</Help>
+			<PrereqTech>NONE</PrereqTech>
+			<iTime>0</iTime>
+			<iCost>0</iCost>
+			<bKill>0</bKill>
+			<ImprovementType>NONE</ImprovementType>
+			<RouteType>NONE</RouteType>
+			<EntityEvent>ENTITY_EVENT_CHOP</EntityEvent>
+			<FeatureStructs>
+				<FeatureStruct>
+					<FeatureType>FEATURE_FOREST</FeatureType>
+					<PrereqTech>NONE</PrereqTech>
+					<iTime>300</iTime>
+					<iProduction>0</iProduction>
+					<bRemove>1</bRemove>
+				</FeatureStruct>
+			</FeatureStructs>
+			<HotKey>KB_C</HotKey>
+			<bAltDown>1</bAltDown>
+			<bShiftDown>0</bShiftDown>
+			<bCtrlDown>0</bCtrlDown>
+			<iHotKeyPriority>0</iHotKeyPriority>
+			<Button>,Art/Interface/Buttons/Builds/BuildChopDown.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,7,8</Button>
+		</BuildInfo>
 	</BuildInfos>
 </Civ4BuildInfos>

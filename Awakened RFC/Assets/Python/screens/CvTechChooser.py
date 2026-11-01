@@ -18,6 +18,9 @@ TEXTURE_SIZE = 24
 X_START = 6
 X_INCREMENT = 27
 Y_ROW = 32
+MASTERY_ICON_SIZE = 24
+MASTERY_TILE_SIZE = 34
+MASTERY_ICON_SPACING = 36
 
 CIV_HAS_TECH = 0
 CIV_IS_RESEARCHING = 1
@@ -82,6 +85,7 @@ class CvTechChooser:
 		self.iCivSelected = gc.getGame().getActivePlayer()
 		self.aiCurrentState = []
 		screen.setPersistent( True )
+		self.prepareLayout(screen)
 		
 		# Advanced Start
 		if (gc.getPlayer(self.iCivSelected).getAdvancedStartPoints() >= 0):
@@ -89,7 +93,7 @@ class CvTechChooser:
 			self.m_bSelectedTechDirty = true
 			
 			self.X_ADD_TECH_BUTTON = 10
-			self.Y_ADD_TECH_BUTTON = 731
+			self.Y_ADD_TECH_BUTTON = self.H_SCREEN - 37
 			self.W_ADD_TECH_BUTTON = 150
 			self.H_ADD_TECH_BUTTON = 30
 			self.X_ADVANCED_START_TEXT = self.X_ADD_TECH_BUTTON + self.W_ADD_TECH_BUTTON + 20
@@ -100,11 +104,11 @@ class CvTechChooser:
 			
 		# Here we set the background widget and exit button, and we show the screen
 		screen.showWindowBackground( False )
-		screen.setDimensions(screen.centerX(0), screen.centerY(0), 1024, 768)
+		screen.setDimensions(screen.centerX(0), screen.centerY(0) - (self.H_SCREEN - 768) // 2, 1024, self.H_SCREEN)
 		screen.addPanel( "TechTopPanel", u"", u"", True, False, 0, 0, 1024, 55, PanelStyles.PANEL_STYLE_TOPBAR )
-		screen.addDDSGFC("TechBG", ArtFileMgr.getInterfaceArtInfo("SCREEN_BG_OPAQUE").getPath(), 0, 48, 1024, 672, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-		screen.addPanel( "TechBottomPanel", u"", u"", True, False, 0, 713, 1024, 55, PanelStyles.PANEL_STYLE_BOTTOMBAR )
-		screen.setText( "TechChooserExit", "Background", u"<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, 994, 726, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.addDDSGFC("TechBG", ArtFileMgr.getInterfaceArtInfo("SCREEN_BG_OPAQUE").getPath(), 0, 48, 1024, self.H_SCREEN - 96, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+		screen.addPanel( "TechBottomPanel", u"", u"", True, False, 0, self.H_SCREEN - 55, 1024, 55, PanelStyles.PANEL_STYLE_BOTTOMBAR )
+		screen.setText( "TechChooserExit", "Background", u"<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, 994, self.H_SCREEN - 42, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 		screen.setActivation( "TechChooserExit", ActivationTypes.ACTIVATE_MIMICPARENTFOCUS )
 
 		# Header...
@@ -114,7 +118,7 @@ class CvTechChooser:
 		screen.setLabel( "TechTitleHeader", "Background", szText, CvUtil.FONT_CENTER_JUSTIFY, 502, 8, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 		# Make the scrollable area for the city list...
-		screen.addScrollPanel( "TechList", u"", 0, 64, 1024, 626, PanelStyles.PANEL_STYLE_EXTERNAL )
+		screen.addScrollPanel( "TechList", u"", 0, 64, 1024, self.H_SCREEN - 142, PanelStyles.PANEL_STYLE_EXTERNAL )
 		screen.setActivation( "TechList", ActivationTypes.ACTIVATE_NORMAL )
 		screen.hide( "TechList" )
 		
@@ -132,6 +136,75 @@ class CvTechChooser:
 		
 		screen.moveToFront( "AddTechButton" )
 	
+	def masteryUnit(self, iTech):
+		szType = gc.getTechInfo(iTech).getType()
+		if szType.startswith("TECH_UNIT_MASTERY_"):
+			return gc.getInfoTypeForString("UNIT_" + szType[len("TECH_UNIT_MASTERY_"):])
+		return -1
+
+	def visibleTech(self, iTech):
+		info = gc.getTechInfo(iTech)
+		if info.getGridX() < 0 or info.getGridY() < 0:
+			return False
+		iUnit = self.masteryUnit(iTech)
+		if iUnit != -1:
+			iCiv = gc.getPlayer(self.iCivSelected).getCivilizationType()
+			return gc.getCivilizationInfo(iCiv).getCivilizationUnits(gc.getUnitInfo(iUnit).getUnitClassType()) == iUnit
+		return True
+
+	def prepareLayout(self, screen, bResize=True):
+		# Seven small icons fit inside one ordinary technology column.
+		columnWidth = (BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH) * PIXEL_INCREMENT
+		iconsPerRow = columnWidth // MASTERY_ICON_SPACING
+		columns = {}
+		for i in range(gc.getNumTechInfos()):
+			if self.masteryUnit(i) != -1 and self.visibleTech(i):
+				x = gc.getTechInfo(i).getGridX()
+				columns.setdefault(x, []).append(i)
+		maxGridY = max([gc.getTechInfo(i).getGridY() for i in range(gc.getNumTechInfos()) if self.masteryUnit(i) == -1 and self.visibleTech(i)])
+		masteryRows = max([0] + [(len(items) + iconsPerRow - 1) // iconsPerRow for items in columns.values()])
+		masteryHeight = max(0, (masteryRows - 1) * MASTERY_ICON_SPACING + MASTERY_TILE_SIZE)
+		self.techRowSpacing = BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT
+		self.techPanelHeight = 12 + BOX_INCREMENT_HEIGHT * PIXEL_INCREMENT
+		normalBottom = (maxGridY - 1) * self.techRowSpacing + self.techPanelHeight - 1
+		# Reserve room for the header, footer and horizontal scrollbar.
+		desiredHeight = 64 + normalBottom + 12 + masteryHeight + 44 + 78
+		if bResize:
+			self.H_SCREEN = min(max(768, screen.getYResolution()), max(768, desiredHeight))
+		if self.H_SCREEN < desiredHeight:
+			# At 768px, preserve the icons/text inside ordinary cards while
+			# trimming their empty bottom margin and the gaps between rows.
+			self.techPanelHeight = 70
+			available = self.H_SCREEN - 142 - 44 - 12 - masteryHeight
+			self.techRowSpacing = min(self.techRowSpacing, (available - self.techPanelHeight + 1) // max(1, maxGridY - 1))
+		normalBottom = (maxGridY - 1) * self.techRowSpacing + self.techPanelHeight - 1
+		self.masteryPositions = {}
+		for x, items in columns.items():
+			for slot in range(len(items)):
+				self.masteryPositions[items[slot]] = (24 + (x - 1) * columnWidth + (slot % iconsPerRow) * MASTERY_ICON_SPACING,
+					normalBottom + 12 + (slot // iconsPerRow) * MASTERY_ICON_SPACING)
+
+	def techPosition(self, iTech):
+		if iTech in self.masteryPositions:
+			return self.masteryPositions[iTech]
+		return (30 + (gc.getTechInfo(iTech).getGridX() - 1) * (BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH) * PIXEL_INCREMENT,
+			(gc.getTechInfo(iTech).getGridY() - 1) * self.techRowSpacing + 5)
+
+	def colorMasteryIcon(self, screen, iTech):
+		states = ("Complete", "Researching", "Available", "Unavailable")
+		texture = "Art/Interface/Buttons/UnitMastery/" + states[self.aiCurrentState[iTech]] + ".dds"
+		szFrame = "MasteryFrame" + str(iTech)
+		screen.changeImageButton(szFrame, texture)
+
+	def techLabel(self, iTech):
+		szText = gc.getTechInfo(iTech).getDescription()
+		iUnit = self.masteryUnit(iTech)
+		if iUnit != -1:
+			szText = localText.getText("TXT_KEY_UNIT_MASTERY_NAME", (gc.getUnitInfo(iUnit).getDescription(),))
+			iLevel = min(2, gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).getTechCount(iTech))
+			szText += " " + ("I", "II", "III")[iLevel]
+		return szText
+
 	def placeTechs (self):
 	
 		iMaxX = 0
@@ -146,18 +219,41 @@ class CvTechChooser:
 	
 		# Go through all the techs
 		for i in range(gc.getNumTechInfos()):
+			if not self.visibleTech(i):
+				self.aiCurrentState.append(CIV_TECH_AVAILABLE)
+				continue
+
 
 			# Create and place a tech in its proper location
-			iX = 30 + ( (gc.getTechInfo(i).getGridX() - 1) * ( ( BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH ) * PIXEL_INCREMENT ) )
-			iY = ( gc.getTechInfo(i).getGridY() - 1 ) * ( BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT ) + 5
+			iX, iY = self.techPosition(i)
 			szTechRecord = "TechRecord" + str(i)
+			if self.masteryUnit(i) != -1:
+				self.aiCurrentState.append(CIV_TECH_AVAILABLE)
+				screen.attachPanelAt("TechList", szTechRecord, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH,
+					iX, iY, MASTERY_TILE_SIZE, MASTERY_TILE_SIZE, WidgetTypes.WIDGET_TECH_TREE, i, -1)
+				# Keep a visible research-colored frame and give both hit areas
+				# their own research widget, rather than a passive DDS overlay.
+				screen.setActivation(szTechRecord, ActivationTypes.ACTIVATE_NORMAL)
+				szFrame = "MasteryFrame" + str(i)
+				screen.setImageButtonAt(szFrame, szTechRecord, "Art/Interface/Buttons/UnitMastery/Available.dds",
+					0, 0, MASTERY_TILE_SIZE, MASTERY_TILE_SIZE, WidgetTypes.WIDGET_TECH_TREE, i, -1)
+				screen.setActivation(szFrame, ActivationTypes.ACTIVATE_NORMAL)
+				szTechButtonID = "TechButtonID" + str(i)
+				iInset = (MASTERY_TILE_SIZE - MASTERY_ICON_SIZE) // 2
+				screen.setImageButtonAt(szTechButtonID, szTechRecord, gc.getTechInfo(i).getButton(),
+					iInset, iInset, MASTERY_ICON_SIZE, MASTERY_ICON_SIZE, WidgetTypes.WIDGET_TECH_TREE, i, -1)
+				screen.setActivation(szTechButtonID, ActivationTypes.ACTIVATE_NORMAL)
+				screen.show(szTechRecord)
+				iMaxX = max(iMaxX, iX + MASTERY_TILE_SIZE)
+				iMaxY = max(iMaxY, iY + MASTERY_TILE_SIZE)
+				continue
 			
 			if ( iMaxX < iX + self.getXStart() ):
 				iMaxX = iX + self.getXStart()
-			if ( iMaxY < iY + ( BOX_INCREMENT_HEIGHT * PIXEL_INCREMENT ) ):
-				iMaxY = iY + ( BOX_INCREMENT_HEIGHT * PIXEL_INCREMENT )
+			if ( iMaxY < iY + self.techPanelHeight - 6 ):
+				iMaxY = iY + self.techPanelHeight - 6
 
-			screen.attachPanelAt( "TechList", szTechRecord, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH, iX - 6, iY - 6, self.getXStart() + 6, 12 + ( BOX_INCREMENT_HEIGHT * PIXEL_INCREMENT ), WidgetTypes.WIDGET_TECH_TREE, i, -1 )
+			screen.attachPanelAt( "TechList", szTechRecord, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH, iX - 6, iY - 6, self.getXStart() + 6, self.techPanelHeight, WidgetTypes.WIDGET_TECH_TREE, i, -1 )
 			screen.setActivation( szTechRecord, ActivationTypes.ACTIVATE_MIMICPARENTFOCUS)
 			screen.hide( szTechRecord )
 			
@@ -165,7 +261,7 @@ class CvTechChooser:
 			iX = 6
 			iY = 6
 			
-			if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) ):
+			if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) or (self.masteryUnit(i) != -1 and gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).getTechCount(i) >= 3) ):
 				screen.setPanelColor(szTechRecord, 85, 150, 87)
 				self.aiCurrentState.append(CIV_HAS_TECH)
 			elif ( gc.getPlayer(self.iCivSelected).getCurrentResearch() == i ):
@@ -185,7 +281,7 @@ class CvTechChooser:
 			szTechString = "<font=1>"
 			if ( gc.getPlayer(self.iCivSelected).isResearchingTech(i) ):
 				szTechString = szTechString + str(gc.getPlayer(self.iCivSelected).getQueuePosition(i)) + ". "
-			szTechString += gc.getTechInfo(i).getDescription()
+			szTechString += self.techLabel(i)
 			szTechString = szTechString + "</font>"
 			screen.setTextAt( szTechID, szTechRecord, szTechString, CvUtil.FONT_LEFT_JUSTIFY, iX + 6 + X_INCREMENT, iY + 6, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_TECH_TREE, i, -1 )
 			screen.setActivation( szTechID, ActivationTypes.ACTIVATE_MIMICPARENTFOCUS )
@@ -633,6 +729,7 @@ class CvTechChooser:
 					
 			screen.show( szTechRecord )
 					
+		self.updateTechRecords(True)
 		screen.setViewMin( "TechList", iMaxX + 20, iMaxY + 20 )
 		screen.show( "TechList" )
 		screen.setFocus( "TechList" )
@@ -655,8 +752,10 @@ class CvTechChooser:
 		for i in range(gc.getNumTechInfos()):
 		
 			abChanged.append(0)
+			if not self.visibleTech(i):
+				continue
 		
-			if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) ):
+			if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) or (self.masteryUnit(i) != -1 and gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).getTechCount(i) >= 3) ):
 				if ( self.aiCurrentState[i] != CIV_HAS_TECH ):
 					self.aiCurrentState[i] = CIV_HAS_TECH
 					abChanged[i] = 1
@@ -684,7 +783,13 @@ class CvTechChooser:
 
 		for i in range(gc.getNumTechInfos()):
 
+			if not self.visibleTech(i):
+				continue
+
 			if (abChanged[i] or bForce or (bAnyChanged and gc.getPlayer(self.iCivSelected).isResearchingTech(i))):
+				if self.masteryUnit(i) != -1:
+					self.colorMasteryIcon(screen, i)
+					continue
 				# Create and place a tech in its proper location
 				szTechRecord = "TechRecord" + str(i)
 				szTechID = "TechID" + str(i)
@@ -693,10 +798,9 @@ class CvTechChooser:
 				if ( gc.getPlayer(self.iCivSelected).isResearchingTech(i) ):
 					szTechString = szTechString + unicode(gc.getPlayer(self.iCivSelected).getQueuePosition(i)) + ". "
 					
-				iX = 30 + ( (gc.getTechInfo(i).getGridX() - 1) * ( ( BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH ) * PIXEL_INCREMENT ) )
-				iY = ( gc.getTechInfo(i).getGridY() - 1 ) * ( BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT ) + 5
+				iX, iY = self.techPosition(i)
 
-				szTechString += gc.getTechInfo(i).getDescription()
+				szTechString += self.techLabel(i)
 				if ( gc.getPlayer(self.iCivSelected).isResearchingTech(i) ):
 					szTechString += " ("
 					szTechString += str(gc.getPlayer(self.iCivSelected).getResearchTurnsLeft(i, ( gc.getPlayer(self.iCivSelected).getCurrentResearch() == i )))
@@ -705,7 +809,7 @@ class CvTechChooser:
 				screen.setTextAt( szTechID, "TechList", szTechString, CvUtil.FONT_LEFT_JUSTIFY, iX + 6 + X_INCREMENT, iY + 6, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_TECH_TREE, i, -1 )
 				screen.setActivation( szTechID, ActivationTypes.ACTIVATE_MIMICPARENTFOCUS )
 
-				if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) ):
+				if ( gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).isHasTech(i) or (self.masteryUnit(i) != -1 and gc.getTeam(gc.getPlayer(self.iCivSelected).getTeam()).getTechCount(i) >= 3) ):
 					screen.setPanelColor(szTechRecord, 85, 150, 87)
 				elif ( gc.getPlayer(self.iCivSelected).getCurrentResearch() == i ):
 					screen.setPanelColor(szTechRecord, 104, 158, 165)
@@ -735,7 +839,7 @@ class CvTechChooser:
 		for i in range(gc.getNumTechInfos()):
 
 			# Hidden technologies have no valid endpoint in the visible tree.
-			if gc.getTechInfo(i).getGridX() < 0 or gc.getTechInfo(i).getGridY() < 0:
+			if not self.visibleTech(i) or self.masteryUnit(i) != -1:
 				continue
 
 			bFirst = 1
@@ -751,7 +855,7 @@ class CvTechChooser:
 					fX = fX - X_INCREMENT
 
 					iX = 30 + ( (gc.getTechInfo(i).getGridX() - 1) * ( ( BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH ) * PIXEL_INCREMENT ) )
-					iY = ( gc.getTechInfo(i).getGridY() - 1 ) * ( BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT ) + 5
+					iY = ( gc.getTechInfo(i).getGridY() - 1 ) * self.techRowSpacing + 5
 
 					szTechPrereqID = "TechPrereqID" + str((i * 1000) + j)
 					screen.addDDSGFCAt( szTechPrereqID, "TechList", gc.getTechInfo(eTech).getButton(), iX + fX, iY + 6, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_TECH_PREPREQ, eTech, -1, False )
@@ -770,7 +874,7 @@ class CvTechChooser:
 						continue
 
 					iX = 24 + ( (gc.getTechInfo(eTech).getGridX() - 1) * ( ( BOX_INCREMENT_X_SPACING + BOX_INCREMENT_WIDTH ) * PIXEL_INCREMENT ) )
-					iY = ( gc.getTechInfo(eTech).getGridY() - 1 ) * ( BOX_INCREMENT_Y_SPACING * PIXEL_INCREMENT ) + 5
+					iY = ( gc.getTechInfo(eTech).getGridY() - 1 ) * self.techRowSpacing + 5
 					
 					# j is the pre-req, i is the tech...
 					xDiff = gc.getTechInfo(i).getGridX() - gc.getTechInfo(eTech).getGridX()
@@ -851,7 +955,15 @@ class CvTechChooser:
 			screen = CyGInterfaceScreen( "TechChooser", CvScreenEnums.TECH_CHOOSER )			
 			iIndex = screen.getSelectedPullDownID("CivDropDown")
 			self.iCivSelected = screen.getPullDownData("CivDropDown", iIndex)
-			self.updateTechRecords(false)
+			# Rebuild the compact row for the selected civilization's replacements.
+			self.prepareLayout(screen, False)
+			self.aiCurrentState = []
+			self.nWidgetCount = 0
+			screen.deleteWidget("TechList")
+			screen.addScrollPanel("TechList", u"", 0, 64, 1024, self.H_SCREEN - 142, PanelStyles.PANEL_STYLE_EXTERNAL)
+			screen.setActivation("TechList", ActivationTypes.ACTIVATE_NORMAL)
+			self.placeTechs()
+			self.drawArrows()
 
 	# Will handle the input for this screen...
 	def handleInput (self, inputClass):
@@ -902,7 +1014,7 @@ class CvTechChooser:
 		return ( ( xDiff * self.getXSpacing() ) + ( ( xDiff - 1 ) * self.getXStart() ) )
 		
 	def getHeight(self, yDiff, nFactor):
-		return ( ( nFactor + ( ( abs( yDiff ) - 1 ) * 6 ) ) * PIXEL_INCREMENT )
+		return nFactor * PIXEL_INCREMENT + (abs(yDiff) - 1) * self.techRowSpacing
 		
 	def update(self, fDelta):
 
