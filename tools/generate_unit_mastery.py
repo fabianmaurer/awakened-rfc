@@ -14,7 +14,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
 XML = MOD / 'Assets/XML'
 LANGS = ('English', 'French', 'German', 'Italian', 'Spanish')
-MASTERY_RESEARCH_COST_MULTIPLIER = 8
+# The basic Warrior has no unlocking technology.
+MASTERY_NO_TECH_BASE_COST = 100
 
 # Each tuple is an incremental reward. Earlier rewards remain active.
 # Explicit tracks keep rewards specific to the unit, including unique units.
@@ -227,11 +228,11 @@ SPANISH = {
 }
 LOCAL_PHRASES = dict(zip(LANGS, (PHRASES, FRENCH, GERMAN, ITALIAN, SPANISH)))
 RULES = dict(zip(LANGS, (
-    'Three levels. Each level doubles the next cost. Ends when a successor is unlocked.',
-    "Trois niveaux. Chaque niveau double le coût suivant. Se termine au déblocage d'un successeur.",
-    'Drei Stufen. Jede Stufe verdoppelt die nächsten Kosten. Endet, sobald ein Nachfolger freigeschaltet ist.',
-    'Tre livelli. Ogni livello raddoppia il costo successivo. Termina quando si sblocca un successore.',
-    'Tres niveles. Cada nivel duplica el siguiente coste. Termina al desbloquear un sucesor.',
+    'Three levels. Level I uses the base cost of the most expensive required technology, or 100 if none is required. Normal research modifiers apply. Each further level doubles the cost. Ends when a successor is unlocked.',
+    "Trois niveaux. Le niveau I utilise le coût de base de la technologie requise la plus chère, ou 100 si aucune n'est requise. Les modificateurs de recherche habituels s'appliquent. Chaque niveau suivant double le coût. Se termine au déblocage d'un successeur.",
+    'Drei Stufen. Stufe I nutzt die Basiskosten der teuersten benötigten Technologie, oder 100 ohne benötigte Technologie. Die üblichen Forschungsmodifikatoren gelten. Jede weitere Stufe verdoppelt die Kosten. Endet, sobald ein Nachfolger freigeschaltet ist.',
+    'Tre livelli. Il livello I usa il costo base della tecnologia richiesta più costosa, o 100 se non ne è richiesta alcuna. Si applicano i normali modificatori di ricerca. Ogni livello successivo raddoppia il costo. Termina quando si sblocca un successore.',
+    'Tres niveles. El nivel I usa el coste base de la tecnología requerida más cara, o 100 si no se requiere ninguna. Se aplican los modificadores de investigación habituales. Cada nivel posterior duplica el coste. Termina al desbloquear un sucesor.',
 )))
 DETAILS = dict(zip(LANGS, (
     "Benefits are cumulative and apply to existing and newly trained units of this type. Resources and buildings do not affect research access. Upgrading uses the destination unit's mastery; earlier types do not stack. Research is shared by teammates. Obsolete units retain completed benefits.",
@@ -334,7 +335,8 @@ def main():
             raise ValueError('Missing mastery research icon for ' + name)
         prereqs = [u.findtext('PrereqTech')] + [t.text for t in u.findall('TechTypes/PrereqTech')]
         prereqs = list(dict.fromkeys(t for t in prereqs if t and t != 'NONE'))
-        base_cost = int(u.findtext('iCost')) * MASTERY_RESEARCH_COST_MULTIPLIER
+        cost_tech = max(prereqs, key=lambda p: int(techs[p].findtext('iCost'))) if prereqs else None
+        base_cost = int(techs[cost_tech].findtext('iCost')) if cost_tech else MASTERY_NO_TECH_BASE_COST
         x = max([1] + [int(techs[t].findtext('iGridX')) for t in prereqs])
         # Keep the section within the existing width and stack collisions.
         x = min(x, max_x)
@@ -347,7 +349,7 @@ def main():
                   'iHealth': '0', 'iHappiness': '0', 'iAsset': '0', 'iPower': '0',
                   'iAIWeight': '0', 'iAdvancedStartCost': '-1', 'iFirstFreeTechs': '0',
                   'iGridX': str(x), 'iGridY': str(max_y + 3 + row * 2),
-                  'Era': techs[prereqs[0]].findtext('Era') if prereqs else 'ERA_ANCIENT',
+                  'Era': techs[cost_tech].findtext('Era') if cost_tech else 'ERA_ANCIENT',
                   'Button': button, 'Quote': ''}
         for tag, value in values.items():
             t.find(tag).text = value
@@ -386,13 +388,12 @@ def main():
 
 Military fighting units have three cumulative, unit-specific mastery levels.
 Each level costs twice the previous one: base, 2x base, 4x base. The base is
-8 times the unit's base XML production cost: levels I, II and III therefore
-start at 8x, 16x and 32x base production. Normal research modifiers still apply.
-This is calibrated to roughly 20x the displayed production cost for level I
-under the reported game settings (13-hammer Warrior: about 255 research).
-It is not a fixed final ratio across difficulties, teams, eras or other cost
-modifiers. City and civilization production bonuses do not change the XML base.
-Reward strength does not change the multiplier. Research unlocks with all unit technology
+the base XML research cost of the unit's most expensive required technology.
+The mastery uses that technology's era for research cost modifiers. Warriors
+require no technology and use a fallback base cost of 100. Normal research
+modifiers still apply; technology diffusion discounts do not apply to mastery.
+Calendar thresholds do not reprice research. Unit production costs and reward
+strength do not change the research cost. Research unlocks with all unit technology
 requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.

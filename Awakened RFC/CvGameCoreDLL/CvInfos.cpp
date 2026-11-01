@@ -10143,10 +10143,6 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 				researchPercent /= 100;
 			}
 		}
-		else if (GC.getGameINLINE().getGameTurn() >=181 ) {
-			researchPercent *= 92;
-			researchPercent /= 100;
-		}
 	}
 
 	if (GC.getGameINLINE().getStartTurn() != 0) { //late start condition - apparently it goes too fast from 600AD
@@ -10154,19 +10150,10 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 		researchPercent /= 100;
 	}
 
-	if (GC.getGameINLINE().getGameTurn() < 75 ) 
-		{
-			researchPercent *= 105;
-			researchPercent /= 100;
-		}
-	else if (GC.getGameINLINE().getGameTurn() >=75 && GC.getGameINLINE().getGameTurn() <= 180) //up to where the new timeline's stretched
-		{
-			researchPercent *= 150;
-			researchPercent /= 100;
-		}
-	
 	// Remove per-civilization research cost tuning. Shared RFCMP pace scaling
-	// above still accounts for handicap, active human count, and timeline.
+	// above still accounts for handicap, active human count, and scenario.
+	// Calendar pacing is baked into fixed XML tech costs instead of repricing
+	// every available technology at turns 75 and 181.
 	// Power of Astronomy is an explicit unique power, not general cost tuning:
 	// Maya pay 40% less for research through the Medieval era.
 	if (pl == MAYA && GET_PLAYER(pl).getCurrentEra() <= GC.getInfoTypeForString("ERA_MEDIEVAL"))

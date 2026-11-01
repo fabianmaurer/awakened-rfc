@@ -9,6 +9,9 @@ from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
 XML = ROOT / 'Awakened RFC/Assets/XML'
+# Fixed late-tech pacing combines the former 92% and 80% discounts.
+# Basis points retain the exact 73.6% factor without floating-point rounding.
+LATE_RESEARCH_COST_PER_10000 = 7360
 AIR_TECHS = {'TECH_FLIGHT', 'TECH_ADVANCED_FLIGHT', 'TECH_STEALTH'}
 RETIRED_UNITS = {'UNIT_CARRIER', 'UNIT_GUNSHIP', 'UNIT_SAM_INFANTRY', 'UNIT_MOBILE_SAM', 'UNIT_ICBM'}
 RETIRED_BUILDINGS = {'BUILDING_AIRPORT', 'BUILDING_BOMB_SHELTER'}
@@ -119,7 +122,8 @@ def main():
         block = re.sub(r'<!--.*?-->', '', template, flags=re.S)
         values = {'Type': 'TECH_' + suffix, 'Description': 'TXT_KEY_TECH_' + suffix,
                   'Civilopedia': 'TXT_KEY_TECH_' + suffix + '_PEDIA', 'Help': 'TXT_KEY_TECH_' + suffix + '_HELP',
-                  'Strategy': 'TXT_KEY_TECH_' + suffix + '_PEDIA', 'iCost': cost, 'bDisable': 0,
+                  'Strategy': 'TXT_KEY_TECH_' + suffix + '_PEDIA',
+                  'iCost': (cost * LATE_RESEARCH_COST_PER_10000 + 9999) // 10000, 'bDisable': 0,
                   'bRepeat': repeat, 'bTrade': 0, 'iHealth': health, 'iHappiness': happy,
                   'iGridX': x, 'iGridY': y, 'Era': 'ERA_MODERN' if repeat else 'ERA_FUTURE',
                   'iAIWeight': 0, 'iAsset': 32, 'iPower': 0, 'iAdvancedStartCost': -1,

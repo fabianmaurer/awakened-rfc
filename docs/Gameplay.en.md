@@ -328,6 +328,28 @@ All seven religious shrines grant **two free Priests**, replacing their three as
 
 Jerusalem automatically receives the Jewish shrine, Solomon's Temple, on the first turn at or after **957 BC**, if the city exists and contains Judaism. The date follows the traditional completion chronology in [Getty's First Temple record](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039). Later scenarios apply the grant at setup. If Jerusalem is absent or lacks Judaism, the grant waits; it is never duplicated if the shrine has already been created elsewhere, nor automatically rebuilt after destruction. The grant is synchronized game state and saved. In-game and multiplayer validation remain pending.
 
+## Fixed research pacing
+
+Research no longer reprices all technologies at turns 75, 181 or 401. Each
+technology's fixed XML cost reflects the former pacing for its own era:
+
+| Technology era | Factor applied to the original XML base cost |
+| --- | ---: |
+| Ancient | 105% |
+| Classical and Medieval | 150% |
+| Renaissance and Industrial | 92% |
+| Modern and Future | 73.6% (92% multiplied by 80%) |
+
+Costs round upward to whole research points. The old 8% discount is included
+in later-era prices for every civilization instead of changing with the turn.
+Mastery I uses the base cost and era of the unit's most expensive required
+technology; levels II and III cost 2x and 4x that base. Warriors require no tech
+and use a fallback base cost of 100. Unit production costs are unchanged. Other research modifiers
+and Maya's unique power still apply. These bands reproduce the old era-associated
+factors; actual research dates and integer rounding can differ from the old
+calendar-based prices. Gameplay and multiplayer validation remain user-operated
+and unverified; these rules target new games.
+
 ## Knowledge from conquest
 
 All research costs receive an additional global **1.1× multiplier**

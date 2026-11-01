@@ -33,14 +33,17 @@ production rules.
 
 | Field | Prerequisite | Base cost | Per completion |
 | --- | --- | ---: | --- |
-| Environmental Quality | Ecology | 6,000 | +1 happiness in every city |
-| Medical Progress | Genetics | 6,500 | +1 health in every city |
-| Military Research | Computers | 8,000 | +1 percentage point combat strength for land/naval units |
+| Environmental Quality | Ecology | 4,416 | +1 happiness in every city |
+| Medical Progress | Genetics | 4,784 | +1 health in every city |
+| Military Research | Computers | 5,888 | +1 percentage point combat strength for land/naval units |
 
 The original combined Future Tech is disabled. Each field's cost increases by
 35% for every completion of that field, independently of the other two. Integer
 rounding goes upward at each step. Standard game-speed, difficulty, team, empire
-and timeline modifiers still apply. Costs have an engine arithmetic safety
+modifiers still apply. Fixed Modern/Future base costs include the former 92%
+factor and 20% late-game discount (73.6% combined); calendar thresholds no longer
+reprice research.
+Costs have an engine arithmetic safety
 ceiling of 2,000,000 beakers. Growth uses deterministic 64-bit integer arithmetic.
 
 Military Research stops at level 15, giving at most +15 percentage points. The
@@ -68,14 +71,14 @@ retained.
 
 | Technology | Prerequisites | Base cost | Building unlocked |
 | --- | --- | ---: | --- |
-| Digital Administration | Computers, Fiber Optics | 16,000 | Administration centre: -20% city maintenance |
-| Machine Learning | Digital Administration | 24,000 | ML laboratory: +25% research |
-| AI-Assisted Services | Machine Learning | 36,000 | Services centre: +15% gold, +2 health, +1 happiness |
-| Networked Production | Machine Learning, Robotics | 50,000 | Networked factory: +25% production |
-| General AI | AI-Assisted Services, Networked Production | 80,000 | General AI research centre: +40% research |
-| Full Automation | General AI, Fusion | 140,000 | Automated complex: +50% production, +25% gold |
-| Autonomous Systems | Networked Production | 65,000 | Autonomous Combat Vehicle |
-| Autonomous Warfare | Autonomous Systems, General AI | 110,000 | Autonomous Battle Tank |
+| Digital Administration | Computers, Fiber Optics | 11,776 | Administration centre: -20% city maintenance |
+| Machine Learning | Digital Administration | 17,664 | ML laboratory: +25% research |
+| AI-Assisted Services | Machine Learning | 26,496 | Services centre: +15% gold, +2 health, +1 happiness |
+| Networked Production | Machine Learning, Robotics | 36,800 | Networked factory: +25% production |
+| General AI | AI-Assisted Services, Networked Production | 58,880 | General AI research centre: +40% research |
+| Full Automation | General AI, Fusion | 103,040 | Automated complex: +50% production, +25% gold |
+| Autonomous Systems | Networked Production | 47,840 | Autonomous Combat Vehicle |
+| Autonomous Warfare | Autonomous Systems, General AI | 80,960 | Autonomous Battle Tank |
 
 Buildings cost 400, 500, 650, 850, 1,100 and 1,800 production respectively. Each
 city can construct one of each. They reuse suitable existing building art and introduce

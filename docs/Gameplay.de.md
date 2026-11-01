@@ -219,6 +219,20 @@ Jerusalem erhält den jüdischen Schrein, den Salomonischen Tempel, automatisch 
 
 ## Wissen durch Eroberungen
 
+Forschungskosten ändern sich nicht mehr allein durch das Erreichen der Runden
+75, 181 oder 401. Die festen XML-Kosten verwenden je nach Epoche folgende Faktoren
+auf die ursprünglichen Basiskosten: Antike 105%, Klassik und Mittelalter 150%,
+Renaissance und Industriezeitalter 92%, Moderne und Zukunft 73,6% (92% mal 80%).
+Die Kosten werden auf ganze Forschungspunkte aufgerundet. Meisterschaft
+I verwendet Basiskosten und Epoche der teuersten benötigten Technologie;
+Stufen II und III kosten das Doppelte und Vierfache. Krieger benötigen keine
+Technologie und verwenden Basiskosten von 100. Produktionskosten bleiben unverändert.
+Die frühere Ermäßigung von 8% steckt nun für alle Zivilisationen in den Kosten
+späterer Epochen. Die Faktoren entsprechen den bisherigen Epochenabschnitten;
+Forschungszeitpunkt und Rundung können vom alten Kalenderpreis abweichen.
+Eine genaue Spielbalance ist noch nicht im Spiel geprüft. Andere Modifikatoren
+und die einzigartige Fähigkeit der Maya bleiben aktiv. Dies gilt für neue Partien.
+
 Alle Forschungskosten erhalten zusätzlich den globalen Faktor **1,1**
 (`RFCMP_GLOBAL_RESEARCH_COST_PERCENT = 110` in `GlobalDefines.xml`).
 Wer eine militärisch eroberte Stadt behält, erhält Wissen für eine gleichverteilt

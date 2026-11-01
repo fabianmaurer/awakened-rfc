@@ -2720,7 +2720,9 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}
 	}
 
-	if (bAstronomy && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
+	// Untradeable automation research stays outside tech diffusion even when
+	// its fixed pacing discount brings the XML price below the old threshold.
+	if (bAstronomy && GC.getTechInfo(eTech).isTrade() && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
 		for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
 			if (GET_TEAM((TeamTypes)iI).isHasTech(eTech))
@@ -2733,14 +2735,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	}
 	//Rhye - end
 
-	//Rhye - start
-	//discount for the late game
-	if (GC.getGameINLINE().getGameTurn() > 400){ 
-		iCost *= 8; 
-		iCost /= 10; 
-	}
-
-	//Rhye - end
+	// The former turn-400 discount is baked into Modern/Future XML costs.
 	
 	//Rhye - start min and max turns cap
 	/*int iResearchRate = GET_PLAYER((PlayerTypes)getID()).calculateResearchRate(eTech);
