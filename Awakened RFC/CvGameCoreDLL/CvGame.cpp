@@ -1,6 +1,7 @@
 // game.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "CvGameCoreUtils.h"
 #include "CvGame.h"
 #include "CvGameAI.h"
@@ -959,6 +960,8 @@ void CvGame::initFreeState()
 
 	for (iI = 0; iI < GC.getNumTechInfos(); iI++)
 	{
+		// Starting eras grant technologies, never unit specialization.
+		if (UnitMastery::unitForTech((TechTypes)iI) != NO_UNIT) continue;
 		for (iJ = 0; iJ < MAX_TEAMS; iJ++)
 		{
 			if (GET_TEAM((TeamTypes)iJ).isAlive())

@@ -1,6 +1,7 @@
 // team.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvDefines.h"
@@ -2767,7 +2768,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	if (GC.getTechInfo(eTech).isRepeat())
 	{
 		for (int iLevel = 0; iLevel < getTechCount(eTech) && iCost < 2000000; ++iLevel)
-			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * 135 + 99) / 100));
+			iCost = (int)std::min((__int64)2000000, (((__int64)std::max(1, iCost) * (UnitMastery::unitForTech(eTech) != NO_UNIT ? 200 : 135) + 99) / 100));
 	}
 
 	iCost = (int)std::min((__int64)MAX_INT, ((__int64)iCost * GC.getDefineINT("RFCMP_GLOBAL_RESEARCH_COST_PERCENT")) / 100);
@@ -5143,6 +5144,9 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		return;
 	}
 
+	if (bNewValue && UnitMastery::unitForTech(eIndex) != NO_UNIT && getTechCount(eIndex) >= 3)
+		return;
+
 	if (ePlayer == NO_PLAYER)
 	{
 		ePlayer = getLeaderID();
@@ -5157,7 +5161,9 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 	{
 		if (GC.getTechInfo(eIndex).isRepeat())
 		{
+			UnitMastery::updateSight(*this, eIndex, false);
 			m_paiTechCount[eIndex]++;
+			UnitMastery::updateSight(*this, eIndex, true);
 
 			setResearchProgress(eIndex, 0, ePlayer);
 
@@ -5217,6 +5223,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		}
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
+		if (bNewValue) UnitMastery::refreshResearch(*this, ePlayer);
 		// A capped military field must stop consuming research after level 15.
 		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)
 		{

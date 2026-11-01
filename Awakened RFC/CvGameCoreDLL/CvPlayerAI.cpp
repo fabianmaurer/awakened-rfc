@@ -1,6 +1,7 @@
 // playerAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
 #include "CvRandom.h"
@@ -3893,7 +3894,7 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 		{
 			if ((eIgnoreAdvisor == NO_ADVISOR) || (GC.getTechInfo((TechTypes)iI).getAdvisorType() != eIgnoreAdvisor))
 			{
-				if (canEverResearch((TechTypes)iI))
+				if (canEverResearch((TechTypes)iI) && (!bIgnoreCost || UnitMastery::unitForTech((TechTypes)iI) == NO_UNIT))
 				{
 					if (!(kTeam.isHasTech((TechTypes)iI)))
 					{
@@ -5155,6 +5156,16 @@ TechTypes CvPlayerAI::AI_bestTech(int iMaxPathLength, bool bIgnoreCost, bool bAs
 								if (GC.getTechInfo((TechTypes)iI).isRepeat())
 								{
 									iValue += GC.getTechInfo((TechTypes)iI).getHappiness() * (200 + 20 * getNumCities());
+                                    const UnitTypes eMasteryUnit = UnitMastery::unitForTech((TechTypes)iI);
+                                    if (eMasteryUnit != NO_UNIT)
+                                    {
+                                        // Value the army which actually benefits, not hypothetical
+                                        // foreign units or a blanket military flavor for every track.
+                                        const int iCount = getUnitClassCount((UnitClassTypes)GC.getUnitInfo(eMasteryUnit).getUnitClassType());
+                                        iValue += (GET_TEAM(getTeam()).getAtWarCount(true) > 0 ? 900 : 350)
+                                            + std::min(4000, iCount * 180);
+                                    }
+
 									if (iI == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH"))
 										iValue += (GET_TEAM(getTeam()).getAtWarCount(true) > 0 ? 1000 : 400);
 									iValue /= 2;

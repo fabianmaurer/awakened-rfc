@@ -1,6 +1,7 @@
 // unit.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "CvUnit.h"
 #include "CvArea.h"
 #include "CvPlot.h"
@@ -3782,7 +3783,7 @@ int CvUnit::healRate(const CvPlot* pPlot) const
 	iTotalHeal += iBestHeal;
 	// XXX
 
-	return iTotalHeal;
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_HEAL) + iTotalHeal;
 }
 
 
@@ -7539,7 +7540,7 @@ bool CvUnit::isHuman() const
 
 int CvUnit::visibilityRange() const
 {
-	return (GC.getDefineINT("UNIT_VISIBILITY_RANGE") + getExtraVisibilityRange());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_VISIBILITY) + (GC.getDefineINT("UNIT_VISIBILITY_RANGE") + getExtraVisibilityRange());
 }
 
 
@@ -7548,7 +7549,7 @@ int CvUnit::baseMoves() const
 	// The Buffalo Horns follows ownership and unit class through captures/upgrades.
 	const int iUniqueMoves = (GET_PLAYER(getOwnerINLINE()).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ZULU") &&
 		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MELEE")) ? 1 : 0;
-	return (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()) + iUniqueMoves);
+	return (m_pUnitInfo->getMoves() + getExtraMoves() + GET_TEAM(getTeam()).getExtraMoves(getDomainType()) + iUniqueMoves + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_MOVES));
 }
 
 
@@ -8083,7 +8084,7 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 	int iModifier = 0;
 	int iExtraModifier;
 
-	iExtraModifier = getExtraCombatPercent();
+	iExtraModifier = getExtraCombatPercent() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_COMBAT);
 	const TechTypes eMilitaryResearch = (TechTypes)GC.getInfoTypeForString("TECH_MILITARY_RESEARCH");
 	if (eMilitaryResearch != NO_TECH && (getDomainType() == DOMAIN_LAND || getDomainType() == DOMAIN_SEA))
 		iExtraModifier += std::min(15, GET_TEAM(getTeam()).getTechCount(eMilitaryResearch));
@@ -8958,7 +8959,7 @@ int CvUnit::maxXPValue() const
 
 int CvUnit::firstStrikes() const
 {
-	return std::max(0, (m_pUnitInfo->getFirstStrikes() + getExtraFirstStrikes()));
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_FIRST_STRIKES) + std::max(0, (m_pUnitInfo->getFirstStrikes() + getExtraFirstStrikes()));
 }
 
 
@@ -8997,7 +8998,7 @@ bool CvUnit::alwaysInvisible() const
 
 bool CvUnit::immuneToFirstStrikes() const
 {
-	return (m_pUnitInfo->isFirstStrikeImmune() || (getImmuneToFirstStrikesCount() > 0));
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_FIRST_IMMUNE) > 0) || (m_pUnitInfo->isFirstStrikeImmune() || (getImmuneToFirstStrikesCount() > 0));
 }
 
 
@@ -9009,7 +9010,7 @@ bool CvUnit::noDefensiveBonus() const
 
 bool CvUnit::ignoreBuildingDefense() const
 {
-	return m_pUnitInfo->isIgnoreBuildingDefense();
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_IGNORE_BUILDING) > 0) || m_pUnitInfo->isIgnoreBuildingDefense();
 }
 
 
@@ -9031,7 +9032,7 @@ bool CvUnit::flatMovementCost() const
 
 bool CvUnit::ignoreTerrainCost() const
 {
-	return m_pUnitInfo->isIgnoreTerrainCost();
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_IGNORE_TERRAIN) > 0) || m_pUnitInfo->isIgnoreTerrainCost();
 }
 
 
@@ -9110,57 +9111,57 @@ int CvUnit::withdrawalProbability(const CvUnit* pOpponent) const
 		return 0;
 	}
 
-	return std::min(100, std::max(0, m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal() +
+	return std::min(100, std::max(0, m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_WITHDRAWAL) +
 		(pOpponent != NULL && pOpponent->isAnimal() && getUnitType() == GC.getInfoTypeForString("UNIT_ARCTIC_HUNTER") ? 50 : 0)));
 }
 
 
 int CvUnit::collateralDamage() const
 {
-	return std::max(0, (m_pUnitInfo->getCollateralDamage()));
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_COLLATERAL) + std::max(0, (m_pUnitInfo->getCollateralDamage()));
 }
 
 
 int CvUnit::collateralDamageLimit() const
 {
-	return std::max(0, m_pUnitInfo->getCollateralDamageLimit() * GC.getMAX_HIT_POINTS() / 100);
+	return std::min(GC.getMAX_HIT_POINTS(), std::max(0, (m_pUnitInfo->getCollateralDamageLimit() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_COLLATERAL_LIMIT)) * GC.getMAX_HIT_POINTS() / 100));
 }
 
 
 int CvUnit::collateralDamageMaxUnits() const
 {
-	return std::max(0, m_pUnitInfo->getCollateralDamageMaxUnits());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_COLLATERAL_TARGETS) + std::max(0, m_pUnitInfo->getCollateralDamageMaxUnits());
 }
 
 
 int CvUnit::cityAttackModifier() const
 {
-	int iModifier = m_pUnitInfo->getCityAttackModifier() + getExtraCityAttackPercent();
+	int iModifier = m_pUnitInfo->getCityAttackModifier() + getExtraCityAttackPercent() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CITY_ATTACK);
 	return iModifier;
 }
 
 
 int CvUnit::cityDefenseModifier() const
 {
-	return (m_pUnitInfo->getCityDefenseModifier() + getExtraCityDefensePercent());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CITY_DEFENSE) + (m_pUnitInfo->getCityDefenseModifier() + getExtraCityDefensePercent());
 }
 
 
 int CvUnit::animalCombatModifier() const
 {
-	return m_pUnitInfo->getAnimalCombatModifier();
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ANIMAL) + m_pUnitInfo->getAnimalCombatModifier();
 }
 
 
 int CvUnit::hillsAttackModifier() const
 {
-	return (m_pUnitInfo->getHillsAttackModifier() + getExtraHillsAttackPercent());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_HILLS_ATTACK) + (m_pUnitInfo->getHillsAttackModifier() + getExtraHillsAttackPercent());
 }
 
 
 int CvUnit::hillsDefenseModifier() const
 {
-	return (m_pUnitInfo->getHillsDefenseModifier() + getExtraHillsDefensePercent());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_HILLS_DEFENSE) + (m_pUnitInfo->getHillsDefenseModifier() + getExtraHillsDefensePercent());
 }
 
 
@@ -9182,16 +9183,20 @@ int CvUnit::terrainDefenseModifier(TerrainTypes eTerrain) const
 
 int CvUnit::featureAttackModifier(FeatureTypes eFeature) const
 {
+	const int iMastery = (eFeature == GC.getInfoTypeForString("FEATURE_FOREST") ? UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_FOREST_ATTACK) :
+		eFeature == GC.getInfoTypeForString("FEATURE_JUNGLE") ? UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_JUNGLE_ATTACK) : 0);
 	FAssertMsg(eFeature >= 0, "eFeature is expected to be non-negative (invalid Index)");
 	FAssertMsg(eFeature < GC.getNumFeatureInfos(), "eFeature is expected to be within maximum bounds (invalid Index)");
-	return (m_pUnitInfo->getFeatureAttackModifier(eFeature) + getExtraFeatureAttackPercent(eFeature));
+	return (iMastery + m_pUnitInfo->getFeatureAttackModifier(eFeature) + getExtraFeatureAttackPercent(eFeature));
 }
 
 int CvUnit::featureDefenseModifier(FeatureTypes eFeature) const
 {
+	const int iMastery = (eFeature == GC.getInfoTypeForString("FEATURE_FOREST") ? UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_FOREST_DEFENSE) :
+		eFeature == GC.getInfoTypeForString("FEATURE_JUNGLE") ? UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_JUNGLE_DEFENSE) : 0);
 	FAssertMsg(eFeature >= 0, "eFeature is expected to be non-negative (invalid Index)");
 	FAssertMsg(eFeature < GC.getNumFeatureInfos(), "eFeature is expected to be within maximum bounds (invalid Index)");
-	return (m_pUnitInfo->getFeatureDefenseModifier(eFeature) + getExtraFeatureDefensePercent(eFeature));
+	return (iMastery + m_pUnitInfo->getFeatureDefenseModifier(eFeature) + getExtraFeatureDefensePercent(eFeature));
 }
 
 int CvUnit::unitClassAttackModifier(UnitClassTypes eUnitClass) const
@@ -9214,7 +9219,15 @@ int CvUnit::unitCombatModifier(UnitCombatTypes eUnitCombat) const
 {
 	FAssertMsg(eUnitCombat >= 0, "eUnitCombat is expected to be non-negative (invalid Index)");
 	FAssertMsg(eUnitCombat < GC.getNumUnitCombatInfos(), "eUnitCombat is expected to be within maximum bounds (invalid Index)");
-	return (m_pUnitInfo->getUnitCombatModifier(eUnitCombat) + getExtraUnitCombatModifier(eUnitCombat));
+	int iMastery = 0;
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_MELEE")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_MELEE);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_MOUNTED);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_ARCHER")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ARCHER);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_GUN")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_GUN);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_ARMOR")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ARMOR);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_SIEGE")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_SIEGE);
+	if (eUnitCombat == GC.getInfoTypeForString("UNITCOMBAT_NAVAL")) iMastery = UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_NAVAL);
+	return (iMastery + m_pUnitInfo->getUnitCombatModifier(eUnitCombat) + getExtraUnitCombatModifier(eUnitCombat));
 }
 
 
@@ -9228,7 +9241,7 @@ int CvUnit::domainModifier(DomainTypes eDomain) const
 
 int CvUnit::bombardRate() const
 {
-	return (m_pUnitInfo->getBombardRate() + getExtraBombardRate());
+	return UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_BOMBARD) + (m_pUnitInfo->getBombardRate() + getExtraBombardRate());
 }
 
 
@@ -10549,7 +10562,7 @@ int CvUnit::getBlitzCount() const
 
 bool CvUnit::isBlitz() const
 {
-	return (getBlitzCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_BLITZ) > 0) || (getBlitzCount() > 0);
 }
 
 void CvUnit::changeBlitzCount(int iChange)			
@@ -10565,7 +10578,7 @@ int CvUnit::getAmphibCount() const
 
 bool CvUnit::isAmphib() const
 {
-	return (getAmphibCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_AMPHIB) > 0) || (getAmphibCount() > 0);
 }
 
 void CvUnit::changeAmphibCount(int iChange)
@@ -10581,7 +10594,7 @@ int CvUnit::getRiverCount() const
 
 bool CvUnit::isRiver() const
 {
-	return (getRiverCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_RIVER) > 0) || (getRiverCount() > 0);
 }
 
 void CvUnit::changeRiverCount(int iChange)
@@ -10597,7 +10610,7 @@ int CvUnit::getEnemyRouteCount() const
 
 bool CvUnit::isEnemyRoute() const
 {
-	return (getEnemyRouteCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ENEMY_ROUTE) > 0) || (getEnemyRouteCount() > 0);
 }
 
 void CvUnit::changeEnemyRouteCount(int iChange)
@@ -10613,7 +10626,7 @@ int CvUnit::getAlwaysHealCount() const
 
 bool CvUnit::isAlwaysHeal() const
 {
-	return (getAlwaysHealCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ALWAYS_HEAL) > 0) || (getAlwaysHealCount() > 0);
 }
 
 void CvUnit::changeAlwaysHealCount(int iChange)
@@ -10629,7 +10642,7 @@ int CvUnit::getHillsDoubleMoveCount() const
 
 bool CvUnit::isHillsDoubleMove() const
 {
-	return (getHillsDoubleMoveCount() > 0);
+	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_HILLS_DOUBLE) > 0) || (getHillsDoubleMoveCount() > 0);
 }
 
 void CvUnit::changeHillsDoubleMoveCount(int iChange)
@@ -10816,7 +10829,7 @@ void CvUnit::changeExtraFriendlyHeal(int iChange)
 
 int CvUnit::getSameTileHeal() const
 {
-	return m_iSameTileHeal;
+	return m_iSameTileHeal + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_SAME_TILE_HEAL);
 }
 
 void CvUnit::changeSameTileHeal(int iChange)
@@ -11598,7 +11611,9 @@ bool CvUnit::isFeatureDoubleMove(FeatureTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumFeatureInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	return (getFeatureDoubleMoveCount(eIndex) > 0);
+	return (getFeatureDoubleMoveCount(eIndex) > 0) ||
+		(eIndex == GC.getInfoTypeForString("FEATURE_FOREST") && UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_FOREST_DOUBLE) > 0) ||
+		(eIndex == GC.getInfoTypeForString("FEATURE_JUNGLE") && UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_JUNGLE_DOUBLE) > 0);
 }
 
 

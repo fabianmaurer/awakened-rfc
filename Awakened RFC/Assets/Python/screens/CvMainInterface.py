@@ -1840,6 +1840,9 @@ class CvMainInterface:
 				elif (gc.getPlayer(ePlayer).getCurrentResearch() != -1):
 
 					szText = CyGameTextMgr().getResearchStr(ePlayer)
+					iResearch = gc.getPlayer(ePlayer).getCurrentResearch()
+					if gc.getTechInfo(iResearch).getType().startswith("TECH_UNIT_MASTERY_"):
+						szText += u" (%d)" % gc.getPlayer(ePlayer).getResearchTurnsLeft(iResearch, True)
 					screen.setText( "ResearchText", "Background", szText, CvUtil.FONT_CENTER_JUSTIFY, screen.centerX(512), 3, -0.4, FontTypes.GAME_FONT, WidgetTypes.WIDGET_RESEARCH, -1, -1 )
 					screen.show( "ResearchText" )
 

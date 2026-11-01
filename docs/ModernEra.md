@@ -54,6 +54,10 @@ AI research valuation now recognizes the happiness and military benefits and
 does not apply the old tenfold repeat-tech penalty. The ordinary cost comparison
 still allows long-term research to compete with repeated improvements.
 
+Military units also have three unit-specific mastery levels, separate from
+global Military Research. See [UnitMastery.md](UnitMastery.md) for costs,
+retirement rules and the complete reward table, including unique units.
+
 ## AI and automation branch
 
 The three repeatable fields share column 21. Everything to their right belongs

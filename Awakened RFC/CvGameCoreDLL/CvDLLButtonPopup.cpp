@@ -1,6 +1,7 @@
 // buttonPopup.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvUnitMastery.h"
 #include "CvRhyes.h"
 #include "CvDLLButtonPopup.h"
 #include "CvGlobals.h"
@@ -1527,10 +1528,10 @@ bool CvDLLButtonPopup::launchChooseTechPopup(CvPopup* pPopup, CvPopupInfo &info)
 		{
 			if (((iI == eBestTech) || (iI == eNextBestTech)) == (iPass == 0))
 			{
-				if (player.canResearch((TechTypes)iI))
+				if (player.canResearch((TechTypes)iI) && (iDiscover <= 0 || UnitMastery::unitForTech((TechTypes)iI) == NO_UNIT))
 				{
 					CvWString szBuffer;
-					szBuffer.Format(L"%s (%d)", GC.getTechInfo((TechTypes)iI).getDescription(), ((iDiscover > 0) ? 0 : player.getResearchTurnsLeft(((TechTypes)iI), true)));
+					szBuffer.Format(L"%s (%d)", UnitMastery::researchName((TechTypes)iI, player.getTeam()).GetCString(), ((iDiscover > 0) ? 0 : player.getResearchTurnsLeft(((TechTypes)iI), true)));
 
 					if ((iI == eBestTech) || (iI == eNextBestTech))
 					{

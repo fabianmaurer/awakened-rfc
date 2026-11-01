@@ -676,7 +676,7 @@ These changes require a new game because the player-slot layout has expanded.
 ### Medieval ships
 
 Triremes have **3 strength** and no longer receive a special bonus against
-Galleys. They upgrade to the **War Galley**, which requires Compass and
+Galleys. They upgrade to the **War Galley**, which requires Machinery, Compass and
 Sailing and has **4 strength, 3 movement, no cargo**, and a base cost of 60.
 War Galleys upgrade to Frigates, keeping the Caravel's exploration role separate.
 
