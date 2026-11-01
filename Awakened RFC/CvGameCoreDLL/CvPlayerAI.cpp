@@ -2993,7 +2993,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	}
 
 	iValue /= (std::max(0, (iBadTile - (NUM_CITY_PLOTS / 4))) + 3);
-	if (!(iX >= 67 && iX <= 70 && iY >= 43 && iY <= 46) && !(iX >= 79 && iX <= 18 && iY >= 110 && iY <= 10)) { //Rhye (exclude Turkey and Siberia)
+	if (!(iX >= scenarioGeographyValue("CvPlayerAI.bound_1") && iX <= scenarioGeographyValue("CvPlayerAI.bound_2") && iY >= scenarioGeographyValue("CvPlayerAI.bound_3") && iY <= scenarioGeographyValue("CvPlayerAI.bound_4")) && !(iX >= scenarioGeographyValue("CvPlayerAI.bound_5") && iX <= scenarioGeographyValue("CvPlayerAI.bound_6") && iY >= scenarioGeographyValue("CvPlayerAI.bound_7") && iY <= scenarioGeographyValue("CvPlayerAI.bound_8"))) { //Rhye (exclude Turkey and Siberia)
 	if (bStartingLoc)
 	{
 		iDifferentAreaTile = 0;
@@ -3017,26 +3017,26 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	int tempY = pPlot->getY_INLINE();
 
 
-	iValue *= getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX);
+	iValue *= getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX);
 	iValue /= 100;
 
-	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) <= 3)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) <= 3)
 		iValue /= 2;
-	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) <= 60)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) <= 60)
 		iValue /= 2;
-	/*if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] >= 200) {
+	/*if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) >= 200) {
 		iValue *= 11;
 		iValue /= 10;
 	}
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] >= 400) {
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) >= 400) {
 		iValue *= 11;
 		iValue /= 10;
 	}*/
-	if (getSettlerMapValue(getID(), EARTH_Y - 1 - tempY, tempX) > 60)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) > 60)
 	//	iValue += GC.getGameINLINE().getSorenRandNum(1000, "Random Value");
 	{
 		//iValue *= 100 + GC.getASyncRand().get(40, "Random Value");
-		iValue *= (100 + ((GC.getGameINLINE().getSorenRand().getSeed() % ((tempX+10)*(tempY+10) + (EARTH_X-tempX) + (EARTH_Y-tempY))) % 50)); //RFCMP
+		iValue *= (100 + ((GC.getGameINLINE().getSorenRand().getSeed() % ((tempX+10)*(tempY+10) + (GC.getMapINLINE().getGridWidthINLINE()-tempX) + (GC.getMapINLINE().getGridHeightINLINE()-tempY))) % 50)); //RFCMP
 		iValue /= 100;
 	} 
 	//Rhye - end
@@ -3151,17 +3151,17 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 
 	//Rhye - start
 
-	if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 3)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 3)
 		iValue -= 2;
-	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 20)
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 20)
 		iValue -= 1;
-	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 500) //500-700
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 500) //500-700
 		iValue += 4;
-	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 300) //300-400
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 300) //300-400
 		iValue += 3;
-	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 150) //150-200
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 150) //150-200
 		iValue += 2;
-	else if (getSettlerMapValue(getID(), EARTH_Y - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 40) //40-60-90
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 40) //40-60-90
 		iValue += 1;
 
 	if (pCity->getOwner() >= NUM_MAJOR_PLAYERS)
@@ -3295,7 +3295,7 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 	}
 
 	//Rhye - start switch
-	if (pCity->getX_INLINE() <= 43) { //wars in America
+	if (pCity->getX_INLINE() <= scenarioGeographyValue("CvPlayerAI.bound_9")) { //wars in America
 		switch (getID())
 		{
 			case SPAIN:
@@ -8183,7 +8183,7 @@ int CvPlayerAI::AI_cityTradeVal(CvCity* pCity) const
 
 
 	if (GET_PLAYER(pCity->getOwnerINLINE()).getNumCities() > 12) 
-		if (getSettlerMapValue(pCity->getOwnerINLINE(), EARTH_Y -1 - pCity->getY(), pCity->getX()) < 500) { //not in core area
+		if (getSettlerMapValue(pCity->getOwnerINLINE(), GC.getMapINLINE().getGridHeightINLINE() -1 - pCity->getY(), pCity->getX()) < 500) { //not in core area
 			iValue *= 2;
 			iValue /= 3;
 		}
@@ -18278,7 +18278,7 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 			CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
 			if (pLoopPlot->isRevealed(getTeam(), false))
 			{
-				if (getSettlerMapValue(getID(), EARTH_Y -1 - pLoopPlot->getY(), pLoopPlot->getX()) >= 90) //Rhye
+				if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 - pLoopPlot->getY(), pLoopPlot->getX()) >= 90) //Rhye
 				{ //Rhye
 				iValue = pLoopPlot->getFoundValue(getID());
 				if (iValue > iMinFoundValueThreshold)
@@ -18345,17 +18345,17 @@ int CvPlayerAI::AI_browseStep(int iMinFoundValueThreshold, int iBestFoundValue, 
 	//int iI;
 	int iI, iJ;
 
-	for (iI = 0; iI < EARTH_X; iI++)
+	for (iI = 0; iI < GC.getMapINLINE().getGridWidthINLINE(); iI++)
 	{
-	for (iJ = 0; iJ < EARTH_Y; iJ++)
+	for (iJ = 0; iJ < GC.getMapINLINE().getGridHeightINLINE(); iJ++)
 	{
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotINLINE(iI, iJ);
-		if (getSettlerMapValue(getID(), EARTH_Y -1 -iJ, iI) == iModifier)
+		if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 -iJ, iI) == iModifier)
 
 	/*for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
 	{		
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
-		if (settlersMaps[getID()][EARTH_Y -1 - pLoopPlot->getY()][pLoopPlot->getX()] == iModifier)*/
+		if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 - pLoopPlot->getY(), pLoopPlot->getX()) == iModifier)*/
 		{
 			if (pLoopPlot->isRevealed(getTeam(), false))
 			{

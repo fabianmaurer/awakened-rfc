@@ -1,3 +1,4 @@
+import ScenarioGeography as geo
 from Reporting import ENABLED as REPORTING_ENABLED
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
@@ -3054,7 +3055,7 @@ class CvMainInterface:
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
                                                                                                         elif gc.getGame().isPapalState(ePlayer):
                                                                                                                 # Papal survival depends on retaining or recovering Rome.
-                                                                                                                pRome = CyMap().plot(60, 44).getPlotCity()
+                                                                                                                pRome = CyMap().plot(*geo.value("CvMainInterface.rome")).getPlotCity()
                                                                                                                 bHoldsRome = not pRome.isNone() and pRome.getOwner() == ePlayer
                                                                                                                 iSymbol = CyGame().getSymbolID(FontSymbols.POWER_CHAR) + 3
                                                                                                                 if bHoldsRome:

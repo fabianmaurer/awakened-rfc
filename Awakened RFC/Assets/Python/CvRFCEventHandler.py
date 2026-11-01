@@ -1,4 +1,5 @@
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import CvEventManager #Mercenaries
 import sys #Mercenaries
@@ -176,7 +177,7 @@ class CvRFCEventHandler:
                 if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and
                     not (bTrade and not bConquest and gc.getGame().isPapalState(playerType))):  #late start condition (RFCMP)
                         if (owner == iCeltia and gc.getPlayer(iCeltia).isAlive()):
-                                if ((city.getX() == 68 and city.getY() == 45) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
+                                if ((city.getX() == geo.value('CvRFCEventHandler.bound_1') and city.getY() == geo.value('CvRFCEventHandler.bound_2')) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
                                         print ("killed Byzantium")
                                         utils.killAndFragmentCiv(iCeltia, iIndependent, iIndependent2, -1, False)
 
@@ -496,7 +497,7 @@ class CvRFCEventHandler:
                                 self.rnf.setAstronomyTurn(iPlayer, gc.getGame().getGameTurn())
                 if (argsList[0] == con.iCompass):
                         if (iPlayer == con.iVikings):
-                                gc.getMap().plot(49, 62).setTerrainType(con.iCoast, True, True)
+                                gc.getMap().plot(*geo.value('CvRFCEventHandler.plot_1')).setTerrainType(con.iCoast, True, True)
                 if (argsList[0] == con.iMedicine):
                         self.pla.onTechAcquired(argsList[0], argsList[2])
 
@@ -616,7 +617,7 @@ class CvRFCEventHandler:
                         #print (plotList)
                         #utils.setStability(con.iChina, -25)
                         
-                        #city = gc.getMap().plot( 79, 40 ).getPlotCity() 
+                        #city = gc.getMap().plot( 79, 40 ).getPlotCity()
                         #self.pla.infectCity(city)
                         #self.pla.spreadPlague(con.iPersia)
                         #self.pla.processPlague(con.iPersia)
@@ -747,8 +748,8 @@ class CvRFCEventHandler:
                 #              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
                 #              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
                 #              0, 0]
-                for x in range(0, 123):
-                        for y in range(0, 67):
+                for x in range(*geo.value('CvRFCEventHandler.range_5')):
+                        for y in range(*geo.value('CvRFCEventHandler.range_6')):
                                 pCurrent = gc.getMap().plot( x, y )
                                 iTotal += pCurrent.getNumUnits()
 ##                                if (pCurrent.getNumUnits() > 0):

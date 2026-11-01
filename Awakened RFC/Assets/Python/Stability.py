@@ -2,6 +2,7 @@
 
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers   
 import Popup
@@ -20,8 +21,7 @@ iIndependent = con.iIndependent
 iIndependent2 = con.iIndependent2
 iNumTotalPlayers = con.iNumTotalPlayers
 iBarbarian = con.iBarbarian
-tCapitals = con.tCapitals
-
+geo.bind(globals(), 'tCapitals', 'Consts.tCapitals')
 iParCities3 = con.iParCities3
 iParCitiesE = con.iParCitiesE
 iParCivics3 = con.iParCivics3
@@ -214,12 +214,12 @@ class Stability:
                         for i in range(len(con.l0Array)):
                                 lOwnedPlots.append(0)
                                 lOwnedCities.append(0)
-                        for x in range(0, 123):
-                                for y in range(0, 67):
+                        for x in range(*geo.value('Stability.range_1')):
+                                for y in range(*geo.value('Stability.range_2')):
                                         pCurrent = gc.getMap().plot( x, y )
                                         iOwner = pCurrent.getOwner()
                                         if (iOwner >= 0 and iOwner < iNumPlayers and (pCurrent.isHills() or pCurrent.isFlatlands())):
-                                                if (gc.getPlayer(iOwner).getSettlersMaps( 67-y, x ) < 90):
+                                                if (gc.getPlayer(iOwner).getSettlersMaps( (geo.height() - 1) - y, x ) < 90):
                                                         lOwnedPlots[iOwner] += 1
                                                         if (iOwner == con.iRome and bRomanRepublic and pRome.isRomanProvince(x, y) and pCurrent.isConnectedToCapital(iOwner)):
                                                                 iRomanConnectedPlots += 1
@@ -227,7 +227,7 @@ class Stability:
                                                         cityOwner = pCurrent.getPlotCity().getOwner()
                                                         for iLoop in range(con.iNumPlayers):
                                                                 if (iLoop != cityOwner and gc.getPlayer(iLoop).isAlive() and iGameTurn >= con.tBirth[iLoop]+30 and iGameTurn >= self.getLatestRebellionTurn(iLoop) + 15):
-                                                                        if (gc.getPlayer(iLoop).getSettlersMaps( 67-y, x ) >= 400):
+                                                                        if (gc.getPlayer(iLoop).getSettlersMaps( (geo.height() - 1) - y, x ) >= 400):
                                                                                 if (x >= con.tNormalAreasTL[iLoop][0] and x <= con.tNormalAreasBR[iLoop][0] and \
                                                                                     y >= con.tNormalAreasTL[iLoop][1] and y <= con.tNormalAreasBR[iLoop][1]):
                                                                                             if ((x,y) not in con.tNormalAreasSubtract[iLoop]):
@@ -550,7 +550,7 @@ class Stability:
                                         if (iGameTurn > con.tBirth[iLoop] and iLoop != iPlayer):
                                                 if (iX >= con.tNormalAreasTL[iLoop][0] and iX <= con.tNormalAreasBR[iLoop][0] and \
                                                     iY >= con.tNormalAreasTL[iLoop][1] and iY <= con.tNormalAreasBR[iLoop][1]):
-                                                        if (gc.getPlayer(iPlayer).getSettlersMaps( 67-iY, iX ) < 150):
+                                                        if (gc.getPlayer(iPlayer).getSettlersMaps( (geo.height() - 1) - iY, iX ) < 150):
                                                                 iNewBaseStability -= 3
                                                                 self.setParameter(iPlayer, iParExpansion3, True, -3)                                                                
                                                                 #print("city owned in unstable area: -3", pLoopCity.GetCy().getName(), iPlayer)

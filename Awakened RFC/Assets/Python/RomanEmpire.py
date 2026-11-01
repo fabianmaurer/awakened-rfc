@@ -1,6 +1,7 @@
 from Reporting import ENABLED as REPORTING_ENABLED
 # Roman administration and campaign safeguards. Civ4 / Python 2.4.
 from CvPythonExtensions import CyGlobalContext
+import ScenarioGeography as geo
 import cPickle as pickle
 import Consts as con
 import PyHelpers
@@ -20,12 +21,12 @@ def canCampaign(iPlayer):
     if (utils.getPlagueCountdown(iPlayer) > 0):
         return -4
     capital = player.getCapitalCity()
-    if (capital.isNone() or capital.getX() != 60 or capital.getY() != 44):
+    if (capital.isNone() or capital.getX() != geo.value('RomanEmpire.bound_1') or capital.getY() != geo.value('RomanEmpire.bound_2')):
         return -5
     # Preserve Italy before opening another offensive theater.
     for pyCity in PyHelpers.PyPlayer(iPlayer).getCityList():
         city = pyCity.GetCy()
-        if (57 <= city.getX() <= 64 and 40 <= city.getY() <= 47):
+        if (geo.value('RomanEmpire.bound_9') <= city.getX() <= geo.value('RomanEmpire.bound_3') and geo.value('RomanEmpire.bound_10') <= city.getY() <= geo.value('RomanEmpire.bound_4')):
             if (city.isOccupation() or city.getPopulation() < 1):
                 return -6
     return 1
@@ -44,8 +45,8 @@ def handleProvincialLoss(iPlayer, reason):
         utils.getStability(iPlayer) < -40):
         return False
     cities = [pyCity.GetCy() for pyCity in PyHelpers.PyPlayer(iPlayer).getCityList()]
-    italian = [city for city in cities if 57 <= city.getX() <= 64 and 40 <= city.getY() <= 47]
-    if (len(italian) < 2 or gc.getMap().plot(60, 44).getOwner() != iPlayer):
+    italian = [city for city in cities if geo.value('RomanEmpire.bound_11') <= city.getX() <= geo.value('RomanEmpire.bound_5') and geo.value('RomanEmpire.bound_12') <= city.getY() <= geo.value('RomanEmpire.bound_6')]
+    if (len(italian) < 2 or gc.getMap().plot(*geo.value('RomanEmpire.plot_1')).getOwner() != iPlayer):
         return False
     data = pickle.loads(gc.getGame().getScriptData())
     turn = gc.getGame().getGameTurn()
@@ -54,9 +55,9 @@ def handleProvincialLoss(iPlayer, reason):
     candidate = None
     best = -1
     for city in cities:
-        if (city.isCapital() or (57 <= city.getX() <= 64 and 40 <= city.getY() <= 47)):
+        if (city.isCapital() or (geo.value('RomanEmpire.bound_13') <= city.getX() <= geo.value('RomanEmpire.bound_7') and geo.value('RomanEmpire.bound_14') <= city.getY() <= geo.value('RomanEmpire.bound_8'))):
             continue
-        score = abs(city.getX() - 60) + abs(city.getY() - 44)
+        score = abs(city.getX() - geo.value("World.rome")[0]) + abs(city.getY() - geo.value("World.rome")[1])
         if (not city.isConnectedToCapital(iPlayer)):
             score += 100
         if (score > best):

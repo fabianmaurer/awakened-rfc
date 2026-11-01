@@ -16,8 +16,8 @@ namespace
 {
 const char* realmCivs[] = { "CIVILIZATION_ABBASID", "CIVILIZATION_FATIMID", "CIVILIZATION_UMAYYAD" };
 const char* realmLeaders[] = { "LEADER_ABBASID", "LEADER_FATIMID", "LEADER_UMAYYAD" };
-const int capitalX[] = { 78, 69, 51 };
-const int capitalY[] = { 40, 35, 44 };
+
+
 
 #if ARFC_ENABLE_REPORTING
 // Keep native partition progress when a crash prevents a Python traceback.
@@ -34,20 +34,15 @@ inline void logPartitionStage(const char*, PlayerTypes, int = -1) {}
 #endif
 
 // Realm, west, south, east, north. Keep these anchors in sync with Caliphate.py.
-const int realmRegions[][5] = {
-    { 0, 76, 37, 85, 46 }, // Iraq/Persia
-    { 0, 73, 29, 80, 37 }, // Arabian Peninsula
-    { 1, 61, 24, 72, 40 }, // Egypt/eastern North Africa
-    { 1, 71, 38, 75, 45 }, // Levant
-    { 2, 44, 30, 60, 49 }  // Western North Africa/Iberia
-};
+
 
 int realmAt(int x, int y)
 {
     int bestRealm = -1, bestDistance = MAX_INT;
-    for (int i = 0; i < sizeof(realmRegions) / sizeof(realmRegions[0]); ++i)
+    const std::vector<int>& realmRegions = scenarioGeographyValues("Caliphate.realmRegions");
+    for (int i = 0; i < (int)realmRegions.size() / 5; ++i)
     {
-        const int* region = realmRegions[i];
+        const int* region = &realmRegions[i * 5];
         const int nearestX = std::max(region[1], std::min(x, region[3]));
         const int nearestY = std::max(region[2], std::min(y, region[4]));
         // Test both longitude edges as well as the clamped point so that
@@ -125,18 +120,10 @@ int CvPlayer::getCaliphateRealmMask() const
 void CvPlayer::configureCaliphateSuccessor()
 {
     if (getID() >= NUM_MAJOR_PLAYERS) return;
-    // Retain the original Arabia map when loading another game in this process.
-    static bool copied = false;
-    static int originalArabia[EARTH_Y][EARTH_X];
-    if (!copied)
-    {
-        memcpy(originalArabia, settlersMaps[ARABIA], sizeof(originalArabia));
-        copied = true;
-    }
     const int realm = realmOf(getCivilizationType());
     if (realm < 0)
     {
-        if (getID() == ARABIA) memcpy(settlersMaps[ARABIA], originalArabia, sizeof(originalArabia));
+        if (getID() == ARABIA) resetSettlerMap(ARABIA);
         return;
     }
     // The authored 900 AD Umayyad state is still the emirate (caliphate: 929).
@@ -148,18 +135,18 @@ void CvPlayer::configureCaliphateSuccessor()
     GC.getInitCore().setCivShortDesc(getID(), bCordoba ? L"TXT_KEY_RFCMP_900_CORDOBA_SHORT" :
         GC.getCivilizationInfo(getCivilizationType()).getShortDescriptionKey());
     GC.getInitCore().setCivAdjective(getID(), GC.getCivilizationInfo(getCivilizationType()).getAdjectiveKey());
-    for (int y = 0; y < EARTH_Y; ++y)
-        for (int x = 0; x < EARTH_X; ++x)
+    for (int y = 0; y < GC.getMapINLINE().getGridHeightINLINE(); ++y)
+        for (int x = 0; x < GC.getMapINLINE().getGridWidthINLINE(); ++x)
         {
             bool bHomeland = realmAt(x, y) == realm;
             if (GC.getGameINLINE().getStartTurn() == 211)
             {
-                if (realm == 0) bHomeland = x >= 74 && x <= 83 && y >= 31 && y <= 46 &&
-                    !(x <= 74 && y >= 38); // Tulunid southern Syria is autonomous.
-                if (realm == 1) bHomeland = x >= 56 && x <= 74 && y >= 33 && y <= 42;
-                if (realm == 2) bHomeland = x >= 49 && x <= 56 && y >= 40 && y <= 46;
+                if (realm == 0) bHomeland = x >= scenarioGeographyValue("CvCaliphate.bound_1") && x <= scenarioGeographyValue("CvCaliphate.bound_2") && y >= scenarioGeographyValue("CvCaliphate.bound_3") && y <= scenarioGeographyValue("CvCaliphate.bound_4") &&
+                    !(x <= scenarioGeographyValue("CvCaliphate.bound_5") && y >= scenarioGeographyValue("CvCaliphate.bound_6")); // Tulunid southern Syria is autonomous.
+                if (realm == 1) bHomeland = x >= scenarioGeographyValue("CvCaliphate.bound_7") && x <= scenarioGeographyValue("CvCaliphate.bound_8") && y >= scenarioGeographyValue("CvCaliphate.bound_9") && y <= scenarioGeographyValue("CvCaliphate.bound_10");
+                if (realm == 2) bHomeland = x >= scenarioGeographyValue("CvCaliphate.bound_11") && x <= scenarioGeographyValue("CvCaliphate.bound_12") && y >= scenarioGeographyValue("CvCaliphate.bound_13") && y <= scenarioGeographyValue("CvCaliphate.bound_14");
             }
-            settlersMaps[getID()][EARTH_Y - 1 - y][x] = bHomeland ? 300 : 20;
+            setSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - y, x, bHomeland ? 300 : 20);
         }
 }
 
@@ -210,7 +197,7 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
             const int realm = cities[i].realm;
             if (cityCounts[realm] <= cityLimit) continue;
             CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(cities[i].plot);
-            int d = plotDistance(plot->getX_INLINE(), plot->getY_INLINE(), capitalX[realm], capitalY[realm]);
+            int d = plotDistance(plot->getX_INLINE(), plot->getY_INLINE(), scenarioGeographyValue("Caliphate.capitalX", realm), scenarioGeographyValue("Caliphate.capitalY", realm));
             if (d > distance || (d == distance && cities[i].plot > cities[farthest].plot))
             { farthest = i; distance = d; }
         }
@@ -389,7 +376,7 @@ void CvPlayer::resolveCaliphatePartition(int decision, int chosen)
         for (CvCity* city = successor.firstCity(&loop); city != NULL; city = successor.nextCity(&loop))
         {
             city->setNumRealBuilding(palace, 0);
-            int d = plotDistance(city->getX_INLINE(), city->getY_INLINE(), capitalX[r], capitalY[r]);
+            int d = plotDistance(city->getX_INLINE(), city->getY_INLINE(), scenarioGeographyValue("Caliphate.capitalX", r), scenarioGeographyValue("Caliphate.capitalY", r));
             if (d < distance) { distance = d; best = city; }
         }
         if (best != NULL) { best->setNumRealBuilding(palace, 1); successor.setCapitalCity(best); }

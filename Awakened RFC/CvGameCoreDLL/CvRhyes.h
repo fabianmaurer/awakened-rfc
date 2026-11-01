@@ -3,8 +3,6 @@
 #define CVRHYES_H
 
 // rhyes.h
-#define EARTH_X					(124)
-#define EARTH_Y					(68)
 
 
 #define MAX_COM_SHRINE			(20)
@@ -180,7 +178,7 @@
 
 #define NUM_BUILDINGTYPES_PLAGUE	(128)
 
-#endif	// CVRHYES_H
+
 
 
 
@@ -203,17 +201,14 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 extern wchar civDynamicNames[33][22][19]; //(dynamic civ names - not jdog's)
 extern int civDynamicNamesFlag[33];
 extern int civDynamicNamesEraThreshold[33];
-extern int settlersMaps[][68][124];
-
-// Only major civilizations have authored settlement preferences. Minor-player
-// AI also queries this table; reading past it makes city sites depend on memory
-// contents and can send the same unit to different plots in multiplayer.
-inline int getSettlerMapValue(int iPlayer, int iY, int iX)
-{
-	if (iPlayer < 0 || iPlayer >= NUM_MAJOR_PLAYERS ||
-		iY < 0 || iY >= EARTH_Y || iX < 0 || iX >= EARTH_X)
-		return 0;
-	return settlersMaps[iPlayer][iY][iX];
-}
+// Settlement rows are north-to-south, matching authored profile grids.
+int getSettlerMapValue(int iPlayer, int iY, int iX);
+void setSettlerMapValue(int iPlayer, int iY, int iX, int iValue);
+void resetSettlerMap(int iPlayer);
+int scenarioGeographyValue(const char* key, int index = 0);
+const std::vector<int>& scenarioGeographyValues(const char* key);
 
 
+
+
+#endif // CVRHYES_H

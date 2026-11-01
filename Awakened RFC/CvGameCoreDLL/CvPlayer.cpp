@@ -1812,7 +1812,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		const int iCityY = pNewCity->getY_INLINE();
 		if (!m_bArabianJihadCairoSettlerGranted &&
 			getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ARABIA") &&
-			((iCityX == 68 && (iCityY == 34 || iCityY == 35)) || (iCityX == 69 && iCityY == 35)))
+			((iCityX == scenarioGeographyValue("CvPlayer.founding_1") && (iCityY == scenarioGeographyValue("CvPlayer.founding_3") || iCityY == scenarioGeographyValue("CvPlayer.founding_4"))) || (iCityX == scenarioGeographyValue("CvPlayer.founding_2") && iCityY == scenarioGeographyValue("CvPlayer.founding_5"))))
 		{
 			CvUnit* pSettler = initUnit((UnitTypes)GC.getInfoTypeForString("UNIT_SETTLER"), iCityX, iCityY, UNITAI_SETTLE);
 			if (pSettler != NULL)
@@ -8059,14 +8059,14 @@ int CvPlayer::getRomanProvinceStage(int iX, int iY) const
 {
 	// Explicit historical province envelope on RFC's fixed Earth map.
 	// Earlier stages guide campaigns; all stages have identical administration.
-	if (iX >= 57 && iX <= 64 && iY >= 40 && iY <= 47) return 1; // Italy, Sardinia, Sicily
-	if (iX >= 48 && iX <= 63 && iY >= 35 && iY <= 40) return 2; // western North Africa
-	if (iX >= 46 && iX <= 54 && iY >= 40 && iY <= 46) return 2; // Iberia
-	if (iX >= 64 && iX <= 76 && iY >= 39 && iY <= 47) return 3; // Greece, Balkans, Anatolia
-	if (iX >= 51 && iX <= 60 && iY >= 47 && iY <= 53) return 4; // Gaul, Rhine frontier
-	if (iX >= 49 && iX <= 55 && iY >= 53 && iY <= 57) return 4; // southern Britain
-	if (iX >= 64 && iX <= 73 && iY >= 31 && iY <= 38) return 4; // Egypt, Cyrenaica
-	if (iX >= 72 && iX <= 76 && iY >= 36 && iY <= 42) return 4; // Levant
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_1") && iX <= scenarioGeographyValue("CvPlayer.bound_2") && iY >= scenarioGeographyValue("CvPlayer.bound_3") && iY <= scenarioGeographyValue("CvPlayer.bound_4")) return 1; // Italy, Sardinia, Sicily
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_5") && iX <= scenarioGeographyValue("CvPlayer.bound_6") && iY >= scenarioGeographyValue("CvPlayer.bound_7") && iY <= scenarioGeographyValue("CvPlayer.bound_8")) return 2; // western North Africa
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_9") && iX <= scenarioGeographyValue("CvPlayer.bound_10") && iY >= scenarioGeographyValue("CvPlayer.bound_11") && iY <= scenarioGeographyValue("CvPlayer.bound_12")) return 2; // Iberia
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_13") && iX <= scenarioGeographyValue("CvPlayer.bound_14") && iY >= scenarioGeographyValue("CvPlayer.bound_15") && iY <= scenarioGeographyValue("CvPlayer.bound_16")) return 3; // Greece, Balkans, Anatolia
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_17") && iX <= scenarioGeographyValue("CvPlayer.bound_18") && iY >= scenarioGeographyValue("CvPlayer.bound_19") && iY <= scenarioGeographyValue("CvPlayer.bound_20")) return 4; // Gaul, Rhine frontier
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_21") && iX <= scenarioGeographyValue("CvPlayer.bound_22") && iY >= scenarioGeographyValue("CvPlayer.bound_23") && iY <= scenarioGeographyValue("CvPlayer.bound_24")) return 4; // southern Britain
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_25") && iX <= scenarioGeographyValue("CvPlayer.bound_26") && iY >= scenarioGeographyValue("CvPlayer.bound_27") && iY <= scenarioGeographyValue("CvPlayer.bound_28")) return 4; // Egypt, Cyrenaica
+	if (iX >= scenarioGeographyValue("CvPlayer.bound_29") && iX <= scenarioGeographyValue("CvPlayer.bound_30") && iY >= scenarioGeographyValue("CvPlayer.bound_31") && iY <= scenarioGeographyValue("CvPlayer.bound_32")) return 4; // Levant
 	return 0;
 }
 
@@ -8170,8 +8170,8 @@ void CvPlayer::announceArabianJihad(bool bStarting) const
     const int iRadius = std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_MESSAGE_RADIUS"));
     const CvCity* pReference = GC.getGameINLINE().getHolyCity((ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM"));
     if (pReference == NULL) pReference = getCapitalCity();
-    const int iX = pReference ? pReference->getX_INLINE() : 75;
-    const int iY = pReference ? pReference->getY_INLINE() : 33;
+    const int iX = pReference ? pReference->getX_INLINE() : scenarioGeographyValue("World.mecca", 0);
+    const int iY = pReference ? pReference->getY_INLINE() : scenarioGeographyValue("World.mecca", 1);
     for (int i = 0; i < MAX_PLAYERS; ++i)
     {
         CvPlayer& kRecipient = GET_PLAYER((PlayerTypes)i);
@@ -8361,8 +8361,8 @@ int CvPlayer::nearestJihadCampaign(const CvPlot* pPlot) const
         if (pUnit->isDelayedDeath() || pUnit->getJihadCampaign() < 0 || pUnit->getArea() != pPlot->getArea()) continue;
         // Egyptian captures sustain the surviving western field campaign,
         // even when Khalid or Sa'd happens to be closer to the city.
-        if (65 <= pPlot->getX_INLINE() && pPlot->getX_INLINE() <= 72 &&
-            30 <= pPlot->getY_INLINE() && pPlot->getY_INLINE() <= 37 &&
+        if (scenarioGeographyValue("Arabia.egypt", 0) <= pPlot->getX_INLINE() && pPlot->getX_INLINE() <= scenarioGeographyValue("CvPlayer.bound_33") &&
+            scenarioGeographyValue("Arabia.egypt", 1) <= pPlot->getY_INLINE() && pPlot->getY_INLINE() <= scenarioGeographyValue("CvPlayer.bound_34") &&
             pUnit->getJihadCampaign() == 1 && pUnit->canDefend() &&
             !pUnit->isCargo() && pUnit->AI_getUnitAIType() == UNITAI_ATTACK_CITY) return 1;
         const int iDistance = plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pUnit->getX_INLINE(), pUnit->getY_INLINE());
@@ -8930,16 +8930,16 @@ void CvPlayer::foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligio
 				iValue *= 3;
 				iValue /= 5; 
 			}
-			if ((pLoopCity->getX() == 60 && pLoopCity->getX() == 44) || (pLoopCity->getX() == 73 && pLoopCity->getX() == 38)) //Rome or Jerusalem
+			if ((pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_35") && pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_36")) || (pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_37") && pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_38"))) //Rome or Jerusalem
 			{
 				iValue *= 2;
 				//iValue /= 3; 
 			}
-			if (pLoopCity->getX() == 59 && pLoopCity->getX() == 47) //Milan
+			if (pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_39") && pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_40")) //Milan
 			{
 				iValue /= 2; 
 			}
-			if (pLoopCity->getX() == 71 && pLoopCity->getX() == 43) //Gordium
+			if (pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_41") && pLoopCity->getX() == scenarioGeographyValue("CvPlayer.bound_42")) //Gordium
 			{
 				iValue /= 8; 
 			}
@@ -17827,9 +17827,9 @@ int CvPlayer::verifySettlersHalt(int threshold)
 	int countRevealed = 0;
 
 
-	for (iI = 0; iI < EARTH_X; iI++)
+	for (iI = 0; iI < GC.getMapINLINE().getGridWidthINLINE(); iI++)
 	{
-		for (iJ = 0; iJ < EARTH_Y; iJ++)
+		for (iJ = 0; iJ < GC.getMapINLINE().getGridHeightINLINE(); iJ++)
 		{
 			pLoopPlot = GC.getMapINLINE().plotINLINE(iI, iJ);
 
@@ -17839,7 +17839,7 @@ int CvPlayer::verifySettlersHalt(int threshold)
 				{
 					if (!(pLoopPlot->isOwned()))
 					{
-						if (getSettlerMapValue(getID(), EARTH_Y -1 -iJ, iI) >= threshold)
+						if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 -iJ, iI) >= threshold)
 						{
 							count++;
 

@@ -12,6 +12,7 @@ import Islam
 import Caliphate
 from CvPythonExtensions import CyGlobalContext
 import NativeAmerica
+import ScenarioGeography
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -146,6 +147,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
                 # the last 6 arguments are for internal use by handleEvent
                 try:
                     eventHandler(argsList[:len(argsList) - 6])
+                except ScenarioGeography.MissingCoordinate:
+                    continue
                 except:
                     if REPORTING_ENABLED:
                         self.observer.exception(eventType)
@@ -164,7 +167,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         if self.EventHandlerMap.has_key(eventType):
             for eventHandler in self.EventHandlerMap[eventType]:
                 # the last 6 arguments are for internal use by handleEvent
-                result = eventHandler(argsList[:len(argsList) - 6])
+                try:
+                    result = eventHandler(argsList[:len(argsList) - 6])
+                except ScenarioGeography.MissingCoordinate:
+                    continue
                 if (result > 0):
                     return result
         return 0
@@ -185,6 +191,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
     # TODO: this probably needs to be more complex
     def _handleOnLoadEvent(self, eventType, argsList):
         """Handles OnLoad events."""
+        import ScenarioGeography
+        ScenarioGeography.restore()
         result = self._handleDefaultEvent(eventType, argsList)
         NativeAmerica.configureRegions()
         # Refresh only after all saved players and load-time identities are ready.

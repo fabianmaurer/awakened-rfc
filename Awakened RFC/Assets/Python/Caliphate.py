@@ -1,5 +1,6 @@
 from Reporting import ENABLED as REPORTING_ENABLED
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import Popup
 import Consts as con
 import copy
@@ -8,9 +9,7 @@ import CvUtil
 POPUP_ID = 7627
 REALMS = ("ABBASID", "FATIMID", "UMAYYAD")
 # Realm, west, south, east, north; mirrored by CvCaliphate.cpp.
-REGIONS = ((0, 76, 37, 85, 46), (0, 73, 29, 80, 37),
-           (1, 61, 24, 72, 40), (1, 71, 38, 75, 45),
-           (2, 44, 30, 60, 49))
+geo.bind(globals(), 'REGIONS', 'Caliphate.REGIONS')
 shown = None
 tables = ("tCapitals", "tReserveCapitals", "tCoreAreasTL", "tCoreAreasBR",
           "tNormalAreasTL", "tNormalAreasBR", "tNormalAreasSubtract",
@@ -43,12 +42,14 @@ def realmAt(x, y):
 def configureRegions(trace=False):
     trace = trace and REPORTING_ENABLED
     gc = CyGlobalContext()
-    bounds = (((73, 24), (104, 50)), ((61, 24), (75, 45)), ((44, 30), (60, 49)))
-    cores = (((73, 30), (84, 45)), ((66, 30), (75, 43)), ((47, 33), (59, 47)))
+    bounds = geo.value('Caliphate.configureRegions.bounds_1')
+    cores = geo.value('Caliphate.configureRegions.cores_1')
     for iPlayer in (con.iEgypt, con.iCarthage, con.iSpain, con.iArabia, con.iCaliphateSlot1, con.iCaliphateSlot2):
         if trace: CvUtil.pyPrint('Caliphate: reset region player=%d' % iPlayer)
         for name in tables:
-            getattr(con, name)[iPlayer] = copy.deepcopy(defaults[name][iPlayer])
+            source = defaults[name]
+            if name != 'tGoals': source = geo.original('Consts.' + name)
+            getattr(con, name)[iPlayer] = copy.deepcopy(source[iPlayer])
         realm = realmOf(iPlayer)
         if realm < 0: continue
         if trace: CvUtil.pyPrint('Caliphate: region bounds player=%d realm=%d' % (iPlayer, realm))

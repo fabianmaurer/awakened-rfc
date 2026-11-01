@@ -4530,28 +4530,28 @@ void CvGame::setAIAutoPlayCatapult(int iNewValue)
 
 		if ((iOldValue == 0) && (getAIAutoPlay() > 0))
 		{
-			CvPlot* pPlot = GC.getMapINLINE().plotINLINE(0, 0);
+			CvPlot* pPlot = GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_7"), scenarioGeographyValue("CvGame.y_8"));
 			if (pPlot->isUnit()) {
-				GC.getMapINLINE().plotINLINE(0, 0)->getUnitByIndex(0)->kill(false);
+				GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_9"), scenarioGeographyValue("CvGame.y_10"))->getUnitByIndex(0)->kill(false);
 				for (int iI = 0; iI < MAX_PLAYERS; iI++)
 				{
 					if (GET_PLAYER((PlayerTypes)iI).isHuman())
 					{
-						GC.getMapINLINE().plotINLINE(0, 0)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(0, 1)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(1, 0)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(1, 1)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(123, 0)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(123, 1)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(2, 0)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(2, 1)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(2, 2)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(1, 2)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(0, 2)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(123, 2)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(122, 2)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(122, 1)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
-						GC.getMapINLINE().plotINLINE(122, 0)->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_11"), scenarioGeographyValue("CvGame.y_12"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_13"), scenarioGeographyValue("CvGame.y_14"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_15"), scenarioGeographyValue("CvGame.y_16"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_17"), scenarioGeographyValue("CvGame.y_18"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_19"), scenarioGeographyValue("CvGame.y_20"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_21"), scenarioGeographyValue("CvGame.y_22"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_23"), scenarioGeographyValue("CvGame.y_24"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_25"), scenarioGeographyValue("CvGame.y_26"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_27"), scenarioGeographyValue("CvGame.y_28"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_29"), scenarioGeographyValue("CvGame.y_30"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_31"), scenarioGeographyValue("CvGame.y_32"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_33"), scenarioGeographyValue("CvGame.y_34"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_35"), scenarioGeographyValue("CvGame.y_36"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_37"), scenarioGeographyValue("CvGame.y_38"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
+						GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_39"), scenarioGeographyValue("CvGame.y_40"))->setRevealed(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false, NO_TEAM, true);
 					}
 				}		
 			}
@@ -6084,10 +6084,10 @@ static void seedChristianMediterraneanCities(CvCity* pHolyCity)
     const CivicTypes eAtheism = (CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM");
     std::vector<bool> abMediterranean(GC.getMapINLINE().numPlotsINLINE(), false);
     std::vector<CvPlot*> apWater;
-    CvPlot* pSeed = GC.getMapINLINE().plotINLINE(60, 39);
+    CvPlot* pSeed = GC.getMapINLINE().plotINLINE(scenarioGeographyValue("CvGame.x_41"), scenarioGeographyValue("CvGame.y_42"));
     if (pSeed == NULL || !pSeed->isWater()) return;
     apWater.push_back(pSeed);
-    abMediterranean[GC.getMapINLINE().plotNum(60, 39)] = true;
+    abMediterranean[GC.getMapINLINE().plotNum(scenarioGeographyValue("CvGame.x_43"), scenarioGeographyValue("CvGame.y_44"))] = true;
     for (int i = 0; i < (int)apWater.size(); ++i)
     {
         CvPlot* pPlot = apWater[i];
@@ -6096,7 +6096,7 @@ static void seedChristianMediterraneanCities(CvCity* pHolyCity)
             CvPlot* pNext = plotCardinalDirection(pPlot->getX_INLINE(), pPlot->getY_INLINE(), (CardinalDirectionTypes)j);
             if (pNext == NULL || !pNext->isWater()) continue;
             const int x = pNext->getX_INLINE(), y = pNext->getY_INLINE();
-            if (x < 52 || x > 74 || y < 37 || y > 45 || (x >= 69 && y >= 44)) continue;
+            if (x < scenarioGeographyValue("CvGame.bound_1") || x > scenarioGeographyValue("CvGame.bound_2") || y < scenarioGeographyValue("CvGame.bound_3") || y > scenarioGeographyValue("CvGame.bound_4") || (x >= scenarioGeographyValue("CvGame.bound_5") && y >= scenarioGeographyValue("CvGame.bound_6"))) continue;
             const int iIndex = GC.getMapINLINE().plotNum(x, y);
             if (!abMediterranean[iIndex])
             {
@@ -9937,7 +9937,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 		kPope.setCapitalCity(pRome);
 		UnitTypes eGuard = pRome->AI_bestUnitAI(UNITAI_CITY_DEFENSE);
 		if (eGuard == NO_UNIT) eGuard = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
-		for (int i = 0; i < 2; ++i) { CvUnit* pGuard = kPope.initUnit(eGuard, 60, 44, UNITAI_CITY_DEFENSE); if (pGuard) pGuard->finishMoves(); }
+		for (int i = 0; i < 2; ++i) { CvUnit* pGuard = kPope.initUnit(eGuard, scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1), UNITAI_CITY_DEFENSE); if (pGuard) pGuard->finishMoves(); }
 		if (isCrusadeParticipant(eOwner)) joinCrusadeCoalition(ePope);
 	}
 	setVoteSourceReligion((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
@@ -9955,30 +9955,41 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 
 namespace
 {
-// Geographic fronts on RFC's 124 x 68 world map; earlier regions take precedence.
+// Scenario-authored geographic fronts; earlier regions take precedence.
 // Name, west, south, east, north. Coordinates include both endpoints.
 struct CrusadeRegion { const char* name; int west, south, east, north; };
-const CrusadeRegion crusadeRegions[] = {
-	{ "TXT_KEY_AP_REGION_IBERIA", 43, 40, 53, 49 },
-	{ "TXT_KEY_AP_REGION_WEST_EUROPE", 43, 50, 61, 58 },
-	{ "TXT_KEY_AP_REGION_NORTH_EUROPE", 43, 59, 81, 67 },
-	{ "TXT_KEY_AP_REGION_EAST_EUROPE", 62, 50, 81, 58 },
-	{ "TXT_KEY_AP_REGION_ITALY_BALKANS", 54, 40, 70, 49 },
-	{ "TXT_KEY_AP_REGION_ANATOLIA", 71, 44, 81, 49 },
-	{ "TXT_KEY_AP_REGION_LEVANT", 71, 36, 77, 43 },
-	{ "TXT_KEY_AP_REGION_EGYPT", 62, 28, 70, 39 },
-	{ "TXT_KEY_AP_REGION_MAGHREB", 43, 28, 61, 39 },
-	{ "TXT_KEY_AP_REGION_ARABIA", 71, 24, 81, 35 },
-	{ "TXT_KEY_AP_REGION_PERSIA", 78, 36, 93, 43 },
-	{ "TXT_KEY_AP_REGION_CENTRAL_ASIA", 82, 44, 93, 67 },
-	{ "TXT_KEY_AP_REGION_INDIA", 82, 20, 97, 35 },
-	{ "TXT_KEY_AP_REGION_EAST_ASIA", 94, 36, 123, 67 },
-	{ "TXT_KEY_AP_REGION_SOUTHEAST_ASIA", 98, 20, 123, 35 },
-	{ "TXT_KEY_AP_REGION_AFRICA", 43, 0, 81, 27 },
-	{ "TXT_KEY_AP_REGION_NORTH_AMERICA", 0, 36, 42, 67 },
-	{ "TXT_KEY_AP_REGION_SOUTH_AMERICA", 0, 0, 42, 35 },
-	{ "TXT_KEY_AP_REGION_OCEANIA", 82, 0, 123, 19 }
+const char* crusadeRegionNames[] = {
+    "TXT_KEY_AP_REGION_IBERIA",
+    "TXT_KEY_AP_REGION_WEST_EUROPE",
+    "TXT_KEY_AP_REGION_NORTH_EUROPE",
+    "TXT_KEY_AP_REGION_EAST_EUROPE",
+    "TXT_KEY_AP_REGION_ITALY_BALKANS",
+    "TXT_KEY_AP_REGION_ANATOLIA",
+    "TXT_KEY_AP_REGION_LEVANT",
+    "TXT_KEY_AP_REGION_EGYPT",
+    "TXT_KEY_AP_REGION_MAGHREB",
+    "TXT_KEY_AP_REGION_ARABIA",
+    "TXT_KEY_AP_REGION_PERSIA",
+    "TXT_KEY_AP_REGION_CENTRAL_ASIA",
+    "TXT_KEY_AP_REGION_INDIA",
+    "TXT_KEY_AP_REGION_EAST_ASIA",
+    "TXT_KEY_AP_REGION_SOUTHEAST_ASIA",
+    "TXT_KEY_AP_REGION_AFRICA",
+    "TXT_KEY_AP_REGION_NORTH_AMERICA",
+    "TXT_KEY_AP_REGION_SOUTH_AMERICA",
+    "TXT_KEY_AP_REGION_OCEANIA",
 };
+
+CrusadeRegion crusadeRegion(int index)
+{
+    CrusadeRegion result;
+    result.name = crusadeRegionNames[index];
+    result.west = scenarioGeographyValue("Crusades.regions", index * 4);
+    result.south = scenarioGeographyValue("Crusades.regions", index * 4 + 1);
+    result.east = scenarioGeographyValue("Crusades.regions", index * 4 + 2);
+    result.north = scenarioGeographyValue("Crusades.regions", index * 4 + 3);
+    return result;
+}
 
 bool isChristianTeam(TeamTypes eTeam)
 {
@@ -9994,14 +10005,14 @@ int crusadeDuration(const char* key)
 }
 }
 
-int CvGame::getCrusadeRegionCount() const { return sizeof(crusadeRegions) / sizeof(crusadeRegions[0]); }
+int CvGame::getCrusadeRegionCount() const { return sizeof(crusadeRegionNames) / sizeof(crusadeRegionNames[0]); }
 
 int CvGame::getCrusadeRegionAt(const CvPlot* pPlot) const
 {
 	if (!pPlot) return -1;
 	for (int i = 0; i < getCrusadeRegionCount(); ++i)
 	{
-		const CrusadeRegion& r = crusadeRegions[i];
+		const CrusadeRegion& r = crusadeRegion(i);
 		if (pPlot->getX_INLINE() >= r.west && pPlot->getX_INLINE() <= r.east && pPlot->getY_INLINE() >= r.south && pPlot->getY_INLINE() <= r.north) return i;
 	}
 	return -1;
@@ -10009,7 +10020,7 @@ int CvGame::getCrusadeRegionAt(const CvPlot* pPlot) const
 
 CvWString CvGame::getCrusadeRegionName(int iRegion) const
 {
-	return iRegion >= 0 && iRegion < getCrusadeRegionCount() ? gDLL->getText(crusadeRegions[iRegion].name) : CvWString();
+	return iRegion >= 0 && iRegion < getCrusadeRegionCount() ? gDLL->getText(crusadeRegion(iRegion).name) : CvWString();
 }
 
 bool CvGame::getCrusadeTargets(int iRegion, bool* abTargets) const
@@ -10026,7 +10037,7 @@ bool CvGame::getCrusadeTargets(int iRegion, bool* abTargets) const
 			if (getCrusadeRegionAt(pCity->plot()) == iRegion) { abTargets[kPlayer.getTeam()] = true; break; }
 	}
 	// The frontier must be a real land border in this region, not merely nearby capitals.
-	const CrusadeRegion& r = crusadeRegions[iRegion];
+	const CrusadeRegion& r = crusadeRegion(iRegion);
 	for (int x = r.west; x <= r.east && !bFrontier; ++x)
 		for (int y = r.south; y <= r.north && !bFrontier; ++y)
 		{

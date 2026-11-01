@@ -2,6 +2,7 @@
 
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers   
 import Popup
@@ -72,68 +73,68 @@ iIndustrial = con.iIndustrial
 iModern = con.iModern
 iFuture = con.iFuture
 
-tCoreAreasTL = con.tCoreAreasTL
-tCoreAreasBR = con.tCoreAreasBR
-tNormalAreasTL = con.tNormalAreasTL
-tNormalAreasBR = con.tNormalAreasBR
-tAmericasTL = con.tAmericasTL
-tAmericasBR = con.tAmericasBR
-tSAmericaTL = (24, 3)
-tSAmericaBR = (43, 32)
-tNCAmericaTL = (3, 33)
-tNCAmericaBR = (37, 63)
-tCAmericaTL = (12, 33)
-tCAmericaBR = (33, 43)
-tSiberiaTL = (82, 50)
-tSiberiaBR = (112, 64)
-tNECanadaTL = (22, 50)
-tNECanadaBR = (37, 60)
-tLouisianaTL = (19, 42)
-tLouisianaBR = (24, 50)
-tEastCoastTL = (25, 42)
-tEastCoastBR = (35, 52)
-tSouthAfricaTL = (61, 10)
-tSouthAfricaBR = (72, 18)
-tAustraliaTL = (103, 10)
-tAustraliaBR = (118, 22)
-tScandinaviaTL = (57, 55)
-tScandinaviaBR = (65, 65)
-tNearEastTL = (70, 37)
-tNearEastBR = (78, 45)
-tCarthageTL = (50, 36)
-tCarthageBR = (61, 39)
-tAfricaTL = (45, 10)
-tAfricaBR = (76, 39)
-tAsiaTL = (73, 29)
-tAsiaBR = (121, 64)
-tOceaniaTL = (99, 5)
-tOceaniaBR = (123, 28)
-tMediterraneanTL = (51, 36)
-tMediterraneanBR = (73, 47)
-tMediterraneanExceptions = ((51,36),(51,46),(52,46),(53,46),(53,47),(67,47),(67,46),(73,44),(73,45),(72,45),(71,44),(70,44),(73,36))
-tHokkaidoTL = (115, 50)
-tHokkaidoBR = (116, 52)
-tHonshuTL = (112, 44)
-tHonshuBR = (116, 49)
-tBalkansTL = (64, 40)
-tBalkansBR = (68, 47)
-tBlackSeaTL = (67, 44)
-tBlackSeaBR = (76, 50)
-tMesopotamiaTL = (73, 37)
-tMesopotamiaBR = (78, 42)
-tFranceTL = (51, 47)
-tEuropeTL = (44, 40)
-tEuropeBR = (68, 65)
+geo.bind(globals(), 'tCoreAreasTL', 'Consts.tCoreAreasTL')
+geo.bind(globals(), 'tCoreAreasBR', 'Consts.tCoreAreasBR')
+geo.bind(globals(), 'tNormalAreasTL', 'Consts.tNormalAreasTL')
+geo.bind(globals(), 'tNormalAreasBR', 'Consts.tNormalAreasBR')
+geo.bind(globals(), 'tAmericasTL', 'Consts.tAmericasTL')
+geo.bind(globals(), 'tAmericasBR', 'Consts.tAmericasBR')
+geo.bind(globals(), 'tSAmericaTL', 'Victory.tSAmericaTL')
+geo.bind(globals(), 'tSAmericaBR', 'Victory.tSAmericaBR')
+geo.bind(globals(), 'tNCAmericaTL', 'Victory.tNCAmericaTL')
+geo.bind(globals(), 'tNCAmericaBR', 'Victory.tNCAmericaBR')
+geo.bind(globals(), 'tCAmericaTL', 'Victory.tCAmericaTL')
+geo.bind(globals(), 'tCAmericaBR', 'Victory.tCAmericaBR')
+geo.bind(globals(), 'tSiberiaTL', 'Victory.tSiberiaTL')
+geo.bind(globals(), 'tSiberiaBR', 'Victory.tSiberiaBR')
+geo.bind(globals(), 'tNECanadaTL', 'Victory.tNECanadaTL')
+geo.bind(globals(), 'tNECanadaBR', 'Victory.tNECanadaBR')
+geo.bind(globals(), 'tLouisianaTL', 'Victory.tLouisianaTL')
+geo.bind(globals(), 'tLouisianaBR', 'Victory.tLouisianaBR')
+geo.bind(globals(), 'tEastCoastTL', 'Victory.tEastCoastTL')
+geo.bind(globals(), 'tEastCoastBR', 'Victory.tEastCoastBR')
+geo.bind(globals(), 'tSouthAfricaTL', 'Victory.tSouthAfricaTL')
+geo.bind(globals(), 'tSouthAfricaBR', 'Victory.tSouthAfricaBR')
+geo.bind(globals(), 'tAustraliaTL', 'Victory.tAustraliaTL')
+geo.bind(globals(), 'tAustraliaBR', 'Victory.tAustraliaBR')
+geo.bind(globals(), 'tScandinaviaTL', 'Victory.tScandinaviaTL')
+geo.bind(globals(), 'tScandinaviaBR', 'Victory.tScandinaviaBR')
+geo.bind(globals(), 'tNearEastTL', 'Victory.tNearEastTL')
+geo.bind(globals(), 'tNearEastBR', 'Victory.tNearEastBR')
+geo.bind(globals(), 'tCarthageTL', 'Victory.tCarthageTL')
+geo.bind(globals(), 'tCarthageBR', 'Victory.tCarthageBR')
+geo.bind(globals(), 'tAfricaTL', 'Victory.tAfricaTL')
+geo.bind(globals(), 'tAfricaBR', 'Victory.tAfricaBR')
+geo.bind(globals(), 'tAsiaTL', 'Victory.tAsiaTL')
+geo.bind(globals(), 'tAsiaBR', 'Victory.tAsiaBR')
+geo.bind(globals(), 'tOceaniaTL', 'Victory.tOceaniaTL')
+geo.bind(globals(), 'tOceaniaBR', 'Victory.tOceaniaBR')
+geo.bind(globals(), 'tMediterraneanTL', 'Victory.tMediterraneanTL')
+geo.bind(globals(), 'tMediterraneanBR', 'Victory.tMediterraneanBR')
+geo.bind(globals(), 'tMediterraneanExceptions', 'Victory.tMediterraneanExceptions')
+geo.bind(globals(), 'tHokkaidoTL', 'Victory.tHokkaidoTL')
+geo.bind(globals(), 'tHokkaidoBR', 'Victory.tHokkaidoBR')
+geo.bind(globals(), 'tHonshuTL', 'Victory.tHonshuTL')
+geo.bind(globals(), 'tHonshuBR', 'Victory.tHonshuBR')
+geo.bind(globals(), 'tBalkansTL', 'Victory.tBalkansTL')
+geo.bind(globals(), 'tBalkansBR', 'Victory.tBalkansBR')
+geo.bind(globals(), 'tBlackSeaTL', 'Victory.tBlackSeaTL')
+geo.bind(globals(), 'tBlackSeaBR', 'Victory.tBlackSeaBR')
+geo.bind(globals(), 'tMesopotamiaTL', 'Victory.tMesopotamiaTL')
+geo.bind(globals(), 'tMesopotamiaBR', 'Victory.tMesopotamiaBR')
+geo.bind(globals(), 'tFranceTL', 'Victory.tFranceTL')
+geo.bind(globals(), 'tEuropeTL', 'Victory.tEuropeTL')
+geo.bind(globals(), 'tEuropeBR', 'Victory.tEuropeBR')
 ##tNubiaTL = (67, 29)
 ##tNubiaBR = (74, 32)
 ##tEastAfricaTL = (67, 20)
 ##tEastAfricaBR = (77, 28)
-tSomaliaTL = (73, 24)
-tSomaliaBR = (77, 29)
-tSubeqAfricaTL = (60, 10)
-tSubeqAfricaBR = (72, 29)
-tBrazilTL = (32, 14)
-tBrazilBR = (43, 30)
+geo.bind(globals(), 'tSomaliaTL', 'Victory.tSomaliaTL')
+geo.bind(globals(), 'tSomaliaBR', 'Victory.tSomaliaBR')
+geo.bind(globals(), 'tSubeqAfricaTL', 'Victory.tSubeqAfricaTL')
+geo.bind(globals(), 'tSubeqAfricaBR', 'Victory.tSubeqAfricaBR')
+geo.bind(globals(), 'tBrazilTL', 'Victory.tBrazilTL')
+geo.bind(globals(), 'tBrazilBR', 'Victory.tBrazilBR')
 
 # initialise player variables
 iEgypt = con.iEgypt
@@ -562,7 +563,7 @@ class Victory:
                                         bestCity = self.calculateTopCityPopulation(76, 40)                                        
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
-                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == 76 and bestCity.getY() == 40):
+                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_1') and bestCity.getY() == geo.value('Victory.bound_2')):
                                                         self.setGoal(iBabylonia, 1, 1)
                                                 else:
                                                         self.setGoal(iBabylonia, 1, 0)
@@ -572,7 +573,7 @@ class Victory:
                                         bestCity = self.calculateTopCityCulture(76, 40)                                        
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
-                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == 76 and bestCity.getY() == 40):
+                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_3') and bestCity.getY() == geo.value('Victory.bound_4')):
                                                         self.setGoal(iBabylonia, 2, 1)
                                                 else:
                                                         self.setGoal(iBabylonia, 2, 0)
@@ -971,7 +972,7 @@ class Victory:
                                 if (iGameTurn == i1700AD):
                                         bestCity = self.calculateTopCityCulture(55, 50)
                                         if (bestCity != -1):
-                                                if (bestCity.getOwner() == iFrance and bestCity.getX() == 55 and bestCity.getY() == 50):
+                                                if (bestCity.getOwner() == iFrance and bestCity.getX() == geo.value('Victory.bound_7') and bestCity.getY() == geo.value('Victory.bound_8')):
                                                         self.setGoal(iFrance, 0, 1)
                                                 else:
                                                         self.setGoal(iFrance, 0, 0)
@@ -1044,8 +1045,8 @@ class Victory:
                                 if (iGameTurn == i1600AD):
                                         lRevealedMap = con.l0Array
                                         for iCiv in range(iNumPlayers):
-                                                for x in range(124):
-                                                        for y in range(68):
+                                                for x in range(geo.width()):
+                                                        for y in range(geo.height()):
                                                                 if (gc.getMap().plot(x, y).isRevealed(iCiv, False)):
                                                                       lRevealedMap[iCiv] += 1
                                         bBestMap = True
@@ -1107,9 +1108,9 @@ class Victory:
 
                                 if (self.getGoal(iTurkey, 0) == -1):
                                         if (iGameTurn <= i1500AD):
-                                                pIstanbulE = gc.getMap().plot( 68, 45 )
-                                                pIstanbulE2 = gc.getMap().plot( 67, 45 )
-                                                pIstanbulA = gc.getMap().plot( 69, 44 )
+                                                pIstanbulE = gc.getMap().plot(*geo.value('Victory.plot_1'))
+                                                pIstanbulE2 = gc.getMap().plot(*geo.value('Victory.plot_2'))
+                                                pIstanbulA = gc.getMap().plot(*geo.value('Victory.plot_3'))
                                                 if (pIstanbulE.isCity()):                                                        
                                                         if (pIstanbulE.getPlotCity().getOwner() == iTurkey):
                                                                 self.setGoal(iTurkey, 0, 1)
@@ -1125,7 +1126,7 @@ class Victory:
 
                                 if (iGameTurn == i1700AD):
                                         bBalkans = self.checkOwnedArea(iTurkey, tBalkansTL, tBalkansBR, 3)
-                                        bBlackSea = self.checkOwnedAreaAdjacentArea(iTurkey, tBlackSeaTL, tBlackSeaBR, 4, (71,47))
+                                        bBlackSea = self.checkOwnedAreaAdjacentArea(iTurkey, tBlackSeaTL, tBlackSeaBR, 4, geo.value('Victory.checkPlayerTurn.location_1'))
                                         bMesopotamia = self.checkOwnedArea(iTurkey, tMesopotamiaTL, tMesopotamiaBR, 3)
                                         if (bBalkans and bBlackSea and bMesopotamia):
                                                 self.setGoal(iTurkey, 1, 1)
@@ -1152,8 +1153,8 @@ class Victory:
                                 if (iGameTurn == i1500AD):
                                         lRevealedMap = con.l0Array
                                         for iCiv in range(iNumPlayers):
-                                                for x in range(124):
-                                                        for y in range(68):
+                                                for x in range(geo.width()):
+                                                        for y in range(geo.height()):
                                                                 if (gc.getMap().plot(x, y).isRevealed(iCiv, False)):
                                                                       lRevealedMap[iCiv] += 1
                                         bBestMap = True

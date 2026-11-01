@@ -2,6 +2,8 @@
 
 Open `PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave` through the scenario
 menu. The map belongs to `Mods\Awakened RFC` and uses the legacy game DLL.
+Its shared world geography is selected by the scenario registry; see
+[Scenario geography](ScenarioGeography.md) for authoring another map size.
 The authored position is immediately after the Ottoman capture of
 Constantinople, rather than the later conquest of the Mamluks or all Anatolia.
 

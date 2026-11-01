@@ -1,6 +1,7 @@
 # Rhye's and Fall of Civilization - Religions management
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers       
 import Popup
@@ -53,26 +54,26 @@ iMissionary_Taoist = con.iTaoistMissionary
 
 # initialise coordinates
 
-tJerusalem = (73, 38)
-tJewishTL = (68, 34)
-tJewishBR = (80, 42)
-tVaranasiTL = (91, 37)
-tVaranasiBR = (94, 40)
-tBodhgayaTL = (92, 38)
-tBodhgayaBR = (95, 40)
-tBuddhistTL = (87, 33)
-tBuddhistBR = (102, 44)
-tHenanTL = (101, 43)
-tHenanBR = (104, 46)
-tSEAsiaTL = (97, 31)
-tSEAsiaBR = (107, 46)
-tAsiaTL = (83, 28)
-tAsiaBR = (1, 66)
-tEuropeTL = (48, 33)
-tEuropeBR = (72, 65)
-tQufuTL = (102, 44)
-tQufuBR = (106, 46)
-tMecca = (75, 33)
+geo.bind(globals(), 'tJerusalem', 'Religions.tJerusalem')
+geo.bind(globals(), 'tJewishTL', 'Religions.tJewishTL')
+geo.bind(globals(), 'tJewishBR', 'Religions.tJewishBR')
+geo.bind(globals(), 'tVaranasiTL', 'Religions.tVaranasiTL')
+geo.bind(globals(), 'tVaranasiBR', 'Religions.tVaranasiBR')
+geo.bind(globals(), 'tBodhgayaTL', 'Religions.tBodhgayaTL')
+geo.bind(globals(), 'tBodhgayaBR', 'Religions.tBodhgayaBR')
+geo.bind(globals(), 'tBuddhistTL', 'Religions.tBuddhistTL')
+geo.bind(globals(), 'tBuddhistBR', 'Religions.tBuddhistBR')
+geo.bind(globals(), 'tHenanTL', 'Religions.tHenanTL')
+geo.bind(globals(), 'tHenanBR', 'Religions.tHenanBR')
+geo.bind(globals(), 'tSEAsiaTL', 'Religions.tSEAsiaTL')
+geo.bind(globals(), 'tSEAsiaBR', 'Religions.tSEAsiaBR')
+geo.bind(globals(), 'tAsiaTL', 'Religions.tAsiaTL')
+geo.bind(globals(), 'tAsiaBR', 'Religions.tAsiaBR')
+geo.bind(globals(), 'tEuropeTL', 'Religions.tEuropeTL')
+geo.bind(globals(), 'tEuropeBR', 'Religions.tEuropeBR')
+geo.bind(globals(), 'tQufuTL', 'Religions.tQufuTL')
+geo.bind(globals(), 'tQufuBR', 'Religions.tQufuBR')
+geo.bind(globals(), 'tMecca', 'Religions.tMecca')
 
 
 

@@ -1,6 +1,7 @@
 # Rhye's and Fall of Civilization - World Congresses
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers 
 import Popup
@@ -720,7 +721,7 @@ class Congresses:
                         #        reqCity = cityList[gc.getGame().getSorenRandNum(len(cityList), 'random choice')] #retry once (less likely to happen)
                         #if (reqCity.isCapital()):
                         #        reqCity = cityList[gc.getGame().getSorenRandNum(len(cityList), 'random choice')] #retry twice (less likely to happen)
-                        if (gc.getPlayer(reqCity.getOwner()).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) >= 500 and reqCity.getCulture(reqCity.getOwner()) >= 2000):
+                        if (gc.getPlayer(reqCity.getOwner()).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) >= 500 and reqCity.getCulture(reqCity.getOwner()) >= 2000):
                                 reqCity = cityList[gc.getGame().getSorenRandNum(len(cityList), 'random choice')] #retry once (less likely to happen)
 
 
@@ -818,26 +819,26 @@ class Congresses:
                                                                                                                                 cityList.append(city)
                                                                                                                                 continue
                                                                                                                 #condition 8: core land
-                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-city.getY(), city.getX() ) >= 500):
+                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - city.getY(), city.getX() ) >= 500):
                                                                                                                         if (city not in cityList):
                                                                                                                                 cityList.append(city)
                                                                                                                                 continue
                                                                                                                 #condition 9: colonies
                                                                                                                 if (iActiveCiv in lCivGroups[0]):
                                                                                                                         if (city.getOwner() >= iNumPlayers or (city.getOwner() < iNumPlayers and utils.getStability(city.getOwner()) < 0)):
-                                                                                                                                if (city.getX()<=42 or (city.getX()>=86 and city.getY()<=52) or city.getY()<=39): #America, Asia, Africa
+                                                                                                                                if (city.getX()<=geo.value('Congresses.bound_1') or (city.getX()>=geo.value('Congresses.bound_2') and city.getY()<=geo.value('Congresses.bound_3')) or city.getY()<=geo.value('Congresses.bound_4')): #America, Asia, Africa
                                                                                                                                         if (len(cityList) <= 7):
-                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-city.getY(), city.getX() ) >= 60):                                                                                                        
+                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - city.getY(), city.getX() ) >= 60):
                                                                                                                                                         if (city not in cityList):
                                                                                                                                                                 cityList.append(city)
                                                                                                                                                                 continue
                                                                                                                                         elif (len(cityList) <= 14):
-                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-city.getY(), city.getX() ) >= 150):                                                                                                 
+                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - city.getY(), city.getX() ) >= 150):
                                                                                                                                                         if (city not in cityList):
                                                                                                                                                                 cityList.append(city)
                                                                                                                                                                 continue
                                                                                                                                         else:
-                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-city.getY(), city.getX() ) == 400):
+                                                                                                                                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - city.getY(), city.getX() ) == 400):
                                                                                                                                                         if (city not in cityList):
                                                                                                                                                                 cityList.append(city)
                                                                                                                                                                 continue
@@ -846,7 +847,7 @@ class Congresses:
                                                                                                                         if (gc.getGame().getPlayerRank(city.getOwner()) > gc.getGame().countCivPlayersAlive()/2 and gc.getGame().getPlayerRank(iActiveCiv) < gc.getGame().countCivPlayersAlive()/2):
                                                                                                                                 if (utils.getStability(city.getOwner()) <= -35):
                                                                                                                                         if (gc.getPlayer(iActiveCiv).getNumCities() > 0): #this check is needed, otherwise game crashes
-                                                                                                                                                if (utils.calculateDistance(cityPlot.getX(), cityPlot.getY(), gc.getPlayer(iActiveCiv).getCapitalCity().getX(), gc.getPlayer(iActiveCiv).getCapitalCity().getY()) <= 15 or (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-city.getY(), city.getX() ) >= 40)):
+                                                                                                                                                if (utils.calculateDistance(cityPlot.getX(), cityPlot.getY(), gc.getPlayer(iActiveCiv).getCapitalCity().getX(), gc.getPlayer(iActiveCiv).getCapitalCity().getY()) <= 15 or (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - city.getY(), city.getX() ) >= 40)):
                                                                                                                                                         if (city not in cityList):
                                                                                                                                                                 cityList.append(city)
                                                                                                                                                                 continue
@@ -945,14 +946,14 @@ class Congresses:
                                 #factor 7a - euro civs leave colonization go on if not interested in the area
                                 if (iCiv in lCivGroups[0]):
                                         if (iActiveCiv in lCivGroups[0] and iOwner not in lCivGroups[0]):
-                                                if (gc.getPlayer(iCiv).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) < 60):
+                                                if (gc.getPlayer(iCiv).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) < 60):
                                                         iResult += 8
                                 #factor 7b - help forming settlers maps
                                 if (iActiveCiv in lCivGroups[0] and iOwner not in lCivGroups[0]):
-                                        if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) >= 200):
+                                        if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) >= 200):
                                                 iResult += 6
                                 if (iActiveCiv not in lCivGroups[0] and iOwner in lCivGroups[0]):
-                                        if (gc.getPlayer(iOwner).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) >= 200):
+                                        if (gc.getPlayer(iOwner).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) >= 200):
                                                 iResult -= 4 
                                 #factor 8 - distant lands
                                 for i in range(6):
@@ -963,9 +964,9 @@ class Congresses:
                                                         iResult *= 2
                                                         iResult /= 3                                                    
                                 #factor 9 - core land
-                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) >= 500):
+                                if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) >= 500):
                                         iResult += 9
-                                if (gc.getPlayer(iOwner).getSettlersMaps( 67-reqCity.getY(), reqCity.getX() ) >= 500):
+                                if (gc.getPlayer(iOwner).getSettlersMaps( (geo.height() - 1) - reqCity.getY(), reqCity.getX() ) >= 500):
                                         iResult -= 13
                                 #factor 10 - human player
                                 if (iActiveCiv == utils.getHumanID()):

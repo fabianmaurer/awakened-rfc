@@ -1,11 +1,12 @@
 # Simultaneous European settler start. Keep compatible with Python 2.4.
 from CvPythonExtensions import CyGlobalContext, UnitAITypes, DirectionTypes
+import ScenarioGeography as geo
 import Consts as con
 import StartingCivics
 import cPickle as pickle
 
 START_TURN = 211
-SPAIN_START = (51, 46)  # Asturias / Oviedo region, not the Madrid-area birth tile.
+geo.bind(globals(), 'SPAIN_START', 'Scenario900AD.SPAIN_START')  # Asturias / Oviedo region, not the Madrid-area birth tile.
 ACTIVE_PLAYERS = (con.iEgypt, con.iChina, con.iJapan, con.iVikings, con.iArabia,
                   con.iKhmer, con.iSpain, con.iFrance, con.iEngland,
                   con.iGermany, con.iRussia, con.iCaliphateSlot1, con.iKorea, con.iMaya, con.iMississippians)
@@ -13,23 +14,23 @@ ACTIVE_PLAYERS = (con.iEgypt, con.iChina, con.iJapan, con.iVikings, con.iArabia,
 # Inclusive map rectangles: home regions and nearby routes, not world maps.
 # Keep the American and Old World knowledge areas separate.
 STARTING_MAP_KNOWLEDGE = {
-    con.iEgypt: ((47, 32, 81, 46), (69, 24, 81, 37)),
-    con.iChina: ((91, 30, 114, 52), (83, 39, 98, 48), (100, 24, 110, 35)),
-    con.iJapan: ((105, 34, 119, 51),),
-    con.iMaya: ((17, 29, 28, 40),),
-    con.iVikings: ((50, 51, 72, 65), (48, 48, 59, 61)),
-    con.iArabia: ((65, 28, 90, 48), (79, 23, 93, 35)),
-    con.iKhmer: ((94, 18, 111, 35), (85, 25, 101, 35)),
-    con.iSpain: ((46, 35, 61, 49), (58, 38, 68, 44)),
-    con.iFrance: ((48, 42, 64, 55), (49, 37, 69, 44)),
-    con.iEngland: ((48, 50, 58, 61), (49, 45, 63, 55)),
-    con.iGermany: ((53, 43, 72, 57), (57, 37, 66, 45)),
-    con.iRussia: ((63, 46, 82, 61), (66, 40, 79, 49)),
-    con.iCaliphateSlot1: ((46, 32, 67, 50),),
-    con.iCaliphateSlot2: ((46, 35, 61, 49),),
-    con.iKorea: ((101, 40, 117, 53),),
-    con.iMississippians: ((17, 38, 31, 50),),
-    con.iCeltia: ((55, 34, 83, 50),),  # Byzantium in this scenario.
+    con.iEgypt: geo.value('Scenario900AD.data.location_1'),
+    con.iChina: geo.value('Scenario900AD.data.location_2'),
+    con.iJapan: geo.value('Scenario900AD.data.location_3'),
+    con.iMaya: geo.value('Scenario900AD.data.location_4'),
+    con.iVikings: geo.value('Scenario900AD.data.location_5'),
+    con.iArabia: geo.value('Scenario900AD.data.location_6'),
+    con.iKhmer: geo.value('Scenario900AD.data.location_7'),
+    con.iSpain: geo.value('Scenario900AD.data.location_8'),
+    con.iFrance: geo.value('Scenario900AD.data.location_9'),
+    con.iEngland: geo.value('Scenario900AD.data.location_10'),
+    con.iGermany: geo.value('Scenario900AD.data.location_11'),
+    con.iRussia: geo.value('Scenario900AD.data.location_12'),
+    con.iCaliphateSlot1: geo.value('Scenario900AD.data.location_13'),
+    con.iCaliphateSlot2: geo.value('Scenario900AD.data.location_14'),
+    con.iKorea: geo.value('Scenario900AD.data.location_15'),
+    con.iMississippians: geo.value('Scenario900AD.data.location_16'),
+    con.iCeltia: geo.value('Scenario900AD.data.location_17'),  # Byzantium in this scenario.
 }
 
 
@@ -66,9 +67,9 @@ def isScenario():
 
 def configureRegions():
     # Apply after Caliphate's default region reset, both at start and on load.
-    regions = ((con.iEgypt, (56, 34), (74, 42), (56, 33), (74, 42), (69, 35)),
-               (con.iArabia, (75, 37), (81, 43), (74, 31), (83, 46), (78, 40)),
-               (con.iCaliphateSlot1, (49, 40), (55, 43), (49, 40), (56, 46), (51, 41)))
+    regions = ((con.iEgypt, geo.value('Scenario900AD.configureRegions.location_1'), geo.value('Scenario900AD.configureRegions.location_2'), geo.value('Scenario900AD.configureRegions.location_3'), geo.value('Scenario900AD.configureRegions.location_4'), geo.value('Scenario900AD.configureRegions.location_5')),
+               (con.iArabia, geo.value('Scenario900AD.configureRegions.location_6'), geo.value('Scenario900AD.configureRegions.location_7'), geo.value('Scenario900AD.configureRegions.location_8'), geo.value('Scenario900AD.configureRegions.location_9'), geo.value('Scenario900AD.configureRegions.location_10')),
+               (con.iCaliphateSlot1, geo.value('Scenario900AD.configureRegions.location_11'), geo.value('Scenario900AD.configureRegions.location_12'), geo.value('Scenario900AD.configureRegions.location_13'), geo.value('Scenario900AD.configureRegions.location_14'), geo.value('Scenario900AD.configureRegions.location_15')))
     for iPlayer, coreTL, coreBR, normalTL, normalBR, capital in regions:
         con.tCoreAreasTL[iPlayer], con.tCoreAreasBR[iPlayer] = coreTL, coreBR
         con.tNormalAreasTL[iPlayer], con.tNormalAreasBR[iPlayer] = normalTL, normalBR
@@ -88,12 +89,12 @@ def configureRegions():
     con.tReserveCapitals[con.iSpain] = capital
     # The separate Andalusi minor slot owns only the four regional city states.
     iPlayer = con.iCaliphateSlot2
-    con.tCoreAreasTL[iPlayer], con.tCoreAreasBR[iPlayer] = (49, 40), (55, 45)
-    con.tNormalAreasTL[iPlayer], con.tNormalAreasBR[iPlayer] = (49, 40), (56, 46)
-    con.tBroaderAreasTL[iPlayer], con.tBroaderAreasBR[iPlayer] = (49, 40), (56, 46)
+    con.tCoreAreasTL[iPlayer], con.tCoreAreasBR[iPlayer] = geo.value('Scenario900AD.configureRegions.location_16'), geo.value('Scenario900AD.configureRegions.location_17')
+    con.tNormalAreasTL[iPlayer], con.tNormalAreasBR[iPlayer] = geo.value('Scenario900AD.configureRegions.location_18'), geo.value('Scenario900AD.configureRegions.location_19')
+    con.tBroaderAreasTL[iPlayer], con.tBroaderAreasBR[iPlayer] = geo.value('Scenario900AD.configureRegions.location_20'), geo.value('Scenario900AD.configureRegions.location_21')
     con.tNormalAreasSubtract[iPlayer] = ()
     con.tExceptions[iPlayer] = ()
-    capital = (49, 41)
+    capital = geo.value('Scenario900AD.configureRegions.capital_1')
     city = CyGlobalContext().getPlayer(iPlayer).getCapitalCity()
     if not city.isNone():
         capital = (city.getX(), city.getY())
@@ -118,8 +119,8 @@ def setup(riseAndFall):
     # WB plot order must not put the Abbasid palace in Mecca or the Fatimid
     # palace in Alexandria. Use the authored capital in each established state.
     palace = gc.getInfoTypeForString("BUILDING_PALACE")
-    for iPlayer, capital in ((con.iEgypt, (69, 35)),
-                             (con.iArabia, (78, 40)), (con.iCaliphateSlot1, (51, 41))):
+    for iPlayer, capital in ((con.iEgypt, geo.value('Scenario900AD.setup.location_1')),
+                             (con.iArabia, geo.value('Scenario900AD.setup.location_2')), (con.iCaliphateSlot1, geo.value('Scenario900AD.setup.location_3'))):
         player = gc.getPlayer(iPlayer)
         city, iterator = player.firstCity(False)
         while city and not city.isNone():

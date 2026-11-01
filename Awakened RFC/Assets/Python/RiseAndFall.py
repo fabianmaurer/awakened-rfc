@@ -2,6 +2,7 @@ from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Main Scenario
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers        # LOQ
 import Popup
@@ -157,23 +158,16 @@ tDifference = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 
 
 # starting locations coordinates
-tCapitals = con.tCapitals
-
-
-
+geo.bind(globals(), 'tCapitals', 'Consts.tCapitals')
 # core areas coordinates (top left and bottom right)
 
-tCoreAreasTL = con.tCoreAreasTL
-tCoreAreasBR = con.tCoreAreasBR
-
-tExceptions = con.tExceptions
-
-tNormalAreasTL = con.tNormalAreasTL
-tNormalAreasBR = con.tNormalAreasBR
-
-tBroaderAreasTL = con.tBroaderAreasTL 
-tBroaderAreasBR = con.tBroaderAreasBR
-
+geo.bind(globals(), 'tCoreAreasTL', 'Consts.tCoreAreasTL')
+geo.bind(globals(), 'tCoreAreasBR', 'Consts.tCoreAreasBR')
+geo.bind(globals(), 'tExceptions', 'Consts.tExceptions')
+geo.bind(globals(), 'tNormalAreasTL', 'Consts.tNormalAreasTL')
+geo.bind(globals(), 'tNormalAreasBR', 'Consts.tNormalAreasBR')
+geo.bind(globals(), 'tBroaderAreasTL', 'Consts.tBroaderAreasTL')
+geo.bind(globals(), 'tBroaderAreasBR', 'Consts.tBroaderAreasBR')
 tLeaders = con.tLeaders
 tEarlyLeaders = con.tEarlyLeaders
 tLateLeaders = con.tLateLeaders
@@ -693,14 +687,14 @@ class RiseAndFall:
 
 
         def clear600ADChina(self):
-                pGuiyang = gc.getMap().plot(102, 41)
+                pGuiyang = gc.getMap().plot(*geo.value('RiseAndFall.plot_1'))
                 #pBarbarian.raze(pGuiyang.getPlotCity())
                 pGuiyang.getPlotCity().kill()
                 pGuiyang.setImprovementType(-1)
                 pGuiyang.setRouteType(-1)
                 pGuiyang.setFeatureType(con.iForest, 0)
-                tCultureRegionTL = (98, 37)
-                tCultureRegionBR = (109, 49)
+                tCultureRegionTL = geo.value('RiseAndFall.clear600ADChina.tCultureRegionTL_1')
+                tCultureRegionBR = geo.value('RiseAndFall.clear600ADChina.tCultureRegionBR_1')
                 for x in range(tCultureRegionTL[0], tCultureRegionBR[0]+1):       
                         for y in range(tCultureRegionTL[1], tCultureRegionBR[1]+1):	
                                 pCurrent = gc.getMap().plot(x, y)
@@ -876,8 +870,8 @@ class RiseAndFall:
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iBarbarian, False, True, bProtectForts=True) #remaining barbs in the region now belong to the new civ
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iIndependent, False, False, bProtectForts=True) #remaining independents in the region now belong to the new civ
                                 utils.flipUnitsInArea(tCoreAreasTL[iChina], tCoreAreasBR[iChina], iChina, iIndependent2, False, False, bProtectForts=True) #remaining independents in the region now belong to the new civ
-                                tArabianCityTL, tArabianCityBR = con.getBirthFlipArea(iArabia, tCoreAreasTL[iArabia], (82, 36))
-                                tArabianPlotTL, tArabianPlotBR = con.getBirthFlipArea(iArabia, tNormalAreasTL[iArabia], (82, 36))
+                                tArabianCityTL, tArabianCityBR = con.getBirthFlipArea(iArabia, tCoreAreasTL[iArabia], geo.value('RiseAndFall.checkTurn.location_1'))
+                                tArabianPlotTL, tArabianPlotBR = con.getBirthFlipArea(iArabia, tNormalAreasTL[iArabia], geo.value('RiseAndFall.checkTurn.location_2'))
                                 iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iArabia, tArabianCityTL, tArabianCityBR)
                                 self.convertSurroundingPlotCulture(iArabia, tArabianPlotTL, tArabianPlotBR)
                                 utils.flipUnitsInArea(tArabianPlotTL, tArabianPlotBR, iArabia, iBarbarian, False, True, bProtectForts=True) #remaining barbs in the region now belong to the new civ
@@ -1145,8 +1139,8 @@ class RiseAndFall:
                                 if (iGameTurn >= con.tBirth[iCiv] + 25):
                                         iNumCities = gc.getPlayer(iCiv).getNumCities()
                                         iLostCities = 0
-                                        for x in range(0, 124):
-                                                for y in range(0, 168):
+                                        for x in range(*geo.value('RiseAndFall.range_3')):
+                                                for y in range(*geo.value('RiseAndFall.range_4')):
                                                         if (gc.getMap().plot( x,y ).isCity()):
                                                                 city = gc.getMap().plot( x,y ).getPlotCity()
                                                                 if (city.getOwner() == iBarbarian):
@@ -1636,7 +1630,7 @@ class RiseAndFall:
                                                                 print ("colony:", indepCity.getName(), indepCity.getOriginalOwner())
                                                                 indX = indepCity.getX()
                                                                 indY = indepCity.getY()
-                                                                if (gc.getPlayer(iDeadCiv).getSettlersMaps( 67-indY, indX ) >= 90):
+                                                                if (gc.getPlayer(iDeadCiv).getSettlersMaps( (geo.height() - 1) - indY, indX ) >= 90):
                                                                         if (indepCity not in cityList and indepCity not in colonyList):
                                                                                 colonyList.append(indepCity)
                         if (len(colonyList) > 0):
@@ -1727,18 +1721,18 @@ class RiseAndFall:
 
 
         def processConstantinople(self):
-                asiaID = gc.getMap().plot(69, 44).area().getID()
-                pConstantinople = gc.getMap().plot(68, 45)
+                asiaID = gc.getMap().plot(*geo.value('RiseAndFall.plot_2')).area().getID()
+                pConstantinople = gc.getMap().plot(*geo.value('RiseAndFall.plot_3'))
                 if (pConstantinople.area().getID() != asiaID):
                         if (pConstantinople.isCity() and pConstantinople.getPlotCity().getOwner() < con.iNumMajorPlayers):
                                 return
                         else:
-                                gc.getMap().plot(68, 45).setArea(asiaID)
+                                gc.getMap().plot(*geo.value('RiseAndFall.plot_4')).setArea(asiaID)
                                 print("Constantinople now Asian")
 
         def processAfrica(self):
-                africaID = gc.getMap().plot(65, 10).area().getID()
-                if (gc.getMap().plot(56, 29).area().getID() == africaID):
+                africaID = gc.getMap().plot(*geo.value('RiseAndFall.plot_5')).area().getID()
+                if (gc.getMap().plot(*geo.value('RiseAndFall.plot_6')).area().getID() == africaID):
                         return
                 for iLoopX in range(48,63+1):
                         for iLoopY in range(22,33+1):
@@ -2073,25 +2067,25 @@ class RiseAndFall:
                         utils.flipUnitsInArea(tTopLeft, tBottomRight, iCiv, iIndependent2, False, False, bProtectForts=True) #remaining independents in the region now belong to the new civ
                         print ("utils.flipUnitsInArea()") 
                         #cover plots revealed by the lion
-                        plotZero = gc.getMap().plot( 0, 0 )                        
+                        plotZero = gc.getMap().plot(*geo.value('RiseAndFall.plot_7'))
                         if (plotZero.getNumUnits()):
                                 catapult = plotZero.getUnit(0)
                                 catapult.kill(False, iCiv)
-                        gc.getMap().plot(0, 0).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(0, 1).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(1, 1).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(1, 0).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(123, 0).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(123, 1).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(2, 0).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(2, 1).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(2, 2).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(1, 2).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(0, 2).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(122, 0).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(122, 1).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(122, 2).setRevealed(iCiv, False, True, -1);
-                        gc.getMap().plot(123, 2).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_8')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_9')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_10')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_11')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_12')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_13')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_14')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_15')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_16')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_17')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_18')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_19')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_20')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_21')).setRevealed(iCiv, False, True, -1);
+                        gc.getMap().plot(*geo.value('RiseAndFall.plot_22')).setRevealed(iCiv, False, True, -1);
                         print ("Plots covered")
 
                         if (gc.getPlayer(iCiv).getNumCities() > 0):
@@ -2515,8 +2509,8 @@ class RiseAndFall:
 
                 #part2: upgrade galleys to galleons, just once
                 if (gc.getTeam(pCiv.getTeam()).isHasTech(con.iAstronomy)) and (self.getColonistsAlreadyGiven(iCiv) == 0) and (pCiv.isAlive()) and (pCiv.isHuman() == False):
-                        for x in range(0, 123+1):
-                                for y in range(0, 67+1):
+                        for x in range(geo.width()):
+                                for y in range(geo.height()):
                                         galleyPlot = gc.getMap().plot(x,y)
                                         iNumUnitsInAPlot = galleyPlot.getNumUnits()
                                         if (iNumUnitsInAPlot):  
@@ -2567,23 +2561,23 @@ class RiseAndFall:
                                         tArrivalPlot = [-1, -1]
 
                                         if (iNewWorldCiv == iMaya):
-                                                tContactZoneTL = [15, 30]
-                                                tContactZoneBR = [34, 42]
+                                                tContactZoneTL = geo.value('RiseAndFall.onFirstContact.tContactZoneTL_1')
+                                                tContactZoneBR = geo.value('RiseAndFall.onFirstContact.tContactZoneBR_1')
                                         if (iNewWorldCiv == iAztecs):
-                                                tContactZoneTL = [11, 31]
-                                                tContactZoneBR = [34, 43]
+                                                tContactZoneTL = geo.value('RiseAndFall.onFirstContact.tContactZoneTL_2')
+                                                tContactZoneBR = geo.value('RiseAndFall.onFirstContact.tContactZoneBR_2')
                                         if (iNewWorldCiv == iInca):
-                                                tContactZoneTL = [21, 11]
-                                                tContactZoneBR = [36, 40]
+                                                tContactZoneTL = geo.value('RiseAndFall.onFirstContact.tContactZoneTL_3')
+                                                tContactZoneBR = geo.value('RiseAndFall.onFirstContact.tContactZoneBR_3')
 
                                         self.setFirstContactConquerors(iIndex, 1)
                                         print ("1st contact", iNewWorldCiv, iOldWorldCiv)
                                         if (iNewWorldCiv == iInca):
-                                                gc.getMap().plot(27, 30).setFeatureType(-1, 0)
-                                                gc.getMap().plot(28, 31).setFeatureType(-1, 0)
-                                                gc.getMap().plot(31, 13).setPlotType(PlotTypes.PLOT_HILLS, True, True) 
+                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_23')).setFeatureType(-1, 0)
+                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_24')).setFeatureType(-1, 0)
+                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_25')).setPlotType(PlotTypes.PLOT_HILLS, True, True)
                                         if (iNewWorldCiv == iAztecs):
-                                                gc.getMap().plot(40, 66).setPlotType(PlotTypes.PLOT_HILLS, True, True)  #debug
+                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_26')).setPlotType(PlotTypes.PLOT_HILLS, True, True)  #debug
 
                                             
                                         #print ("tContactZoneTL", tContactZoneTL, "tContactZoneBR", tContactZoneBR)
@@ -2617,7 +2611,7 @@ class RiseAndFall:
                                                                 if (pCurrent.getOwner() == iNewWorldCiv and not pCurrent.isCity()):
                                                                         if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
                                                                                 #print ("hills or flat")
-                                                                                if ((pCurrent.getFeatureType() != con.iJungle) and (pCurrent.getTerrainType() != con.iMarsh) and not (x == 25 and y == 32)): #(25,32) is sometimes blocked                                                                  
+                                                                                if ((pCurrent.getFeatureType() != con.iJungle) and (pCurrent.getTerrainType() != con.iMarsh) and not (x == geo.value('RiseAndFall.bound_1') and y == geo.value('RiseAndFall.bound_2'))): #(25,32) is sometimes blocked
                                                                                         iDistance = utils.calculateDistance(x, y, tContactPlot[0], tContactPlot[1])
                                                                                         #print ("Distance", x, y, iDistance)
                                                                                         if (iDistance < iMinDistance):
@@ -3015,7 +3009,7 @@ class RiseAndFall:
                         utils.makeUnit(con.iArcher, iCiv, tPlot, 2)
                         utils.makeUnit(con.iSwordsman, iCiv, tPlot, 1)
                         utils.makeUnit(con.iAxeman, iCiv, tPlot, 1)
-                        tSeaPlot = (74, 29)
+                        tSeaPlot = geo.value('RiseAndFall.createStartingUnits.tSeaPlot_1')
                         if (tSeaPlot):                                
                                 utils.makeUnit(con.iWorkBoat, iCiv, tSeaPlot, 1)
                 if (iCiv == iMaya):
@@ -3142,7 +3136,7 @@ class RiseAndFall:
                         utils.makeUnit(con.iGrenadier, iCiv, tPlot, 2)
                         utils.makeUnit(con.iRifleman, iCiv, tPlot, 4)
                         utils.makeUnit(con.iCannon, iCiv, tPlot, 2)
-                        self.addMissionary(iCiv, (23, 40), (33, 52), tPlot, 1)
+                        self.addMissionary(iCiv, geo.value('RiseAndFall.createStartingUnits.location_1'), geo.value('RiseAndFall.createStartingUnits.location_2'), tPlot, 1)
                         tSeaPlot = self.findSeaPlots(tPlot, 1, iCiv)
                         if (tSeaPlot):  
                                 utils.makeUnit(con.iWorkBoat, iCiv, tSeaPlot, 2)

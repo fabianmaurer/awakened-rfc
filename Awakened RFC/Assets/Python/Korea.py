@@ -1,26 +1,18 @@
 # Korean starts and historical objectives. Keep compatible with Python 2.4.
 from CvPythonExtensions import CyGlobalContext
+import ScenarioGeography as geo
 import Consts as con
 import StartingCivics
 
 
 # Regional names on RFC's compressed peninsula. Shared with scenario authoring.
-CITY_NAMES = ((108, 49, "Uiju"), (109, 50, "Chongjin"),
-              (108, 48, "Anju"), (109, 48, "Pyongyang"),
-              (108, 47, "Nampo"), (109, 47, "Kaesong"),
-              (110, 47, "Chuncheon"), (109, 46, "Hanseong"),
-              (110, 46, "Gangneung"), (109, 45, "Jeonju"),
-              (110, 45, "Gyeongju"))
+geo.bind(globals(), 'CITY_NAMES', 'Korea.CITY_NAMES')
 
 
 # Cover regions around the city anchors, including the western border and
 # northern approaches. An adjacent founding tile must not use the generic list.
-CITY_NAME_AREA = ((107, 44), (111, 51))
-FRONTIER_CITY_NAMES = ((107, 48, "Dalian"), (107, 49, "Dandong"),
-                      (107, 50, "Liaoyang"), (108, 51, "Ji'an"),
-                      (109, 51, "Hyesan"), (110, 51, "Hoeryong"),
-                      (111, 51, "Rason"), (110, 48, "Wonsan"),
-                      (109, 49, "Hamhung"))
+geo.bind(globals(), 'CITY_NAME_AREA', 'Korea.CITY_NAME_AREA')
+geo.bind(globals(), 'FRONTIER_CITY_NAMES', 'Korea.FRONTIER_CITY_NAMES')
 
 
 def cityNameMap(baseMap):
@@ -28,26 +20,26 @@ def cityNameMap(baseMap):
     # Extend named regions over gaps, rather than falling back to Seoul or the
     # next unrelated city in Korea's generic civilization list.
     result = [list(row) for row in baseMap]
-    areas = (((96, 32), (111, 55)), ((106, 48), (118, 59)))
+    areas = geo.value('Korea.cityNameMap.areas_1')
     for topLeft, bottomRight in areas:
         anchors = []
         for x in range(topLeft[0], bottomRight[0] + 1):
             for y in range(topLeft[1], bottomRight[1] + 1):
-                name = baseMap[67-y][x]
+                name = baseMap[(geo.height() - 1) - y][x]
                 if name != "-1":
                     anchors.append((x, y, name))
         for x in range(topLeft[0], bottomRight[0] + 1):
             for y in range(topLeft[1], bottomRight[1] + 1):
-                if result[67-y][x] != "-1":
+                if result[(geo.height() - 1) - y][x] != "-1":
                     continue
                 bestDistance = 100000
                 for ax, ay, name in anchors:
                     distance = (x-ax)*(x-ax) + (y-ay)*(y-ay)
                     if distance < bestDistance:
                         bestDistance = distance
-                        result[67-y][x] = name
+                        result[(geo.height() - 1) - y][x] = name
     for x, y, name in regionalCityNames():
-        result[67-y][x] = name
+        result[(geo.height() - 1) - y][x] = name
     return tuple(tuple(row) for row in result)
 
 
@@ -108,11 +100,11 @@ def setup(victory):
     StartingCivics.apply(con.iKorea)
     player = gc.getPlayer(con.iKorea)
     start = gc.getGame().getStartTurn()
-    capital = (109, 48)
+    capital = geo.value('Korea.setup.capital_1')
     if start == 211:
-        capital = (110, 45)
+        capital = geo.value('Korea.setup.capital_2')
     elif start == 271:
-        capital = (109, 46)
+        capital = geo.value('Korea.setup.capital_3')
     palace = gc.getInfoTypeForString("BUILDING_PALACE")
     city, iterator = player.firstCity(False)
     while city and not city.isNone():
@@ -142,14 +134,14 @@ def checkGoals(victory):
     city, iterator = player.firstCity(False)
     seowon = gc.getInfoTypeForString("BUILDING_KOREAN_SEOWON")
     while city and not city.isNone():
-        if 108 <= city.getX() <= 110 and 45 <= city.getY() <= 49:
+        if geo.value('Korea.bound_3') <= city.getX() <= geo.value('Korea.bound_1') and geo.value('Korea.bound_4') <= city.getY() <= geo.value('Korea.bound_2'):
             coreCities += 1
         if city.getNumRealBuilding(seowon) > 0:
             universities += 1
         city, iterator = player.nextCity(iterator, False)
     foreignCoreCity = False
-    for x in range(108, 111):
-        for y in range(45, 50):
+    for x in range(*geo.value('Korea.range_5')):
+        for y in range(*geo.value('Korea.range_6')):
             plot = gc.getMap().plot(x, y)
             if plot.isCity() and plot.getOwner() != con.iKorea:
                 foreignCoreCity = True

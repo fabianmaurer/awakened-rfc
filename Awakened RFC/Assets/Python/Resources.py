@@ -1,6 +1,7 @@
 # Rhye's and Fall of Civilization - Dynamic resources
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers  
 import Popup
@@ -36,92 +37,92 @@ class Resources:
 
 
                 if (iGameTurn == 5): #otherwise it's picked by Portugal at the beginning
-                        gc.getMap().plot(49, 43).setImprovementType(con.iHut)
+                        gc.getMap().plot(*geo.value('Resources.plot_1')).setImprovementType(con.iHut)
 
 
                 if (iGameTurn == con.i450AD): #(dye added later to prevent Carthaginian UHV exploit)
-                        gc.getMap().plot(53, 51).setBonusType(iDye) #France
-                        gc.getMap().plot(53, 55).setBonusType(iDye) #England
+                        gc.getMap().plot(*geo.value('Resources.plot_2')).setBonusType(iDye) #France
+                        gc.getMap().plot(*geo.value('Resources.plot_3')).setBonusType(iDye) #England
                 if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition
                         if (iGameTurn == con.i600AD): 
-                                gc.getMap().plot(53, 51).setBonusType(iDye) #France
-                                gc.getMap().plot(53, 55).setBonusType(iDye) #England
+                                gc.getMap().plot(*geo.value('Resources.plot_4')).setBonusType(iDye) #France
+                                gc.getMap().plot(*geo.value('Resources.plot_5')).setBonusType(iDye) #England
                     
                 if (iGameTurn == con.i1100AD):
                         #gc.getMap().plot(71, 30).setBonusType(iSugar) #Egypt
-                        gc.getMap().plot(72, 24).setBonusType(iSugar) #East Africa
-                        gc.getMap().plot(70, 17).setBonusType(iSugar) #Zimbabwe
-                        gc.getMap().plot(67, 11).setBonusType(iSugar) #South Africa
+                        gc.getMap().plot(*geo.value('Resources.plot_7')).setBonusType(iSugar) #East Africa
+                        gc.getMap().plot(*geo.value('Resources.plot_8')).setBonusType(iSugar) #Zimbabwe
+                        gc.getMap().plot(*geo.value('Resources.plot_9')).setBonusType(iSugar) #South Africa
 
-                        gc.getMap().plot(66, 23).setBonusType(iBanana) #Central Africa
-                        gc.getMap().plot(67, 21).setBonusType(iBanana) #Central Africa
+                        gc.getMap().plot(*geo.value('Resources.plot_10')).setBonusType(iBanana) #Central Africa
+                        gc.getMap().plot(*geo.value('Resources.plot_11')).setBonusType(iBanana) #Central Africa
 
                 if (iGameTurn == con.i1250AD):
-                        gc.getMap().plot(57, 52).setBonusType(iWheat) #Amsterdam
+                        gc.getMap().plot(*geo.value('Resources.plot_12')).setBonusType(iWheat) #Amsterdam
                         
                 if (iGameTurn == con.i1600AD):
-                        gc.getMap().plot(28, 46).setBonusType(iCow) #Washington area
-                        gc.getMap().plot(30, 49).setBonusType(iCow) #New York area
-                        gc.getMap().plot(25, 49).setBonusType(iCow) #Lakes
-                        gc.getMap().plot(24, 43).setBonusType(iCow) #Jacksonville area
-                        gc.getMap().plot(18, 46).setBonusType(iCow) #Colorado 
-                        gc.getMap().plot(11, 47).setBonusType(iCow) #California
-                        gc.getMap().plot(20, 45).setBonusType(iCow) #Texas
-                        gc.getMap().plot(37, 14).setBonusType(iCow) #Argentina
-                        gc.getMap().plot(33, 11).setBonusType(iCow) #Argentina
-                        gc.getMap().plot(35, 10).setBonusType(iCow) #Pampas
+                        gc.getMap().plot(*geo.value('Resources.plot_13')).setBonusType(iCow) #Washington area
+                        gc.getMap().plot(*geo.value('Resources.plot_14')).setBonusType(iCow) #New York area
+                        gc.getMap().plot(*geo.value('Resources.plot_15')).setBonusType(iCow) #Lakes
+                        gc.getMap().plot(*geo.value('Resources.plot_16')).setBonusType(iCow) #Jacksonville area
+                        gc.getMap().plot(*geo.value('Resources.plot_17')).setBonusType(iCow) #Colorado
+                        gc.getMap().plot(*geo.value('Resources.plot_18')).setBonusType(iCow) #California
+                        gc.getMap().plot(*geo.value('Resources.plot_19')).setBonusType(iCow) #Texas
+                        gc.getMap().plot(*geo.value('Resources.plot_20')).setBonusType(iCow) #Argentina
+                        gc.getMap().plot(*geo.value('Resources.plot_21')).setBonusType(iCow) #Argentina
+                        gc.getMap().plot(*geo.value('Resources.plot_22')).setBonusType(iCow) #Pampas
 
-                        gc.getMap().plot(24, 43).setBonusType(iCotton) #near Florida
-                        gc.getMap().plot(23, 45).setBonusType(iCotton) #Louisiana
-                        gc.getMap().plot(22, 44).setBonusType(iCotton) #Louisiana
-                        gc.getMap().plot(13, 45).setBonusType(iCotton) #California
+                        gc.getMap().plot(*geo.value('Resources.plot_23')).setBonusType(iCotton) #near Florida
+                        gc.getMap().plot(*geo.value('Resources.plot_24')).setBonusType(iCotton) #Louisiana
+                        gc.getMap().plot(*geo.value('Resources.plot_25')).setBonusType(iCotton) #Louisiana
+                        gc.getMap().plot(*geo.value('Resources.plot_26')).setBonusType(iCotton) #California
                         
-                        gc.getMap().plot(22, 49).setBonusType(iPig) #Lakes
+                        gc.getMap().plot(*geo.value('Resources.plot_27')).setBonusType(iPig) #Lakes
                         
-                        gc.getMap().plot(21, 50).setBonusType(iWheat) #Canadian border
-                        gc.getMap().plot(19, 48).setBonusType(iWheat) #Midwest
+                        gc.getMap().plot(*geo.value('Resources.plot_28')).setBonusType(iWheat) #Canadian border
+                        gc.getMap().plot(*geo.value('Resources.plot_29')).setBonusType(iWheat) #Midwest
 
-                        gc.getMap().plot(22, 33).setBonusType(iBanana) #Guatemala
-                        gc.getMap().plot(27, 31).setBonusType(iBanana) #Colombia
-                        gc.getMap().plot(43, 23).setBonusType(iBanana) #Brazil
-                        gc.getMap().plot(39, 26).setBonusType(iBanana) #Brazil
+                        gc.getMap().plot(*geo.value('Resources.plot_30')).setBonusType(iBanana) #Guatemala
+                        gc.getMap().plot(*geo.value('Resources.plot_31')).setBonusType(iBanana) #Colombia
+                        gc.getMap().plot(*geo.value('Resources.plot_32')).setBonusType(iBanana) #Brazil
+                        gc.getMap().plot(*geo.value('Resources.plot_33')).setBonusType(iBanana) #Brazil
 
-                        gc.getMap().plot(49, 44).setBonusType(iCorn) #Galicia
-                        gc.getMap().plot(54, 48).setBonusType(iCorn) #France
-                        gc.getMap().plot(67, 47).setBonusType(iCorn) #Romania
+                        gc.getMap().plot(*geo.value('Resources.plot_34')).setBonusType(iCorn) #Galicia
+                        gc.getMap().plot(*geo.value('Resources.plot_35')).setBonusType(iCorn) #France
+                        gc.getMap().plot(*geo.value('Resources.plot_36')).setBonusType(iCorn) #Romania
 
-                        gc.getMap().plot(106, 50).setBonusType(iCorn) #Manchuria
+                        gc.getMap().plot(*geo.value('Resources.plot_37')).setBonusType(iCorn) #Manchuria
                        
 
                 if (iGameTurn == con.i1700AD):
-                        gc.getMap().plot(26, 45).setBonusType(iHorse) #Washington area                        
-                        gc.getMap().plot(21, 48).setBonusType(iHorse) #Midwest
-                        gc.getMap().plot(19, 45).setBonusType(iHorse) #Texas
-                        gc.getMap().plot(40, 25).setBonusType(iHorse) #Brazil
-                        gc.getMap().plot(33, 10).setBonusType(iHorse) #Buenos Aires area
-                        gc.getMap().plot(32, 8).setBonusType(iHorse) #Pampas
+                        gc.getMap().plot(*geo.value('Resources.plot_38')).setBonusType(iHorse) #Washington area
+                        gc.getMap().plot(*geo.value('Resources.plot_39')).setBonusType(iHorse) #Midwest
+                        gc.getMap().plot(*geo.value('Resources.plot_40')).setBonusType(iHorse) #Texas
+                        gc.getMap().plot(*geo.value('Resources.plot_41')).setBonusType(iHorse) #Brazil
+                        gc.getMap().plot(*geo.value('Resources.plot_42')).setBonusType(iHorse) #Buenos Aires area
+                        gc.getMap().plot(*geo.value('Resources.plot_43')).setBonusType(iHorse) #Pampas
 
-                        gc.getMap().plot(27, 36).setBonusType(iSugar) #Caribbean
-                        gc.getMap().plot(39, 25).setBonusType(iSugar) #Brazil
-                        gc.getMap().plot(37, 20).setBonusType(iSugar) #inner Brazil
+                        gc.getMap().plot(*geo.value('Resources.plot_44')).setBonusType(iSugar) #Caribbean
+                        gc.getMap().plot(*geo.value('Resources.plot_45')).setBonusType(iSugar) #Brazil
+                        gc.getMap().plot(*geo.value('Resources.plot_46')).setBonusType(iSugar) #inner Brazil
 
-                        gc.getMap().plot(104, 52).setBonusType(iCorn) #Manchuria
-                        gc.getMap().plot(89, 36).setBonusType(iCorn) #India
+                        gc.getMap().plot(*geo.value('Resources.plot_47')).setBonusType(iCorn) #Manchuria
+                        gc.getMap().plot(*geo.value('Resources.plot_48')).setBonusType(iCorn) #India
 
                 if (iGameTurn == con.i1850AD):
-                        gc.getMap().plot(12, 45).setBonusType(iWine) #California
-                        gc.getMap().plot(31, 10).setBonusType(iWine) #Andes
+                        gc.getMap().plot(*geo.value('Resources.plot_49')).setBonusType(iWine) #California
+                        gc.getMap().plot(*geo.value('Resources.plot_50')).setBonusType(iWine) #Andes
 
-                        gc.getMap().plot(114, 11).setBonusType(iSheep) #Australia
-                        gc.getMap().plot(116, 13).setBonusType(iSheep) #Australia
-                        gc.getMap().plot(121, 6).setBonusType(iSheep) #New Zealand
+                        gc.getMap().plot(*geo.value('Resources.plot_51')).setBonusType(iSheep) #Australia
+                        gc.getMap().plot(*geo.value('Resources.plot_52')).setBonusType(iSheep) #Australia
+                        gc.getMap().plot(*geo.value('Resources.plot_53')).setBonusType(iSheep) #New Zealand
 
-                        gc.getMap().plot(19, 41).setBonusType(iHorse) #Mexico
+                        gc.getMap().plot(*geo.value('Resources.plot_54')).setBonusType(iHorse) #Mexico
 
-                        gc.getMap().plot(58, 47).setBonusType(iRice) #Vercelli
-                        gc.getMap().plot(12, 49).setBonusType(iRice) #California
+                        gc.getMap().plot(*geo.value('Resources.plot_55')).setBonusType(iRice) #Vercelli
+                        gc.getMap().plot(*geo.value('Resources.plot_56')).setBonusType(iRice) #California
 
-                        gc.getMap().plot(11, 45).setBonusType(iFish) #California
+                        gc.getMap().plot(*geo.value('Resources.plot_57')).setBonusType(iFish) #California
 
 
 

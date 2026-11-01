@@ -22,6 +22,10 @@ public:
 	CyMap(CvMap* pMap);		// Call from C++
 	CvMap* getMap() { return m_pMap;	}	// Call from C++
 	bool isNone() { return (m_pMap==NULL); }
+
+    bool configureScenarioGeography(boost::python::list& data);
+    void finalizeScenarioGeography();
+    std::string getScenarioGeographyName();
 	
 	void erasePlots();
 	void setRevealedPlots(int /*TeamTypes*/ eTeam, bool bNewValue, bool bTerrainOnly);

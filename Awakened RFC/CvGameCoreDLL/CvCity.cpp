@@ -921,7 +921,7 @@ void CvCity::kill(bool bUpdatePlotGroups)
 
 	pPlot->setPlotCity(NULL);
 	// Capturing, gifting or razing Rome ends the former owner's refusal penalty.
-	if (pPlot->getX_INLINE() == 60 && pPlot->getY_INLINE() == 44)
+	if (pPlot->getX_INLINE() == scenarioGeographyValue("CvCity.bound_1") && pPlot->getY_INLINE() == scenarioGeographyValue("CvCity.bound_2"))
 	{
 		GC.getGameINLINE().clearPapalRefusalPenalties();
 		GC.getGameINLINE().notifyPapalRomeLost(getOwnerINLINE());
@@ -9078,7 +9078,7 @@ int CvCity::getBaseCommerceRate(CommerceTypes eIndex) const
 int CvCity::getPapalTributeGold() const
 {
 	CvGame& kGame = GC.getGameINLINE();
-	if (getX_INLINE() != 60 || getY_INLINE() != 44 ||
+	if (getX_INLINE() != scenarioGeographyValue("CvCity.bound_3") || getY_INLINE() != scenarioGeographyValue("CvCity.bound_4") ||
 		!kGame.isPapalState(getOwnerINLINE()) || !kGame.isCouncilActive()) return 0;
 	const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
 	const int iForeignCities = kGame.countReligionLevels(eChristianity) - GET_PLAYER(getOwnerINLINE()).getHasReligionCount(eChristianity);
@@ -9922,19 +9922,19 @@ int CvCity::getRevoltTestProbability() const
 	}
 
 	if (GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4) { //late start condition (RFCMP)
-		if (getX_INLINE() == 59 && getY_INLINE() == 47) //Mediolanum
+		if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_5") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_6")) //Mediolanum
 			result /= 8;
-		else if (getX_INLINE() == 60 && getY_INLINE() == 47) //Venice
+		else if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_7") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_8")) //Venice
 			result /= 8;
-		else if (getX_INLINE() == 60 && getY_INLINE() == 44) //Rome
+		else if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_9") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_10")) //Rome
 			result /= 8;
 		else if (getOwnerINLINE() == CELTIA) //Byzantium
 			result *= 2;
-		else if (getX_INLINE() == 68 && getY_INLINE() == 45) //Constantinopolis
+		else if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_11") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_12")) //Constantinopolis
 			result /= 16;
 	}
 
-	if (getX_INLINE() == 59 && getY_INLINE() == 53) //Hamburg
+	if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_13") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_14")) //Hamburg
 			result /= 8;
 
 	if (isCapital() && getOwnerINLINE() < NUM_MAJOR_PLAYERS)
@@ -12769,10 +12769,10 @@ void CvCity::doCulture()
 				break;
 			case CELTIA:
 				if (GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4) { //late start condition (RFCMP)
-					if (getX_INLINE() == 73 && getY_INLINE() == 41) //Alexandretta
+					if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_15") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_16")) //Alexandretta
 						if (getCulture(getOwnerINLINE()) < 1)
 							changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *50 /100, false, true);
-					else if (getX_INLINE() == 73 && getY_INLINE() == 38) //Jerusalem
+					else if (getX_INLINE() == scenarioGeographyValue("CvCity.bound_17") && getY_INLINE() == scenarioGeographyValue("CvCity.bound_18")) //Jerusalem
 						if (getCulture(getOwnerINLINE()) < 1)
 							changeCultureTimes100(getOwnerINLINE(), getCommerceRateTimes100(COMMERCE_CULTURE) *50 /100, false, true);
 					else
@@ -14178,9 +14178,9 @@ bool CvCity::isStarCity() const
 bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
 {
     // Broad historical regions, independent of the city owner. Coordinates
-    // use the RFC Earth grid (124 x 68), normalized for the current map size.
-    const int iX = getX_INLINE() * 124 / GC.getMapINLINE().getGridWidthINLINE();
-    const int iY = getY_INLINE() * 68 / GC.getMapINLINE().getGridHeightINLINE();
+    // come from the selected scenario geography profile.
+    const int iX = getX_INLINE();
+    const int iY = getY_INLINE();
     switch (eBuilding)
     {
     case GREATLIGHTHOUSE:
@@ -14192,19 +14192,19 @@ bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
         {
             CvPlot* pWater = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)i);
             if (pWater == NULL || !pWater->isWater() || pWater->isLake()) continue;
-            const int x = pWater->getX_INLINE() * 124 / GC.getMapINLINE().getGridWidthINLINE();
-            const int y = pWater->getY_INLINE() * 68 / GC.getMapINLINE().getGridHeightINLINE();
+            const int x = pWater->getX_INLINE();
+            const int y = pWater->getY_INLINE();
             if (eBuilding == MOAI)
             {
                 // Both shores of the Pacific and its islands, across the map seam.
-                const int iAmericanEdge = y >= 50 ? 12 : y >= 40 ? 14 : y >= 37 ? 16 :
-                    y >= 35 ? 18 : y >= 33 ? 21 : y >= 31 ? 23 : y >= 29 ? 25 :
-                    y >= 24 ? 24 : y >= 20 ? 27 : y >= 14 ? 29 : 32;
-                const int iAsianEdge = y >= 52 ? 112 : y >= 42 ? 107 : y >= 34 ? 103 :
-                    y >= 26 ? 101 : y >= 22 ? 108 : 116;
-                if (y >= 8 && y <= 57 && (x <= iAmericanEdge || x >= iAsianEdge)) bMatchingCoast = true;
+                const int iAmericanEdge = y >= scenarioGeographyValue("CvCity.bound_19") ? scenarioGeographyValue("CvCity.iAmericanEdge_54") : y >= scenarioGeographyValue("CvCity.bound_20") ? scenarioGeographyValue("CvCity.iAmericanEdge_55") : y >= scenarioGeographyValue("CvCity.bound_21") ? scenarioGeographyValue("CvCity.iAmericanEdge_56") :
+                    y >= scenarioGeographyValue("CvCity.bound_22") ? scenarioGeographyValue("CvCity.iAmericanEdge_57") : y >= scenarioGeographyValue("CvCity.bound_23") ? scenarioGeographyValue("CvCity.iAmericanEdge_58") : y >= scenarioGeographyValue("CvCity.bound_24") ? scenarioGeographyValue("CvCity.iAmericanEdge_59") : y >= scenarioGeographyValue("CvCity.bound_25") ? scenarioGeographyValue("CvCity.iAmericanEdge_60") :
+                    y >= scenarioGeographyValue("CvCity.bound_26") ? scenarioGeographyValue("CvCity.iAmericanEdge_61") : y >= scenarioGeographyValue("CvCity.bound_27") ? scenarioGeographyValue("CvCity.iAmericanEdge_62") : y >= scenarioGeographyValue("CvCity.bound_28") ? scenarioGeographyValue("CvCity.iAmericanEdge_63") : scenarioGeographyValue("CvCity.iAmericanEdge_64");
+                const int iAsianEdge = y >= scenarioGeographyValue("CvCity.bound_29") ? scenarioGeographyValue("CvCity.iAsianEdge_65") : y >= scenarioGeographyValue("CvCity.bound_30") ? scenarioGeographyValue("CvCity.iAsianEdge_66") : y >= scenarioGeographyValue("CvCity.bound_31") ? scenarioGeographyValue("CvCity.iAsianEdge_67") :
+                    y >= scenarioGeographyValue("CvCity.bound_32") ? scenarioGeographyValue("CvCity.iAsianEdge_68") : y >= scenarioGeographyValue("CvCity.bound_33") ? scenarioGeographyValue("CvCity.iAsianEdge_69") : scenarioGeographyValue("CvCity.iAsianEdge_70");
+                if (y >= scenarioGeographyValue("CvCity.bound_34") && y <= scenarioGeographyValue("CvCity.bound_35") && (x <= iAmericanEdge || x >= iAsianEdge)) bMatchingCoast = true;
             }
-            else if (x >= 51 && x <= 72 && y >= 37 && y <= 45 && (x < 67 || y <= 43))
+            else if (x >= scenarioGeographyValue("CvCity.bound_36") && x <= scenarioGeographyValue("CvCity.bound_37") && y >= scenarioGeographyValue("CvCity.bound_38") && y <= scenarioGeographyValue("CvCity.bound_39") && (x < scenarioGeographyValue("CvCity.bound_40") || y <= scenarioGeographyValue("CvCity.bound_41")))
             {
                 // Mediterranean water, excluding the Atlantic, Red Sea and Black Sea.
                 bMatchingCoast = true;
@@ -14217,13 +14217,13 @@ bool CvCity::isValidBuildingLocation(BuildingTypes eBuilding) const
     case ARTEMIS:
     case ZEUS:
     case MAUSOLLOS:
-        if (iX < 49 || iX > 74 || iY < 35 || iY > 47) return false;
+        if (iX < scenarioGeographyValue("CvCity.bound_42") || iX > scenarioGeographyValue("CvCity.bound_43") || iY < scenarioGeographyValue("CvCity.bound_44") || iY > scenarioGeographyValue("CvCity.bound_45")) return false;
         break;
     case CHICHENITZA:
-        if (iX < 15 || iX > 29 || iY < 25 || iY > 40) return false;
+        if (iX < scenarioGeographyValue("CvCity.bound_46") || iX > scenarioGeographyValue("CvCity.bound_47") || iY < scenarioGeographyValue("CvCity.bound_48") || iY > scenarioGeographyValue("CvCity.bound_49")) return false;
         break;
     case GREATWALL:
-        if (iX < 95 || iX > 115 || iY < 35 || iY > 55) return false;
+        if (iX < scenarioGeographyValue("CvCity.bound_50") || iX > scenarioGeographyValue("CvCity.bound_51") || iY < scenarioGeographyValue("CvCity.bound_52") || iY > scenarioGeographyValue("CvCity.bound_53")) return false;
         break;
     case PYRAMID:
     {

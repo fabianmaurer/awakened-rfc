@@ -7839,8 +7839,8 @@ bool CvUnitAI::AI_jihadCampaignEscort()
     }
     CvCity* pCity = plot()->getPlotCity();
     const bool bRegion = iCampaign == 1 ?
-        (65 <= getX_INLINE() && getX_INLINE() <= 72 && 30 <= getY_INLINE() && getY_INLINE() <= 37) :
-        (75 <= getX_INLINE() && getX_INLINE() <= 93 && 36 <= getY_INLINE() && getY_INLINE() <= 46);
+        (scenarioGeographyValue("CvUnitAI.bound_21") <= getX_INLINE() && getX_INLINE() <= scenarioGeographyValue("CvUnitAI.bound_1") && scenarioGeographyValue("CvUnitAI.bound_22") <= getY_INLINE() && getY_INLINE() <= scenarioGeographyValue("CvUnitAI.bound_2")) :
+        (scenarioGeographyValue("CvUnitAI.bound_23") <= getX_INLINE() && getX_INLINE() <= scenarioGeographyValue("CvUnitAI.bound_3") && scenarioGeographyValue("CvUnitAI.bound_24") <= getY_INLINE() && getY_INLINE() <= scenarioGeographyValue("CvUnitAI.bound_4"));
     if (pCity != NULL && pCity->getOwnerINLINE() == getOwnerINLINE() && bRegion)
     {
         int iGuards = 0;
@@ -11337,15 +11337,15 @@ CvCity* CvUnitAI::AI_jihadCampaignTarget(bool bEgyptCoastOnly)
             if (!generatePath(pCity->plot(), 0, true, &iPathTurns)) continue;
             const int x = pCity->getX_INLINE();
             const int y = pCity->getY_INLINE();
-            const bool bLevant = 73 <= x && x <= 79 && 37 <= y && y <= 43;
-            const bool bEgypt = 65 <= x && x <= 72 && 30 <= y && y <= 37;
-            const bool bEgyptCore = (x == 69 && y == 33) || (x == 68 && y == 36);
-            const bool bLowerEgypt = bEgypt && y >= 33;
-            const bool bAfrica = 45 <= x && x < 65 && 28 <= y && y <= 39;
-            const bool bAfricaCoast = bAfrica && y >= 34;
+            const bool bLevant = scenarioGeographyValue("CvUnitAI.bound_25") <= x && x <= scenarioGeographyValue("CvUnitAI.bound_5") && scenarioGeographyValue("CvUnitAI.bound_26") <= y && y <= scenarioGeographyValue("CvUnitAI.bound_6");
+            const bool bEgypt = scenarioGeographyValue("CvUnitAI.bound_27") <= x && x <= scenarioGeographyValue("CvUnitAI.bound_7") && scenarioGeographyValue("CvUnitAI.bound_28") <= y && y <= scenarioGeographyValue("CvUnitAI.bound_8");
+            const bool bEgyptCore = (x == scenarioGeographyValue("CvUnitAI.bound_9") && y == scenarioGeographyValue("CvUnitAI.bound_10")) || (x == scenarioGeographyValue("CvUnitAI.bound_11") && y == scenarioGeographyValue("CvUnitAI.bound_12"));
+            const bool bLowerEgypt = bEgypt && y >= scenarioGeographyValue("CvUnitAI.bound_13");
+            const bool bAfrica = scenarioGeographyValue("CvUnitAI.bound_29") <= x && x < scenarioGeographyValue("CvUnitAI.bound_14") && scenarioGeographyValue("CvUnitAI.bound_30") <= y && y <= scenarioGeographyValue("CvUnitAI.bound_15");
+            const bool bAfricaCoast = bAfrica && y >= scenarioGeographyValue("CvUnitAI.bound_16");
             if (bEgyptCoastOnly && !(bLowerEgypt || bAfricaCoast)) continue;
-            const bool bIraq = 80 <= x && x <= 85 && 36 <= y && y <= 43;
-            const bool bPersia = 85 < x && x <= 97 && 30 <= y && y <= 45;
+            const bool bIraq = scenarioGeographyValue("CvUnitAI.bound_31") <= x && x <= scenarioGeographyValue("CvUnitAI.bound_17") && scenarioGeographyValue("CvUnitAI.bound_32") <= y && y <= scenarioGeographyValue("CvUnitAI.bound_18");
+            const bool bPersia = scenarioGeographyValue("CvUnitAI.bound_33") < x && x <= scenarioGeographyValue("CvUnitAI.bound_19") && scenarioGeographyValue("CvUnitAI.bound_34") <= y && y <= scenarioGeographyValue("CvUnitAI.bound_20");
             int iPriority = 0;
             if (iCampaign == 0) iPriority = bLevant ? 3 : (bIraq ? 2 : 0);
             // Thebes and Kem Kasir first; Nubia and inland Africa must not
@@ -12845,7 +12845,7 @@ bool CvUnitAI::AI_found()
 		CvPlot* pCitySitePlot = GET_PLAYER(getOwnerINLINE()).AI_getCitySite(iI);
 
 		//Rhye - start
-		if (settlersMaps[getOwnerINLINE()][EARTH_Y -1 -pCitySitePlot->getY_INLINE()][pCitySitePlot->getX_INLINE()] < 150) //so high?
+		if (getSettlerMapValue(getOwnerINLINE(), GC.getMapINLINE().getGridHeightINLINE() -1 -pCitySitePlot->getY_INLINE(), pCitySitePlot->getX_INLINE()) < 150) //so high?
 			return false;
 		//Rhye - end
 
@@ -12917,13 +12917,13 @@ bool CvUnitAI::AI_found_map(int modifier)
 	pBestFoundPlot = NULL;
 
 
-	for (iI = 0; iI < EARTH_X; iI++)
+	for (iI = 0; iI < GC.getMapINLINE().getGridWidthINLINE(); iI++)
 	{
-		for (iJ = 0; iJ < EARTH_Y; iJ++)
+		for (iJ = 0; iJ < GC.getMapINLINE().getGridHeightINLINE(); iJ++)
 		{
 			pLoopPlot = GC.getMapINLINE().plotINLINE(iI, iJ);
 
-			if (settlersMaps[getOwnerINLINE()][EARTH_Y -1 -iJ][iI] == modifier)
+			if (getSettlerMapValue(getOwnerINLINE(), GC.getMapINLINE().getGridHeightINLINE() -1 -iJ, iI) == modifier)
 			{
 				if (pLoopPlot != NULL)
 				{
@@ -13017,7 +13017,7 @@ bool CvUnitAI::AI_foundRange(int iRange, bool bFollow)
 				{
 					if (canFound(pLoopPlot))
 					{
-						if (getOwnerINLINE() > NUM_MAJOR_PLAYERS || settlersMaps[getOwnerINLINE()][EARTH_Y -1 - (iDY+getY_INLINE())][(iDX+getX_INLINE())] >= 60) //Rhye
+						if (getOwnerINLINE() > NUM_MAJOR_PLAYERS || getSettlerMapValue(getOwnerINLINE(), GC.getMapINLINE().getGridHeightINLINE() -1 - (iDY+getY_INLINE()), (iDX+getX_INLINE())) >= 60) //Rhye
 						{ //Rhye
 
 						iValue = pLoopPlot->getFoundValue(getOwnerINLINE());

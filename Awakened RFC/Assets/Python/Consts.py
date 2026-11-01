@@ -4,6 +4,7 @@
 # globals
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 gc = CyGlobalContext()
 
 l0Array =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -110,8 +111,8 @@ lCivBioNewWorld = [iMaya, iInca, iAztecs] #, iNative]
 
 
 #for Victory and the handler
-tAmericasTL = (3, 0)
-tAmericasBR = (43, 63)
+geo.bind(globals(), 'tAmericasTL', 'Consts.tAmericasTL')
+geo.bind(globals(), 'tAmericasBR', 'Consts.tAmericasBR')
 
 
 #for messages
@@ -411,203 +412,19 @@ i2000AD = 480
 
 
 # starting locations coordinates
-tCapitals = (
-(69, 33), #tThebes
-(90, 40), #tDelhi
-(102, 47), #tBeijing
-(76, 40), #tBabylon
-(67, 41), #tAthens
-(82, 39), #tPersepolis
-(58, 39), #tCarthage
-(60, 44), #tRome
-(113, 45), #tKyoto
-(72, 29), #tAksum
-(22, 35), #tTikal
-(61, 62), #tNidaros
-(75, 33), #tMecca
-(102, 34), #tAngkor
-(52, 43), #tMadrid
-(55, 50), #tParis
-(53, 54), #tLondon
-(62, 52), #tBerlin
-(73, 54), #tMoskow
-(57, 53), #tAmsterdam
-(53, 31), #tTimbuktu
-(49, 43), #tLisboa
-(28, 22), #tCuzco
-(99, 51), #tKarakorum
-(18, 37), #tTenochtitlan
-(70, 43), #tSogut ((72, 43), #tKonya  #71?)
-(27, 46) #tWashington
-,
-(75, 33), (75, 33)
-,
-(99, 51),
-(109, 48), # Korea
- # Xiongnu
-(23, 45),
-
-(122, 61), # Eskimos
-) 
+geo.bind(globals(), 'tCapitals', 'Consts.tCapitals')
 
 #for minor civs
-tReserveCapitals = (
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), 
-(), #((57, 52), (56, 52), (58, 53)), #tAmsterdam
-(), 
-(), #((49, 42), (49, 44)) #tLisboa
-(),
-(),
-(),
-(),
-(), 
-
-(), ()
-,
-(),
-(109, 46), # Korea
- # Xiongnu
-(25, 44),
-
-(115, 64), # Eskimos
-)
+geo.bind(globals(), 'tReserveCapitals', 'Consts.tReserveCapitals')
 
 #core areas (for RiseAndFall and Victory)
 
-tCoreAreasTL = (
-(66, 30), #Egypt
-(87, 33), #India
-(99, 43), #China 
-(74, 38), #Babylonia
-(65, 39), #Greece
-(79, 37), #Persia
-(54, 37), #Carthage
-(59, 40), #Rome
-(111, 41), #Japan
-(69, 27), #Ethiopia
-(20, 35), #Maya
-(57, 57), #Vikings
-(73, 30), #Arabia
-(100, 32), #Khmer
-(49, 42), #Spain: southern Iberia (including Granada) stays outside the birth flip
-(54, 47), #France
-(50, 53), #England
-(59, 48), #Germany
-(67, 50), #Russia
-(56, 52), #Holland
-(49, 26), #Mali
-(44, 42), #Portugal
-(24, 18), #Inca
-(90, 48), #Mongolia
-(15, 36), #Aztecs
-(69, 43), #Turkey
-(26, 42) #America
-,
-(73, 30), (73, 30)
-,
-(96, 50),
-(108, 45), # Korea
- # Xiongnu
-(20, 42),
+geo.bind(globals(), 'tCoreAreasTL', 'Consts.tCoreAreasTL')
 
-(110, 59), # Eskimos
-) 
-
-tCoreAreasBR = (
-(70, 36), #Egypt
-(94, 40), #India
-(107, 47), #China
-(77, 42), #Babylonia
-(70, 44), #Greece
-(85, 44), #Persia
-(60, 39), #Carthage
-(63, 47), #Rome
-(116, 49), #Japan
-(73, 30), #Ethiopia
-(23, 37), #Maya
-(70, 65), #Vikings
-(81, 39), #Arabia
-(103, 36), #Khmer
-(55, 46), #Spain
-(57, 52), #France
-(54, 60), #England   57 without Scotland
-(66, 54), #Germany
-(74, 57), #Russia
-(58, 53), #Holland
-(57, 31), #Mali
-(50, 44), #Portugal
-(29, 24), #Inca
-(105, 58), #Mongolia
-(20, 41), #Aztecs
-(79, 49), #Turkey
-(31, 48) #America
-,
-(81, 39), (81, 39)
-,
-(103, 54),
-(110, 49), # Korea
- # Xiongnu
-(27, 48),
-
-(123, 65), # Eskimos
-) 
+geo.bind(globals(), 'tCoreAreasBR', 'Consts.tCoreAreasBR')
 
 
-tExceptions = (  #for RiseAndFall
-(), #Egypt
-(), #India
-(), #China
-((78, 41), (78, 42)), #Babylonia
-(), #Greece
-(), #Persia
-(),#(73, 40), (73, 41)), #Carthage
-(), #Rome
-(), #Japan
-(), #Ethiopia
-(), #Maya
-((59, 55), (60, 55), (62, 55), (59, 56), (62, 56), (63, 56)), #Vikings
-((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)),  #Arabia
-(), #Khmer
-(), #Spain
-((51, 50), (52, 49), (52, 50), (53, 47), (53, 48), (53, 49), (53, 50), (53, 51), (55, 46), (56, 46), (57, 46), (56, 45), (57, 45), (58, 48), (58, 49), (58, 50)), #France
-(), #England
-((62, 47), (63, 47), (64, 47), (58, 51), (58, 52), (58, 53), (57, 53), (65, 55), (66, 55), (66, 56)),  #Germany
-((68, 58), (69, 58), (70, 58), (65, 55), (66, 55), (66, 56)), #Russia
-((57, 51), (58, 51)), #Holland
-(), #Mali
-(), #Portugal
-(), #Inca
-((90, 47), (91, 47), (92, 47), (93, 47), (94, 47), (95, 47), (96, 47), (97, 47), (98, 47)), #Mongolia
-(), #Aztecs
-((68, 48), (68, 49), (73, 40), (73, 41), (73, 42), (71, 42), (70, 42), (74, 42), (75, 42), (80, 47), (80, 48), (80, 49)), #Turkey
-((29, 49), (30, 49), (31, 49), (31, 50), (32, 50), (24, 44), (25, 44), (24, 43), (25, 43)),
-((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37)), ((82, 34), (73, 40), (74, 40), (75, 40), (71, 36), (72, 37))
-,
-(),
-(), # Korea
- # Xiongnu
-(),
-
-(), # Eskimos
-) #America
+geo.bind(globals(), 'tExceptions', 'Consts.tExceptions')
 
 
 
@@ -621,13 +438,15 @@ def getBirthFlipArea(iCiv, tTL=None, tBR=None):
         if tBR is None: tBR = tCoreAreasBR[iCiv]
         if isArabianBirthRestricted(iCiv):
                 # Arabian Peninsula only: exclude Egypt, Sinai, Levant and Iraq.
-                return (max(73, tTL[0]), max(30, tTL[1])), (min(82, tBR[0]), min(37, tBR[1]))
+                west, south, east, north = geo.value("Consts.arabianBirthArea")
+                return (max(west, tTL[0]), max(south, tTL[1])), (min(east, tBR[0]), min(north, tBR[1]))
         return tTL, tBR
 
 
 def getBirthFlipExceptions(iCiv):
         if isArabianBirthRestricted(iCiv):
-                return tuple(t for t in tExceptions[iCiv] if 73 <= t[0] <= 82 and 30 <= t[1] <= 37)
+                west, south, east, north = geo.value("Consts.arabianBirthArea")
+                return tuple(t for t in tExceptions[iCiv] if west <= t[0] <= east and south <= t[1] <= north)
         return tExceptions[iCiv]
 
 
@@ -663,245 +482,27 @@ def getBirthFlipMask(argsList):
 
 # Italy's resurrection is northern Italy only; Rome (60,44) and its
 # adjacent tiles are outside these inclusive bounds. Ancient Roman areas stay intact.
-tItalyRespawnArea = (57, 46, 62, 47)
+geo.bind(globals(), 'tItalyRespawnArea', 'Consts.tItalyRespawnArea')
 
-tNormalAreasTL = (
-(65, 30), #Egypt
-(86, 29), #India
-(99, 39), #China
-(74, 38), #Babylonia
-(64, 39), #Greece
-(79, 37), #Persia
-(50, 36), #Carthage
-(57, 40), #Rome
-(111, 41), #Japan
-(68, 25), #Ethiopia
-(20, 32), #Maya
-(57, 55), #Vikings
-(73, 30), #Arabia
-(98, 26), #Khmer
-(49, 40), #Spain
-(51, 46), #France
-(50, 53), #England
-(59, 48), #Germany
-(68, 49), #Russia
-(56, 51), #Holland
-(48, 26), #Mali
-(44, 41), #Portugal
-(24, 14), #Inca
-(92, 48), #Mongolia
-(15, 35), #Aztecs
-(68, 42), #Turkey
-(11, 43) #America
-,
-(73, 30), (73, 30)
-,
-(94, 48),
-(107, 44), # Korea
- # Xiongnu
-(18, 40),
+geo.bind(globals(), 'tNormalAreasTL', 'Consts.tNormalAreasTL')
 
-(98, 56), # Eskimos
-) 
-
-tNormalAreasBR = (
-(72, 37), #Egypt
-(97, 42), #India
-(108, 50), #China
-(79, 44), #Babylonia
-(68, 44), #Greece
-(86, 46), #Persia
-(61, 39), #Carthage
-(63, 47), #Rome
-(116, 52), #Japan
-(77, 30), #Ethiopia
-(23, 37), #Maya
-(67, 65), #Vikings
-(82, 38), #Arabia
-(103, 37), #Khmer
-(55, 46), #Spain
-(58, 52), #France
-(54, 60), #England
-(66, 54), #Germany
-(83, 62), #Russia
-(59, 54), #Holland    #58,53 for excluding Denmark
-(60, 33), #Mali
-(50, 44), #Portugal
-(30, 29), #Inca
-(104, 54), #Mongolia
-(20, 40), #Aztecs
-(78, 49), #Turkey
-(31, 49) #America
-,
-(82, 38), (82, 38)
-,
-(105, 55),
-(111, 50), # Korea
- # Xiongnu
-(29, 50),
-
-(123, 67), # Eskimos
-) 
+geo.bind(globals(), 'tNormalAreasBR', 'Consts.tNormalAreasBR')
 
 
-tNormalAreasSubtract = (  #for resurrection and stability
-((72, 37), (70, 30), (71, 30), (72, 30)), #Egypt
-((93, 42), (94, 42), (95, 42), (96, 42)), #India
-((99, 49), (100, 49), (101, 49), (99, 50), (100, 50), (101, 50), (102, 50)), #China
-(), #Babylonia
-(), #Greece
-((86, 39), (86, 38), (86, 37)), #Persia
-(), #Carthage
-((62, 47), (63, 47), (63, 46)), #Rome
-((111, 52), (112, 52), (111, 51)), #Japan
-((76, 30), (77, 30)), #Ethiopia
-(), #Maya
-((65, 55), (66, 55), (67, 55), (66, 56), (67, 56)), #Vikings
-((81, 38), (82, 38), (82, 37)),  #Arabia
-(), #Khmer
-((49, 44), (49, 43), (49, 42), (49, 41)), #Spain #bts only
-((51, 46), (52, 46), (53, 46), (58, 47), (58, 46), (58, 51), (58, 52), (57, 52)), #France #changed in BTS
-(), #England
-((54, 59)),  #Germany
-((80, 49), (68, 62), (68, 61), (68, 60), (68, 59)), #Russia
-(), #Holland
-(), #Mali
-(), #Portugal
-(), #Inca
-((92, 52), (92, 53), (92, 54), (93, 54), (94, 54), (100, 48), (101, 48), (102, 48), (103, 48), (104, 48)), #Mongolia
-((20, 35)), #Aztecs #bts only
-(), #Turkey
-(),
-((81, 38), (82, 38), (82, 37)), ((81, 38), (82, 38), (82, 37))
-,
-(),
-(), # Korea
- # Xiongnu
-(),
-
-(), # Eskimos
-) #America
+geo.bind(globals(), 'tNormalAreasSubtract', 'Consts.tNormalAreasSubtract')
 
 
 
 # broader areas coordinates (top left and bottom right) (for RiseAndFall)
 
-tBroaderAreasTL = (
-(60, 26), #Egypt
-(85, 28), #India
-(95, 38), #China
-(72, 37), #Babylonia
-(62, 39), #Greece
-(70, 37), #Persia
-(49, 35), #Carthage
-(49, 35), #Rome
-(110, 40), #Japan
-(67, 21), #Ethiopia
-(19, 30), #Maya
-(57, 55), #Vikings
-(64, 30), #Arabia
-(97, 25), #Khmer
-(49, 38), #Spain
-(49, 44), #France
-(48, 53), #England
-(55, 46), #Germany
-(65, 48), #Russia
-(56, 51), #Holland
-(48, 21), #Mali
-(49, 40), #Portugal
-(24, 14), #Inca
-(82, 44), #Mongolia
-(14, 32), #Aztecs
-(68, 42), #Turkey
-(10, 42) #America
-,
-(64, 30), (64, 30)
-,
-(96, 50),
-(107, 44), # Korea
- # Xiongnu
-(15, 35),
+geo.bind(globals(), 'tBroaderAreasTL', 'Consts.tBroaderAreasTL')
 
-(88, 53), # Eskimos
-)
-
-tBroaderAreasBR = (
-(74, 38), #Egypt
-(99, 43), #India
-(108, 50), #China
-(78, 44), #Babylonia
-(77, 47), #Greece
-(87, 49), #Persia
-(59, 41), #Carthage
-(73, 50), #Rome
-(116, 56), #Japan
-(77, 30), #Ethiopia
-(26, 37), #Maya
-(71, 65), #Vikings
-(85, 44), #Arabia
-(105, 39), #Khmer
-(55, 46), #Spain
-(61, 52), #France
-(54, 60), #England
-(67, 56), #Germany
-(92, 59), #Russia
-(58, 53), #Holland
-(67, 32), #Mali
-(51, 45), #Portugal
-(30, 27), #Inca
-(110, 62), #Mongolia
-(24, 43), #Aztecs
-(86, 49), #Turkey
-(37, 56),
-(85, 44), (85, 44)
-,
-(103, 54),
-(111, 50), # Korea
- # Xiongnu
-(32, 53),
-
-(123, 67), # Eskimos
-) #America
+geo.bind(globals(), 'tBroaderAreasBR', 'Consts.tBroaderAreasBR')
 
 
 
 #Mercenaries. Higher number = less likely to hire
-tHire = (
-10, #Egypt
-30, #India
-30, #China
-30, #Babylonia
-50, #Greece
-20, #Persia
-10, #Carthage
-30, #Rome
-60, #Japan
-30, #Ethiopia
-30, #Maya
-60, #Viking
-50, #Arabia
-30, #Ethiopia
-50, #Spain
-50, #France
-50, #England
-60, #Germany
-60, #Russia
-10, #Holland
-30, #Mali
-60, #Portugal
-30, #Inca
-70, #Mongolia
-30, #Aztec
-50, #Turkey
-50, #America
-50, 50, 100, 30,
-30,
-100, # Eskimos
-100,
-100,
-100,
-100,
-100) #Barbs
+geo.bind(globals(), 'tHire', 'Consts.tHire') #Barbs
 
 
 
@@ -1058,38 +659,7 @@ tResurrectionProb = (
 
 
 #Congresses.
-tPatienceThreshold = (
-30, #Egypt
-50, #India
-30, #China
-30, #Babylonia
-35, #Greece
-30, #Persia
-35, #Carthage
-25, #Rome
-25, #Japan
-20, #Ethopia
-35, #Maya
-30, #Viking
-30, #Arabia
-30, #Khmer
-20, #Spain
-20, #France
-20, #England
-20, #Germany
-30, #Russia
-30, #Holland
-35, #Mali
-30, #Portugal
-35, #Inca
-20, #Mongolia
-30, #Aztec
-35, #Turkey
-30, #America
-30, 30, 30, 35,
-35,
-35, # Eskimos
-100) #Barbs
+geo.bind(globals(), 'tPatienceThreshold', 'Consts.tPatienceThreshold') #Barbs
 
 
 #RnF Colonists
@@ -1930,7 +1500,7 @@ False,
 for _table in ("tCapitals", "tReserveCapitals", "tCoreAreasTL", "tCoreAreasBR",
                "tNormalAreasTL", "tNormalAreasBR", "tNormalAreasSubtract",
                "tBroaderAreasTL", "tBroaderAreasBR", "tExceptions", "tGoals"):
-        globals()[_table] = list(globals()[_table])
+        if _table == "tGoals": globals()[_table] = list(globals()[_table])
 
 # Korea shares East Asian diplomacy and Old World disease contact.
 lCivGroups[1].append(iKorea)

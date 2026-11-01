@@ -1,26 +1,24 @@
 # Fantastical Eskimo homeland and persistent polar wildlife. Python 2.4.
 from CvPythonExtensions import CyGlobalContext, UnitAITypes, DirectionTypes, GameOptionTypes, plotXY
+import ScenarioGeography as geo
 import Consts as con
 import StartingCivics
 import cPickle as pickle
 
 
 def cityNameMap():
-    anchors = ((24, 59, "Iqaluit"), (18, 61, "Nanuk"), (30, 62, "Qaanaaq"),
-               (14, 57, "Nanuvik"), (35, 60, "Tasiilaq"), (24, 64, "Thule"),
-               (122, 61, "Uelen"), (114, 64, "Pevek"), (106, 63, "Chersky"),
-               (99, 63, "Tiksi"), (121, 63, "Nanuk"))
-    result = [["-1" for x in range(124)] for y in range(68)]
-    for x in range(124):
-        for y in range(53, 68):
-            if not (5 <= x <= 43 or 98 <= x <= 123):
+    anchors = geo.value('Arctic.cityNameMap.anchors_1')
+    result = [["-1" for x in range(geo.width())] for y in range(geo.height())]
+    for x in range(geo.width()):
+        for y in range(*geo.value('Arctic.range_13')):
+            if not (geo.value('Arctic.bound_7') <= x <= geo.value('Arctic.bound_1') or geo.value('Arctic.bound_8') <= x <= geo.value('Arctic.bound_2')):
                 continue
             best, distance = anchors[0], 100000
             for anchor in anchors:
                 value = (x-anchor[0])**2 + (y-anchor[1])**2
                 if value < distance:
                     best, distance = anchor, value
-            result[67-y][x] = best[2]
+            result[(geo.height() - 1) - y][x] = best[2]
     return tuple(tuple(row) for row in result)
 
 
@@ -47,8 +45,8 @@ def spawn(turn):
     candidates = []
     cold = (gc.getInfoTypeForString("TERRAIN_SNOW"), gc.getInfoTypeForString("TERRAIN_TUNDRA"))
     capital = con.tCapitals[con.iEskimos]
-    for x in range(98, 124):
-        for y in range(56, 68):
+    for x in range(*geo.value('Arctic.range_14')):
+        for y in range(*geo.value('Arctic.range_15')):
             plot = gc.getMap().plot(x, y)
             if (plot.getTerrainType() in cold and plot.getNumUnits() == 0 and
                 player.canFound(x, y) and plot.getFortGarrisonOwner() in (-1, con.iEskimos)):
@@ -84,7 +82,7 @@ def wildlife(turn):
         for i in range(plot.getNumUnits()):
             if plot.getUnit(i).getUnitType() == bear:
                 count += 1
-                if 98 <= plot.getX() <= 123 and 56 <= plot.getY() <= 65:
+                if geo.value('Arctic.bound_9') <= plot.getX() <= geo.value('Arctic.bound_3') and geo.value('Arctic.bound_10') <= plot.getY() <= geo.value('Arctic.bound_4'):
                     localCount += 1
         if plot.isWater() or plot.isImpassable() or plot.getTerrainType() not in (snow, tundra):
             continue
@@ -104,7 +102,7 @@ def wildlife(turn):
         if nearOwned:
             continue
         candidates.append(index)
-        if 98 <= plot.getX() <= 123 and 56 <= plot.getY() <= 65:
+        if geo.value('Arctic.bound_11') <= plot.getX() <= geo.value('Arctic.bound_5') and geo.value('Arctic.bound_12') <= plot.getY() <= geo.value('Arctic.bound_6'):
             homeland.append(index)
     target = min(48, cold // 18)
     for i in range(min(4, max(0, target-count))):

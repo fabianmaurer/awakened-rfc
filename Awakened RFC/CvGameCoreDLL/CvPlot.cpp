@@ -3125,7 +3125,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 
 	// Papal Rome retains its immediate territory regardless of foreign culture
 	// or fort garrisons. Other city tiles still follow normal conquest rules.
-	if (abs(getX_INLINE() - 60) <= 1 && abs(getY_INLINE() - 44) <= 1)
+	if (abs(getX_INLINE() - scenarioGeographyValue("World.rome", 0)) <= 1 && abs(getY_INLINE() - scenarioGeographyValue("World.rome", 1)) <= 1)
 	{
 		CvCity* pRome = GC.getGameINLINE().getPapalRome();
 		if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()) &&
@@ -3168,7 +3168,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 			{
 				//Rhye - start (core territories of modern civs are not invaded by old civs' culture dominance)
 				if (iI < NUM_MAJOR_PLAYERS) {
-					if (settlersMaps[iI][EARTH_Y - 1 - getY_INLINE()][getX_INLINE()] >= 500)
+					if (getSettlerMapValue(iI, GC.getMapINLINE().getGridHeightINLINE() - 1 - getY_INLINE(), getX_INLINE()) >= 500)
 						if (!isCity())
 							iCulture *= 4;
 						//else
