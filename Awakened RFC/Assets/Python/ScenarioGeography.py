@@ -10,6 +10,7 @@ SCENARIOS = {
     'start 1b - 3000 bc - large world.civbeyondswordwbsave': 'Earth160x88',
     'start 1 xl - 3000bc.civbeyondswordwbsave': 'Earth200x110',
     'start 2 - 800 bc.civbeyondswordwbsave': 'Earth124x68',
+    'start 2 xl - 800bc.civbeyondswordwbsave': 'Earth200x110',
     'start 3 - 600 ad.civbeyondswordwbsave': 'Earth124x68',
     'start 3b - 900 ad.civbeyondswordwbsave': 'Earth124x68',
     'start 4 - 1453 ad.civbeyondswordwbsave': 'Earth124x68',

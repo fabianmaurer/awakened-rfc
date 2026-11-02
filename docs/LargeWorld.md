@@ -1,4 +1,23 @@
-# Large World, 3000 BC
+# XL and Large World scenarios
+
+## XL World, 800 BC
+
+Select **Start 2 XL - 800BC** for the existing 800 BC setup on the 200 x 110
+XL world. It retains the standard start's 17 cities, 62 placed units, player
+choices, diplomacy, buildings and religions, plus its Python starting armies,
+technologies and gold. Cities and units use local land/water placements and the
+reviewed XL birth and historical-city anchors. The standard 800 BC scenario
+remains available.
+
+Resources follow the XL atlas, including 61 introductions already due by
+800 BC. Roads expand with the map; 50 starting improvements fit the local XL
+terrain and resources. Five old pastures, quarries, camps or plantations with
+no suitable local resource are omitted. Merv, Anuradhapura, Palembang and Great
+Zimbabwe retain their later founding events in both ancient XL starts.
+
+Generate with `python tools/generate_800_bc_xl_scenario.py`, after generating
+the 3000 BC XL map if its geography has changed. Source/map and localization
+checks do not establish in-game loading or multiplayer readiness.
 
 ## Additional Huge World start
 
@@ -49,7 +68,7 @@ terrain; ownership, culture and other normal gameplay conditions can still
 prevent an individual event. This is a static source/map review, not in-game
 or multiplayer validation.
 
-Huge's 3000 BC start also schedules four independent cities: Merv in 600 BC,
+Both ancient XL starts schedule four independent cities: Merv in 600 BC,
 Anuradhapura in 400 BC, Palembang in AD 700 and Great Zimbabwe in AD 1100.
 Each starts at population one with a small garrison, and appears only if the
 site remains available under the normal ownership and nearby-city checks.

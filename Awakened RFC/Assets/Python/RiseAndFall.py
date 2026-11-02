@@ -566,7 +566,7 @@ class RiseAndFall:
 
                 #self.setupBirthTurnModifiers() (causes a crash on civ switch)
 
-                if (gc.getGame().getStartTurn() != 0): #late start condition
+                if (gc.getGame().getStartTurn() == con.i600AD):
                         self.clear600ADChina()
 
                 #self.assign4000BCtechs()

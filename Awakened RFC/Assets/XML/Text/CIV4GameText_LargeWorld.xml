@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
+    <Tag>TXT_KEY_ARFC_800_BC_XL_DESC</Tag>
+    <English>800 BC: XL World. Ancient kingdoms and new civilizations share a 200 x 110 world. Choose an established realm or lead Persia, Carthage, Rome, Japan, Korea, the Adena or the Eskimos.</English>
+    <French>800 av. J.-C. : Monde XL. Royaumes antiques et nouvelles civilisations partagent une carte de 200 x 110 cases. Choisissez un royaume &#233;tabli ou dirigez la Perse, Carthage, Rome, le Japon, la Cor&#233;e, les Adenas ou les Esquimaux.</French>
+    <German>800 v. Chr.: XL-Welt. Antike Reiche und neue Zivilisationen teilen sich eine Welt mit 200 x 110 Feldern. W&#228;hlt ein bestehendes Reich oder f&#252;hrt Persien, Karthago, Rom, Japan, Korea, die Adena oder die Eskimos.</German>
+    <Italian>800 a.C.: Mondo XL. Regni antichi e nuove civilt&#224; condividono una mappa di 200 x 110 caselle. Scegli un regno esistente o guida Persia, Cartagine, Roma, Giappone, Corea, Adena o Eschimesi.</Italian>
+    <Spanish>800 a. C.: Mundo XL. Reinos antiguos y nuevas civilizaciones comparten un mapa de 200 x 110 casillas. Elige un reino establecido o lidera Persia, Cartago, Roma, Jap&#243;n, Corea, los Adena o los esquimales.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_ARFC_HUGE_WORLD_DESC</Tag>
     <English>3000 BC: Huge World. A 200 x 110 world centred on Europe, with vast impassable interiors and open historical routes. Begin as Egypt, India, China or Babylonia.</English>
     <French>3000 av. J.-C. : Monde immense. Une carte de 200 x 110 cases centr&#233;e sur l'Europe, avec de vastes terres int&#233;rieures infranchissables et des voies historiques ouvertes. Incarnez l'&#201;gypte, l'Inde, la Chine ou la Babylonie.</French>
