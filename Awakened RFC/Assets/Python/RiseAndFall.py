@@ -988,6 +988,7 @@ class RiseAndFall:
 
 
         def switchLateLeaders(self, iPlayer, iLeaderIndex):
+                tLateLeaders = con.getLateLeaders()
                 import Caliphate
                 if Caliphate.realmOf(iPlayer) >= 0: return
                 if (tLateLeaders[iPlayer][iLeaderIndex] != gc.getPlayer(iPlayer).getLeader()):
