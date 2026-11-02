@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
+    <Tag>TXT_KEY_ARFC_HUGE_WORLD_DESC</Tag>
+    <English>3000 BC: Huge World. A 200 x 110 world centred on Europe, with vast impassable interiors and open historical routes. Begin as Egypt, India, China or Babylonia.</English>
+    <French>3000 av. J.-C. : Monde immense. Une carte de 200 x 110 cases centr&#233;e sur l'Europe, avec de vastes terres int&#233;rieures infranchissables et des voies historiques ouvertes. Incarnez l'&#201;gypte, l'Inde, la Chine ou la Babylonie.</French>
+    <German>3000 v. Chr.: Riesige Welt. Eine Welt mit 200 x 110 Feldern und Europa im Mittelpunkt, mit weiten unpassierbaren Binnengebieten und offenen historischen Routen. Beginnt als &#196;gypten, Indien, China oder Babylonien.</German>
+    <Italian>3000 a.C.: Mondo immenso. Una mappa di 200 x 110 caselle incentrata sull'Europa, con vasti territori interni invalicabili e percorsi storici aperti. Inizia con Egitto, India, Cina o Babilonia.</Italian>
+    <Spanish>3000 a. C.: Mundo inmenso. Un mapa de 200 x 110 casillas centrado en Europa, con vastas tierras interiores infranqueables y rutas hist&#243;ricas abiertas. Comienza con Egipto, India, China o Babilonia.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_ARFC_LARGE_WORLD_DESC</Tag>
     <English>3000 BC: Large World. A 160 x 88 world with vast impassable wilderness and selected travel routes. Begin as Egypt, India, China or Babylonia.</English>
     <French>3000 av. J.-C. : Grand monde. Une carte de 160 x 88 cases avec de vastes zones sauvages infranchissables et quelques voies de passage. Incarnez l'&#201;gypte, l'Inde, la Chine ou la Babylonie.</French>

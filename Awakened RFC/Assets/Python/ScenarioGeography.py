@@ -8,6 +8,7 @@ from CvPythonExtensions import CyMap
 SCENARIOS = {
     'start 1 - 3000 bc.civbeyondswordwbsave': 'Earth124x68',
     'start 1b - 3000 bc - large world.civbeyondswordwbsave': 'Earth160x88',
+    'start 1c - 3000 bc - huge world.civbeyondswordwbsave': 'Earth200x110',
     'start 2 - 800 bc.civbeyondswordwbsave': 'Earth124x68',
     'start 3 - 600 ad.civbeyondswordwbsave': 'Earth124x68',
     'start 3b - 900 ad.civbeyondswordwbsave': 'Earth124x68',

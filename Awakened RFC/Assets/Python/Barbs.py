@@ -337,6 +337,14 @@ class Barbs:
                 self.foundCity(iBarbarian, lKazan, "Kazan", iGameTurn, 2, con.iHorseArcher, 1)
                 self.foundCity(iNative, lKongo, "Mbanza Kongo", iGameTurn, 1, con.iZuluImpi, 1)
 
+                if (geo.profile_name() == 'Earth200x110' and gc.getGame().getStartTurn() == 0):
+                        # Optional regional centres for the Huge 3000 BC start.
+                        # Use the shared ownership, nearby-city and retry checks.
+                        self.foundCity(iIndependent, geo.value('Barbs.lMerv'), "Merv", iGameTurn, 1, con.iArcher, 1)
+                        self.foundCity(iIndependent2, geo.value('Barbs.lAnuradhapura'), "Anuradhapura", iGameTurn, 1, con.iArcher, 1)
+                        self.foundCity(iIndependent, geo.value('Barbs.lPalembang'), "Palembang", iGameTurn, 1, con.iArcher, 2)
+                        self.foundCity(iIndependent2, geo.value('Barbs.lGreatZimbabwe'), "Great Zimbabwe", iGameTurn, 1, con.iLongbowman, 1)
+
 
 
         def checkAmericanRaids(self, iGameTurn):

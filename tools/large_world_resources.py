@@ -111,27 +111,121 @@ MINERALS = set('COPPER IRON GOLD SILVER GEMS COAL ALUMINUM OIL URANIUM STONE MAR
 SEA = set('FISH CLAM CRAB WHALE'.split())
 FIELDS = set('WHEAT RICE CORN COW SHEEP PIG HORSE COTTON SUGAR DYE WINE'.split())
 
+# Additional coastal districts for Huge World's longer shores. These mark
+# productive shelves, estuaries and upwelling coasts, not uniform ocean density
+# or present-day catch quotas. Each anchor still receives at most one deposit.
+MARINE_EXTENSIONS = """
+FISH|-3000|Newfoundland east banks:36,54; Labrador shelf:35,57; Nova Scotia shelf:33,51; New England outer shelf:32,48; Carolina shelf:30,44; Florida Atlantic:29,41; Louisiana shelf:23,41; Yucatan shelf:24,38; Cuba north shelf:27,39; Guianas shelf:39,31; Brazil northeast shelf:44,26; Brazil southeast shelf:42,20; Rio de la Plata shelf:38,13; Patagonia northern shelf:37,10
+FISH|-3000|Alaska Gulf east:9,58; Vancouver outer coast:10,52; Oregon upwelling:10,49; Baja Pacific:12,42; Gulf California north:14,43; Ecuador upwelling:24,28; Peru central upwelling:25,24; Chile northern upwelling:28,19; Chile central upwelling:28,13
+FISH|-3000|Iceland west shelf:44,64; Faroes shelf:51,61; Scottish east shelf:55,58; North Sea south banks:57,54; Skagerrak:61,57; Norway central shelf:59,63; Baltic south coast:65,54; Bay Biscay south:51,46; Portuguese upwelling:48,44; Alboran Sea:54,40; Gulf Lion:57,46; Tyrrhenian Sea:59,43; Sicily channel:60,39; Ionian Sea:64,41; Levantine coast:72,39; Black Sea east shelf:76,47
+FISH|-3000|Morocco northern shelf:48,38; Mauritania upwelling:47,33; Guinea shelf:50,27; Nigeria shelf:59,25; Angola upwelling:60,20; Namibia upwelling:60,14; Somali upwelling:78,26; Gulf Aden:77,29; Oman upwelling:84,32; Malabar shelf:89,32; Gujarat shelf:87,37; Coromandel shelf:94,33; Bengal outer shelf:96,36
+FISH|-3000|Myanmar shelf:98,34; Gulf Thailand:102,33; Mekong shelf:105,34; Gulf Tonkin:105,38; Taiwan Strait:109,41; Shandong shelf:108,46; Korean east shelf:112,48; Japan Seto coast:113,44; Japan Tohoku shelf:117,48; Sakhalin shelf:116,54; Kamchatka shelf:122,56; Sumatra west shelf:99,28; Sunda shelf:103,28; Java south shelf:104,24; Makassar Strait:110,27; Philippines central shelf:110,31; Arafura shelf:116,23; Queensland shelf:119,19; Bass Strait fisheries:115,10; New Zealand east shelf:123,12
+CLAM|-3000|Nova Scotia shellfish:33,51; Carolina estuaries:29,44; Gulf Mexico oysters:24,42; Guianas mangrove shellfish:37,31; Brazil northeast estuaries:43,25; Danish shellfish:60,55; Dutch Wadden shellfish:58,53; Galician shellfish:49,46; Tunisia shellfish:59,38; Senegal estuary shellfish:49,30; Mozambique estuary shellfish:72,19; Malabar estuary shellfish:90,32; Guangdong estuary shellfish:107,40; Philippines mangrove shellfish:109,32; Sumatra estuary shellfish:101,28; New Guinea estuary shellfish:119,27
+CRAB|-3000|Labrador crab:35,56; Nova Scotia crab:33,50; Oregon crab:10,49; Chile southern crab:30,9; Barents coast crab:68,64; Scottish crab:52,59; Brittany crab:51,49; Oman coast crab:83,33; Myanmar mangrove crab:98,35; Japan Hokkaido crab:116,51; Queensland mud crab:118,20; New Zealand coastal crab:122,10
+"""
 
-def sites():
-    for line in ATLAS.strip().splitlines():
+# Only named rocky districts receive a hard relief requirement. Alluvial gold,
+# sedimentary coal/oil basins, bauxite plateaus and ordinary quarries elsewhere
+# may legitimately remain flat. Move to an existing local hill first; author a
+# small hill/outcrop only if the scaled relief provides no suitable one.
+ROCKY_DISTRICTS = {
+    'COPPER': {'Sinai', 'Timna', 'Faynan', 'Oman', 'Iranian plateau', 'Atacama', 'central Chile', 'Sonora', 'Arizona', 'Namaqualand'},
+    'GOLD': {'Egyptian eastern desert', 'Nubia eastern desert', 'Urals', 'Altai', 'Kalgoorlie'},
+    'GEMS': {'Egypt emeralds', 'Sinai turquoise', 'Afghanistan Badakhshan', 'Kashmir', 'Myanmar Mogok'},
+    'IRON': {'Nubia', 'Anatolia', 'Urals', 'Altai', 'Yunnan', 'Carajas', 'Pilbara'},
+    'SILVER': {'Laurion', 'Harz', 'Bohemia', 'Erzgebirge', 'Urals', 'Nevada Comstock', 'Colorado', 'Zacatecas', 'Guanajuato', 'Taxco', 'Potosi', 'Peru Pasco', 'Peru Huancavelica', 'Chile Norte Chico'},
+    'COAL': {'Appalachian north', 'Appalachian south', 'South Wales'},
+    'MARBLE': {'Carrara', 'Pentelikon', 'Pyrenees', 'Norwegian Fauske', 'Afghanistan'},
+    'STONE': {'Aswan granite', 'Sinai', 'Ethiopian basalt', 'Andean stone'},
+}
+
+
+CRETE_SITES = """
+SHEEP|-3000|Crete uplands:68,39
+WINE|-3000|Crete vineyards:69,39
+FISH|-3000|Crete coastal fish:68,38
+"""
+
+
+def sites(review=False):
+    atlas = ATLAS + (MARINE_EXTENSIONS + CRETE_SITES if review else '')
+    for line in atlas.strip().splitlines():
+        if not line.strip():
+            continue
         bonus, year, regions = line.split('|')
         for region in regions.split(';'):
             label, xy = region.strip().rsplit(':', 1)
             x, y = map(int, xy.split(','))
+            if review and label == 'Cyprus':
+                x, y = 71, 40  # The island, not the original Syrian atlas anchor.
             yield bonus, int(year), label, (x, y)
 
 
-def place_resources(plots, origins, axis, data_dir):
+def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas_name='LargeWorldResources.tsv',
+                    review=False, protected=(), valleys=()):
     """Replace all bonuses after geography; reserve later sites from turn zero.
 
     Random-map BonusInfo climate restrictions (e.g. silver only on tundra)
     would falsify historical geology. Authored deposits instead respect land/
     water, relief, local climate for crops and existing physical barriers.
-    No terrain, peaks or impassability is changed to accommodate a resource.
+    Huge World's reviewed rocky districts may gain small hills. Peaks,
+    impassability, protected routes/starts and alluvial valley tiles are retained.
     """
     for fields in plots.values():
         fields[:] = [f for f in fields if not f.startswith('BonusType=')]
-    reserved, additions, catalog, omitted = set(), [], [], []
+    reserved, additions, catalog, omitted, relief_edits = set(), [], [], [], []
+    crete_land = {pos for pos, origin in origins.items()
+                  if origin in ((68, 39), (69, 39)) and 'PlotType=3' not in plots[pos]} if review else set()
+    width = max(x for x, y in plots) + 1
+    city_radius = tuple((dx, dy) for dx in range(-2, 3) for dy in range(-2, 3)
+                        if (dx or dy) and not (abs(dx) == 2 and abs(dy) == 2))
+    def open_water(pos):
+        fs = plots.get(pos, ())
+        return 'PlotType=3' in fs and not any('FEATURE_ICE' in f for f in fs)
+    ocean = set()
+    if review:
+        # This Earth projection puts the central Pacific on the wrap seam.
+        # Lake shores must not count as coastal city sites for marine deposits.
+        pacific = (0, (max(y for x, y in plots) + 1) // 2)
+        if not open_water(pacific):
+            raise ValueError('Expected an open Pacific seed for coastal resource authoring')
+        queue = [pacific]
+        ocean.add(pacific)
+        while queue:
+            x, y = queue.pop()
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    q = ((x + dx) % width, y + dy)
+                    if q not in ocean and open_water(q):
+                        ocean.add(q)
+                        queue.append(q)
+    city_sites = set()
+    if review:
+        for (x, y), fs in plots.items():
+            if not ('PlotType=1' in fs or 'PlotType=2' in fs) or any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fs):
+                continue
+            if any(f in fs for f in ('TerrainType=TERRAIN_SNOW', 'TerrainType=TERRAIN_MARSH')):
+                continue
+            if any(((x + dx) % width, y + dy) in ocean for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy):
+                city_sites.add((x, y))
+    accessible_land = set()
+    if review:
+        # Relief refinement can expose small enclosed foothill pockets. Place
+        # economic deposits only on land connected to the coastal network.
+        queue = list(city_sites)
+        accessible_land.update(queue)
+        while queue:
+            x, y = queue.pop()
+            for dx in (-1, 0, 1):
+                for dy in (-1, 0, 1):
+                    q = ((x + dx) % width, y + dy)
+                    fs = plots.get(q, ())
+                    if (q not in accessible_land and ('PlotType=1' in fs or 'PlotType=2' in fs)
+                            and not any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fs)):
+                        accessible_land.add(q)
+                        queue.append(q)
+    def workable(pos):
+        return any(((pos[0] + dx) % width, pos[1] + dy) in city_sites for dx, dy in city_radius)
     def priority(site):
         bonus, year, label, origin = site
         # Productive agriculture and characteristic island exports take
@@ -140,11 +234,22 @@ def place_resources(plots, origins, axis, data_dir):
         island_sugar = bonus == 'SUGAR' and label in ('Cuba', 'Hispaniola', 'Jamaica', 'Sicily', 'Canaries', 'Mauritius', 'Madeira')
         rank = 0 if label in signature or island_sugar else 1 if bonus in FIELDS else 2 if bonus not in MINERALS else 4 if bonus in ('STONE', 'MARBLE') else 3
         return rank, year, bonus, label
-    for bonus, year, label, origin in sorted(sites(), key=priority):
+    for bonus, year, label, origin in sorted(sites(review), key=priority):
         center = axis(origin[0]), axis(origin[1], True)
+        rocky = review and label in ROCKY_DISTRICTS.get(bonus, ())
         choices = []
         for pos, fields in plots.items():
             dx, dy = pos[0]-center[0], pos[1]-center[1]
+            if review and label == 'Cyprus' and pos not in ((114, 65), (115, 65)):
+                continue
+            if review and label.startswith('Crete '):
+                # Keep the island's named supplies on Crete and its immediate
+                # shore, rather than drifting north into the Aegean network.
+                if bonus in SEA:
+                    if not any(max(abs(pos[0] - x), abs(pos[1] - y)) <= 1 for x, y in crete_land):
+                        continue
+                elif pos not in crete_land:
+                    continue
             # No long-distance relocation; each coordinate describes a local
             # regional envelope within 3.2 enlarged tiles of the anchor.
             if abs(dx) > 3 or abs(dy) > 3 or dx*dx+dy*dy > 10 or pos in reserved:
@@ -152,14 +257,18 @@ def place_resources(plots, origins, axis, data_dir):
             if any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fields) or 'PlotType=0' in fields:
                 continue
             water = 'PlotType=3' in fields
+            if review and not water and pos not in accessible_land:
+                continue
             if water != (bonus in SEA or (bonus == 'OIL' and 'offshore' in label.lower())):
+                continue
+            if review and water and (pos not in ocean or not workable(pos)):
                 continue
             terrain = next(f.split('=')[1] for f in fields if f.startswith('TerrainType='))
             feature = next((f.split('=')[1].split(',')[0] for f in fields if f.startswith('FeatureType=')), None)
             if bonus in SEA:
                 if bonus in ('CLAM', 'CRAB') and terrain != 'TERRAIN_COAST':
                     continue
-                if bonus == 'WHALE' and terrain != 'TERRAIN_OCEAN':
+                if bonus == 'WHALE' and not review and terrain != 'TERRAIN_OCEAN':
                     continue
             elif bonus not in MINERALS:
                 if terrain in ('TERRAIN_SNOW', 'TERRAIN_MARSH'):
@@ -171,6 +280,15 @@ def place_resources(plots, origins, axis, data_dir):
                     continue
             elif terrain == 'TERRAIN_MARSH':
                 continue
+            if review and bonus in MINERALS and pos in valleys:
+                continue
+            if rocky and 'PlotType=2' in fields:
+                river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
+                         'isNOfRiver' in plots.get((pos[0], pos[1] + 1), ()) or
+                         'isWOfRiver' in plots.get(((pos[0] - 1) % width, pos[1]), ()))
+                if (pos in protected or river or any(f.startswith('ImprovementType=') for f in fields)
+                        or feature in ('FEATURE_FLOOD_PLAINS', 'FEATURE_OASIS', 'FEATURE_MUD')):
+                    continue
             # Prefer existing relief/vegetation, then proximity. No displaced
             # bonus may jump across water to another island or coastal region.
             penalty = 0
@@ -184,13 +302,20 @@ def place_resources(plots, origins, axis, data_dir):
                 penalty += 2
             if feature in ('FEATURE_OASIS', 'FEATURE_FLOOD_PLAINS') and bonus in MINERALS:
                 continue
-            choices.append((dx*dx+dy*dy+penalty, pos))
+            relief_rank = int(rocky and 'PlotType=1' not in fields)
+            if review and label == 'Crete vineyards':
+                relief_rank = int('PlotType=1' in fields)
+            if review and bonus in ('WHEAT', 'RICE', 'CORN'):
+                relief_rank = int('PlotType=1' in fields)
+            choices.append((relief_rank, dx*dx+dy*dy+penalty, pos))
         if not choices:
             omitted.append((bonus, label))
             continue
         # Restrict the local envelope to the anchor's connected land/sea patch.
         def medium(pos):
             fs = plots.get(pos, ())
+            if review and (bonus in SEA or (bonus == 'OIL' and 'offshore' in label.lower())):
+                return pos in ocean
             return bool(fs) and ('PlotType=3' in fs) == (bonus in SEA or (bonus == 'OIL' and 'offshore' in label.lower()))
         anchor = min((p for p in plots if medium(p) and abs(p[0]-center[0]) <= 2 and abs(p[1]-center[1]) <= 2),
                      key=lambda p: ((p[0]-center[0])**2+(p[1]-center[1])**2, p), default=None)
@@ -204,13 +329,16 @@ def place_resources(plots, origins, axis, data_dir):
                 q = p[0]+dx, p[1]+dy
                 if q not in reachable and abs(q[0]-center[0]) <= 4 and abs(q[1]-center[1]) <= 4 and medium(q):
                     queue.append(q)
-        choices = [entry for entry in choices if entry[1] in reachable]
+        choices = [entry for entry in choices if entry[2] in reachable]
         if not choices:
             omitted.append((bonus, label))
             continue
-        pos = min(choices)[1]
+        pos = min(choices)[2]
         reserved.add(pos)
         fields = plots[pos]
+        if rocky and 'PlotType=2' in fields:
+            fields[fields.index('PlotType=2')] = 'PlotType=1'
+            relief_edits.append((bonus, label, pos))
         if year <= -3000:
             fields.append('BonusType=BONUS_' + bonus)
             # Cultivated fields and vineyards, not unexplained new vegetation.
@@ -227,9 +355,9 @@ def place_resources(plots, origins, axis, data_dir):
     output = '# Generated by tools/generate_large_world.py. Python 2.4.\n'
     output += '# Independent Large World introductions: (year, bonus, (x, y)).\n'
     output += 'ADDITIONS = ' + pprint.pformat(tuple(sorted(additions)), width=110) + '\n'
-    (data_dir / 'Earth160x88Resources.py').write_text(output, encoding='ascii', newline='\n')
+    (data_dir / (profile + 'Resources.py')).write_text(output, encoding='ascii', newline='\n')
     # Compact reviewable atlas of final coordinates, including later resources.
-    out = Path(__file__).resolve().parents[1] / 'docs/LargeWorldResources.tsv'
+    out = Path(__file__).resolve().parents[1] / 'docs' / atlas_name
     rows = ['resource\tyear\tregion\tx\ty'] + ['%s\t%d\t%s\t%d\t%d' % (b,y,n,p[0],p[1]) for b,y,n,p in catalog]
     out.write_text('\n'.join(rows)+'\n', encoding='utf-8', newline='\n')
     print('Authored resources: %d initial, %d later; %d inaccessible/unsuitable sites omitted' %
@@ -237,3 +365,5 @@ def place_resources(plots, origins, axis, data_dir):
     print('Resource atlas counts:', dict(sorted(Counter(b for b,y,n,p in catalog).items())))
     if omitted:
         print('Omitted sites (no distant substitutes):', omitted)
+    if review:
+        print('Rocky district hills authored:', relief_edits)

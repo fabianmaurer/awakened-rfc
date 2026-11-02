@@ -5,7 +5,9 @@ The original RFC cartography supplies coastlines; this offline conversion also
 authors terrain barriers, preserves corridors and emits independent profile data.
 """
 from collections import Counter, deque
+import argparse
 import heapq
+import math
 from pathlib import Path
 import pprint
 import re
@@ -20,6 +22,8 @@ import Earth124x68 as BASE
 WIDTH, HEIGHT = 160, 88
 NAME = 'Earth160x88'
 TARGET = MOD / 'PublicMaps/Start 1b - 3000 BC - Large World.CivBeyondSwordWBSave'
+DESCRIPTION = 'TXT_KEY_ARFC_LARGE_WORLD_DESC'
+ATLAS_NAME = 'LargeWorldResources.tsv'
 
 
 def axis(n, vertical=False):
@@ -170,6 +174,15 @@ def values():
             result[key] = tuple((v[0],) + rectangle(v[1:]) for v in value)
         else:
             result[key] = coordinate(value)
+    if NAME == 'Earth200x110':
+        # Huge-only regional centres. Turns use the existing RFC calendar;
+        # the fourth field is mutable founding-retry state, initially zero.
+        result.update({
+            'Barbs.lMerv': [135, 74, 101, 0],       # 600 BC, river oasis.
+            'Barbs.lAnuradhapura': [150, 48, 114, 0],  # 400 BC, northern Sri Lanka.
+            'Barbs.lPalembang': [164, 43, 191, 0],  # AD 700, southeast Sumatra.
+            'Barbs.lGreatZimbabwe': [111, 27, 231, 0],  # AD 1100, inland cattle/gold belt.
+        })
     return result
 
 
@@ -206,13 +219,20 @@ def native():
     return result
 
 
-def compact(planes):
+def compact(planes, city_names=False):
     result, shared = [], {}
     xs = [min(123, int((x + .5) * 124 / WIDTH)) for x in range(WIDTH)]
     ys = [min(67, int((y + .5) * 68 / HEIGHT)) for y in range(HEIGHT)]
     for plane in planes:
         rows = tuple(tuple(plane[67 - ys[HEIGHT - 1 - y]][x] for x in xs)
                      for y in range(HEIGHT))
+        if NAME == 'Earth200x110':
+            # Cyprus gains a lowland beside its original summit cell. Keep
+            # naming and AI geography on that land instead of the old sea grid.
+            row = list(rows[HEIGHT - 1 - 65])
+            for x in (114, 115):
+                row[x] = 'Salamis' if city_names else plane[67 - 40][71]
+            rows = rows[:HEIGHT - 1 - 65] + (tuple(row),) + rows[HEIGHT - 65:]
         if rows in shared:
             result.append(shared[rows])
             continue
@@ -289,6 +309,21 @@ WILDS = (
     ('Papua interior', 'rainforest', ((114, 24), (116, 28), (120, 29), (123, 27), (122, 24), (118, 23))),
     ('Western and central Australia', 'desert', ((102, 13), (103, 20), (108, 23), (115, 22), (118, 17), (116, 11), (108, 10))),
 )
+# Huge World expands remote interiors, not Europe's settlement belt. These
+# supplement the EU4-inspired inventory above; they are geographic abstractions,
+# not claims that every tile was historically inaccessible. Coastal fringes,
+# birth sites, the Sahel and the named route networks remain protected.
+HUGE_WILDS = (
+    ('Saharan interior extensions', 'desert', ((48, 32), (50, 37), (58, 37), (66, 37), (68, 31), (63, 29), (54, 29))),
+    ('Congo southern interior', 'rainforest', ((60, 22), (62, 26), (68, 26), (70, 23), (68, 20), (63, 20))),
+    ('Amazon southern interior', 'rainforest', ((28, 23), (31, 28), (39, 28), (42, 25), (40, 19), (34, 19))),
+    ('Patagonian interior', 'desert', ((31, 5), (31, 12), (33, 14), (35, 12), (35, 7), (33, 5))),
+    ('Canadian shield interior', 'boreal', ((16, 54), (18, 61), (26, 63), (33, 60), (35, 55), (29, 52), (23, 52))),
+    ('Alaskan interior extensions', 'boreal', ((4, 57), (5, 64), (12, 65), (15, 61), (13, 56), (9, 55))),
+    ('Siberian taiga interior', 'boreal', ((82, 56), (88, 61), (100, 63), (115, 62), (121, 58), (113, 55), (99, 55), (89, 55))),
+    ('Gobi interior', 'desert', ((96, 49), (98, 53), (103, 54), (107, 52), (106, 49), (101, 48))),
+    ('Australian interior extensions', 'desert', ((103, 12), (103, 21), (110, 24), (116, 22), (118, 17), (116, 10), (109, 10))),
+)
 # Open strategic routes through the surrounding barriers. These are traversable
 # corridors, not prebuilt roads. Coordinates follow RFC's compressed projection.
 CORRIDORS = (
@@ -331,6 +366,17 @@ HISTORICAL_ROUTES = (
     ('Canadian southern route', ((10, 52), (16, 50), (22, 50), (30, 48))),
     ('southern Siberia', ((76, 54), (90, 54), (101, 54), (113, 54))),
 )
+HUGE_ROUTES = (
+    ('Tibetan valleys and eastern approaches', ((95, 43), (97, 43), (100, 42), (100, 40))),
+    ('Tibet-Nepal-Ganges', ((95, 43), (94, 42), (94, 40), (93, 39))),
+    ('southern Andes and central Chile', ((30, 15), (30, 13), (30, 10), (31, 8))),
+    ('central Andes crossing to the Pampas', ((30, 13), (32, 13), (35, 12))),
+    ('Alberta eastern foothills', ((15, 55), (17, 53), (18, 52))),
+    ('Great Basin northern passes', ((13, 48), (15, 49), (16, 50), (18, 49))),
+    ('central Andean plateau access', ((28, 23), (31, 22), (33, 20))),
+)
+ROUTE_STEPS = tuple((dx, dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1) if dx or dy)
+SHARED_EDGE_ROUTES = False
 
 
 def open_routes(plots):
@@ -355,19 +401,23 @@ def open_routes(plots):
                 if pos == end:
                     break
                 x, y = pos
-                for dx in (-1, 0, 1):
-                    for dy in (-1, 0, 1):
-                        neighbor = (x + dx, y + dy)
-                        if not (dx or dy) or not is_land(neighbor):
-                            continue
-                        sx, sy = (neighbor[0]+.5)*124/WIDTH, (neighbor[1]+.5)*68/HEIGHT
-                        if line_distance(sx, sy, a, b) > 3:
-                            continue
-                        step = 12 if 'PlotType=0' in plots[neighbor] else 1
-                        score = cost + step
-                        if score < costs.get(neighbor, float('inf')):
-                            costs[neighbor], previous[neighbor] = score, pos
-                            heapq.heappush(queue, (score, neighbor))
+                for dx, dy in ROUTE_STEPS:
+                    neighbor = (x + dx, y + dy)
+                    if not is_land(neighbor):
+                        continue
+                    if (SHARED_EDGE_ROUTES and dx and dy and
+                            (is_land((x + dx, y)) or is_land((x, y + dy)))):
+                        # Follow land around corners. Diagonal-only isthmuses
+                        # between water cells still need the normal Civ4 step.
+                        continue
+                    sx, sy = (neighbor[0]+.5)*124/WIDTH, (neighbor[1]+.5)*68/HEIGHT
+                    if line_distance(sx, sy, a, b) > 3:
+                        continue
+                    step = 12 if 'PlotType=0' in plots[neighbor] else 1
+                    score = cost + step
+                    if score < costs.get(neighbor, float('inf')):
+                        costs[neighbor], previous[neighbor] = score, pos
+                        heapq.heappush(queue, (score, neighbor))
             if end not in previous:
                 raise ValueError('Disconnected historical route: ' + name)
             pos = end
@@ -432,6 +482,181 @@ def barrier_biome(fields, kind):
     raise ValueError('Unknown wilderness biome: ' + kind)
 
 
+# Reviewed off-channel alluvial fringes, in the reference projection. Plains
+# represent seasonally watered soils/dry grazing here, not a universal fertile
+# halo around rivers. The Nile's narrow valley is already represented by its
+# river-adjacent floodplains; its outer copies retain underlying desert.
+FLOODPLAIN_FRINGES = {
+    (53, 31): 'Niger inland delta', (54, 31): 'Niger inland delta',
+    (76, 38): 'Mesopotamian alluvium', (76, 41): 'Upper Mesopotamian steppe',
+    (77, 38): 'Mesopotamian alluvium', (77, 39): 'Mesopotamian alluvium',
+    (77, 40): 'Mesopotamian alluvium',
+    (87, 39): 'Indus alluvial fringe',
+}
+
+
+def correct_floodplains(plots, origins):
+    """Remove invalid features; preserve base terrain except reviewed fringes."""
+    valleys, corrected = set(), Counter()
+    for (x, y), fields in plots.items():
+        if not any(f.startswith('FeatureType=FEATURE_FLOOD_PLAINS') for f in fields):
+            continue
+        valleys.add((x, y))
+        river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
+                 'isNOfRiver' in plots.get((x, y + 1), ()) or
+                 'isWOfRiver' in plots.get(((x - 1) % WIDTH, y), ()))
+        if river and 'PlotType=2' in fields and 'TerrainType=TERRAIN_DESERT' in fields:
+            continue
+        fields[:] = [f for f in fields if not f.startswith('FeatureType=FEATURE_FLOOD_PLAINS')]
+        if ('PlotType=2' in fields and 'TerrainType=TERRAIN_DESERT' in fields
+                and origins[x, y] in FLOODPLAIN_FRINGES):
+            fields[fields.index('TerrainType=TERRAIN_DESERT')] = 'TerrainType=TERRAIN_PLAINS'
+        terrain = next(f.split('=')[1] for f in fields if f.startswith('TerrainType='))
+        corrected[terrain] += 1
+    print('Off-river/invalid floodplains replaced:', dict(corrected))
+    return valleys
+
+
+def refine_mountains(plots, source):
+    """Reconstruct Huge relief instead of multiplying rectangular peak cells.
+
+    Keep a summit in each original peak cell, but give enlarged outer copies
+    hill shoulders where the continuous source relief falls away. No new peaks
+    or lowland edits: the original range cores and isolated summits survive.
+    """
+    summits = {point: (axis(point[0]), axis(point[1], True))
+               for point, fields in source.items() if 'PlotType=0' in fields}
+    cores = set(summits.values())
+    # Link adjacent source summits before trimming. This keeps continuous
+    # ridges continuous rather than leaving spaced, isolated peak anchors.
+    for (sx, sy), (ax, ay) in summits.items():
+        for dx, dy in ((1, 0), (0, 1), (1, 1), (-1, 1)):
+            end = summits.get((sx + dx, sy + dy))
+            if end is None:
+                continue
+            bx, by = end
+            steps = max(abs(bx - ax), abs(by - ay))
+            cores.update((round(ax + (bx - ax) * n / steps),
+                          round(ay + (by - ay) * n / steps))
+                         for n in range(steps + 1))
+    shoulders = set()
+    for (x, y), fields in plots.items():
+        if 'PlotType=0' not in fields:
+            continue
+        if (x, y) in cores:
+            continue
+        fx, fy = (x + .5) * 124 / WIDTH - .5, (y + .5) * 68 / HEIGHT - .5
+        left, bottom = math.floor(fx), math.floor(fy)
+        support = 0.
+        for dx in (0, 1):
+            for dy in (0, 1):
+                point = ((left + dx) % 124, max(0, min(67, bottom + dy)))
+                if 'PlotType=0' in source[point]:
+                    support += (1 - abs(fx - left - dx)) * (1 - abs(fy - bottom - dy))
+        # Trim the outer quarter of the interpolated peak field; summit
+        # anchors and their links take precedence over this shoulder threshold.
+        if support < .75:
+            fields[fields.index('PlotType=0')] = 'PlotType=1'
+            shoulders.add((x, y))
+    print('Enlarged mountain edge tiles changed to foothills:', len(shoulders))
+    return shoulders
+
+
+def refine_starts(plots, source, profile_values):
+    """Keep births beside their source rivers/shores after edge-based scaling."""
+    def river(grid, point):
+        x, y = point
+        return any(flag in grid.get(pos, ()) for pos, flag in (
+            (point, 'isNOfRiver'), (point, 'isWOfRiver'),
+            ((x, y + 1), 'isNOfRiver'), ((x - 1, y), 'isWOfRiver')))
+
+    def shore(grid, point, width, radius=1):
+        x, y = point
+        return any('PlotType=3' in grid.get(((x + dx) % width, y + dy), ())
+                   for dx in range(-radius, radius + 1) for dy in range(-radius, radius + 1)
+                   if dx or dy)
+
+    resolved = {}
+    def resolve(point, settlement=False):
+        if not point:
+            return point
+        if point in resolved:
+            return resolved[point]
+        center = (axis(point[0]), axis(point[1], True))
+        needs_river, needs_shore = river(source, point), shore(source, point, 124)
+        choices = []
+        for pos in footprint(point):
+            fields = plots[pos]
+            if not ('PlotType=1' in fields or 'PlotType=2' in fields):
+                continue
+            if any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fields):
+                continue
+            if needs_river and not river(plots, pos):
+                continue
+            if needs_shore and not shore(plots, pos, WIDTH):
+                # A one-cell estuary can become two cells wide. Historical
+                # cities prefer direct coast, but retain their river when the
+                # two edges cannot share a tile in this source footprint.
+                if not settlement or not shore(plots, pos, WIDTH, radius=2):
+                    continue
+            choices.append(pos)
+        if not choices:
+            raise ValueError('No matching river/shore birth tile in source footprint: ' + str(point))
+        result = min(choices, key=lambda p: (needs_shore and not shore(plots, p, WIDTH),
+                     (p[0] - center[0]) ** 2 + (p[1] - center[1]) ** 2, p))
+        resolved[point] = result
+        return result
+
+    for key in ('Consts.tCapitals', 'Consts.tReserveCapitals'):
+        profile_values[key] = tuple(resolve(point) for point in BASE.VALUES[key])
+    # These setup routines can replace the ordinary capital table at runtime.
+    for key in ('NativeAmerica.configureRegions.capital_1', 'NativeAmerica.configureRegions.capital_2',
+                'Korea.setup.capital_1', 'Korea.setup.capital_2', 'Korea.setup.capital_3'):
+        profile_values[key] = resolve(BASE.VALUES[key])
+    # Historical city foundations suffer the same edge/center mismatch as
+    # civilization births. Preserve their dates and owners while moving locally.
+    for key, value in BASE.VALUES.items():
+        if key.startswith('Barbs.l') and len(value) == 4 and isinstance(value[0], int):
+            profile_values[key] = list(resolve(tuple(value[:2]), settlement=True)) + list(value[2:])
+    print('Birth/setup river and shore corrections:',
+          {point: pos for point, pos in resolved.items()
+           if pos != (axis(point[0]), axis(point[1], True))})
+
+
+def refine_historic_regions(plots):
+    """Small authored lowlands inside overly broad enlarged mountain masks."""
+    lowlands = {
+        'Sichuan basin': ((161, 67), (162, 67), (162, 68), (163, 68), (164, 68), (165, 68)),
+        'Wei and middle Yellow River valleys': ((162, 70), (163, 70), (164, 70), (165, 70)),
+        'Red River delta': ((163, 60), (164, 60)),
+    }
+    protected = set()
+    for name, points in lowlands.items():
+        for pos in points:
+            fields = plots[pos]
+            old = next(f for f in fields if f.startswith('PlotType='))
+            fields[fields.index(old)] = 'PlotType=2'
+            protected.add(pos)
+        print(name + ' protected lowland tiles:', len(points))
+    # A short distributary joins the existing south-flowing Red River at
+    # corner (163,60) to the coast at (165,60). The enlarged delta must not
+    # separate its historical city tile from both river and coastal access.
+    for pos in ((163, 60), (164, 60)):
+        fields = plots[pos]
+        fields[:] = [f for f in fields if f != 'isNOfRiver' and not f.startswith('RiverWEDirection=')]
+        fields.extend(('isNOfRiver', 'RiverWEDirection=1'))
+    # The source reduces Cyprus to one uninhabitable summit, while its copper
+    # atlas marker lies on Syria. Retain an upland and add one coastal lowland.
+    for pos, relief in (((114, 65), 2), ((115, 65), 1)):
+        fields = plots[pos]
+        fields[:] = [f for f in fields if not f.startswith(('PlotType=', 'TerrainType=', 'FeatureType='))]
+        fields.extend(('TerrainType=TERRAIN_PLAINS', 'PlotType=%d' % relief))
+        if relief == 1:
+            fields.append('FeatureType=FEATURE_FOREST, FeatureVariety=0')
+        protected.add(pos)
+    return protected
+
+
 def make_map(profile_values):
     source = (MOD / 'PublicMaps/Start 1 - 3000 BC.CivBeyondSwordWBSave').read_text(encoding='utf-8-sig')
     header = source.split('BeginPlot', 1)[0]
@@ -473,8 +698,41 @@ def make_map(profile_values):
                 fields.append(s)
             plots[x, y], origins[x, y] = fields, (sx, sy)
 
+    shoulders = refine_mountains(plots, blocks) if NAME == 'Earth200x110' else set()
+    historic_sites = refine_historic_regions(plots) if NAME == 'Earth200x110' else set()
+    # The coarse Amazon mask overlapped the Bolivian highlands. Keep this small
+    # authored Altiplano belt as open upland terrain, with its source relief;
+    # it must not turn Potosi and the plateau valleys into tropical wilderness.
+    uplands = set()
+    if NAME == 'Earth200x110':
+        # Fine relief on the enlarged Greek projection. Keep Athens (108,67)
+        # flat, distinguish Attic uplands and one Peloponnesian valley, and
+        # give Crete a broken upland spine with three usable lowland tiles.
+        for pos, relief in (((109, 68), 1), ((109, 66), 1), ((106, 65), 2),
+                            ((110, 63), 1), ((111, 64), 1), ((112, 63), 1)):
+            fields = plots[pos]
+            old = next(f for f in fields if f.startswith('PlotType='))
+            fields[fields.index(old)] = 'PlotType=%d' % relief
+        # The source Venice/Aquileia cell is hills, interrupting the eastern
+        # lowland. Flatten only its enlarged footprint, below the Alpine belt.
+        for pos in footprint((61, 47)):
+            fields = plots[pos]
+            if 'PlotType=1' in fields:
+                fields[fields.index('PlotType=1')] = 'PlotType=2'
+        for point in ((31, 22), (32, 22), (32, 21), (33, 21), (32, 20), (33, 20)):
+            for pos in footprint(point):
+                fields = plots[pos]
+                if 'PlotType=3' in fields:
+                    continue
+                terrain = next(f for f in fields if f.startswith('TerrainType='))
+                fields[fields.index(terrain)] = 'TerrainType=TERRAIN_PLAINS'
+                fields[:] = [f for f in fields if not f.startswith('FeatureType=FEATURE_JUNGLE')]
+                uplands.add(pos)
+        print('Andean plateau terrain tiles:', len(uplands))
     route_sites = open_routes(plots)
     ocean_ice(plots, origins)
+    if NAME == 'Earth200x110':
+        refine_starts(plots, blocks, profile_values)
 
     anchors = list(profile_values['Consts.tCapitals'])
     for key, value in profile_values.items():
@@ -494,12 +752,19 @@ def make_map(profile_values):
                for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))):
             continue
         for name, kind, vertices in WILDS:
-            if in_polygon(sx, sy, vertices) and barrier_biome(fields, kind):
+            # Mountain polygons use destination-cell centers, avoiding another
+            # source-sized staircase. Retain the newly authored foothills.
+            px, py = sx, sy
+            if kind == 'mountain' and NAME == 'Earth200x110':
+                if (x, y) in shoulders:
+                    continue
+                px, py = (x + .5) * 124 / WIDTH - .5, (y + .5) * 68 / HEIGHT - .5
+            if in_polygon(px, py, vertices) and barrier_biome(fields, kind):
                 candidates.append((x, y, name))
                 break
     # Births and historical settlement sites retain access. Villages inside a
     # wasteland move to accessible fringes; resources are authored afterward.
-    protected = set(placements) | route_sites
+    protected = set(placements) | route_sites | uplands | historic_sites
     for key in FOOTPRINT_KEYS - {'Victory.tMediterraneanExceptions', 'RiseAndFall.conquerorBlockedPlots'}:
         protected.update(profile_values[key])
     event_sites = set(anchors)
@@ -609,11 +874,14 @@ def make_map(profile_values):
             raise ValueError('Invalid civilization start: ' + str(pos))
     # Resource history is a separate final authoring pass. It sees the finished
     # geography, including opened mountain passes and permanent ocean ice.
+    review = NAME == 'Earth200x110'
+    valleys = correct_floodplains(plots, origins) if review else set()
     from large_world_resources import place_resources
-    place_resources(plots, origins, axis, DATA)
-    for old, new in [('grid width=124', 'grid width=160'), ('grid height=68', 'grid height=88'),
-                     ('num plots written=8432', 'num plots written=14080'),
-                     ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=TXT_KEY_ARFC_LARGE_WORLD_DESC')]:
+    place_resources(plots, origins, axis, DATA, NAME, ATLAS_NAME,
+                    review=review, protected=protected, valleys=valleys)
+    for old, new in [('grid width=124', 'grid width=%d' % WIDTH), ('grid height=68', 'grid height=%d' % HEIGHT),
+                     ('num plots written=8432', 'num plots written=%d' % (WIDTH * HEIGHT)),
+                     ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=' + DESCRIPTION)]:
         header = header.replace(old, new)
     # Explicit initial starts; the existing RiseAndFall setup supplies their units.
     players = re.findall(r'BeginPlayer\s*\n.*?EndPlayer', header, re.S)
@@ -699,21 +967,36 @@ def feature_xml():
 
 
 def main():
+    global WIDTH, HEIGHT, NAME, TARGET, DESCRIPTION, ATLAS_NAME, WILDS, HISTORICAL_ROUTES, SHARED_EDGE_ROUTES
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--huge', action='store_true', help='Author the additional 200 x 110 Eurocentric world.')
+    args = parser.parse_args()
+    if args.huge:
+        WIDTH, HEIGHT = 200, 110
+        NAME = 'Earth200x110'
+        TARGET = MOD / 'PublicMaps/Start 1c - 3000 BC - Huge World.CivBeyondSwordWBSave'
+        DESCRIPTION = 'TXT_KEY_ARFC_HUGE_WORLD_DESC'
+        ATLAS_NAME = 'HugeWorldResources.tsv'
+        WILDS = WILDS + HUGE_WILDS
+        HISTORICAL_ROUTES = HISTORICAL_ROUTES + HUGE_ROUTES
+        # Continuous shared-edge paths avoid corner-only gaps through the
+        # enlarged peak blocks. Keep passes narrow rather than flattening ranges.
+        SHARED_EDGE_ROUTES = True
     v = values()
     used = make_map(v)
     write_data(DATA / (NAME + 'Values.py'), {'VALUES': v})
     write_data(DATA / (NAME + 'Native.py'), {'VALUES': native()})
     write_data(DATA / (NAME + 'Grids.py'), {
         'SETTLEMENTS': compact(BASE.SETTLERS),
-        'CITY_NAMES': compact(BASE.VALUES['CityNameManager.tCityMap']),
+        'CITY_NAMES': compact(BASE.VALUES['CityNameManager.tCityMap'], city_names=True),
         'WAR_MAPS': compact(BASE.VALUES['AIWars.tWarsMap'])})
     # Emit continent rectangles using full source-cell extents as well.
     wrapper = ('# Generated by tools/generate_large_world.py. Python 2.4.\n'
-               'from Earth160x88Values import VALUES\n'
-               'from Earth160x88Native import VALUES as NATIVE\n'
-               'from Earth160x88Grids import SETTLEMENTS, CITY_NAMES, WAR_MAPS\n'
+               'from {name}Values import VALUES\n'
+               'from {name}Native import VALUES as NATIVE\n'
+               'from {name}Grids import SETTLEMENTS, CITY_NAMES, WAR_MAPS\n'
                'from SparseGrids import expand\n\n'
-               'WIDTH = 160\nHEIGHT = 88\nAREA_COUNT = 3\nAREAS = ')
+               'WIDTH = {width}\nHEIGHT = {height}\nAREA_COUNT = 3\nAREAS = ').format(name=NAME, width=WIDTH, height=HEIGHT)
     areas = [(group,) + rectangle((west, south, east, north))
              for group, west, south, east, north in BASE.AREAS]
     wrapper += pprint.pformat(areas, width=110) + '\n\n'
