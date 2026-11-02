@@ -5,11 +5,11 @@ The original RFC cartography supplies coastlines; this offline conversion also
 authors terrain barriers, preserves corridors and emits independent profile data.
 """
 from collections import Counter, deque
+import heapq
 from pathlib import Path
 import pprint
 import re
 import sys
-import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
@@ -276,7 +276,6 @@ WILDS = (
     ('Eastern Siberia', 'boreal', ((105, 59), (105, 65), (115, 67), (123, 65), (122, 59), (115, 57))),
     ('Tian Shan', 'mountain', ((85, 47), (87, 51), (93, 51), (95, 48), (90, 46))),
     ('Pamir', 'mountain', ((85, 43), (85, 47), (88, 49), (91, 46), (89, 42))),
-    ('Taklamakan', 'desert', ((90, 45), (91, 49), (96, 49), (99, 47), (97, 44), (93, 44))),
     ('Himalaya and Arunachal', 'mountain', ((89, 41), (91, 44), (97, 44), (102, 42), (101, 40), (96, 41), (92, 40))),
     ('Changtang', 'mountain', ((92, 44), (92, 47), (98, 48), (101, 46), (99, 43), (96, 43))),
     ('Qilian', 'mountain', ((96, 47), (97, 51), (100, 52), (103, 49), (102, 46))),
@@ -307,6 +306,101 @@ CORRIDORS = (
     ((11, 48), (31, 48), .7),                            # southern Canada
     ((76, 54), (110, 54), .7),                           # southern Siberia
 )
+
+# Named route networks, not a guarantee that every coastline is connected.
+# Waypoints use reference-map coordinates. Short mountain passes may be opened
+# where the enlarged source peaks otherwise sever a documented land route.
+HISTORICAL_ROUTES = (
+    ('western trans-Saharan', ((51, 36), (54, 32), (53, 27))),
+    ('Fezzan-Kanem', ((60, 38), (61, 33), (62, 28))),
+    ('Nile', ((68, 35), (69, 30), (69, 25))),
+    ('Arabian incense route', ((77, 31), (76, 34), (75, 37), (76, 41))),
+    ('Persia-Bactria', ((79, 41), (83, 42), (86, 45))),
+    ('western Alpine pass', ((59, 47), (58, 48), (58, 49))),
+    ('Brenner approach', ((60, 47), (61, 48), (62, 49))),
+    ('Caucasus northern access', ((76, 45), (77, 47), (77, 49))),
+    ('northern Tarim and Hexi', ((86, 45), (90, 48), (95, 48), (99, 47), (102, 47), (106, 46))),
+    ('southern Tarim', ((90, 48), (90, 45), (95, 45), (99, 47))),
+    ('Khyber and Ganges', ((86, 45), (87, 41), (90, 40), (95, 38))),
+    ('Bengal-Burma-Yunnan', ((95, 38), (98, 37), (99, 35), (102, 40))),
+    ('mainland Southeast Asia', ((99, 35), (102, 34), (103, 36), (103, 38))),
+    ('Congo river and lake approaches', ((60, 23), (64, 25), (67, 24), (70, 23))),
+    ('Zambezi', ((64, 20), (68, 19), (72, 19))),
+    ('Amazon river', ((28, 27), (34, 27), (39, 27))),
+    ('Andean north-south', ((25, 29), (26, 25), (28, 20), (30, 15))),
+    ('Canadian southern route', ((10, 52), (16, 50), (22, 50), (30, 48))),
+    ('southern Siberia', ((76, 54), (90, 54), (101, 54), (113, 54))),
+)
+
+
+def open_routes(plots):
+    """Protect connected, narrow paths; avoid water and prefer existing passes."""
+    protected, opened_peaks = set(), set()
+    def is_land(pos):
+        return pos in plots and 'PlotType=3' not in plots[pos] and not any('FEATURE_ICE' in f for f in plots[pos])
+    def snap(point):
+        center = (axis(point[0]), axis(point[1], True))
+        choices = [p for p in plots if is_land(p) and max(abs(p[0]-center[0]), abs(p[1]-center[1])) <= 2]
+        if not choices:
+            raise ValueError('Route waypoint has no nearby land: ' + str(point))
+        return min(choices, key=lambda p: ((p[0]-center[0])**2+(p[1]-center[1])**2, 'PlotType=0' in plots[p], p))
+    for name, waypoints in HISTORICAL_ROUTES:
+        for a, b in zip(waypoints, waypoints[1:]):
+            start, end = snap(a), snap(b)
+            queue, costs, previous = [(0, start)], {start: 0}, {start: None}
+            while queue:
+                cost, pos = heapq.heappop(queue)
+                if cost != costs[pos]:
+                    continue
+                if pos == end:
+                    break
+                x, y = pos
+                for dx in (-1, 0, 1):
+                    for dy in (-1, 0, 1):
+                        neighbor = (x + dx, y + dy)
+                        if not (dx or dy) or not is_land(neighbor):
+                            continue
+                        sx, sy = (neighbor[0]+.5)*124/WIDTH, (neighbor[1]+.5)*68/HEIGHT
+                        if line_distance(sx, sy, a, b) > 3:
+                            continue
+                        step = 12 if 'PlotType=0' in plots[neighbor] else 1
+                        score = cost + step
+                        if score < costs.get(neighbor, float('inf')):
+                            costs[neighbor], previous[neighbor] = score, pos
+                            heapq.heappush(queue, (score, neighbor))
+            if end not in previous:
+                raise ValueError('Disconnected historical route: ' + name)
+            pos = end
+            while pos is not None:
+                protected.add(pos)
+                fields = plots[pos]
+                if 'PlotType=0' in fields:
+                    fields[fields.index('PlotType=0')] = 'PlotType=1'
+                    opened_peaks.add(pos)
+                pos = previous[pos]
+    print('Historical route tiles: %d; mountain pass tiles opened: %d' % (len(protected), len(opened_peaks)))
+    return protected
+
+
+def ocean_ice(plots, origins):
+    """Conservative permanent pack ice, not the seasonal winter maximum."""
+    added = 0
+    for pos, fields in plots.items():
+        if 'PlotType=3' not in fields:
+            continue
+        x, y = origins[pos]
+        arctic = y >= 66 or (y >= 64 and (x <= 37 or x >= 72)) or (y >= 62 and 20 <= x <= 38)
+        # Tierra del Fuego reaches source row 3 in this compressed projection.
+        # Explicitly preserve its southern sea lane rather than treating every
+        # low row as equally far south. Only small Weddell/Ross fringes extend.
+        cape_horn = 28 <= x <= 36 and 1 <= y <= 4
+        antarctic = not cape_horn and (y <= 1 or (y <= 2 and (39 <= x <= 44 or 110 <= x <= 123)))
+        if not (arctic or antarctic) or any('FEATURE_ICE' in f for f in fields):
+            continue
+        fields[:] = [f for f in fields if not f.startswith('FeatureType=')]
+        fields.append('FeatureType=FEATURE_ICE, FeatureVariety=0')
+        added += 1
+    print('Additional permanent ocean ice:', added)
 
 
 def line_distance(x, y, start, end):
@@ -361,8 +455,12 @@ def make_map(profile_values):
             sx, sy = min(123, int((x + .5) * 124 / WIDTH)), min(67, int((y + .5) * 68 / HEIGHT))
             fields = []
             for s in blocks[sx, sy]:
-                # Resources and huts are retained once, not multiplied by resizing.
-                if s.startswith(('BonusType=', 'ImprovementType=')) and (x, y) != (axis(sx), axis(sy, True)):
+                # Large World resources are authored independently, after all
+                # terrain, routes and sea ice. Never inherit a source deposit.
+                if s.startswith('BonusType='):
+                    continue
+                # Improvements are retained once, not multiplied by resizing.
+                if s.startswith('ImprovementType=') and (x, y) != (axis(sx), axis(sy, True)):
                     continue
                 if s.startswith(('TeamReveal=', 'Player')):
                     continue
@@ -374,6 +472,9 @@ def make_map(profile_values):
                     continue
                 fields.append(s)
             plots[x, y], origins[x, y] = fields, (sx, sy)
+
+    route_sites = open_routes(plots)
+    ocean_ice(plots, origins)
 
     anchors = list(profile_values['Consts.tCapitals'])
     for key, value in profile_values.items():
@@ -396,15 +497,12 @@ def make_map(profile_values):
             if in_polygon(sx, sy, vertices) and barrier_biome(fields, kind):
                 candidates.append((x, y, name))
                 break
-    # Fixed historical events and births stay in place. Ordinary map resources
-    # and villages inside a wasteland move to nearby accessible fringes instead
-    # of punching dozens of unrelated tunnels through each regional barrier.
-    protected = set(placements)
+    # Births and historical settlement sites retain access. Villages inside a
+    # wasteland move to accessible fringes; resources are authored afterward.
+    protected = set(placements) | route_sites
     for key in FOOTPRINT_KEYS - {'Victory.tMediterraneanExceptions', 'RiseAndFall.conquerorBlockedPlots'}:
         protected.update(profile_values[key])
-    event_sites = {tuple(value) for key, value in profile_values.items()
-                   if key.startswith('Resources.plot_')}
-    event_sites.update(anchors)
+    event_sites = set(anchors)
     candidate_sites = {(x, y) for x, y, region in candidates}
     safe = {pos for pos, fields in plots.items() if usable(fields) and pos not in candidate_sites and
             any(plot_type(plots.get(((pos[0] + dx) % WIDTH, pos[1] + dy), ['PlotType=3'])) == 3
@@ -423,7 +521,7 @@ def make_map(profile_values):
                     queue.append(neighbor)
     for site in sorted(event_sites):
         protected.add(site)
-        if not usable(plots[site]):  # The California fish event is at sea.
+        if not usable(plots[site]):
             continue
         queue, previous = deque([site]), {site: None}
         reached = None
@@ -439,7 +537,7 @@ def make_map(profile_values):
                     previous[neighbor] = pos
                     queue.append(neighbor)
         if reached is None:
-            raise ValueError('No land access to historical resource event at ' + str(site))
+            raise ValueError('No land access to historical site at ' + str(site))
         while reached is not None:
             protected.add(reached)
             safe.add(reached)
@@ -448,26 +546,14 @@ def make_map(profile_values):
     barrier_sites = {(x, y) for x, y, region in candidates}
     # Include newly opened historical access paths when relocating resources.
     accessible = safe | protected
-    bonus_rules = {}
-    for node in ET.parse(MOD / 'Assets/XML/Terrain/CIV4BonusInfos.xml').getroot().iter():
-        if node.tag.split('}')[-1] != 'BonusInfo':
-            continue
-        tags = dict((child.tag.split('}')[-1], child) for child in node)
-        terrains = {child.text for child in tags['TerrainBooleans'].iter()
-                    if child.tag.split('}')[-1] == 'TerrainType'}
-        bonus_rules[tags['Type'].text] = (terrains, tags['bHills'].text == '1', tags['bFlatlands'].text == '1')
     relocations = []
     for pos, fields in plots.items():
         if pos not in barrier_sites:
             continue
         for field in list(fields):
-            if not ((field.startswith('BonusType=') and field != 'BonusType=BONUS_SWAMP') or
-                    field.startswith('ImprovementType=')):
+            if not field.startswith('ImprovementType='):
                 continue
             prefix = field.split('=')[0] + '='
-            is_bonus = prefix == 'BonusType='
-            terrain = next(s for s in fields if s.startswith('TerrainType='))
-            feature = next((s for s in fields if s.startswith('FeatureType=')), None)
             destinations = []
             for target, target_fields in plots.items():
                 if target not in accessible or target in barrier_sites or target in placements or not usable(target_fields):
@@ -480,31 +566,11 @@ def make_map(profile_values):
                     continue
                 if (origins[pos][0] < 44) != (origins[target][0] < 44):
                     continue
-                if is_bonus:
-                    allowed, hills, flat = bonus_rules[field.split('=')[1]]
-                    target_terrain = next(s for s in target_fields if s.startswith('TerrainType='))
-                    if target_terrain != terrain and target_terrain.split('=')[1] not in allowed:
-                        continue
-                    if plot_type(target_fields) != plot_type(fields) and not ((hills and plot_type(target_fields) == 1) or (flat and plot_type(target_fields) == 2)):
-                        continue
-                target_feature = next((s for s in target_fields if s.startswith('FeatureType=')), None)
-                water_feature = lambda s: s and ('FEATURE_OASIS' in s or 'FEATURE_FLOOD_PLAINS' in s)
-                if is_bonus and (water_feature(feature) or water_feature(target_feature)) and feature != target_feature:
-                    continue
-                penalty = 0
-                if is_bonus:
-                    penalty += 10 if feature != target_feature else 0
-                    penalty += 25 if terrain not in target_fields else 0
-                    penalty += 10 if plot_type(fields) != plot_type(target_fields) else 0
-                destinations.append((distance + penalty, target))
+                destinations.append((distance, target))
             if not destinations:
                 raise ValueError('No nearby compatible fringe tile for %s at %s' % (field, pos))
             target = min(destinations)[1]
             target_fields = plots[target]
-            if is_bonus:
-                target_fields[:] = [s for s in target_fields if not s.startswith('FeatureType=')]
-                if feature:
-                    target_fields.append(feature)
             target_fields.append(field)
             fields.remove(field)
             relocations.append((field, pos, target))
@@ -515,7 +581,7 @@ def make_map(profile_values):
         fields = plots[x, y]
         terrain = next(s for s in fields if s.startswith('TerrainType='))
         kind = kinds[region]
-        replacement = {'desert': 'TERRAIN_DESERT', 'ice': 'TERRAIN_SNOW'}.get(kind, terrain.split('=')[1])
+        replacement = {'desert': 'TERRAIN_DESERT', 'ice': 'TERRAIN_SNOW', 'polar': 'TERRAIN_SNOW'}.get(kind, terrain.split('=')[1])
         if kind == 'rainforest' and replacement != 'TERRAIN_MARSH':
             replacement = 'TERRAIN_GRASS'
         fields[fields.index(terrain)] = 'TerrainType=' + replacement + '_IMPASSABLE'
@@ -523,15 +589,28 @@ def make_map(profile_values):
         if kind == 'mountain':
             fields[fields.index(next(s for s in fields if s.startswith('PlotType=')))] = 'PlotType=0'
         else:
-            feature, variety = {'desert': ('DEEP_DESERT', 0), 'rainforest': ('DEEP_JUNGLE', 0),
-                                'boreal': ('REMOTE_FOREST', 0), 'ice': ('FROZEN_WILDERNESS', 0),
-                                'polar': ('FROZEN_WILDERNESS', 0)}[kind]
-            fields.append('FeatureType=FEATURE_%s, FeatureVariety=%d' % (feature, variety))
+            # Normal vegetation/ice remains the gameplay feature. The DLL adds
+            # FEATURE_IMPASSABLE as display-only fog over impassable terrain.
+            feature = None
+            if replacement == 'TERRAIN_SNOW':
+                feature = 'ICE'
+            elif replacement == 'TERRAIN_MARSH':
+                feature = 'MUD'
+            elif kind == 'rainforest':
+                feature = 'JUNGLE'
+            elif kind == 'boreal':
+                feature = 'FOREST'
+            if feature:
+                fields.append('FeatureType=FEATURE_%s, FeatureVariety=%d' % (feature, int(feature == 'FOREST')))
         barriers[region] += 1
     # Every major birth must remain a legal land start, including future civs.
     for pos in profile_values['Consts.tCapitals']:
         if not usable(plots[pos]) or any('_IMPASSABLE' in s for s in plots[pos]):
             raise ValueError('Invalid civilization start: ' + str(pos))
+    # Resource history is a separate final authoring pass. It sees the finished
+    # geography, including opened mountain passes and permanent ocean ice.
+    from large_world_resources import place_resources
+    place_resources(plots, origins, axis, DATA)
     for old, new in [('grid width=124', 'grid width=160'), ('grid height=68', 'grid height=88'),
                      ('num plots written=8432', 'num plots written=14080'),
                      ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=TXT_KEY_ARFC_LARGE_WORLD_DESC')]:
@@ -554,7 +633,7 @@ def make_map(profile_values):
     print('Reference passable land: %d; enlarged before barriers: %d; final: %d (%+.2f%%)' %
           (baseline, before, before - len(candidates), 100 * ((before - len(candidates)) / baseline - 1)))
     print('Impassable additions:', dict(barriers))
-    print('Resources/villages moved to nearby fringes:', len(relocations))
+    print('Improvements moved to nearby fringes:', len(relocations))
     if relocations:
         print('Longest relocation: %.1f tiles' % max(((a[0]-b[0])**2+(a[1]-b[1])**2)**.5
                                                     for field, a, b in relocations))
@@ -583,46 +662,39 @@ def terrain_xml(used):
 
 
 def feature_xml():
-    """Append scenario-only, non-spreading and unremovable feature types."""
+    """One display-only fog feature; normal plot features remain unchanged."""
     path = MOD / 'Assets/XML/Terrain/CIV4FeatureInfos.xml'
     text = path.read_text(encoding='utf-8')
-    entries = (('DEEP_DESERT', 'OASIS', 'ART_DEF_FEATURE_DEEP_DESERT'),
-               ('DEEP_JUNGLE', 'JUNGLE', 'ART_DEF_FEATURE_DEEP_JUNGLE'),
-               ('REMOTE_FOREST', 'FOREST', 'ART_DEF_FEATURE_DEEP_JUNGLE'),
-               ('FROZEN_WILDERNESS', 'ICE', 'ART_DEF_FEATURE_FROZEN_WILDERNESS'))
-    for name, template, art in entries:
-        pattern = r'<FeatureInfo>\s*<Type>FEATURE_' + name + r'</Type>.*?</FeatureInfo>'
-        text = re.sub(r'\s*' + pattern, '', text, flags=re.S)
-        block = re.search(r'<FeatureInfo>\s*<Type>FEATURE_' + template + r'</Type>.*?</FeatureInfo>', text, re.S)[0]
-        block = block.replace('<Type>FEATURE_' + template + '</Type>', '<Type>FEATURE_' + name + '</Type>')
-        for tag, value in (('Description', 'TXT_KEY_ARFC_' + name),
-                           ('Civilopedia', 'TXT_KEY_ARFC_' + name + '_PEDIA'), ('ArtDefineTag', art)):
-            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>' + value + '</' + tag + '>', block, flags=re.S)
-        for tag in ('YieldChanges', 'RiverYieldChange', 'HillsYieldChange', 'FootstepSounds', 'TerrainBooleans'):
-            block = re.sub(r'<' + tag + r'(?:\s*/>|>.*?</' + tag + r'>)', '<' + tag + '/>', block, flags=re.S)
-        for tag in ('iAppearance', 'iDisappearance', 'iGrowth', 'iTurnDamage', 'iHealthPercent', 'iDefense',
-                    'bNoCoast', 'bNoRiver', 'bNoAdjacent', 'bRequiresFlatlands', 'bRequiresRiver', 'bAddsFreshWater'):
-            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>0</' + tag + '>', block)
-        for tag in ('bImpassable', 'bNoCity', 'bNoImprovement', 'bNukeImmune'):
-            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>1</' + tag + '>', block)
-        block = re.sub('<iAdvancedStartRemoveCost>.*?</iAdvancedStartRemoveCost>',
-                       '<iAdvancedStartRemoveCost>-1</iAdvancedStartRemoveCost>', block)
-        text = re.sub(r'\s*</FeatureInfos>', '\n\t\t' + block + '\n\t</FeatureInfos>', text)
+    retired = 'DEEP_DESERT|DEEP_JUNGLE|REMOTE_FOREST|FROZEN_WILDERNESS|IMPASSABLE'
+    text = re.sub(r'\s*<FeatureInfo>\s*<Type>FEATURE_(?:' + retired + r')</Type>.*?</FeatureInfo>', '', text, flags=re.S)
+    block = re.search(r'<FeatureInfo>\s*<Type>FEATURE_FALLOUT</Type>.*?</FeatureInfo>', text, re.S)[0]
+    for tag, value in (('Type', 'FEATURE_IMPASSABLE'), ('Description', 'TXT_KEY_ARFC_IMPASSABLE_LAND'),
+                       ('Civilopedia', 'TXT_KEY_ARFC_IMPASSABLE_LAND_PEDIA'), ('ArtDefineTag', 'ART_DEF_FEATURE_IMPASSABLE')):
+        block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>' + value + '</' + tag + '>', block, flags=re.S)
+    for tag in ('YieldChanges', 'RiverYieldChange', 'HillsYieldChange', 'FootstepSounds', 'TerrainBooleans'):
+        block = re.sub(r'<' + tag + r'(?:\s*/>|>.*?</' + tag + r'>)', '<' + tag + '/>', block, flags=re.S)
+    for tag in ('iAppearance', 'iDisappearance', 'iGrowth', 'iTurnDamage', 'iHealthPercent', 'iDefense',
+                'bNoCoast', 'bNoRiver', 'bNoAdjacent', 'bRequiresFlatlands', 'bRequiresRiver', 'bAddsFreshWater'):
+        block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>0</' + tag + '>', block)
+    for tag in ('bImpassable', 'bNoCity', 'bNoImprovement', 'bNukeImmune'):
+        block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>1</' + tag + '>', block)
+    block = re.sub('<iAdvancedStartRemoveCost>.*?</iAdvancedStartRemoveCost>', '<iAdvancedStartRemoveCost>-1</iAdvancedStartRemoveCost>', block)
+    text = re.sub(r'\s*</FeatureInfos>', '\n\t\t' + block + '\n\t</FeatureInfos>', text)
     path.write_text(text, encoding='utf-8', newline='\n')
     path = MOD / 'Assets/XML/Art/CIV4ArtDefines_Feature.xml'
     text = path.read_text(encoding='utf-8')
-    template = re.search(r'<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_FALLOUT</Type>.*?</FeatureArtInfo>', text, re.S)[0]
-    for name, model, button in (
-            ('DEEP_DESERT', 'DesertFog.nif', ',Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1'),
-            ('DEEP_JUNGLE', 'JungleFog.nif', ',Art/Interface/Buttons/TerrainFeatures/Jungle.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,5,3'),
-            ('FROZEN_WILDERNESS', 'IceFog.nif', ',Art/Interface/Buttons/TerrainFeatures/Ice.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,4,3')):
-        kind = 'ART_DEF_FEATURE_' + name
-        text = re.sub(r'\s*<FeatureArtInfo>\s*<Type>' + kind + r'</Type>.*?</FeatureArtInfo>', '', text, flags=re.S)
-        block = template.replace('ART_DEF_FEATURE_FALLOUT', kind)
-        block = re.sub(r'<ModelFile>.*?</ModelFile>', '<ModelFile>Art/Terrain/Features/Wasteland/' + model + '</ModelFile>', block)
-        block = re.sub(r'<Button>.*?</Button>', '<Button>' + button + '</Button>', block)
-        block = re.sub(r'<VarietyButton>.*?</VarietyButton>', '<VarietyButton>' + button + '</VarietyButton>', block)
-        text = re.sub(r'\s*</FeatureArtInfos>', '\n\t\t' + block + '\n\t</FeatureArtInfos>', text)
+    text = re.sub(r'\s*<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_(?:DEEP_DESERT|DEEP_JUNGLE|FROZEN_WILDERNESS|IMPASSABLE)</Type>.*?</FeatureArtInfo>', '', text, flags=re.S)
+    block = re.search(r'<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_FALLOUT</Type>.*?</FeatureArtInfo>', text, re.S)[0]
+    block = block.replace('ART_DEF_FEATURE_FALLOUT', 'ART_DEF_FEATURE_IMPASSABLE')
+    block = re.sub(r'<ModelFile>.*?</ModelFile>', '<ModelFile>Art/Terrain/Features/Wasteland/ImpassableFog.nif</ModelFile>', block)
+    button = ',Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1'
+    for tag in ('Button', 'VarietyButton'):
+        block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>' + button + '</' + tag + '>', block)
+    # The engine uses the plot's normal feature variety when drawing an
+    # additional entity. Support all three forest varieties, like herd overlays.
+    variety = re.search(r'<FeatureVariety>.*?</FeatureVariety>', block, re.S)[0]
+    block = block.replace(variety, '\n'.join([variety] * 3))
+    text = re.sub(r'\s*</FeatureArtInfos>', '\n\t\t' + block + '\n\t</FeatureArtInfos>', text)
     path.write_text(text, encoding='utf-8', newline='\n')
 
 

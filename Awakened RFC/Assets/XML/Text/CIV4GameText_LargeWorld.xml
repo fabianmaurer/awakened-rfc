@@ -10,29 +10,21 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ARFC_IMPASSABLE_LAND</Tag>
-    <English>Impassable wilderness</English>
-    <French>&#201;tendue sauvage infranchissable</French>
-    <German>Unpassierbare Wildnis</German>
-    <Italian>Territorio selvaggio invalicabile</Italian>
-    <Spanish>Territorio salvaje infranqueable</Spanish>
+    <English>Impassable</English>
+    <French>Infranchissable</French>
+    <German>Unpassierbar</German>
+    <Italian>Invalicabile</Italian>
+    <Spanish>Infranqueable</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ARFC_IMPASSABLE_LAND_PEDIA</Tag>
-    <English>Armies cannot cross this terrain. On the Large World map, remote deserts, ice sheets and wilderness channel movement through open corridors.</English>
-    <French>Les arm&#233;es ne peuvent pas traverser ce terrain. Sur la carte Grand monde, les d&#233;serts isol&#233;s, les calottes glaciaires et les zones sauvages canalisent les d&#233;placements vers les passages ouverts.</French>
-    <German>Armeen k&#246;nnen dieses Gel&#228;nde nicht durchqueren. Auf der Karte Gro&#223;e Welt lenken abgelegene W&#252;sten, Eisschilde und Wildnis die Bewegung durch offene Korridore.</German>
-    <Italian>Gli eserciti non possono attraversare questo terreno. Nella mappa Grande mondo, deserti remoti, calotte glaciali e zone selvagge incanalano gli spostamenti nei corridoi aperti.</Italian>
-    <Spanish>Los ej&#233;rcitos no pueden cruzar este terreno. En el mapa Gran mundo, los desiertos remotos, los casquetes polares y las zonas salvajes canalizan el movimiento por los corredores abiertos.</Spanish>
+    <English>This terrain blocks movement. Use the open passes and corridors.</English>
+    <French>Ce terrain bloque les d&#233;placements. Empruntez les cols et les passages ouverts.</French>
+    <German>Dieses Gel&#228;nde blockiert die Bewegung. Nutzt die offenen P&#228;sse und Korridore.</German>
+    <Italian>Questo terreno blocca il movimento. Usa i valichi e i corridoi aperti.</Italian>
+    <Spanish>Este terreno bloquea el movimiento. Usa los pasos y corredores abiertos.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_ARFC_DEEP_DESERT</Tag>
-    <English>Deep desert</English>
-    <French>D&#233;sert profond</French>
-    <German>Tiefe W&#252;ste</German>
-    <Italian>Deserto profondo</Italian>
-    <Spanish>Desierto profundo</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_ARFC_DEEP_DESERT_PEDIA</Tag>
     <English>Armies cannot cross this vast, arid interior. Use the open oasis routes.</English>
     <French>Les arm&#233;es ne peuvent pas traverser ce vaste int&#233;rieur aride. Empruntez les routes ouvertes des oasis.</French>
@@ -40,15 +32,7 @@
     <Italian>Gli eserciti non possono attraversare questo vasto entroterra arido. Usa le vie aperte tra le oasi.</Italian>
     <Spanish>Los ej&#233;rcitos no pueden cruzar este vasto interior &#225;rido. Usa las rutas abiertas entre oasis.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_ARFC_DEEP_JUNGLE</Tag>
-    <English>Dense rainforest</English>
-    <French>For&#234;t tropicale dense</French>
-    <German>Dichter Regenwald</German>
-    <Italian>Foresta pluviale fitta</Italian>
-    <Spanish>Selva densa</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_ARFC_DEEP_JUNGLE_PEDIA</Tag>
     <English>Armies cannot cross this dense rainforest interior.</English>
     <French>Les arm&#233;es ne peuvent pas traverser cette for&#234;t tropicale dense.</French>
@@ -56,15 +40,7 @@
     <Italian>Gli eserciti non possono attraversare questa fitta foresta pluviale.</Italian>
     <Spanish>Los ej&#233;rcitos no pueden cruzar esta selva densa.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_ARFC_REMOTE_FOREST</Tag>
-    <English>Remote wilderness</English>
-    <French>R&#233;gion sauvage isol&#233;e</French>
-    <German>Abgelegene Wildnis</German>
-    <Italian>Territorio selvaggio remoto</Italian>
-    <Spanish>Territorio salvaje remoto</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_ARFC_REMOTE_FOREST_PEDIA</Tag>
     <English>Armies cannot cross this remote northern wilderness.</English>
     <French>Les arm&#233;es ne peuvent pas traverser cette r&#233;gion sauvage isol&#233;e du Nord.</French>
@@ -72,15 +48,7 @@
     <Italian>Gli eserciti non possono attraversare questo remoto territorio selvaggio settentrionale.</Italian>
     <Spanish>Los ej&#233;rcitos no pueden cruzar este remoto territorio salvaje del norte.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_ARFC_FROZEN_WILDERNESS</Tag>
-    <English>Frozen wilderness</English>
-    <French>&#201;tendue gel&#233;e</French>
-    <German>Eisige Wildnis</German>
-    <Italian>Territorio gelato</Italian>
-    <Spanish>Territorio helado</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_ARFC_FROZEN_WILDERNESS_PEDIA</Tag>
     <English>Armies cannot cross this frozen interior.</English>
     <French>Les arm&#233;es ne peuvent pas traverser cet int&#233;rieur gel&#233;.</French>

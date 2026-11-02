@@ -554,6 +554,7 @@ protected:
 	short* m_paiBuildProgress;
 
 	CvFeature* m_pFeatureSymbol;
+	CvFeature* m_pImpassableSymbol; // Transient fog overlay; preserves the normal plot feature.
 	CvFeature* m_pHuntingHerdSymbol; // Transient worked-tile artwork.
 	CvFeature* m_pArchiveOutputSymbol; // Transient display only; never a plot feature.
 	CvRoute* m_pRouteSymbol;

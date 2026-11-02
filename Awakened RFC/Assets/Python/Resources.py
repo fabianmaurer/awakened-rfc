@@ -39,6 +39,10 @@ class Resources:
                 if (iGameTurn == 5): #otherwise it's picked by Portugal at the beginning
                         gc.getMap().plot(*geo.value('Resources.plot_1')).setImprovementType(con.iHut)
 
+                if geo.profile_name() == 'Earth160x88':
+                        self.checkLargeWorldTurn(iGameTurn)
+                        return
+
 
                 if (iGameTurn == con.i450AD): #(dye added later to prevent Carthaginian UHV exploit)
                         gc.getMap().plot(*geo.value('Resources.plot_2')).setBonusType(iDye) #France
@@ -132,13 +136,25 @@ class Resources:
                 #setPlotType(PlotType eNewValue, BOOL bRecalculate, BOOL bRebuildGraphics)
                 #setTerrainType(TerrainType eNewValue, BOOL bRecalculate, BOOL bRebuildGraphics)
 
-
-                        
-
-
-            
-
-
-
-
-                        
+        def checkLargeWorldTurn(self, iGameTurn):
+                # Every peer applies the same calendar crossing; no local-player
+                # routing, random placement, or transient pending state.
+                from Earth160x88Resources import ADDITIONS
+                game = gc.getGame()
+                year = game.getTurnYear(iGameTurn)
+                previousYear = -3001
+                if iGameTurn > 0:
+                        previousYear = game.getTurnYear(iGameTurn - 1)
+                for firstYear, bonus, pos in ADDITIONS:
+                        if previousYear < firstYear and firstYear <= year:
+                                plot = gc.getMap().plot(*pos)
+                                # Do not replace a resource added by another
+                                # mechanic or put a crop under new sea ice.
+                                if not plot.isWater() and not plot.isImpassable() and plot.getBonusType(-1) == -1:
+                                        plot.setBonusType(gc.getInfoTypeForString(bonus))
+                                        if bonus in ('BONUS_WHEAT', 'BONUS_RICE', 'BONUS_CORN', 'BONUS_COW',
+                                                     'BONUS_SHEEP', 'BONUS_PIG', 'BONUS_HORSE', 'BONUS_COTTON',
+                                                     'BONUS_SUGAR', 'BONUS_DYE', 'BONUS_WINE'):
+                                                feature = plot.getFeatureType()
+                                                if feature == gc.getInfoTypeForString('FEATURE_FOREST') or feature == gc.getInfoTypeForString('FEATURE_JUNGLE'):
+                                                        plot.setFeatureType(-1, 0)

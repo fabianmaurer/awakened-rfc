@@ -1,138 +1,161 @@
 # Large World, 3000 BC
 
-Select **Start 1b - 3000 BC - Large World** in the scenario menu. Egypt,
-India, China and Babylonia are the four playable founding civilizations. The
-WorldBuilder file contains their starting locations and preserves the original
-minor city of Uruk with its buildings and defenders. The ordinary RFC birth
-system supplies major civilizations' starting units and later civilizations.
-Scripted minor settlements use the same spawn turns as the default 3000 BC
-scenario, including its immediate spawns.
+Select **Start 1b - 3000 BC - Large World**. Egypt, India, China and Babylonia
+are the four playable founding civilizations. Uruk retains its buildings and
+defenders; the usual RFC birth system supplies starting units and later births.
+Other scenarios retain their geography and resource events.
 
 | Measure | Original world | Large World |
 | --- | ---: | ---: |
-| Dimensions | 124 × 68 | 160 × 88 |
+| Dimensions | 124 x 68 | 160 x 88 |
 | Total tiles | 8,432 | 14,080 (+66.98%) |
-| Passable land tiles | 2,714 | 3,241 (+19.42%) |
+| Passable land tiles | 2,714 | 3,330 (+22.70%) |
 
-Passable land means flatland or hills without impassable terrain or ice. Peaks
-and water are excluded; ordinary desert, tundra, snow and marsh count. This is a
-movement budget, not a count of fertile city sites. The larger projection has
-4,567 passable land tiles before adding 1,326 impassable wilderness tiles. The
-earlier 25% figure is not a target: barriers follow geography, and usable land
-is measured afterward.
+Passable land counts flatland and hills without impassable terrain or ice.
+It is a movement measure, not a measure of fertile city sites. There is no
+barrier quota or resource quota per civilization.
 
-## Geography and barriers
+## Barriers and historical routes
 
-The map expands the existing RFC coastlines and terrain into a larger grid,
-retaining its deliberately enlarged Europe and compressed oceans. It is an
-alternative RFC world, rather than a new geographic projection. Existing peaks
-remain peaks. Added impassable terrain retains its desert, snow, tundra or
-vegetated appearance and is identified as **Impassable wilderness** on hover.
-These additional terrain types are appended to the XML; original terrain IDs
-and the original scenarios remain unchanged.
+The map retains RFC's enlarged Europe and compressed oceans. Its regional
+barriers use the [EU4 1.30 SVG](https://github.com/primislas/eu4-svg-map/blob/master/maps/1.30.0/eu4-political.svg)
+as a benchmark, adapting regions rather than reproducing province borders.
+The reviewed inventory covers the Sahara; Namib and Kalahari; Guinea, Congo,
+Imatong and Urgoma; Amazon and Guyana; Great Basin and Rockies; northern Canada,
+Alaska and Greenland; Scandes, Alps, Carpathians, Caucasus, Atlas and Hakkari;
+Arabian deserts; northern Siberia; Tian Shan, Pamir, Himalaya, Changtang, Qilian
+and Suleiman; Southeast Asian border ranges and Changbai; Borneo, Papua and
+Australia. Adirondacks and Annamite were supplemental later-reference regions.
+**Takla Makan is passable desert in the benchmark and has no added barrier.**
 
-The revised layout uses the complete EU4 1.30 wasteland inventory as a regional
-reference, supplemented by Adirondacks and Annamite Mountains from later province
-lists. It adapts those regions to RFC's projection rather than copying EU4 borders.
-The reference is the [full SVG generated from EU4 map data](https://github.com/primislas/eu4-svg-map/blob/master/maps/1.30.0/eu4-political.svg).
-EU4 defines wasteland as terrain that cannot be crossed or colonized; see the
-[official manual](https://forumcontent.paradoxplaza.com/public/79250/EuropaUniversalisIV_Manual.pdf).
-This is an exhaustive review of that reference snapshot, not a claim to reproduce
-every border in the latest EU4 patch.
+Nineteen named route networks protect 303 tiles. They cover western Saharan
+oases and Fezzan-Kanem, the Nile, Arabian incense routes, Persia-Bactria,
+northern and southern Tarim routes and Hexi, Khyber/Ganges, Bengal-Burma-Yunnan,
+mainland Southeast Asia, Congo/lake approaches, the Zambezi, Amazon and Andes,
+southern Canada and Siberia, two Alpine approaches and northern Caucasus access.
+Thirteen source peak tiles become hills where narrow passes are needed.
+Routes are ordinary traversable terrain, without prebuilt roads. Other peaks
+remain, and historical birth and settlement locations retain coastal access.
+Three improvements move locally; all 28 initial villages and both farms remain.
 
-| EU4 wastelands reviewed | Large World treatment |
-| --- | --- |
-| El Djouf, Central Sahara, East Sahara | Broad deep-desert regions, two narrow north-south oasis routes, open Nile and coastal margins. 168 of 258 land tiles in the Saharan envelope are blocked, including existing peaks. |
-| Namibia, Kalahari | Impassable desert interiors with coastal and southern approaches. |
-| Guinea, Central Africa, Northern Congo Basin, Imatong, Urgoma | Rainforest interiors and highlands; lower Congo, lake approaches and historical settlements remain accessible. |
-| Western Amazonas, Eastern Amazonas, Guyana | Large rainforest interior with an Amazon trunk route and Andean approaches. Guyana overlaps the northern Amazon envelope and existing peaks. |
-| Great Basin, Columbia, Rocky Mountains | Desert core and mountain barriers with open approaches. |
-| Alaska, Northwest Territories, Nunavut, Baffin, Weagamow, Ungava | Northern wilderness; coastal margins and the southern Canadian route stay open. |
-| Greenland | Impassable ice interior. |
-| Scandes, Alps (both regions), Carpathians, Caucasus, High Atlas, Hakkari | Selected upland barriers with lowland passes. The small Caucasus envelope already has peaks and narrow coastal approaches. |
-| Badiyat ash Sham, Rub al Khali | Syrian and Empty Quarter desert barriers; Levant, western Arabia and Persian approaches remain open. |
-| Nenets, Yamal, Western Siberia, Central Siberia, Eastern Siberia | Extensive remote northern wilderness above the southern route. |
-| Tian Shan, Pamir, Himalaya, Arunachal, Changtang, Qilian, Suleiman Range | Existing peaks plus selected additional highlands. Tarim rim, Khyber and Ganges approaches remain open. |
-| Naga Hills, Arakan Mountains, Gaoligong Mountains, Annamite Mountains, Changbai Mountains | Border highlands. At this resolution Annamite already has peaks and little room between coasts and lowland routes. |
-| Borneo, Papua | Existing interior peaks retained; these narrow islands have no additional interior tiles after protecting their coastal margins. |
-| Western Australia, Central Australia | Broad desert interior with usable coasts. |
-| Adirondacks (later addition) | Small upland barrier. |
+The [UNESCO Chang'an-Tianshan corridor description](https://whc.unesco.org/en/list/1442/)
+supports connected routes through Hexi and around the Tian Shan; the
+[Metropolitan Museum's Sahel material](https://www.metmuseum.org/de/exhibitions/sahel-art-empire-sahara/inside-the-exhibition)
+provides the trans-Saharan oasis-network context. Route waypoints are coarse
+adaptations to RFC's projection, not precise archaeological itineraries.
 
-Four scenario-only features identify deep desert, dense rainforest, remote
-northern wilderness and frozen wilderness. Deep desert, frozen wilderness and
-dense rainforest use brown-orange, light blue and dark green animated fog,
-respectively. These reuse Civilization IV's fallout smoke with its radiation
-glow removed; the original fallout feature is unchanged. Remote northern forest
-also uses dark green fog, so every impassable land tile except mountain peaks
-has fog. Rebuild the derived fog models and shared smoke texture with
-`.venv-art/Scripts/python.exe tools/build_wasteland_art.py`.
-All four are impassable, do not spread and cannot be removed. Underlying
-impassable terrain remains a second movement guard. Mountain additions are peaks.
-The default scenarios receive no new wasteland placements.
+## Normal terrain features and fog
 
-Shorelines, civilization capitals, historical settlements and fixed resource
-events retain access. Selected corridors are open terrain, not prebuilt roads.
-Unlike the earlier revision, every riverbank is not automatically exempt:
-large wilderness regions stay coherent. The generator opens paths from fixed
-historical sites to the coastal land network where necessary. Ordinary resources
-and tribal villages inside a barrier move to compatible accessible fringe tiles;
-91 resource/village placements move, at most 17.1 enlarged-map tiles. Counts of
-every resource, all 28 villages, both farms, Uruk's buildings and defenders are
-preserved. The decorative swamp bonus may remain on blocked marsh.
+The four special wilderness gameplay features are removed. Added barriers use
+normal jungle, evergreen forest, marsh/mud, ice, or bare desert; snowy barriers
+use ice rather than forest. Appended impassable terrain variants retain the
+appropriate underlying appearance. Terrain remains impassable even when a normal
+feature is present or removed; the DLL checks terrain and feature independently.
 
-Rivers extend along the correct enlarged tile edges: a plot north of a river
-keeps it on its southern boundary, and a plot west of a river keeps it on its
-eastern boundary. Resources are retained once rather than multiplied across
-enlarged cells.
+Civ4 stores only one gameplay feature per plot. **FEATURE_IMPASSABLE** is a
+separate, transient display entity over blocked land, preserving normal trees,
+jungle and ice. It has no saved state or gameplay callback, and respects map
+revelation. Peaks and ocean ice use their ordinary artwork. The neutral fog
+retains animated fallout smoke without radiation glow; its vertex opacity is
+35% stronger than the previous coloured overlays. The original fallout feature
+is unchanged. Build the derived mesh with:
 
-Impassability is a strategic abstraction for sustaining substantial premodern
-armies, not a claim that these lands were uninhabited or never crossed. Saharan
-travel in particular followed established oasis networks; see the
-[Metropolitan Museum's account of Sahelian trade](https://www.metmuseum.org/de/exhibitions/sahel-art-empire-sahara/inside-the-exhibition).
-Barriers remain impassable in later eras; there is no new technology-based
-unlocking mechanic.
+```powershell
+.venv-art/Scripts/python.exe tools/build_wasteland_art.py
+```
+
+Impassability remains a permanent strategic abstraction. No technology-based
+unlocking, seasonal ice changes or save migration is introduced.
+
+## Ocean ice
+
+262 additional ocean tiles use normal impassable ice: central Arctic pack,
+Canadian high-Arctic waters and the extreme Antarctic fringe, including small
+Weddell/Ross extensions. The open Norwegian Atlantic and Bering approaches are
+outside the new northern mask. A local exception protects the southern Cape
+Horn sea lane, which lies close to the map edge; the Cape of Good Hope is
+outside the southern mask. This models a conservative perennial barrier,
+not the winter maximum or modern annual weather.
+
+[NSIDC's sea-ice overview](https://nsidc.org/learn/parts-cryosphere/sea-ice/science-sea-ice)
+distinguishes persistent Arctic pack from mostly seasonal Antarctic ice. The
+[Australian Antarctic Program](https://www.antarctica.gov.au/about-antarctica/weather-and-climate/climate-change/sea-ice/sea-ice/)
+describes the smaller summer ice concentrations used as the southern reference.
+There is no Bermuda Triangle barrier.
+
+## Resource atlas
+
+Resource authoring runs **after all terrain, routes and ocean ice**. Every old
+bonus is discarded. The independent atlas in `tools/large_world_resources.py`
+places **678 initial economic resources and 194 later introductions**, covering
+all 33 map resource types. Decorative swamp artwork is rebuilt separately from
+finished marsh terrain. [LargeWorldResources.tsv](LargeWorldResources.tsv)
+lists each placed resource, introduction year, named region and final coordinates.
+
+Mineral markers represent geological deposits, not the date a modern mine opened;
+existing technology reveals still govern visibility. Named districts include
+ancient copper/gold/silver sources and later-important coal, oil, bauxite and
+uranium basins. Generic quarry stone is lower priority than regionally distinctive
+resources. Random-map restrictions such as silver appearing only on tundra are
+not historical geology and do not constrain this authored map. Neither terrain
+nor relief is changed to accommodate a deposit.
+
+Crops and livestock distinguish initial regional availability from later spread.
+Maize begins in the Americas; Eurasian livestock and wheat reach American
+regions after contact; Australian pastoral/agricultural introductions are later.
+Horse supply begins on the Pontic-Caspian steppe around 2200 BC and subsequently
+spreads. Initial silk, sugarcane and spice locations follow their native/early
+production regions rather than later colonial plantations. Bonuses represent
+local supply, not imports. Missing crops such as millet, sorghum, potatoes and
+cassava are not silently represented by unrelated wheat or maize bonuses.
+
+Introduction years are coarse regional milestones, not precise first-find dates.
+The calendar-crossing callback works independently of game speed and replaces
+the original resource-event schedule only for this scenario. Future sites are
+reserved during authoring. An introduction never overwrites a bonus supplied by
+another mechanic, and cultivated fields may clear normal forest or jungle.
+Existing historical birth, trade and technology rules otherwise remain.
+
+Placement stays within a small local geographic envelope (at most 3.2 enlarged
+tiles from the atlas anchor), on the same local land/sea patch, outside barriers
+and ice. Twenty-one unsuitable, crowded or inaccessible sites are omitted rather
+than moved far away. Small islands cannot display every historical commodity on
+Civ4's one-bonus-per-tile grid. Counts are not normalized for civilization balance;
+this is a history-first atlas, not a campaign balance claim.
+
+Evidence and authoring references:
+
+- [USGS mineral resource data](https://www.usgs.gov/programs/mineral-resources-program/mineral-resources-data)
+  and [Mineral Commodity Summaries](https://pubs.usgs.gov/publication/mcs2026)
+  for mineral districts and resource-bearing regions. Locations are manually
+  adapted to the projection, not an automatic import of reserve tonnages.
+- [Origins of food crops connect countries worldwide](https://pmc.ncbi.nlm.nih.gov/articles/PMC4920324/)
+  and the [Alliance of Bioversity/CIAT origin map](https://alliancebioversityciat.org/origin-crops-family-genus-center-origin-map)
+  for crop origins and regional diversity; [crop dispersal review](https://puruggananlab.org/Papers/2023/Crop_GeographicSpread_Adaptation_Review2023.pdf)
+  for ancient exchange and post-Columbian introductions.
+- [Ancient horse genomes](https://www.nature.com/articles/s41586-021-04018-9)
+  for the Pontic-Caspian origin and Bronze Age expansion of modern domestic horses.
 
 ## Maintaining the scenario
 
-Run `python tools/generate_large_world.py` to regenerate the WorldBuilder map,
-static values, native coordinates, compact civilization grids and appended
-terrain and feature definitions. The generator uses the original map/profile as an offline
-cartographic reference, with regional polygons, selected uplands,
-corridor lines and axis metadata. There is no global barrier quota.
-Region bounds include the full extent of each enlarged source
-tile; regional exceptions and scripted terrain edits cover its full footprint.
-Runtime code loads independent `Earth160x88` data; it does not
-stretch the original profile at runtime. `Earth160x88.py` supplies the dimensions
-and continent subdivisions; `ScenarioGeography.py` registers the filename.
-Scenario text is in `CIV4GameText_LargeWorld.xml` with all five languages.
+Run `python tools/generate_large_world.py`. It emits the WorldBuilder map,
+resource introduction schedule and atlas, geography values, native coordinates,
+compact civilization grids and appended terrain/feature definitions. Authoring
+coordinates use the original reference projection; runtime loads independent
+`Earth160x88` data. All 33 starts, city-name/settlement/war grids, birth/stability
+regions and scripted geographic bounds remain scenario-selected. Original
+terrain/feature IDs preceding the removed scenario-only entries are unchanged.
+The fog overlay and terrain/feature movement fix require the accompanying
+production DLL built with the legacy VC7.1 toolchain.
 
-All 33 civilization starts, settlement maps, war maps, city-name grids, stability
-and birth regions, scripted-event coordinates and native geographic bounds are
-mapped to the enlarged projection. Remaining fixed coordinates in Babylonian
-and French victory checks, Russia's unique-power region, Saharan continent
-handling, the Huna warning and the papacy's Rome lookup use the selected profile.
-Barbarian, conqueror and slave-rebel placement rejects impassable terrain.
-Country-name previews recognize the scenario. Civilization birth dates, unique
-powers and gameplay rules are retained. City-name regions may span multiple tiles. Fixed travel
-distances, army sizes and historical objectives have not been rebalanced for the
-larger world; a successful startup does not establish campaign balance or
-multiplayer readiness. Profile/map edits need no DLL rebuild; the papacy lookup
-fix requires the accompanying rebuilt production DLL.
+Static review on 2026-11-02 confirmed all 33 starts, the 19 route networks,
+unique resource sites and schedules, Cape Horn and major ocean connections.
+Changed XML parses and each text entry has all five languages. The fog mesh
+reads back with six smoke layers and 0.54 vertex opacity (previously 0.40).
+The production VC7.1 build succeeded; changed runtime files and the DLL were
+synchronized to the installed mod and hash-verified.
 
-Validation on 2026-11-01: profile schema and all 99 grids checked; WorldBuilder
-plots complete and unique; original resource counts and minor spawn times preserved; changed XML
-parsed and all new text entries contain five languages. The installed production
-DLL matched the workspace. The scenario loaded through civilization selection
-into Egypt's 3000 BC starting position and opening dialog in German, with no
-Python exception logged. Civilization IV was closed afterward. No campaign or
-multiplayer run was performed.
-
-Map revision on 2026-11-02 follows the complete EU4 reference inventory above.
-The 19.42% additional passable land is an outcome of the geography, not a quota.
-Static review confirms all 33 starts, scripted minor settlements, fixed resource
-events and land resources connect to the coastal land network. Resource, village,
-city and defender counts and river edges are preserved. Feature XML and all five
-text languages parse; both new meshes read back in Civ4's NIF format. Startup of
-the revised installed scenario reached Egypt's opening position without a Python
-exception; the desert dunes rendered correctly. No turns or multiplayer campaign
-were run by the agent. The game was left open at the user's request.
+The previous revision loaded into Egypt's opening position in German. That is
+not runtime validation of this revision. No new game, campaign, observer test or
+multiplayer validation was run for these changes. Fixed travel distances,
+historical objectives and army sizes have not been rebalanced for the larger map.

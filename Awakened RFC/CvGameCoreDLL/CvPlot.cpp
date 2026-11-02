@@ -54,6 +54,7 @@ CvPlot::CvPlot()
 	m_apaiInvisibleVisibilityCount = NULL;
 	
 	m_pFeatureSymbol = NULL;
+	m_pImpassableSymbol = NULL;
 	m_pArchiveOutputSymbol = NULL;
 	m_pHuntingHerdSymbol = NULL;
 	m_pPlotBuilder = NULL;
@@ -96,6 +97,7 @@ void CvPlot::uninit()
 	SAFE_DELETE_ARRAY(m_szScriptData);
 
 	gDLL->getFeatureIFace()->destroy(m_pFeatureSymbol);
+	gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
 	gDLL->getFeatureIFace()->destroy(m_pArchiveOutputSymbol);
 	gDLL->getFeatureIFace()->destroy(m_pHuntingHerdSymbol);
 	if(m_pPlotBuilder)
@@ -4021,7 +4023,10 @@ bool CvPlot::isImpassable() const
 		return false;
 	}
 
-	return ((getFeatureType() == NO_FEATURE) ? GC.getTerrainInfo(getTerrainType()).isImpassable() : GC.getFeatureInfo(getFeatureType()).isImpassable());
+	// Vegetation must not cancel a terrain barrier (Large World uses normal
+	// forests/jungles over impassable terrain, with a separate fog display).
+	return GC.getTerrainInfo(getTerrainType()).isImpassable() ||
+		(getFeatureType() != NO_FEATURE && GC.getFeatureInfo(getFeatureType()).isImpassable());
 }
 
 
@@ -5491,6 +5496,7 @@ void CvPlot::setTerrainType(TerrainTypes eNewValue, bool bRecalculate, bool bReb
 			//Update terrain graphics
 			gDLL->getEngineIFace()->RebuildPlot(getX_INLINE(), getY_INLINE(),false,true);
 			updateRouteSymbol(true, true);
+			updateFeatureSymbol(true);
 			//gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true); //minimap does a partial update
 			//gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 		}
@@ -8049,6 +8055,13 @@ void CvPlot::updateFeatureSymbolVisibility()
 		return;
 	}
 
+	if (m_pImpassableSymbol != NULL)
+	{
+		const TeamTypes eTeam = GC.getGameINLINE().getActiveTeam();
+		gDLL->getFeatureIFace()->Hide(m_pImpassableSymbol,
+			eTeam == NO_TEAM || !isRevealed(eTeam, true));
+	}
+
 	if (m_pFeatureSymbol != NULL)
 	{
 		bool bVisible = isRevealed(GC.getGameINLINE().getActiveTeam(), true);
@@ -8080,6 +8093,30 @@ void CvPlot::updateFeatureSymbol(bool bForce)
 	}
 
 	eFeature = getFeatureType();
+
+	// Display-only second feature: never replaces vegetation or enters saves.
+	// Ice uses its ordinary artwork; peaks already explain their own barrier.
+	const bool bFog = !isWater() && !isPeak() && getTerrainType() != NO_TERRAIN &&
+		GC.getTerrainInfo(getTerrainType()).isImpassable();
+	if (!bFog)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
+	}
+	else
+	{
+		const FeatureTypes eFog = (FeatureTypes)GC.getInfoTypeForString("FEATURE_IMPASSABLE");
+		if (eFog != NO_FEATURE)
+		{
+			if (bForce || m_pImpassableSymbol == NULL)
+			{
+				gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
+				m_pImpassableSymbol = gDLL->getFeatureIFace()->createFeature();
+				gDLL->getFeatureIFace()->init(m_pImpassableSymbol, 0, 0, eFog, this);
+			}
+			else gDLL->getFeatureIFace()->updatePosition(m_pImpassableSymbol);
+			updateFeatureSymbolVisibility();
+		}
+	}
 
 	gDLL->getEngineIFace()->RebuildTileArt(m_iX,m_iY);
 

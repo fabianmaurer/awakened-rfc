@@ -42,6 +42,10 @@ def width():
     return _profile().WIDTH
 
 
+def profile_name():
+    return _name
+
+
 def height():
     return _profile().HEIGHT
 

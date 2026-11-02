@@ -1,4 +1,4 @@
-﻿"""Build three tinted fog features from Civilization IV's animated fallout smoke.
+"""Build a neutral impassable overlay from Civ4's animated fallout smoke.
 
 Run with .venv-art/Scripts/python.exe. Reads the locally installed game's art
 through the existing Assets helper. Derived assets are for use with Civ4.
@@ -14,9 +14,7 @@ OUT = ROOT / 'Awakened RFC/Assets/Art/Terrain/Features/Wasteland'
 SOURCE = 'base:Art/Effects/cities_irradiated/fx_cities_iradiated.nif'
 TEXTURE = 'Art/Terrain/Features/Wasteland/FogSmoke.dds'
 FOGS = (
-    ('DesertFog.nif', (1., .62, .25)),
-    ('IceFog.nif', (.66, .86, 1.)),
-    ('JungleFog.nif', (.16, .42, .18)),
+    ('ImpassableFog.nif', (.55, .57, .56)),
 )
 
 
@@ -41,12 +39,16 @@ def main():
         root.name = filename.removesuffix('.nif').encode('ascii')
         for block in root.tree():
             if isinstance(block, N.NiMaterialProperty):
-                block.name = b'Wilderness fog'
+                block.name = b'Impassable fog'
                 block.emissive_color.r, block.emissive_color.g, block.emissive_color.b = tint
                 block.specular_color.r = block.specular_color.g = block.specular_color.b = 0
                 block.glossiness = 0
             elif isinstance(block, N.NiSourceTexture):
                 block.file_name = TEXTURE.encode('ascii')
+            elif isinstance(block, N.NiTriShapeData):
+                # 35% denser, preserving soft edges and vegetation beneath it.
+                for color in block.vertex_colors:
+                    color.a = min(1., color.a * 1.35)
         with (OUT / filename).open('wb') as handle:
             data.write(handle)
         print(OUT / filename)
