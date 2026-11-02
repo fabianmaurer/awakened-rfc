@@ -417,7 +417,7 @@ class Barbs:
                 if (iGameTurn == con.i450AD):
                         CyInterface().addMessage(con.iIndia, True, con.iDuration,
                                 CyTranslator().getText("TXT_KEY_HUNA_INVASION_WARNING", ()),
-                                "", 0, "", ColorTypes(con.iOrange), 88, 40, True, True)
+                                "", 0, "", ColorTypes(con.iOrange), geo.value('Barbs.hunaWarning')[0], geo.value('Barbs.hunaWarning')[1], True, True)
                         return
 
                 # Punjab side of the mountains: prefer unclaimed land, then
@@ -497,6 +497,8 @@ class Barbs:
 
         def checkRegion(self, tCity):
                 cityPlot = gc.getMap().plot(tCity[0], tCity[1])
+                if cityPlot.isNone() or cityPlot.isWater() or cityPlot.isPeak() or cityPlot.isImpassable():
+                        return (False, -1)
                 iNumUnitsInAPlot = cityPlot.getNumUnits()
 ##                print iNumUnitsInAPlot
                 

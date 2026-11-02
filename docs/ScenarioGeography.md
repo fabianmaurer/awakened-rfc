@@ -1,8 +1,9 @@
 # Scenario geography
 
 WorldBuilder scenarios select a geography profile through `SCENARIOS` in
-`Assets/Python/ScenarioGeography.py`. All five existing start dates explicitly
-select `Earth124x68`; selection is by scenario filename, not map dimensions or
+`Assets/Python/ScenarioGeography.py`. The five original start dates explicitly
+select `Earth124x68`; the alternative large 3000 BC start selects `Earth160x88`
+([map details](LargeWorld.md)). Selection is by scenario filename, not map dimensions or
 start turn. A copied or renamed scenario needs its own registry entry.
 
 Profiles live in `Assets/Python/ScenarioGeographyData`. They supply:
@@ -10,7 +11,7 @@ Profiles live in `Assets/Python/ScenarioGeographyData`. They supply:
 - Grid width and height, settlement preferences, war targets and city-name maps.
 - Capitals, birth-flip areas and exceptions, stability and resurrection regions.
 - Coordinates and bounds used by historical events, resource changes, regional
-  units, religious mechanics, wonders and the associated UI.
+  units, religious mechanics, wonders, unique powers and the associated UI.
 - Native continent subdivisions, Caliphate regions and crusade fronts.
 
 Civ4 imports files in this directory by flat module name, not as a Python
@@ -19,8 +20,8 @@ VALUES`; avoid `ScenarioGeographyData.` prefixes.
 
 The scenario's authored cities, units and diplomacy remain in its WorldBuilder
 file. Date-specific setup modules and generated scenario data remain responsible
-for their own starting positions and rules. This change creates no larger map
-and does not automatically adapt historical setup to a new geography.
+for their own starting positions and rules. Profiles do not automatically adapt
+historical setup to a new geography.
 
 ## Adding a different world map
 

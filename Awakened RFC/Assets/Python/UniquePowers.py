@@ -23,6 +23,7 @@
 #America HERE + in CvCity::getCulturePercentAnger()
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers   
 import Popup
@@ -79,8 +80,8 @@ pMongolia = gc.getPlayer(iMongolia)
 teamMongolia = gc.getTeam(pMongolia.getTeam())
 
 
-tRussianTopLeft = (65, 49)
-tRussianBottomRight = (121, 65)
+geo.bind(globals(), 'tRussianTopLeft', 'UniquePowers.tRussianTopLeft')
+geo.bind(globals(), 'tRussianBottomRight', 'UniquePowers.tRussianBottomRight')
 
 
 iNumReligions = con.iNumReligions

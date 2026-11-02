@@ -560,7 +560,7 @@ class Victory:
                 elif (iPlayer == iBabylonia):
                         if (pBabylonia.isAlive()):
                                 if (iGameTurn == i850BC):
-                                        bestCity = self.calculateTopCityPopulation(76, 40)                                        
+                                        bestCity = self.calculateTopCityPopulation(geo.value('Victory.bound_1'), geo.value('Victory.bound_2'))
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
                                                 if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_1') and bestCity.getY() == geo.value('Victory.bound_2')):
@@ -570,7 +570,7 @@ class Victory:
                                         else:
                                                 self.setGoal(iBabylonia, 1, 0)
                                 if (iGameTurn == i700BC):           
-                                        bestCity = self.calculateTopCityCulture(76, 40)                                        
+                                        bestCity = self.calculateTopCityCulture(geo.value('Victory.bound_3'), geo.value('Victory.bound_4'))
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
                                                 if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_3') and bestCity.getY() == geo.value('Victory.bound_4')):
@@ -970,7 +970,7 @@ class Victory:
                         if (pFrance.isAlive()):
                             
                                 if (iGameTurn == i1700AD):
-                                        bestCity = self.calculateTopCityCulture(55, 50)
+                                        bestCity = self.calculateTopCityCulture(geo.value('Victory.bound_7'), geo.value('Victory.bound_8'))
                                         if (bestCity != -1):
                                                 if (bestCity.getOwner() == iFrance and bestCity.getX() == geo.value('Victory.bound_7') and bestCity.getY() == geo.value('Victory.bound_8')):
                                                         self.setGoal(iFrance, 0, 1)

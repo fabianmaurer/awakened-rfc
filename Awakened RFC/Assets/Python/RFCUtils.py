@@ -1042,7 +1042,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         if (pCurrent.countTotalCulture() == 0 ):
@@ -1058,7 +1058,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isWater()):
+                if (pCurrent.isWater() and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10 ):
                                 iClean = 0
                                 for x in range(tCoords[0] - 1, tCoords[0] + 2):        # from x-1 to x+1
@@ -1078,7 +1078,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isWater()):
+                if (pCurrent.isWater() and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10):
                                 if (pCurrent.countTotalCulture() == 0 ):
                                         iClean = 0
@@ -1098,7 +1098,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.getTerrainType() == con.iCoast):
+                if (pCurrent.getTerrainType() == con.iCoast and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10 ):
                                 if (pCurrent.countTotalCulture() == 0 ):
                                         iClean = 0
@@ -1120,7 +1120,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         iClean = 0
@@ -1142,7 +1142,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         if (pCurrent.getOwner() in argsList ):
@@ -1157,7 +1157,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         iClean = 0
@@ -1249,7 +1249,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                             if (pCurrent.getOwner() == argsList ):

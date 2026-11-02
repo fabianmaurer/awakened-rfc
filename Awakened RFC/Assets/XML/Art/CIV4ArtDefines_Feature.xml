@@ -792,15 +792,68 @@
 				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
 			</FeatureVariety>
 		</FeatureArtInfo>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-</FeatureArtInfos>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_DEEP_DESERT</Type>
+			<bAnimated>1</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/DesertFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_DEEP_JUNGLE</Type>
+			<bAnimated>1</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/Jungle.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,5,3</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/JungleFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/TerrainFeatures/Jungle.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,5,3</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_FROZEN_WILDERNESS</Type>
+			<bAnimated>1</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/Ice.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,4,3</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/IceFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/TerrainFeatures/Ice.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,4,3</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+	</FeatureArtInfos>
 </Civ4ArtDefines>

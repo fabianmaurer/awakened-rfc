@@ -1734,8 +1734,9 @@ class RiseAndFall:
                 africaID = gc.getMap().plot(*geo.value('RiseAndFall.plot_5')).area().getID()
                 if (gc.getMap().plot(*geo.value('RiseAndFall.plot_6')).area().getID() == africaID):
                         return
-                for iLoopX in range(48,63+1):
-                        for iLoopY in range(22,33+1):
+                tTopLeft, tBottomRight = geo.value('RiseAndFall.processAfrica.bounds')
+                for iLoopX in range(tTopLeft[0], tBottomRight[0]+1):
+                        for iLoopY in range(tTopLeft[1], tBottomRight[1]+1):
                                 pCurrent = gc.getMap().plot(iLoopX, iLoopY)
                                 if (not pCurrent.isWater()):
                                         pCurrent.setArea(africaID)                
@@ -2573,11 +2574,13 @@ class RiseAndFall:
                                         self.setFirstContactConquerors(iIndex, 1)
                                         print ("1st contact", iNewWorldCiv, iOldWorldCiv)
                                         if (iNewWorldCiv == iInca):
-                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_23')).setFeatureType(-1, 0)
-                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_24')).setFeatureType(-1, 0)
-                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_25')).setPlotType(PlotTypes.PLOT_HILLS, True, True)
+                                                for tPlot in geo.value('RiseAndFall.conquerorFeaturePlots'):
+                                                        gc.getMap().plot(*tPlot).setFeatureType(-1, 0)
+                                                for tPlot in geo.value('RiseAndFall.conquerorHillPlots'):
+                                                        gc.getMap().plot(*tPlot).setPlotType(PlotTypes.PLOT_HILLS, True, True)
                                         if (iNewWorldCiv == iAztecs):
-                                                gc.getMap().plot(*geo.value('RiseAndFall.plot_26')).setPlotType(PlotTypes.PLOT_HILLS, True, True)  #debug
+                                                for tPlot in geo.value('RiseAndFall.aztecHillPlots'):
+                                                        gc.getMap().plot(*tPlot).setPlotType(PlotTypes.PLOT_HILLS, True, True)
 
                                             
                                         #print ("tContactZoneTL", tContactZoneTL, "tContactZoneBR", tContactZoneBR)
@@ -2609,9 +2612,9 @@ class RiseAndFall:
                                                                 pCurrent = gc.getMap().plot( x, y )
                                                                 #print ("XY", x, y)
                                                                 if (pCurrent.getOwner() == iNewWorldCiv and not pCurrent.isCity()):
-                                                                        if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                                                                        if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                                                                                 #print ("hills or flat")
-                                                                                if ((pCurrent.getFeatureType() != con.iJungle) and (pCurrent.getTerrainType() != con.iMarsh) and not (x == geo.value('RiseAndFall.bound_1') and y == geo.value('RiseAndFall.bound_2'))): #(25,32) is sometimes blocked
+                                                                                if ((pCurrent.getFeatureType() != con.iJungle) and (pCurrent.getTerrainType() != con.iMarsh) and (x, y) not in geo.value('RiseAndFall.conquerorBlockedPlots')):
                                                                                         iDistance = utils.calculateDistance(x, y, tContactPlot[0], tContactPlot[1])
                                                                                         #print ("Distance", x, y, iDistance)
                                                                                         if (iDistance < iMinDistance):

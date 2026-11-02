@@ -280,7 +280,7 @@ class Slavery:
 				for dy in range(-radius, radius + 1):
 					if max(abs(dx), abs(dy)) != radius: continue
 					plot = gc.getMap().plot(city.getX() + dx, city.getY() + dy)
-					if not plot.isNone() and not plot.isWater() and not plot.isPeak() and not plot.isCity():
+					if not plot.isNone() and not plot.isWater() and not plot.isPeak() and not plot.isImpassable() and not plot.isCity():
 						return plot
 		return city.plot()
 

@@ -9612,7 +9612,7 @@ bool CvGame::isCouncilActive() const
 
 CvCity* CvGame::getPapalRome() const
 {
-	CvPlot* pPlot = GC.getMapINLINE().plot(60, 44);
+	CvPlot* pPlot = GC.getMapINLINE().plot(scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1));
 	return pPlot ? pPlot->getPlotCity() : NULL;
 }
 

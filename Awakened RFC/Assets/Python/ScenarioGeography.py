@@ -7,6 +7,7 @@ from CvPythonExtensions import CyMap
 # Selection is explicit: a map of the same size need not have the same geography.
 SCENARIOS = {
     'start 1 - 3000 bc.civbeyondswordwbsave': 'Earth124x68',
+    'start 1b - 3000 bc - large world.civbeyondswordwbsave': 'Earth160x88',
     'start 2 - 800 bc.civbeyondswordwbsave': 'Earth124x68',
     'start 3 - 600 ad.civbeyondswordwbsave': 'Earth124x68',
     'start 3b - 900 ad.civbeyondswordwbsave': 'Earth124x68',

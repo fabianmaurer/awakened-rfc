@@ -1,0 +1,657 @@
+"""Author the alternative 3000 BC world and its static Python 2.4 geography.
+
+Run with Python 3 from any directory. Never launches Civilization IV.
+The original RFC cartography supplies coastlines; this offline conversion also
+authors terrain barriers, preserves corridors and emits independent profile data.
+"""
+from collections import Counter, deque
+from pathlib import Path
+import pprint
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).resolve().parents[1]
+MOD = ROOT / 'Awakened RFC'
+DATA = MOD / 'Assets/Python/ScenarioGeographyData'
+sys.path.insert(0, str(DATA))
+import Earth124x68 as BASE
+
+WIDTH, HEIGHT = 160, 88
+NAME = 'Earth160x88'
+TARGET = MOD / 'PublicMaps/Start 1b - 3000 BC - Large World.CivBeyondSwordWBSave'
+
+
+def axis(n, vertical=False):
+    old, new = (68, HEIGHT) if vertical else (124, WIDTH)
+    if n == old:  # Exclusive range endpoint.
+        return new
+    return int((n + .5) * new / old)
+
+
+def edge(n, vertical=False):
+    """First destination cell in a source cell (also exclusive range bounds)."""
+    old, new = (68, HEIGHT) if vertical else (124, WIDTH)
+    return max(0, min(new, (2 * n * new + old - 1) // (2 * old)))
+
+
+def footprint(point):
+    x, y = point
+    return tuple((dx, dy) for dx in range(edge(x), edge(x + 1))
+                 for dy in range(edge(y, True), edge(y + 1, True)))
+
+
+def rectangle(value):
+    west, south, east, north = value
+    return (edge(west), edge(south, True), edge(east + 1) - 1,
+            edge(north + 1, True) - 1)
+
+
+def corners(value, upper=False):
+    if not value:
+        return value
+    if len(value) == 2 and isinstance(value[0], int):
+        return type(value)(edge(n + int(upper), i == 1) - int(upper)
+                           for i, n in enumerate(value))
+    return type(value)(corners(v, upper) for v in value)
+
+
+def boxes(value):
+    if len(value) == 2 and len(value[0]) == 2 and isinstance(value[0][0], int):
+        return (corners(value[0]), corners(value[1], True))
+    return tuple(boxes(v) for v in value)
+
+
+def coordinate(value):
+    """Only geographic sequences; turn numbers and weights stay untouched."""
+    kind = type(value)
+    if not value:
+        return value
+    if len(value) in (2, 3, 4) and all(isinstance(n, int) for n in value[:2]):
+        if len(value) == 3:  # Named city anchor.
+            return kind((axis(value[0]), axis(value[1], True), value[2]))
+        if len(value) == 4:
+            return kind(rectangle(value))
+        return kind(axis(n, i % 2 == 1) for i, n in enumerate(value))
+    return kind(coordinate(n) for n in value)
+
+
+# Scalar keys do not encode their axis. Keep this explicit and reviewable.
+PY_Y = {
+    'Arctic': {4, 6, 10, 12}, 'RiseAndFall': {2},
+    'Korea': {2, 4}, 'Victory': {2, 4, 8}, 'Congresses': {3, 4},
+    'CvRFCEventHandler': {2}, 'RomanEmpire': set(range(2, 15, 2)),
+}
+PY_LOWER = {'Arctic': set(range(7, 13)), 'Korea': {3, 4},
+            'RomanEmpire': set(range(9, 15)), 'Congresses': {2}}
+PY_UPPER = {'Arctic': set(range(1, 7)), 'Korea': {1, 2},
+            'RomanEmpire': set(range(3, 9)), 'Congresses': {1, 3, 4}}
+RANGE_Y = {'Arctic.range_13', 'Arctic.range_15', 'NativeAmerica.range_2',
+           'Korea.range_6', 'RiseAndFall.range_4', 'Barbs.range_2',
+           'Stability.range_2', 'CvRFCEventHandler.range_6'}
+BOX_KEYS = {'Korea.CITY_NAME_AREA', 'Korea.cityNameMap.areas_1',
+            'Caliphate.configureRegions.bounds_1', 'Caliphate.configureRegions.cores_1',
+            'Barbs.checkAmericanRaids.lRegions_1', 'RiseAndFall.processAfrica.bounds'}
+FOOTPRINT_KEYS = {'RiseAndFall.conquerorFeaturePlots', 'RiseAndFall.conquerorHillPlots',
+                  'RiseAndFall.aztecHillPlots', 'RiseAndFall.conquerorBlockedPlots',
+                  'Victory.tMediterraneanExceptions'}
+NATIVE_Y = {
+    'CvCaliphate': {3, 4, 6, 9, 10, 13, 14},
+    'CvCity': set(range(2, 19, 2)) | set(range(19, 36)) |
+              {38, 39, 41, 44, 45, 48, 49, 52, 53},
+    'CvGame': {3, 4, 6},
+    'CvPlayer': {n for n in range(1, 33) if (n - 1) % 4 >= 2} |
+                {34, 36, 38, 40, 42},
+    'CvPlayerAI': {3, 4, 7, 8},
+    'CvUnitAI': {2, 4, 6, 8, 10, 12, 13, 15, 16, 18, 20,
+                 22, 24, 26, 28, 30, 32, 34},
+}
+NATIVE_UPPER = {
+    'CvCaliphate': {2, 4, 5, 8, 10, 12, 14},
+    'CvCity': {35, 37, 39, 41, 43, 45, 47, 49, 51, 53},
+    'CvGame': {2, 4},
+    'CvPlayer': set(range(2, 33, 2)) | {33, 34},
+    'CvPlayerAI': {2, 4, 6, 8, 9},
+    'CvUnitAI': {1, 2, 3, 4, 5, 6, 7, 8, 15, 17, 18, 19, 20, 33},
+}
+NATIVE_LOWER = {
+    'CvCaliphate': {1, 3, 6, 7, 9, 11, 13},
+    'CvCity': set(range(19, 35)) | {36, 38, 40, 42, 44, 46, 48, 50, 52},
+    'CvGame': {1, 3, 5, 6},
+    'CvPlayer': set(range(1, 33, 2)),
+    'CvPlayerAI': {1, 3, 5, 7},
+    'CvUnitAI': {13, 14, 16, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 34},
+}
+
+
+def scalar_bound(n, vertical, number, module, lower, upper):
+    if number in upper.get(module, ()):
+        return edge(n + 1, vertical) - 1
+    if number in lower.get(module, ()):
+        return edge(n, vertical)
+    return axis(n, vertical)  # Equality against an exact city/plot anchor.
+
+
+def values():
+    result = {}
+    for key, value in BASE.VALUES.items():
+        if key in ('CityNameManager.tCityMap', 'AIWars.tWarsMap'):
+            continue
+        module, leaf = key.split('.', 1)
+        if key in ('Consts.tPatienceThreshold', 'Consts.tHire'):
+            result[key] = value
+        elif key in FOOTPRINT_KEYS:
+            result[key] = tuple(p for point in value for p in footprint(point))
+        elif key in ('Consts.tExceptions', 'Consts.tNormalAreasSubtract'):
+            result[key] = tuple(tuple(p for point in ((plane,) if plane and isinstance(plane[0], int) else plane)
+                                      for p in footprint(point))
+                                for plane in value)
+        elif key in BOX_KEYS:
+            result[key] = boxes(value)
+        elif key == 'UniquePowers.tRussianTopLeft':
+            result[key] = corners(value)
+        elif key == 'UniquePowers.tRussianBottomRight':
+            result[key] = tuple(edge(n, i == 1) for i, n in enumerate(value))
+        elif re.search(r'TL(?:_\d+)?$', key):
+            result[key] = corners(value)
+        elif re.search(r'BR(?:_\d+)?$', key):
+            result[key] = corners(value, True)
+        elif '.bound_' in key:
+            number = int(leaf.split('_')[-1])
+            result[key] = scalar_bound(value, number in PY_Y[module], number,
+                                       module, PY_LOWER, PY_UPPER)
+        elif '.range_' in key:
+            # Correct the reference profile's obsolete 168-row loop to this map.
+            result[key] = (0, HEIGHT) if key == 'RiseAndFall.range_4' else tuple(
+                edge(n, key in RANGE_Y) for n in value)
+        elif module == 'Barbs' and leaf.startswith('l') and len(value) == 4 and isinstance(value[0], int):
+            result[key] = [axis(value[0]), axis(value[1], True)] + value[2:]
+        elif key == 'Caliphate.REGIONS':
+            result[key] = tuple((v[0],) + rectangle(v[1:]) for v in value)
+        else:
+            result[key] = coordinate(value)
+    return result
+
+
+def native():
+    result = {}
+    for key, value in BASE.NATIVE.items():
+        module, leaf = key.split('.', 1)
+        if key == 'Caliphate.realmRegions':
+            result[key] = [n for i in range(0, len(value), 5)
+                           for n in (value[i],) + rectangle(value[i + 1:i + 5])]
+        elif key in ('Crusades.regions', 'Arabia.egypt'):
+            result[key] = [n for i in range(0, len(value), 4)
+                           for n in rectangle(value[i:i + 4])]
+        elif key in ('World.rome', 'World.mecca'):
+            result[key] = [axis(n, i % 2 == 1) for i, n in enumerate(value)]
+        elif 'iAmericanEdge' in key:
+            result[key] = [edge(n + 1) - 1 for n in value]
+        elif 'iAsianEdge' in key:
+            result[key] = [edge(n) for n in value]
+        elif key == 'Caliphate.capitalX':
+            result[key] = [axis(n) for n in value]
+        elif key == 'Caliphate.capitalY':
+            result[key] = [axis(n, True) for n in value]
+        else:
+            number = int(leaf.split('_')[-1])
+            vertical = (leaf.startswith('y_') or
+                        (leaf.startswith('bound_') and number in NATIVE_Y[module]) or
+                        (leaf.startswith('founding_') and number >= 3))
+            if leaf.startswith('bound_'):
+                result[key] = [scalar_bound(n, vertical, number, module, NATIVE_LOWER, NATIVE_UPPER)
+                               for n in value]
+            else:
+                result[key] = [axis(n, vertical) for n in value]
+    return result
+
+
+def compact(planes):
+    result, shared = [], {}
+    xs = [min(123, int((x + .5) * 124 / WIDTH)) for x in range(WIDTH)]
+    ys = [min(67, int((y + .5) * 68 / HEIGHT)) for y in range(HEIGHT)]
+    for plane in planes:
+        rows = tuple(tuple(plane[67 - ys[HEIGHT - 1 - y]][x] for x in xs)
+                     for y in range(HEIGHT))
+        if rows in shared:
+            result.append(shared[rows])
+            continue
+        shared[rows] = len(result)
+        default = Counter(n for row in rows for n in row).most_common(1)[0][0]
+        spans = {}
+        for y, row in enumerate(rows):
+            x = 0
+            while x < WIDTH:
+                end = x
+                while end + 1 < WIDTH and row[end + 1] == row[x]:
+                    end += 1
+                if row[x] != default:
+                    spans.setdefault(row[x], []).append((y, x, end))
+                x = end + 1
+        result.append((default, tuple((n, tuple(runs)) for n, runs in sorted(spans.items()))))
+    return tuple(result)
+
+
+def write_data(path, entries):
+    text = '# Generated by tools/generate_large_world.py. Python 2.4.\n'
+    for key, value in entries.items():
+        text += key + ' = ' + pprint.pformat(value, width=110, sort_dicts=False) + '\n'
+    path.write_text(text, encoding='ascii')
+
+
+# EU4-inspired strategic wastelands in RFC's compressed coordinates. These are
+# regional barriers, including sparse/cleared cells inside a forest or desert;
+# source vegetation and every minor river must not perforate the interiors.
+# See docs/LargeWorld.md for the complete EU4 reference-to-region review.
+WILDS = (
+    ('Sahara: El Djouf, central and east', 'desert', ((47, 31), (49, 36), (55, 37), (63, 36), (69, 36), (70, 30), (65, 28), (57, 29), (51, 30))),
+    ('Central Africa and northern Congo', 'rainforest', ((57, 24), (58, 28), (63, 30), (69, 29), (71, 26), (68, 21), (62, 21), (59, 23))),
+    ('Guinea interior', 'rainforest', ((52, 26), (54, 29), (58, 29), (59, 26), (56, 24), (53, 25))),
+    ('Imatong', 'rainforest', ((69, 25), (70, 28), (72, 28), (73, 25), (71, 24))),
+    ('Urgoma', 'mountain', ((73, 25), (74, 28), (76, 27), (76, 24), (74, 23))),
+    ('Namib', 'desert', ((61, 13), (61, 18), (64, 20), (65, 17), (64, 12))),
+    ('Kalahari', 'desert', ((64, 14), (64, 19), (67, 21), (70, 19), (69, 15), (67, 13))),
+    ('Western and eastern Amazonas', 'rainforest', ((27, 24), (28, 29), (33, 31), (39, 30), (42, 26), (40, 21), (34, 20), (29, 22))),
+    ('Guyana interior', 'rainforest', ((34, 29), (35, 32), (39, 33), (42, 30), (40, 27), (37, 27))),
+    ('Great Basin', 'desert', ((11, 45), (12, 50), (16, 51), (18, 48), (16, 44), (13, 43))),
+    ('Columbia and Rocky Mountains', 'mountain', ((8, 51), (10, 58), (13, 60), (17, 56), (18, 51), (15, 47), (12, 48))),
+    ('Alaska', 'boreal', ((3, 59), (5, 65), (10, 66), (14, 63), (12, 58), (7, 57))),
+    ('Northwest Territories', 'boreal', ((13, 56), (14, 63), (19, 66), (24, 64), (24, 58), (19, 54))),
+    ('Nunavut and Baffin', 'polar', ((23, 59), (25, 65), (31, 67), (39, 67), (38, 62), (31, 58))),
+    ('Weagamow', 'boreal', ((21, 52), (22, 58), (28, 59), (30, 55), (27, 51))),
+    ('Ungava', 'boreal', ((29, 55), (30, 62), (35, 64), (39, 61), (37, 55), (33, 53))),
+    ('Adirondacks', 'mountain', ((28, 49), (28, 51), (30, 52), (31, 50), (30, 49))),
+    ('Greenland', 'ice', ((37, 55), (40, 56), (43, 61), (42, 66), (38, 67), (36, 62))),
+    ('Scandes', 'mountain', ((59, 57), (59, 62), (62, 65), (65, 63), (64, 58), (62, 56))),
+    ('Alps west and east', 'mountain', ((56, 46), (58, 49), (62, 49), (64, 47), (61, 46))),
+    ('Carpathians', 'mountain', ((65, 49), (67, 52), (70, 51), (70, 48), (68, 47))),
+    ('Caucasus', 'mountain', ((74, 45), (76, 47), (80, 47), (81, 45), (78, 44))),
+    ('High Atlas', 'mountain', ((49, 35), (51, 38), (54, 38), (56, 36), (53, 34))),
+    ('Hakkari', 'mountain', ((76, 42), (77, 45), (80, 45), (81, 43), (79, 41))),
+    ('Syrian desert', 'desert', ((76, 35), (77, 38), (80, 38), (81, 35), (79, 34))),
+    ('Rub al Khali', 'desert', ((77, 29), (76, 32), (79, 35), (83, 34), (85, 31), (82, 28))),
+    ('Nenets and Yamal', 'boreal', ((69, 61), (72, 66), (84, 67), (88, 63), (84, 59), (77, 59))),
+    ('Western Siberia', 'boreal', ((81, 56), (81, 63), (86, 66), (92, 64), (93, 58), (87, 55))),
+    ('Central Siberia', 'boreal', ((91, 58), (90, 65), (99, 67), (106, 65), (106, 59), (99, 57))),
+    ('Eastern Siberia', 'boreal', ((105, 59), (105, 65), (115, 67), (123, 65), (122, 59), (115, 57))),
+    ('Tian Shan', 'mountain', ((85, 47), (87, 51), (93, 51), (95, 48), (90, 46))),
+    ('Pamir', 'mountain', ((85, 43), (85, 47), (88, 49), (91, 46), (89, 42))),
+    ('Taklamakan', 'desert', ((90, 45), (91, 49), (96, 49), (99, 47), (97, 44), (93, 44))),
+    ('Himalaya and Arunachal', 'mountain', ((89, 41), (91, 44), (97, 44), (102, 42), (101, 40), (96, 41), (92, 40))),
+    ('Changtang', 'mountain', ((92, 44), (92, 47), (98, 48), (101, 46), (99, 43), (96, 43))),
+    ('Qilian', 'mountain', ((96, 47), (97, 51), (100, 52), (103, 49), (102, 46))),
+    ('Suleiman Range', 'mountain', ((84, 37), (85, 41), (88, 43), (90, 41), (88, 37), (86, 36))),
+    ('Changbai', 'mountain', ((108, 50), (108, 53), (111, 55), (112, 52), (111, 49))),
+    ('Arakan', 'mountain', ((96, 34), (97, 38), (99, 40), (100, 37), (98, 33))),
+    ('Naga Hills', 'mountain', ((98, 39), (98, 41), (101, 42), (102, 40), (100, 38))),
+    ('Gaoligong', 'mountain', ((99, 40), (100, 44), (103, 44), (104, 41), (102, 39))),
+    ('Annamite Mountains', 'mountain', ((103, 33), (103, 37), (105, 39), (106, 36), (105, 32))),
+    ('Borneo interior', 'rainforest', ((104, 25), (105, 29), (108, 29), (110, 27), (109, 24), (106, 24))),
+    ('Papua interior', 'rainforest', ((114, 24), (116, 28), (120, 29), (123, 27), (122, 24), (118, 23))),
+    ('Western and central Australia', 'desert', ((102, 13), (103, 20), (108, 23), (115, 22), (118, 17), (116, 11), (108, 10))),
+)
+# Open strategic routes through the surrounding barriers. These are traversable
+# corridors, not prebuilt roads. Coordinates follow RFC's compressed projection.
+CORRIDORS = (
+    ((53, 28), (54, 32), .55), ((54, 32), (55, 37), .55), # western oasis route
+    ((60, 28), (61, 33), .55), ((61, 33), (60, 37), .55), # Djado/Fezzan route
+    ((69, 24), (69, 37), .85),                            # Nile
+    ((73, 30), (75, 37), .65), ((75, 37), (77, 41), .65), # western Arabia/Levant
+    ((78, 38), (86, 42), .65),                           # Persia
+    ((83, 47), (90, 49), .6), ((90, 49), (102, 49), .6), # northern Silk Road
+    ((90, 44), (99, 45), .55),                           # southern Tarim rim
+    ((86, 41), (90, 40), .6), ((90, 40), (98, 37), .65), # Khyber/Ganges/Bengal
+    ((25, 18), (28, 29), .65),                           # Andean approaches
+    ((28, 27), (34, 27), .55), ((34, 27), (42, 28), .55),# Amazon trunk
+    ((60, 23), (65, 23), .6), ((65, 23), (69, 24), .6), # lower Congo/lakes
+    ((11, 48), (31, 48), .7),                            # southern Canada
+    ((76, 54), (110, 54), .7),                           # southern Siberia
+)
+
+
+def line_distance(x, y, start, end):
+    ax, ay = start
+    dx, dy = end[0] - ax, end[1] - ay
+    t = max(0, min(1, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+    return ((x - ax - t * dx) ** 2 + (y - ay - t * dy) ** 2) ** .5
+
+
+def in_polygon(x, y, vertices):
+    inside = False
+    ax, ay = vertices[-1]
+    for bx, by in vertices:
+        if ((bx - ax) * (y - ay) == (by - ay) * (x - ax) and
+                min(ax, bx) <= x <= max(ax, bx) and min(ay, by) <= y <= max(ay, by)):
+            return True
+        if (ay > y) != (by > y) and x < ax + (y - ay) * (bx - ax) / (by - ay):
+            inside = not inside
+        ax, ay = bx, by
+    return inside
+
+
+def barrier_biome(fields, kind):
+    if kind in ('desert', 'rainforest', 'boreal', 'polar', 'ice'):
+        return True
+    if kind == 'mountain':
+        # Retain lowland approaches; existing peaks already form most ranges.
+        return 'PlotType=1' in fields or 'TerrainType=TERRAIN_SNOW' in fields
+    raise ValueError('Unknown wilderness biome: ' + kind)
+
+
+def make_map(profile_values):
+    source = (MOD / 'PublicMaps/Start 1 - 3000 BC.CivBeyondSwordWBSave').read_text(encoding='utf-8-sig')
+    header = source.split('BeginPlot', 1)[0]
+    blocks, placements = {}, {}
+    for block in re.findall(r'BeginPlot\s*\n(.*?)EndPlot', source, re.S):
+        x, y = map(int, re.search(r'x=(\d+),y=(\d+)', block).groups())
+        payload = [m.group(0).strip() for m in re.finditer(r'Begin(City|Unit)\b.*?End\1', block, re.S)]
+        if payload:
+            placements[axis(x), axis(y, True)] = payload
+        block = re.sub(r'\s*Begin(?:City|Unit)\b.*?End(?:City|Unit)', '', block, flags=re.S)
+        fields = [s.strip() for s in block.splitlines() if s.strip()]
+        blocks[x, y] = fields[1:]
+    def plot_type(fields):
+        return int(next(s.split('=')[1] for s in fields if s.startswith('PlotType=')))
+    def usable(fields):
+        return plot_type(fields) in (1, 2) and not any('FEATURE_ICE' in s for s in fields)
+    baseline = sum(usable(fields) for fields in blocks.values())
+    plots, origins = {}, {}
+    for x in range(WIDTH):
+        for y in range(HEIGHT):
+            sx, sy = min(123, int((x + .5) * 124 / WIDTH)), min(67, int((y + .5) * 68 / HEIGHT))
+            fields = []
+            for s in blocks[sx, sy]:
+                # Resources and huts are retained once, not multiplied by resizing.
+                if s.startswith(('BonusType=', 'ImprovementType=')) and (x, y) != (axis(sx), axis(sy, True)):
+                    continue
+                if s.startswith(('TeamReveal=', 'Player')):
+                    continue
+                # Rivers run on cell edges: extend their length but never their width.
+                # NOfRiver means the plot is NORTH of its south-edge river.
+                if (s == 'isNOfRiver' or s.startswith('RiverWEDirection=')) and y != edge(sy, True):
+                    continue
+                if (s == 'isWOfRiver' or s.startswith('RiverNSDirection=')) and x != edge(sx + 1) - 1:
+                    continue
+                fields.append(s)
+            plots[x, y], origins[x, y] = fields, (sx, sy)
+
+    anchors = list(profile_values['Consts.tCapitals'])
+    for key, value in profile_values.items():
+        if key.startswith('Barbs.l') and len(value) == 4 and isinstance(value[0], int):
+            anchors.append(tuple(value[:2]))
+    candidates = []
+    for (x, y), fields in plots.items():
+        if not usable(fields):
+            continue
+        if any(max(abs(x - ax), abs(y - ay)) <= 2 for ax, ay in anchors):
+            continue
+        sx, sy = origins[x, y]
+        if any(line_distance(sx, sy, a, b) <= width for a, b, width in CORRIDORS):
+            continue
+        # Keep shorelines traversable; do not turn a peninsula into a wall.
+        if any(plot_type(plots.get(((x + dx) % WIDTH, y + dy), ['PlotType=3'])) == 3
+               for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1))):
+            continue
+        for name, kind, vertices in WILDS:
+            if in_polygon(sx, sy, vertices) and barrier_biome(fields, kind):
+                candidates.append((x, y, name))
+                break
+    # Fixed historical events and births stay in place. Ordinary map resources
+    # and villages inside a wasteland move to nearby accessible fringes instead
+    # of punching dozens of unrelated tunnels through each regional barrier.
+    protected = set(placements)
+    for key in FOOTPRINT_KEYS - {'Victory.tMediterraneanExceptions', 'RiseAndFall.conquerorBlockedPlots'}:
+        protected.update(profile_values[key])
+    event_sites = {tuple(value) for key, value in profile_values.items()
+                   if key.startswith('Resources.plot_')}
+    event_sites.update(anchors)
+    candidate_sites = {(x, y) for x, y, region in candidates}
+    safe = {pos for pos, fields in plots.items() if usable(fields) and pos not in candidate_sites and
+            any(plot_type(plots.get(((pos[0] + dx) % WIDTH, pos[1] + dy), ['PlotType=3'])) == 3
+                for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)))}
+    # Only connected open land is a destination: a protected capital's small
+    # clearing inside a wasteland must not count as its own access route.
+    queue = deque(safe)
+    while queue:
+        x, y = queue.popleft()
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                neighbor = ((x + dx) % WIDTH, y + dy)
+                if (neighbor in plots and neighbor not in safe and neighbor not in candidate_sites
+                        and usable(plots[neighbor])):
+                    safe.add(neighbor)
+                    queue.append(neighbor)
+    for site in sorted(event_sites):
+        protected.add(site)
+        if not usable(plots[site]):  # The California fish event is at sea.
+            continue
+        queue, previous = deque([site]), {site: None}
+        reached = None
+        while queue:
+            pos = queue.popleft()
+            if pos in safe:
+                reached = pos
+                break
+            x, y = pos
+            for neighbor in (((x + dx) % WIDTH, y + dy)
+                             for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dx or dy):
+                if neighbor not in previous and neighbor in plots and usable(plots[neighbor]):
+                    previous[neighbor] = pos
+                    queue.append(neighbor)
+        if reached is None:
+            raise ValueError('No land access to historical resource event at ' + str(site))
+        while reached is not None:
+            protected.add(reached)
+            safe.add(reached)
+            reached = previous[reached]
+    candidates = [entry for entry in candidates if entry[:2] not in protected]
+    barrier_sites = {(x, y) for x, y, region in candidates}
+    # Include newly opened historical access paths when relocating resources.
+    accessible = safe | protected
+    bonus_rules = {}
+    for node in ET.parse(MOD / 'Assets/XML/Terrain/CIV4BonusInfos.xml').getroot().iter():
+        if node.tag.split('}')[-1] != 'BonusInfo':
+            continue
+        tags = dict((child.tag.split('}')[-1], child) for child in node)
+        terrains = {child.text for child in tags['TerrainBooleans'].iter()
+                    if child.tag.split('}')[-1] == 'TerrainType'}
+        bonus_rules[tags['Type'].text] = (terrains, tags['bHills'].text == '1', tags['bFlatlands'].text == '1')
+    relocations = []
+    for pos, fields in plots.items():
+        if pos not in barrier_sites:
+            continue
+        for field in list(fields):
+            if not ((field.startswith('BonusType=') and field != 'BonusType=BONUS_SWAMP') or
+                    field.startswith('ImprovementType=')):
+                continue
+            prefix = field.split('=')[0] + '='
+            is_bonus = prefix == 'BonusType='
+            terrain = next(s for s in fields if s.startswith('TerrainType='))
+            feature = next((s for s in fields if s.startswith('FeatureType=')), None)
+            destinations = []
+            for target, target_fields in plots.items():
+                if target not in accessible or target in barrier_sites or target in placements or not usable(target_fields):
+                    continue
+                if any(s.startswith(prefix) for s in target_fields):
+                    continue
+                dx, dy = abs(target[0] - pos[0]), abs(target[1] - pos[1])
+                distance = min(dx, WIDTH - dx) ** 2 + dy ** 2
+                if distance > 22 ** 2:
+                    continue
+                if (origins[pos][0] < 44) != (origins[target][0] < 44):
+                    continue
+                if is_bonus:
+                    allowed, hills, flat = bonus_rules[field.split('=')[1]]
+                    target_terrain = next(s for s in target_fields if s.startswith('TerrainType='))
+                    if target_terrain != terrain and target_terrain.split('=')[1] not in allowed:
+                        continue
+                    if plot_type(target_fields) != plot_type(fields) and not ((hills and plot_type(target_fields) == 1) or (flat and plot_type(target_fields) == 2)):
+                        continue
+                target_feature = next((s for s in target_fields if s.startswith('FeatureType=')), None)
+                water_feature = lambda s: s and ('FEATURE_OASIS' in s or 'FEATURE_FLOOD_PLAINS' in s)
+                if is_bonus and (water_feature(feature) or water_feature(target_feature)) and feature != target_feature:
+                    continue
+                penalty = 0
+                if is_bonus:
+                    penalty += 10 if feature != target_feature else 0
+                    penalty += 25 if terrain not in target_fields else 0
+                    penalty += 10 if plot_type(fields) != plot_type(target_fields) else 0
+                destinations.append((distance + penalty, target))
+            if not destinations:
+                raise ValueError('No nearby compatible fringe tile for %s at %s' % (field, pos))
+            target = min(destinations)[1]
+            target_fields = plots[target]
+            if is_bonus:
+                target_fields[:] = [s for s in target_fields if not s.startswith('FeatureType=')]
+                if feature:
+                    target_fields.append(feature)
+            target_fields.append(field)
+            fields.remove(field)
+            relocations.append((field, pos, target))
+    before = sum(usable(fields) for fields in plots.values())
+    barriers = Counter()
+    kinds = dict((name, kind) for name, kind, polygon in WILDS)
+    for x, y, region in candidates:
+        fields = plots[x, y]
+        terrain = next(s for s in fields if s.startswith('TerrainType='))
+        kind = kinds[region]
+        replacement = {'desert': 'TERRAIN_DESERT', 'ice': 'TERRAIN_SNOW'}.get(kind, terrain.split('=')[1])
+        if kind == 'rainforest' and replacement != 'TERRAIN_MARSH':
+            replacement = 'TERRAIN_GRASS'
+        fields[fields.index(terrain)] = 'TerrainType=' + replacement + '_IMPASSABLE'
+        fields[:] = [s for s in fields if not s.startswith('FeatureType=')]
+        if kind == 'mountain':
+            fields[fields.index(next(s for s in fields if s.startswith('PlotType=')))] = 'PlotType=0'
+        else:
+            feature, variety = {'desert': ('DEEP_DESERT', 0), 'rainforest': ('DEEP_JUNGLE', 0),
+                                'boreal': ('REMOTE_FOREST', 0), 'ice': ('FROZEN_WILDERNESS', 0),
+                                'polar': ('FROZEN_WILDERNESS', 0)}[kind]
+            fields.append('FeatureType=FEATURE_%s, FeatureVariety=%d' % (feature, variety))
+        barriers[region] += 1
+    # Every major birth must remain a legal land start, including future civs.
+    for pos in profile_values['Consts.tCapitals']:
+        if not usable(plots[pos]) or any('_IMPASSABLE' in s for s in plots[pos]):
+            raise ValueError('Invalid civilization start: ' + str(pos))
+    for old, new in [('grid width=124', 'grid width=160'), ('grid height=68', 'grid height=88'),
+                     ('num plots written=8432', 'num plots written=14080'),
+                     ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=TXT_KEY_ARFC_LARGE_WORLD_DESC')]:
+        header = header.replace(old, new)
+    # Explicit initial starts; the existing RiseAndFall setup supplies their units.
+    players = re.findall(r'BeginPlayer\s*\n.*?EndPlayer', header, re.S)
+    for i, player in enumerate(players):
+        changed = re.sub(r'(StartingX=)(\d+)', lambda m: m[1] + str(axis(int(m[2]))), player)
+        changed = re.sub(r'(StartingY=)(\d+)', lambda m: m[1] + str(axis(int(m[2]), True)), changed)
+        if i < 4:
+            x, y = profile_values['Consts.tCapitals'][i]
+            changed = changed.replace('EndPlayer', '\tStartingX=%d\n\tStartingY=%d\nEndPlayer' % (x, y))
+        header = header.replace(player, changed, 1)
+    output = [header.rstrip() + '\n']
+    for (x, y), fields in plots.items():
+        output.append('BeginPlot\n\tx=%d,y=%d\n\t%s\nEndPlot\n' %
+                      (x, y, '\n\t'.join(fields + placements.get((x, y), []))))
+    output.append('BeginSign\nEndSign\n' if 'BeginSign' in source else '')
+    TARGET.write_text(''.join(output), encoding='utf-8', newline='\n')
+    print('Reference passable land: %d; enlarged before barriers: %d; final: %d (%+.2f%%)' %
+          (baseline, before, before - len(candidates), 100 * ((before - len(candidates)) / baseline - 1)))
+    print('Impassable additions:', dict(barriers))
+    print('Resources/villages moved to nearby fringes:', len(relocations))
+    if relocations:
+        print('Longest relocation: %.1f tiles' % max(((a[0]-b[0])**2+(a[1]-b[1])**2)**.5
+                                                    for field, a, b in relocations))
+    return {s.split('=')[1] for fields in plots.values() for s in fields if s.startswith('TerrainType=') and '_IMPASSABLE' in s}
+
+
+def terrain_xml(used):
+    path = MOD / 'Assets/XML/Terrain/CIV4TerrainInfos.xml'
+    text = path.read_text(encoding='utf-8')
+    # Keep existing appended terrain IDs stable when a map stops using a biome.
+    used = set(used) | set(re.findall(r'<Type>(TERRAIN_[A-Z]+_IMPASSABLE)</Type>', text))
+    text = re.sub(r'\s*<TerrainInfo>\s*<Type>TERRAIN_[A-Z]+_IMPASSABLE</Type>.*?</TerrainInfo>', '', text, flags=re.S)
+    additions = []
+    for name in sorted(used):
+        original = name.removesuffix('_IMPASSABLE')
+        block = re.search(r'<TerrainInfo>\s*<Type>' + original + r'</Type>.*?</TerrainInfo>', text, re.S)[0]
+        block = block.replace('<Type>' + original + '</Type>', '<Type>' + name + '</Type>')
+        block = re.sub(r'<Description>.*?</Description>', '<Description>TXT_KEY_ARFC_IMPASSABLE_LAND</Description>', block)
+        block = re.sub(r'<Civilopedia>.*?</Civilopedia>', '<Civilopedia>TXT_KEY_ARFC_IMPASSABLE_LAND_PEDIA</Civilopedia>', block)
+        block = block.replace('<bImpassable>0', '<bImpassable>1').replace('<bFound>1', '<bFound>0')
+        block = block.replace('<bFoundCoast>1', '<bFoundCoast>0').replace('<bFoundFreshWater>1', '<bFoundFreshWater>0')
+        block = re.sub(r'<iYield>\d+</iYield>', '<iYield>0</iYield>', block)
+        additions.append('\t\t' + block + '\n')
+    text = text.replace('\t</TerrainInfos>', ''.join(additions) + '\t</TerrainInfos>')
+    path.write_text(text, encoding='utf-8', newline='\n')
+
+
+def feature_xml():
+    """Append scenario-only, non-spreading and unremovable feature types."""
+    path = MOD / 'Assets/XML/Terrain/CIV4FeatureInfos.xml'
+    text = path.read_text(encoding='utf-8')
+    entries = (('DEEP_DESERT', 'OASIS', 'ART_DEF_FEATURE_DEEP_DESERT'),
+               ('DEEP_JUNGLE', 'JUNGLE', 'ART_DEF_FEATURE_DEEP_JUNGLE'),
+               ('REMOTE_FOREST', 'FOREST', 'ART_DEF_FEATURE_DEEP_JUNGLE'),
+               ('FROZEN_WILDERNESS', 'ICE', 'ART_DEF_FEATURE_FROZEN_WILDERNESS'))
+    for name, template, art in entries:
+        pattern = r'<FeatureInfo>\s*<Type>FEATURE_' + name + r'</Type>.*?</FeatureInfo>'
+        text = re.sub(r'\s*' + pattern, '', text, flags=re.S)
+        block = re.search(r'<FeatureInfo>\s*<Type>FEATURE_' + template + r'</Type>.*?</FeatureInfo>', text, re.S)[0]
+        block = block.replace('<Type>FEATURE_' + template + '</Type>', '<Type>FEATURE_' + name + '</Type>')
+        for tag, value in (('Description', 'TXT_KEY_ARFC_' + name),
+                           ('Civilopedia', 'TXT_KEY_ARFC_' + name + '_PEDIA'), ('ArtDefineTag', art)):
+            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>' + value + '</' + tag + '>', block, flags=re.S)
+        for tag in ('YieldChanges', 'RiverYieldChange', 'HillsYieldChange', 'FootstepSounds', 'TerrainBooleans'):
+            block = re.sub(r'<' + tag + r'(?:\s*/>|>.*?</' + tag + r'>)', '<' + tag + '/>', block, flags=re.S)
+        for tag in ('iAppearance', 'iDisappearance', 'iGrowth', 'iTurnDamage', 'iHealthPercent', 'iDefense',
+                    'bNoCoast', 'bNoRiver', 'bNoAdjacent', 'bRequiresFlatlands', 'bRequiresRiver', 'bAddsFreshWater'):
+            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>0</' + tag + '>', block)
+        for tag in ('bImpassable', 'bNoCity', 'bNoImprovement', 'bNukeImmune'):
+            block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>1</' + tag + '>', block)
+        block = re.sub('<iAdvancedStartRemoveCost>.*?</iAdvancedStartRemoveCost>',
+                       '<iAdvancedStartRemoveCost>-1</iAdvancedStartRemoveCost>', block)
+        text = re.sub(r'\s*</FeatureInfos>', '\n\t\t' + block + '\n\t</FeatureInfos>', text)
+    path.write_text(text, encoding='utf-8', newline='\n')
+    path = MOD / 'Assets/XML/Art/CIV4ArtDefines_Feature.xml'
+    text = path.read_text(encoding='utf-8')
+    template = re.search(r'<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_FALLOUT</Type>.*?</FeatureArtInfo>', text, re.S)[0]
+    for name, model, button in (
+            ('DEEP_DESERT', 'DesertFog.nif', ',Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1'),
+            ('DEEP_JUNGLE', 'JungleFog.nif', ',Art/Interface/Buttons/TerrainFeatures/Jungle.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,5,3'),
+            ('FROZEN_WILDERNESS', 'IceFog.nif', ',Art/Interface/Buttons/TerrainFeatures/Ice.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,4,3')):
+        kind = 'ART_DEF_FEATURE_' + name
+        text = re.sub(r'\s*<FeatureArtInfo>\s*<Type>' + kind + r'</Type>.*?</FeatureArtInfo>', '', text, flags=re.S)
+        block = template.replace('ART_DEF_FEATURE_FALLOUT', kind)
+        block = re.sub(r'<ModelFile>.*?</ModelFile>', '<ModelFile>Art/Terrain/Features/Wasteland/' + model + '</ModelFile>', block)
+        block = re.sub(r'<Button>.*?</Button>', '<Button>' + button + '</Button>', block)
+        block = re.sub(r'<VarietyButton>.*?</VarietyButton>', '<VarietyButton>' + button + '</VarietyButton>', block)
+        text = re.sub(r'\s*</FeatureArtInfos>', '\n\t\t' + block + '\n\t</FeatureArtInfos>', text)
+    path.write_text(text, encoding='utf-8', newline='\n')
+
+
+def main():
+    v = values()
+    used = make_map(v)
+    write_data(DATA / (NAME + 'Values.py'), {'VALUES': v})
+    write_data(DATA / (NAME + 'Native.py'), {'VALUES': native()})
+    write_data(DATA / (NAME + 'Grids.py'), {
+        'SETTLEMENTS': compact(BASE.SETTLERS),
+        'CITY_NAMES': compact(BASE.VALUES['CityNameManager.tCityMap']),
+        'WAR_MAPS': compact(BASE.VALUES['AIWars.tWarsMap'])})
+    # Emit continent rectangles using full source-cell extents as well.
+    wrapper = ('# Generated by tools/generate_large_world.py. Python 2.4.\n'
+               'from Earth160x88Values import VALUES\n'
+               'from Earth160x88Native import VALUES as NATIVE\n'
+               'from Earth160x88Grids import SETTLEMENTS, CITY_NAMES, WAR_MAPS\n'
+               'from SparseGrids import expand\n\n'
+               'WIDTH = 160\nHEIGHT = 88\nAREA_COUNT = 3\nAREAS = ')
+    areas = [(group,) + rectangle((west, south, east, north))
+             for group, west, south, east, north in BASE.AREAS]
+    wrapper += pprint.pformat(areas, width=110) + '\n\n'
+    wrapper += ("SETTLERS = expand(WIDTH, HEIGHT, SETTLEMENTS)\n"
+                "VALUES['CityNameManager.tCityMap'] = expand(WIDTH, HEIGHT, CITY_NAMES)\n"
+                "VALUES['AIWars.tWarsMap'] = expand(WIDTH, HEIGHT, WAR_MAPS)\n")
+    (DATA / (NAME + '.py')).write_text(wrapper, encoding='ascii')
+    terrain_xml(used)
+    feature_xml()
+
+
+if __name__ == '__main__':
+    main()

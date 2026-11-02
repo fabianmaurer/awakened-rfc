@@ -965,4 +965,12 @@ VALUES = {'Consts.tAmericasTL': (3, 0),
  'Scenario900AD.setup.location_1': (69, 35),
  'Scenario900AD.setup.location_2': (78, 40),
  'Scenario900AD.setup.location_3': (51, 41),
- 'Victory.checkPlayerTurn.location_1': (71, 47)}
+ 'Victory.checkPlayerTurn.location_1': (71, 47),
+ 'UniquePowers.tRussianTopLeft': (65, 49),
+ 'UniquePowers.tRussianBottomRight': (121, 65),
+ 'RiseAndFall.processAfrica.bounds': ((48, 22), (63, 33)),
+ 'Barbs.hunaWarning': (88, 40),
+ 'RiseAndFall.conquerorFeaturePlots': ((27, 30), (28, 31)),
+ 'RiseAndFall.conquerorHillPlots': ((31, 13),),
+ 'RiseAndFall.aztecHillPlots': ((40, 66),),
+ 'RiseAndFall.conquerorBlockedPlots': ((25, 32),)}

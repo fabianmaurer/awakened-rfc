@@ -11,6 +11,7 @@ def descriptions(description, filename):
     # These scenarios use RFC's fixed major-player slots. Other WB maps may not.
     if os.path.basename(filename or "").lower() not in (
             "start 1 - 3000 bc.civbeyondswordwbsave",
+            "start 1b - 3000 bc - large world.civbeyondswordwbsave",
             "start 2 - 800 bc.civbeyondswordwbsave",
             "start 3 - 600 ad.civbeyondswordwbsave",
             "start 3b - 900 ad.civbeyondswordwbsave",
