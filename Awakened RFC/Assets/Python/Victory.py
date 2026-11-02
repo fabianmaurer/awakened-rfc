@@ -21,48 +21,48 @@ PyPlayer = PyHelpers.PyPlayer
 
 ### Constants ###
 
-i850BC = con.i850BC #new timeline
-i700BC = con.i700BC
-i250BC = con.i250BC #new timeline
-i100BC = con.i100BC #new timeline
-i50AD = con.i50AD
-i140AD = con.i140AD #new timeline
-i170AD = con.i170AD
-i200AD = con.i200AD #new timeline
-i250AD = con.i250AD
-i350AD = con.i350AD
-i450AD = con.i450AD
-i470AD = con.i470AD #new timeline
-i500AD = con.i500AD #new timeline
-i600AD = con.i600AD
-i700AD = con.i700AD
-i900AD = con.i900AD
-i1000AD = con.i1000AD
-i1200AD = con.i1200AD
-i1300AD = con.i1300AD
-i1400AD = con.i1400AD
-i1450AD = con.i1450AD
-i1500AD = con.i1500AD
-i1600AD = con.i1600AD
-i1650AD = con.i1650AD
-i1700AD = con.i1700AD
-i1715AD = con.i1715AD
-i1730AD = con.i1730AD
-i1745AD = con.i1745AD
-i1760AD = con.i1760AD
-i1775AD = con.i1775AD
-i1800AD = con.i1800AD
-i1820AD = con.i1820AD
-i1850AD = con.i1850AD
-i1860AD = con.i1860AD
-i1870AD = con.i1870AD
-i1880AD = con.i1880AD
-i1900AD = con.i1900AD
-i1910AD = con.i1910AD
-i1930AD = con.i1930AD
-i1940AD = con.i1940AD
-i1950AD = con.i1950AD
-i2000AD = con.i2000AD
+geo.bindTime(globals(), 'i850BC', con._timeValues['i850BC']) #new timeline
+geo.bindTime(globals(), 'i700BC', con._timeValues['i700BC'])
+geo.bindTime(globals(), 'i250BC', con._timeValues['i250BC']) #new timeline
+geo.bindTime(globals(), 'i100BC', con._timeValues['i100BC']) #new timeline
+geo.bindTime(globals(), 'i50AD', con._timeValues['i50AD'])
+geo.bindTime(globals(), 'i140AD', con._timeValues['i140AD']) #new timeline
+geo.bindTime(globals(), 'i170AD', con._timeValues['i170AD'])
+geo.bindTime(globals(), 'i200AD', con._timeValues['i200AD']) #new timeline
+geo.bindTime(globals(), 'i250AD', con._timeValues['i250AD'])
+geo.bindTime(globals(), 'i350AD', con._timeValues['i350AD'])
+geo.bindTime(globals(), 'i450AD', con._timeValues['i450AD'])
+geo.bindTime(globals(), 'i470AD', con._timeValues['i470AD']) #new timeline
+geo.bindTime(globals(), 'i500AD', con._timeValues['i500AD']) #new timeline
+geo.bindTime(globals(), 'i600AD', con._timeValues['i600AD'])
+geo.bindTime(globals(), 'i700AD', con._timeValues['i700AD'])
+geo.bindTime(globals(), 'i900AD', con._timeValues['i900AD'])
+geo.bindTime(globals(), 'i1000AD', con._timeValues['i1000AD'])
+geo.bindTime(globals(), 'i1200AD', con._timeValues['i1200AD'])
+geo.bindTime(globals(), 'i1300AD', con._timeValues['i1300AD'])
+geo.bindTime(globals(), 'i1400AD', con._timeValues['i1400AD'])
+geo.bindTime(globals(), 'i1450AD', con._timeValues['i1450AD'])
+geo.bindTime(globals(), 'i1500AD', con._timeValues['i1500AD'])
+geo.bindTime(globals(), 'i1600AD', con._timeValues['i1600AD'])
+geo.bindTime(globals(), 'i1650AD', con._timeValues['i1650AD'])
+geo.bindTime(globals(), 'i1700AD', con._timeValues['i1700AD'])
+geo.bindTime(globals(), 'i1715AD', con._timeValues['i1715AD'])
+geo.bindTime(globals(), 'i1730AD', con._timeValues['i1730AD'])
+geo.bindTime(globals(), 'i1745AD', con._timeValues['i1745AD'])
+geo.bindTime(globals(), 'i1760AD', con._timeValues['i1760AD'])
+geo.bindTime(globals(), 'i1775AD', con._timeValues['i1775AD'])
+geo.bindTime(globals(), 'i1800AD', con._timeValues['i1800AD'])
+geo.bindTime(globals(), 'i1820AD', con._timeValues['i1820AD'])
+geo.bindTime(globals(), 'i1850AD', con._timeValues['i1850AD'])
+geo.bindTime(globals(), 'i1860AD', con._timeValues['i1860AD'])
+geo.bindTime(globals(), 'i1870AD', con._timeValues['i1870AD'])
+geo.bindTime(globals(), 'i1880AD', con._timeValues['i1880AD'])
+geo.bindTime(globals(), 'i1900AD', con._timeValues['i1900AD'])
+geo.bindTime(globals(), 'i1910AD', con._timeValues['i1910AD'])
+geo.bindTime(globals(), 'i1930AD', con._timeValues['i1930AD'])
+geo.bindTime(globals(), 'i1940AD', con._timeValues['i1940AD'])
+geo.bindTime(globals(), 'i1950AD', con._timeValues['i1950AD'])
+geo.bindTime(globals(), 'i2000AD', con._timeValues['i2000AD'])
 
 
 iAncient = con.iAncient
@@ -513,7 +513,7 @@ class Victory:
                                         else:
                                                 self.setGoal(iEgypt, 2, 0)
                                                 
-                                if (iGameTurn == i100BC+1):
+                                if (iGameTurn == i100BC+geo.turns(1)):
                                         if (self.getGoal(iEgypt, 1) == -1):                                  
                                                 self.setGoal(iEgypt, 1, 0)                      
 
@@ -720,7 +720,7 @@ class Victory:
                                                 if (iCounterBarracks >= 5 and iCounterAqueduct >= 5 and iCounterColosseum >= 5):
                                                         self.setGoal(iRome, 0, 1)
                                                         
-                                if (iGameTurn == i200AD+1):
+                                if (iGameTurn == i200AD+geo.turns(1)):
                                         if (self.getGoal(iRome, 0) == -1):
                                                 self.setGoal(iRome, 0, 0)  
                                     
@@ -820,11 +820,11 @@ class Victory:
                 elif (iPlayer == iMaya):
                         if (pMaya.isAlive()):
 
-                                if (iGameTurn == i600AD+1):
+                                if (iGameTurn == i600AD+geo.turns(1)):
                                         if (self.getGoal(iMaya, 0) == -1): #see onTechAcquired()                                        
                                                 self.setGoal(iMaya, 0, 0)
 
-                                if (iGameTurn == i900AD+1):
+                                if (iGameTurn == i900AD+geo.turns(1)):
                                         if (self.getGoal(iMaya, 1) == -1): #see onBuildingBuilt()
                                                 self.setGoal(iMaya, 1, 0)
 
@@ -877,7 +877,7 @@ class Victory:
 
 
                             
-                                if (iGameTurn >= con.tBirth[iSpain]+1 and iGameTurn <= i1300AD):
+                                if (iGameTurn >= con.tBirth[iSpain]+geo.turns(1) and iGameTurn <= i1300AD):
                                         if (self.getGoal(iArabia, 1) == -1):
                                                 bSpain = self.checkOwnedCiv(iArabia, iSpain)
                                                 if (teamSpain.isVassal(iArabia)):
@@ -1029,7 +1029,7 @@ class Victory:
                                         if (self.getGoal(iRussia, 0) == -1):
                                                 self.setGoal(iRussia, 0, 0)
 
-                                if (iGameTurn == i1950AD+1):      
+                                if (iGameTurn == i1950AD+geo.turns(1)):
                                         if (self.getGoal(iRussia, 1) == -1): 
                                                 self.setGoal(iRussia, 1, 0)
 
@@ -1074,7 +1074,7 @@ class Victory:
                 elif (iPlayer == iMali):
                         if (pMali.isAlive()):
 
-                                if (iGameTurn == i1300AD-10): #temporary fix, they use too many specialist and make Mali UHV very hard
+                                if (iGameTurn == i1300AD-geo.turns(10)): #temporary fix, they use too many specialist and make Mali UHV very hard
                                         if (not pFrance.isHuman()):
                                                 if (pFrance.getGold() > 2000):
                                                         pFrance.setGold(pFrance.getGold()*50/100)
@@ -1293,7 +1293,7 @@ class Victory:
                                         else:
                                                 self.setGoal(iAmerica, 0, 0)
 
-                                if (iGameTurn == i2000AD+1):
+                                if (iGameTurn == i2000AD+geo.turns(1)):
                                         if (self.getGoal(iAmerica, 1) == -1):
                                                 if (self.getWondersBuilt(iAmerica) != 3):                                    
                                                         self.setGoal(iAmerica, 1, 0)

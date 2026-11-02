@@ -218,6 +218,8 @@ def main():
 
     header = re.sub(r'BeginMap\b.*?EndMap', lambda _: re.search(r'BeginMap\b.*?EndMap', xl_header, re.S)[0], header, flags=re.S)
     header = re.sub(r'Description=[^\r\n]*', 'Description=' + DESCRIPTION, header, count=1)
+    header = re.sub(r'GameTurn=87[ \t]*', 'GameTurn=174', header, count=1)
+    header = re.sub(r'Calendar=CALENDAR_DEFAULT[ \t]*', 'Calendar=CALENDAR_DEFAULT\n\tSpeed=GAMESPEED_XL', header, count=1)
     player_id = iter(range(39))
     def player(match):
         owner = next(player_id)

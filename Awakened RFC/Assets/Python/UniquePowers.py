@@ -162,13 +162,13 @@ class UniquePowers:
                 if (iGameTurn >= con.i860AD):
                         self.russianUP()
 
-                if (iGameTurn >= con.tBirth[iAmerica]+5 and ((self.getImmigrationTurnLength() != 0) or ((utils.getFakeRandNum(30, 'random') % 20) == 0 and gc.getPlayer(iAmerica).isAlive()))):
+                if (iGameTurn >= con.tBirth[iAmerica]+geo.turns(5) and ((self.getImmigrationTurnLength() != 0) or ((utils.getFakeRandNum(30, 'random') % 20) == 0 and gc.getPlayer(iAmerica).isAlive()))):
                         self.americanUP()
 
                 if (iGameTurn >= con.i1190AD):
                 #if (iGameTurn >= 0): #debug
                         for iTimer in range(iMongolianTimer+1):
-                                if (iGameTurn == self.getLatestRazeData(0)+iTimer):
+                                if (geo.historyTurn(iGameTurn - self.getLatestRazeData(0)) == iTimer):
                                         self.useMongolUP()
 
 

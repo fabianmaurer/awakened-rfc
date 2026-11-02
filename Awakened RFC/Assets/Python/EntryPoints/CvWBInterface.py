@@ -24,6 +24,7 @@ def readAndApplyDesc(argsList):
 	fileName = argsList[0]
 	if WBDesc.read(fileName) < 0:
 		return -1
+	WBDesc.gameDesc.speedType = ScenarioGeography.scenarioSpeed(fileName)
 	ScenarioGeography.prepare(fileName, WBDesc.mapDesc)
 	if (WBDesc.applyMap() < 0):
 		return -1
@@ -40,6 +41,8 @@ def readDesc(argsList):
 			lastFileRead=fileName
 	else:
 		ret=0		
+	if ret == 0:
+		WBDesc.gameDesc.speedType = ScenarioGeography.scenarioSpeed(fileName)
 	return ret
 		
 def applyMapDesc():	

@@ -50,7 +50,7 @@ def handleProvincialLoss(iPlayer, reason):
         return False
     data = pickle.loads(gc.getGame().getScriptData())
     turn = gc.getGame().getGameTurn()
-    if (turn - data['iRomanLastProvincialLossTurn'] < 10):
+    if (turn - data['iRomanLastProvincialLossTurn'] < geo.turns(10)):
         return True
     candidate = None
     best = -1

@@ -1770,9 +1770,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		if (iTeamCulturePercent < GC.getDefineINT("OCCUPATION_CULTURE_PERCENT_THRESHOLD"))
 		{
 			//Rhye - start UP (Babylonian)
-			//pNewCity->changeOccupationTimer(((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100);
+			//pNewCity->changeOccupationTimer(historicalTurns(((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100));
 			if (getID() != BABYLONIA)			
-			pNewCity->changeOccupationTimer(((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100);
+			pNewCity->changeOccupationTimer(historicalTurns(((GC.getDefineINT("BASE_OCCUPATION_TURNS") + ((pNewCity->getPopulation() * GC.getDefineINT("OCCUPATION_TURNS_POPULATION_PERCENT")) / 100)) * (100 - iTeamCulturePercent)) / 100));
 			else
 				pNewCity->changeOccupationTimer(0);
 			//Rhye - end UP 
@@ -6340,6 +6340,8 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 
 	iProductionNeeded *= GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getTrainPercent();
 	iProductionNeeded /= 100;
+	// XL settlers retain the ordinary cost so the larger world can be settled.
+	if (GC.getUnitInfo(eUnit).isFound()) iProductionNeeded /= historicalTurns(1);
 
 	iProductionNeeded *= GC.getEraInfo(GC.getGameINLINE().getStartEra()).getTrainPercent();
 	iProductionNeeded /= 100;
@@ -8205,7 +8207,7 @@ void CvPlayer::startArabianJihad()
     m_iArabianJihadEndTurn = iStart + 1;
     while (GC.getGameINLINE().getTurnYear(m_iArabianJihadEndTurn) < iEndYear && m_iArabianJihadEndTurn < iStart + 10000)
         ++m_iArabianJihadEndTurn;
-    m_iArabianJihadEndTurn += std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_EXTRA_TURNS"));
+    m_iArabianJihadEndTurn += historicalTurns(std::max(0, GC.getDefineINT("RFCMP_ARABIAN_JIHAD_EXTRA_TURNS")));
 
     adoptIslamicCause();
     int iCityLoop;
@@ -8258,13 +8260,13 @@ void CvPlayer::doArabianJihad()
         }
         if (m_bIslamSuppressionRally && m_iIslamHolyCityDeadline < 0 && isAlive() && getNumCities() > 0)
         {
-            m_iIslamHolyCityDeadline = GC.getGameINLINE().getGameTurn() + std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS"));
+            m_iIslamHolyCityDeadline = GC.getGameINLINE().getGameTurn() + historicalTurns(std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS")));
             adoptIslamicCause();
             int iLoop;
             for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
                 convertIslamicCity(pCity, !pCity->isHasReligion(eIslam));
             gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
-                gDLL->getText("TXT_KEY_RFCMP_ISLAM_RALLY", std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS"))),
+                gDLL->getText("TXT_KEY_RFCMP_ISLAM_RALLY", historicalTurns(std::max(1, GC.getDefineINT("RFCMP_ISLAM_HOLY_CITY_CONQUEST_TURNS")))),
                 "AS2D_DECLAREWAR", MESSAGE_TYPE_MAJOR_EVENT, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"));
         }
         // Re-evaluate ownership throughout the rally, never remember a previous
@@ -20953,8 +20955,8 @@ void CvPlayer::doEvents()
 		}
 	}
 
-	bool bNewEventEligible = true;
-	if (GC.getGameINLINE().getElapsedGameTurns() < GC.getDefineINT("FIRST_EVENT_DELAY_TURNS"))
+	bool bNewEventEligible = GC.getGameINLINE().getGameTurn() % historicalTurns(1) == 0;
+	if (GC.getGameINLINE().getElapsedGameTurns() < historicalTurns(GC.getDefineINT("FIRST_EVENT_DELAY_TURNS")))
 	{
 		bNewEventEligible = false;
 	}

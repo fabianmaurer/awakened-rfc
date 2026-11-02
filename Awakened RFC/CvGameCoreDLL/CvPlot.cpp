@@ -9004,7 +9004,7 @@ void CvPlot::doCulture()
 				{
 					//if (GC.getGameINLINE().getSorenRandNum(100, "Revolt #1") < pCity->getRevoltTestProbability())
 					//RFCMP
-					if (GC.getGameINLINE().getFakeRandNum(100) < pCity->getRevoltTestProbability())
+					if (GC.getGameINLINE().getGameTurn() % historicalTurns(1) == 0 && GC.getGameINLINE().getFakeRandNum(100) < pCity->getRevoltTestProbability())
 					{
 						iCityStrength = pCity->cultureStrength(eCulturalOwner);
 						iGarrison = pCity->cultureGarrison(eCulturalOwner);

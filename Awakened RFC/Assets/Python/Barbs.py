@@ -130,7 +130,7 @@ class Barbs:
                 # Give the first settlement twelve turns; stop before later armies.
                 if (gc.getGame().getStartTurn() == 0 and gc.getPlayer(con.iEgypt).isAlive()
                     and gc.getPlayer(con.iEgypt).getNumCities() > 0
-                    and iGameTurn >= 12 and iGameTurn <= con.i850BC):
+                    and iGameTurn >= geo.turns(12) and iGameTurn <= con.i850BC):
                         # Nubians approach along the Nile; Libyans enter from the west.
                         # Pillage AI and warriors keep these as light military pressure.
                         self.spawnUnits(iBarbarian, geo.value('Barbs.checkTurn.location_11'), geo.value('Barbs.checkTurn.location_12'), con.iWarrior, 2, iGameTurn, 18, 12, utils.outerInvasion, 3, "TXT_KEY_UNIT_NUBIAN_RAIDERS")
@@ -337,7 +337,7 @@ class Barbs:
                 self.foundCity(iBarbarian, lKazan, "Kazan", iGameTurn, 2, con.iHorseArcher, 1)
                 self.foundCity(iNative, lKongo, "Mbanza Kongo", iGameTurn, 1, con.iZuluImpi, 1)
 
-                if (geo.profile_name() == 'Earth200x110' and gc.getGame().getStartTurn() in (0, 87)):
+                if (geo.profile_name() == 'Earth200x110' and gc.getGame().getStartTurn() in (0, geo.turns(87))):
                         # Optional regional centres for both ancient XL starts.
                         # Use the shared ownership, nearby-city and retry checks.
                         self.foundCity(iIndependent, geo.value('Barbs.lMerv'), "Merv", iGameTurn, 1, con.iArcher, 1)
@@ -350,13 +350,13 @@ class Barbs:
         def checkAmericanRaids(self, iGameTurn):
                 # Two weak raiders per region every three turns, through 1600.
                 # Stagger regions and allow eight turns after a scenario starts.
-                if (iGameTurn < gc.getGame().getStartTurn() + 8 or iGameTurn > con.i1600AD):
+                if (iGameTurn < gc.getGame().getStartTurn() + geo.turns(8) or iGameTurn > con.i1600AD):
                         return
                 if (gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_BARBARIANS)):
                         return
                 lRegions = geo.value('Barbs.checkAmericanRaids.lRegions_1')  # Andes and nearby lowlands
                 for iRegion in range(len(lRegions)):
-                        if (iGameTurn % 3 != iRegion):
+                        if (geo.historyTurn(iGameTurn) % 3 != iRegion):
                                 continue
                         tTL, tBR = lRegions[iRegion]
                         lCities = []
@@ -371,7 +371,7 @@ class Barbs:
                                         if (plot.isCity()):
                                                 city = plot.getPlotCity()
                                                 if (city.getOwner() < con.iNumPlayers
-                                                    and city.getGameTurnFounded() <= iGameTurn - 8):
+                                                    and city.getGameTurnFounded() <= iGameTurn - geo.turns(8)):
                                                         lCities.append(plot)
                                         elif (not plot.isWater() and not plot.isPeak() and not plot.isImpassable()
                                               and not plot.isUnit()
@@ -402,7 +402,7 @@ class Barbs:
                         # Alternate warrior pairs with a warrior and an archer.
                         # Pillage AI emphasizes frontier disruption over city assaults.
                         lUnits = [con.iWarrior, con.iWarrior]
-                        if ((iGameTurn // 3) % 2 == 1):
+                        if ((geo.historyTurn(iGameTurn) // 3) % 2 == 1):
                                 lUnits[1] = con.iArcher
                         for iUnit in lUnits[:min(2, 12 - iRaiders)]:
                                 self.makeUnit(iUnit, iBarbarian, tSpawn, 1, 3)
@@ -487,7 +487,7 @@ class Barbs:
                 return CyGlobalContext().getMap().plot(tCoords[0], tCoords[1]).getPlotCity()
 
         def foundCity(self, iCiv, lCity, name, iTurn, iPopulation, iUnitType, iNumUnits):
-                if ((iTurn == lCity[2] + lCity[3]) and (lCity[3]<10)):
+                if ((iTurn == lCity[2] + lCity[3]) and (lCity[3]<geo.turns(10))):
                         #print self.checkRegion(tUr)
                         bResult, lCity[3] = self.checkRegion(lCity)
                         if (bResult == True):
@@ -521,7 +521,7 @@ class Barbs:
                                 unit = cityPlot.getUnit(i)
                                 iOwner = unit.getOwner()
                                 if (iOwner == iBarbarian):
-                                        return (False, tCity[3]+1) 
+                                        return (False, tCity[3]+geo.turns(1))
                                 #pOwner = gc.getPlayer(iOwner)
                                 #if (pOwner.isHuman()):
                                 #        return (False, tCity[3]+1)                    
@@ -539,13 +539,13 @@ class Barbs:
                                                 iOwner = unit.getOwner()
                                                 pOwner = gc.getPlayer(iOwner)
                                                 if (pOwner.isHuman()):
-                                                        return (False, tCity[3]+1)
+                                                        return (False, tCity[3]+geo.turns(1))
                 return (True, tCity[3])
 
 
 
         def spawnUnits(self, iCiv, tTopLeft, tBottomRight, iUnitType, iNumUnits, iTurn, iPeriod, iRest, function, iForceAttack, sNameKey=None):
-                if (iTurn % iPeriod == iRest):
+                if (geo.historyTurn(iTurn) % iPeriod == iRest):
                         dummy, plotList = utils.squareSearch( tTopLeft, tBottomRight, function, [] )
                         if (len(plotList)):
                                 rndNum = utils.getFakeRandNum(len(plotList), 'Spawn units')

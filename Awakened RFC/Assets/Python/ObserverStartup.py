@@ -30,6 +30,13 @@ def configure_players(description, filename):
     if scenario not in expected:
         raise ValueError('Unsupported observer scenario/mode')
     name, turn, active, civ = expected[scenario]
+    if parser.has_option('Observer', 'XL') and parser.getboolean('Observer', 'XL'):
+        xl_names = {'3000bc': 'start 1 xl - 3000bc.civbeyondswordwbsave',
+                    '800bc': 'start 2 xl - 800bc.civbeyondswordwbsave'}
+        if scenario not in xl_names:
+            raise ValueError('Unsupported XL observer scenario')
+        name = xl_names[scenario]
+        turn *= 2
     if os.path.basename(str(filename)).lower() != name:
         raise ValueError('Unattended observer loaded an unexpected scenario')
     if description.gameDesc.gameTurn != turn or description.gameDesc.iStartYear != -3000:
@@ -43,6 +50,8 @@ def configure_players(description, filename):
         players[i].isPlayableCiv = int(i == active)
     players[active].handicap = 'HANDICAP_PRINCE'
     description.gameDesc.speedType = 'GAMESPEED_NORMAL'
+    if parser.has_option('Observer', 'XL') and parser.getboolean('Observer', 'XL'):
+        description.gameDesc.speedType = 'GAMESPEED_XL'
     output = parser.get('Observer', 'OutputDirectory')
     marker = os.path.join(output, 'setup-ready.json')
     if not os.path.exists(marker):

@@ -23,14 +23,14 @@ iIndependent = con.iIndependent
 iIndependent2 = con.iIndependent2
 iCeltia = con.iCeltia
 
-i2250BC = con.i2250BC
-i2085BC = con.i2085BC
-i1800BC = con.i1800BC
-i600BC = con.i600BC
-i483BC = con.i483BC
-i479BC = con.i479BC
-i33AD = con.i33AD
-i622AD = con.i622AD
+geo.bindTime(globals(), 'i2250BC', con._timeValues['i2250BC'])
+geo.bindTime(globals(), 'i2085BC', con._timeValues['i2085BC'])
+geo.bindTime(globals(), 'i1800BC', con._timeValues['i1800BC'])
+geo.bindTime(globals(), 'i600BC', con._timeValues['i600BC'])
+geo.bindTime(globals(), 'i483BC', con._timeValues['i483BC'])
+geo.bindTime(globals(), 'i479BC', con._timeValues['i479BC'])
+geo.bindTime(globals(), 'i33AD', con._timeValues['i33AD'])
+geo.bindTime(globals(), 'i622AD', con._timeValues['i622AD'])
 
 
 
@@ -139,7 +139,7 @@ class Religions:
                         iIndianModifier = 0
                         if (gc.getPlayer(con.iIndia).isHuman()):
                                 iIndianModifier = 15 #for the UHV
-                        if (iGameTurn == i2250BC + 30*self.getSeed()/100 + iIndianModifier): #Judaism up to 1500BC
+                        if (iGameTurn == i2250BC + geo.turns(30*self.getSeed()/100) + geo.turns(iIndianModifier)): #Judaism up to 1500BC
                                 pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])                
                                 if (not pJerusalem.getPlotCity().isNone()):                            
                                         if (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian):
@@ -153,7 +153,7 @@ class Religions:
                         iEthiopianModifier = 0
                         if (gc.getPlayer(con.iEthiopia).isHuman()):
                                 iEthiopianModifier = 15 #for the UHV
-                        if (iGameTurn == i33AD + 8*self.getSeed()/100 + iEthiopianModifier): #Christianity up to 190AD (15 = 330AD)
+                        if (iGameTurn == i33AD + geo.turns(8*self.getSeed()/100) + geo.turns(iEthiopianModifier)): #Christianity up to 190AD (15 = 330AD)
                                 pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])
                                 # A razed Jerusalem must still allow the alternative-city search.
                                 if (not pJerusalem.getPlotCity().isNone() and (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian)):
@@ -199,7 +199,7 @@ class Religions:
                                         self.spreadReligion(tCity, 3, iMissionary_Christian)
 
 
-                if (iGameTurn == i622AD+1):
+                if (iGameTurn == i622AD+geo.turns(1)):
                         if (gc.getGame().isReligionFounded(iIslam)):
                                 for pyCity in PyPlayer(iArabia).getCityList():
                                         if (pyCity.GetCy().isHolyCityByType(iIslam)):
@@ -208,7 +208,7 @@ class Religions:
                                                         #self.spreadReligion( tMecca, 4, iMissionary_Islamic)
                                                         self.spreadReligion( (pyCity.GetCy().getX(), pyCity.GetCy().getY()), 4, iMissionary_Islamic) 
 
-                if (iGameTurn == 181):
+                if (iGameTurn == geo.turns(181)):
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
                                 pMecca = gc.getMap().plot(tMecca[0], tMecca[1])                
                                 if (not pMecca.getPlotCity().isNone()):                            

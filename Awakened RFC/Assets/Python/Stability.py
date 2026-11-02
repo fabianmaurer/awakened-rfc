@@ -205,7 +205,7 @@ class Stability:
 
 
                 #moved here with its own stored value to save loading time (scrolls the map only once instead of every player)
-                if (iGameTurn % 6 == 0): #3 is too short to detect any change; must be a multiple of 3 anyway
+                if (geo.historyTurn(iGameTurn) % 6 == 0): #3 is too short to detect any change; must be a multiple of 3 anyway
                         iRomanConnectedPlots = 0
                         pRome = gc.getPlayer(con.iRome)
                         bRomanRepublic = pRome.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))
@@ -226,7 +226,7 @@ class Stability:
                                                 if (pCurrent.isCity()):
                                                         cityOwner = pCurrent.getPlotCity().getOwner()
                                                         for iLoop in range(con.iNumPlayers):
-                                                                if (iLoop != cityOwner and gc.getPlayer(iLoop).isAlive() and iGameTurn >= con.tBirth[iLoop]+30 and iGameTurn >= self.getLatestRebellionTurn(iLoop) + 15):
+                                                                if (iLoop != cityOwner and gc.getPlayer(iLoop).isAlive() and iGameTurn >= con.tBirth[iLoop]+geo.turns(30) and iGameTurn >= self.getLatestRebellionTurn(iLoop) + geo.turns(15)):
                                                                         if (gc.getPlayer(iLoop).getSettlersMaps( (geo.height() - 1) - y, x ) >= 400):
                                                                                 if (x >= con.tNormalAreasTL[iLoop][0] and x <= con.tNormalAreasBR[iLoop][0] and \
                                                                                     y >= con.tNormalAreasTL[iLoop][1] and y <= con.tNormalAreasBR[iLoop][1]):
@@ -242,7 +242,7 @@ class Stability:
                                 self.setOwnedPlotsLastTurn(iLoopCiv, lOwnedPlots[iLoopCiv])
                                 self.setOwnedCitiesLastTurn(iLoopCiv, lOwnedCities[iLoopCiv])
 
-                        if (iGameTurn % 3 == 0): #for up/down arrows
+                        if (geo.historyTurn(iGameTurn) % 3 == 0): #for up/down arrows
                                 self.setLastRecordedStabilityStuff(0, self.getStability(utils.getHumanID()))
                                 self.setLastRecordedStabilityStuff(1, utils.getParCities())
                                 self.setLastRecordedStabilityStuff(2, utils.getParCivics())
@@ -257,19 +257,19 @@ class Stability:
                         if (gc.getPlayer(iPlayer).isAlive()):
                                 iTempNormalizationThreshold = self.getStability(iPlayer)
                                 
-                                if (iGameTurn > con.i1760AD and iGameTurn % 12 == 7):
+                                if (iGameTurn > con.i1760AD and geo.historyTurn(iGameTurn) % 12 == 7):
                                         if (self.getStability(iPlayer) < 40):
                                                 self.setStability(iPlayer, self.getStability(iPlayer) + 1 )
-                                elif (iGameTurn > con.i1000BC and iGameTurn % 22 == 7):
+                                elif (iGameTurn > con.i1000BC and geo.historyTurn(iGameTurn) % 22 == 7):
                                         if (self.getStability(iPlayer) < 20 and self.getStability(iPlayer) >= -50):
                                                 self.setStability(iPlayer, self.getStability(iPlayer) + 1 )
-                                if (iGameTurn % 10 == 8):
+                                if (geo.historyTurn(iGameTurn) % 10 == 8):
                                         if (self.getStability(iPlayer) < -50):
                                                 self.setStability(iPlayer, self.getStability(iPlayer) + 1 )
-                                if (iGameTurn % 10 == 9):
+                                if (geo.historyTurn(iGameTurn) % 10 == 9):
                                         if (self.getStability(iPlayer) > 50):
                                                 self.setStability(iPlayer, self.getStability(iPlayer) - 1 )
-                                if (iGameTurn > con.i1000BC and iGameTurn % 12 == 5):
+                                if (iGameTurn > con.i1000BC and geo.historyTurn(iGameTurn) % 12 == 5):
                                         iPermanentModifier = self.getStability(iPlayer) - self.getBaseStabilityLastTurn(iPlayer)
                                         if (iPermanentModifier > 15):
                                                 self.setStability(iPlayer, self.getStability(iPlayer) - 1 )
@@ -281,7 +281,7 @@ class Stability:
                                 self.setParameter(iPlayer, iParDiplomacyE, True, self.getStability(iPlayer) - iTempNormalizationThreshold)
 
 
-                if (((iGameTurn > con.i600BC and gc.getGame().getStartTurn() == 0) or (iGameTurn > 181+20 and gc.getGame().getStartTurn() != 0)) and iGameTurn % 20 == 15): #late start condition
+                if (((iGameTurn > con.i600BC and gc.getGame().getStartTurn() == 0) or (iGameTurn > geo.turns(181+20) and gc.getGame().getStartTurn() != 0)) and geo.historyTurn(iGameTurn) % 20 == 15): #late start condition
                 #if (iGameTurn > 0): #debug
                         self.continentsNormalization(iGameTurn)
                         self.normalization(iGameTurn)
@@ -311,9 +311,9 @@ class Stability:
                 iTotal = 0
                 iStandardMean = 3
                 iSigma = 0
-                iMinSigma = 7 + (iGameTurn - 100)/50
-                iMaxSigma = 15 + (iGameTurn - 100)/50
-                iStandardSigma = 11 + (iGameTurn - 100)/50
+                iMinSigma = 7 + (geo.historyTurn(iGameTurn) - 100)/50
+                iMaxSigma = 15 + (geo.historyTurn(iGameTurn) - 100)/50
+                iStandardSigma = 11 + (geo.historyTurn(iGameTurn) - 100)/50
                 iNumAlive = 0
                 for iPlayer in range(iNumPlayers):
                         if (gc.getPlayer(iPlayer).isAlive()):
@@ -452,7 +452,7 @@ class Stability:
                 teamPlayer = gc.getTeam(pPlayer.getTeam())
 
                 
-                if (iGameTurn % 3 != 0):
+                if (geo.historyTurn(iGameTurn) % 3 != 0):
                         iNewBaseStability = self.getPartialBaseStability(iPlayer)
                         iEconomy = pPlayer.calculateTotalYield(YieldTypes.YIELD_COMMERCE) - pPlayer.calculateInflatedCosts() #used later
                         iIndustry = pPlayer.calculateTotalYield(YieldTypes.YIELD_PRODUCTION) #used later
@@ -677,9 +677,9 @@ class Stability:
 
                 #every turn
 
-                if (iGameTurn >= con.tBirth[iPlayer]+15):
+                if (iGameTurn >= con.tBirth[iPlayer]+geo.turns(15)):
                         self.setGNPnew(iPlayer, self.getGNPnew(iPlayer) + (iEconomy + 4*iIndustry + 2*iAgriculture)/7)
-                        if (iGameTurn % 3 == 2):
+                        if (geo.historyTurn(iGameTurn) % 3 == 2):
                                 iTempEconomyThreshold = self.getStability(iPlayer)
                                 iMaxShrink = 7
                                 iMaxGrowth = 3
@@ -714,7 +714,7 @@ class Stability:
                                 self.setParameter(iPlayer, iParEconomyE, True, self.getStability(iPlayer) - iTempEconomyThreshold)
 
 
-                if (iGameTurn % 3 == 2):
+                if (geo.historyTurn(iGameTurn) % 3 == 2):
                         self.setGNPold(iPlayer, self.getGNPnew(iPlayer))
                         self.setGNPnew(iPlayer, 0)
 
@@ -729,10 +729,13 @@ class Stability:
 
                 iTempExpansionThreshold = iNewBaseStability
                 iNumPlayerCities = pPlayer.getNumCities()
-                if (iNumPlayerCities < 8):
+                iEffectiveCities = iNumPlayerCities
+                if geo.turns(1) == 2:
+                        iEffectiveCities = iNumPlayerCities * 2 // 3
+                if (iEffectiveCities < 8):
                         pass
                 else:
-                        iCityPenalty = (iNumPlayerCities-5)*(iNumPlayerCities-5)/9
+                        iCityPenalty = (iEffectiveCities-5)*(iEffectiveCities-5)/9
                         if (iPlayer == con.iRome and pPlayer.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
                                 iConnected = 0
                                 for pyCity in PyPlayer(iPlayer).getCityList():
@@ -792,7 +795,7 @@ class Stability:
 
                 iTempExpansionThreshold = self.getStability(iPlayer)
                 iGameTurn = gc.getGame().getGameTurn()
-                if (iGameTurn <= con.tBirth[iPlayer] + 20):
+                if (iGameTurn <= con.tBirth[iPlayer] + geo.turns(20)):
                         self.setStability(iPlayer, self.getStability(iPlayer) + 3 )
                 else:
                         self.setStability(iPlayer, self.getStability(iPlayer) + 1 )
@@ -813,7 +816,7 @@ class Stability:
                 iGameTurn = gc.getGame().getGameTurn()
                 if (owner < con.iNumPlayers):
                         iTotalCityLostModifier = 0                        
-                        if (bTrade and (iGameTurn == con.tBirth[playerType] or iGameTurn == con.tBirth[playerType]+1 or iGameTurn == con.tBirth[playerType]+2)):
+                        if (bTrade and (iGameTurn == con.tBirth[playerType] or iGameTurn == con.tBirth[playerType]+geo.turns(1) or iGameTurn == con.tBirth[playerType]+geo.turns(2))):
                                 iTotalCityLostModifier = 3 #during a civ birth
                                 if (not gc.getPlayer(owner).isHuman()):
                                         iTotalCityLostModifier += 1
@@ -840,7 +843,7 @@ class Stability:
                         
                 if (playerType < con.iNumPlayers):
                         iTempExpansionThreshold = self.getStability(playerType)
-                        if (iGameTurn == con.tBirth[playerType] or iGameTurn == con.tBirth[playerType]+1 or iGameTurn == con.tBirth[playerType]+2):
+                        if (iGameTurn == con.tBirth[playerType] or iGameTurn == con.tBirth[playerType]+geo.turns(1) or iGameTurn == con.tBirth[playerType]+geo.turns(2)):
                                 self.setStability(playerType, self.getStability(playerType) + 3)
                         elif (owner >= con.iNumPlayers):
                                 self.setStability(playerType, self.getStability(playerType) + max(0,min(5,(12 - gc.getPlayer(playerType).getNumCities())/2)) )
@@ -1062,11 +1065,11 @@ class Stability:
        	
         def checkImplosion(self, iGameTurn):
     
-                if (iGameTurn > con.i350BC and iGameTurn % 10 == 5):
+                if (iGameTurn > con.i350BC and geo.historyTurn(iGameTurn) % 10 == 5):
                         for iPlayer in range(iNumPlayers):
                                 if utils.isIndependentMinor(iPlayer):
                                         continue
-                                if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + 25 and not gc.getPlayer(iPlayer).isGoldenAge()):
+                                if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + geo.turns(25) and not gc.getPlayer(iPlayer).isGoldenAge()):
                                         if (self.getStability(iPlayer) < -40): #civil war
                                                 print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))
                                                 if (iPlayer != utils.getHumanID()): #not me

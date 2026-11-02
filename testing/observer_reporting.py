@@ -172,7 +172,7 @@ def enrich(run, records):
 
 def cohort_key(run, build=True):
     m = run['metadata']
-    return json.dumps([m.get('runtime_fingerprint') if build else None, m.get('scenario'),
+    return json.dumps([m.get('runtime_fingerprint') if build else None, m.get('scenario'), m.get('xl', False),
                        m.get('mode'), m.get('autoplay'), m.get('settings'),
                        m.get('record_interval', 1), run['last_turn']], sort_keys=True)
 

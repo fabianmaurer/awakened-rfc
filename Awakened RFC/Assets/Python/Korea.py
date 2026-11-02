@@ -101,9 +101,9 @@ def setup(victory):
     player = gc.getPlayer(con.iKorea)
     start = gc.getGame().getStartTurn()
     capital = geo.value('Korea.setup.capital_1')
-    if start == 211:
+    if start == geo.turns(211):
         capital = geo.value('Korea.setup.capital_2')
-    elif start == 271:
+    elif start == geo.turns(271):
         capital = geo.value('Korea.setup.capital_3')
     palace = gc.getInfoTypeForString("BUILDING_PALACE")
     city, iterator = player.firstCity(False)

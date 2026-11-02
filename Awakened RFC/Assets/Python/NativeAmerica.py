@@ -47,7 +47,7 @@ def configureRegions(argsList=None):
     if adena:
         birth = 87
         capital = geo.value('NativeAmerica.configureRegions.capital_2')
-    con.tBirth = con.tBirth[:con.iMississippians] + (birth,) + con.tBirth[con.iMississippians+1:]
+    con.tBirth = con.tBirth[:con.iMississippians] + (geo.turns(birth),) + con.tBirth[con.iMississippians+1:]
     import CityNameManager
     CityNameManager.tCityMap = CityNameManager.tCityMap[:31] + (cityNameMap(adena),) + CityNameManager.tCityMap[32:]
     city = gc.getPlayer(con.iMississippians).getCapitalCity()
@@ -74,6 +74,6 @@ def setup():
         maya = gc.getPlayer(con.iMaya)
         if maya.isAlive():
             StartingCivics.apply(con.iMaya)
-            if turn >= 181:
+            if turn >= geo.turns(181):
                 data['lGoals'][con.iMaya] = [0, 0, 0]
     gc.getGame().setScriptData(pickle.dumps(data))

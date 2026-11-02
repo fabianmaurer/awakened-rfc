@@ -901,6 +901,8 @@ def make_map(profile_values):
                      ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=' + DESCRIPTION)]:
         header = header.replace(old, new)
     # Explicit initial starts; the existing RiseAndFall setup supplies their units.
+    if NAME == 'Earth200x110':
+        header = re.sub(r'Calendar=CALENDAR_DEFAULT[ \t]*', 'Calendar=CALENDAR_DEFAULT\n\tSpeed=GAMESPEED_XL', header, count=1)
     players = re.findall(r'BeginPlayer\s*\n.*?EndPlayer', header, re.S)
     for i, player in enumerate(players):
         changed = re.sub(r'(StartingX=)(\d+)', lambda m: m[1] + str(axis(int(m[2]))), player)

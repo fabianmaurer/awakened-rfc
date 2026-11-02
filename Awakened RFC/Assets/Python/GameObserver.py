@@ -246,6 +246,9 @@ class Observer:
                 self.scenario = get('Scenario')
             if self.scenario not in ('3000bc', '800bc', '600ad'):
                 raise ValueError('Unsupported observer scenario/mode')
+            self.xl = (parser.has_option('Observer', 'XL') and parser.getboolean('Observer', 'XL'))
+            if self.xl and self.scenario not in ('3000bc', '800bc'):
+                raise ValueError('Unsupported XL observer scenario')
             if self.mode == 'off':
                 return
             if self.mode not in ('balance', 'diagnostics', 'performance'):
@@ -390,6 +393,8 @@ class Observer:
                 raise ValueError('Observer launcher currently supports single-player only')
             expected_turn, expected_player = {'3000bc': (0, 26), '800bc': (87, 26),
                                                '600ad': (181, 2)}[self.scenario]
+            if self.xl:
+                expected_turn *= 2
             if game.getStartYear() != -3000 or game.getGameTurn() != expected_turn:
                 raise ValueError('Observer scenario start turn/year mismatch')
             if self.unattended:
@@ -422,11 +427,14 @@ class Observer:
                             'setup_player': setup_player,
                             'civilization': actual_civ, 'speed': actual_speed,
                             'handicap': actual_handicap, 'expected_player': expected_player})
+                expected_speed = 'GAMESPEED_NORMAL'
+                if self.xl:
+                    expected_speed = 'GAMESPEED_XL'
                 if (actual_player != expected_player or
-                        actual_speed != 'GAMESPEED_NORMAL' or
+                        actual_speed != expected_speed or
                         actual_handicap != 'HANDICAP_PRINCE'):
-                    raise ValueError('Automatic setup mismatch: player=%d (%s), expected=%d; speed=%s, expected=GAMESPEED_NORMAL; handicap=%s, expected=HANDICAP_PRINCE' %
-                                     (actual_player, actual_civ, expected_player, actual_speed, actual_handicap))
+                    raise ValueError('Automatic setup mismatch: player=%d (%s), expected=%d; speed=%s, expected=%s; handicap=%s, expected=HANDICAP_PRINCE' %
+                                     (actual_player, actual_civ, expected_player, actual_speed, expected_speed, actual_handicap))
             # A WorldBuilder scenario need not appear in getMapScriptName():
             # that API names the map generator, not necessarily the loaded WB
             # file. Prefer the loader's cached filename when it is available.
@@ -435,13 +443,16 @@ class Observer:
             self.loaded_scenario = getattr(CvWBInterface, 'lastFileRead', None)
             expected = {'3000bc': 'start 1 - 3000 bc', '800bc': 'start 2 - 800 bc',
                         '600ad': 'start 3 - 600 ad'}[self.scenario]
+            if self.xl:
+                expected = {'3000bc': 'start 1 xl - 3000bc', '800bc': 'start 2 xl - 800bc'}[self.scenario]
+            expected += '.civbeyondswordwbsave'
             if self.loaded_scenario:
                 filename = str(self.loaded_scenario).replace('\\', '/').split('/')[-1].lower()
-                if not filename.startswith(expected):
+                if filename != expected:
                     raise ValueError('Observer scenario mismatch; WB loader reports: ' + str(self.loaded_scenario))
             elif str(self.map_script).lower().endswith('.civbeyondswordwbsave'):
                 filename = str(self.map_script).replace('\\', '/').split('/')[-1].lower()
-                if not filename.startswith(expected):
+                if filename != expected:
                     raise ValueError('Observer scenario mismatch; map reports: ' + str(self.map_script))
             # If neither API exposes a filename, the turn/year checks above
             # remain mandatory. The launcher itself selects and fingerprints
@@ -482,8 +493,11 @@ class Observer:
                 self.started = True
                 self.camera_pending = self.reveal_map and self.autoplay
                 self.performance_boundary = time.clock()
+                scenario_label = self.scenario
+                if self.xl:
+                    scenario_label += '-xl'
                 self.write({'kind': 'performance_metadata', 'mode': self.mode,
-                            'scenario': self.scenario, 'start_turn': game.getGameTurn(),
+                            'scenario': scenario_label, 'start_turn': game.getGameTurn(),
                             'seed': self.seed, 'reveal_map': self.reveal_map, 'runtime_fingerprint': self.fingerprint,
                             'seed_applied_at': 'CvGame.init before scenario initialization; no GameStart reseed',
                             'rng_state_before_rfc_setup': self.initial_rng_state,
@@ -517,6 +531,7 @@ class Observer:
                         'seed_applied_at': 'GameStart, before RFC setup (map and initial placement already loaded)',
                         'mod_version': self.version, 'runtime_fingerprint': self.fingerprint,
                         'scenario': self.loaded_scenario, 'map_script': self.map_script,
+                        'xl': self.xl,
                         'scenario_identity_available': bool(self.loaded_scenario), 'settings': settings,
                         'record_interval': self.record_interval,
                         'infos': infos, 'boundary': 'EndGameTurn after RFC implosion processing, before next-turn trade recalculation'})

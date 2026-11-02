@@ -2123,7 +2123,7 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 			return false;
 		if ((GET_TEAM(getTeam()).isAtWar((TeamTypes)((int)eBuilding - NUM_BUILDINGS_PLAGUE))))
 			return false;
-		if (GC.getGameINLINE().getGameTurn() <= startingTurn[eBuilding - NUM_BUILDINGS_PLAGUE] + 2)
+		if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[eBuilding - NUM_BUILDINGS_PLAGUE] + 2)
 			return false;
 		int iEspionagePoints = GET_TEAM(getTeam()).getEspionagePointsAgainstTeam((TeamTypes)((int)eBuilding - NUM_BUILDINGS_PLAGUE));
 		int iCost = 10;
@@ -6016,6 +6016,8 @@ int CvCity::calculateNumCitiesMaintenanceTimes100() const
 	int iNumCitiesMaintenance = (GET_PLAYER(getOwnerINLINE()).getNumCities() + iNumVassalCities) * iNumCitiesPercent;
 
 	iNumCitiesMaintenance = std::min(iNumCitiesMaintenance, GC.getHandicapInfo(getHandicapType()).getMaxNumCitiesMaintenance() * 100);
+	// Reduce only the city-count component, including its cap, by one third.
+	if (historicalTurns(1) == 2) iNumCitiesMaintenance = iNumCitiesMaintenance * 2 / 3;
 
 	iNumCitiesMaintenance *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getNumCitiesMaintenanceModifier() + 100));
 	iNumCitiesMaintenance /= 100;

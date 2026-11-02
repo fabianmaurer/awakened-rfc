@@ -2661,9 +2661,9 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}	
 		//discount for new born civs
 		int iTurnModifier = 5*(int)GET_PLAYER((PlayerTypes)getID()).getCurrentEra(); //0-5-10-15-20-25-30
-		if (GC.getGameINLINE().getGameTurn() <= startingTurn[getID()] + iTurnModifier) {
+		if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[getID()] + iTurnModifier) {
 			
-			iCost *= 100 - ((startingTurn[getID()] + iTurnModifier) - GC.getGameINLINE().getGameTurn());
+			iCost *= 100 - ((startingTurn[getID()] + iTurnModifier) - (GC.getGameINLINE().getGameTurn() / historicalTurns(1)));
 			iCost /= 100;
 		}
 	}

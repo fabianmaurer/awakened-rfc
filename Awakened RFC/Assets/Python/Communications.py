@@ -1,3 +1,4 @@
+import ScenarioGeography as geo
 # Rhye's and Fall of Civilization - Communications
 
 from CvPythonExtensions import *
@@ -68,8 +69,8 @@ class Communications:
        	
         def checkTurn(self, iGameTurn):
                 #self.decay(con.iIndia) #debug
-                if (iGameTurn >= 25 and iGameTurn <= 95):
-                        i = (iGameTurn + utils.getSeed()/10 - 5) % (len(tPool1))
+                if (iGameTurn >= geo.turns(25) and iGameTurn <= geo.turns(95)):
+                        i = (geo.historyTurn(iGameTurn) + utils.getSeed()/10 - 5) % (len(tPool1))
                         iCiv = tPool1[i]
 ##                        #shuffle                        
 ##                        if (i % 2 == 0):
@@ -77,28 +78,28 @@ class Communications:
 ##                        else:
 ##                                iCiv = con.iNumMajorPlayers/2 + i/2  
                         if (iCiv >= 0 and iCiv < con.iNumMajorPlayers):
-                                if (gc.getPlayer(iCiv).isAlive() and iGameTurn >= con.tBirth[iCiv]+15):
+                                if (gc.getPlayer(iCiv).isAlive() and iGameTurn >= con.tBirth[iCiv]+geo.turns(15)):
                                         if (not gc.getTeam(gc.getPlayer(iCiv).getTeam()).isHasTech(con.iElectricity)):
                                                 self.decay(iCiv)
-                elif (iGameTurn > 95 and iGameTurn <= 168):
-                        i = (iGameTurn + utils.getSeed()/10 - 5) % (len(tPool2))
+                elif (iGameTurn > geo.turns(95) and iGameTurn <= geo.turns(168)):
+                        i = (geo.historyTurn(iGameTurn) + utils.getSeed()/10 - 5) % (len(tPool2))
                         iCiv = tPool2[i]
   
                         if (iCiv >= 0 and iCiv < con.iNumMajorPlayers):
-                                if (gc.getPlayer(iCiv).isAlive() and iGameTurn >= con.tBirth[iCiv]+15):
+                                if (gc.getPlayer(iCiv).isAlive() and iGameTurn >= con.tBirth[iCiv]+geo.turns(15)):
                                         if (not gc.getTeam(gc.getPlayer(iCiv).getTeam()).isHasTech(con.iElectricity)):
                                                 self.decay(iCiv)
                 else:
-                        i = (iGameTurn + utils.getSeed()/10 - 5) % (len(tPool3))
-                        j = ((iGameTurn + utils.getSeed()/10 - 5)+13) % (len(tPool3))
+                        i = (geo.historyTurn(iGameTurn) + utils.getSeed()/10 - 5) % (len(tPool3))
+                        j = ((geo.historyTurn(iGameTurn) + utils.getSeed()/10 - 5)+13) % (len(tPool3))
                         iCiv1 = tPool3[i]
                         iCiv2 = tPool3[j]            
                         if (iCiv1 >= 0 and iCiv1 < con.iNumMajorPlayers):
-                                if (gc.getPlayer(iCiv1).isAlive() and iGameTurn >= con.tBirth[iCiv1]+15):
+                                if (gc.getPlayer(iCiv1).isAlive() and iGameTurn >= con.tBirth[iCiv1]+geo.turns(15)):
                                         if (not gc.getTeam(gc.getPlayer(iCiv1).getTeam()).isHasTech(con.iElectricity)):
                                                 self.decay(iCiv1)
                         if (iCiv2 >= 0 and iCiv2 < con.iNumMajorPlayers):
-                                if (gc.getPlayer(iCiv2).isAlive() and iGameTurn >= con.tBirth[iCiv2]+15):
+                                if (gc.getPlayer(iCiv2).isAlive() and iGameTurn >= con.tBirth[iCiv2]+geo.turns(15)):
                                         if (not gc.getTeam(gc.getPlayer(iCiv2).getTeam()).isHasTech(con.iElectricity)):
                                                 self.decay(iCiv2)
 

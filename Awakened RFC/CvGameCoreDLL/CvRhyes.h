@@ -207,6 +207,7 @@ void setSettlerMapValue(int iPlayer, int iY, int iX, int iValue);
 void resetSettlerMap(int iPlayer);
 int scenarioGeographyValue(const char* key, int index = 0);
 const std::vector<int>& scenarioGeographyValues(const char* key);
+int historicalTurns(int iReferenceTurns);
 
 
 

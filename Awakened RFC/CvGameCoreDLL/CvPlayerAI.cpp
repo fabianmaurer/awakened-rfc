@@ -3702,7 +3702,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 	//if (getCommercePercent(COMMERCE_GOLD) > 50)
 	{
 		//Rhye - start
-		int iGameTurn = GC.getGameINLINE().getGameTurn();
+		int iGameTurn = GC.getGameINLINE().getGameTurn() / historicalTurns(1);
 		if (iGameTurn == startingTurn[getID()] || iGameTurn == startingTurn[getID()] + 1 || iGameTurn == startingTurn[getID()] + 2)
 			return false;
 		if ((GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4 && iGameTurn <= 181+2) || 

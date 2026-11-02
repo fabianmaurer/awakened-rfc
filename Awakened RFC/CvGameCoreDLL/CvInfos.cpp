@@ -10127,7 +10127,7 @@ int CvHandicapInfo::getResearchPercentByID(PlayerTypes pl) const
 	for (int iLoop = 0; iLoop < NUM_MAJOR_PLAYERS; iLoop++) //Rhye
 		{
 		if (GET_PLAYER((PlayerTypes)iLoop).isHuman()) {
-			if (GC.getGameINLINE().getGameTurn() >= startingTurn[iLoop]) {
+			if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) >= startingTurn[iLoop]) {
 				researchPercent *= humanContributionPercent;
 				researchPercent /= 100;
 			}

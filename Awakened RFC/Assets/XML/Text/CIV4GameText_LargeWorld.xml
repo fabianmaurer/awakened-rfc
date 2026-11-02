@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
+    <Tag>TXT_KEY_GAMESPEED_XL</Tag>
+    <English>XL</English>
+    <French>XL</French>
+    <German>XL</German>
+    <Italian>XL</Italian>
+    <Spanish>XL</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAMESPEED_XL_HELP</Tag>
+    <English>History progresses at half speed. Most costs and durations are doubled. Settlers keep their normal cost.</English>
+    <French>L'histoire progresse deux fois plus lentement. La plupart des co&#251;ts et des dur&#233;es sont doubl&#233;s. Les colons conservent leur co&#251;t normal.</French>
+    <German>Die Geschichte schreitet halb so schnell voran. Die meisten Kosten und Zeitspannen sind verdoppelt. Siedler behalten ihre normalen Kosten.</German>
+    <Italian>La storia avanza a met&#224; velocit&#224;. Quasi tutti i costi e le durate sono raddoppiati. I coloni mantengono il costo normale.</Italian>
+    <Spanish>La historia avanza a la mitad de velocidad. La mayor&#237;a de los costes y duraciones se duplican. Los colonos conservan su coste normal.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_ARFC_800_BC_XL_DESC</Tag>
     <English>800 BC: XL World. Ancient kingdoms and new civilizations share a 200 x 110 world. Choose an established realm or lead Persia, Carthage, Rome, Japan, Korea, the Adena or the Eskimos.</English>
     <French>800 av. J.-C. : Monde XL. Royaumes antiques et nouvelles civilisations partagent une carte de 200 x 110 cases. Choisissez un royaume &#233;tabli ou dirigez la Perse, Carthage, Rome, le Japon, la Cor&#233;e, les Adenas ou les Esquimaux.</French>

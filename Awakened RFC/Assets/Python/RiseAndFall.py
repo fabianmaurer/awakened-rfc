@@ -31,7 +31,7 @@ iBetrayalThreshold = 80
 iRebellionDelay = 15
 iEscapePeriod = 30
 tAIStopBirthThreshold = con.tAIStopBirthThreshold
-tBirth = con.tBirth
+geo.bindTime(globals(), 'tBirth', con._timeValues['tBirth'])
 
 iWorker = con.iWorker
 iSettler = con.iSettler
@@ -170,7 +170,7 @@ geo.bind(globals(), 'tBroaderAreasTL', 'Consts.tBroaderAreasTL')
 geo.bind(globals(), 'tBroaderAreasBR', 'Consts.tBroaderAreasBR')
 tLeaders = con.tLeaders
 tEarlyLeaders = con.tEarlyLeaders
-tLateLeaders = con.tLateLeaders
+# Leader dates are resolved after scenario selection.
 
 class RiseAndFall:
 
@@ -257,6 +257,7 @@ class RiseAndFall:
                 return scriptDict['lAstronomyTurn'][iCiv]
 
         def setAstronomyTurn( self, iCiv, iNewValue ):
+                iNewValue = geo.nextHistoryTurn(iNewValue)
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 scriptDict['lAstronomyTurn'][iCiv] = iNewValue
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
@@ -723,7 +724,7 @@ class RiseAndFall:
                         if (iCiv > utils.getHumanID() and iCiv < iAmerica):
                                 for j in range(iNumPlayers-1-iCiv):
                                         iNextCiv = iCiv+j+1
-                                        if (con.tBirth[iCiv]+self.getBirthTurnModifier(iCiv) == con.tBirth[iNextCiv]+self.getBirthTurnModifier(iNextCiv)):
+                                        if (con.tBirth[iCiv]+geo.turns(self.getBirthTurnModifier(iCiv)) == con.tBirth[iNextCiv]+geo.turns(self.getBirthTurnModifier(iNextCiv))):
                                                 self.setBirthTurnModifier(iNextCiv, (self.getBirthTurnModifier(iNextCiv)+1))
 
 
@@ -732,7 +733,7 @@ class RiseAndFall:
                 for i in range(iNumActivePlayers):
                         # Keep localized, authored scenario ruler names.
                         # setLeader also resets LeaderName to the leaderhead.
-                        if gc.getGame().getStartTurn() == 87 and i <= iJapan:
+                        if gc.getGame().getStartTurn() == geo.turns(87) and i <= iJapan:
                                 continue
                         if (Scenario900AD.isScenario() and
                             (i in Scenario900AD.ACTIVE_PLAYERS or i == con.iCaliphateSlot2)):
@@ -766,7 +767,7 @@ class RiseAndFall:
 ##                        else:
 ##                                self.setCheatersCheck(0, self.getCheatersCheck(0)-1)
 
-                if (iGameTurn % 20 == 0):
+                if (geo.historyTurn(iGameTurn) % 20 == 0):
                         if (pIndependent.isAlive()):                                  
                                 utils.updateMinorTechs(iIndependent, iBarbarian)
                         if (pIndependent2.isAlive()):                                  
@@ -781,23 +782,23 @@ class RiseAndFall:
                         self.giveEarlyColonists(iCarthage)
 
                 if (iGameTurn >= con.i860AD and iGameTurn <= con.i1250AD):
-                        if (iGameTurn % 10 == 9):
+                        if (geo.historyTurn(iGameTurn) % 10 == 9):
                                 self.giveRaiders(iVikings, tBroaderAreasTL[iVikings], tBroaderAreasBR[iVikings])
                                 
                 if (iGameTurn >= con.i1350AD and iGameTurn <= con.i1918AD):
-                        if (iGameTurn == self.getAstronomyTurn(iSpain) + 1 + self.getColonistsAlreadyGiven(iSpain)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iSpain) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iSpain)*8)):
                                 self.giveColonists(iSpain, tBroaderAreasTL[iSpain], tBroaderAreasBR[iSpain])
-                        if (iGameTurn == self.getAstronomyTurn(iEngland) + 1 + self.getColonistsAlreadyGiven(iEngland)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iEngland) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iEngland)*8)):
                                 self.giveColonists(iEngland, tBroaderAreasTL[iEngland], tBroaderAreasBR[iEngland])
-                        if (iGameTurn == self.getAstronomyTurn(iFrance) + 1 + self.getColonistsAlreadyGiven(iFrance)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iFrance) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iFrance)*8)):
                                 self.giveColonists(iFrance, tBroaderAreasTL[iFrance], tBroaderAreasBR[iFrance])
-                        if (iGameTurn == self.getAstronomyTurn(iPortugal) + 1 + self.getColonistsAlreadyGiven(iPortugal)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iPortugal) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iPortugal)*8)):
                                 self.giveColonists(iPortugal, tNormalAreasTL[iPortugal], tNormalAreasBR[iPortugal])
-                        if (iGameTurn == self.getAstronomyTurn(iHolland) + 1 + self.getColonistsAlreadyGiven(iHolland)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iHolland) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iHolland)*8)):
                                 self.giveColonists(iHolland, tNormalAreasTL[iHolland], tNormalAreasBR[iHolland])
-                        if (iGameTurn == self.getAstronomyTurn(iVikings) + 1 + self.getColonistsAlreadyGiven(iVikings)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iVikings) + geo.turns(1) + geo.turns(self.getColonistsAlreadyGiven(iVikings)*8)):
                                 self.giveColonists(iVikings, tBroaderAreasTL[iVikings], tBroaderAreasBR[iVikings])
-                        if (iGameTurn == self.getAstronomyTurn(iGermany) + 100 + self.getColonistsAlreadyGiven(iGermany)*8):
+                        if (iGameTurn == self.getAstronomyTurn(iGermany) + geo.turns(100) + geo.turns(self.getColonistsAlreadyGiven(iGermany)*8)):
                                 self.giveColonists(iGermany, tNormalAreasTL[iGermany], tNormalAreasBR[iGermany])
 
 
@@ -840,12 +841,12 @@ class RiseAndFall:
                 else:
                         iFirstSpawn = iKhmer
                 for iLoopCiv in range(iFirstSpawn, iNumMajorPlayers):
-                        if (iGameTurn >= con.tBirth[iLoopCiv] - 2 and iGameTurn <= con.tBirth[iLoopCiv] + 6):
+                        if (iGameTurn >= con.tBirth[iLoopCiv] - geo.turns(2) and iGameTurn <= con.tBirth[iLoopCiv] + geo.turns(6)):
                                 self.initBirth(iGameTurn, con.tBirth[iLoopCiv], iLoopCiv)
                         # The birth phase can set the actual two-turn flip delay.
                         self.checkFlipUnrest(iGameTurn, iLoopCiv)
 
-                if (iGameTurn == 87):
+                if (iGameTurn == geo.turns(87)):
                         if (gc.getGame().getStartTurn() != 0):  #late start condition (RFCMP) 800BC
                                 print ("late start")
                                 iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iPersia, tCoreAreasTL[iPersia], tCoreAreasBR[iPersia])
@@ -862,7 +863,7 @@ class RiseAndFall:
 
 
 
-                if (iGameTurn == 181):
+                if (iGameTurn == geo.turns(181)):
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4):  #late start condition (RFCMP)
                                 print ("late start")
                                 iNumAICitiesConverted, iNumHumanCitiesToConvert = self.convertSurroundingCities(iChina, tCoreAreasTL[iChina], tCoreAreasBR[iChina])
@@ -880,19 +881,19 @@ class RiseAndFall:
                                 #teamArabia.setHasTech(con.iDivineRight, True, iArabia, False, False)
 
                 #kill the remaining barbs in the region: it's necessary to do this more than once to protect those civs
-                if (iGameTurn >= con.tBirth[iVikings]+2 and iGameTurn <= con.tBirth[iVikings]+10):
+                if (iGameTurn >= con.tBirth[iVikings]+geo.turns(2) and iGameTurn <= con.tBirth[iVikings]+geo.turns(10)):
                         utils.killUnitsInArea(tCoreAreasTL[iVikings], tCoreAreasBR[iVikings], iBarbarian)
                         #utils.flipUnitsInArea(tCoreAreasTL[iVikings], tCoreAreasBR[iVikings], iVikings, iBarbarian, False, True)
-                if (iGameTurn >= con.tBirth[iSpain]+2 and iGameTurn <= con.tBirth[iSpain]+10):
+                if (iGameTurn >= con.tBirth[iSpain]+geo.turns(2) and iGameTurn <= con.tBirth[iSpain]+geo.turns(10)):
                         utils.killUnitsInArea(tCoreAreasTL[iSpain], tCoreAreasBR[iSpain], iBarbarian)
                         #utils.flipUnitsInArea(tCoreAreasTL[iSpain], tCoreAreasBR[iSpain], iSpain, iBarbarian, False, True)
-                if (iGameTurn >= con.tBirth[iFrance]+2 and iGameTurn <= con.tBirth[iFrance]+10):
+                if (iGameTurn >= con.tBirth[iFrance]+geo.turns(2) and iGameTurn <= con.tBirth[iFrance]+geo.turns(10)):
                         utils.killUnitsInArea(tCoreAreasTL[iFrance], tCoreAreasBR[iFrance], iBarbarian)
                         #utils.flipUnitsInArea(tCoreAreasTL[iFrance], tCoreAreasBR[iFrance], iFrance, iBarbarian, False, True)
-                if (iGameTurn >= con.tBirth[iGermany]+2 and iGameTurn <= con.tBirth[iGermany]+10):
+                if (iGameTurn >= con.tBirth[iGermany]+geo.turns(2) and iGameTurn <= con.tBirth[iGermany]+geo.turns(10)):
                         utils.killUnitsInArea(tCoreAreasTL[iGermany], tCoreAreasBR[iGermany], iBarbarian)
                         #utils.flipUnitsInArea(tCoreAreasTL[iGermany], tCoreAreasBR[iGermany], iGermany, iBarbarian, False, True)
-                if (iGameTurn >= con.tBirth[iRussia]+2 and iGameTurn <= con.tBirth[iRussia]+10):
+                if (iGameTurn >= con.tBirth[iRussia]+geo.turns(2) and iGameTurn <= con.tBirth[iRussia]+geo.turns(10)):
                         utils.killUnitsInArea(tCoreAreasTL[iRussia], tCoreAreasBR[iRussia], iBarbarian)
                         #utils.flipUnitsInArea(tCoreAreasTL[iRussia], tCoreAreasBR[iRussia], iRussia, iBarbarian, False, True)
                         
@@ -916,25 +917,25 @@ class RiseAndFall:
 
 
                 #fragment utility
-                if (iGameTurn >= con.i50AD and iGameTurn % 15 == 6):
+                if (iGameTurn >= con.i50AD and geo.historyTurn(iGameTurn) % 15 == 6):
                         self.fragmentIndependents()
 #                if (iGameTurn >= con.i450AD and iGameTurn % 30 == 12):
 #                        self.fragmentBarbarians(iGameTurn)
                         
                 #fall of civs
-                if (iGameTurn >= con.i200AD and iGameTurn % 4 == 0):
+                if (iGameTurn >= con.i200AD and geo.historyTurn(iGameTurn) % 4 == 0):
                         self.collapseByBarbs(iGameTurn)                                        
-                if (iGameTurn >= con.i2000BC and iGameTurn % 18 == 0): #used to be 15 in vanilla, because we must give some time for vassal states to form
+                if (iGameTurn >= con.i2000BC and geo.historyTurn(iGameTurn) % 18 == 0): #used to be 15 in vanilla, because we must give some time for vassal states to form
                         self.collapseGeneric(iGameTurn)
-                if (iGameTurn >= con.i2000BC and iGameTurn % 13 == 7): #used to be 8 in vanilla, because we must give some time for vassal states to form
+                if (iGameTurn >= con.i2000BC and geo.historyTurn(iGameTurn) % 13 == 7): #used to be 8 in vanilla, because we must give some time for vassal states to form
                         self.collapseMotherland(iGameTurn)
-                if (iGameTurn > con.i300AD and iGameTurn % 10 == 6):
+                if (iGameTurn > con.i300AD and geo.historyTurn(iGameTurn) % 10 == 6):
                         self.secession(iGameTurn)
                 #debug
                 #self.collapseMotherland()
 
                 # Chinese reunification is independent of the global dead-civ threshold.
-                if iGameTurn % 5 == 0 and not pChina.isAlive():
+                if geo.historyTurn(iGameTurn) % 5 == 0 and not pChina.isAlive():
                         self.resurrection(iGameTurn, iChina)
 
                 #resurrection of civs
@@ -944,10 +945,10 @@ class RiseAndFall:
                 #        iNumDeadCivs1 -= 2
                 #        iNumDeadCivs2 -= 2
                 if (gc.getGame().countCivPlayersEverAlive() - gc.getGame().countCivPlayersAlive() > iNumDeadCivs1): 
-                        if (iGameTurn % 15 == 10): #in Warlords 14, in vanilla 13
+                        if (geo.historyTurn(iGameTurn) % 15 == 10): #in Warlords 14, in vanilla 13
                                 self.resurrection(iGameTurn)                        
                 elif (gc.getGame().countCivPlayersEverAlive() - gc.getGame().countCivPlayersAlive() > iNumDeadCivs2): 
-                        if (iGameTurn % 30 == 15): #in Warlords 25, in vanilla 20
+                        if (geo.historyTurn(iGameTurn) % 30 == 15): #in Warlords 25, in vanilla 20
                                 self.resurrection(iGameTurn)
 
                 
@@ -960,6 +961,7 @@ class RiseAndFall:
 
 
         def checkPlayerTurn(self, iGameTurn, iPlayer):
+                tLateLeaders = con.getLateLeaders()
                 #switch leader on first anarchy if early leader is different from primary one, and in a late game anarchy period to a late leader              
 ##                if (len(tLeaders[iPlayer]) > 1):
 ##                        if (tEarlyLeaders[iPlayer] != tLeaders[iPlayer][0]):
@@ -1041,7 +1043,7 @@ class RiseAndFall:
                 iRndnum = utils.getFakeRandNum(iNumPlayers, 'starting count')
                 for j in range(iRndnum, iRndnum + iNumPlayers):
                         iDeadCiv = j % iNumPlayers                                                        
-                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + 50):
+                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + geo.turns(50)):
                                 pDeadCiv = gc.getPlayer(iDeadCiv)
                                 teamDeadCiv = gc.getTeam(pDeadCiv.getTeam())
                                 iCityCounter = 0
@@ -1136,7 +1138,7 @@ class RiseAndFall:
                         if utils.isIndependentMinor(iCiv):
                                 continue
                         if (gc.getPlayer(iCiv).isHuman() == 0 and gc.getPlayer(iCiv).isAlive()):
-                                if (iGameTurn >= con.tBirth[iCiv] + 25):
+                                if (iGameTurn >= con.tBirth[iCiv] + geo.turns(25)):
                                         iNumCities = gc.getPlayer(iCiv).getNumCities()
                                         iLostCities = 0
                                         for x in range(*geo.value('RiseAndFall.range_3')):
@@ -1174,7 +1176,7 @@ class RiseAndFall:
                                 pCiv = gc.getPlayer(iCiv)
                                 teamCiv = gc.getTeam(pCiv.getTeam())
                                 if (pCiv.isAlive()):
-                                        if (iGameTurn >= con.tBirth[iCiv] + 25):
+                                        if (iGameTurn >= con.tBirth[iCiv] + geo.turns(25)):
                                                 lNumCitiesNew[iCiv] = pCiv.getNumCities()
                                                 iPreviousCities = self.getNumCities(iCiv)
                                                 iLostCities = iPreviousCities - lNumCitiesNew[iCiv]
@@ -1221,7 +1223,7 @@ class RiseAndFall:
                         pCiv = gc.getPlayer(iCiv)
                         teamCiv = gc.getTeam(pCiv.getTeam())
                         if (pCiv.isHuman() == 0 and pCiv.isAlive() and pCiv.getNumCities() > 0):
-                                if (iGameTurn >= con.tBirth[iCiv] + 25):
+                                if (iGameTurn >= con.tBirth[iCiv] + geo.turns(25)):
                                         bSafe = False
                                         for x in range(tCoreAreasTL[iCiv][0], tCoreAreasBR[iCiv][0]+1):
                                                 for y in range(tCoreAreasTL[iCiv][1], tCoreAreasBR[iCiv][1]+1):
@@ -1333,7 +1335,7 @@ class RiseAndFall:
                 
 
         def escape(self, city):
-                if (gc.getGame().getGameTurn() <= self.getExileData(2) + iEscapePeriod):
+                if (gc.getGame().getGameTurn() <= self.getExileData(2) + geo.turns(iEscapePeriod)):
                         iOldHuman = self.getExileData(3)
                         if (gc.getPlayer(iOldHuman).isAlive()):
                                 iHuman = utils.getHumanID()
@@ -1377,7 +1379,7 @@ class RiseAndFall:
                 iRndnum = utils.getFakeRandNum(iNumPlayers, 'starting count')
                 for j in range(iRndnum, iRndnum + iNumPlayers):
                         iPlayer = j % iNumPlayers   
-                        if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + 30):
+                        if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + geo.turns(30)):
                                 if (utils.getStability(iPlayer) >= -400 and utils.getStability(iPlayer) < -20): #secession (-400 for any very low value, instead of -40)
 
                                         cityList = []
@@ -1473,15 +1475,15 @@ class RiseAndFall:
                 cityList = []
                 bDeadCivFound = False
                 for iDeadCiv in candidates:
-                        if iDeadCiv == con.iEskimos and gc.getGame().getStartTurn() > 87:
+                        if iDeadCiv == con.iEskimos and gc.getGame().getStartTurn() > geo.turns(87):
                                 continue
                         if iDeadCiv == iMongolia and con.isMongolianBirthReplaced():
                                 continue
                         cityList = []
-                        bCooldownExpired = iGameTurn > utils.getLastTurnAlive(iDeadCiv) + 20
+                        bCooldownExpired = iGameTurn > utils.getLastTurnAlive(iDeadCiv) + geo.turns(20)
                         if iDeadCiv == iChina:
-                                bCooldownExpired = iGameTurn >= utils.getLastTurnAlive(iDeadCiv) + 10
-                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + 50 and bCooldownExpired):
+                                bCooldownExpired = iGameTurn >= utils.getLastTurnAlive(iDeadCiv) + geo.turns(10)
+                        if (not gc.getPlayer(iDeadCiv).isAlive() and iGameTurn > con.tBirth[iDeadCiv] + geo.turns(50) and bCooldownExpired):
                                 if (utils.getFakeRandNum(100, 'roll') >= con.tResurrectionProb[iDeadCiv]):
                                         #print("skip")
                                         continue
@@ -1744,7 +1746,9 @@ class RiseAndFall:
                                 
                             
                                     
-        def startFlipUnrest(self, iCiv, tTopLeft, tBottomRight, iTurns=3, bNotify=True):
+        def startFlipUnrest(self, iCiv, tTopLeft, tBottomRight, iTurns=None, bNotify=True):
+                if iTurns is None:
+                        iTurns = geo.turns(3)
                 tTopLeft, tBottomRight = con.getBirthFlipArea(iCiv, tTopLeft, tBottomRight)
                 lNotifiedPlayers = []
                 for x in range(tTopLeft[0], tBottomRight[0] + 1):
@@ -1778,14 +1782,14 @@ class RiseAndFall:
                         return
                 # Start on appearance so the three-turn occupation timer
                 # remains active through the usual second-phase city flip.
-                iBirthTurn = con.tBirth[iCiv] - 1 + self.getSpawnDelay(iCiv)
+                iBirthTurn = con.tBirth[iCiv] - geo.turns(1) + geo.turns(self.getSpawnDelay(iCiv))
                 iWarningTurn = iBirthTurn
                 if iGameTurn < iWarningTurn:
                         return
                 iFlipsDelay = self.getFlipsDelay(iCiv)
                 if gc.getPlayer(iCiv).isAlive() and iFlipsDelay == 0:
                         return
-                iFlipTurn = iBirthTurn + iFlipsDelay
+                iFlipTurn = iBirthTurn + geo.turns(iFlipsDelay)
                 if iGameTurn >= iFlipTurn:
                         return
                 if iGameTurn == iWarningTurn:
@@ -1802,9 +1806,9 @@ class RiseAndFall:
                         import Arctic
                         Arctic.spawn(iCurrentTurn)
                         return # The 800 BC start already contains its Arctic units.
-                if iCiv == con.iMaya and gc.getGame().getStartTurn() == 87:
+                if iCiv == con.iMaya and gc.getGame().getStartTurn() == geo.turns(87):
                         return # Preclassic Maya are already settled in this start.
-                if iCiv == con.iMississippians and gc.getGame().getStartTurn() >= 211:
+                if iCiv == con.iMississippians and gc.getGame().getStartTurn() >= geo.turns(211):
                         return # The late starts already contain this civilization.
                 if gc.getGame().isCrusadeHolyState(iCiv):
                         return
@@ -1813,7 +1817,7 @@ class RiseAndFall:
                 if iCiv == iMongolia and con.isMongolianBirthReplaced():
                         return
                 iHuman = utils.getHumanID()
-                if (iCurrentTurn == iBirthYear-1 + self.getSpawnDelay(iCiv) + self.getFlipsDelay(iCiv)):
+                if (iCurrentTurn == iBirthYear-geo.turns(1) + geo.turns(self.getSpawnDelay(iCiv)) + geo.turns(self.getFlipsDelay(iCiv))):
                         if (iCiv == iMongolia and not pMongolia.isAlive() and
                             self.getFlipsDelay(iCiv) == 0 and gc.getPlayer(con.iXiongnu).isAlive()):
                                 # Resolve once, before any Mongolian territory flips or unrest.
@@ -1833,9 +1837,9 @@ class RiseAndFall:
                                 self.createMongolianArmy(con.iXiongnu, tPlot)
                                 return
 
-                        if (iCurrentTurn >= con.tBirth[iVikings]-1 and iCurrentTurn <= con.tBirth[iTurkey]-1):
+                        if (iCurrentTurn >= con.tBirth[iVikings]-geo.turns(1) and iCurrentTurn <= con.tBirth[iTurkey]-geo.turns(1)):
                                 self.processConstantinople()
-                        if (iCurrentTurn >= con.tBirth[iEngland]-1 and iCurrentTurn <= con.tBirth[iMali]-1):
+                        if (iCurrentTurn >= con.tBirth[iEngland]-geo.turns(1) and iCurrentTurn <= con.tBirth[iMali]-geo.turns(1)):
                                 self.processAfrica()
                     
                         tCapital = tCapitals[iCiv]
@@ -2526,7 +2530,7 @@ class RiseAndFall:
 
 
         def onFirstContact(self, iTeamX, iHasMetTeamY):
-                if (gc.getGame().getGameTurn() < con.i1800AD and gc.getGame().getGameTurn() > 181): #>181 necessary, must be later than the game initialization
+                if (gc.getGame().getGameTurn() < con.i1800AD and gc.getGame().getGameTurn() > geo.turns(181)): #>181 necessary, must be later than the game initialization
                         iOldWorldCiv = -1
                         iNewWorldCiv = -1
                         #if (iTeamX in con.lCivBioOldWorld and iHasMetTeamY in con.lCivBioNewWorld):
@@ -2549,7 +2553,7 @@ class RiseAndFall:
                                 bAlreadyContacted = False
                                 if (self.getFirstContactConquerors(iIndex) == 1):
                                         bAlreadyContacted = True
-                                if (gc.getGame().getGameTurn() <= con.tBirth[con.iAztecs] + 10): #no "come back later" exploit
+                                if (gc.getGame().getGameTurn() <= con.tBirth[con.iAztecs] + geo.turns(10)): #no "come back later" exploit
                                         self.setFirstContactConquerors(iIndex, 1)
                                         return
                                         
@@ -2751,7 +2755,7 @@ class RiseAndFall:
                 iLosingPlayer = pLosingUnit.getOwner()
                 iUnitType = pLosingUnit.getUnitType()
                 if (iLosingPlayer < iNumMajorPlayers):
-                        if (gc.getGame().getGameTurn() >= con.tBirth[iLosingPlayer] and gc.getGame().getGameTurn() <= con.tBirth[iLosingPlayer]+2):
+                        if (gc.getGame().getGameTurn() >= con.tBirth[iLosingPlayer] and gc.getGame().getGameTurn() <= con.tBirth[iLosingPlayer]+geo.turns(2)):
                                 if (pLosingUnit.getX() == tCapitals[iLosingPlayer][0] and pLosingUnit.getY() == tCapitals[iLosingPlayer][1]):
                                         print("new civs are immune for now")
                                         if (utils.getFakeRandNum(100, 'immune roll') >= 50): #RFCMP

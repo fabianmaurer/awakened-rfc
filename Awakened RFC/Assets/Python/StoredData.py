@@ -2,6 +2,7 @@
 
 from CvPythonExtensions import *
 import Consts as con
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers  
 import cPickle as pickle
@@ -25,7 +26,7 @@ class StoredData:
                                     'bAlreadySwitched': False,
                                     'bMongoliaReplaced': False,
                                     'lColonistsAlreadyGiven': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
-                                    'lAstronomyTurn': [500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500], #active players
+                                    'lAstronomyTurn': [geo.turns(500)] * 31, #active players
                                     'lNumCities': [0] * con.iNumTotalPlayers, #total players to contain Byzantium too
                                     'lLastTurnAlive': [0] * con.iNumTotalPlayers, #total players to contain Byzantium too
                                     'lSpawnDelay': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players

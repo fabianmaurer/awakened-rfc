@@ -5,6 +5,7 @@ from CvPythonExtensions import *
 import Popup
 import CvUtil
 import Consts as con
+import ScenarioGeography as geo
 
 gc = CyGlobalContext()
 
@@ -13,6 +14,7 @@ CAPTURE_AFTERMATH_POPUP = 7625
 CAPTURE_AFTERMATH_MINIMUM_POPULATION = 4
 CAPTURE_AFTERMATH_MAX_DISTANCE = 12
 CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
+geo.bindTime(globals(), 'CAPTURE_AFTERMATH_REFUGEE_TURNS', 20)
 
 class Slavery:
 
@@ -204,6 +206,7 @@ class Slavery:
 		return max(0, min(40, self._slaveCount(city) * 5 * unguardedPower / slavePower))
 
 	def checkPlayerTurn(self, iPlayer):
+		if not geo.historyBoundary(gc.getGame().getGameTurn()): return
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive() or not self._hasSlavery(player):
 			return

@@ -68,7 +68,7 @@ def wildlife(turn):
     game = gc.getGame()
     if game.isOption(GameOptionTypes.GAMEOPTION_NO_BARBARIANS):
         return
-    if (turn - game.getStartTurn()) % 6:
+    if not geo.historyBoundary(turn) or (turn - game.getStartTurn()) % geo.turns(6):
         return
     bear = gc.getInfoTypeForString("UNIT_ICE_BEAR")
     snow = gc.getInfoTypeForString("TERRAIN_SNOW")

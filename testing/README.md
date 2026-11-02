@@ -54,6 +54,19 @@ Modes are `balance`, `diagnostics`, and `performance`. Starts are zero-based:
 | 1 | 800 BC | America |
 | 2 | 600 AD | China |
 
+Add `--xl` with either `--start` or `--scenario` to prefer the installed XL map
+for that date. XL starts currently exist for 3000 BC and 800 BC. If the date has
+no XL version, or its XL file is missing, the launcher prints a notice and uses
+the standard scenario. It prints the selected filename and records the actual
+variant; XL batches include `-xl` in their folder names.
+XL uses its slower game speed automatically. `--turns` counts actual turns:
+150 XL turns cover the calendar progression of 75 standard turns. The 800 BC
+XL scenario starts at engine turn 174; its observer still uses America.
+
+```powershell
+.\testing\run-test --mode diagnostics --start 1 --xl --runs 1 --turns 150
+```
+
 `--runs` sets the total number of games. `--turns` counts simulated turns
 from the scenario start. Seeds begin at `--seed` (default 1) and increment for
 each run. All existing launcher options remain available, including output and
@@ -114,7 +127,7 @@ python testing/run_observer.py --mode diagnostics --turns 100 --checkpoint-inter
 python testing/run_observer.py --mode balance --turns 250 --record-interval 25 --checkpoint-interval 25
 ```
 
-All modes support the four installed scenarios. Loaded saves are rejected.
+All modes support the three start dates above, including available XL variants. Loaded saves are rejected.
 Runtime validation checks each scenario's expected starting turn, start year,
 and WorldBuilder filename when available. If the filename is unavailable,
 metadata marks this and validation relies on turn/year checks and the launcher's

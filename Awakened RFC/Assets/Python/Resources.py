@@ -36,7 +36,7 @@ class Resources:
         def checkTurn(self, iGameTurn):
 
 
-                if (iGameTurn == 5): #otherwise it's picked by Portugal at the beginning
+                if (iGameTurn == geo.turns(5)): #otherwise it's picked by Portugal at the beginning
                         gc.getMap().plot(*geo.value('Resources.plot_1')).setImprovementType(con.iHut)
 
                 if geo.profile_name() in ('Earth160x88', 'Earth200x110'):
@@ -144,7 +144,7 @@ class Resources:
                 year = game.getTurnYear(iGameTurn)
                 previousYear = -3001
                 if iGameTurn > 0:
-                        previousYear = game.getTurnYear(iGameTurn - 1)
+                        previousYear = game.getTurnYear(iGameTurn - geo.turns(1))
                 for firstYear, bonus, pos in additions:
                         if previousYear < firstYear and firstYear <= year:
                                 plot = gc.getMap().plot(*pos)

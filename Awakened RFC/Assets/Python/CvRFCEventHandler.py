@@ -304,7 +304,7 @@ class CvRFCEventHandler:
                 'Religion Founded'
                 iReligion, iFounder = argsList
 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == geo.turns(181) or gc.getGame().getGameTurn() == geo.turns(87) or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
         
                 self.vic.onReligionFounded(iReligion, iFounder)
@@ -345,6 +345,8 @@ class CvRFCEventHandler:
                 
         def onBeginGameTurn(self, argsList):
                 iGameTurn = argsList[0]
+                if not geo.historyBoundary(iGameTurn):
+                        return 0
 
                 print ("iGameTurn", iGameTurn)
                 #self.printDebug(iGameTurn) #RFCMP
@@ -371,12 +373,14 @@ class CvRFCEventHandler:
 
         def onBeginPlayerTurn(self, argsList):        
                 iGameTurn, iPlayer = argsList
+                if not geo.historyBoundary(iGameTurn):
+                        return
 
                 # Democracy holds an election every ten turns. The synchronized game RNG
                 # selects one non-government civic column and one available replacement.
                 pPlayer = gc.getPlayer(iPlayer)
                 iDemocracy = CvUtil.findInfoTypeNum(gc.getCivicInfo, gc.getNumCivicInfos(), 'CIVIC_DEMOCRACY')
-                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % 10 == 0 and pPlayer.getCivics(0) == iDemocracy):
+                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % geo.turns(10) == 0 and pPlayer.getCivics(0) == iDemocracy):
                         lEligibleColumns = []
                         for iOption in range(1, gc.getNumCivicOptionInfos()):
                                 lAvailableCivics = []
@@ -440,6 +444,8 @@ class CvRFCEventHandler:
         def onEndGameTurn(self, argsList):
             
                 iGameTurn = argsList[0]
+                if not geo.historyBoundary(iGameTurn):
+                        return
                 self.sta.checkImplosion(iGameTurn)
 
 
@@ -466,7 +472,7 @@ class CvRFCEventHandler:
                 #print ("onTechAcquired", argsList)
                 iPlayer = argsList[2]
                 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == geo.turns(181) or gc.getGame().getGameTurn() == geo.turns(87) or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
                 
                 if (gc.getGame().getGameTurn() > con.tBirth[iPlayer]):                    

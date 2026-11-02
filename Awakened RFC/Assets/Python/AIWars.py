@@ -17,7 +17,7 @@ utils = RFCUtils.RFCUtils()
 ### Constants ###
 
 
-iStartTurn = con.i600BC
+geo.bindTime(globals(), 'iStartTurn', con._timeValues['i600BC'])
 iMinIntervalEarly = 15
 iMaxIntervalEarly = 30
 iMinIntervalLate = 40
@@ -59,20 +59,20 @@ class AIWars:
                         if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
                                 iTurn = con.i900AD
                 iTurn = max(iTurn, gc.getGame().getStartTurn())
-                self.setNextTurnAIWar(iTurn + utils.getFakeRandNum(iMaxIntervalEarly-iMinIntervalEarly, 'random turn'))
+                self.setNextTurnAIWar(iTurn + geo.turns(utils.getFakeRandNum(iMaxIntervalEarly-iMinIntervalEarly, 'random turn')))
 
 
 
         def checkTurn(self, iGameTurn):
 
                 #turn automatically peace on between independent cities and all the major civs
-                if (iGameTurn % 20 == 7):
+                if (geo.historyTurn(iGameTurn) % 20 == 7):
                         utils.restorePeaceHuman(con.iIndependent2, False)
-                if (iGameTurn % 20 == 14):
+                if (geo.historyTurn(iGameTurn) % 20 == 14):
                         utils.restorePeaceHuman(con.iIndependent, False)
-                if (iGameTurn % 60 == 55 and iGameTurn > 50):
+                if (geo.historyTurn(iGameTurn) % 60 == 55 and iGameTurn > geo.turns(50)):
                         utils.restorePeaceAI(con.iIndependent, False)
-                if (iGameTurn % 60 == 30 and iGameTurn > 50):
+                if (geo.historyTurn(iGameTurn) % 60 == 30 and iGameTurn > geo.turns(50)):
                         utils.restorePeaceAI(con.iIndependent2, False)
                 #RFCMP
 ##                #turn automatically war on between independent cities and some AI major civs
@@ -105,7 +105,7 @@ class AIWars:
                                                 numCivsAtWar += 1
                                 if (numCivsAtWar*100/gc.getGame().countCivPlayersAlive() > 50): #more than half at war with someone
                                         print("Skipping AIWar (WW)")
-                                        self.setNextTurnAIWar(iGameTurn + iMinInterval + utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn'))
+                                        self.setNextTurnAIWar(iGameTurn + geo.turns(iMinInterval) + geo.turns(utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn')))
                                         return                                                             
                             
                         iCiv, iTargetCiv = self.pickCivs()
@@ -123,7 +123,7 @@ class AIWars:
 
                         #make sure we don't miss this
                         print("Skipping AIWar")
-                        self.setNextTurnAIWar(iGameTurn + iMinInterval + utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn'))
+                        self.setNextTurnAIWar(iGameTurn + geo.turns(iMinInterval) + geo.turns(utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn')))
 
 
         def pickCivs(self): 
@@ -139,7 +139,7 @@ class AIWars:
 
         def initWar(self, iCiv, iTargetCiv, iGameTurn, iMaxInterval, iMinInterval): 
                 gc.getTeam(gc.getPlayer(iCiv).getTeam()).declareWar(iTargetCiv, True, -1) ##False?
-                self.setNextTurnAIWar(iGameTurn + iMinInterval + utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn'))
+                self.setNextTurnAIWar(iGameTurn + geo.turns(iMinInterval) + geo.turns(utils.getFakeRandNum(iMaxInterval-iMinInterval, 'random turn')))
                 print("Setting AIWar", iCiv, "attacking", iTargetCiv)
 
 ##        def initArray(self):
@@ -213,7 +213,7 @@ class AIWars:
                 pCiv = gc.getPlayer(iCiv)
                 tCiv = gc.getTeam(pCiv.getTeam())
                 iGameTurn = gc.getGame().getGameTurn()
-                bPunicCampaign = (iCiv == con.iCarthage and iGameTurn >= con.tBirth[con.iCarthage] + 20 and iGameTurn <= con.i300AD)
+                bPunicCampaign = (iCiv == con.iCarthage and iGameTurn >= con.tBirth[con.iCarthage] + geo.turns(20) and iGameTurn <= con.i300AD)
                 bArabianCampaign = (iCiv == con.iArabia)
                 lTargetCivs = []
                 #lTargetCivs = con.l0ArrayTotal
@@ -306,7 +306,7 @@ class AIWars:
                         if (attitude > 0):
                                 lTargetCivs[iLoopCiv] /= attitude
                         #exploit plague
-                        if (utils.getPlagueCountdown(iLoopCiv) > 0 or utils.getPlagueCountdown(iLoopCiv) < -10 and not (gc.getGame().getGameTurn() <= con.tBirth[iLoopCiv] + 20)):
+                        if (utils.getPlagueCountdown(iLoopCiv) > 0 or utils.getPlagueCountdown(iLoopCiv) < -10 and not (gc.getGame().getGameTurn() <= con.tBirth[iLoopCiv] + geo.turns(20))):
                                 lTargetCivs[iLoopCiv] *= 3
                                 lTargetCivs[iLoopCiv] /= 2
 

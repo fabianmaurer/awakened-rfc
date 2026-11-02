@@ -1267,11 +1267,11 @@ DenialTypes CvTeamAI::AI_techTrade(TechTypes eTech, TeamTypes eTeam) const
 	}
 
 	//Rhye - start (no trading the first turns, for the exploit)
-	if (GC.getGameINLINE().getGameTurn() <= startingTurn[getID()]+2)
+	if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[getID()]+2)
 	{
 		return DENIAL_TECH_MONOPOLY;
 	}
-	if (GC.getGameINLINE().getGameTurn() <= startingTurn[eTeam]+2)
+	if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[eTeam]+2)
 	{
 		return DENIAL_TECH_WHORE;
 	}
@@ -1537,7 +1537,7 @@ DenialTypes CvTeamAI::AI_vassalTrade(TeamTypes eTeam) const
 	// offering voluntary submission. Wartime capitulation has its own path.
 	if (!isHuman())
 	{
-		const int iProtectionTurns = GC.getDefineINT("RFCMP_SPAWN_VASSAL_PROTECTION_TURNS");
+		const int iProtectionTurns = historicalTurns(GC.getDefineINT("RFCMP_SPAWN_VASSAL_PROTECTION_TURNS"));
 		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
 		{
 			const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
@@ -1725,7 +1725,7 @@ DenialTypes CvTeamAI::AI_surrenderTrade(TeamTypes eTeam, int iPowerMultiplier) c
 	//Rhye - end
 
 	//Rhye - start (lower the first turns)
-	if (GC.getGameINLINE().getGameTurn() <= startingTurn[getID()]+5)
+	if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[getID()]+5)
 	{
 		iMasterPower /= 2;
 	}
@@ -2427,7 +2427,7 @@ int CvTeamAI::AI_defensivePactTradeVal(TeamTypes eTeam) const
 	if (isHasTech((TechTypes)ELECTRICITY) || isHasTech((TechTypes)ASSEMBLY_LINE)) {
 		modifier = 200;
 	}	
-	else if (GC.getGameINLINE().getGameTurn() > 400) { //the last 100 turns, starting from 1900
+	else if (GC.getGameINLINE().getGameTurn() > historicalTurns(400)) { //the last 100 turns, starting from 1900
 		modifier = 160;
 	}	
 

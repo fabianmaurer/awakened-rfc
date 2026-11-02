@@ -24,6 +24,8 @@ SCENARIO = 'Start 1 - 3000 BC.CivBeyondSwordWBSave'
 SCENARIOS = {'3000bc': SCENARIO,
              '800bc': 'Start 2 - 800 BC.CivBeyondSwordWBSave',
              '600ad': 'Start 3 - 600 AD.CivBeyondSwordWBSave'}
+XL_SCENARIOS = {'3000bc': 'Start 1 XL - 3000BC.CivBeyondSwordWBSave',
+                '800bc': 'Start 2 XL - 800BC.CivBeyondSwordWBSave'}
 
 
 def fingerprint(mod):
@@ -88,6 +90,7 @@ def main():
     start.add_argument('--scenario', choices=tuple(SCENARIOS))
     start.add_argument('--start', type=int, choices=range(3),
                        help='0: 3000 BC, 1: 800 BC, 2: 600 AD')
+    parser.add_argument('--xl', action='store_true', help='Use the XL version of the selected start when installed; otherwise use the standard scenario')
     parser.add_argument('--games', '--runs', dest='games', type=int, default=1)
     parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; setup is serialized (default: 1)')
     parser.add_argument('--turns', type=int)
@@ -136,8 +139,17 @@ def main():
     if game_running():
         parser.error('Close Civ4 before starting a batch; existing games are never terminated')
     installed = args.exe.resolve().parent / 'Mods/Awakened RFC'
+    using_xl = False
+    if args.xl:
+        xl_scenario = XL_SCENARIOS.get(args.scenario)
+        if xl_scenario and (installed / 'PublicMaps' / xl_scenario).is_file():
+            scenario = xl_scenario
+            using_xl = True
+        else:
+            print('XL scenario unavailable for %s; using the standard scenario.' % args.scenario, flush=True)
     if not (installed / 'PublicMaps' / scenario).is_file():
         parser.error('Scenario not found: ' + scenario)
+    print('Scenario: ' + scenario, flush=True)
     output_root = args.output_dir.resolve()
     if output_root.is_relative_to(installed.resolve()) or output_root.is_relative_to((ROOT / 'Awakened RFC').resolve()):
         parser.error('--output-dir must be outside both mod folders')
@@ -163,7 +175,7 @@ def main():
                              capture_output=True, text=True).stdout.strip() or 'unknown'
     control = 'human' if args.observe_only else 'ai'
     batch_name = '%s-%s-%s-%dgames-%dturns-seeds-%d-%d-%s-%s' % (
-        mode, control, args.scenario, args.games, turns, args.seed, args.seed + args.games - 1,
+        mode, control, args.scenario + ('-xl' if using_xl else ''), args.games, turns, args.seed, args.seed + args.games - 1,
         time.strftime('%Y%m%d-%H%M%S'), secrets.token_hex(3))
     batch = output_root / batch_name
     batch.mkdir(parents=True)
@@ -206,6 +218,7 @@ def main():
         settings = configparser.RawConfigParser()
         settings['Observer'] = {'Mode': mode, 'Autoplay': str(not args.observe_only),
                                 'RevealMap': str(int(args.reveal_map)), 'Scenario': args.scenario,
+                                'XL': str(using_xl),
                                 'Turns': str(turns), 'Seed': str(seed), 'CheckpointInterval': str(interval),
                                 'RecordInterval': str(args.record_interval), 'Unattended': str(unattended),
                                 'OutputDirectory': str(run), 'Token': token, 'ProcessId': '0',
@@ -226,6 +239,7 @@ def main():
             command += ' multiple'
         (run / 'launch.json').write_text(json.dumps({'seed': seed, 'mode': mode, 'turns': turns,
                                                    'scenario': args.scenario,
+                                                   'xl': using_xl, 'scenario_file': scenario,
                                                    'autoplay': not args.observe_only, 'version': version,
                                                    'unattended': unattended, 'reveal_map': args.reveal_map,
                                                    'jobs': args.jobs,

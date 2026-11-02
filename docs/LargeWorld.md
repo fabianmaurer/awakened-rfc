@@ -1,5 +1,32 @@
 # XL and Large World scenarios
 
+## XL pace and expansion
+
+Both XL starts use the XL game speed: 1,000 turns instead of 500, with half the
+calendar progression per turn. Production, research, food for growth, worker
+tasks, improvement upgrades, city Great People and culture thresholds use twice
+their ordinary requirements. Settlers retain their ordinary production cost;
+movement, per-turn yields and recurring upkeep retain their ordinary rates.
+Golden ages, anarchy, anger and related timed effects follow the slower speed.
+Chops, Great Person missions and population rushing scale their rewards to match
+the larger requirements; military Great General experience follows the original
+game-speed formula.
+
+Historical births, religions, city foundations, leader dates and victory
+deadlines retain their calendar dates. Recurring RFC checks and raids run once
+per two XL turns, with the same unit counts per event. The XL 800 BC start is
+engine turn 174, corresponding to standard turn 87. Observer turn limits still
+count actual simulated turns, so 150 XL turns cover 75 standard turns of history.
+
+For the city-count stability penalty, XL uses two-thirds of the actual number
+of cities, rounded down. The penalty begins at 12 actual cities; 18 cities receive
+the ordinary penalty for 12. Roman Republic mitigation still applies afterward.
+The number-of-cities maintenance component, including its cap, is reduced by one
+third. Distance, colonial and corporate maintenance and territorial stability
+rules retain their ordinary formulas. Named civilization unique powers remain
+active. These changes apply to new games; gameplay balance and multiplayer
+behavior require user-operated validation.
+
 ## XL World, 800 BC
 
 Select **Start 2 XL - 800BC** for the existing 800 BC setup on the 200 x 110

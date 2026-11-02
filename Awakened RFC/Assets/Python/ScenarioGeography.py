@@ -20,6 +20,7 @@ _name = 'Earth124x68' # Import-time bootstrap; scenario loading always selects e
 _profiles = {}
 _values = {}
 _bindings = []
+_timeBindings = []
 # Missing scripted-event locations abort only the current dispatched callback.
 # Naming grids, birth/stability tables and DLL geography remain mandatory.
 _eventModules = ('Resources', 'Barbs', 'Religions', 'RiseAndFall', 'Arctic',
@@ -52,6 +53,47 @@ def height():
     return _profile().HEIGHT
 
 
+def turns(number):
+    """Reference-calendar turns to engine turns; movement is never scaled."""
+    if _name == 'Earth200x110':
+        return number * 2
+    return number
+
+
+def historyTurn(number):
+    """Reference tick for recurring RFC checks, on historyBoundary only."""
+    return number // turns(1)
+
+
+def historyBoundary(number):
+    return number % turns(1) == 0
+
+
+def nextHistoryTurn(number):
+    return ((number + turns(1) - 1) // turns(1)) * turns(1)
+
+
+def scenarioSpeed(filename):
+    basename = os.path.basename((filename or '').replace('\\', '/')).lower()
+    if SCENARIOS.get(basename) == 'Earth200x110':
+        return 'GAMESPEED_XL'
+    return 'GAMESPEED_NORMAL'
+
+
+def bindTime(namespace, name, reference):
+    """Rebind dates/durations when selecting or restoring a geography."""
+    _timeBindings.append((namespace, name, reference))
+    namespace[name] = _scaledTime(reference)
+
+
+def _scaledTime(entry):
+    if isinstance(entry, (list, tuple)):
+        return type(entry)([_scaledTime(item) for item in entry])
+    if entry < 0:
+        return entry # Disabled dates and other sentinels.
+    return turns(entry)
+
+
 def original(key):
     """Unmodified authored data, for restoring successor-civilization regions."""
     return _profile().VALUES[key]
@@ -62,6 +104,8 @@ def value(key):
         raise MissingCoordinate(key)
     if key not in _values:
         entry = copy.deepcopy(original(key))
+        if key.startswith('Barbs.l') and isinstance(entry, list) and len(entry) == 4:
+            entry[2] = turns(entry[2]) # Founding date, never x/y or retry state.
         if key.startswith('Consts.') and key.split('.')[1] in _mutable:
             entry = list(entry)
         _values[key] = entry
@@ -140,6 +184,8 @@ def _activate(name):
     _values = {}
     for namespace, variable, key in _bindings:
         namespace[variable] = _boundValue(key)
+    for namespace, variable, reference in _timeBindings:
+        namespace[variable] = _scaledTime(reference)
     return profile
 
 

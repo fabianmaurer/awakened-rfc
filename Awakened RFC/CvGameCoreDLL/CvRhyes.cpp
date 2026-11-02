@@ -5,6 +5,10 @@
 #include "CvMap.h"
 
 // rhyes.cpp
+int historicalTurns(int iReferenceTurns)
+{
+    return iReferenceTurns * (GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110" ? 2 : 1);
+}
 
 
 

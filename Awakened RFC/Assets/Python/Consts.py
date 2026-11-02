@@ -1539,6 +1539,26 @@ def getCrusadeFlipRecipient(argsList):
         return -1
 
 # Mississippian chiefdoms have their own American major slot.
+# Keep reference dates for module aliases and scenario changes in one process.
+_timeValues = {'tBirth': tBirth}
+for _name, _value in list(globals().items()):
+        if (_name.startswith('i') and (_name.endswith('BC') or _name.endswith('AD'))
+            and _name[1:-2].isdigit()):
+                _timeValues[_name] = _value
+for _name, _value in _timeValues.items():
+        geo.bindTime(globals(), _name, _value)
+
+# Leader tables mix dates with IDs, probabilities and eras. Scale only dates.
+_referenceLateLeaders = tLateLeaders
+def getLateLeaders():
+        result = []
+        for leaders in _referenceLateLeaders:
+                values = list(leaders)
+                for index in range(1, len(values), 4):
+                        values[index] = geo.turns(values[index])
+                result.append(tuple(values))
+        return tuple(result)
+
 lCivGroups[5].append(iMississippians)
 lCivStabilityGroups[4].append(iMississippians)
 lCivBioNewWorld.append(iMississippians)

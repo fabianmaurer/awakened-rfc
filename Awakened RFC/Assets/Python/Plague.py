@@ -1,3 +1,4 @@
+import ScenarioGeography as geo
 # Rhye's and Fall of Civilization - Historical Victory Goals
 
 
@@ -78,18 +79,18 @@ class Plague:
 
                 for i in range(iNumMajorPlayers):
                         self.setPlagueCountdown(i, -iImmunity) 
-##                self.setGenericPlagueDates(0, 100 + utils.getFakeRandNum(30, 'Variation') - 15) #-400 ca
-##                self.setGenericPlagueDates(1, 150 + utils.getFakeRandNum(30, 'Variation') - 15) #600 ca
-##                self.setGenericPlagueDates(2, 225 + utils.getFakeRandNum(30, 'Variation') - 15) #1340
-##                self.setGenericPlagueDates(3, 277 + utils.getFakeRandNum(30, 'Variation') - 15) #1630
-##                self.setGenericPlagueDates(4, 340 + utils.getFakeRandNum(30, 'Variation') - 15) #1850 ca
+##                self.setGenericPlagueDates(0, geo.turns(100 + utils.getFakeRandNum(30, 'Variation') - 15)) #-400 ca
+##                self.setGenericPlagueDates(1, geo.turns(150 + utils.getFakeRandNum(30, 'Variation') - 15)) #600 ca
+##                self.setGenericPlagueDates(2, geo.turns(225 + utils.getFakeRandNum(30, 'Variation') - 15)) #1340
+##                self.setGenericPlagueDates(3, geo.turns(277 + utils.getFakeRandNum(30, 'Variation') - 15)) #1630
+##                self.setGenericPlagueDates(4, geo.turns(340 + utils.getFakeRandNum(30, 'Variation') - 15)) #1850 ca
                 if (not gc.getPlayer(con.iCeltia).getCivilizationType() == 4 ):  #late start condition (RFCMP)
-                        self.setGenericPlagueDates(0, 170 + utils.getFakeRandNum(40, 'Variation') - 20) #400
+                        self.setGenericPlagueDates(0, geo.turns(170 + utils.getFakeRandNum(40, 'Variation') - 20)) #400
                 else:
-                        self.setGenericPlagueDates(0, 80) #safe value
-                self.setGenericPlagueDates(1, 250 + utils.getFakeRandNum(40, 'Variation') - 20) #1300 ca
-                self.setGenericPlagueDates(2, 315 + utils.getFakeRandNum(40, 'Variation') - 20) #1650 ca
-                self.setGenericPlagueDates(3, 380 + utils.getFakeRandNum(40, 'Variation') - 20) #1850 ca
+                        self.setGenericPlagueDates(0, geo.turns(80)) #safe value
+                self.setGenericPlagueDates(1, geo.turns(250 + utils.getFakeRandNum(40, 'Variation') - 20)) #1300 ca
+                self.setGenericPlagueDates(2, geo.turns(315 + utils.getFakeRandNum(40, 'Variation') - 20)) #1650 ca
+                self.setGenericPlagueDates(3, geo.turns(380 + utils.getFakeRandNum(40, 'Variation') - 20)) #1850 ca
 
                 undoPlague = utils.getFakeRandNum(8, 'undo')
                 if (undoPlague <= 3):
@@ -116,7 +117,7 @@ class Plague:
                                 self.startPlague(i)
                         if (i >= 1):
                                 #retry if the epidemic is dead too quickly
-                                if (iGameTurn == self.getGenericPlagueDates(i) + 4):
+                                if (iGameTurn == self.getGenericPlagueDates(i) + geo.turns(4)):
                                         iInfectedCounter = 0
                                         for j in range(iNumTotalPlayersB):
                                                 if (self.getPlagueCountdown(j) > 0):
@@ -125,7 +126,7 @@ class Plague:
                                                 #print ("new plague again1")
                                                 self.startPlague(i)
                         if (i == 2 or i == 3):
-                                if (iGameTurn == self.getGenericPlagueDates(i) + 8):
+                                if (iGameTurn == self.getGenericPlagueDates(i) + geo.turns(8)):
                                         iInfectedCounter = 0
                                         for j in range(iNumTotalPlayersB):
                                                 if (self.getPlagueCountdown(j) > 0):
@@ -498,7 +499,7 @@ class Plague:
         def onCityAcquired(self, iOldOwner, iNewOwner, city):
                 if (city.hasBuilding(iPlague)):
                         if (self.getFirstContactPlague(iOldOwner) == False): #don't infect if first contact plague
-                                if (self.getPlagueCountdown(iNewOwner) <= 0 and gc.getGame().getGameTurn() > con.tBirth[iNewOwner] + iImmunity ): #skip immunity in this case, but not for the new born civs
+                                if (self.getPlagueCountdown(iNewOwner) <= 0 and gc.getGame().getGameTurn() > con.tBirth[iNewOwner] + geo.turns(iImmunity) ): #skip immunity in this case, but not for the new born civs
                                         if (not gc.getTeam(gc.getPlayer(iNewOwner).getTeam()).isHasTech(con.iMedicine)): #but not permanent immunity
                                                 print("acquiring plague")
                                                 self.spreadPlague(iNewOwner)
@@ -527,7 +528,7 @@ class Plague:
 
 
         def onFirstContact(self, iTeamX, iHasMetTeamY):
-                if (gc.getGame().getGameTurn() > con.tBirth[con.iAztecs] + 2 and gc.getGame().getGameTurn() < con.i1800AD):
+                if (gc.getGame().getGameTurn() > con.tBirth[con.iAztecs] + geo.turns(2) and gc.getGame().getGameTurn() < con.i1800AD):
                         iOldWorldCiv = -1
                         iNewWorldCiv = -1
                         #if (iTeamX in con.lCivBioOldWorld and iHasMetTeamY in con.lCivBioNewWorld):

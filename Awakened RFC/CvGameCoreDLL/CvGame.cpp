@@ -9760,10 +9760,10 @@ void CvGame::announcePapalCouncil(const char* szEvent)
 void CvGame::notifyPapalRomeLost(PlayerTypes eOwner)
 {
 	if (!isPapalState(eOwner) || !GET_PLAYER(eOwner).isAlive() || m_iPapalRomeDeadline >= 0) return;
-	m_iPapalRomeDeadline = getGameTurn() + 10;
+	m_iPapalRomeDeadline = getGameTurn() + historicalTurns(10);
 	gDLL->getInterfaceIFace()->addMessage(eOwner, false, GC.getEVENT_MESSAGE_TIME(),
-		gDLL->getText("TXT_KEY_AP_ROME_RECOVERY", 10), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
-		(ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), 60, 44);
+		gDLL->getText("TXT_KEY_AP_ROME_RECOVERY", historicalTurns(10)), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+		(ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1));
 #if ARFC_ENABLE_REPORTING
 	reportApostolicMechanic("papal_rome_lost", eOwner, m_iPapalRomeDeadline);
 #endif
@@ -9944,7 +9944,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	pRome->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), 1);
 	m_bPapalCivicOverride = false;
 	refreshPapalPalaceEffects();
-	m_iPapalFirstCouncilTurn = std::max(getGameTurn() + 3, getStartTurn() + 10);
+	m_iPapalFirstCouncilTurn = std::max(getGameTurn() + historicalTurns(3), getStartTurn() + historicalTurns(10));
 	setVoteTimer((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), 0);
 #if ARFC_ENABLE_REPORTING
 	reportApostolicMechanic("papacy_founded", ePope, eOwner, bBecome, pRome->getOwnerINLINE(), isCouncilActive());
