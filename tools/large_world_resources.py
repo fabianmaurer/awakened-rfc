@@ -162,7 +162,7 @@ def sites(review=False):
 
 
 def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas_name='LargeWorldResources.tsv',
-                    review=False, protected=(), valleys=()):
+                    review=False, protected=(), valleys=(), event_fisheries=()):
     """Replace all bonuses after geography; reserve later sites from turn zero.
 
     Random-map BonusInfo climate restrictions (e.g. silver only on tundra)
@@ -226,6 +226,13 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
                         queue.append(q)
     def workable(pos):
         return any(((pos[0] + dx) % width, pos[1] + dy) in city_sites for dx, dy in city_radius)
+    for bonus, label, pos in event_fisheries:
+        if (pos not in ocean or 'TerrainType=TERRAIN_COAST' not in plots[pos]
+                or not workable(pos) or pos in reserved):
+            raise ValueError('Invalid founding-event fishery: ' + label)
+        reserved.add(pos)
+        plots[pos].append('BonusType=BONUS_' + bonus)
+        catalog.append((bonus, -3000, label, pos))
     def priority(site):
         bonus, year, label, origin = site
         # Productive agriculture and characteristic island exports take

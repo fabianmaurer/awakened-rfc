@@ -21,7 +21,8 @@ import Earth124x68 as BASE
 
 WIDTH, HEIGHT = 160, 88
 NAME = 'Earth160x88'
-TARGET = MOD / 'PublicMaps/Start 1b - 3000 BC - Large World.CivBeyondSwordWBSave'
+# Retain the Large start for authoring without exposing it in the scenario menu.
+TARGET = ROOT / 'tools/scenario_templates/disabled/Start 1b - 3000 BC - Large World.CivBeyondSwordWBSave'
 DESCRIPTION = 'TXT_KEY_ARFC_LARGE_WORLD_DESC'
 ATLAS_NAME = 'LargeWorldResources.tsv'
 
@@ -178,6 +179,13 @@ def values():
         # Huge-only regional centres. Turns use the existing RFC calendar;
         # the fourth field is mutable founding-retry state, initially zero.
         result.update({
+            # The old Libyan rectangle is entirely Saharan wasteland. Use the
+            # open coastal approach west of the Nile instead.
+            'Barbs.checkTurn.location_13': (104, 59),
+            'Barbs.checkTurn.location_14': (110, 60),
+            # The reference's early chariot rectangle has reversed x bounds.
+            # Share the eastern limit of the following Near Eastern raid phase.
+            'Barbs.checkTurn.location_60': (128, 78),
             'Barbs.lMerv': [135, 74, 101, 0],       # 600 BC, river oasis.
             'Barbs.lAnuradhapura': [150, 48, 114, 0],  # 400 BC, northern Sri Lanka.
             'Barbs.lPalembang': [164, 43, 191, 0],  # AD 700, southeast Sumatra.
@@ -877,8 +885,17 @@ def make_map(profile_values):
     review = NAME == 'Earth200x110'
     valleys = correct_floodplains(plots, origins) if review else set()
     from large_world_resources import place_resources
+    event_fisheries = ()
+    if review:
+        # These two founding events install fishing boats on an existing bonus.
+        # Reserve their coastal beds before placing the general resource atlas.
+        event_fisheries = (
+            ('CRAB', 'Gadir crab', profile_values['Barbs.plot_1']),
+            ('CLAM', 'Karalis shellfish', profile_values['Barbs.plot_2']),
+        )
     place_resources(plots, origins, axis, DATA, NAME, ATLAS_NAME,
-                    review=review, protected=protected, valleys=valleys)
+                    review=review, protected=protected, valleys=valleys,
+                    event_fisheries=event_fisheries)
     for old, new in [('grid width=124', 'grid width=%d' % WIDTH), ('grid height=68', 'grid height=%d' % HEIGHT),
                      ('num plots written=8432', 'num plots written=%d' % (WIDTH * HEIGHT)),
                      ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=' + DESCRIPTION)]:
@@ -974,7 +991,7 @@ def main():
     if args.huge:
         WIDTH, HEIGHT = 200, 110
         NAME = 'Earth200x110'
-        TARGET = MOD / 'PublicMaps/Start 1c - 3000 BC - Huge World.CivBeyondSwordWBSave'
+        TARGET = MOD / 'PublicMaps/Start 1 XL - 3000BC.CivBeyondSwordWBSave'
         DESCRIPTION = 'TXT_KEY_ARFC_HUGE_WORLD_DESC'
         ATLAS_NAME = 'HugeWorldResources.tsv'
         WILDS = WILDS + HUGE_WILDS

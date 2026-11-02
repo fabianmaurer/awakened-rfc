@@ -3,7 +3,8 @@
 WorldBuilder scenarios select a geography profile through `SCENARIOS` in
 `Assets/Python/ScenarioGeography.py`. The five original start dates explicitly
 select `Earth124x68`; the alternative large 3000 BC start selects `Earth160x88`
-and the huge 3000 BC start selects `Earth200x110`
+and the huge 3000 BC start selects `Earth200x110`. The large start is currently
+archived in `tools/scenario_templates/disabled`, outside the playable mod
 ([map details](LargeWorld.md)). Selection is by scenario filename, not map dimensions or
 start turn. A copied or renamed scenario needs its own registry entry.
 

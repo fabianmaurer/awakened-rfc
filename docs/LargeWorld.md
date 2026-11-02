@@ -2,7 +2,7 @@
 
 ## Additional Huge World start
 
-Select **Start 1c - 3000 BC - Huge World** for the additional 200 x 110 map.
+Select **Start 1 XL - 3000BC** for the additional 200 x 110 map.
 It has 22,000 tiles, 56.25% more than Large World, with 5,032 passable land
 tiles. Of its 8,390 land tiles, 3,358 (40.0%) are blocked by wasteland, peaks
 or ice, compared with 37.7% in Large World. It starts in 3000 BC with the same
@@ -30,12 +30,24 @@ and [Nepal-Tibet approaches](https://www.asiasocietymuseum.org/buddhist_trade/hi
 not claims that these trade networks already operated in 3000 BC.
 
 The shared historical resource atlas is placed against the new finished terrain:
-774 initial resources and 197 later introductions, with 25 unsuitable sites
+776 initial resources and 197 later introductions, with 25 unsuitable sites
 omitted rather than moved far away. See [HugeWorldResources.tsv](HugeWorldResources.tsv).
 The independent `Earth200x110` profile supplies all geography grids, event
 coordinates and its own resource schedule. Generate this variant with
 `python tools/generate_large_world.py --huge`; the command without that flag
 continues to author Large World.
+
+Large World is temporarily disabled: its WorldBuilder file is retained under
+`tools/scenario_templates/disabled`, outside the playable mod and release ZIPs.
+The generator without `--huge` writes to that archived location.
+
+Huge's event geography includes every reference-profile key. The Libyan raids
+use the open coastal approach west of the Nile, and the early chariot raids
+have ordered west/east bounds. Gadir's crab and Karalis's clam beds are reserved
+for their founding-event fishing boats. All scripted raid areas have suitable
+terrain; ownership, culture and other normal gameplay conditions can still
+prevent an individual event. This is a static source/map review, not in-game
+or multiplayer validation.
 
 Huge's 3000 BC start also schedules four independent cities: Merv in 600 BC,
 Anuradhapura in 400 BC, Palembang in AD 700 and Great Zimbabwe in AD 1100.
@@ -45,7 +57,7 @@ Great Zimbabwe uses the inland cattle and gold belt rather than the dormant
 southern marker. These additions do not change the other scenarios.
 
 The resource/terrain correction pass expands fish, shellfish and whale sites
-from 110 to 205 using additional named shelves, estuaries and upwelling coasts.
+from 110 to 207 using additional named shelves, estuaries and upwelling coasts.
 Every water resource, including offshore oil, is on the connected ocean and
 within Civ4's working radius of a potential coastal city on suitable land.
 Clams and crabs stay on coast terrain; whales may also use coastal migration
@@ -143,7 +155,7 @@ with the shore at most two tiles away. Foundation dates and owners are unchanged
 
 ## Large World start
 
-Select **Start 1b - 3000 BC - Large World**. Egypt, India, China and Babylonia
+Currently disabled: **Start 1b - 3000 BC - Large World**. Egypt, India, China and Babylonia
 are the four playable founding civilizations. Uruk retains its buildings and
 defenders; the usual RFC birth system supplies starting units and later births.
 Other scenarios retain their geography and resource events.

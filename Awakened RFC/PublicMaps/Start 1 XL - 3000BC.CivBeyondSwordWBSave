@@ -48212,6 +48212,7 @@ BeginPlot
 	x=81,y=65
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_CRAB
 EndPlot
 BeginPlot
 	x=81,y=66
@@ -54690,6 +54691,7 @@ BeginPlot
 	x=92,y=68
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_CLAM
 EndPlot
 BeginPlot
 	x=92,y=69
