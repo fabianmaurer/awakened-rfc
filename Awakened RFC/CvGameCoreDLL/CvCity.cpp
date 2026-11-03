@@ -8067,7 +8067,7 @@ void CvCity::initCulturePlots()
 		{
 			CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
 			int iRange = cultureDistance(iDX, iDY);
-			if (pPlot == NULL || iRange > iRadius) continue;
+			if (pPlot == NULL || pPlot->isImpassable() || iRange > iRadius) continue;
 			int iIndex = GC.getMapINLINE().plotNumINLINE(pPlot->getX_INLINE(), pPlot->getY_INLINE());
 			bool bDuplicate = false;
 			for (int i = 0; i < (int)aPlots.size(); ++i)
@@ -8091,8 +8091,7 @@ void CvCity::initCulturePlots()
 	std::sort(aPlots.begin(), aPlots.end());
 	std::vector<bool> abAvailable(aPlots.size(), false);
 	std::vector<bool> abAdded(aPlots.size(), false);
-	// All starting neighbors are covered, including peaks. Only passable
-	// neighbors may subsequently carry culture outward from that inner ring.
+	// Only passable tiles enter the footprint, including the starting neighbors.
 	for (int i = 0; i < (int)aPlots.size(); ++i)
 	{
 		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(aPlots[i].second);

@@ -21005,9 +21005,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=35,y=60
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_COTTON
 EndPlot
 BeginPlot
 	x=35,y=61
@@ -21601,9 +21601,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=36,y=59
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_COTTON
 EndPlot
 BeginPlot
 	x=36,y=60
@@ -22226,6 +22226,7 @@ BeginPlot
 	x=37,y=60
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_CORN
 EndPlot
 BeginPlot
 	x=37,y=61
@@ -26877,9 +26878,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=45,y=44
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_CORN
 EndPlot
 BeginPlot
 	x=45,y=45
@@ -40727,6 +40728,7 @@ BeginPlot
 	RiverWEDirection=1
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_COTTON
 EndPlot
 BeginPlot
 	x=68,y=40
@@ -58223,6 +58225,7 @@ BeginPlot
 	x=98,y=65
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
+	BonusType=BONUS_WINE
 EndPlot
 BeginPlot
 	x=98,y=66
@@ -63791,6 +63794,7 @@ BeginPlot
 	x=107,y=71
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WINE
 EndPlot
 BeginPlot
 	x=107,y=72
@@ -66711,6 +66715,7 @@ BeginPlot
 	x=112,y=38
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
+	BonusType=BONUS_COW
 EndPlot
 BeginPlot
 	x=112,y=39
@@ -83698,6 +83703,7 @@ BeginPlot
 	x=140,y=86
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=140,y=87
@@ -89596,9 +89602,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=150,y=64
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_RICE
 EndPlot
 BeginPlot
 	x=150,y=65
@@ -97371,9 +97377,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=163,y=57
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_PIG
 EndPlot
 BeginPlot
 	x=163,y=58
@@ -100370,6 +100376,7 @@ BeginPlot
 	x=168,y=41
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_PIG
 EndPlot
 BeginPlot
 	x=168,y=42

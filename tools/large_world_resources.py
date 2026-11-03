@@ -140,15 +140,75 @@ ROCKY_DISTRICTS = {
 }
 
 
-CRETE_SITES = """
+XL_SITES = """
 SHEEP|-3000|Crete uplands:68,39
 WINE|-3000|Crete vineyards:69,39
 FISH|-3000|Crete coastal fish:68,38
+HORSE|-1600|Eastern Nile delta:69,35
 """
+
+# XL availability review: allow early local exploitation rather than waiting
+# for widespread cultivation or commercial prominence. These are generous
+# gameplay milestones, not claims of proven cultivation at every atlas site.
+# Apply after site selection so date changes cannot displace other resources.
+XL_EARLIER_YEARS = {
+    ('WINE', 'Greece north'): -3000,
+    ('WINE', 'Sicily'): -3000,
+    ('WINE', 'Italy Campania'): -2000,
+    ('WINE', 'Etruria'): -2000,
+    ('WINE', 'Iberian south'): -1500,
+    ('WINE', 'Tunisia'): -1500,
+    ('WINE', 'Gaul Mediterranean'): -1000,
+    ('WINE', 'Iberian interior'): -1000,
+    ('WINE', 'Bordeaux'): -500,
+    ('WINE', 'Burgundy'): -500,
+    ('WINE', 'Rhine'): -500,
+    ('WINE', 'Moselle'): -500,
+    ('COTTON', 'Mesoamerica Gulf'): -3000,
+    ('COTTON', 'Maya lowlands'): -3000,
+    ('COTTON', 'Deccan'): -2000,
+    ('COTTON', 'Ganges'): -2000,
+    ('COTTON', 'Bengal'): -2000,
+    ('COTTON', 'Nubia'): -500,
+    ('COTTON', 'Central Asia'): -500,
+    ('COTTON', 'Brazil northeast'): -3000,
+    ('COTTON', 'US Mississippi'): 1000,
+    ('COTTON', 'US Alabama'): 1000,
+    ('COTTON', 'US Texas'): 1000,
+    ('COTTON', 'Egypt delta expansion'): 1000,
+    ('CORN', 'Yucatan'): -3000,
+    ('CORN', 'Colombian valleys'): -3000,
+    ('CORN', 'Peru highland valleys'): -2500,
+    ('CORN', 'Bolivia valleys'): -2500,
+    ('CORN', 'Chile central'): -2000,
+    ('CORN', 'southwest pueblos'): -2200,
+    ('CORN', 'Mississippi middle'): -500,
+    ('CORN', 'Ohio valley'): -500,
+    ('CORN', 'Mississippi lower'): 0,
+    ('CORN', 'Great Lakes south'): 0,
+    ('CORN', 'Iroquois country'): 0,
+    ('CORN', 'southeastern US'): 0,
+    ('CORN', 'southern Brazil'): -1000,
+    ('CORN', 'US Corn Belt'): 500,
+    ('COW', 'east Africa'): -3000,
+    ('COW', 'north China'): -2500,
+    ('SHEEP', 'Central Asian steppe'): -3000,
+    ('SHEEP', 'Mongolia'): -2500,
+    ('SHEEP', 'north China'): -2500,
+    ('PIG', 'Southeast Asia'): -3000,
+    ('PIG', 'Java'): -3000,
+    ('PIG', 'Korea'): -2000,
+    ('PIG', 'New Guinea'): -1500,
+    ('WHEAT', 'north China'): -2500,
+    ('WHEAT', 'Shandong'): -2500,
+    ('RICE', 'middle Ganges'): -3000,
+    ('RICE', 'Niger inland delta African rice'): -1000,
+    ('RICE', 'upper Guinea African rice'): -1000,
+}
 
 
 def sites(review=False):
-    atlas = ATLAS + (MARINE_EXTENSIONS + CRETE_SITES if review else '')
+    atlas = ATLAS + (MARINE_EXTENSIONS + XL_SITES if review else '')
     for line in atlas.strip().splitlines():
         if not line.strip():
             continue
@@ -342,6 +402,8 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
             continue
         pos = min(choices)[2]
         reserved.add(pos)
+        if review:
+            year = XL_EARLIER_YEARS.get((bonus, label), year)
         fields = plots[pos]
         if rocky and 'PlotType=2' in fields:
             fields[fields.index('PlotType=2')] = 'PlotType=1'

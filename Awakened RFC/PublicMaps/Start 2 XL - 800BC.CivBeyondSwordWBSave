@@ -19395,6 +19395,7 @@ BeginPlot
 	x=27,y=69
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_CORN
 
 EndPlot
 BeginPlot
@@ -44119,9 +44120,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=62,y=29
-	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_CORN
 
 EndPlot
 BeginPlot
@@ -48361,6 +48362,7 @@ BeginPlot
 	RiverWEDirection=1
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_COTTON
 
 EndPlot
 BeginPlot
@@ -58558,6 +58560,7 @@ BeginPlot
 	x=83,y=46
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_RICE
 
 EndPlot
 BeginPlot
@@ -60827,6 +60830,7 @@ BeginPlot
 	x=86,y=71
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
+	BonusType=BONUS_WINE
 
 EndPlot
 BeginPlot
@@ -61394,6 +61398,7 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	BonusType=BONUS_RICE
 
 EndPlot
 BeginPlot
@@ -64354,9 +64359,9 @@ BeginPlot
 	x=91,y=76
 	isWOfRiver
 	RiverNSDirection=2
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
+	BonusType=BONUS_WINE
 
 EndPlot
 BeginPlot
@@ -79467,7 +79472,9 @@ BeginPlot
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	BonusType=BONUS_HORSE
 	RouteType=ROUTE_ROAD
+	ImprovementType=IMPROVEMENT_PASTURE
 
 EndPlot
 BeginPlot
@@ -104363,9 +104370,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=147,y=56
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_COTTON
 
 EndPlot
 BeginPlot
@@ -105845,6 +105852,7 @@ BeginPlot
 	x=149,y=64
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_COTTON
 BeginUnit
 		UnitType=UNIT_WARRIOR, UnitOwner=1
 		UnitAIType=UNITAI_ATTACK
@@ -108655,9 +108663,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=153,y=61
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	BonusType=BONUS_COTTON
 
 EndPlot
 BeginPlot

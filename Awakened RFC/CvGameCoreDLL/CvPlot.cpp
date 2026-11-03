@@ -3125,6 +3125,13 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 {
 	PROFILE("CvPlot::calculateCulturalOwner()")
 
+	// Impassable terrain, peaks and ice never acquire cultural ownership,
+	// including through border-hole filling or special territorial claims.
+	if (isImpassable())
+	{
+		return NO_PLAYER;
+	}
+
 	// Papal Rome retains its immediate territory regardless of foreign culture
 	// or fort garrisons. Other city tiles still follow normal conquest rules.
 	if (abs(getX_INLINE() - scenarioGeographyValue("World.rome", 0)) <= 1 && abs(getY_INLINE() - scenarioGeographyValue("World.rome", 1)) <= 1)

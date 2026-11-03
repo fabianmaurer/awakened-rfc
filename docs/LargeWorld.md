@@ -36,9 +36,9 @@ technologies and gold. Cities and units use local land/water placements and the
 reviewed XL birth and historical-city anchors. The standard 800 BC scenario
 remains available.
 
-Resources follow the XL atlas, including 61 introductions already due by
-800 BC. Roads expand with the map; 50 starting improvements fit the local XL
-terrain and resources. Five old pastures, quarries, camps or plantations with
+Resources follow the XL atlas, including 60 introductions already due by
+800 BC. Roads expand with the map; 51 starting improvements fit the local XL
+terrain and resources. Four old pastures, quarries, camps or plantations with
 no suitable local resource are omitted. Merv, Anuradhapura, Palembang and Great
 Zimbabwe retain their later founding events in both ancient XL starts.
 
@@ -76,7 +76,7 @@ and [Nepal-Tibet approaches](https://www.asiasocietymuseum.org/buddhist_trade/hi
 not claims that these trade networks already operated in 3000 BC.
 
 The shared historical resource atlas is placed against the new finished terrain:
-776 initial resources and 197 later introductions, with 25 unsuitable sites
+788 initial resources and 186 later introductions, with 25 unsuitable sites
 omitted rather than moved far away. See [HugeWorldResources.tsv](HugeWorldResources.tsv).
 The independent `Earth200x110` profile supplies all geography grids, event
 coordinates and its own resource schedule. Generate this variant with
@@ -305,10 +305,27 @@ Crops and livestock distinguish initial regional availability from later spread.
 Maize begins in the Americas; Eurasian livestock and wheat reach American
 regions after contact; Australian pastoral/agricultural introductions are later.
 Horse supply begins on the Pontic-Caspian steppe around 2200 BC and subsequently
-spreads. Initial silk, sugarcane and spice locations follow their native/early
+spreads. On XL, horses appear in the eastern Nile Delta around 1600 BC,
+providing Egypt with local supply for War Chariots; they are already present
+in the 800 BC start. Initial silk, sugarcane and spice locations follow their native/early
 production regions rather than later colonial plantations. Bonuses represent
 local supply, not imports. Missing crops such as millet, sorghum, potatoes and
 cassava are not silently represented by unrelated wheat or maize bonuses.
+
+XL dates favor early local availability over widespread cultivation or commercial
+prominence. The availability review advances 52 placements: 12 wine, 12 cotton,
+14 maize, nine livestock, two wheat and three rice sites. Twelve become initial
+resources; the other 40 retain earlier scheduled introductions. These are
+generous gameplay milestones, not claims of proven cultivation at every site.
+Minerals remain initial, and meaningful introductions between regions remain,
+including maize outside the Americas, horses in Egypt and livestock in Australia.
+The exact dates and locations are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
+`XL_EARLIER_YEARS` applies after site selection to retain existing resource locations;
+the disabled Large World authoring profile retains its original dates.
+
+Examples include Central Asian sheep and eastern African cattle from 3000 BC,
+southwestern US maize from 2200 BC, northern Chinese wheat from 2500 BC, and
+the later US cotton expansion sites from AD 1000 instead of AD 1800.
 
 Introduction years are coarse regional milestones, not precise first-find dates.
 The calendar-crossing callback works independently of game speed and replaces
@@ -336,6 +353,12 @@ Evidence and authoring references:
   for ancient exchange and post-Columbian introductions.
 - [Ancient horse genomes](https://www.nature.com/articles/s41586-021-04018-9)
   for the Pontic-Caspian origin and Bronze Age expansion of modern domestic horses.
+- [Horses in Ancient Egypt](https://www.ucl.ac.uk/museums-static/digitalegypt/foodproduction/horse.html)
+  for their Second Intermediate Period introduction and remains at Avaris.
+- Early availability evidence: [Central Asian sheep](https://www.nature.com/articles/s41562-021-01083-y),
+  [eastern African livestock](https://pmc.ncbi.nlm.nih.gov/articles/PMC6827346/),
+  [southwestern US maize](https://pmc.ncbi.nlm.nih.gov/articles/PMC2795521/) and
+  [Chinese wheat](https://www.nature.com/articles/s41477-018-0141-x).
 
 ## Maintaining the scenario
 

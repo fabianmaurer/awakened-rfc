@@ -7,7 +7,7 @@ SPICES	-3000	Banda nutmeg	186	42
 SPICES	-3000	Moluccas cloves	186	43
 SPICES	-3000	Sri Lanka cinnamon	150	47
 SUGAR	-3000	New Guinea	191	44
-PIG	-1000	New Guinea	193	44
+PIG	-1500	New Guinea	193	44
 SUGAR	1000	Sicily	99	65
 SUGAR	1500	Madeira	76	62
 SUGAR	1600	Cuba	42	62
@@ -133,18 +133,19 @@ RICE	-2000	Assam	158	63
 RICE	-2000	Bengal	153	62
 RICE	-2000	Odisha	154	61
 RICE	-2000	Yunnan	162	67
-RICE	-2000	middle Ganges	150	64
+RICE	-3000	middle Ganges	150	64
 WHEAT	-2000	Gansu Hexi	158	78
-WHEAT	-2000	Shandong	171	76
+WHEAT	-2500	Shandong	171	76
 WHEAT	-2000	Tarim oases	152	76
-WHEAT	-2000	north China	165	75
-CORN	-1500	Bolivia valleys	54	34
-CORN	-1500	Chile central	49	23
-CORN	-1500	Colombian valleys	45	44
-CORN	-1500	Peru highland valleys	46	39
-CORN	-1500	Yucatan	37	60
-COTTON	-1500	Maya lowlands	36	59
-COTTON	-1500	Mesoamerica Gulf	35	60
+WHEAT	-2500	north China	165	75
+HORSE	-1600	Eastern Nile delta	112	57
+CORN	-2500	Bolivia valleys	54	34
+CORN	-2000	Chile central	49	23
+CORN	-3000	Colombian valleys	45	44
+CORN	-2500	Peru highland valleys	46	39
+CORN	-3000	Yucatan	37	60
+COTTON	-3000	Maya lowlands	36	59
+COTTON	-3000	Mesoamerica Gulf	35	60
 HORSE	-1500	Anatolia	119	71
 HORSE	-1500	Balkans	106	76
 HORSE	-1500	Central Europe	100	83
@@ -159,27 +160,27 @@ RICE	-1500	Red River	163	62
 RICE	-1500	central Thailand	163	55
 RICE	-1500	lower Burma	158	57
 RICE	-1500	south India	149	54
-SHEEP	-1500	Central Asian steppe	140	86
-SHEEP	-1500	Mongolia	162	84
-SHEEP	-1500	north China	165	78
-COW	-1000	east Africa	112	38
-COW	-1000	north China	166	76
+SHEEP	-3000	Central Asian steppe	140	86
+SHEEP	-2500	Mongolia	162	84
+SHEEP	-2500	north China	165	78
+COW	-3000	east Africa	112	38
+COW	-2500	north China	166	76
 COW	-1000	southern Africa	109	26
 PIG	-1000	Japan	183	73
-PIG	-1000	Java	168	41
-PIG	-1000	Korea	178	77
-PIG	-1000	Southeast Asia	163	57
+PIG	-3000	Java	168	41
+PIG	-2000	Korea	178	77
+PIG	-3000	Southeast Asia	163	57
 SUGAR	-1000	Bengal	154	63
 SUGAR	-1000	Ganges	151	63
 SUGAR	-1000	south India	148	54
 WHEAT	-1000	Ethiopian highlands	118	48
 WHEAT	-1000	eastern Ganges	152	63
-WINE	-1000	Etruria	97	73
-WINE	-1000	Greece north	107	71
-WINE	-1000	Iberian south	84	67
-WINE	-1000	Italy Campania	99	70
-WINE	-1000	Sicily	98	65
-WINE	-1000	Tunisia	93	62
+WINE	-2000	Etruria	97	73
+WINE	-3000	Greece north	107	71
+WINE	-1500	Iberian south	84	67
+WINE	-2000	Italy Campania	99	70
+WINE	-3000	Sicily	98	65
+WINE	-1500	Tunisia	93	62
 HORSE	-500	Arabia north	123	59
 HORSE	-500	Britain	85	88
 HORSE	-500	Central Asian oases	137	78
@@ -190,32 +191,32 @@ RICE	-500	Japan Kyushu	179	68
 RICE	-500	Java	168	40
 RICE	-500	Korea	176	77
 RICE	-500	Luzon	176	55
-RICE	-500	Niger inland delta African rice	87	49
+RICE	-1000	Niger inland delta African rice	87	49
 RICE	-500	Sri Lanka	150	48
 RICE	-500	Sumatra	162	44
-RICE	-500	upper Guinea African rice	83	46
-WINE	-500	Gaul Mediterranean	91	76
-WINE	-500	Iberian interior	86	71
-WINE	200	Bordeaux	86	78
-WINE	200	Burgundy	91	80
-WINE	200	Moselle	94	83
-WINE	200	Rhine	95	82
-CORN	500	Mississippi middle	37	75
-CORN	500	Ohio valley	41	76
-CORN	500	southwest pueblos	27	69
-COTTON	500	Central Asia	136	76
-COTTON	500	Deccan	147	56
-COTTON	500	Ganges	149	64
-COTTON	500	Nubia	112	50
+RICE	-1000	upper Guinea African rice	83	46
+WINE	-1000	Gaul Mediterranean	91	76
+WINE	-1000	Iberian interior	86	71
+WINE	-500	Bordeaux	86	78
+WINE	-500	Burgundy	91	80
+WINE	-500	Moselle	94	83
+WINE	-500	Rhine	95	82
+CORN	-500	Mississippi middle	37	75
+CORN	-500	Ohio valley	41	76
+CORN	-2200	southwest pueblos	27	69
+COTTON	-500	Central Asia	136	76
+COTTON	-2000	Deccan	147	56
+COTTON	-2000	Ganges	149	64
+COTTON	-500	Nubia	112	50
 SUGAR	500	Java	167	41
 SUGAR	500	south China	170	66
 RICE	900	Iberian Valencia	87	70
-CORN	1000	Great Lakes south	38	78
-CORN	1000	Iroquois country	47	81
-CORN	1000	Mississippi lower	37	71
-CORN	1000	southeastern US	43	71
-CORN	1000	southern Brazil	62	29
-COTTON	1000	Bengal	153	61
+CORN	0	Great Lakes south	38	78
+CORN	0	Iroquois country	47	81
+CORN	0	Mississippi lower	37	71
+CORN	0	southeastern US	43	71
+CORN	-1000	southern Brazil	62	29
+COTTON	-2000	Bengal	153	61
 COTTON	1000	Egypt	111	58
 COTTON	1000	Iberian south	83	67
 COTTON	1000	Syria	120	65
@@ -258,7 +259,7 @@ WINE	1700	Chile central	48	21
 WINE	1700	South Africa Cape	105	16
 CORN	1750	China northeast	176	82
 CORN	1750	South Africa	110	23
-CORN	1750	US Corn Belt	37	76
+CORN	500	US Corn Belt	37	76
 COW	1750	Brazil south	61	29
 COW	1750	California	19	73
 COW	1750	Texas	31	70
@@ -274,11 +275,11 @@ WHEAT	1750	Argentina Pampas	55	20
 WHEAT	1750	New England	49	80
 WHEAT	1750	Pennsylvania	47	76
 WHEAT	1750	Virginia	44	75
-COTTON	1800	Brazil northeast	68	39
-COTTON	1800	Egypt delta expansion	112	57
-COTTON	1800	US Alabama	41	70
-COTTON	1800	US Mississippi	36	71
-COTTON	1800	US Texas	33	70
+COTTON	-3000	Brazil northeast	68	39
+COTTON	1000	Egypt delta expansion	112	58
+COTTON	1000	US Alabama	41	70
+COTTON	1000	US Mississippi	36	71
+COTTON	1000	US Texas	33	70
 SHEEP	1800	Australia southeast	189	20
 SHEEP	1800	Australia southwest	168	21
 SHEEP	1800	Tasmania	185	13
