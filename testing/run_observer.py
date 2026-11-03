@@ -97,10 +97,14 @@ def main():
     parser.add_argument('--seed', type=int, default=1, help='First seed; incremented for each game')
     parser.add_argument('--observe-only', action='store_true', help='Record a human-controlled game; do not enable AI control')
     parser.add_argument('--reveal-map', action='store_true', help='Show the fully revealed map and normal HUD from directly above, with twice the default view span and normal map detail')
+    parser.add_argument('--capture-worker-paths', action='store_true',
+                        help='Performance only: capture busy worker search graphs and compare both pathfinders; sampled turns include substantial extra overhead')
     parser.add_argument('--manual-start', action='store_true', help='Leave scenario setup to the user instead of confirming it automatically')
     parser.add_argument('--exe', type=Path, default=DEFAULT_EXE)
     parser.add_argument('--output-dir', type=Path, default=TESTING / 'runs')
     parser.add_argument('--checkpoint-interval', type=int, help='Turns between saves; 0 disables saves')
+    parser.add_argument('--autosave', type=int, default=0, metavar='X',
+                        help='Save every X simulated turns, including performance mode (default: 0, disabled); files go in each run\'s saves folder')
     parser.add_argument('--record-interval', type=int, default=1, help='Turns between state snapshots (events are collected every turn)')
     parser.add_argument('--startup-timeout', type=int, default=300)
     parser.add_argument('--stall-timeout', type=int, default=60,
@@ -116,6 +120,10 @@ def main():
     config = configparser.ConfigParser()
     config.read(TESTING / 'observer.local.ini', encoding='utf-8')
     mode = args.mode or config.get('Observer', 'Mode', fallback='balance')
+    if args.capture_worker_paths and mode != 'performance':
+        parser.error('--capture-worker-paths requires --mode performance')
+    if args.autosave < 0:
+        parser.error('--autosave must be zero or positive')
     turns = args.turns if args.turns is not None else config.getint('Observer', 'Turns', fallback=500)
     interval = args.checkpoint_interval
     if interval is None:
@@ -211,8 +219,11 @@ def main():
         activation = run / 'observer.ini'
         env = os.environ.copy()
         env.pop('AWAKENED_RFC_PERFORMANCE_OUTPUT', None)
+        env.pop('AWAKENED_RFC_CAPTURE_WORKER_PATHS', None)
         if mode == 'performance':
             env['AWAKENED_RFC_PERFORMANCE_OUTPUT'] = str(run / 'performance-native.csv')
+            if args.capture_worker_paths:
+                env['AWAKENED_RFC_CAPTURE_WORKER_PATHS'] = '1'
         env['AWAKENED_RFC_OBSERVER_CONFIG'] = str(activation)
         env['AWAKENED_RFC_OBSERVER_TOKEN'] = token
         settings = configparser.RawConfigParser()
@@ -220,6 +231,7 @@ def main():
                                 'RevealMap': str(int(args.reveal_map)), 'Scenario': args.scenario,
                                 'XL': str(using_xl),
                                 'Turns': str(turns), 'Seed': str(seed), 'CheckpointInterval': str(interval),
+                                'AutosaveInterval': str(args.autosave),
                                 'RecordInterval': str(args.record_interval), 'Unattended': str(unattended),
                                 'OutputDirectory': str(run), 'Token': token, 'ProcessId': '0',
                                 'ModVersion': version, 'RuntimeFingerprint': runtime_hash, 'RunId': run.name}
@@ -243,6 +255,8 @@ def main():
                                                    'autoplay': not args.observe_only, 'version': version,
                                                    'unattended': unattended, 'reveal_map': args.reveal_map,
                                                    'jobs': args.jobs,
+                                                   'capture_worker_paths': args.capture_worker_paths,
+                                                   'autosave_interval': args.autosave,
                                                    'crash_capture': mode != 'performance',
                                                    'record_interval': args.record_interval,
                                                    'runtime_fingerprint': runtime_hash, 'command': command}, indent=2))
@@ -376,11 +390,17 @@ def main():
                 try:
                     summarize(run)
                     print('Performance report: ' + str(run / 'performance-report.md'), flush=True)
+                    if args.capture_worker_paths:
+                        from analyze_worker_paths import summarize as summarize_worker_paths
+                        print('Worker path report: ' + str(summarize_worker_paths(run)), flush=True)
                 except (OSError, ValueError, KeyError) as error:
                     print('Could not summarize performance; raw timings retained: ' + str(error), flush=True)
         print(run.name + ': ' + outcome['status'], flush=True)
         if outcome['status'] != 'complete':
             raise RuntimeError('Batch stopped; inspect ' + str(run))
+        if args.capture_worker_paths and not (run / 'worker-path-summary.json').exists():
+            raise RuntimeError('Game completed, but worker path capture/reporting failed. '
+                               'Ordinary performance timings remain valid; inspect ' + str(run))
 
     def worker(index):
         # Hold foreground setup ownership until started.json confirms that

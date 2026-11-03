@@ -81,6 +81,9 @@ protected:
 	void AI_animalMove();
 	void AI_settleMove();
 	void AI_workerMove();
+	bool AI_workerGeneratePath(const CvPlot* destination, int flags = 0, bool reuse = false, int* turns = NULL) const;
+	FAStarNode* AI_workerPathLastNode() const;
+	CvPlot* AI_workerPathEndTurnPlot() const;
 	void AI_barbAttackMove();
 	void AI_attackMove();
 	bool AI_slaveMove();

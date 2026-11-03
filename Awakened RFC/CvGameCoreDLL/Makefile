@@ -277,6 +277,10 @@ $(Target_BIN): $(Target_BIN_TEMP)
 
 		
 build: $(Target_BIN)
+# Both reporting modes publish to the same output path. The other mode's
+# output may be newer than this mode's cached DLL, so timestamps alone cannot
+# select the correct binary. Always compare against the selected mode first.
+	@FC /B "$(Target_BIN_TEMP)" "$(Target_BIN)" >NUL || COPY /Y "$(Target_BIN_TEMP)" "$(Target_BIN)"
 !IFDEF YOURMOD
 	-COPY "$(Target_BIN)" "$(YOURMOD)\Assets\."
 !ENDIF

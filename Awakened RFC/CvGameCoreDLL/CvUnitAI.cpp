@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
+#include "WorkerPathFinder.h"
 #include "CvUnitAI.h"
 #include "CvMap.h"
 #include "CvArea.h"
@@ -891,6 +892,7 @@ int CvUnitAI::AI_attackOdds(const CvPlot* pPlot, bool bPotentialEnemy) const
 // Returns true if the unit found a build for this city...
 bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* peBestBuild, CvPlot* pIgnorePlot, CvUnit* pUnit)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_bestCityBuild");
 	PROFILE_FUNC();
 
 	BuildTypes eBuild;
@@ -937,11 +939,11 @@ bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* 
 										if (!(pLoopPlot->isVisibleEnemyUnit(this)))
 										{
 											int iPathTurns;
-											if (generatePath(pLoopPlot, 0, true, &iPathTurns))
+											if (AI_workerGeneratePath(pLoopPlot, 0, true, &iPathTurns))
 											{
 												// XXX take advantage of range (warning... this could lead to some units doing nothing...)
 												int iMaxWorkers = 1;
-												if (getPathLastNode()->m_iData1 == 0)
+												if (AI_workerPathLastNode()->m_iData1 == 0)
 												{
 													iPathTurns++;
 												}
@@ -951,7 +953,7 @@ bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* 
 												}
 												if (pUnit != NULL)
 												{
-													if (pUnit->plot()->isCity() && iPathTurns == 1 && getPathLastNode()->m_iData1 > 0)
+													if (pUnit->plot()->isCity() && iPathTurns == 1 && AI_workerPathLastNode()->m_iData1 > 0)
 													{
 														iMaxWorkers += 10;
 													}
@@ -984,7 +986,7 @@ bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* 
 			{
 				FAssert(pBestPlot != NULL);
 				int iPathTurns;
-				if ((generatePath(pBestPlot, 0, true, &iPathTurns)) && canBuild(pBestPlot, eBestBuild)
+				if ((AI_workerGeneratePath(pBestPlot, 0, true, &iPathTurns)) && canBuild(pBestPlot, eBestBuild)
 					&& !(pBestPlot->isVisibleEnemyUnit(this)))
 				{
 					int iMaxWorkers = 1;
@@ -995,7 +997,7 @@ bool CvUnitAI::AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot, BuildTypes* 
 							iMaxWorkers += 10;
 						}
 					}	
-					if (getPathLastNode()->m_iData1 == 0)
+					if (AI_workerPathLastNode()->m_iData1 == 0)
 					{
 						iPathTurns++;
 					}
@@ -1409,9 +1411,36 @@ void CvUnitAI::AI_settleMove()
 }
 
 
+// Only candidate queries inside the current worker decision share fields.
+// Actual mission execution continues to use CvSelectionGroup::generatePath.
+bool CvUnitAI::AI_workerGeneratePath(const CvPlot* destination, int flags, bool reuse, int* turns) const
+{
+    WorkerPathDecision* decision = WorkerPathDecision::current;
+    if (decision && decision->matches(this) && decision->supports(flags))
+        return decision->query(destination, flags, reuse, turns);
+    if (decision) decision->useLegacy();
+    return generatePath(destination, flags, reuse, turns);
+}
+
+FAStarNode* CvUnitAI::AI_workerPathLastNode() const
+{
+    WorkerPathDecision* decision = WorkerPathDecision::current;
+    if (decision && decision->matches(this) && decision->lastNode()) return decision->lastNode();
+    return getPathLastNode();
+}
+
+CvPlot* CvUnitAI::AI_workerPathEndTurnPlot() const
+{
+    WorkerPathDecision* decision = WorkerPathDecision::current;
+    if (decision && decision->matches(this) && decision->lastNode()) return decision->endTurnPlot();
+    return getPathEndTurnPlot();
+}
+
+
 void CvUnitAI::AI_workerMove()
 {
 	OBSERVER_PERFORMANCE("unitAI.AI_workerMove");
+	WorkerPathDecision workerPaths(this);
 	PROFILE_FUNC();
 	
 	CvCity* pCity;
@@ -7560,6 +7589,7 @@ bool CvUnitAI::AI_groupMergeRange(UnitAITypes eUnitAI, int iMaxRange, bool bBigg
 // Returns true if we loaded onto a transport or a mission was pushed...
 bool CvUnitAI::AI_load(UnitAITypes eUnitAI, MissionAITypes eMissionAI, UnitAITypes eTransportedUnitAI, int iMinCargo, int iMinCargoSpace, int iMaxCargoSpace, int iMaxCargoOurUnitAI, int iFlags, int iMaxPath, bool bRomanExpedition)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_load");
 	PROFILE_FUNC();
 
 	CvUnit* pLoopUnit;
@@ -7653,7 +7683,7 @@ bool CvUnitAI::AI_load(UnitAITypes eUnitAI, MissionAITypes eMissionAI, UnitAITyp
 														CvPlot* pUnitTargetPlot = pLoopUnit->getGroup()->AI_getMissionAIPlot();
 														if ((pUnitTargetPlot == NULL) || (pUnitTargetPlot->getTeam() == getTeam()) || (!pUnitTargetPlot->isOwned() || !isPotentialEnemy(pUnitTargetPlot->getTeam(), pUnitTargetPlot)))
 														{
-															if (generatePath(pLoopUnit->plot(), iFlags, true, &iPathTurns))
+															if (AI_workerGeneratePath(pLoopUnit->plot(), iFlags, true, &iPathTurns))
 															{
 																if (iPathTurns <= iMaxPath)
 																{
@@ -10715,6 +10745,7 @@ bool CvUnitAI::AI_defend()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_safety()
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_safety");
 	PROFILE_FUNC();
 
 	CLLNode<IDInfo>* pUnitNode;
@@ -10749,7 +10780,7 @@ bool CvUnitAI::AI_safety()
 					{
 						if (!(pLoopPlot->isVisibleEnemyUnit(this)))
 						{
-							if (generatePath(pLoopPlot, ((iPass > 0) ? MOVE_IGNORE_DANGER : 0), true, &iPathTurns))
+							if (AI_workerGeneratePath(pLoopPlot, ((iPass > 0) ? MOVE_IGNORE_DANGER : 0), true, &iPathTurns))
 							{
 								if (iPathTurns <= 1)
 								{
@@ -14123,6 +14154,7 @@ bool CvUnitAI::AI_carrierSeaTransport()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_connectPlot(CvPlot* pPlot, int iRange)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_connectPlot");
 	PROFILE_FUNC();
 
 	CvCity* pLoopCity;
@@ -14134,7 +14166,7 @@ bool CvUnitAI::AI_connectPlot(CvPlot* pPlot, int iRange)
 	{
 		if (GET_PLAYER(getOwnerINLINE()).AI_plotTargetMissionAIs(pPlot, MISSIONAI_BUILD, getGroup(), iRange) == 0)
 		{
-			if (generatePath(pPlot, MOVE_SAFE_TERRITORY, true))
+			if (AI_workerGeneratePath(pPlot, MOVE_SAFE_TERRITORY, true))
 			{
 				for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
 				{
@@ -14158,7 +14190,7 @@ bool CvUnitAI::AI_connectPlot(CvPlot* pPlot, int iRange)
 
 						if (!(pLoopCity->plot()->isVisibleEnemyUnit(this)))
 						{
-							if (generatePath(pLoopCity->plot(), MOVE_SAFE_TERRITORY, true))
+							if (AI_workerGeneratePath(pLoopCity->plot(), MOVE_SAFE_TERRITORY, true))
 							{
 								if (atPlot(pPlot)) // need to test before moving...
 								{
@@ -14186,6 +14218,7 @@ bool CvUnitAI::AI_connectPlot(CvPlot* pPlot, int iRange)
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_improveCity(CvCity* pCity)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_improveCity");
 	PROFILE_FUNC();
 
 	CvPlot* pBestPlot;
@@ -14204,7 +14237,7 @@ bool CvUnitAI::AI_improveCity(CvCity* pCity)
 		else
 		{
 			eMission = MISSION_MOVE_TO;
-			if (NULL != pBestPlot && generatePath(pBestPlot) && (getPathLastNode()->m_iData2 == 1) && (getPathLastNode()->m_iData1 == 0))
+			if (NULL != pBestPlot && AI_workerGeneratePath(pBestPlot) && (AI_workerPathLastNode()->m_iData2 == 1) && (AI_workerPathLastNode()->m_iData1 == 0))
 			{
 				if (pBestPlot->getRouteType() != NO_ROUTE)
 				{
@@ -14240,6 +14273,7 @@ bool CvUnitAI::AI_improveCity(CvCity* pCity)
 
 bool CvUnitAI::AI_improveLocalPlot(int iRange, CvCity* pIgnoreCity)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_improveLocalPlot");
 	
 	int iX, iY;
 	
@@ -14290,7 +14324,7 @@ bool CvUnitAI::AI_improveLocalPlot(int iRange, CvCity* pIgnoreCity)
 										{
 											int iValue = pCity->AI_getBestBuildValue(iIndex);
 											int iPathTurns;
-											if (generatePath(pLoopPlot, 0, true, &iPathTurns))
+											if (AI_workerGeneratePath(pLoopPlot, 0, true, &iPathTurns))
 											{
 												int iMaxWorkers = 1;
 												if (plot() == pLoopPlot)
@@ -14298,7 +14332,7 @@ bool CvUnitAI::AI_improveLocalPlot(int iRange, CvCity* pIgnoreCity)
 													iValue *= 3;
 													iValue /= 2;
 												}
-												else if (getPathLastNode()->m_iData1 == 0)
+												else if (AI_workerPathLastNode()->m_iData1 == 0)
 												{
 													iPathTurns++;
 												}
@@ -14349,7 +14383,7 @@ bool CvUnitAI::AI_improveLocalPlot(int iRange, CvCity* pIgnoreCity)
 		MissionTypes eMission = MISSION_MOVE_TO;
 
 		int iPathTurns;
-		if (generatePath(pBestPlot, 0, true, &iPathTurns) && (getPathLastNode()->m_iData2 == 1) && (getPathLastNode()->m_iData1 == 0))
+		if (AI_workerGeneratePath(pBestPlot, 0, true, &iPathTurns) && (AI_workerPathLastNode()->m_iData2 == 1) && (AI_workerPathLastNode()->m_iData1 == 0))
 		{
 			if (pBestPlot->getRouteType() != NO_ROUTE)
 			{
@@ -14384,6 +14418,7 @@ bool CvUnitAI::AI_improveLocalPlot(int iRange, CvCity* pIgnoreCity)
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_nextCityToImprove(CvCity* pCity)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_nextCityToImprove");
 	PROFILE_FUNC();
 
 	CvCity* pLoopCity;
@@ -14427,7 +14462,7 @@ bool CvUnitAI::AI_nextCityToImprove(CvCity* pCity)
 					    iValue *= 2;
 					}
 
-					generatePath(pPlot, 0, true, &iPathTurns);
+					if (!AI_workerGeneratePath(pPlot, 0, true, &iPathTurns)) continue;
 					iValue /= (iPathTurns + 1);
 
 					if (iValue > iBestValue)
@@ -14531,6 +14566,7 @@ bool CvUnitAI::AI_nextCityToImproveAirlift()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_irrigateTerritory()
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_irrigateTerritory");
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
@@ -14627,7 +14663,7 @@ bool CvUnitAI::AI_irrigateTerritory()
 											{
 												if (GET_PLAYER(getOwnerINLINE()).AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD, getGroup(), 1) == 0)
 												{
-													if (generatePath(pLoopPlot, 0, true, &iPathTurns)) // XXX should this actually be at the top of the loop? (with saved paths and all...)
+													if (AI_workerGeneratePath(pLoopPlot, 0, true, &iPathTurns)) // XXX should this actually be at the top of the loop? (with saved paths and all...)
 													{
 														iValue = 10000;
 
@@ -14669,6 +14705,7 @@ bool CvUnitAI::AI_irrigateTerritory()
 
 bool CvUnitAI::AI_fortTerritory(bool bCanal, bool bAirbase)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_fortTerritory");
 	int iBestValue = 0;
 	BuildTypes eBestBuild = NO_BUILD;
 	CvPlot* pBestPlot = NULL;
@@ -14746,7 +14783,7 @@ bool CvUnitAI::AI_fortTerritory(bool bCanal, bool bAirbase)
 									if (GET_PLAYER(getOwnerINLINE()).AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD, getGroup(), 3) == 0)
 									{
 										int iPathTurns;
-										if (generatePath(pLoopPlot, 0, true, &iPathTurns))
+										if (AI_workerGeneratePath(pLoopPlot, 0, true, &iPathTurns))
 										{
 											iValue *= 1000;
 											iValue /= (iPathTurns + 1);
@@ -14784,6 +14821,7 @@ bool CvUnitAI::AI_fortTerritory(bool bCanal, bool bAirbase)
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* peBestBuild, int* piBestValue)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_improveBonus");
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
@@ -14897,7 +14935,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 
                         if ((eBestTempBuild != NO_BUILD) || (bCanRoute && !bIsConnected))
                         {
-                        	if (generatePath(pLoopPlot, 0, true, &iPathTurns))
+						if (AI_workerGeneratePath(pLoopPlot, 0, true, &iPathTurns))
 							{
 								iValue = GET_PLAYER(getOwnerINLINE()).AI_bonusVal(eNonObsoleteBonus);
 											
@@ -14922,7 +14960,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 								{
 									//allow teaming.
 									iMaxWorkers = AI_calculatePlotWorkersNeeded(pLoopPlot, eBestTempBuild);
-									if (getPathLastNode()->m_iData1 == 0)
+									if (AI_workerPathLastNode()->m_iData1 == 0)
 									{
 										iMaxWorkers = std::min((iMaxWorkers + 1) / 2, 1 + GET_PLAYER(getOwnerINLINE()).AI_baseBonusVal(eNonObsoleteBonus) / 20);
 									}
@@ -15011,7 +15049,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 			{
 				int iDistance = stepDistance(getX_INLINE(), getY_INLINE(), pBestPlot->getX_INLINE(), pBestPlot->getY_INLINE());
 				int iPathTurns;
-				if (generatePath(pBestPlot, 0, false, &iPathTurns))
+				if (AI_workerGeneratePath(pBestPlot, 0, false, &iPathTurns))
 				{
 					if (iPathTurns >= iDistance)
 					{
@@ -15312,6 +15350,7 @@ bool CvUnitAI::AI_connectCity()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_routeCity()
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_routeCity");
 	PROFILE_FUNC();
 
 	CvCity* pRouteToCity;
@@ -15330,13 +15369,13 @@ bool CvUnitAI::AI_routeCity()
 			{
 				if (!(pLoopCity->plot()->isVisibleEnemyUnit(this)))
 				{
-					if (generatePath(pLoopCity->plot(), MOVE_SAFE_TERRITORY, true))
+					if (AI_workerGeneratePath(pLoopCity->plot(), MOVE_SAFE_TERRITORY, true))
 					{
 						if (!(pRouteToCity->plot()->isVisibleEnemyUnit(this)))
 						{
 							if (GET_PLAYER(getOwnerINLINE()).AI_plotTargetMissionAIs(pRouteToCity->plot(), MISSIONAI_BUILD, getGroup()) == 0)
 							{
-								if (generatePath(pRouteToCity->plot(), MOVE_SAFE_TERRITORY, true))
+								if (AI_workerGeneratePath(pRouteToCity->plot(), MOVE_SAFE_TERRITORY, true))
 								{
 									getGroup()->pushMission(MISSION_ROUTE_TO, pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE(), MOVE_SAFE_TERRITORY, false, false, MISSIONAI_BUILD, pRouteToCity->plot());
 									getGroup()->pushMission(MISSION_ROUTE_TO, pRouteToCity->getX_INLINE(), pRouteToCity->getY_INLINE(), MOVE_SAFE_TERRITORY, (getGroup()->getLengthMissionQueue() > 0), false, MISSIONAI_BUILD, pRouteToCity->plot());
@@ -15358,6 +15397,7 @@ bool CvUnitAI::AI_routeCity()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_routeTerritory(bool bImprovementOnly)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_routeTerritory");
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
@@ -15423,7 +15463,7 @@ bool CvUnitAI::AI_routeTerritory(bool bImprovementOnly)
 							{
 								if (GET_PLAYER(getOwnerINLINE()).AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD, getGroup(), 1) == 0)
 								{
-									if (generatePath(pLoopPlot, MOVE_SAFE_TERRITORY, true, &iPathTurns))
+									if (AI_workerGeneratePath(pLoopPlot, MOVE_SAFE_TERRITORY, true, &iPathTurns))
 									{
 										iValue = 10000;
 
@@ -15572,6 +15612,7 @@ bool CvUnitAI::AI_travelToUpgradeCity()
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 {
+	OBSERVER_PERFORMANCE("workerTask.AI_retreatToCity");
 	PROFILE_FUNC();
 
 	CvCity* pCity;
@@ -15608,8 +15649,11 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 		}
 	}
 
+	WorkerPathDecision* workerPaths = WorkerPathDecision::current;
+	const bool bWorkerSearch = workerPaths && workerPaths->matches(this);
 	for (iPass = 0; iPass < 4; iPass++)
 	{
+		std::vector<CvPlot*> workerCities;
 		for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
 		{
 			if (AI_plotValid(pLoopCity->plot()))
@@ -15620,7 +15664,16 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 					{
 						if (!(pLoopCity->plot()->isVisibleEnemyUnit(this)))
 						{
-							if (!atPlot(pLoopCity->plot()) && generatePath(pLoopCity->plot(), ((iPass > 1) ? MOVE_IGNORE_DANGER : 0), true, &iPathTurns))
+							if (bWorkerSearch)
+							{
+								// Filter before searching: safe noncombat workers cannot
+								// find a city with less than zero danger in pass zero.
+								if (!atPlot(pLoopCity->plot()) && (iPass > 0 || (iCurrentDanger > 0 &&
+									GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot(), -1, true, false, getGroup()->isWorkerGroup()) < iCurrentDanger)))
+									workerCities.push_back(pLoopCity->plot());
+								continue;
+							}
+							if (!atPlot(pLoopCity->plot()) && AI_workerGeneratePath(pLoopCity->plot(), ((iPass > 1) ? MOVE_IGNORE_DANGER : 0), true, &iPathTurns))
 							{
 								if (iPathTurns <= ((iPass == 2) ? 1 : iMaxPath))
 								{
@@ -15636,7 +15689,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 										if (iValue < iBestValue)
 										{
 											iBestValue = iValue;
-											pBestPlot = getPathEndTurnPlot();
+											pBestPlot = AI_workerPathEndTurnPlot();
 											FAssert(!atPlot(pBestPlot));
 										}
 									}
@@ -15646,6 +15699,15 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 					}
 				}
 			}
+		}
+
+		if (bWorkerSearch && !workerCities.empty())
+		{
+			// One goal-set search stops at the cheapest eligible city, instead
+			// of exhausting the map to price every distant/unreachable city.
+			CvPlot* pRetreatCity = workerPaths->queryAny(workerCities,
+				(iPass > 1) ? MOVE_IGNORE_DANGER : 0, (iPass == 2) ? 1 : iMaxPath);
+			if (pRetreatCity != NULL) pBestPlot = workerPaths->endTurnPlot();
 		}
 
 		if (pBestPlot != NULL)

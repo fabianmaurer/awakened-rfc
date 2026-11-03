@@ -321,6 +321,13 @@ int potentialIrrigation(FAStarNode* parent, FAStarNode* node, int data, const vo
 int checkFreshWater(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 int changeIrrigated(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder);
+// Shared movement weights and legality rules for worker candidate fields/replay.
+#define PATH_MOVEMENT_WEIGHT (1000)
+#define PATH_TERRITORY_WEIGHT (3)
+#define PATH_STEP_WEIGHT (2)
+#define PATH_STRAIGHT_WEIGHT (1)
+int pathDestValidForFlags(int iToX, int iToY, const void* pointer, int iFlags);
+int pathValidForFlags(FAStarNode* parent, FAStarNode* node, const void* pointer, int iFlags);
 int pathHeuristic(int iFromX, int iFromY, int iToX, int iToY);
 int pathCost(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);
 int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder);

@@ -173,6 +173,16 @@ is not saved, and does not change normal-game autosave settings or `--observe-on
 It does not call RFC's existing `setAIAutoPlay`, which deletes that player's
 possessions. While explicitly enabled, all civilizations use their AI paths
 and the game can continue without a surviving human civilization.
+
+Add `--autosave X` to save every X simulated turns in any mode, including
+performance mode. For example:
+`testing\run-test.cmd --mode performance --start 0 --xl --turns 250 --autosave 10`.
+These normal Civ4 save files go under each game's `saves/autosave-<game-turn>.CivBeyondSwordSave`
+and remain separate from the game's usual autosave folder and other runs.
+The interval counts actual simulated turns, including on XL maps. Omit the
+option or use `--autosave 0` to disable these saves. Explicit autosaves are
+independent of `--checkpoint-interval` and add save overhead to performance timings.
+
 Pass `--reveal-map` to `testing\run-test.cmd` to watch the AI on a fully
 revealed map with the normal HUD, minimap and scoreboard. For example:
 `testing\run-test.cmd --mode balance --turns 220 --seed 1 --reveal-map`.
@@ -464,6 +474,84 @@ in the user-operated run; no speedup or multiplayer validation is claimed.
 
 Run the same 400-turn seed-1 launcher for the next comparison; no game is started
 by building or analysing recordings.
+
+### Worker candidate distance fields
+
+Land AI workers travelling alone now share a lazy Dijkstra distance field across
+candidate queries in one worker decision, with separate fields for movement flags.
+Terrain/road movement costs, ownership/damage costs, danger and movement permissions
+use the existing rules. One movement-state label per plot is an approximation;
+candidate rankings and arrival estimates may differ. Mission execution still uses
+the engine pathfinder. Human automation, combat workers, groups, cargo and unsupported
+flags retain the engine search. Fields are discarded at the end of each decision;
+integer costs and plot-index ties make the new search deterministic.
+The algorithm uses the [single-source distance-field pattern](https://www.redblobgames.com/pathfinding/distance-to-any/),
+extended to weighted movement with Dijkstra's algorithm.
+
+The November 2 seed-1 XL comparison reduced mean turn-boundary time for turns
+200-249 from 7.773 to 2.994 seconds. Combined engine/shared pathfinding fell from
+5.915 to 1.432 seconds per turn. All 250 sampled city/unit/alive-player counts
+matched the baseline; this does not establish identical routes or gameplay.
+The remaining shared-search cost is concentrated in `AI_retreatToCity`
+(about 0.95 seconds per late turn). No replay comparisons were available from
+that run because the original capture threshold produced no files.
+The November 3 capture run saved two resource-improvement batches (ten queries):
+paired shared/legacy query times were 2.559/10.776 ms in total (4.21x faster),
+with matching reachability, arrival turns and remaining movement, and zero
+native/replay mismatches. These samples do not cover the retreat bottleneck.
+Weighted A* with weight 32 reduced expansions on those local queries, but
+broader destination probes on the saved graphs favored sharing explored regions
+over restarting searches. This is search-work evidence, not a DLL speed estimate.
+
+Worker retreats now collect eligible cities before searching and stop the shared
+field at the first eligible city reached in path-cost order. Already explored
+cities can be reused. Safer-city preferences, primary-area/airlift restrictions,
+turn limits and fallback phases remain; noncombat workers in no danger skip
+the impossible search for a city with negative danger. City selection now favors
+path cost rather than exhaustively comparing every city's arrival turn, so
+choices may differ. Other unit roles keep their previous retreat selection.
+Speedup for this change has not yet been measured.
+
+For a short user-operated comparison, `Compare Retreat From Autosave.cmd` selects
+the preserved before/after production DLLs under ignored `testing/bin/retreat-comparison/`.
+Close Civ4, select **before**, load a fixed autosave and time 3-5 end turns. Close
+Civ4, select **after**, reload the same save and repeat the same turns/actions.
+Use the same graphics settings and finish with **after** installed. Neither the
+switcher nor the assistant launches the game. No reporting build or full observer
+run is needed. These local DLL snapshots must be prepared again in a fresh checkout.
+The save fixes the initial state; changed AI choices can diverge afterward.
+
+Double-click `Profile XL Worker Paths.cmd` to build the reporting DLL, run one
+250-turn 3000 BC XL capture game with seed 1, and restore the production DLL afterward.
+Pass `-IncludeCleanRun` to the PowerShell script to precede capture with a separate
+clean timing run. Capture uses `--capture-worker-paths`: one worker decision
+with at least four candidate queries or a query expanding at least 256 plots is
+captured every 25 turns from turn 150 through 350. The former 16-query threshold
+produced no captures in the November 2 XL run, whose expensive decisions were
+short retreat-to-city batches. Missing capture reports now make the launcher
+return an error even when the game itself completes. No game is started by
+compiling or analyzing this code.
+Mode switches compare the selected cached DLL with the shared output by content,
+so a newer production DLL cannot mask an older reporting build. The launcher
+verifies the published DLL hashes and mode tag before proceeding. Build logs
+are kept separately as `legacy-toolchain/worker-profile-build-0.log` and
+`legacy-toolchain/worker-profile-build-1.log`.
+
+Captures write `worker-path-*-queries.csv` with paired native/legacy query timings
+and `worker-path-*-flags<N>.json` with replayable terrain, road costs, permissions,
+danger and movement state. Sampled turn durations include substantial graph-export
+and comparison overhead; use a clean run for whole-game timing. Query CSV timings
+exclude graph export. Capture is reporting-only and requires the explicit launcher
+flag; normal games and ordinary performance recordings do not export graphs.
+
+The capture run automatically writes `worker-path-report.md` and
+`worker-path-summary.json`. Regenerate with
+`python testing/analyze_worker_paths.py <run-or-batch-folder>`.
+The analyzer checks that captured native results and expansion counts replay,
+compares repeated A* and weighted A* (weights 8 and 32), and reports changes in
+reachability/arrival estimates. Repeated A* is an independent algorithm reference;
+the paired in-game timings, which honor legacy reuse requests, measure actual
+engine comparisons. Python replay times are not estimates of DLL speed.
 
 ### Historical path query detail
 

@@ -261,6 +261,11 @@ class Observer:
                                parser.getboolean('Observer', 'Unattended'))
             self.limit = int(get('Turns'))
             self.checkpoint_interval = int(get('CheckpointInterval'))
+            self.autosave_interval = 0
+            if parser.has_option('Observer', 'AutosaveInterval'):
+                self.autosave_interval = int(get('AutosaveInterval'))
+            if self.autosave_interval < 0:
+                raise ValueError('Autosave interval must be zero or positive')
             self.record_interval = parser.getint('Observer', 'RecordInterval')
             self.seed = int(get('Seed'))
             self.version = get('ModVersion')
@@ -499,6 +504,7 @@ class Observer:
                 self.write({'kind': 'performance_metadata', 'mode': self.mode,
                             'scenario': scenario_label, 'start_turn': game.getGameTurn(),
                             'seed': self.seed, 'reveal_map': self.reveal_map, 'runtime_fingerprint': self.fingerprint,
+                            'autosave_interval': self.autosave_interval,
                             'seed_applied_at': 'CvGame.init before scenario initialization; no GameStart reseed',
                             'rng_state_before_rfc_setup': self.initial_rng_state,
                             'timer': 'Windows Python time.clock wall seconds',
@@ -534,6 +540,7 @@ class Observer:
                         'xl': self.xl,
                         'scenario_identity_available': bool(self.loaded_scenario), 'settings': settings,
                         'record_interval': self.record_interval,
+                        'autosave_interval': self.autosave_interval,
                         'infos': infos, 'boundary': 'EndGameTurn after RFC implosion processing, before next-turn trade recalculation'})
             if self.mode == 'diagnostics':
                 plots = []
@@ -890,6 +897,8 @@ class Observer:
             return
         try:
             self.turns += 1
+            if self.autosave_interval > 0 and self.turns % self.autosave_interval == 0:
+                self.save_game('autosave')
             if self.mode == 'performance':
                 now = time.clock()
                 self.write({'kind': 'performance', 'turn': self.game.getGameTurn(),
@@ -928,6 +937,9 @@ class Observer:
     def checkpoint(self, label):
         if self.mode == 'performance' or self.checkpoint_interval <= 0:
             return
+        self.save_game(label)
+
+    def save_game(self, label):
         folder = os.path.join(self.output, 'saves')
         if not os.path.isdir(folder):
             os.makedirs(folder)
