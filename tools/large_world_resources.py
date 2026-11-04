@@ -222,7 +222,7 @@ def sites(review=False):
 
 
 def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas_name='LargeWorldResources.tsv',
-                    review=False, protected=(), valleys=(), event_fisheries=()):
+                    review=False, protected=(), valleys=(), event_fisheries=(), settlements=()):
     """Replace all bonuses after geography; reserve later sites from turn zero.
 
     Random-map BonusInfo climate restrictions (e.g. silver only on tundra)
@@ -234,6 +234,7 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
     for fields in plots.values():
         fields[:] = [f for f in fields if not f.startswith('BonusType=')]
     reserved, additions, catalog, omitted, relief_edits = set(), [], [], [], []
+    settlements = set(settlements)
     crete_land = {pos for pos, origin in origins.items()
                   if origin in ((68, 39), (69, 39)) and 'PlotType=3' not in plots[pos]} if review else set()
     width = max(x for x, y in plots) + 1
@@ -319,7 +320,8 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
                     continue
             # No long-distance relocation; each coordinate describes a local
             # regional envelope within 3.2 enlarged tiles of the anchor.
-            if abs(dx) > 3 or abs(dy) > 3 or dx*dx+dy*dy > 10 or pos in reserved:
+            if (abs(dx) > 3 or abs(dy) > 3 or dx*dx+dy*dy > 10
+                    or pos in reserved or pos in settlements):
                 continue
             if any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fields) or 'PlotType=0' in fields:
                 continue

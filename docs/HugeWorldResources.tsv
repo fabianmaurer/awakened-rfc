@@ -15,7 +15,7 @@ SUGAR	1600	Hispaniola	48	60
 SUGAR	1600	Jamaica	44	59
 CORN	-3000	Balsas valley	26	61
 CORN	-3000	Ecuador coastal	42	43
-CORN	-3000	Guatemala	36	57
+CORN	-3000	Guatemala	35	57
 CORN	-3000	Gulf Mexico lowlands	34	59
 CORN	-3000	Oaxaca	32	57
 CORN	-3000	north Peru coast	41	39
@@ -47,8 +47,8 @@ DYE	-3000	Britain woad	86	88
 DYE	-3000	China indigo	170	68
 DYE	-3000	European woad	88	80
 DYE	-3000	Indian Deccan indigo	146	57
-DYE	-3000	Indus indigo	142	62
-DYE	-3000	Levant madder	118	62
+DYE	-3000	Indus indigo	142	61
+DYE	-3000	Levant madder	118	64
 DYE	-3000	Maya indigo	37	59
 DYE	-3000	Mexico cochineal	31	57
 DYE	-3000	Peru cochineal	45	39
@@ -56,7 +56,7 @@ PIG	-3000	Anatolia	117	72
 PIG	-3000	Danube	104	80
 PIG	-3000	Ganges	150	63
 PIG	-3000	Gaul woodland farms	89	79
-PIG	-3000	Levant	118	64
+PIG	-3000	Levant	119	63
 PIG	-3000	Po valley	96	76
 PIG	-3000	Rhineland	95	84
 PIG	-3000	Sichuan	162	68
@@ -66,7 +66,7 @@ PIG	-3000	south China	170	67
 PIG	-3000	southern Britain	86	86
 RICE	-3000	Hunan	166	68
 RICE	-3000	lower Yangtze	171	71
-RICE	-3000	middle Yangtze	166	70
+RICE	-3000	middle Yangtze	165	70
 RICE	-3000	south China	169	67
 SHEEP	-3000	Anatolia	120	71
 SHEEP	-3000	Atlas	83	59
@@ -82,9 +82,9 @@ SHEEP	-3000	Indus	142	65
 SHEEP	-3000	Iran	134	68
 SHEEP	-3000	Ireland	78	91
 SHEEP	-3000	Italy Apennines	99	71
-SHEEP	-3000	Levant	119	63
+SHEEP	-3000	Levant	119	62
 SHEEP	-3000	Mesopotamia	124	67
-SHEEP	-3000	Nile	111	54
+SHEEP	-3000	Nile	110	55
 SHEEP	-3000	Sardinia	94	70
 SHEEP	-3000	Zagros	128	67
 WHEAT	-3000	Algeria	89	63
@@ -92,7 +92,7 @@ WHEAT	-3000	Anatolia	116	71
 WHEAT	-3000	Bactria	136	73
 WHEAT	-3000	British south	85	86
 WHEAT	-3000	Danube	105	79
-WHEAT	-3000	Ganges northwest	145	65
+WHEAT	-3000	Ganges northwest	144	65
 WHEAT	-3000	Greece	108	71
 WHEAT	-3000	Guadalquivir	83	68
 WHEAT	-3000	Iberian interior	83	71
@@ -107,7 +107,7 @@ WHEAT	-3000	Lower Nile	110	56
 WHEAT	-3000	Mesopotamia north	126	68
 WHEAT	-3000	Mesopotamia south	125	65
 WHEAT	-3000	Morocco	83	61
-WHEAT	-3000	Paris basin	89	81
+WHEAT	-3000	Paris basin	88	81
 WHEAT	-3000	Po valley	97	75
 WHEAT	-3000	Rhineland	95	83
 WHEAT	-3000	Sicily	97	65
@@ -123,7 +123,7 @@ WINE	-3000	Anatolia	116	70
 WINE	-3000	Armenia	126	71
 WINE	-3000	Crete vineyards	111	63
 WINE	-3000	Georgia	124	73
-WINE	-3000	Levant	119	62
+WINE	-3000	Levant	118	61
 WINE	-3000	Nile delta	111	57
 WINE	-3000	Zagros	130	68
 HORSE	-2200	Kazakhstan steppe	141	86
@@ -155,7 +155,7 @@ HORSE	-1500	Mesopotamia	125	68
 HORSE	-1500	Mongolia	162	83
 HORSE	-1500	Ukraine	112	83
 HORSE	-1500	north China	166	78
-RICE	-1500	Mekong	165	55
+RICE	-1500	Mekong	165	56
 RICE	-1500	Red River	163	62
 RICE	-1500	central Thailand	163	55
 RICE	-1500	lower Burma	158	57
@@ -166,7 +166,7 @@ SHEEP	-2500	north China	165	78
 COW	-3000	east Africa	112	38
 COW	-2500	north China	166	76
 COW	-1000	southern Africa	109	26
-PIG	-1000	Japan	183	73
+PIG	-1000	Japan	184	72
 PIG	-3000	Java	168	41
 PIG	-2000	Korea	178	77
 PIG	-3000	Southeast Asia	163	57
@@ -185,7 +185,7 @@ HORSE	-500	Arabia north	123	59
 HORSE	-500	Britain	85	88
 HORSE	-500	Central Asian oases	137	78
 HORSE	-500	Gaul	90	80
-HORSE	-500	Iberia	84	70
+HORSE	-500	Iberia	83	70
 HORSE	-500	Numidia	90	62
 RICE	-500	Japan Kyushu	179	68
 RICE	-500	Java	168	40
@@ -221,7 +221,7 @@ COTTON	1000	Egypt	111	58
 COTTON	1000	Iberian south	83	67
 COTTON	1000	Syria	120	65
 COTTON	1000	south China	169	66
-SUGAR	1000	Egypt	110	55
+SUGAR	1000	Egypt	109	59
 SUGAR	1000	Iberian south	84	66
 SUGAR	1000	Khuzestan	129	63
 RICE	1500	Po valley	97	77
@@ -237,7 +237,7 @@ COW	1600	Argentina Pampas	57	20
 COW	1600	Brazil northeast	66	41
 COW	1600	Caribbean Cuba	42	61
 COW	1600	Colombia	45	46
-COW	1600	Mexico central	29	60
+COW	1600	Mexico central	28	60
 DYE	1600	Caribbean indigo	49	60
 DYE	1600	Carolina indigo	43	72
 HORSE	1600	Argentina Pampas	56	20
@@ -245,7 +245,7 @@ HORSE	1600	Chile	49	21
 HORSE	1600	Mexico north	28	65
 PIG	1600	Brazil	66	33
 PIG	1600	Cuba	43	62
-PIG	1600	Mexico	28	60
+PIG	1600	Mexico	29	59
 PIG	1600	US southeast	42	71
 SHEEP	1600	Argentina Patagonia	52	14
 SHEEP	1600	Mexico uplands	29	63
@@ -581,7 +581,7 @@ BANANA	-1500	Sri Lanka	151	48
 BANANA	-1500	Sumatra	162	43
 BANANA	-1500	south India	149	53
 SILK	200	India Assam	157	62
-SILK	200	Japan	184	72
+SILK	200	Japan	185	73
 SILK	200	Korea	177	77
 BANANA	500	Congo southern fringe	105	37
 BANANA	500	East African lakes	112	40
@@ -750,7 +750,7 @@ GOLD	-3000	Kalgoorlie	171	19
 GOLD	-3000	Karnataka Kolar	147	54
 GOLD	-3000	Kolyma	189	99
 GOLD	-3000	Lobi	89	47
-GOLD	-3000	Lydia	113	70
+GOLD	-3000	Lydia	113	69
 GOLD	-3000	Mexico	28	63
 GOLD	-3000	Minas Gerais	62	30
 GOLD	-3000	Nevada	23	77
@@ -785,12 +785,12 @@ IRON	-3000	Elba	94	69
 IRON	-3000	Etruria	96	74
 IRON	-3000	Gabon	99	41
 IRON	-3000	Guinea	85	45
-IRON	-3000	Hebei	165	76
+IRON	-3000	Hebei	166	77
 IRON	-3000	Iran	132	68
 IRON	-3000	Japan Chugoku	183	70
 IRON	-3000	Karnataka	144	54
 IRON	-3000	Kiruna	104	104
-IRON	-3000	Korea	176	78
+IRON	-3000	Korea	178	76
 IRON	-3000	Krivyi Rih	114	81
 IRON	-3000	Kursk	116	86
 IRON	-3000	Labrador	54	88
@@ -820,7 +820,7 @@ IRON	-3000	South Australia	179	21
 IRON	-3000	Sweden Bergslagen	101	97
 IRON	-3000	Thrace	108	73
 IRON	-3000	Urals	132	87
-IRON	-3000	Weald	86	87
+IRON	-3000	Weald	87	86
 IRON	-3000	Yilgarn	167	23
 IRON	-3000	Yunnan	161	66
 IRON	-3000	Zimbabwe	109	28
@@ -842,7 +842,7 @@ OIL	-3000	Caspian northeast	130	80
 OIL	-3000	Daqing	178	84
 OIL	-3000	Egypt Suez	113	56
 OIL	-3000	Gabon offshore	96	39
-OIL	-3000	Gujarat	142	61
+OIL	-3000	Gujarat	143	60
 OIL	-3000	Kazakhstan	134	81
 OIL	-3000	Khuzestan	128	63
 OIL	-3000	Kuwait	126	60
@@ -896,7 +896,7 @@ SILVER	-3000	Potosi	54	33
 SILVER	-3000	Rio Tinto	82	67
 SILVER	-3000	Sardinia	94	68
 SILVER	-3000	Siphnos	109	66
-SILVER	-3000	Taxco	29	59
+SILVER	-3000	Taxco	29	58
 SILVER	-3000	Yunnan	161	64
 SILVER	-3000	Zacatecas	29	65
 URANIUM	-3000	Athabasca	31	90
@@ -943,18 +943,18 @@ STONE	-3000	Angkor sandstone	166	56
 STONE	-3000	Armorica granite	84	81
 STONE	-3000	Aswan granite	112	52
 STONE	-3000	Australia sandstone	190	21
-STONE	-3000	Bohemian sandstone	100	84
+STONE	-3000	Bohemian sandstone	101	83
 STONE	-3000	China central plains	165	73
 STONE	-3000	Deccan basalt	144	56
 STONE	-3000	Ethiopian basalt	119	46
 STONE	-3000	Fujian granite	173	68
 STONE	-3000	Ganges sandstone	150	62
 STONE	-3000	German sandstone	97	83
-STONE	-3000	Iberian granite	83	70
+STONE	-3000	Iberian granite	82	70
 STONE	-3000	Iranian limestone	130	67
 STONE	-3000	Irish limestone	77	89
-STONE	-3000	Japan granite	185	73
-STONE	-3000	Korea granite	178	76
+STONE	-3000	Japan granite	185	74
+STONE	-3000	Korea granite	177	76
 STONE	-3000	Latium tuff	98	71
 STONE	-3000	Levant limestone	120	62
 STONE	-3000	Malta	99	60
@@ -962,7 +962,7 @@ STONE	-3000	Mesopotamian uplands	127	70
 STONE	-3000	New England granite	51	81
 STONE	-3000	Nile limestone	112	56
 STONE	-3000	Po foothills	96	75
-STONE	-3000	Portugal limestone	79	70
+STONE	-3000	Portugal limestone	79	69
 STONE	-3000	Rajasthan sandstone	144	61
 STONE	-3000	Scandinavian granite	102	96
 STONE	-3000	Sichuan sandstone	163	69

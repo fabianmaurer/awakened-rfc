@@ -3404,7 +3404,7 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 static bool isIgnoredWorkerThreat(PlayerTypes eOwner)
 {
 	if (eOwner == NO_PLAYER) return false;
-	if (eOwner == BARBARIAN_PLAYER) return true;
+	if (eOwner == BARBARIAN_PLAYER) return false;
 
 	// Scenarios can place Independent factions in additional player slots
 	// (for example, the Andalusian minors in 900 AD).

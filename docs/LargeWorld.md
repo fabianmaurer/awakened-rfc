@@ -320,6 +320,10 @@ generous gameplay milestones, not claims of proven cultivation at every site.
 Minerals remain initial, and meaningful introductions between regions remain,
 including maize outside the Americas, horses in Egypt and livestock in Australia.
 The exact dates and locations are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
+XL birth tiles, reserve capitals, native/Korean setup capitals and the 800 BC
+scenario's 17 city sites are excluded from initial and later resource placement.
+The historical starting positions stay fixed; nearby resources move within their
+existing regional placement envelopes, retaining their types and introduction dates.
 `XL_EARLIER_YEARS` applies after site selection to retain existing resource locations;
 the disabled Large World authoring profile retains its original dates.
 

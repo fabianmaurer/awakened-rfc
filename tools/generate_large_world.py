@@ -27,6 +27,21 @@ DESCRIPTION = 'TXT_KEY_ARFC_LARGE_WORLD_DESC'
 ATLAS_NAME = 'LargeWorldResources.tsv'
 
 
+def resource_free_settlements(profile_values):
+    """Keep reviewed XL births and the 800 BC cities free of all dated bonuses."""
+    result = {tuple(pos) for key in ('Consts.tCapitals', 'Consts.tReserveCapitals')
+              for pos in profile_values[key] if pos}
+    result.update(profile_values[key] for key in (
+        'NativeAmerica.configureRegions.capital_1', 'NativeAmerica.configureRegions.capital_2',
+        'Korea.setup.capital_1', 'Korea.setup.capital_2', 'Korea.setup.capital_3'))
+    # Authored 800 BC settlements, including secondary and Independent cities.
+    result.update(((36, 57), (95, 76), (108, 67), (110, 59), (111, 54),
+                   (118, 62), (118, 65), (123, 65), (124, 69), (128, 65),
+                   (137, 77), (142, 62), (145, 65), (150, 65), (165, 76),
+                   (166, 70), (172, 71)))
+    return result
+
+
 def axis(n, vertical=False):
     old, new = (68, HEIGHT) if vertical else (124, WIDTH)
     if n == old:  # Exclusive range endpoint.
@@ -895,7 +910,8 @@ def make_map(profile_values):
         )
     place_resources(plots, origins, axis, DATA, NAME, ATLAS_NAME,
                     review=review, protected=protected, valleys=valleys,
-                    event_fisheries=event_fisheries)
+                    event_fisheries=event_fisheries,
+                    settlements=resource_free_settlements(profile_values) if review else ())
     for old, new in [('grid width=124', 'grid width=%d' % WIDTH), ('grid height=68', 'grid height=%d' % HEIGHT),
                      ('num plots written=8432', 'num plots written=%d' % (WIDTH * HEIGHT)),
                      ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=' + DESCRIPTION)]:

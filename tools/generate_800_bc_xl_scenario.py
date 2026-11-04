@@ -141,6 +141,8 @@ def main():
             if dest in city_sites or not land(plots[dest]):
                 raise ValueError('Invalid or duplicate city site: ' + str(dest))
             city_sites.add(dest)
+            if value(plots[dest], 'BonusType') is not None:
+                raise ValueError('Resource under XL city: ' + str(dest))
             put(plots[dest], 'FeatureType', None)
         payloads.setdefault(dest, []).extend(entries)
 

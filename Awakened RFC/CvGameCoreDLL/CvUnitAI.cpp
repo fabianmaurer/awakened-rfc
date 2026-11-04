@@ -3094,6 +3094,17 @@ void CvUnitAI::AI_pillageMove()
 		return;
 	}
 
+	// Approach Egypt when there are no local targets: ordinary barbarian
+	// patrols prefer unowned land and keep these early raiders outside borders.
+	if (isBarbarian() && getScriptData() == "RFCMP_EGYPT_FRONTIER_RAIDER" &&
+		GET_PLAYER((PlayerTypes)EGYPT).isAlive() && isEnemy(GET_PLAYER((PlayerTypes)EGYPT).getTeam()))
+	{
+		if (AI_targetCity(0, (PlayerTypes)EGYPT))
+		{
+			return;
+		}
+	}
+
 	if (plot()->getOwnerINLINE() == getOwnerINLINE())
 	{
 		if (AI_load(UNITAI_ASSAULT_SEA, MISSIONAI_LOAD_ASSAULT, UNITAI_ATTACK, -1, -1, -1, -1, MOVE_SAFE_TERRITORY, 4))

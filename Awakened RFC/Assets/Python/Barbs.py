@@ -105,6 +105,8 @@ class Barbs:
                                 unit = player.initUnit(iUnit, tCoords[0], tCoords[1], UnitAITypes.UNITAI_PILLAGE, DirectionTypes.DIRECTION_SOUTH)
                         if (sNameKey):
                                 unit.setName(CyTranslator().getText(sNameKey, ()))
+                                if (sNameKey in ("TXT_KEY_UNIT_NUBIAN_RAIDERS", "TXT_KEY_UNIT_LIBYAN_RAIDERS")):
+                                        unit.setScriptData("RFCMP_EGYPT_FRONTIER_RAIDER")
 
 
         def checkTurn(self, iGameTurn):
