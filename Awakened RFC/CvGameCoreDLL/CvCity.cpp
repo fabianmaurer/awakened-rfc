@@ -8784,6 +8784,15 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 // Trade infrastructure ignores military access, but respects war and terrain.
 // Route selection builds a local flood fill. Citizen assignment may reuse
 // infrastructure results within a single assignment call, without a UI cache.
+// Trade defines use the original 124-tile-wide world's distances. XL's
+// 200 x 110 geography has approximately the same enlargement on both axes.
+static int tradeDistanceThreshold(int iReferenceDistance)
+{
+    if (GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110")
+        return (iReferenceDistance * 200 + 62) / 124;
+    return iReferenceDistance;
+}
+
 static bool cityHasHarbor(const CvCity* pCity);
 
 static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& reachable, std::vector<bool>& roads, int iTarget = -1)
@@ -8794,9 +8803,9 @@ static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& rea
     CvTeam& kTeam = GET_TEAM(pCity->getTeam());
     bool bSailing = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_SAILING"));
     bool bAstronomy = kTeam.isHasTech((TechTypes)GC.getInfoTypeForString("TECH_ASTRONOMY"));
-    int iWaterRange = GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_BEFORE_ASTRONOMY");
+    int iWaterRange = tradeDistanceThreshold(GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_BEFORE_ASTRONOMY"));
     if (!bAstronomy && cityHasHarbor(pCity))
-        iWaterRange = std::max(iWaterRange, GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_WITH_HARBOR_BEFORE_ASTRONOMY"));
+        iWaterRange = std::max(iWaterRange, tradeDistanceThreshold(GC.getDefineINT("RFCMP_WATER_TRADE_MAX_DISTANCE_WITH_HARBOR_BEFORE_ASTRONOMY")));
     reachable.assign(kMap.numPlotsINLINE(), false);
     roads.assign(kMap.numPlotsINLINE(), false);
     // Separate road-only and water-assisted networks: long roads must not be
@@ -8875,8 +8884,8 @@ static int tradeInfrastructureEfficiency(const CvCity* pCity, const CvCity* pPar
     // Caravans can operate without roads, but cannot bypass sea navigation.
     if (pCity->area() != pPartner->area()) return 0;
     int iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pPartner->getX_INLINE(), pPartner->getY_INLINE());
-    int iFullDistance = std::max(0, GC.getDefineINT("RFCMP_TRADE_FULL_EFFICIENCY_DISTANCE"));
-    int iZeroDistance = std::max(iFullDistance + 1, GC.getDefineINT("RFCMP_TRADE_ZERO_EFFICIENCY_DISTANCE"));
+    int iFullDistance = std::max(0, tradeDistanceThreshold(GC.getDefineINT("RFCMP_TRADE_FULL_EFFICIENCY_DISTANCE")));
+    int iZeroDistance = std::max(iFullDistance + 1, tradeDistanceThreshold(GC.getDefineINT("RFCMP_TRADE_ZERO_EFFICIENCY_DISTANCE")));
     int iMaxEfficiency = std::max(0, GC.getDefineINT("RFCMP_BASE_TRADE_PERCENT"));
     if (iDistance <= iFullDistance) return iMaxEfficiency;
     if (iDistance >= iZeroDistance) return 0;

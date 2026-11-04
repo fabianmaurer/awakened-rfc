@@ -455,6 +455,9 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   connection gives **100% efficiency without a range limit**. Water-assisted
   connections (sea or river, including mixed road/water paths) require **Sailing**
   and give 100% within distance **12**, or **20** when the originating city has a harbor, until **Astronomy** removes the range limit. The existing terrain-navigation restrictions still apply.
+  On XL maps, these distances scale with the enlarged geography: caravan
+  efficiency stays at 50% through **8**, then declines linearly to zero at **24**;
+  the pre-Astronomy water limits are **19**, or **32** with an originating harbor.
   Cities on different landmasses require an actual navigable connection;
   infrastructure-free caravan routes cannot bypass these sea-trade restrictions.
   Water-assisted trade runs at **50% instead of 100%** unless both cities have
