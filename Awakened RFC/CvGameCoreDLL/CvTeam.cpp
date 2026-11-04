@@ -5219,8 +5219,12 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
 		if (bNewValue) UnitMastery::refreshResearch(*this, ePlayer);
-		// A capped military field must stop consuming research after level 15.
-		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)
+		// Each mastery tier finishes the selected research, like an ordinary tech.
+		// Leave any explicitly queued next tech in place; otherwise the normal
+		// research-choice path below prompts humans and lets AI choose again.
+		// Global Military Research only leaves the queue at its level-15 cap.
+		if (bNewValue && (UnitMastery::unitForTech(eIndex) != NO_UNIT ||
+			(eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)))
 		{
 			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
 				if (GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())

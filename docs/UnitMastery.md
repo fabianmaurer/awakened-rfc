@@ -11,6 +11,9 @@ strength do not change the research cost. Research unlocks with all unit technol
 requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.
+Completing a tier ends that research selection. Any queued next technology
+continues normally; otherwise humans choose their next research and AI evaluates
+its choices again. Continuing the same mastery requires a new research choice.
 
 Each direct combat grants both participants' teams 1% of their exact unit type's
 next mastery level's total research cost, whether attacking, defending, losing
