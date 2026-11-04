@@ -320,6 +320,10 @@ generous gameplay milestones, not claims of proven cultivation at every site.
 Minerals remain initial, and meaningful introductions between regions remain,
 including maize outside the Americas, horses in Egypt and livestock in Australia.
 The exact dates and locations are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
+North Africa's XL coast has four additional fisheries off Algeria, Tripolitania,
+Cyrenaica and Egypt. Cyrenaican wheat and wine, plus Tripolitanian and Marmarican
+sheep, support a few productive coastal cities without filling the desert interior.
+All eight additions are available from 3000 BC in both XL starts.
 XL birth tiles, reserve capitals, native/Korean setup capitals and the 800 BC
 scenario's 17 city sites are excluded from initial and later resource placement.
 The historical starting positions stay fixed; nearby resources move within their

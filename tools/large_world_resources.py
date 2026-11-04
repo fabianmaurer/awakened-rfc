@@ -144,6 +144,10 @@ XL_SITES = """
 SHEEP|-3000|Crete uplands:68,39
 WINE|-3000|Crete vineyards:69,39
 FISH|-3000|Crete coastal fish:68,38
+FISH|-3000|Egyptian Mediterranean coast:68,36; Cyrenaican coast:65,37; Tripolitanian coast:61,37; Algerian coast:55,40
+WHEAT|-3000|Cyrenaican farmland:65,36
+SHEEP|-3000|Marmarican pasture:67,36; Tripolitanian pasture:60,36
+WINE|-3000|Cyrenaican vineyards:64,36
 HORSE|-1600|Eastern Nile delta:69,35
 """
 

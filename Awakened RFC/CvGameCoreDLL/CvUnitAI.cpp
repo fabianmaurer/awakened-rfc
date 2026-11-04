@@ -3084,7 +3084,10 @@ void CvUnitAI::AI_pillageMove()
 		return;
 	}
 	
-	if (AI_choke(1))
+	// Named Egyptian frontier raiders should raid, rather than camp on a
+	// defensive resource tile before reaching their city-approach fallback.
+	const bool bEgyptFrontierRaider = isBarbarian() && getScriptData() == "RFCMP_EGYPT_FRONTIER_RAIDER";
+	if (!bEgyptFrontierRaider && AI_choke(1))
 	{
 		return;
 	}
@@ -3096,7 +3099,7 @@ void CvUnitAI::AI_pillageMove()
 
 	// Approach Egypt when there are no local targets: ordinary barbarian
 	// patrols prefer unowned land and keep these early raiders outside borders.
-	if (isBarbarian() && getScriptData() == "RFCMP_EGYPT_FRONTIER_RAIDER" &&
+	if (bEgyptFrontierRaider &&
 		GET_PLAYER((PlayerTypes)EGYPT).isAlive() && isEnemy(GET_PLAYER((PlayerTypes)EGYPT).getTeam()))
 	{
 		if (AI_targetCity(0, (PlayerTypes)EGYPT))

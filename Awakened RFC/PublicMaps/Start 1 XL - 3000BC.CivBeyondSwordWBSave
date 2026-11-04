@@ -52943,6 +52943,7 @@ BeginPlot
 	x=89,y=65
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=89,y=66
@@ -57596,6 +57597,7 @@ BeginPlot
 	x=97,y=59
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=97,y=60
@@ -58799,6 +58801,7 @@ BeginPlot
 	x=99,y=61
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=99,y=62
@@ -61207,6 +61210,7 @@ BeginPlot
 	x=103,y=59
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WINE
 EndPlot
 BeginPlot
 	x=103,y=60
@@ -61826,11 +61830,13 @@ BeginPlot
 	x=104,y=59
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=104,y=60
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=104,y=61
@@ -64352,6 +64358,7 @@ BeginPlot
 	x=108,y=59
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	BonusType=BONUS_SHEEP
 EndPlot
 BeginPlot
 	x=108,y=60
@@ -65635,6 +65642,7 @@ BeginPlot
 	x=110,y=60
 	TerrainType=TERRAIN_COAST
 	PlotType=3
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=110,y=61

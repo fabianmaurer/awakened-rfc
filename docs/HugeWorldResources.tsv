@@ -83,14 +83,17 @@ SHEEP	-3000	Iran	134	68
 SHEEP	-3000	Ireland	78	91
 SHEEP	-3000	Italy Apennines	99	71
 SHEEP	-3000	Levant	119	62
+SHEEP	-3000	Marmarican pasture	108	59
 SHEEP	-3000	Mesopotamia	124	67
 SHEEP	-3000	Nile	110	55
 SHEEP	-3000	Sardinia	94	70
+SHEEP	-3000	Tripolitanian pasture	97	59
 SHEEP	-3000	Zagros	128	67
 WHEAT	-3000	Algeria	89	63
 WHEAT	-3000	Anatolia	116	71
 WHEAT	-3000	Bactria	136	73
 WHEAT	-3000	British south	85	86
+WHEAT	-3000	Cyrenaican farmland	104	59
 WHEAT	-3000	Danube	105	79
 WHEAT	-3000	Ganges northwest	144	65
 WHEAT	-3000	Greece	108	71
@@ -122,6 +125,7 @@ WINE	-3000	Aegean	108	68
 WINE	-3000	Anatolia	116	70
 WINE	-3000	Armenia	126	71
 WINE	-3000	Crete vineyards	111	63
+WINE	-3000	Cyrenaican vineyards	103	59
 WINE	-3000	Georgia	124	73
 WINE	-3000	Levant	118	61
 WINE	-3000	Nile delta	111	57
@@ -393,6 +397,7 @@ FISH	-3000	Aegean	110	67
 FISH	-3000	Alaska Gulf east	15	94
 FISH	-3000	Alaska salmon	13	94
 FISH	-3000	Alboran Sea	87	65
+FISH	-3000	Algerian coast	89	65
 FISH	-3000	Angola upwelling	97	33
 FISH	-3000	Arabian Sea	137	59
 FISH	-3000	Arafura shelf	187	38
@@ -423,8 +428,10 @@ FISH	-3000	Chile upwelling	46	25
 FISH	-3000	Coromandel shelf	152	54
 FISH	-3000	Crete coastal fish	110	62
 FISH	-3000	Cuba north shelf	44	63
+FISH	-3000	Cyrenaican coast	104	60
 FISH	-3000	East China Sea	178	70
 FISH	-3000	Ecuador upwelling	38	46
+FISH	-3000	Egyptian Mediterranean coast	110	60
 FISH	-3000	Faroes shelf	83	99
 FISH	-3000	Florida Atlantic	47	66
 FISH	-3000	Georges Bank	52	79
@@ -501,6 +508,7 @@ FISH	-3000	Sri Lanka	153	49
 FISH	-3000	Sumatra west shelf	159	46
 FISH	-3000	Sunda shelf	166	46
 FISH	-3000	Taiwan Strait	176	67
+FISH	-3000	Tripolitanian coast	99	61
 FISH	-3000	Tyrrhenian Sea	95	70
 FISH	-3000	Vancouver outer coast	16	84
 FISH	-3000	Vietnam coast	168	59
