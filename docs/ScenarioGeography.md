@@ -71,6 +71,15 @@ initial cities. Native successor settlement maps are finalized after map
 creation. Python module bindings refresh when switching scenarios in the same
 process, including aliases of mutable regional tables.
 
+Bindings refresh both the captured execution namespace and the published Python
+module attributes. Civ4's importer can separate these dictionaries; updating only
+the former leaves consumers using bootstrap-map capitals and unscaled birth dates.
+The 2026-11-04 XL spawn audit confirmed Greece, Rome, Japan and Korea at their exact
+`Earth124x68` capitals in a WorldBuilder quicksave. Both XL scenarios' 33 capital
+tiles, three reserve capitals, five setup capitals and authored player starts are
+valid land; all 33 capitals lie inside their XL core areas. This is a static audit;
+new-game spawning still needs user-operated in-game validation.
+
 Saves store the profile name, native geography and settlement maps. Load handling
 restores Python bindings before civilization callbacks. This changes the save
 format; existing saves are unsupported. All multiplayer peers require identical

@@ -1,6 +1,7 @@
 # Scenario-selected geography shared by Python and the DLL. Python 2.4.
 import copy
 import os
+import sys
 from CvPythonExtensions import CyMap
 
 
@@ -83,7 +84,7 @@ def scenarioSpeed(filename):
 def bindTime(namespace, name, reference):
     """Rebind dates/durations when selecting or restoring a geography."""
     _timeBindings.append((namespace, name, reference))
-    namespace[name] = _scaledTime(reference)
+    _setBinding(namespace, name, _scaledTime(reference))
 
 
 def _scaledTime(entry):
@@ -115,7 +116,17 @@ def value(key):
 def bind(namespace, name, key):
     """Refresh module aliases when another scenario is opened in this process."""
     _bindings.append((namespace, name, key))
-    namespace[name] = _boundValue(key)
+    _setBinding(namespace, name, _boundValue(key))
+
+
+def _setBinding(namespace, name, entry):
+    # Civ4's importer can publish module attributes separately from the globals
+    # captured during execution. Refresh both; other modules read con.tCapitals
+    # and con.tBirth through the published module, not this captured dictionary.
+    namespace[name] = entry
+    module = sys.modules.get(namespace.get('__name__'))
+    if module is not None:
+        setattr(module, name, entry)
 
 
 def _boundValue(key):
@@ -183,9 +194,9 @@ def _activate(name):
     _name = name
     _values = {}
     for namespace, variable, key in _bindings:
-        namespace[variable] = _boundValue(key)
+        _setBinding(namespace, variable, _boundValue(key))
     for namespace, variable, reference in _timeBindings:
-        namespace[variable] = _scaledTime(reference)
+        _setBinding(namespace, variable, _scaledTime(reference))
     return profile
 
 

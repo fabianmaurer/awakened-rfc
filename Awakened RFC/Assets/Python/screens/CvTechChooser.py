@@ -77,14 +77,16 @@ class CvTechChooser:
 		else:
 			screen.hide( "CivDropDown" )
 			
-		if ( screen.isPersistent() and self.iCivSelected == gc.getGame().getActivePlayer()):
+		# Native screen persistence can outlive the Python state (for example,
+		# after a reload). Only reuse a fully initialized technology list.
+		if ( screen.isPersistent() and self.iCivSelected == gc.getGame().getActivePlayer() and len(self.aiCurrentState) == gc.getNumTechInfos()):
 			self.updateTechRecords(false)
 			return
 		
 		self.nWidgetCount = 0
 		self.iCivSelected = gc.getGame().getActivePlayer()
 		self.aiCurrentState = []
-		screen.setPersistent( True )
+		screen.setPersistent( False )
 		self.prepareLayout(screen)
 		
 		# Advanced Start
@@ -135,6 +137,7 @@ class CvTechChooser:
 		screen.moveToFront( "CivDropDown" )
 		
 		screen.moveToFront( "AddTechButton" )
+		screen.setPersistent( True )
 	
 	def masteryUnit(self, iTech):
 		szType = gc.getTechInfo(iTech).getType()

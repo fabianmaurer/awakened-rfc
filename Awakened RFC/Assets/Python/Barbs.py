@@ -135,7 +135,11 @@ class Barbs:
                     and iGameTurn >= geo.turns(12) and iGameTurn <= con.i850BC):
                         # Nubians approach along the Nile; Libyans enter from the west.
                         # Pillage AI and warriors keep these as light military pressure.
-                        self.spawnUnits(iBarbarian, geo.value('Barbs.checkTurn.location_11'), geo.value('Barbs.checkTurn.location_12'), con.iWarrior, 2, iGameTurn, 18, 12, utils.outerInvasion, 3, "TXT_KEY_UNIT_NUBIAN_RAIDERS")
+                        iNubianWarriors = 2
+                        # The first two scheduled waves each bring one warrior.
+                        if (iGameTurn < geo.turns(12 + 2 * 18)):
+                                iNubianWarriors = 1
+                        self.spawnUnits(iBarbarian, geo.value('Barbs.checkTurn.location_11'), geo.value('Barbs.checkTurn.location_12'), con.iWarrior, iNubianWarriors, iGameTurn, 18, 12, utils.outerInvasion, 3, "TXT_KEY_UNIT_NUBIAN_RAIDERS")
                         self.spawnUnits(iBarbarian, geo.value('Barbs.checkTurn.location_13'), geo.value('Barbs.checkTurn.location_14'), con.iWarrior, 1, iGameTurn, 28, 22, utils.outerInvasion, 3, "TXT_KEY_UNIT_LIBYAN_RAIDERS")
 
                 #celts
