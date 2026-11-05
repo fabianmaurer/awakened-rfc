@@ -33708,7 +33708,7 @@ BeginPlot
 	x=89,y=41
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
-	PlotType=2
+	PlotType=1
 EndPlot
 BeginPlot
 	x=89,y=42
@@ -34091,6 +34091,8 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	isNOfRiver
+	RiverWEDirection=1
 EndPlot
 BeginPlot
 	x=90,y=42
@@ -34463,7 +34465,6 @@ BeginPlot
 	BonusType=BONUS_DYE
 	isWOfRiver
 	RiverNSDirection=2
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
@@ -34471,7 +34472,6 @@ BeginPlot
 	x=91,y=41
 	isNOfRiver
 	RiverWEDirection=1
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot

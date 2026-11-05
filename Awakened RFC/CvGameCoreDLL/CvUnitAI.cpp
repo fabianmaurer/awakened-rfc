@@ -1781,6 +1781,13 @@ void CvUnitAI::AI_barbAttackMove()
 {
 	PROFILE_FUNC();
 
+	// Plunder the current enemy tile before selecting another destination.
+	if (isBarbarian() && isEnemy(plot()->getTeam(), plot()) && canPillage(plot()))
+	{
+		getGroup()->pushMission(MISSION_PILLAGE, -1, -1, 0, false, false, MISSIONAI_PILLAGE, plot());
+		return;
+	}
+
 	if (AI_guardCity(false, true, 1))
 	{
 		return;
@@ -1795,12 +1802,9 @@ void CvUnitAI::AI_barbAttackMove()
 		}
 	}
 
-	if (GC.getGameINLINE().getSorenRandNum(2, "AI Barb") == 0)
+	if (AI_pillageRange(1))
 	{
-		if (AI_pillageRange(1))
-		{
-			return;
-		}
+		return;
 	}
 
 	if (AI_anyAttack(1, 20))
@@ -3042,6 +3046,13 @@ void CvUnitAI::AI_pillageMove()
 	OBSERVER_PERFORMANCE("unitAI.AI_pillageMove");
 	PROFILE_FUNC();
 
+	// Plunder the current enemy tile before selecting another destination.
+	if (isBarbarian() && isEnemy(plot()->getTeam(), plot()) && canPillage(plot()))
+	{
+		getGroup()->pushMission(MISSION_PILLAGE, -1, -1, 0, false, false, MISSIONAI_PILLAGE, plot());
+		return;
+	}
+
 	if (AI_guardCity(false, true, 1))
 	{
 		return;
@@ -3097,8 +3108,8 @@ void CvUnitAI::AI_pillageMove()
 		return;
 	}
 
-	// Approach Egypt when there are no local targets: ordinary barbarian
-	// patrols prefer unowned land and keep these early raiders outside borders.
+	// Approach Egypt when there are no local targets, keeping these named
+	// frontier raiders focused on their intended civilization.
 	if (bEgyptFrontierRaider &&
 		GET_PLAYER((PlayerTypes)EGYPT).isAlive() && isEnemy(GET_PLAYER((PlayerTypes)EGYPT).getTeam()))
 	{
@@ -10633,13 +10644,22 @@ bool CvUnitAI::AI_patrol()
 				{
 					if (generatePath(pAdjacentPlot, 0, true))
 					{
-						//iValue = (1 + GC.getGameINLINE().getSorenRandNum(10000, "AI Patrol"));
-						//Rhye - RFCMP
-						// Animals make independent choices using the synchronized game RNG.
-						iValue = 1 + (isAnimal() ? GC.getGameINLINE().getSorenRandNum(10000, "Animal Patrol") :
-							GC.getGameINLINE().getFakeBigRandNum(10000));
+						// Score each candidate independently with the synchronized game RNG.
+						// The fake RNG does not advance, causing direction-order ties and patrol loops.
+						iValue = 1 + GC.getGameINLINE().getSorenRandNum(10000, "AI Patrol");
 
-						if (isBarbarian() && getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR"))
+						if (isBarbarian() && !isAnimal())
+						{
+							if (isEnemy(pAdjacentPlot->getTeam(), pAdjacentPlot))
+							{
+								iValue += 20000;
+							}
+							else if (!pAdjacentPlot->isOwned() && pAdjacentPlot->isAdjacentOwned())
+							{
+								iValue += 10000;
+							}
+						}
+						else if (isBarbarian() && getUnitType() != GC.getInfoTypeForString("UNIT_ICE_BEAR"))
 						{
 							if (!(pAdjacentPlot->isOwned()))
 							{
@@ -12610,9 +12630,9 @@ bool CvUnitAI::AI_pillage(int iBonusValueThreshold)
 			{
 			    CvCity * pWorkingCity = pLoopPlot->getWorkingCity();
 
-			    if (pWorkingCity != NULL)
+			    if (isBarbarian() || pWorkingCity != NULL)
 			    {
-                    if (!(pWorkingCity == area()->getTargetCity(getOwnerINLINE())) && canPillage(pLoopPlot))
+                    if ((isBarbarian() || pWorkingCity != area()->getTargetCity(getOwnerINLINE())) && canPillage(pLoopPlot))
                     {
                         if (!(pLoopPlot->isVisibleEnemyUnit(this)))
                         {
@@ -12749,9 +12769,9 @@ bool CvUnitAI::AI_pillageRange(int iRange, int iBonusValueThreshold)
 					{
                         CvCity * pWorkingCity = pLoopPlot->getWorkingCity();
 
-                        if (pWorkingCity != NULL)
+                        if (isBarbarian() || pWorkingCity != NULL)
                         {
-                            if (!(pWorkingCity == area()->getTargetCity(getOwnerINLINE())) && canPillage(pLoopPlot))
+                            if ((isBarbarian() || pWorkingCity != area()->getTargetCity(getOwnerINLINE())) && canPillage(pLoopPlot))
                             {
                                 if (!(pLoopPlot->isVisibleEnemyUnit(this)))
                                 {

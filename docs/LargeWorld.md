@@ -52,15 +52,32 @@ checks do not establish in-game loading or multiplayer readiness.
 
 ## XL city names
 
-Both XL starts retain the original location-based naming grids, with 235
-tile-specific refinements and 250 local names/cultural variants across Europe,
+Both XL starts retain the original location-based naming grids, with 644
+tile-specific refinements and 668 local names/cultural variants across Europe,
 Asia, Africa and the Americas. These split enlarged naming regions and fill
-the opened Sichuan lowlands. The Inca grid gains 12 additional names. Existing
-capital, reserve and scripted city sites retain their names. Conquest uses the
+the opened Sichuan lowlands. Coverage includes smaller provincial towns,
+Swahili and Portuguese African ports, North American inland centres, Latin
+American colonial towns and Australian ports. The Inca grid gains 21 additional
+names. Existing capital, reserve and scripted city sites retain their names. Conquest uses the
 authored cultural variants at the same tile; other locations retain RFC's
 existing renaming rules. This has not been validated in game or multiplayer.
 
-Maintain the XL coordinates and names in `tools/large_world_city_names.py`.
+Add entries to `tools/large_world_city_names.json`, grouped by region. Each
+entry uses a civilization name, XL tile coordinates and a city name; optional
+`variants` map an existing regional name to its local cultural replacement:
+
+```json
+{"civ": "England", "x": 85, "y": 88, "name": "St Albans", "variants": {"Londinium": "Verulamium", "Londres": "St Albans"}}
+```
+
+Use the civilization names listed in `CIVILIZATIONS` in
+`tools/large_world_city_names.py`. Coordinates are XL tiles, with y increasing
+northward. Other civilizations sharing the reference civilization's existing
+name at that tile inherit the new name automatically. Variants handle different
+parent names; omit them when unnecessary. Accents can be typed normally.
+The generator checks coordinates, duplicate sites, passable land and protected
+city sites, and generates the conquest-name mappings automatically.
+
 Run `python tools/generate_large_world.py --huge --city-names-only` to refresh
 the naming grids and profile without regenerating terrain or resources.
 The full XL generator includes the same refinements. Names use the existing

@@ -1152,11 +1152,12 @@
 	</Define>
 	<Define>
 		<DefineName>CAMERA_MIN_YAW</DefineName>
-		<fDefineFloatVal>-45.0</fDefineFloatVal>
+		<!-- Keep yaw limits distinct: equal values break camera zoom transitions. -->
+		<fDefineFloatVal>-0.1</fDefineFloatVal>
 	</Define>
 	<Define>
 		<DefineName>CAMERA_MAX_YAW</DefineName>
-		<fDefineFloatVal>45.0</fDefineFloatVal>
+		<fDefineFloatVal>0.1</fDefineFloatVal>
 	</Define>
 	<Define>
 		<DefineName>CAMERA_START_DISTANCE</DefineName>

@@ -102305,14 +102305,14 @@ BeginPlot
 	x=144,y=66
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
-	PlotType=2
+	PlotType=1
 
 EndPlot
 BeginPlot
 	x=144,y=67
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
-	PlotType=2
+	PlotType=1
 
 EndPlot
 BeginPlot
@@ -103037,6 +103037,8 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
+	isNOfRiver
+	RiverWEDirection=1
 EndPlot
 BeginPlot
 	x=145,y=67
@@ -103736,6 +103738,8 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
+	isNOfRiver
+	RiverWEDirection=1
 EndPlot
 BeginPlot
 	x=146,y=67
@@ -104442,7 +104446,6 @@ BeginPlot
 	x=147,y=65
 	isWOfRiver
 	RiverNSDirection=2
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
@@ -104451,14 +104454,12 @@ BeginPlot
 	x=147,y=66
 	isNOfRiver
 	RiverWEDirection=1
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
 EndPlot
 BeginPlot
 	x=147,y=67
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 

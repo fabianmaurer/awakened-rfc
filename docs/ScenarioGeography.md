@@ -88,3 +88,10 @@ profile files and the matching DLL.
 Changing profile data needs no DLL rebuild. Changing native accessors or the
 bridge does require the legacy production build. Source and data checks do not
 establish in-game loading or multiplayer readiness.
+
+India's Delhi opening has a short east-flowing tributary for fresh water,
+wooded northwestern hills for production, and two cleared source-map jungle
+tiles on the eastern approach. These terrain changes apply across the standard,
+Large and XL scenarios. The large-world generator inherits them from the
+standard 3000 BC map; capital coordinates, resources and unique powers retain
+their existing rules.

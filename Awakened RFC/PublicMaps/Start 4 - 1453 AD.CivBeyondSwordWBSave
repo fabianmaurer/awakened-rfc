@@ -43829,7 +43829,7 @@ BeginPlot
 	x=89,y=41
 
 	TerrainType=TERRAIN_GRASS
-	PlotType=2
+	PlotType=1
 	Player1Culture=40
 	ImprovementType=IMPROVEMENT_HAMLET
 	RouteType=ROUTE_ROAD
@@ -44339,6 +44339,8 @@ BeginPlot
 	RouteType=ROUTE_ROAD
 	Player1Culture=10
 	TeamReveal=0,1,2,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,23,25,30,
+	isNOfRiver
+	RiverWEDirection=1
 EndPlot
 BeginPlot
 	x=90,y=42
@@ -44803,7 +44805,6 @@ BeginPlot
 	BonusType=BONUS_DYE
 	isWOfRiver
 	RiverNSDirection=2
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	Player1Culture=40

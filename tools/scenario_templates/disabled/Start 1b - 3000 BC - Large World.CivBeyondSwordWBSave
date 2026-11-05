@@ -55631,7 +55631,7 @@ BeginPlot
 	x=115,y=53
 	FeatureType=FEATURE_FOREST, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
-	PlotType=2
+	PlotType=1
 	BonusType=BONUS_OIL
 EndPlot
 BeginPlot
@@ -56124,6 +56124,8 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	isNOfRiver
+	RiverWEDirection=1
 EndPlot
 BeginPlot
 	x=116,y=54
@@ -56595,7 +56597,6 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=117,y=52
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
@@ -56603,7 +56604,6 @@ BeginPlot
 	x=117,y=53
 	isNOfRiver
 	RiverWEDirection=1
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
@@ -57078,7 +57078,6 @@ BeginPlot
 	x=118,y=52
 	isWOfRiver
 	RiverNSDirection=2
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot
@@ -57086,7 +57085,6 @@ BeginPlot
 	x=118,y=53
 	isNOfRiver
 	RiverWEDirection=1
-	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 EndPlot

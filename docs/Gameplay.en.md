@@ -1290,3 +1290,8 @@ established major civilization's city on the same landmass, including jungle.
 The two tile rings around every city are excluded from spawning. Raids start
 at least eight turns after scenario start; new cities attract them after eight turns. Raids pause without eligible cities or spawn tiles, and respect No Barbarians.
 The later North American native resistance and Caribbean pirates remain active.
+
+Non-animal barbarian patrols favor enemy territory, then unclaimed border tiles.
+Barbarian attack and pillage units plunder their current enemy tile before
+moving on. Their pillage searches include improvements around target cities
+and outside city working areas.

@@ -177,13 +177,16 @@ void CvGameTextMgr::setDateStr(CvWString& szString, int iGameTurn, bool bSave, C
 		else
 		{
 			int iMonth = getTurnMonthForGame(iGameTurn, iStartYear, eCalendar, eSpeed);
+			// BC dates can have a negative remainder on sub-year game speeds.
+			// Normalize it before using it as a month-info index.
+			iMonth = ((iMonth % GC.getNumMonthInfos()) + GC.getNumMonthInfos()) % GC.getNumMonthInfos();
 			if (bSave)
 			{
-				szString = (szYearBuffer + "-" + GC.getMonthInfo((MonthTypes)(iMonth % GC.getNumMonthInfos())).getDescription());
+				szString = (szYearBuffer + "-" + GC.getMonthInfo((MonthTypes)iMonth).getDescription());
 			}
 			else
 			{
-				szString = (GC.getMonthInfo((MonthTypes)(iMonth % GC.getNumMonthInfos())).getDescription() + CvString(", ") + szYearBuffer);
+				szString = (GC.getMonthInfo((MonthTypes)iMonth).getDescription() + CvString(", ") + szYearBuffer);
 			}
 		}
 		break;
