@@ -402,6 +402,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iImmobileTimer = 0;
 
 	m_bMadeAttack = false;
+	m_iAttacksMade = 0;
 	m_bMadeInterception = false;
 	m_bPromotionReady = false;
 	m_bDeathDelay = false;
@@ -505,6 +506,8 @@ void CvUnit::convert(CvUnit* pUnit)
 	setDamage(pUnit->getDamage());
 	m_iLastHunPillageHealTurn = pUnit->m_iLastHunPillageHealTurn;
 	setMoves(pUnit->getMoves());
+	m_bMadeAttack = pUnit->m_bMadeAttack;
+	m_iAttacksMade = pUnit->m_iAttacksMade;
 
 	setLevel(pUnit->getLevel());
 	m_iExplorationExperienceRemainder = pUnit->m_iExplorationExperienceRemainder;
@@ -1057,7 +1060,7 @@ void CvUnit::updateAirCombat(bool bQuick)
 				return;
 			}
 
-			setMadeAttack(true);
+			recordAttack();
 
 			setCombatUnit(pInterceptor, true);
 			pInterceptor->setCombatUnit(this, false);
@@ -1400,7 +1403,7 @@ void CvUnit::updateCombat(bool bQuick)
 				return;
 			}
 
-			setMadeAttack(true);
+			recordAttack();
 
 			//rotate to face plot
 			DirectionTypes newDirection = estimateDirection(this->plot(), pDefender->plot());
@@ -1676,7 +1679,7 @@ void CvUnit::updateCombat(bool bQuick)
 
 void CvUnit::checkRemoveSelectionAfterAttack()
 {
-	if (!canMove() || !isBlitz())
+	if (!canMove() || !canAttackAgain())
 	{
 		if (IsSelected())
 		{
@@ -2655,7 +2658,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 
 	if (bAttack)
 	{
-		if (isMadeAttack() && !isBlitz())
+		if (!canAttackAgain())
 		{
 			return false;
 		}
@@ -4118,7 +4121,7 @@ bool CvUnit::nuke(int iX, int iY)
 		gDLL->getEntityIFace()->AddMission(&kDefiniton);
 	}
 
-	setMadeAttack(true);
+	recordAttack();
 	setAttackPlot(pPlot, false);
 
 	for (iI = 0; iI < MAX_TEAMS; iI++)
@@ -4351,7 +4354,7 @@ bool CvUnit::paradrop(int iX, int iY)
 	CvPlot* pPlot = GC.getMapINLINE().plotINLINE(iX, iY);
 
 	changeMoves(GC.getMOVE_DENOMINATOR() / 2);
-	setMadeAttack(true);
+	recordAttack();
 
 	setXY(pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
@@ -4527,7 +4530,7 @@ bool CvUnit::airBomb(int iX, int iY)
 
 	setReconPlot(pPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	if (pPlot->isActiveVisible(false))
@@ -4650,7 +4653,7 @@ bool CvUnit::bombard()
 	pBombardCity->changeDefenseModifier(-(bombardRate() * std::max(0, 100 + iBombardModifier)) / 100);
 	if (pBombardCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pTargetPlot->getTeam(), pTargetPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_DEFENSES_IN_CITY_REDUCED_TO", pBombardCity->getNameKey(), pBombardCity->getDefenseModifier(false), GET_PLAYER(getOwnerINLINE()).getNameKey());
@@ -4763,7 +4766,8 @@ bool CvUnit::pillage()
 		CvUnit* pInterceptor = bestSeaPillageInterceptor(this, GC.getDefineINT("COMBAT_DIE_SIDES") / 2);
 		if (NULL != pInterceptor)
 		{
-			setMadeAttack(false);
+			// The forced interception fight must not reset this turn's attack count.
+			m_bMadeAttack = false;
 
 			int iWithdrawal = withdrawalProbability();
 			changeExtraWithdrawal(-iWithdrawal); // no withdrawal since we are really the defender
@@ -6499,7 +6503,7 @@ bool CvUnit::espionage(EspionageMissionTypes eMission, int iData)
 			if (!testSpyIntercepted(eTargetPlayer, GC.getDefineINT("ESPIONAGE_SPY_MISSION_ESCAPE_MOD")))
 			{
 				setFortifyTurns(0);
-				setMadeAttack(true);
+				recordAttack();
 				finishMoves();
 
 				CvCity* pCapital = GET_PLAYER(getOwnerINLINE()).getCapitalCity();
@@ -9208,7 +9212,15 @@ int CvUnit::unitClassAttackModifier(UnitClassTypes eUnitClass) const
 {
 	FAssertMsg(eUnitClass >= 0, "eUnitClass is expected to be non-negative (invalid Index)");
 	FAssertMsg(eUnitClass < GC.getNumUnitClassInfos(), "eUnitClass is expected to be within maximum bounds (invalid Index)");
-	return m_pUnitInfo->getUnitClassAttackModifier(eUnitClass);
+	static const UnitClassTypes eArcher = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_ARCHER");
+	static const UnitClassTypes eRifleman = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_RIFLEMAN");
+	static const UnitClassTypes eInfantry = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_INFANTRY");
+	int iMastery = 0;
+	if (eUnitClass == eArcher)
+		iMastery += UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ARCHER_ATTACK);
+	if (eUnitClass == eRifleman || eUnitClass == eInfantry)
+		iMastery += UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_RIFLE_INFANTRY_ATTACK);
+	return m_pUnitInfo->getUnitClassAttackModifier(eUnitClass) + iMastery;
 }
 
 
@@ -9216,7 +9228,10 @@ int CvUnit::unitClassDefenseModifier(UnitClassTypes eUnitClass) const
 {
 	FAssertMsg(eUnitClass >= 0, "eUnitClass is expected to be non-negative (invalid Index)");
 	FAssertMsg(eUnitClass < GC.getNumUnitClassInfos(), "eUnitClass is expected to be within maximum bounds (invalid Index)");
-	return m_pUnitInfo->getUnitClassDefenseModifier(eUnitClass);
+	static const UnitClassTypes eChariot = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_CHARIOT");
+	const int iMastery = eUnitClass == eChariot ?
+		UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CHARIOT_DEFENSE) : 0;
+	return m_pUnitInfo->getUnitClassDefenseModifier(eUnitClass) + iMastery;
 }
 
 
@@ -9276,11 +9291,12 @@ DomainTypes CvUnit::domainCargo() const
 
 int CvUnit::cargoSpace() const
 {
-	// Changing civics never strands existing passengers; no new cargo can be
-	// loaded above the current civic capacity until the excess has disembarked.
+	int iCapacity = m_iCargoCapacity + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CARGO);
 	if (GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(getUnitType()))
-		return std::max(getCargo(), m_iCargoCapacity + GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType()));
-	return m_iCargoCapacity;
+		iCapacity += GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType());
+	// Losing a civic or team mastery bonus never strands existing passengers.
+	// No new cargo can load until enough passengers have disembarked.
+	return std::max(getCargo(), iCapacity);
 }
 
 void CvUnit::changeCargoSpace(int iChange)
@@ -10634,7 +10650,15 @@ int CvUnit::getEnemyRouteCount() const
 
 bool CvUnit::isEnemyRoute() const
 {
-	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ENEMY_ROUTE) > 0) || (getEnemyRouteCount() > 0);
+	return getEnemyRouteCount() > 0;
+}
+
+bool CvUnit::canUseEnemyRoute(RouteTypes eRoute) const
+{
+	// Commando (including the Panzer's free promotion) still uses all routes.
+	if (isEnemyRoute()) return true;
+	static const RouteTypes eRoad = (RouteTypes)GC.getInfoTypeForString("ROUTE_ROAD");
+	return eRoute == eRoad && UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ENEMY_ROAD) > 0;
 }
 
 void CvUnit::changeEnemyRouteCount(int iChange)
@@ -11130,6 +11154,20 @@ bool CvUnit::isMadeAttack() const
 void CvUnit::setMadeAttack(bool bNewValue)
 {
 	m_bMadeAttack = bNewValue;
+	m_iAttacksMade = bNewValue ? std::max(1, m_iAttacksMade) : 0;
+}
+
+void CvUnit::recordAttack()
+{
+	m_bMadeAttack = true;
+	++m_iAttacksMade;
+}
+
+bool CvUnit::canAttackAgain() const
+{
+	if (!isMadeAttack() || isBlitz()) return true;
+	return m_iAttacksMade < 2 &&
+		UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_SECOND_ATTACK) > 0;
 }
 
 
@@ -12069,6 +12107,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iImmobileTimer);
 
 	pStream->Read(&m_bMadeAttack);
+	pStream->Read(&m_iAttacksMade);
 	pStream->Read(&m_bMadeInterception);
 	pStream->Read(&m_bPromotionReady);
 	pStream->Read(&m_bDeathDelay);
@@ -12177,6 +12216,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iImmobileTimer);
 
 	pStream->Write(m_bMadeAttack);
+	pStream->Write(m_iAttacksMade);
 	pStream->Write(m_bMadeInterception);
 	pStream->Write(m_bPromotionReady);
 	pStream->Write(m_bDeathDelay);
@@ -12553,7 +12593,7 @@ bool CvUnit::airStrike(CvPlot* pPlot)
 
 	setReconPlot(pPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	int iDamage = airCombatDamage(pDefender);
@@ -12596,7 +12636,7 @@ bool CvUnit::canRangeStrike() const
 		return false;
 	}
 
-	if (isMadeAttack() && !isBlitz())
+	if (!canAttackAgain())
 	{
 		return false;
 	}
@@ -12673,7 +12713,7 @@ bool CvUnit::rangeStrike(int iX, int iY)
 
 	if (GC.getDefineINT("RANGED_ATTACKS_USE_MOVES") == 0)
 	{
-		setMadeAttack(true);
+		recordAttack();
 	}
 	changeMoves(GC.getMOVE_DENOMINATOR());
 

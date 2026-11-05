@@ -36,6 +36,10 @@ technologies and gold. Cities and units use local land/water placements and the
 reviewed XL birth and historical-city anchors. The standard 800 BC scenario
 remains available.
 
+Both XL selection menus use the historical country-name previews. The 800 BC
+XL start also uses the same starting civic profiles as standard 800 BC;
+its doubled engine turn is converted to the reference calendar for both.
+
 Resources follow the XL atlas, including 60 introductions already due by
 800 BC. Roads expand with the map; 51 starting improvements fit the local XL
 terrain and resources. Four old pastures, quarries, camps or plantations with
@@ -45,6 +49,24 @@ Zimbabwe retain their later founding events in both ancient XL starts.
 Generate with `python tools/generate_800_bc_xl_scenario.py`, after generating
 the 3000 BC XL map if its geography has changed. Source/map and localization
 checks do not establish in-game loading or multiplayer readiness.
+
+## XL city names
+
+Both XL starts retain the original location-based naming grids, with 235
+tile-specific refinements and 250 local names/cultural variants across Europe,
+Asia, Africa and the Americas. These split enlarged naming regions and fill
+the opened Sichuan lowlands. The Inca grid gains 12 additional names. Existing
+capital, reserve and scripted city sites retain their names. Conquest uses the
+authored cultural variants at the same tile; other locations retain RFC's
+existing renaming rules. This has not been validated in game or multiplayer.
+
+Maintain the XL coordinates and names in `tools/large_world_city_names.py`.
+Run `python tools/generate_large_world.py --huge --city-names-only` to refresh
+the naming grids and profile without regenerating terrain or resources.
+The full XL generator includes the same refinements. Names use the existing
+grid vocabulary and historical regional centres, including
+[Caral](https://whc.unesco.org/en/list/1269/) and
+[Quirigua](https://whc.unesco.org/en/list/149/).
 
 ## Additional Huge World start
 

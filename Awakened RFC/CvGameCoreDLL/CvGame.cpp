@@ -8211,6 +8211,7 @@ int CvGame::calculateSyncChecksum()
 					iMultiplier += (pLoopUnit->getDamage() * 736373);
 					iMultiplier += (pLoopUnit->getExperience() * 820622);
 					iMultiplier += (pLoopUnit->getExplorationExperienceRemainder() * 473113);
+					iMultiplier += (pLoopUnit->getAttacksMade() * 473117);
 					iMultiplier += (pLoopUnit->getLevel() * 367291);
 				}
 				break;

@@ -3790,7 +3790,7 @@ bool CvPlot::isValidRoute(const CvUnit* pUnit) const
 {
 	if (isRoute())
 	{
-		if (!pUnit->isEnemy(getTeam(), this) || pUnit->isEnemyRoute())
+		if (!pUnit->isEnemy(getTeam(), this) || pUnit->canUseEnemyRoute(getRouteType()))
 		{
 			return true;
 		}

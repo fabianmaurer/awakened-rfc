@@ -9132,7 +9132,7 @@ bool CvUnitAI::AI_afterAttack()
 		return false;
 	}
 
-	if (isBlitz())
+	if (canAttackAgain())
 	{
 		return false;
 	}

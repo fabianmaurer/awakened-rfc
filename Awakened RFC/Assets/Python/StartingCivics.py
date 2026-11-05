@@ -1,5 +1,6 @@
 # Awakened RFC starting institutions. Compatible with Civ4's Python 2.4.
 from CvPythonExtensions import CyGlobalContext
+import ScenarioGeography
 
 # Columns: Government, Legitimacy, Labor, Military, Religion.
 # These are preferences; unavailable choices use the fallbacks below.
@@ -117,10 +118,10 @@ def apply(iPlayer):
     civType = player.getCivilizationType()
     if civType < 0:
         return
-    profile = getProfile(gc.getCivilizationInfo(civType).getType(),
-                         gc.getGame().getStartTurn())
+    startTurn = ScenarioGeography.historyTurn(gc.getGame().getStartTurn())
+    profile = getProfile(gc.getCivilizationInfo(civType).getType(), startTurn)
     # Dedicated Andalusi minor player; leave the global independent cities alone.
-    if gc.getGame().getStartTurn() == 211 and iPlayer == 28 and player.isMinorCiv():
+    if startTurn == 211 and iPlayer == 28 and player.isMinorCiv():
         profile = getProfile("CIVILIZATION_UMAYYAD", 211)
     for iColumn in range(len(profile)):
         for name in (profile[iColumn],) + FALLBACKS[iColumn]:

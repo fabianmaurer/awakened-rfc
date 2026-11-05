@@ -517,6 +517,7 @@ public:
 																																														
 	int getEnemyRouteCount() const;																									
 	bool isEnemyRoute() const;																											// Exposed to Python					
+	bool canUseEnemyRoute(RouteTypes eRoute) const;
 	void changeEnemyRouteCount(int iChange);																									
 																																														
 	int getAlwaysHealCount() const;																														
@@ -621,6 +622,9 @@ public:
 
 	bool isMadeAttack() const;																																// Exposed to Python
 	void setMadeAttack(bool bNewValue);																							// Exposed to Python
+	bool canAttackAgain() const;
+	void recordAttack();
+	int getAttacksMade() const { return m_iAttacksMade; }
 
 	bool isMadeInterception() const;																													// Exposed to Python
 	void setMadeInterception(bool bNewValue);																				// Exposed to Python
@@ -845,6 +849,7 @@ protected:
     int m_iJihadCampaign;
 
 	bool m_bMadeAttack;
+	int m_iAttacksMade;
 	bool m_bMadeInterception;
 	bool m_bPromotionReady;
 	bool m_bDeathDelay;

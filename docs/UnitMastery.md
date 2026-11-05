@@ -1,6 +1,11 @@
 # Military unit mastery
 
 Military fighting units have three cumulative, unit-specific mastery levels.
+Tier I gives a useful role bonus, tier II adds a supporting ability, and tier III
+provides a major improvement. Unique tracks build on each unit's own abilities.
+Naval mastery grants at most two attacks per turn, still requiring movement.
+Native Blitz and promotions retain their normal effects. Mastery permits enemy
+road use only; native enemy-route abilities also permit railroads.
 Each level costs twice the previous one: base, 2x base, 4x base. The base is
 the base XML research cost of the unit's most expensive required technology.
 The mastery uses that technology's era for research cost modifiers. Warriors
@@ -28,6 +33,9 @@ units benefit; upgrading switches tracks. Surviving obsolete units retain
 completed benefits. No promotions are added or transferred. Existing unique
 powers and capped global Military Research remain active and stack normally.
 Unfinished retired research returns to the acquiring player's research overflow.
+Bonuses against Chariots, Archers, Riflemen or Infantry also affect their unique
+replacements. Extra cargo capacity follows the owner's mastery; losing capacity
+does not unload existing passengers, but prevents loading above the new limit.
 
 Small mastery icons sit below the ordinary tree without arrows, grouped side
 by side within their unlocking technology's column. The dialog grows to fit
@@ -51,86 +59,86 @@ Gameplay and multiplayer validation are user-operated and remain unverified.
 
 | Unit | Base cost | I | II | III |
 | --- | ---: | --- | --- | --- |
-| Scout | 42 | +1 visibility range. | Double movement in forests; Double movement in jungle. | Heals 15 extra HP per turn; Immune to first strikes. |
-| Explorer | 750 | +1 movement. | Units on the same tile heal 15 extra HP per turn. | Ignores terrain movement costs; Heals 15 extra HP per turn. |
-| Warrior | 100 | +30% city defense. | +30% against melee units. | Heals 15 extra HP per turn; Can heal while moving. |
-| Quechua Warrior | 53 | +50% against archery units. | Double movement in hills. | +40% city attack; Heals 15 extra HP per turn. |
-| Swordsman | 300 | +30% city attack. | Immune to first strikes. | Can attack multiple times per turn; +1 movement. |
-| Aztec Jaguar | 126 | Double movement in jungle. | +50% jungle attack; +50% forest attack. | Can heal while moving; Heals 20 extra HP per turn. |
-| Celtic Gallic Warrior | 300 | +50% hills attack. | Double movement in hills. | +40% withdrawal chance; +30% hills defense. |
-| Legion | 300 | +40% city attack. | Units on the same tile heal 15 extra HP per turn. | Ignores building defenses. |
-| Axeman | 126 | +35% against melee units. | +40% forest attack. | +30% collateral damage; +3 collateral targets; +40% collateral damage limit. |
-| Greek Phalanx | 126 | +50% against mounted units. | +2 first strikes. | +40% against melee units; +30% hills defense. |
-| Sumerian Vulture | 126 | +40% against melee units. | +40% city attack. | Immune to first strikes; Heals 15 extra HP per turn. |
-| Native America Dog Soldier | 126 | +50% forest defense. | Double movement in forests. | +40% against melee units; Units on the same tile heal 15 extra HP per turn. |
-| Maceman | 1200 | +30% city attack. | +25% against armored units; +25% against gunpowder units. | +2 first strikes. |
-| Japan Samurai | 1200 | +2 first strikes. | +40% city attack. | Can attack multiple times per turn; +1 movement. |
-| Berserker | 1200 | +40% city attack. | No river attack penalty; +1 movement. | Can attack multiple times per turn. |
-| Spearman | 42 | +50% against mounted units. | +40% hills defense. | +2 first strikes. |
-| Zulu Impi | 42 | +40% withdrawal chance. | Can use enemy roads. | Units on the same tile heal 20 extra HP per turn; Can heal while moving. |
-| Maya Holkan | 126 | +50% jungle defense. | Double movement in jungle. | +50% against mounted units; +2 first strikes. |
-| Pikeman | 1500 | +50% against mounted units. | +30% against melee units. | Immune to first strikes; Heals 15 extra HP per turn. |
-| Holy Roman Landsknecht | 1500 | +50% against melee units. | +50% against mounted units. | +2 first strikes; Heals 15 extra HP per turn. |
-| Musketman | 1500 | +30% city defense. | +2 first strikes. | No amphibious attack penalty; No river attack penalty. |
-| French Musketeer | 1500 | +35% withdrawal chance. | Can use enemy roads. | Can attack multiple times per turn. |
-| Janissary | 1500 | +30% against melee units; +30% against archery units; +30% against mounted units. | +40% city attack. | +2 first strikes. |
-| Ethiopian Oromo Warrior | 1500 | +2 first strikes. | +50% hills defense. | Double movement in hills; Heals 20 extra HP per turn. |
-| Rifleman | 2208 | +25% against gunpowder units. | +40% hills defense. | Can heal while moving; Heals 15 extra HP per turn. |
-| English Redcoat | 2208 | +40% against gunpowder units. | No amphibious attack penalty; No river attack penalty. | +2 first strikes; +30% city defense. |
-| Grenadier | 2116 | +35% city attack. | +35% collateral damage; +3 collateral targets; +50% collateral damage limit. | Immune to first strikes. |
-| At Infantry | 3220 | +50% against armored units. | +40% hills defense. | +40% withdrawal chance. |
-| Infantry | 3680 | +30% city attack. | Units on the same tile heal 15 extra HP per turn. | Can attack multiple times per turn; +1 movement. |
-| Marine | 4140 | +35% city attack. | +2 first strikes. | Can heal while moving; Heals 20 extra HP per turn. |
-| American Navy Seal | 4140 | +2 first strikes. | Can use enemy roads. | Can attack multiple times per turn; +1 movement. |
-| Paratrooper | 2944 | +40% hills defense. | Can use enemy roads. | +35% city attack; Immune to first strikes. |
-| Mechanized Infantry | 4564 | +35% against armored units. | Units on the same tile heal 20 extra HP per turn. | +1 movement; Can use enemy roads. |
-| Archer | 63 | +40% city defense. | +40% hills defense. | +2 first strikes. |
-| Mali Skirmisher | 63 | +40% withdrawal chance. | +1 movement. | +50% hills defense; +2 first strikes. |
-| Asharittu Bowman | 63 | +50% against melee units. | +40% city defense. | +2 first strikes; Units on the same tile heal 15 extra HP per turn. |
-| Longbowman | 1125 | +40% city defense. | +2 first strikes. | Units on the same tile heal 15 extra HP per turn; Heals 15 extra HP per turn. |
-| Crossbowman | 1125 | +40% against melee units. | +40% hills attack. | +2 first strikes. |
-| China Chokonu | 1125 | +3 collateral targets. | +20% collateral damage limit. | Can attack multiple times per turn; +1 movement. |
-| Chariot | 63 | +30% withdrawal chance. | +40% against archery units. | +1 movement; No river attack penalty. |
-| Egypt Warchariot | 63 | +50% against archery units. | +40% withdrawal chance. | +1 movement; Can attack multiple times per turn. |
-| Persia Immortal | 42 | +40% city attack. | Units on the same tile heal 15 extra HP per turn. | Can heal while moving; Heals 25 extra HP per turn. |
-| Horse Archer | 375 | +30% withdrawal chance. | +2 first strikes. | Can use enemy roads. |
-| Numidian Cavalry | 375 | +40% against melee units. | +40% withdrawal chance. | Can use enemy roads; +1 movement. |
-| Mongol Keshik | 1500 | +40% withdrawal chance. | Can use enemy roads. | Can attack multiple times per turn; +1 movement. |
-| Knight | 1500 | +30% city attack. | +30% withdrawal chance. | Can attack multiple times per turn; +1 movement. |
-| Arabia Camelarcher | 1500 | +40% against mounted units. | Heals 25 extra HP per turn; Can heal while moving. | Can attack multiple times per turn; +1 movement. |
-| Byzantine Cataphract | 1125 | +40% against melee units. | Immune to first strikes. | +40% city attack; +35% withdrawal chance. |
-| Spanish Conquistador | 1500 | +35% against gunpowder units. | No amphibious attack penalty; No river attack penalty. | +40% city attack; Units on the same tile heal 15 extra HP per turn. |
-| Cuirassier | 1656 | +30% against gunpowder units. | +35% withdrawal chance. | +1 movement; Immune to first strikes. |
-| Cavalry | 2208 | +50% against siege units. | Can use enemy roads. | Can attack multiple times per turn; +1 movement. |
-| Russia Cossack | 2208 | +50% against mounted units. | +40% withdrawal chance. | Can attack multiple times per turn; +1 movement. |
-| War Elephant | 450 | +35% against melee units. | +35% city attack. | +40% collateral damage; +4 collateral targets; +50% collateral damage limit. |
-| Khmer Ballista Elephant | 450 | +50% against mounted units. | +40% collateral damage; +4 collateral targets; +50% collateral damage limit. | Immune to first strikes. |
-| Tank | 4140 | +35% city attack. | +35% withdrawal chance. | +1 movement; Can use enemy roads. |
-| German Panzer | 4140 | +50% against armored units. | +40% withdrawal chance. | +1 movement; Can use enemy roads. |
-| Main Battle Tank | 4122 | +35% against armored units. | Immune to first strikes. | +1 movement; Can heal while moving. |
-| Catapult | 375 | +20% city bombardment. | +3 collateral targets. | +40% withdrawal chance. |
-| Korean Hwacha | 375 | +50% against melee units. | +4 collateral targets. | +25% collateral damage limit; +35% withdrawal chance. |
-| Trebuchet | 1500 | +50% city attack. | +25% city bombardment. | +20% collateral damage limit; +2 collateral targets. |
-| Cannon | 1500 | +30% collateral damage. | +30% city bombardment. | +40% withdrawal chance. |
-| Machine Gun | 3220 | +35% against gunpowder units. | +3 first strikes. | Units on the same tile heal 20 extra HP per turn. |
-| Artillery | 3220 | +4 collateral targets. | +20% collateral damage limit. | +1 movement. |
-| Mobile Artillery | 4122 | +40% city bombardment. | +4 collateral targets. | +50% withdrawal chance; Can use enemy roads. |
-| Trireme | 675 | +2 first strikes. | +40% withdrawal chance. | +2 movement. |
-| Caravel | 1200 | +2 visibility range. | +2 movement. | +50% withdrawal chance. |
-| Portugal Carrack | 1200 | Heals 20 extra HP per turn; Can heal while moving. | +2 visibility range. | +2 movement; +35% withdrawal chance. |
-| Netherlands Oostindievaarder | 1472 | +2 first strikes. | Heals 25 extra HP per turn; Can heal while moving. | +2 movement. |
-| Privateer | 1656 | +40% withdrawal chance. | +2 movement. | Can heal while moving; Heals 25 extra HP per turn. |
-| Frigate | 1656 | +25% city bombardment. | +2 first strikes. | +2 movement. |
-| Ship Of The Line | 2116 | Immune to first strikes. | +30% city bombardment. | +3 first strikes. |
-| Ironclad | 2484 | +25% city bombardment; Heals 15 extra HP per turn. | Immune to first strikes. | +2 movement. |
-| Destroyer | 3404 | +2 visibility range. | +3 first strikes. | +2 movement; +30% withdrawal chance. |
-| Battleship | 4140 | +40% city bombardment. | +3 collateral targets; +20% collateral damage limit. | Can attack multiple times per turn; +1 movement. |
-| Missile Cruiser | 4564 | Units on the same tile heal 20 extra HP per turn; Heals 15 extra HP per turn. | +2 visibility range. | Can attack multiple times per turn; +2 movement. |
-| Stealth Destroyer | 4564 | +3 first strikes. | +45% withdrawal chance. | +2 movement; Can heal while moving. |
-| Submarine | 3165 | +40% withdrawal chance. | +3 first strikes. | +2 movement. |
-| Attack Submarine | 3404 | +3 first strikes. | Immune to first strikes; Heals 20 extra HP per turn. | +2 movement; +30% withdrawal chance. |
-| Autonomous Combat Vehicle | 47840 | +40% city defense. | Can heal while moving; Heals 20 extra HP per turn. | +3 first strikes. |
-| Autonomous Battle Tank | 80960 | +40% city attack. | +40% against armored units. | +1 movement; Can use enemy roads. |
-| War Galley | 1125 | +2 first strikes. | Heals 20 extra HP per turn; Can heal while moving. | Can attack multiple times per turn. |
-| Arctic hunter | 100 | +1 visibility range; +50% against animals. | Double movement in hills. | +2 first strikes; Heals 20 extra HP per turn. |
-| Woodland Warrior | 100 | +50% forest attack; +50% forest defense. | Double movement in forests. | Units on the same tile heal 15 extra HP per turn; +2 first strikes. |
+| Scout | 42 | +25% against animals; Heals 5 extra HP per turn. | +1 visibility range; Double movement in forests; Double movement in jungle. | Ignores terrain movement costs; +1 movement. |
+| Explorer | 750 | Heals 10 extra HP per turn. | +1 visibility range; +1 movement. | Can use enemy roads, but not railroads; Units on the same tile heal 20 extra HP per turn. |
+| Warrior | 100 | +15% city defense. | +25% against melee units. | +30% combat strength; Heals 15 extra HP per turn. |
+| Quechua Warrior | 53 | +15% against archery units. | +25% city attack. | +30% combat strength; Immune to first strikes. |
+| Swordsman | 300 | +15% city attack. | +25% against melee units. | +1 movement; Can attack multiple times per turn. |
+| Aztec Jaguar | 126 | +15% jungle attack. | Double movement in forests; Double movement in jungle. | Heals 25 extra HP per turn; Can heal while moving. |
+| Celtic Gallic Warrior | 300 | +15% hills defense. | Double movement in hills. | +40% hills attack; +40% withdrawal chance. |
+| Legion | 300 | +10% combat strength. | Units on the same tile heal 15 extra HP per turn. | +35% combat strength; Immune to first strikes. |
+| Axeman | 126 | +15% against melee units. | +25% forest attack; +25% forest defense. | +30% combat strength; Immune to first strikes. |
+| Greek Phalanx | 126 | +15% defense against Chariots. | +25% hills defense; +1 first strikes. | +40% against mounted units; +25% against melee units. |
+| Sumerian Vulture | 126 | +15% city attack. | Heals 15 extra HP per turn. | Can attack multiple times per turn; +1 movement. |
+| Native America Dog Soldier | 126 | +15% against melee units. | Units on the same tile heal 15 extra HP per turn. | +40% against melee units; +2 first strikes. |
+| Maceman | 1200 | +15% city attack. | +25% against melee units; +25% against gunpowder units. | +35% combat strength; Immune to first strikes. |
+| Japan Samurai | 1200 | +15% against melee units. | +1 first strikes; +20% city attack. | +2 first strikes; Heals 20 extra HP per turn. |
+| Berserker | 1200 | +15% city attack. | No river attack penalty; Heals 10 extra HP per turn. | +1 movement; Can attack multiple times per turn. |
+| Spearman | 42 | +20% against mounted units. | +25% hills defense; +1 first strikes. | +35% combat strength; +40% against mounted units. |
+| Zulu Impi | 42 | +15% withdrawal chance. | Heals 15 extra HP per turn; Can heal while moving. | Can use enemy roads, but not railroads; +1 movement. |
+| Maya Holkan | 126 | +15% against melee units. | +25% jungle defense; +1 first strikes. | +35% combat strength; Double movement in jungle. |
+| Pikeman | 1500 | +20% against mounted units. | +25% against melee units. | +35% combat strength; +2 first strikes. |
+| Holy Roman Landsknecht | 1500 | +15% against melee units. | +25% hills defense; +1 first strikes. | +35% against melee units; +35% against mounted units; Units on the same tile heal 15 extra HP per turn. |
+| Musketman | 1500 | +15% city defense. | +1 first strikes; +20% city attack. | +35% combat strength; Can heal while moving. |
+| French Musketeer | 1500 | +15% withdrawal chance. | No river attack penalty; Heals 15 extra HP per turn. | Can use enemy roads, but not railroads; Can attack multiple times per turn. |
+| Janissary | 1500 | +15% against archery units. | +25% city attack; Immune to first strikes. | +35% against melee units; +35% against archery units; +35% against mounted units. |
+| Ethiopian Oromo Warrior | 1500 | +15% hills defense. | +1 first strikes; Heals 10 extra HP per turn. | +2 first strikes; +30% city defense. |
+| Rifleman | 2208 | +15% against gunpowder units. | +25% city defense; +25% hills defense. | +35% combat strength; Heals 15 extra HP per turn. |
+| English Redcoat | 2208 | +15% against gunpowder units. | No amphibious attack penalty; No river attack penalty. | +35% combat strength; +2 first strikes. |
+| Grenadier | 2116 | +15% city attack. | +25% against gunpowder units. | +40% city attack; Immune to first strikes. |
+| At Infantry | 3220 | +20% against armored units. | +25% hills defense; +1 first strikes. | +40% against armored units; +30% combat strength. |
+| Infantry | 3680 | +15% city attack. | +25% against gunpowder units. | +1 movement; Can attack multiple times per turn. |
+| Marine | 4140 | +15% city attack. | +1 first strikes; +20% against gunpowder units. | +40% city attack; Can heal while moving; Heals 20 extra HP per turn. |
+| American Navy Seal | 4140 | Heals 10 extra HP per turn. | +1 first strikes; +20% city attack. | +1 movement; Can attack multiple times per turn. |
+| Paratrooper | 2944 | +15% hills defense. | +25% city attack; Heals 10 extra HP per turn. | Can use enemy roads, but not railroads; +1 movement. |
+| Mechanized Infantry | 4564 | +15% against armored units. | Units on the same tile heal 15 extra HP per turn. | +1 movement; Heals 20 extra HP per turn. |
+| Archer | 63 | +15% city defense. | +20% hills defense; +1 first strikes. | +35% combat strength; +2 first strikes. |
+| Mali Skirmisher | 63 | +15% hills defense. | +1 first strikes; +20% withdrawal chance. | +1 movement; +35% combat strength. |
+| Asharittu Bowman | 63 | +15% collateral damage. | +2 collateral targets. | +20% collateral damage limit; +40% withdrawal chance. |
+| Longbowman | 1125 | +15% city defense. | +25% hills defense; +1 first strikes. | +35% combat strength; Units on the same tile heal 20 extra HP per turn. |
+| Crossbowman | 1125 | +15% against melee units. | +25% city defense; +1 first strikes. | +35% combat strength; +40% against melee units. |
+| China Chokonu | 1125 | +15% against melee units. | +2 collateral targets. | +1 movement; Can attack multiple times per turn. |
+| Chariot | 63 | +15% withdrawal chance. | +25% against archery units. | +1 movement; +30% combat strength. |
+| Egypt Warchariot | 63 | +15% against archery units. | +25% withdrawal chance. | +1 movement; +35% combat strength. |
+| Persia Immortal | 42 | +15% attack against Archers. | Heals 15 extra HP per turn; Immune to first strikes. | +40% city attack; Units on the same tile heal 15 extra HP per turn. |
+| Horse Archer | 375 | +15% withdrawal chance. | +25% against archery units. | Can use enemy roads, but not railroads; +30% combat strength. |
+| Numidian Cavalry | 375 | +15% against melee units. | +25% withdrawal chance. | +1 movement; Heals 20 extra HP per turn; Can heal while moving. |
+| Mongol Keshik | 1500 | +15% withdrawal chance. | No river attack penalty; Heals 15 extra HP per turn. | Can use enemy roads, but not railroads; Can attack multiple times per turn. |
+| Knight | 1500 | +15% city attack. | +25% withdrawal chance. | +1 movement; Can attack multiple times per turn. |
+| Arabia Camelarcher | 1500 | Heals 10 extra HP per turn. | +25% withdrawal chance. | Heals 15 extra HP per turn; Can heal while moving. |
+| Byzantine Cataphract | 1125 | +15% city attack. | +25% withdrawal chance. | +35% combat strength; Can attack multiple times per turn. |
+| Spanish Conquistador | 1500 | +15% against melee units. | +25% hills defense; +25% forest defense. | +35% combat strength; Units on the same tile heal 20 extra HP per turn. |
+| Cuirassier | 1656 | +15% withdrawal chance. | +25% against gunpowder units. | +1 movement; +35% combat strength. |
+| Cavalry | 2208 | +20% against siege units. | +25% withdrawal chance. | +1 movement; Can attack multiple times per turn. |
+| Russia Cossack | 2208 | +15% against mounted units. | +25% withdrawal chance. | +1 movement; +40% against mounted units. |
+| War Elephant | 450 | +15% against melee units. | +25% city attack. | +40% collateral damage; +4 collateral targets; +50% collateral damage limit. |
+| Khmer Ballista Elephant | 450 | +15% against mounted units. | +25% withdrawal chance. | +40% against mounted units; Immune to first strikes. |
+| Tank | 4140 | +15% city attack. | +25% withdrawal chance. | Can use enemy roads, but not railroads; +1 movement. |
+| German Panzer | 4140 | +15% attack against Riflemen and Infantry. | Heals 15 extra HP per turn. | +1 movement; Can heal while moving. |
+| Main Battle Tank | 4122 | +15% against armored units. | +25% city attack. | +1 movement; Can heal while moving; Heals 20 extra HP per turn. |
+| Catapult | 375 | +8% city bombardment. | +2 collateral targets. | +20% collateral damage limit; +40% withdrawal chance. |
+| Korean Hwacha | 375 | +15% against melee units. | +2 collateral targets. | +40% against melee units; +20% collateral damage limit. |
+| Trebuchet | 1500 | +15% city attack. | +10% city bombardment. | +40% city attack; +3 collateral targets. |
+| Cannon | 1500 | +8% city bombardment. | +2 collateral targets. | +20% collateral damage limit; +40% withdrawal chance. |
+| Machine Gun | 3220 | +15% against gunpowder units. | +25% hills defense; +1 first strikes. | +35% combat strength; Units on the same tile heal 20 extra HP per turn. |
+| Artillery | 3220 | +8% city bombardment. | +2 collateral targets. | +1 movement; +20% collateral damage limit. |
+| Mobile Artillery | 4122 | +8% city bombardment. | +2 collateral targets. | Can use enemy roads, but not railroads; +20% collateral damage limit. |
+| Trireme | 675 | +15% combat strength. | +1 first strikes; +20% withdrawal chance. | +2 movement; +30% combat strength. |
+| Caravel | 1200 | Heals 10 extra HP per turn. | +1 visibility range; +1 movement. | +2 movement; +40% withdrawal chance. |
+| Portugal Carrack | 1200 | +1 visibility range; Heals 5 extra HP per turn. | +1 cargo capacity. | +2 movement; Can heal while moving; Heals 20 extra HP per turn. |
+| Netherlands Oostindievaarder | 1472 | +15% combat strength. | +1 cargo capacity. | +2 movement; Can attack twice per turn. |
+| Privateer | 1656 | +15% withdrawal chance. | +1 movement; +20% combat strength. | Can heal while moving; Heals 25 extra HP per turn. |
+| Frigate | 1656 | +8% city bombardment. | +20% combat strength; +1 first strikes. | +2 movement; Can attack twice per turn. |
+| Ship Of The Line | 2116 | +15% combat strength. | +1 first strikes; +10% city bombardment. | +35% combat strength; Can attack twice per turn. |
+| Ironclad | 2484 | Heals 10 extra HP per turn. | +20% combat strength; +1 first strikes. | +2 movement; Can heal while moving. |
+| Destroyer | 3404 | +15% combat strength. | +1 visibility range; +1 first strikes. | +2 movement; Can attack twice per turn. |
+| Battleship | 4140 | +8% city bombardment. | +2 collateral targets. | Can attack twice per turn; +20% collateral damage limit. |
+| Missile Cruiser | 4564 | Heals 10 extra HP per turn. | +1 visibility range; +20% combat strength. | Can attack twice per turn; Units on the same tile heal 20 extra HP per turn. |
+| Stealth Destroyer | 4564 | +15% withdrawal chance. | +20% combat strength; +1 first strikes. | +2 movement; Can heal while moving; Heals 20 extra HP per turn. |
+| Submarine | 3165 | +15% withdrawal chance. | +25% combat strength. | +2 movement; +15% withdrawal chance. |
+| Attack Submarine | 3404 | +15% combat strength. | +1 visibility range; +20% withdrawal chance. | +2 movement; Can attack twice per turn. |
+| Autonomous Combat Vehicle | 47840 | +15% city defense. | +25% against gunpowder units. | +35% combat strength; Heals 20 extra HP per turn. |
+| Autonomous Battle Tank | 80960 | +15% city attack. | +25% against armored units. | Can use enemy roads, but not railroads; +1 movement. |
+| War Galley | 1125 | +15% combat strength. | +1 first strikes; Heals 10 extra HP per turn. | +1 movement; Can attack twice per turn. |
+| Arctic hunter | 100 | +25% against animals. | +1 visibility range; +20% hills defense. | Double movement in hills; +35% combat strength. |
+| Woodland Warrior | 100 | +15% forest defense. | Double movement in forests. | +40% forest attack; Units on the same tile heal 20 extra HP per turn. |

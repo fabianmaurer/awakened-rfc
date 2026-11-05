@@ -342,7 +342,7 @@ CvUnit* CvSelectionGroupAI::AI_getBestGroupAttacker(const CvPlot* pPlot, bool bP
 			{
 				bCanAttack = pLoopUnit->canAttack();
 
-				if (bCanAttack && bNoBlitz && pLoopUnit->isBlitz() && pLoopUnit->isMadeAttack())
+				if (bCanAttack && bNoBlitz && pLoopUnit->isMadeAttack())
 				{
 					bCanAttack = false;
 				}
@@ -409,7 +409,7 @@ CvUnit* CvSelectionGroupAI::AI_getBestGroupSacrifice(const CvPlot* pPlot, bool b
 			{
 				bCanAttack = pLoopUnit->canAttack();
 
-				if (bCanAttack && bNoBlitz && pLoopUnit->isBlitz() && pLoopUnit->isMadeAttack())
+				if (bCanAttack && bNoBlitz && pLoopUnit->isMadeAttack())
 				{
 					bCanAttack = false;
 				}

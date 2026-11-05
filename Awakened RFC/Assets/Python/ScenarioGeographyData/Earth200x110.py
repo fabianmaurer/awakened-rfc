@@ -21,3 +21,5 @@ AREAS = [(0, 39, 37, 41, 48),
 SETTLERS = expand(WIDTH, HEIGHT, SETTLEMENTS)
 VALUES['CityNameManager.tCityMap'] = expand(WIDTH, HEIGHT, CITY_NAMES)
 VALUES['AIWars.tWarsMap'] = expand(WIDTH, HEIGHT, WAR_MAPS)
+from Earth200x110Grids import CITY_NAME_REFINEMENTS
+VALUES['CityNameManager.XLNames'] = CITY_NAME_REFINEMENTS

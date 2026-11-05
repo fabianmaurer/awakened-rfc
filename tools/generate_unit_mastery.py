@@ -18,94 +18,94 @@ LANGS = ('English', 'French', 'German', 'Italian', 'Spanish')
 MASTERY_NO_TECH_BASE_COST = 100
 
 # Each tuple is an incremental reward. Earlier rewards remain active.
-# Explicit tracks keep rewards specific to the unit, including unique units.
+# I gives a useful role bonus, II adds support, III defines a major capability.
+# Unique tracks develop the unit's actual XML abilities, not its base-game name.
 TRACKS = {
-    'SCOUT': [('VISIBILITY', 1), ('FOREST_DOUBLE', 1, 'JUNGLE_DOUBLE', 1), ('HEAL', 15, 'FIRST_IMMUNE', 1)],
-    'EXPLORER': [('MOVES', 1), ('SAME_TILE_HEAL', 15), ('IGNORE_TERRAIN', 1, 'HEAL', 15)],
-    'WARRIOR': [('CITY_DEFENSE', 30), ('MELEE', 30), ('HEAL', 15, 'ALWAYS_HEAL', 1)],
-    'SWORDSMAN': [('CITY_ATTACK', 30), ('FIRST_IMMUNE', 1), ('BLITZ', 1, 'MOVES', 1)],
-    'AXEMAN': [('MELEE', 35), ('FOREST_ATTACK', 40), ('COLLATERAL', 30, 'COLLATERAL_TARGETS', 3, 'COLLATERAL_LIMIT', 40)],
-    'MACEMAN': [('CITY_ATTACK', 30), ('ARMOR', 25, 'GUN', 25), ('FIRST_STRIKES', 2)],
-    'SPEARMAN': [('MOUNTED', 50), ('HILLS_DEFENSE', 40), ('FIRST_STRIKES', 2)],
-    'PIKEMAN': [('MOUNTED', 50), ('MELEE', 30), ('FIRST_IMMUNE', 1, 'HEAL', 15)],
-    'MUSKETMAN': [('CITY_DEFENSE', 30), ('FIRST_STRIKES', 2), ('AMPHIB', 1, 'RIVER', 1)],
-    'RIFLEMAN': [('GUN', 25), ('HILLS_DEFENSE', 40), ('ALWAYS_HEAL', 1, 'HEAL', 15)],
-    'GRENADIER': [('CITY_ATTACK', 35), ('COLLATERAL', 35, 'COLLATERAL_TARGETS', 3, 'COLLATERAL_LIMIT', 50), ('FIRST_IMMUNE', 1)],
-    'AT_INFANTRY': [('ARMOR', 50), ('HILLS_DEFENSE', 40), ('WITHDRAWAL', 40)],
-    'INFANTRY': [('CITY_ATTACK', 30), ('SAME_TILE_HEAL', 15), ('BLITZ', 1, 'MOVES', 1)],
-    'MARINE': [('CITY_ATTACK', 35), ('FIRST_STRIKES', 2), ('ALWAYS_HEAL', 1, 'HEAL', 20)],
-    'PARATROOPER': [('HILLS_DEFENSE', 40), ('ENEMY_ROUTE', 1), ('CITY_ATTACK', 35, 'FIRST_IMMUNE', 1)],
-    'MECHANIZED_INFANTRY': [('ARMOR', 35), ('SAME_TILE_HEAL', 20), ('MOVES', 1, 'ENEMY_ROUTE', 1)],
-    'ARCHER': [('CITY_DEFENSE', 40), ('HILLS_DEFENSE', 40), ('FIRST_STRIKES', 2)],
-    'LONGBOWMAN': [('CITY_DEFENSE', 40), ('FIRST_STRIKES', 2), ('SAME_TILE_HEAL', 15, 'HEAL', 15)],
-    'CROSSBOWMAN': [('MELEE', 40), ('HILLS_ATTACK', 40), ('FIRST_STRIKES', 2)],
-    'CHARIOT': [('WITHDRAWAL', 30), ('ARCHER', 40), ('MOVES', 1, 'RIVER', 1)],
-    'HORSE_ARCHER': [('WITHDRAWAL', 30), ('FIRST_STRIKES', 2), ('ENEMY_ROUTE', 1)],
-    'KNIGHT': [('CITY_ATTACK', 30), ('WITHDRAWAL', 30), ('BLITZ', 1, 'MOVES', 1)],
-    'CUIRASSIER': [('GUN', 30), ('WITHDRAWAL', 35), ('MOVES', 1, 'FIRST_IMMUNE', 1)],
-    'CAVALRY': [('SIEGE', 50), ('ENEMY_ROUTE', 1), ('BLITZ', 1, 'MOVES', 1)],
-    'WAR_ELEPHANT': [('MELEE', 35), ('CITY_ATTACK', 35), ('COLLATERAL', 40, 'COLLATERAL_TARGETS', 4, 'COLLATERAL_LIMIT', 50)],
-    'TANK': [('CITY_ATTACK', 35), ('WITHDRAWAL', 35), ('MOVES', 1, 'ENEMY_ROUTE', 1)],
-    'MODERN_ARMOR': [('ARMOR', 35), ('FIRST_IMMUNE', 1), ('MOVES', 1, 'ALWAYS_HEAL', 1)],
-    'CATAPULT': [('BOMBARD', 20), ('COLLATERAL_TARGETS', 3), ('WITHDRAWAL', 40)],
-    'TREBUCHET': [('CITY_ATTACK', 50), ('BOMBARD', 25), ('COLLATERAL_LIMIT', 20, 'COLLATERAL_TARGETS', 2)],
-    'CANNON': [('COLLATERAL', 30), ('BOMBARD', 30), ('WITHDRAWAL', 40)],
-    'MACHINE_GUN': [('GUN', 35), ('FIRST_STRIKES', 3), ('SAME_TILE_HEAL', 20)],
-    'ARTILLERY': [('COLLATERAL_TARGETS', 4), ('COLLATERAL_LIMIT', 20), ('MOVES', 1)],
-    'MOBILE_ARTILLERY': [('BOMBARD', 40), ('COLLATERAL_TARGETS', 4), ('WITHDRAWAL', 50, 'ENEMY_ROUTE', 1)],
-    'GALLEY': [('WITHDRAWAL', 35), ('MOVES', 1), ('ALWAYS_HEAL', 1, 'HEAL', 20)],
-    'TRIREME': [('FIRST_STRIKES', 2), ('WITHDRAWAL', 40), ('MOVES', 2)],
-    'CARAVEL': [('VISIBILITY', 2), ('MOVES', 2), ('WITHDRAWAL', 50)],
-    'GALLEON': [('WITHDRAWAL', 35), ('MOVES', 2), ('HEAL', 25, 'ALWAYS_HEAL', 1)],
-    'PRIVATEER': [('WITHDRAWAL', 40), ('MOVES', 2), ('ALWAYS_HEAL', 1, 'HEAL', 25)],
-    'FRIGATE': [('BOMBARD', 25), ('FIRST_STRIKES', 2), ('MOVES', 2)],
-    'SHIP_OF_THE_LINE': [('FIRST_IMMUNE', 1), ('BOMBARD', 30), ('FIRST_STRIKES', 3)],
-    'IRONCLAD': [('BOMBARD', 25, 'HEAL', 15), ('FIRST_IMMUNE', 1), ('MOVES', 2)],
-    'DESTROYER': [('VISIBILITY', 2), ('FIRST_STRIKES', 3), ('MOVES', 2, 'WITHDRAWAL', 30)],
-    'BATTLESHIP': [('BOMBARD', 40), ('COLLATERAL_TARGETS', 3, 'COLLATERAL_LIMIT', 20), ('BLITZ', 1, 'MOVES', 1)],
-    'MISSILE_CRUISER': [('SAME_TILE_HEAL', 20, 'HEAL', 15), ('VISIBILITY', 2), ('BLITZ', 1, 'MOVES', 2)],
-    'STEALTH_DESTROYER': [('FIRST_STRIKES', 3), ('WITHDRAWAL', 45), ('MOVES', 2, 'ALWAYS_HEAL', 1)],
-    'SUBMARINE': [('WITHDRAWAL', 40), ('FIRST_STRIKES', 3), ('MOVES', 2)],
-    'ATTACK_SUBMARINE': [('FIRST_STRIKES', 3), ('FIRST_IMMUNE', 1, 'HEAL', 20), ('MOVES', 2, 'WITHDRAWAL', 30)],
-    'AUTONOMOUS_COMBAT_VEHICLE': [('CITY_DEFENSE', 40), ('ALWAYS_HEAL', 1, 'HEAL', 20), ('FIRST_STRIKES', 3)],
-    'AUTONOMOUS_TANK': [('CITY_ATTACK', 40), ('ARMOR', 40), ('MOVES', 1, 'ENEMY_ROUTE', 1)],
-    'WAR_GALLEY': [('FIRST_STRIKES', 2), ('HEAL', 20, 'ALWAYS_HEAL', 1), ('BLITZ', 1)],
-    'ARCTIC_HUNTER': [('VISIBILITY', 1, 'ANIMAL', 50), ('HILLS_DOUBLE', 1), ('FIRST_STRIKES', 2, 'HEAL', 20)],
-    # Unique units: deliberate rewards build on their historical/gameplay role.
-    'INCAN_QUECHUA': [('ARCHER', 50), ('HILLS_DOUBLE', 1), ('CITY_ATTACK', 40, 'HEAL', 15)],
-    'AZTEC_JAGUAR': [('JUNGLE_DOUBLE', 1), ('JUNGLE_ATTACK', 50, 'FOREST_ATTACK', 50), ('ALWAYS_HEAL', 1, 'HEAL', 20)],
-    'CELTIC_GALLIC_WARRIOR': [('HILLS_ATTACK', 50), ('HILLS_DOUBLE', 1), ('WITHDRAWAL', 40, 'HILLS_DEFENSE', 30)],
-    'ROME_PRAETORIAN': [('CITY_ATTACK', 40), ('SAME_TILE_HEAL', 15), ('IGNORE_BUILDING', 1)],
-    'GREEK_PHALANX': [('MOUNTED', 50), ('FIRST_STRIKES', 2), ('MELEE', 40, 'HILLS_DEFENSE', 30)],
-    'SUMERIAN_VULTURE': [('MELEE', 40), ('CITY_ATTACK', 40), ('FIRST_IMMUNE', 1, 'HEAL', 15)],
-    'NATIVE_AMERICA_DOG_SOLDIER': [('FOREST_DEFENSE', 50), ('FOREST_DOUBLE', 1), ('MELEE', 40, 'SAME_TILE_HEAL', 15)],
-    'JAPAN_SAMURAI': [('FIRST_STRIKES', 2), ('CITY_ATTACK', 40), ('BLITZ', 1, 'MOVES', 1)],
-    'VIKING_BESERKER': [('CITY_ATTACK', 40), ('RIVER', 1, 'MOVES', 1), ('BLITZ', 1)],
-    'ZULU_IMPI': [('WITHDRAWAL', 40), ('ENEMY_ROUTE', 1), ('SAME_TILE_HEAL', 20, 'ALWAYS_HEAL', 1)],
-    'MAYA_HOLKAN': [('JUNGLE_DEFENSE', 50), ('JUNGLE_DOUBLE', 1), ('MOUNTED', 50, 'FIRST_STRIKES', 2)],
-    'HOLY_ROMAN_LANDSKNECHT': [('MELEE', 50), ('MOUNTED', 50), ('FIRST_STRIKES', 2, 'HEAL', 15)],
-    'FRENCH_MUSKETEER': [('WITHDRAWAL', 35), ('ENEMY_ROUTE', 1), ('BLITZ', 1)],
-    'OTTOMAN_JANISSARY': [('MELEE', 30, 'ARCHER', 30, 'MOUNTED', 30), ('CITY_ATTACK', 40), ('FIRST_STRIKES', 2)],
-    'ETHIOPIAN_OROMO_WARRIOR': [('FIRST_STRIKES', 2), ('HILLS_DEFENSE', 50), ('HILLS_DOUBLE', 1, 'HEAL', 20)],
-    'ENGLISH_REDCOAT': [('GUN', 40), ('AMPHIB', 1, 'RIVER', 1), ('FIRST_STRIKES', 2, 'CITY_DEFENSE', 30)],
-    'AMERICAN_NAVY_SEAL': [('FIRST_STRIKES', 2), ('ENEMY_ROUTE', 1), ('BLITZ', 1, 'MOVES', 1)],
-    'MALI_SKIRMISHER': [('WITHDRAWAL', 40), ('MOVES', 1), ('HILLS_DEFENSE', 50, 'FIRST_STRIKES', 2)],
-    'BABYLON_BOWMAN': [('MELEE', 50), ('CITY_DEFENSE', 40), ('FIRST_STRIKES', 2, 'SAME_TILE_HEAL', 15)],
-    'CHINA_CHOKONU': [('COLLATERAL_TARGETS', 3), ('COLLATERAL_LIMIT', 20), ('BLITZ', 1, 'MOVES', 1)],
-    'EGYPT_WARCHARIOT': [('ARCHER', 50), ('WITHDRAWAL', 40), ('MOVES', 1, 'BLITZ', 1)],
-    'PERSIA_IMMORTAL': [('CITY_ATTACK', 40), ('SAME_TILE_HEAL', 15), ('ALWAYS_HEAL', 1, 'HEAL', 25)],
-    'CARTHAGE_NUMIDIAN_CAVALRY': [('MELEE', 40), ('WITHDRAWAL', 40), ('ENEMY_ROUTE', 1, 'MOVES', 1)],
-    'MONGOL_KESHIK': [('WITHDRAWAL', 40), ('ENEMY_ROUTE', 1), ('BLITZ', 1, 'MOVES', 1)],
-    'ARABIA_CAMELARCHER': [('MOUNTED', 40), ('HEAL', 25, 'ALWAYS_HEAL', 1), ('BLITZ', 1, 'MOVES', 1)],
-    'BYZANTINE_CATAPHRACT': [('MELEE', 40), ('FIRST_IMMUNE', 1), ('CITY_ATTACK', 40, 'WITHDRAWAL', 35)],
-    'SPANISH_CONQUISTADOR': [('GUN', 35), ('AMPHIB', 1, 'RIVER', 1), ('CITY_ATTACK', 40, 'SAME_TILE_HEAL', 15)],
-    'RUSSIA_COSSACK': [('MOUNTED', 50), ('WITHDRAWAL', 40), ('BLITZ', 1, 'MOVES', 1)],
-    'KHMER_BALLISTA_ELEPHANT': [('MOUNTED', 50), ('COLLATERAL', 40, 'COLLATERAL_TARGETS', 4, 'COLLATERAL_LIMIT', 50), ('FIRST_IMMUNE', 1)],
-    'GERMAN_PANZER': [('ARMOR', 50), ('WITHDRAWAL', 40), ('MOVES', 1, 'ENEMY_ROUTE', 1)],
-    'KOREAN_HWACHA': [('MELEE', 50), ('COLLATERAL_TARGETS', 4), ('COLLATERAL_LIMIT', 25, 'WITHDRAWAL', 35)],
-    'PORTUGAL_CARRACK': [('HEAL', 20, 'ALWAYS_HEAL', 1), ('VISIBILITY', 2), ('MOVES', 2, 'WITHDRAWAL', 35)],
-    'NETHERLANDS_OOSTINDIEVAARDER': [('FIRST_STRIKES', 2), ('HEAL', 25, 'ALWAYS_HEAL', 1), ('MOVES', 2)],
-    'ADENA_WOODLAND_WARRIOR': [('FOREST_ATTACK', 50, 'FOREST_DEFENSE', 50), ('FOREST_DOUBLE', 1), ('SAME_TILE_HEAL', 15, 'FIRST_STRIKES', 2)],
+    'SCOUT': [('ANIMAL', 25, 'HEAL', 5), ('VISIBILITY', 1, 'FOREST_DOUBLE', 1, 'JUNGLE_DOUBLE', 1), ('IGNORE_TERRAIN', 1, 'MOVES', 1)],
+    'EXPLORER': [('HEAL', 10), ('VISIBILITY', 1, 'MOVES', 1), ('ENEMY_ROAD', 1, 'SAME_TILE_HEAL', 20)],
+    'WARRIOR': [('CITY_DEFENSE', 15), ('MELEE', 25), ('COMBAT', 30, 'HEAL', 15)],
+    'SWORDSMAN': [('CITY_ATTACK', 15), ('MELEE', 25), ('MOVES', 1, 'BLITZ', 1)],
+    'AXEMAN': [('MELEE', 15), ('FOREST_ATTACK', 25, 'FOREST_DEFENSE', 25), ('COMBAT', 30, 'FIRST_IMMUNE', 1)],
+    'MACEMAN': [('CITY_ATTACK', 15), ('MELEE', 25, 'GUN', 25), ('COMBAT', 35, 'FIRST_IMMUNE', 1)],
+    'SPEARMAN': [('MOUNTED', 20), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'MOUNTED', 40)],
+    'PIKEMAN': [('MOUNTED', 20), ('MELEE', 25), ('COMBAT', 35, 'FIRST_STRIKES', 2)],
+    'MUSKETMAN': [('CITY_DEFENSE', 15), ('FIRST_STRIKES', 1, 'CITY_ATTACK', 20), ('COMBAT', 35, 'ALWAYS_HEAL', 1)],
+    'RIFLEMAN': [('GUN', 15), ('CITY_DEFENSE', 25, 'HILLS_DEFENSE', 25), ('COMBAT', 35, 'HEAL', 15)],
+    'GRENADIER': [('CITY_ATTACK', 15), ('GUN', 25), ('CITY_ATTACK', 40, 'FIRST_IMMUNE', 1)],
+    'AT_INFANTRY': [('ARMOR', 20), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('ARMOR', 40, 'COMBAT', 30)],
+    'INFANTRY': [('CITY_ATTACK', 15), ('GUN', 25), ('MOVES', 1, 'BLITZ', 1)],
+    'MARINE': [('CITY_ATTACK', 15), ('FIRST_STRIKES', 1, 'GUN', 20), ('CITY_ATTACK', 40, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
+    'PARATROOPER': [('HILLS_DEFENSE', 15), ('CITY_ATTACK', 25, 'HEAL', 10), ('ENEMY_ROAD', 1, 'MOVES', 1)],
+    'MECHANIZED_INFANTRY': [('ARMOR', 15), ('SAME_TILE_HEAL', 15), ('MOVES', 1, 'HEAL', 20)],
+    'ARCHER': [('CITY_DEFENSE', 15), ('HILLS_DEFENSE', 20, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'FIRST_STRIKES', 2)],
+    'LONGBOWMAN': [('CITY_DEFENSE', 15), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'SAME_TILE_HEAL', 20)],
+    'CROSSBOWMAN': [('MELEE', 15), ('CITY_DEFENSE', 25, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'MELEE', 40)],
+    'CHARIOT': [('WITHDRAWAL', 15), ('ARCHER', 25), ('MOVES', 1, 'COMBAT', 30)],
+    'HORSE_ARCHER': [('WITHDRAWAL', 15), ('ARCHER', 25), ('ENEMY_ROAD', 1, 'COMBAT', 30)],
+    'KNIGHT': [('CITY_ATTACK', 15), ('WITHDRAWAL', 25), ('MOVES', 1, 'BLITZ', 1)],
+    'CUIRASSIER': [('WITHDRAWAL', 15), ('GUN', 25), ('MOVES', 1, 'COMBAT', 35)],
+    'CAVALRY': [('SIEGE', 20), ('WITHDRAWAL', 25), ('MOVES', 1, 'BLITZ', 1)],
+    'WAR_ELEPHANT': [('MELEE', 15), ('CITY_ATTACK', 25), ('COLLATERAL', 40, 'COLLATERAL_TARGETS', 4, 'COLLATERAL_LIMIT', 50)],
+    'TANK': [('CITY_ATTACK', 15), ('WITHDRAWAL', 25), ('ENEMY_ROAD', 1, 'MOVES', 1)],
+    'MODERN_ARMOR': [('ARMOR', 15), ('CITY_ATTACK', 25), ('MOVES', 1, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
+    'CATAPULT': [('BOMBARD', 8), ('COLLATERAL_TARGETS', 2), ('COLLATERAL_LIMIT', 20, 'WITHDRAWAL', 40)],
+    'TREBUCHET': [('CITY_ATTACK', 15), ('BOMBARD', 10), ('CITY_ATTACK', 40, 'COLLATERAL_TARGETS', 3)],
+    'CANNON': [('BOMBARD', 8), ('COLLATERAL_TARGETS', 2), ('COLLATERAL_LIMIT', 20, 'WITHDRAWAL', 40)],
+    'MACHINE_GUN': [('GUN', 15), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'SAME_TILE_HEAL', 20)],
+    'ARTILLERY': [('BOMBARD', 8), ('COLLATERAL_TARGETS', 2), ('MOVES', 1, 'COLLATERAL_LIMIT', 20)],
+    'MOBILE_ARTILLERY': [('BOMBARD', 8), ('COLLATERAL_TARGETS', 2), ('ENEMY_ROAD', 1, 'COLLATERAL_LIMIT', 20)],
+    'GALLEY': [('WITHDRAWAL', 15), ('MOVES', 1), ('ALWAYS_HEAL', 1, 'HEAL', 25)],
+    'TRIREME': [('COMBAT', 15), ('FIRST_STRIKES', 1, 'WITHDRAWAL', 20), ('MOVES', 2, 'COMBAT', 30)],
+    'CARAVEL': [('HEAL', 10), ('VISIBILITY', 1, 'MOVES', 1), ('MOVES', 2, 'WITHDRAWAL', 40)],
+    'GALLEON': [('HEAL', 10), ('CARGO', 1), ('MOVES', 2, 'COMBAT', 30)],
+    'PRIVATEER': [('WITHDRAWAL', 15), ('MOVES', 1, 'COMBAT', 20), ('ALWAYS_HEAL', 1, 'HEAL', 25)],
+    'FRIGATE': [('BOMBARD', 8), ('COMBAT', 20, 'FIRST_STRIKES', 1), ('MOVES', 2, 'SECOND_ATTACK', 1)],
+    'SHIP_OF_THE_LINE': [('COMBAT', 15), ('FIRST_STRIKES', 1, 'BOMBARD', 10), ('COMBAT', 35, 'SECOND_ATTACK', 1)],
+    'IRONCLAD': [('HEAL', 10), ('COMBAT', 20, 'FIRST_STRIKES', 1), ('MOVES', 2, 'ALWAYS_HEAL', 1)],
+    'DESTROYER': [('COMBAT', 15), ('VISIBILITY', 1, 'FIRST_STRIKES', 1), ('MOVES', 2, 'SECOND_ATTACK', 1)],
+    'BATTLESHIP': [('BOMBARD', 8), ('COLLATERAL_TARGETS', 2), ('SECOND_ATTACK', 1, 'COLLATERAL_LIMIT', 20)],
+    'MISSILE_CRUISER': [('HEAL', 10), ('VISIBILITY', 1, 'COMBAT', 20), ('SECOND_ATTACK', 1, 'SAME_TILE_HEAL', 20)],
+    'STEALTH_DESTROYER': [('WITHDRAWAL', 15), ('COMBAT', 20, 'FIRST_STRIKES', 1), ('MOVES', 2, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
+    'SUBMARINE': [('WITHDRAWAL', 15), ('COMBAT', 25), ('MOVES', 2, 'WITHDRAWAL', 15)],
+    'ATTACK_SUBMARINE': [('COMBAT', 15), ('VISIBILITY', 1, 'WITHDRAWAL', 20), ('MOVES', 2, 'SECOND_ATTACK', 1)],
+    'AUTONOMOUS_COMBAT_VEHICLE': [('CITY_DEFENSE', 15), ('GUN', 25), ('COMBAT', 35, 'HEAL', 20)],
+    'AUTONOMOUS_TANK': [('CITY_ATTACK', 15), ('ARMOR', 25), ('ENEMY_ROAD', 1, 'MOVES', 1)],
+    'WAR_GALLEY': [('COMBAT', 15), ('FIRST_STRIKES', 1, 'HEAL', 10), ('MOVES', 1, 'SECOND_ATTACK', 1)],
+    'ARCTIC_HUNTER': [('ANIMAL', 25), ('VISIBILITY', 1, 'HILLS_DEFENSE', 20), ('HILLS_DOUBLE', 1, 'COMBAT', 35)],
+    'INCAN_QUECHUA': [('ARCHER', 15), ('CITY_ATTACK', 25), ('COMBAT', 30, 'FIRST_IMMUNE', 1)],
+    'AZTEC_JAGUAR': [('JUNGLE_ATTACK', 15), ('FOREST_DOUBLE', 1, 'JUNGLE_DOUBLE', 1), ('HEAL', 25, 'ALWAYS_HEAL', 1)],
+    'CELTIC_GALLIC_WARRIOR': [('HILLS_DEFENSE', 15), ('HILLS_DOUBLE', 1), ('HILLS_ATTACK', 40, 'WITHDRAWAL', 40)],
+    'ROME_PRAETORIAN': [('COMBAT', 10), ('SAME_TILE_HEAL', 15), ('COMBAT', 35, 'FIRST_IMMUNE', 1)],
+    'GREEK_PHALANX': [('CHARIOT_DEFENSE', 15), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('MOUNTED', 40, 'MELEE', 25)],
+    'SUMERIAN_VULTURE': [('CITY_ATTACK', 15), ('HEAL', 15), ('BLITZ', 1, 'MOVES', 1)],
+    'NATIVE_AMERICA_DOG_SOLDIER': [('MELEE', 15), ('SAME_TILE_HEAL', 15), ('MELEE', 40, 'FIRST_STRIKES', 2)],
+    'JAPAN_SAMURAI': [('MELEE', 15), ('FIRST_STRIKES', 1, 'CITY_ATTACK', 20), ('FIRST_STRIKES', 2, 'HEAL', 20)],
+    'VIKING_BESERKER': [('CITY_ATTACK', 15), ('RIVER', 1, 'HEAL', 10), ('MOVES', 1, 'BLITZ', 1)],
+    'ZULU_IMPI': [('WITHDRAWAL', 15), ('HEAL', 15, 'ALWAYS_HEAL', 1), ('ENEMY_ROAD', 1, 'MOVES', 1)],
+    'MAYA_HOLKAN': [('MELEE', 15), ('JUNGLE_DEFENSE', 25, 'FIRST_STRIKES', 1), ('COMBAT', 35, 'JUNGLE_DOUBLE', 1)],
+    'HOLY_ROMAN_LANDSKNECHT': [('MELEE', 15), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('MELEE', 35, 'MOUNTED', 35, 'SAME_TILE_HEAL', 15)],
+    'FRENCH_MUSKETEER': [('WITHDRAWAL', 15), ('RIVER', 1, 'HEAL', 15), ('ENEMY_ROAD', 1, 'BLITZ', 1)],
+    'OTTOMAN_JANISSARY': [('ARCHER', 15), ('CITY_ATTACK', 25, 'FIRST_IMMUNE', 1), ('MELEE', 35, 'ARCHER', 35, 'MOUNTED', 35)],
+    'ETHIOPIAN_OROMO_WARRIOR': [('HILLS_DEFENSE', 15), ('FIRST_STRIKES', 1, 'HEAL', 10), ('FIRST_STRIKES', 2, 'CITY_DEFENSE', 30)],
+    'ENGLISH_REDCOAT': [('GUN', 15), ('AMPHIB', 1, 'RIVER', 1), ('COMBAT', 35, 'FIRST_STRIKES', 2)],
+    'AMERICAN_NAVY_SEAL': [('HEAL', 10), ('FIRST_STRIKES', 1, 'CITY_ATTACK', 20), ('MOVES', 1, 'BLITZ', 1)],
+    'MALI_SKIRMISHER': [('HILLS_DEFENSE', 15), ('FIRST_STRIKES', 1, 'WITHDRAWAL', 20), ('MOVES', 1, 'COMBAT', 35)],
+    'BABYLON_BOWMAN': [('COLLATERAL', 15), ('COLLATERAL_TARGETS', 2), ('COLLATERAL_LIMIT', 20, 'WITHDRAWAL', 40)],
+    'CHINA_CHOKONU': [('MELEE', 15), ('COLLATERAL_TARGETS', 2), ('MOVES', 1, 'BLITZ', 1)],
+    'EGYPT_WARCHARIOT': [('ARCHER', 15), ('WITHDRAWAL', 25), ('MOVES', 1, 'COMBAT', 35)],
+    'PERSIA_IMMORTAL': [('ARCHER_ATTACK', 15), ('HEAL', 15, 'FIRST_IMMUNE', 1), ('CITY_ATTACK', 40, 'SAME_TILE_HEAL', 15)],
+    'CARTHAGE_NUMIDIAN_CAVALRY': [('MELEE', 15), ('WITHDRAWAL', 25), ('MOVES', 1, 'HEAL', 20, 'ALWAYS_HEAL', 1)],
+    'MONGOL_KESHIK': [('WITHDRAWAL', 15), ('RIVER', 1, 'HEAL', 15), ('ENEMY_ROAD', 1, 'BLITZ', 1)],
+    'ARABIA_CAMELARCHER': [('HEAL', 10), ('WITHDRAWAL', 25), ('HEAL', 15, 'ALWAYS_HEAL', 1)],
+    'BYZANTINE_CATAPHRACT': [('CITY_ATTACK', 15), ('WITHDRAWAL', 25), ('COMBAT', 35, 'BLITZ', 1)],
+    'SPANISH_CONQUISTADOR': [('MELEE', 15), ('HILLS_DEFENSE', 25, 'FOREST_DEFENSE', 25), ('COMBAT', 35, 'SAME_TILE_HEAL', 20)],
+    'RUSSIA_COSSACK': [('MOUNTED', 15), ('WITHDRAWAL', 25), ('MOVES', 1, 'MOUNTED', 40)],
+    'KHMER_BALLISTA_ELEPHANT': [('MOUNTED', 15), ('WITHDRAWAL', 25), ('MOUNTED', 40, 'FIRST_IMMUNE', 1)],
+    'GERMAN_PANZER': [('RIFLE_INFANTRY_ATTACK', 15), ('HEAL', 15), ('MOVES', 1, 'ALWAYS_HEAL', 1)],
+    'KOREAN_HWACHA': [('MELEE', 15), ('COLLATERAL_TARGETS', 2), ('MELEE', 40, 'COLLATERAL_LIMIT', 20)],
+    'PORTUGAL_CARRACK': [('VISIBILITY', 1, 'HEAL', 5), ('CARGO', 1), ('MOVES', 2, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
+    'NETHERLANDS_OOSTINDIEVAARDER': [('COMBAT', 15), ('CARGO', 1), ('MOVES', 2, 'SECOND_ATTACK', 1)],
+    'ADENA_WOODLAND_WARRIOR': [('FOREST_DEFENSE', 15), ('FOREST_DOUBLE', 1), ('FOREST_ATTACK', 40, 'SAME_TILE_HEAL', 20)],
 }
 
 # Armed transports are deliberately excluded: mastery is for fighting units.
@@ -115,6 +115,11 @@ EXCLUDED = {'UNIT_GALLEY', 'UNIT_GALLEON', 'UNIT_PORTUGAL_CARRACK',
 EXCLUDED -= {'UNIT_PORTUGAL_CARRACK', 'UNIT_NETHERLANDS_OOSTINDIEVAARDER'}
 
 PHRASES = {
+    'SECOND_ATTACK': 'Can attack twice per turn',
+    'CARGO': '+{n} cargo capacity',
+    'CHARIOT_DEFENSE': '+{n}% defense against Chariots',
+    'ARCHER_ATTACK': '+{n}% attack against Archers',
+    'RIFLE_INFANTRY_ATTACK': '+{n}% attack against Riflemen and Infantry',
     'COMBAT': '+{n}% combat strength', 'MOVES': '+{n} movement',
     'FIRST_STRIKES': '+{n} first strikes', 'WITHDRAWAL': '+{n}% withdrawal chance',
     'COLLATERAL': '+{n}% collateral damage', 'COLLATERAL_LIMIT': '+{n}% collateral damage limit',
@@ -129,7 +134,7 @@ PHRASES = {
     'ANIMAL': '+{n}% against animals', 'HEAL': 'Heals {n} extra HP per turn',
     'SAME_TILE_HEAL': 'Units on the same tile heal {n} extra HP per turn',
     'BLITZ': 'Can attack multiple times per turn', 'AMPHIB': 'No amphibious attack penalty',
-    'RIVER': 'No river attack penalty', 'ENEMY_ROUTE': 'Can use enemy roads',
+    'RIVER': 'No river attack penalty', 'ENEMY_ROAD': 'Can use enemy roads, but not railroads',
     'ALWAYS_HEAL': 'Can heal while moving', 'HILLS_DOUBLE': 'Double movement in hills',
     'FOREST_DOUBLE': 'Double movement in forests', 'JUNGLE_DOUBLE': 'Double movement in jungle',
     'FIRST_IMMUNE': 'Immune to first strikes', 'IGNORE_TERRAIN': 'Ignores terrain movement costs',
@@ -139,6 +144,11 @@ PHRASES = {
 
 # Reward wording is kept in one place so all 249 text entries stay consistent.
 GERMAN = {
+    'SECOND_ATTACK': 'Kann zweimal pro Runde angreifen',
+    'CARGO': '+{n} Frachtraum',
+    'CHARIOT_DEFENSE': '+{n}% Verteidigung gegen Einheiten der Streitwagenklasse',
+    'ARCHER_ATTACK': '+{n}% Angriff gegen Einheiten der Bogenschützenklasse',
+    'RIFLE_INFANTRY_ATTACK': '+{n}% Angriff gegen Einheiten der Schützen- und Infanterieklasse',
     'COMBAT': '+{n}% Kampfstärke', 'MOVES': '+{n} Bewegung',
     'FIRST_STRIKES': '+{n} Erstangriffe', 'WITHDRAWAL': '+{n}% Rückzugschance',
     'COLLATERAL': '+{n}% Kollateralschaden', 'COLLATERAL_LIMIT': '+{n}% Kollateralschadensgrenze',
@@ -153,7 +163,7 @@ GERMAN = {
     'ANIMAL': '+{n}% gegen Tiere', 'HEAL': 'Heilt {n} zusätzliche TP pro Runde',
     'SAME_TILE_HEAL': 'Einheiten auf demselben Feld heilen {n} zusätzliche TP pro Runde',
     'BLITZ': 'Kann mehrmals pro Runde angreifen', 'AMPHIB': 'Kein Malus bei amphibischen Angriffen',
-    'RIVER': 'Kein Angriffsmalus über Flüsse', 'ENEMY_ROUTE': 'Kann feindliche Straßen nutzen',
+    'RIVER': 'Kein Angriffsmalus über Flüsse', 'ENEMY_ROAD': 'Kann feindliche Straßen nutzen, aber keine Eisenbahnen',
     'ALWAYS_HEAL': 'Kann während der Bewegung heilen', 'HILLS_DOUBLE': 'Doppelte Bewegung auf Hügeln',
     'FOREST_DOUBLE': 'Doppelte Bewegung im Wald', 'JUNGLE_DOUBLE': 'Doppelte Bewegung im Dschungel',
     'FIRST_IMMUNE': 'Immun gegen Erstangriffe', 'IGNORE_TERRAIN': 'Ignoriert Geländebewegungskosten',
@@ -161,6 +171,11 @@ GERMAN = {
     'VISIBILITY': '+{n} Sichtweite',
 }
 FRENCH = {
+    'SECOND_ATTACK': 'Peut attaquer deux fois par tour',
+    'CARGO': '+{n} capacité de transport',
+    'CHARIOT_DEFENSE': '+{n}% de défense contre les unités de la classe Char',
+    'ARCHER_ATTACK': '+{n}% en attaque contre les unités de la classe Archer',
+    'RIFLE_INFANTRY_ATTACK': '+{n}% en attaque contre les unités des classes Fusilier et Infanterie',
     'COMBAT': '+{n}% de force', 'MOVES': '+{n} mouvement', 'FIRST_STRIKES': '+{n} premières frappes',
     'WITHDRAWAL': '+{n}% de chances de retraite', 'COLLATERAL': '+{n}% de dégâts collatéraux',
     'COLLATERAL_LIMIT': '+{n}% à la limite des dégâts collatéraux', 'COLLATERAL_TARGETS': '+{n} cibles collatérales',
@@ -175,7 +190,7 @@ FRENCH = {
     'HEAL': 'Soigne {n} PV supplémentaires par tour',
     'SAME_TILE_HEAL': 'Les unités sur la même case soignent {n} PV supplémentaires par tour',
     'BLITZ': 'Peut attaquer plusieurs fois par tour', 'AMPHIB': "Aucune pénalité d'attaque amphibie",
-    'RIVER': "Aucune pénalité d'attaque à travers une rivière", 'ENEMY_ROUTE': 'Peut utiliser les routes ennemies',
+    'RIVER': "Aucune pénalité d'attaque à travers une rivière", 'ENEMY_ROAD': 'Peut utiliser les routes ennemies, mais pas les voies ferrées',
     'ALWAYS_HEAL': 'Peut se soigner en mouvement', 'HILLS_DOUBLE': 'Mouvement doublé sur les collines',
     'FOREST_DOUBLE': 'Mouvement doublé en forêt', 'JUNGLE_DOUBLE': 'Mouvement doublé dans la jungle',
     'FIRST_IMMUNE': 'Insensible aux premières frappes', 'IGNORE_TERRAIN': 'Ignore les coûts de mouvement du terrain',
@@ -183,6 +198,11 @@ FRENCH = {
     'VISIBILITY': '+{n} portée de vision',
 }
 ITALIAN = {
+    'SECOND_ATTACK': 'Può attaccare due volte per turno',
+    'CARGO': '+{n} capacità di carico',
+    'CHARIOT_DEFENSE': '+{n}% difesa contro le unità della classe Carro',
+    'ARCHER_ATTACK': '+{n}% attacco contro le unità della classe Arciere',
+    'RIFLE_INFANTRY_ATTACK': '+{n}% attacco contro le unità delle classi Fuciliere e Fanteria',
     'COMBAT': '+{n}% forza', 'MOVES': '+{n} movimento', 'FIRST_STRIKES': '+{n} primi colpi',
     'WITHDRAWAL': '+{n}% probabilità di ritirata', 'COLLATERAL': '+{n}% danni collaterali',
     'COLLATERAL_LIMIT': '+{n}% al limite dei danni collaterali', 'COLLATERAL_TARGETS': '+{n} bersagli collaterali',
@@ -197,7 +217,7 @@ ITALIAN = {
     'HEAL': 'Recupera {n} PF aggiuntivi per turno',
     'SAME_TILE_HEAL': 'Le unità sulla stessa casella recuperano {n} PF aggiuntivi per turno',
     'BLITZ': 'Può attaccare più volte per turno', 'AMPHIB': 'Nessuna penalità agli attacchi anfibi',
-    'RIVER': 'Nessuna penalità agli attacchi attraverso fiumi', 'ENEMY_ROUTE': 'Può usare le strade nemiche',
+    'RIVER': 'Nessuna penalità agli attacchi attraverso fiumi', 'ENEMY_ROAD': 'Può usare le strade nemiche, ma non le ferrovie',
     'ALWAYS_HEAL': 'Può curarsi in movimento', 'HILLS_DOUBLE': 'Movimento doppio sulle colline',
     'FOREST_DOUBLE': 'Movimento doppio nelle foreste', 'JUNGLE_DOUBLE': 'Movimento doppio nella giungla',
     'FIRST_IMMUNE': 'Immune ai primi colpi', 'IGNORE_TERRAIN': 'Ignora i costi di movimento del terreno',
@@ -205,6 +225,11 @@ ITALIAN = {
     'VISIBILITY': '+{n} raggio visivo',
 }
 SPANISH = {
+    'SECOND_ATTACK': 'Puede atacar dos veces por turno',
+    'CARGO': '+{n} capacidad de carga',
+    'CHARIOT_DEFENSE': '+{n}% de defensa contra unidades de la clase Carro',
+    'ARCHER_ATTACK': '+{n}% de ataque contra unidades de la clase Arquero',
+    'RIFLE_INFANTRY_ATTACK': '+{n}% de ataque contra unidades de las clases Fusilero e Infantería',
     'COMBAT': '+{n}% fuerza', 'MOVES': '+{n} movimiento', 'FIRST_STRIKES': '+{n} primeros ataques',
     'WITHDRAWAL': '+{n}% probabilidad de retirada', 'COLLATERAL': '+{n}% daños colaterales',
     'COLLATERAL_LIMIT': '+{n}% al límite de daños colaterales', 'COLLATERAL_TARGETS': '+{n} objetivos colaterales',
@@ -219,7 +244,7 @@ SPANISH = {
     'HEAL': 'Recupera {n} PV adicionales por turno',
     'SAME_TILE_HEAL': 'Las unidades en la misma casilla recuperan {n} PV adicionales por turno',
     'BLITZ': 'Puede atacar varias veces por turno', 'AMPHIB': 'Sin penalización por ataque anfibio',
-    'RIVER': 'Sin penalización por atacar a través de ríos', 'ENEMY_ROUTE': 'Puede usar caminos enemigos',
+    'RIVER': 'Sin penalización por atacar a través de ríos', 'ENEMY_ROAD': 'Puede usar caminos enemigos, pero no ferrocarriles',
     'ALWAYS_HEAL': 'Puede curarse en movimiento', 'HILLS_DOUBLE': 'Movimiento doble en colinas',
     'FOREST_DOUBLE': 'Movimiento doble en bosques', 'JUNGLE_DOUBLE': 'Movimiento doble en selva',
     'FIRST_IMMUNE': 'Inmune a primeros ataques', 'IGNORE_TERRAIN': 'Ignora los costes de movimiento del terreno',
@@ -387,6 +412,11 @@ def main():
     doc = '''# Military unit mastery
 
 Military fighting units have three cumulative, unit-specific mastery levels.
+Tier I gives a useful role bonus, tier II adds a supporting ability, and tier III
+provides a major improvement. Unique tracks build on each unit's own abilities.
+Naval mastery grants at most two attacks per turn, still requiring movement.
+Native Blitz and promotions retain their normal effects. Mastery permits enemy
+road use only; native enemy-route abilities also permit railroads.
 Each level costs twice the previous one: base, 2x base, 4x base. The base is
 the base XML research cost of the unit's most expensive required technology.
 The mastery uses that technology's era for research cost modifiers. Warriors
@@ -397,6 +427,9 @@ strength do not change the research cost. Research unlocks with all unit technol
 requirements and ends at III or when an upgrade successor is technologically
 available, independently of resources/buildings. Unique units use their own
 tracks; civilizations cannot research another civilization's replacement.
+Completing a tier ends that research selection. Any queued next technology
+continues normally; otherwise humans choose their next research and AI evaluates
+its choices again. Continuing the same mastery requires a new research choice.
 
 Each direct combat grants both participants' teams 1% of their exact unit type's
 next mastery level's total research cost, whether attacking, defending, losing
@@ -411,6 +444,9 @@ units benefit; upgrading switches tracks. Surviving obsolete units retain
 completed benefits. No promotions are added or transferred. Existing unique
 powers and capped global Military Research remain active and stack normally.
 Unfinished retired research returns to the acquiring player's research overflow.
+Bonuses against Chariots, Archers, Riflemen or Infantry also affect their unique
+replacements. Extra cargo capacity follows the owner's mastery; losing capacity
+does not unload existing passengers, but prevents loading above the new limit.
 
 Small mastery icons sit below the ordinary tree without arrows, grouped side
 by side within their unlocking technology's column. The dialog grows to fit
