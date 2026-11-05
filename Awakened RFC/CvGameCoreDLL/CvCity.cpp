@@ -585,6 +585,8 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iPowerCount = 0;
 	m_iDirtyPowerCount = 0;
 	m_iDefenseDamage = 0;
+    m_iIntelligenceSuppressionTurn = -1;
+    m_iIntelligenceSuppressionRollTurn = -1;
 	m_iLastDefenseDamage = 0;
 	m_iOccupationTimer = 0;
 	m_eConquestResearchTech = NO_TECH;
@@ -1009,6 +1011,12 @@ void CvCity::doTurn()
 {
 	OBSERVER_PERFORMANCE("CvCity::doTurn");
 	PROFILE("CvCity::doTurn()");
+    if (m_iIntelligenceSuppressionTurn >= 0 && m_iIntelligenceSuppressionTurn < GC.getGameINLINE().getGameTurn())
+    {
+        m_iIntelligenceSuppressionTurn = -1;
+        setInfoDirty(true);
+    }
+
 
 	CvPlot* pLoopPlot;
 	int iI;
@@ -7573,6 +7581,22 @@ void CvCity::changePowerCount(int iChange, bool bDirty)
 }
 
 
+void CvCity::rollIntelligenceSuppression(PlayerTypes eAttacker, int iChance)
+{
+    int iTurn = GC.getGameINLINE().getGameTurn();
+    if (iChance <= 0 || m_iIntelligenceSuppressionRollTurn == iTurn || isOccupation()) return;
+    m_iIntelligenceSuppressionRollTurn = iTurn;
+    if (GC.getGameINLINE().getSorenRandNum(100, "Intelligence city infiltration") >= iChance) return;
+    m_iIntelligenceSuppressionTurn = iTurn;
+    setInfoDirty(true);
+    gDLL->getInterfaceIFace()->addMessage(eAttacker, false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_GATES", getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
+        NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_POSITIVE_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+    gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_GATES_ENEMY", getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
+        NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+}
+
 int CvCity::getDefenseDamage() const																
 {
 	return m_iDefenseDamage;
@@ -7657,7 +7681,7 @@ int CvCity::getTotalDefense(bool bIgnoreBuilding) const
 
 int CvCity::getDefenseModifier(bool bIgnoreBuilding) const
 {
-	if (isOccupation())
+	if (isOccupation() || m_iIntelligenceSuppressionTurn == GC.getGameINLINE().getGameTurn())
 	{
 		return 0;
 	}
@@ -10063,48 +10087,17 @@ void CvCity::setEspionageVisibility(TeamTypes eIndex, bool bNewValue, bool bUpda
 void CvCity::updateEspionageVisibility(bool bUpdatePlotGroups)
 {
 	OBSERVER_PERFORMANCE("CvCity::updateEspionageVisibility");
-	std::vector<EspionageMissionTypes> aMission;
-	for (int iMission = 0; iMission < GC.getNumEspionageMissionInfos(); ++iMission)
-	{
-		if (GC.getEspionageMissionInfo((EspionageMissionTypes)iMission).isPassive() && GC.getEspionageMissionInfo((EspionageMissionTypes)iMission).getVisibilityLevel() > 0)
-		{
-			aMission.push_back((EspionageMissionTypes)iMission);
-		}
-	}
-
-	for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
-	{
-		bool bVisibility = false;
-
-		if (iTeam != getTeam())
-		{
-			if (isRevealed((TeamTypes)iTeam, false))
-			{
-				for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; ++iPlayer)
-				{
-					CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-					if (kPlayer.isAlive() && kPlayer.getTeam() == iTeam)
-					{
-						for (std::vector<EspionageMissionTypes>::iterator it = aMission.begin(); it != aMission.end(); ++it)
-						{
-							if (kPlayer.canDoEspionageMission(*it, getOwnerINLINE(), plot(), -1, NULL))
-							{
-								bVisibility = true;
-								break;
-							}
-						}
-
-						if (bVisibility)
-						{
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		setEspionageVisibility((TeamTypes)iTeam, bVisibility, bUpdatePlotGroups);
-	}
+    for (int iTeam = 0; iTeam < MAX_TEAMS; ++iTeam)
+    {
+        bool bVisibility = false;
+        for (int iPlayer = 0; iPlayer < NUM_MAJOR_PLAYERS && !bVisibility; ++iPlayer)
+        {
+            const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+            if (kPlayer.isAlive() && kPlayer.getTeam() == iTeam)
+                bVisibility = kPlayer.hasIntelligenceCityVisibility(this);
+        }
+        setEspionageVisibility((TeamTypes)iTeam, bVisibility, bUpdatePlotGroups);
+    }
 }
 
 const wchar* CvCity::getNameKey() const
@@ -13408,6 +13401,8 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iPowerCount);
 	pStream->Read(&m_iDirtyPowerCount);
 	pStream->Read(&m_iDefenseDamage);
+    pStream->Read(&m_iIntelligenceSuppressionTurn);
+    pStream->Read(&m_iIntelligenceSuppressionRollTurn);
 	pStream->Read(&m_iLastDefenseDamage);
 	pStream->Read(&m_iOccupationTimer);
 	pStream->Read((int*)&m_eConquestResearchTech);
@@ -13717,6 +13712,8 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iPowerCount);
 	pStream->Write(m_iDirtyPowerCount);
 	pStream->Write(m_iDefenseDamage);
+    pStream->Write(m_iIntelligenceSuppressionTurn);
+    pStream->Write(m_iIntelligenceSuppressionRollTurn);
 	pStream->Write(m_iLastDefenseDamage);
 	pStream->Write(m_iOccupationTimer);
 	pStream->Write((int)m_eConquestResearchTech);
@@ -15438,3 +15435,8 @@ void CvCity::getBuildQueue(std::vector<std::string>& astrQueue) const
 	}
 }
 
+
+int CvCity::getIntelligenceChecksum() const
+{
+    return (m_iIntelligenceSuppressionTurn + 1) * 151 + (m_iIntelligenceSuppressionRollTurn + 1) * 157;
+}

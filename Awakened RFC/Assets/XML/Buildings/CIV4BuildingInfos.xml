@@ -887,7 +887,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_CASTLE</Description>
 			<Civilopedia>TXT_KEY_BUILDING_CASTLE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_CASTLE_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_CASTLE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -1081,7 +1081,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SPANISH_CITADEL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SPANISH_CITADEL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SPANISH_CITADEL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_SPANISH_CITADEL</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -11822,7 +11822,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_COURTHOUSE</Description>
 			<Civilopedia>TXT_KEY_BUILDING_COURTHOUSE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_COURTHOUSE_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_COURTHOUSE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -11999,7 +11999,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_AZTEC_SACRIFICIAL_ALTAR</Description>
 			<Civilopedia>TXT_KEY_BUILDING_AZTEC_COURTHOUSE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_AZTEC_SACRIFICIAL_ALTAR_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_AZTEC_SACRIFICIAL_ALTAR</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -12176,7 +12176,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_HOLY_ROMAN_RATHAUS</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -12353,7 +12353,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_SUMERIAN_ZIGGURAT</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -12530,7 +12530,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_JAIL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_JAIL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_JAIL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_JAIL</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -12711,7 +12711,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM</Description>
 			<Civilopedia>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_INDIAN_MAUSOLEUM</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -13225,7 +13225,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_INTELLIGENCE_AGENCY</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -13402,7 +13402,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_NATIONAL_SECURITY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_NATIONAL_SECURITY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_NATIONAL_SECURITY_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_SECURITY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_NATIONAL_SECURITY</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -20616,7 +20616,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SCOTLAND_YARD</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SCOTLAND_YARD_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SCOTLAND_YARD_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_SCOTLAND_YARD</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -34168,7 +34168,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_ROMAN_ADMINISTRATION</Description>
 			<Civilopedia>TXT_KEY_ROMAN_ADMINISTRATION_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_ROMAN_ADMINISTRATION_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_COURTHOUSE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -35383,7 +35383,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_CASTLE</Description>
 			<Civilopedia>TXT_KEY_BUILDING_CASTLE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_CASTLE_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_CASTLE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -35577,7 +35577,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SPANISH_CITADEL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SPANISH_CITADEL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SPANISH_CITADEL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_SPANISH_CITADEL</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -46318,7 +46318,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_COURTHOUSE</Description>
 			<Civilopedia>TXT_KEY_BUILDING_COURTHOUSE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_COURTHOUSE_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_COURTHOUSE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -46495,7 +46495,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_AZTEC_SACRIFICIAL_ALTAR</Description>
 			<Civilopedia>TXT_KEY_BUILDING_AZTEC_COURTHOUSE_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_AZTEC_SACRIFICIAL_ALTAR_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_AZTEC_SACRIFICIAL_ALTAR</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -46672,7 +46672,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_HOLY_ROMAN_RATHAUS_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_HOLY_ROMAN_RATHAUS</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -46849,7 +46849,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SUMERIAN_ZIGGURAT_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_SUMERIAN_ZIGGURAT</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -47026,7 +47026,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_JAIL</Description>
 			<Civilopedia>TXT_KEY_BUILDING_JAIL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_JAIL_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_JAIL</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -47207,7 +47207,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM</Description>
 			<Civilopedia>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_INDIAN_MAUSOLEUM_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_INDIAN_MAUSOLEUM</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -47721,7 +47721,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_INTELLIGENCE_AGENCY_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_INTELLIGENCE_AGENCY</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -47898,7 +47898,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_NATIONAL_SECURITY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_NATIONAL_SECURITY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_NATIONAL_SECURITY_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_SECURITY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_NATIONAL_SECURITY</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -55112,7 +55112,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_SCOTLAND_YARD</Description>
 			<Civilopedia>TXT_KEY_BUILDING_SCOTLAND_YARD_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_SCOTLAND_YARD_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_BUILDING_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_SCOTLAND_YARD</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>
@@ -68633,7 +68633,7 @@
 			<SpecialBuildingType>NONE</SpecialBuildingType>
 			<Description>TXT_KEY_ROMAN_ADMINISTRATION</Description>
 			<Civilopedia>TXT_KEY_ROMAN_ADMINISTRATION_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_ROMAN_ADMINISTRATION_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ICY_COURTHOUSE</ArtDefineTag>
 			<MovieDefineTag>NONE</MovieDefineTag>

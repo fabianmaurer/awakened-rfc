@@ -1295,3 +1295,64 @@ Non-animal barbarian patrols favor enemy territory, then unclaimed border tiles.
 Barbarian attack and pillage units plunder their current enemy tile before
 moving on. Their pillage searches include improvements around target cities
 and outside city working areas.
+
+
+## Intelligence networks
+
+Spy units and their missions are replaced by automatic operations. In the
+intelligence advisor, choose one mode per civilization in diplomatic contact;
+**technology stealing** is the default. Choices take effect at the next player
+turn boundary. The espionage slider funds every network with your full output,
+without dividing it between rivals. Basic demographics remain available for
+known civilizations. Existing espionage buildings, specialists
+and settled Great Spies remain useful; Great Spies can establish Scotland Yard
+or contribute to a Golden Age, but no longer perform infiltration missions.
+
+Distance between capitals reduces access by up to 60 percentage points. An
+embassy on either side adds 20 points; direct outgoing trade routes add 5 each,
+up to four routes. Access is bounded at 40-140%. Counterintelligence reduces the
+result: effective strength is `A * (A + 20) / (A + 20 + D)`, rounded down, where
+`A` is output after access and `D` is 10 plus the target team's espionage output.
+Security Bureaus increase `D`, weighted by their cities' share of team population.
+
+- **Technology stealing:** one eligible technology is randomly selected as a
+  shared project and retained until completed or unavailable. Prerequisites must
+  be fulfilled. Each rival in technology mode that knows the project contributes
+  effective strength multiplied by `1 + 0.1 * min(10, eligible technologies)`.
+  Contributions are sorted from largest to smallest and divided by 1, 2, 3,
+  etc.; the total is capped at three times your espionage output. Only the
+  current project receives progress; excess does not spill into another stolen
+  technology that turn. Progress is ordinary research progress and remains when
+  you switch modes. A project pauses if no active technology network supplies it.
+- **Military espionage:** up to +8% combat strength against the target; larger
+  armies reduce the bonus. At +3% or above, known enemy cities and nearby units
+  become visible. During war, a land unit capable of attacking on an adjacent
+  tile permits a city-infiltration roll at your turn boundary, capped at 25%.
+  There is only one roll per defending city per game turn, shared across
+  attackers. Success suppresses the city's defense component for that game turn.
+  Terrain, unit promotions and fortification remain. Stored bombardment damage
+  is untouched; defense resumes its underlying value afterward.
+- **Political meddling:** pressure rises gradually and recovers after operations
+  stop. Larger populations resist more effectively. Pressure from all attackers
+  shares a cap of -6 stability and two additional civic-change anarchy turns;
+  civilizations immune to anarchy retain that immunity. Short local unhappiness
+  can occur, with an eight-turn cooldown at Normal speed. The stability effect
+  enters the existing diplomacy component, rather than accumulating permanent
+  damage each turn.
+- **Map intelligence:** a successful report reveals a 7x7 area around a target
+  city, prioritizing unmapped areas, and gives temporary city visibility for
+  three turns at Normal speed. The per-turn chance is capped at 25% and declines
+  with the target's city count. Geography stays revealed. Live visibility expires
+  or ends when the operation changes; reports still provide city intelligence
+  when the map is already known.
+
+Effective operations risk discovery each turn: 1% for technology/maps, 3% for
+military operations, and 6% for politics. Discovery adds diplomatic resentment,
+with respective caps of -1, -3 and -6 attitude. Existing resentment survives
+mode changes and decays by two hundredths of an attitude point per turn. The
+advisor and diplomatic attitude tooltip show the resulting penalty. The AI
+chooses modes and budgets for catch-up, warfare, political hostility and mapping.
+
+These are initial balance values. The VC7.1 DLL and static asset checks cover
+implementation; in-game presentation, balance and multiplayer behavior require
+user-operated validation. The new save layout targets new games.

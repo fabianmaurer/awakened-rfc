@@ -932,6 +932,11 @@ int CyPlayer::getAdvancedStartVisibilityCost(bool bAdd, CyPlot* pPlot)
 	return m_pPlayer ? m_pPlayer->getAdvancedStartVisibilityCost(bAdd, NULL != pPlot ? pPlot->getPlot() : NULL) : -1;
 }
 
+int CyPlayer::getIntelligenceData(int iTarget, int iField)
+{
+    return m_pPlayer ? m_pPlayer->getIntelligenceData(iTarget, iField) : 0;
+}
+
 int CyPlayer::getEspionageSpending(int /*TeamTypes*/ eIndex)
 {
 	return m_pPlayer ? m_pPlayer->getEspionageSpending((TeamTypes) eIndex) : -1;

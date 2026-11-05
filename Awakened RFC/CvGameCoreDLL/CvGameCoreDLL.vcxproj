@@ -186,6 +186,7 @@ nmake clean</NMakeCleanCommandLine>
     <ClCompile Include="CvGameCoreUtils.cpp" />
     <ClCompile Include="CvGameInterface.cpp" />
     <ClCompile Include="CvGameTextMgr.cpp" />
+    <ClCompile Include="CvIntelligence.cpp" />
     <ClCompile Include="CvGlobals.cpp" />
     <ClCompile Include="CvHallOfFameInfo.cpp" />
     <ClCompile Include="CvInfos.cpp" />

@@ -228,6 +228,7 @@ public:
 	int getAdvancedStartTechCost(int /*TechTypes*/ eTech, bool bAdd);
 	int getAdvancedStartVisibilityCost(bool bAdd, CyPlot* pPlot);
 
+	int getIntelligenceData(int iTarget, int iField);
 	int getEspionageSpending(int /*PlayerTypes*/ ePlayer);
 	bool canDoEspionageMission(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);
 	int getEspionageMissionCost(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);

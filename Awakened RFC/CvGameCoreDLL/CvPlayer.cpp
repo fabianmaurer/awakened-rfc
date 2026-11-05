@@ -565,8 +565,17 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		}
 	}
 
+    m_eIntelligenceResearch = NO_TECH;
+    m_iIntelligenceLastResearch = 0;
+    m_iIntelligencePressure = 0;
+    m_iIntelligenceUnrestCooldown = 0;
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
+        m_aiIntelligenceMode[iI] = 0;
+        m_aiIntelligenceStrength[iI] = 0;
+        m_aiIntelligenceExposure[iI] = 0;
+        m_aiIntelligenceReportCity[iI] = -1;
+        m_aiIntelligenceReportUntil[iI] = -1;
 		m_aiEspionageSpendingWeightAgainstTeam[iI] = 0;
 
 		if (!bConstructorCall && getTeam() != NO_TEAM)
@@ -576,6 +585,11 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 				if (GET_PLAYER((PlayerTypes) iJ).getTeam() == iI)
 				{
 					GET_PLAYER((PlayerTypes) iJ).setEspionageSpendingWeightAgainstTeam(getTeam(), 0);
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMode[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceStrength[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceExposure[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportCity[getTeam()] = -1;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportUntil[getTeam()] = -1;
 				}
 			}
 		}
@@ -2862,6 +2876,7 @@ void CvPlayer::doTurn()
 	FAssertMsg(isAlive(), "isAlive is expected to be true");
 	FAssertMsg(!hasBusyUnit() || GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)  || GC.getGameINLINE().isSimultaneousTeamTurns(), "End of turn with busy units in a sequential-turn game");
 
+    doIntelligencePressure();
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
 
 	doUpdateCacheOnTurn();
@@ -5712,6 +5727,7 @@ void CvPlayer::found(int iX, int iY)
 
 bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost) const
 {
+    if (GC.getUnitInfo(eUnit).isSpy()) return false;
 	if (GC.getGameINLINE().isPapalState(getID()) && GC.getUnitInfo(eUnit).isFound()) return false;
     // Apply to humans, AI and ongoing production, including visibility checks.
     if (!isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
@@ -9139,7 +9155,7 @@ int CvPlayer::getCivicAnarchyLength(CivicTypes* paeNewCivics) const
 	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
 	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
 	const int iDemocracyExitTurns = (getCivics(eGovernment) == eDemocracy && paeNewCivics[eGovernment] != eDemocracy) ? 2 : 0;
-	return range(iAnarchyLength, 1, getMaxAnarchyTurns()) + iDemocracyExitTurns;
+	return range(iAnarchyLength, 1, getMaxAnarchyTurns()) + iDemocracyExitTurns + getIntelligenceAnarchyExtra();
 }
 
 
@@ -14911,203 +14927,19 @@ void CvPlayer::doResearch()
 	}
 }
 
-void CvPlayer::doEspionagePoints()
-{
-	OBSERVER_PERFORMANCE("CvPlayer::doEspionagePoints");
-	if (getCommerceRate(COMMERCE_ESPIONAGE) > 0)
-	{
-		GET_TEAM(getTeam()).changeEspionagePointsEver(getCommerceRate(COMMERCE_ESPIONAGE));
-
-		int iSpending = 0;
-
-		// Divide up Espionage between Teams
-		//for (int iLoop = 0; iLoop < MAX_CIV_TEAMS; iLoop++) //Rhye
-		for (int iLoop = 0; iLoop < NUM_MAJOR_PLAYERS; iLoop++) //Rhye
-		{
-			if (getTeam() != iLoop)
-			{
-				if (GET_TEAM((TeamTypes)iLoop).isAlive())
-				{
-					if (GET_TEAM(getTeam()).isHasMet((TeamTypes)iLoop))
-					{
-						iSpending = getEspionageSpending((TeamTypes)iLoop);
-
-						if (iSpending > 0)
-						{
-							GET_TEAM(getTeam()).changeEspionagePointsAgainstTeam((TeamTypes)iLoop, iSpending);
-						}
-					}
-				}
-			}
-		}
-	}	
-}
-
 int CvPlayer::getEspionageSpending(TeamTypes eAgainstTeam) const
 {
-	int iSpendingValue = 0;
-
-	int iTotalPoints = getCommerceRate(COMMERCE_ESPIONAGE);
-	int iAvailablePoints = iTotalPoints;
-
-	int iTotalWeight = 0;
-	int iBestWeight = 0;
-
-	bool bFoundTeam = false;
-
-	//int iLoop;
-
-	// Get sum of all weights to be used later on
-	//for (int iLoop = 0; iLoop < MAX_CIV_TEAMS; iLoop++) //Rhye
-	for (int iLoop = 0; iLoop < NUM_MAJOR_PLAYERS; iLoop++) //Rhye
-	{
-		if (getTeam() != iLoop)
-		{
-			if (GET_TEAM((TeamTypes)iLoop).isAlive())
-			{
-				if (GET_TEAM(getTeam()).isHasMet((TeamTypes)iLoop))
-				{
-					if (iLoop == int(eAgainstTeam))
-					{
-						bFoundTeam = true;
-					}
-
-					int iWeight = getEspionageSpendingWeightAgainstTeam((TeamTypes)iLoop);
-
-					if (iWeight > iBestWeight)
-					{
-						iBestWeight = iWeight;
-					}
-					
-					iTotalWeight += iWeight;
-				}
-			}
-		}
-	}
-
-	// The player requested is not valid
-	if (!bFoundTeam)
-	{
-		return -1;
-	}
-
-	// Split up Espionage Point budget based on weights (if any weights have been assigned)
-	if (iTotalWeight > 0)
-	{
-		//for (int iLoop = 0; iLoop < MAX_CIV_TEAMS; iLoop++) //Rhye
-		for (int iLoop = 0; iLoop < NUM_MAJOR_PLAYERS; iLoop++) //Rhye
-		{
-			if (getTeam() != iLoop)
-			{
-				if (GET_TEAM((TeamTypes)iLoop).isAlive())
-				{
-					if (GET_TEAM(getTeam()).isHasMet((TeamTypes)iLoop))
-					{
-						int iChange = (iTotalPoints * getEspionageSpendingWeightAgainstTeam((TeamTypes)iLoop) / iTotalWeight);
-						iAvailablePoints -= iChange;
-						
-						if (iLoop == int(eAgainstTeam))
-						{
-							iSpendingValue += iChange;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// Divide remainder evenly among top Teams
-	while (iAvailablePoints > 0)
-	{
-		//for (int iLoop = 0; iLoop < MAX_CIV_TEAMS; iLoop++) //Rhye
-		for (int iLoop = 0; iLoop < NUM_MAJOR_PLAYERS; iLoop++) //Rhye
-		{
-			if (getTeam() != iLoop)
-			{
-				if (GET_TEAM((TeamTypes)iLoop).isAlive())
-				{
-					if (GET_TEAM(getTeam()).isHasMet((TeamTypes)iLoop))
-					{
-						if (getEspionageSpendingWeightAgainstTeam((TeamTypes)iLoop) == iBestWeight)
-						{
-							if (iLoop == int(eAgainstTeam))
-							{
-								++iSpendingValue;
-							}
-							--iAvailablePoints;
-
-							if (iAvailablePoints <= 0)
-							{
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	return iSpendingValue;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() == eAgainstTeam)
+            return getIntelligenceRate((PlayerTypes)i);
+    return 0;
 }
 
 bool CvPlayer::canDoEspionageMission(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pUnit) const
 {
-	if (getID() == eTargetPlayer || NO_PLAYER == eTargetPlayer)
-	{
-		return false;
-	}
-
-	//Rhye - start
-	if (isBarbarian())
-	{
-		return false;
-	}
-
-	if (isMinorCiv())
-	{
-		return false;
-	}
-	//Rhye - end
-
-
-	if (!GET_PLAYER(eTargetPlayer).isAlive() || !GET_TEAM(getTeam()).isHasMet(GET_PLAYER(eTargetPlayer).getTeam()))
-	{
-		return false;
-	}
-
-	CvEspionageMissionInfo& kMission = GC.getEspionageMissionInfo(eMission);
-
-	// Need Tech Prereq, if applicable
-	if (kMission.getTechPrereq() != NO_TECH)
-	{
-		if (!GET_TEAM(getTeam()).isHasTech((TechTypes)kMission.getTechPrereq()))
-		{
-			return false;
-		}
-	}
-
-	int iCost = getEspionageMissionCost(eMission, eTargetPlayer, pPlot, iExtraData, pUnit);
-	if (iCost < 0)
-	{
-		return false;
-	}
-
-	if (NO_PLAYER != eTargetPlayer)
-	{
-		int iEspionagePoints = GET_TEAM(getTeam()).getEspionagePointsAgainstTeam(GET_PLAYER(eTargetPlayer).getTeam());
-
-		if (iEspionagePoints < iCost)
-		{
-			return false;
-		}
-
-		if (iEspionagePoints <= 0)
-		{
-			return false;
-		}
-	}
-
-	return true;
+    // Basic statistics remain available; unit missions and old passive thresholds are retired.
+    return eMission >= 0 && eMission < GC.getNumEspionageMissionInfos() &&
+        canIntelligenceTarget(eTargetPlayer) && GC.getEspionageMissionInfo(eMission).isSeeDemographics();
 }
 
 int CvPlayer::getEspionageMissionCost(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pSpyUnit) const
@@ -16111,7 +15943,7 @@ void CvPlayer::setEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iValu
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	FAssert(iValue >= 0);
 
-	iValue = std::min(std::max(0, iValue), 99);
+	iValue = range(iValue, 0, 3);
 
 	if (iValue != getEspionageSpendingWeightAgainstTeam(eIndex))
 	{
@@ -16126,7 +15958,9 @@ void CvPlayer::changeEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iC
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 
-	setEspionageSpendingWeightAgainstTeam(eIndex, getEspionageSpendingWeightAgainstTeam(eIndex) + iChange);
+    // Absolute mode requests are idempotent and use Civ4's player-scoped synchronized message.
+    if (iChange >= 100 && iChange <= 103 && eIndex != getTeam() && GET_TEAM(getTeam()).isHasMet(eIndex))
+        setEspionageSpendingWeightAgainstTeam(eIndex, iChange - 100);
 }
 
 void CvPlayer::doAdvancedStartAction(AdvancedStartActionTypes eAction, int iX, int iY, int iData, bool bAdd)
@@ -18128,6 +17962,16 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(NUM_COMMERCE_TYPES, m_aiCommerceFlexibleCount);
 	pStream->Read(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Read(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceMode);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceStrength);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceExposure);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceReportCity);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceReportUntil);
+    pStream->Read((int*)&m_eIntelligenceResearch);
+    pStream->Read(&m_iIntelligenceLastResearch);
+    pStream->Read(&m_iIntelligencePressure);
+    pStream->Read(&m_iIntelligenceUnrestCooldown);
+
 
 	pStream->Read(NUM_FEAT_TYPES, m_abFeatAccomplished);
 	pStream->Read(NUM_PLAYEROPTION_TYPES, m_abOptions);
@@ -18623,6 +18467,16 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiCommerceFlexibleCount);
 	pStream->Write(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Write(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceMode);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceStrength);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceExposure);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceReportCity);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceReportUntil);
+    pStream->Write(m_eIntelligenceResearch);
+    pStream->Write(m_iIntelligenceLastResearch);
+    pStream->Write(m_iIntelligencePressure);
+    pStream->Write(m_iIntelligenceUnrestCooldown);
+
 
 	pStream->Write(NUM_FEAT_TYPES, m_abFeatAccomplished);
 	pStream->Write(NUM_PLAYEROPTION_TYPES, m_abOptions);

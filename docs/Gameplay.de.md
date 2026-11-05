@@ -1074,3 +1074,58 @@ acht Runden nach Szenariobeginn; neue Städte ziehen sie erst nach acht Runden a
 Ohne geeignete Städte oder Felder pausieren sie; die Option „Keine Barbaren“
 unterbindet sie. Der spätere nordamerikanische Widerstand und die karibischen
 Piraten bleiben aktiv.
+
+
+## Geheimdienstnetze
+
+Automatische Operationen ersetzen Spionageeinheiten und deren Missionen. Im
+Geheimdienstberater wählen Sie einen Modus je Zivilisation mit diplomatischem
+Kontakt. Standard ist **Technologiediebstahl**. Änderungen gelten ab der nächsten
+Spielerrundengrenze. Die volle Spionageleistung wirkt auf jedes Netz, ohne
+Aufteilung zwischen Rivalen. Grundlegende demografische Daten bekannter
+Zivilisationen bleiben verfügbar. Spionagegebäude, Spezialisten und angesiedelte
+Große Spione bleiben nützlich. Große Spione können Scotland Yard errichten
+oder ein Goldenes Zeitalter unterstützen; ihre Infiltrationsmission entfällt.
+
+Entfernung zwischen Hauptstädten senkt den Zugang um höchstens 60 Prozentpunkte.
+Eine Botschaft auf einer Seite bringt 20 Punkte, bis zu vier direkte ausgehende
+Handelswege jeweils 5. Der Zugang liegt zwischen 40 und 140%. Fremde
+Spionageleistung schwächt alle Operationen. Sicherheitsbüros erhöhen die nationale
+Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
+
+- **Technologiediebstahl:** Eine zufällig gewählte Technologie mit erfüllten
+  Voraussetzungen bleibt bis zum Abschluss oder Wegfall das gemeinsame Ziel.
+  Mehr verfügbare Technologien erhöhen den Ertrag. Zusätzliche Quellen bringen
+  abnehmenden Nutzen; insgesamt ist der Ertrag auf die dreifache Spionageleistung
+  begrenzt. Fortschritt bleibt bei Moduswechseln erhalten. Ohne passende Quelle
+  ruht das Ziel. Überschüsse fließen in dieser Runde nicht in ein zweites Ziel.
+- **Militärspionage:** Bis zu +8% Kampfstärke gegen das Ziel, abhängig von dessen
+  Armeegröße. Ab +3% werden bekannte Städte und Einheiten in deren Umfeld
+  sichtbar. Im Krieg ermöglicht eine benachbarte angriffsfähige Landeinheit an
+  der Spielerrundengrenze einen Infiltrationswurf mit höchstens 25% Erfolgschance.
+  Pro Stadt und Spielrunde gibt es nur einen Wurf, gemeinsam für alle Angreifer.
+  Erfolg schaltet die Stadtverteidigung für diese Spielrunde aus. Gelände-,
+  Einheiten- und Verschanzungsboni bleiben erhalten. Gespeicherter
+  Bombardierungsschaden wird nicht verändert; danach gilt wieder der
+  zugrunde liegende Verteidigungswert.
+- **Politische Einmischung:** Druck steigt langsam und sinkt nach Ende der
+  Operation. Große Bevölkerungen leisten mehr Widerstand. Alle Angreifer
+  zusammen verursachen höchstens -6 Stabilität und zwei zusätzliche Runden
+  Anarchie bei Staatsformwechseln. Anarchieimmunität bleibt erhalten. Kurze
+  lokale Unzufriedenheit ist möglich; bei normalem Spieltempo liegen mindestens
+  acht Runden zwischen Vorfällen. Der Stabilitätseffekt gehört zur Diplomatie
+  und verursacht keinen fortlaufend angesammelten dauerhaften Schaden.
+- **Kartenspionage:** Berichte enthüllen ein Gebiet von 7x7 Feldern um eine
+  Zielstadt und zeigen dort bei normalem Spieltempo drei Runden das Geschehen.
+  Unbekanntes Gebiet wird bevorzugt. Größere Reiche senken die Berichtschance,
+  die höchstens 25% pro Runde beträgt. Gelände bleibt bekannt; aktuelle Sicht
+  endet mit dem Bericht oder beim Moduswechsel.
+
+Wirksame Operationen können pro Runde entdeckt werden: Technologie/Karten mit
+1%, Militär mit 3%, Politik mit 6%. Entdeckungen verschlechtern die Haltung des
+Ziels um höchstens -1, -3 beziehungsweise -6. Bestehende Abzüge überdauern
+Moduswechsel und sinken pro Runde um zwei Hundertstel eines Haltungspunkts.
+Berater und Diplomatie-Tooltip zeigen den Abzug. Die KI wählt passende Operationen
+und Budgets. Werte sind vorläufig; Darstellung, Balance und Mehrspielerbetrieb
+benötigen eine vom Benutzer durchgeführte Prüfung im Spiel. Das neue
+Speicherformat ist für neue Partien vorgesehen.

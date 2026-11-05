@@ -323,6 +323,28 @@ public:
 	DllExport void setAdvancedStartPoints(int iNewValue);																													// Exposed to Python
 	DllExport void changeAdvancedStartPoints(int iChange);																													// Exposed to Python
 
+
+    // Automatic intelligence: 0 technology, 1 military, 2 politics, 3 maps.
+    bool canIntelligenceTarget(PlayerTypes eTarget) const;
+    int getIntelligenceMode(TeamTypes eTarget) const;
+    int getIntelligenceAccess(PlayerTypes eTarget) const;
+    int getIntelligenceTradeRoutes(PlayerTypes eTarget) const;
+    bool hasIntelligenceEmbassy(PlayerTypes eTarget) const;
+    int getIntelligenceDefense(PlayerTypes eTarget) const;
+    int getIntelligenceRate(PlayerTypes eTarget) const;
+    int getIntelligenceTechCount(PlayerTypes eTarget) const;
+    int getIntelligenceResearchRate(TechTypes eTech) const;
+    int getIntelligenceMilitaryBonus(PlayerTypes eTarget) const;
+    int getIntelligenceSuppressionChance(PlayerTypes eTarget) const;
+    int getIntelligencePoliticalTarget() const;
+    int getIntelligenceStabilityPenalty() const;
+    int getIntelligenceAnarchyExtra() const;
+    int getIntelligenceRelationPenalty(TeamTypes eTarget) const;
+    bool hasIntelligenceCityVisibility(const CvCity* pCity) const;
+    int getIntelligenceData(int iTarget, int iField) const;
+    int getIntelligenceChecksum() const;
+    void doIntelligencePressure();
+
 	int getEspionageSpending(TeamTypes eAgainstTeam) const;																								// Exposed to Python
 	DllExport bool canDoEspionageMission(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pUnit) const;		// Exposed to Python
 	int getEspionageMissionBaseCost(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pSpyUnit) const;
@@ -1250,6 +1272,17 @@ protected:
 	int* m_aiCommerceFlexibleCount;
 	int* m_aiGoldPerTurnByPlayer;
 	int* m_aiEspionageSpendingWeightAgainstTeam;
+
+    int m_aiIntelligenceMode[MAX_TEAMS];
+    int m_aiIntelligenceStrength[MAX_TEAMS];
+    int m_aiIntelligenceExposure[MAX_TEAMS];
+    int m_aiIntelligenceReportCity[MAX_TEAMS];
+    int m_aiIntelligenceReportUntil[MAX_TEAMS];
+    TechTypes m_eIntelligenceResearch;
+    int m_iIntelligenceLastResearch;
+    int m_iIntelligencePressure;
+    int m_iIntelligenceUnrestCooldown;
+
 
 	bool* m_abFeatAccomplished;
 	bool* m_abOptions;

@@ -8113,9 +8113,11 @@ int CvGame::calculateSyncChecksum()
         int iFoodLoop;
         for (CvCity* pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).firstCity(&iFoodLoop); pFoodCity != NULL;
             pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).nextCity(&iFoodLoop))
-            iValue += (pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101) *
+            iValue += (pFoodCity->getIntelligenceChecksum() * 163 + pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101) *
                 (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
+    for (int iIntel = 0; iIntel < MAX_PLAYERS; ++iIntel)
+        iValue += GET_PLAYER((PlayerTypes)iIntel).getIntelligenceChecksum() * (iIntel + 1);
 	iValue += (m_iPapalPlayer + 1) * 269 + m_iPapalRetryTurn * 271 + m_iPapalDecisionSerial * 277 + m_bPapalPalaceEffects * 281;
 	for (int iBirth = 0; iBirth < MAX_CIV_PLAYERS; ++iBirth)
 		iValue += (GET_PLAYER((PlayerTypes)iBirth).getLastBirthTurn() + 1) * (iBirth + 1) * 317;

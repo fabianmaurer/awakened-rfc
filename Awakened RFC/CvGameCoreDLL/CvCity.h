@@ -515,6 +515,8 @@ public:
 
 	bool isAreaBorderObstacle() const;																				// Exposed to Python
 
+	void rollIntelligenceSuppression(PlayerTypes eAttacker, int iChance);
+    int getIntelligenceChecksum() const;
 	int getDefenseDamage() const;																					// Exposed to Python
 	void changeDefenseDamage(int iChange);													// Exposed to Python
 	void changeDefenseModifier(int iChange);													// Exposed to Python
@@ -1082,6 +1084,8 @@ protected:
 	int m_iPowerCount;
 	int m_iDirtyPowerCount;
 	int m_iDefenseDamage;
+    int m_iIntelligenceSuppressionTurn;
+    int m_iIntelligenceSuppressionRollTurn;
 	int m_iLastDefenseDamage;
 	int m_iOccupationTimer;
 	TechTypes m_eConquestResearchTech;

@@ -1843,7 +1843,7 @@
 				</Flavor>
 			</Flavors>
 			<iAIWeight>0</iAIWeight>
-			<iCost>40</iCost>
+			<iCost>-1</iCost>
 			<iHurryCostModifier>0</iHurryCostModifier>
 			<iAdvancedStartCost>100</iAdvancedStartCost>
 			<iAdvancedStartCostIncrease>0</iAdvancedStartCostIncrease>
@@ -23640,7 +23640,7 @@
 			<SeeInvisible>NONE</SeeInvisible>
 			<Description>TXT_KEY_SPECIALIST_GREAT_SPY</Description>
 			<Civilopedia>TXT_KEY_CONCEPT_GREAT_SPY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_UNIT_GREAT_SPY_STRATEGY</Strategy>
+			<Strategy>TXT_KEY_INTEL_GREAT_SPY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<bAnimal>0</bAnimal>
 			<bFood>0</bFood>
@@ -23742,7 +23742,7 @@
 			<iBaseTrade>0</iBaseTrade>
 			<iTradeMultiplier>0</iTradeMultiplier>
 			<iGreatWorkCulture>0</iGreatWorkCulture>
-			<iEspionagePoints>3000</iEspionagePoints>
+			<iEspionagePoints>0</iEspionagePoints>
 			<TerrainImpassables />
 			<FeatureImpassables />
 			<TerrainPassableTechs />

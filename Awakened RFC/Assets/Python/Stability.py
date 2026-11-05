@@ -508,6 +508,7 @@ class Stability:
                         iNewBaseStability -= (iNumContacts/3 - 4)
                         #print("iNewBaseStability contacts",iNewBaseStability, iPlayer)
                         
+                        iNewBaseStability -= pPlayer.getIntelligenceData(-1, 20)
                         self.setParameter(iPlayer, iParDiplomacy3, False, iNewBaseStability) 
 
 

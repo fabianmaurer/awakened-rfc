@@ -1799,6 +1799,12 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
 			szString.append(L' ');//XXX
 
+            iModifier = GET_PLAYER(pAttacker->getOwnerINLINE()).getIntelligenceMilitaryBonus(pDefender->getOwnerINLINE());
+            if (iModifier != 0)
+            {
+                szString.append(NEWLINE);
+                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", iModifier));
+            }
 			iModifier = pAttacker->getExtraCombatPercent();
 
 			if (iModifier != 0)
@@ -1975,6 +1981,12 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				}
 			}
 
+            iModifier = GET_PLAYER(pDefender->getOwnerINLINE()).getIntelligenceMilitaryBonus(pAttacker->getOwnerINLINE());
+            if (iModifier != 0)
+            {
+                szString.append(NEWLINE);
+                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", iModifier));
+            }
 			iModifier = pDefender->getExtraCombatPercent();
 
 			if (iModifier != 0)
@@ -7430,10 +7442,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	if (kBuilding.getEspionageDefenseModifier() != 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_ESPIONAGE_DEFENSE_MOD", kBuilding.getEspionageDefenseModifier()));
-
-		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_EXPOSE_SPIES"));
+		szBuffer.append(gDLL->getText("TXT_KEY_INTEL_BUILDING_DEFENSE", kBuilding.getEspionageDefenseModifier()));
 	}
 
 	setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_WATER_PLOTS").c_str(), L": ", L"", kBuilding.getSeaPlotYieldChangeArray());
@@ -11184,6 +11193,14 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 			szBuffer.append(szTempBuffer);
 		}
 
+        iAttitudeChange = -GET_PLAYER(eTargetPlayer).getIntelligenceRelationPenalty(GET_PLAYER(ePlayer).getTeam());
+        if (iPass == 1 && iAttitudeChange < 0)
+        {
+            szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_NEGATIVE_TEXT"),
+                gDLL->getText("TXT_KEY_INTEL_ATTITUDE", iAttitudeChange).GetCString());
+            szBuffer.append(NEWLINE);
+            szBuffer.append(szTempBuffer);
+        }
 		iAttitudeChange = GET_PLAYER(ePlayer).AI_getAttitudeExtra(eTargetPlayer);
 		if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
 		{
@@ -11225,8 +11242,8 @@ void CvGameTextMgr::getEspionageString(CvWStringBuffer& szBuffer, PlayerTypes eP
 		CvTeam& kTeam = GET_TEAM(eTeam);
 		CvPlayer& kTargetPlayer = GET_PLAYER(eTargetPlayer);
 
-		//szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_AGAINST_PLAYER", kTargetPlayer.getNameKey(), kTeam.getEspionagePointsAgainstTeam(kTargetPlayer.getTeam()), GET_TEAM(kTargetPlayer.getTeam()).getEspionagePointsAgainstTeam(kPlayer.getTeam()))); //Rhye
-		szBuffer.append(gDLL->getText("TXT_KEY_ESPIONAGE_AGAINST_PLAYER", kTargetPlayer.getCivilizationShortDescriptionKey(), kTeam.getEspionagePointsAgainstTeam(kTargetPlayer.getTeam()), GET_TEAM(kTargetPlayer.getTeam()).getEspionagePointsAgainstTeam(kPlayer.getTeam()))); //Rhye
+        szBuffer.append(gDLL->getText("TXT_KEY_INTEL_CONTACT", kTargetPlayer.getCivilizationShortDescriptionKey(), kPlayer.getIntelligenceRate(eTargetPlayer)));
+
 	}
 }
 

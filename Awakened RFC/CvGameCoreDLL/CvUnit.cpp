@@ -6335,38 +6335,8 @@ int CvUnit::getEspionagePoints(const CvPlot* pPlot) const
 
 bool CvUnit::canInfiltrate(const CvPlot* pPlot, bool bTestVisible) const
 {
-	if (isDelayedDeath())
-	{
-		return false;
-	}
-
-	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
-	{
-		return false;
-	}
-
-	if (getEspionagePoints(NULL) == 0)
-	{
-		return false;
-	}
-
-	CvCity* pCity = pPlot->getPlotCity();
-	if (pCity == NULL || pCity->isBarbarian()) //Rhye - add minors here?
-	{
-		return false;
-	}
-
-	if (!bTestVisible)
-	{
-		if (NULL != pCity && pCity->getTeam() == getTeam())
-		{
-			return false;
-		}
-	}
-
-	return true;
+    return false; // Great Spies support networks through settlement and Scotland Yard.
 }
-
 
 bool CvUnit::infiltrate()
 {
@@ -8338,7 +8308,12 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		{
 			FAssertMsg(pAttacker != this, "pAttacker is not expected to be equal with this");
 
-			iExtraModifier = unitClassDefenseModifier(pAttacker->getUnitClassType());
+			iExtraModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pAttacker->getOwnerINLINE()) -
+                (pAttacker->getDomainType() == DOMAIN_AIR ? 0 : GET_PLAYER(pAttacker->getOwnerINLINE()).getIntelligenceMilitaryBonus(getOwnerINLINE()));
+            iTempModifier += iExtraModifier;
+            if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += iExtraModifier;
+
+            iExtraModifier = unitClassDefenseModifier(pAttacker->getUnitClassType());
 			iTempModifier += iExtraModifier;
 			if (pCombatDetails != NULL)
 			{
@@ -8636,6 +8611,7 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 
 	if (NULL != pOther)
 	{
+        iModifier += GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pOther->getOwnerINLINE());
 		if (pOther->getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iModifier += unitCombatModifier(pOther->getUnitCombatType());

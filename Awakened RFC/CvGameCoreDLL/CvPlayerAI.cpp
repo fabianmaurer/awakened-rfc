@@ -1604,30 +1604,14 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 			}
 		}
 		break;
-	case COMMERCE_ESPIONAGE:
-		{
-		int iEspMultiplier = 0;
-		//for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam) //Rhye
-		for (int iTeam = 0; iTeam < NUM_MAJOR_PLAYERS; ++iTeam) //Rhye
-		{
-			CvTeam& kLoopTeam = GET_TEAM((TeamTypes)iTeam);
-			if (kLoopTeam.isAlive() && iTeam != getTeam() && !kLoopTeam.isVassal(getTeam()) && !GET_TEAM(getTeam()).isVassal((TeamTypes)iTeam))
-			{
-				int iPointDiff = kLoopTeam.getEspionagePointsAgainstTeam(getTeam()) - GET_TEAM(getTeam()).getEspionagePointsAgainstTeam((TeamTypes)iTeam);
-				if (iPointDiff > 0)
-				{
-					iEspMultiplier += 1;
-					break;
-				}
-			}
-		}
-			iEspMultiplier += (iEspMultiplier > 0) ? 3 : 0;
-			iWeight *= iEspMultiplier;
-		iWeight *= AI_getEspionageWeight();
-		iWeight /= 100;
-		}
-		break;
-		
+    case COMMERCE_ESPIONAGE:
+        // Networks have immediate utility; do not value obsolete point-balance races.
+        iWeight = 70;
+        if (GET_TEAM(getTeam()).getAtWarCount(true) > 0) iWeight = 110;
+        if (AI_isFinancialTrouble()) iWeight /= 2;
+        if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) iWeight = 0;
+        break;
+
 	default:
 		break;
 	}
@@ -5959,6 +5943,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
+    iAttitude -= GET_PLAYER(ePlayer).getIntelligenceRelationPenalty(getTeam());
 
 	return range(iAttitude, -100, 100);
 }
@@ -12668,11 +12653,6 @@ void CvPlayerAI::AI_doCommerce()
 		{
 			setCommercePercent(COMMERCE_ESPIONAGE, 0);
 
-			for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
-			{
-				setEspionageSpendingWeightAgainstTeam((TeamTypes)iTeam, 0);
-			}
-
 			bReset = true;
 		}
 	}
@@ -12771,80 +12751,39 @@ void CvPlayerAI::AI_doCommerce()
 		}
 	}
 
-	if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !bFirstTech)
-	{
-		int iEspionageTargetRate = 0;
-		//Rhye
-		//for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
-		for (int iTeam = 0; iTeam < NUM_MAJOR_PLAYERS; ++iTeam)
-		{
-			CvTeam& kLoopTeam = GET_TEAM((TeamTypes)iTeam);
-			if (kLoopTeam.isAlive() && iTeam != getTeam() && !kLoopTeam.isVassal(getTeam()) && !GET_TEAM(getTeam()).isVassal((TeamTypes)iTeam))
-			{
-				int iTarget = (kLoopTeam.getEspionagePointsAgainstTeam(getTeam()) - GET_TEAM(getTeam()).getEspionagePointsAgainstTeam((TeamTypes)iTeam)) / 8;
+    if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
+    {
+        int iBestCatchup = 0;
+        bool bWar = false, bContact = false;
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        {
+            PlayerTypes eTarget = (PlayerTypes)i;
+            if (!canIntelligenceTarget(eTarget)) continue;
+            bContact = true;
+            TeamTypes eTargetTeam = GET_PLAYER(eTarget).getTeam();
+            int iTechs = getIntelligenceTechCount(eTarget);
+            int iMode = 0;
+            if (GET_TEAM(getTeam()).isAtWar(eTargetTeam)) { iMode = 1; bWar = true; }
+            else if (iTechs > 0) iBestCatchup = std::max(iBestCatchup, iTechs);
+            else if (AI_getAttitudeVal(eTarget) <= -6 && !GET_TEAM(getTeam()).isVassal(eTargetTeam) &&
+                !GET_TEAM(eTargetTeam).isVassal(getTeam())) iMode = 2;
+            else iMode = 3;
+            setEspionageSpendingWeightAgainstTeam(eTargetTeam, iMode);
+        }
+        int iDesired = bContact ? 10 : 0;
+        if (iBestCatchup >= 3) iDesired = 30;
+        if (iBestCatchup >= 7) iDesired = 40;
+        if (bWar) iDesired = std::max(iDesired, 20);
+        if (bFirstTech) iDesired = std::min(iDesired, 10);
+        if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3)) iDesired = 0;
+        while (getCommercePercent(COMMERCE_ESPIONAGE) < iDesired && getCommercePercent(COMMERCE_RESEARCH) >= 10)
+        {
+            changeCommercePercent(COMMERCE_RESEARCH, -10);
+            changeCommercePercent(COMMERCE_ESPIONAGE, 10);
+            if (getGold() + iTargetTurns * calculateGoldRate() < iGoldTarget) break;
+        }
+    }
 
-				iTarget -= GET_TEAM(getTeam()).AI_getAttitudeVal((TeamTypes)iTeam);
-
-				if (iTarget > 0)
-				{
-					iEspionageTargetRate += iTarget;
-					changeEspionageSpendingWeightAgainstTeam((TeamTypes)iTeam, iTarget);
-				}
-			}
-		}
-
-		//if economy is weak, neglect espionage spending.
-		//instead invest hammers into espionage via spies/builds
-		if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3))
-		{
-			//can still get trickle espionage income
-			iEspionageTargetRate = 0;
-		}
-		else
-		{
-			iEspionageTargetRate *= (110 - getCommercePercent(COMMERCE_GOLD) * 2);
-			iEspionageTargetRate /= 110;
-
-			iEspionageTargetRate *= GC.getLeaderHeadInfo(getLeaderType()).getEspionageWeight();
-			iEspionageTargetRate /= 100;
-
-			//Rhye - start
-			//world size weight
-			iEspionageTargetRate *= 7; //default number of players
-			iEspionageTargetRate /= 26; //actual number of major players
-
-			//reduce even more
-			iEspionageTargetRate *= 70;
-			iEspionageTargetRate /= 100;
-			//Rhye - end
-
-			int iInitialResearchPercent = getCommercePercent(COMMERCE_RESEARCH);
-
-			while (getCommerceRate(COMMERCE_ESPIONAGE) < iEspionageTargetRate && getCommercePercent(COMMERCE_ESPIONAGE) < 20)
-			{
-				changeCommercePercent(COMMERCE_RESEARCH, -GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS"));			
-				changeCommercePercent(COMMERCE_ESPIONAGE, GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS"));
-
-				if (getGold() + iTargetTurns * calculateGoldRate() < iGoldTarget)
-				{
-					break;
-				}
-
-				if (!AI_avoidScience() && !isNoResearchAvailable())
-				{
-	//				if (2 * getCommercePercent(COMMERCE_RESEARCH) < iInitialResearchPercent)
-	//				{
-	//					break;
-	//				}
-					if (getCommercePercent(COMMERCE_RESEARCH) * 2 <= (getCommercePercent(COMMERCE_ESPIONAGE) + GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS")) * 3)
-					{
-						break;
-					}
-				}
-			}
-		}
-	}
-	
 	if (!bFirstTech && (getGold() < iGoldTarget) && (getCommercePercent(COMMERCE_RESEARCH) > 40))
 	{
 		bool bHurryGold = false;

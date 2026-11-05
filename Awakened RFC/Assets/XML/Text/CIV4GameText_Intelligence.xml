@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TITLE</Tag>
+    <English>Intelligence</English>
+    <French>Intelligence</French>
+    <German>Geheimdienst</German>
+    <Italian>Intelligence</Italian>
+    <Spanish>Intelligence</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_0</Tag>
+    <English>Technology stealing</English>
+    <French>Technology stealing</French>
+    <German>Technologiediebstahl</German>
+    <Italian>Technology stealing</Italian>
+    <Spanish>Technology stealing</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_1</Tag>
+    <English>Military espionage</English>
+    <French>Military espionage</French>
+    <German>Milit&#228;rspionage</German>
+    <Italian>Military espionage</Italian>
+    <Spanish>Military espionage</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_2</Tag>
+    <English>Political meddling</English>
+    <French>Political meddling</French>
+    <German>Politische Einmischung</German>
+    <Italian>Political meddling</Italian>
+    <Spanish>Political meddling</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_3</Tag>
+    <English>Map intelligence</English>
+    <French>Map intelligence</French>
+    <German>Kartenspionage</German>
+    <Italian>Map intelligence</Italian>
+    <Spanish>Map intelligence</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_OUTPUT</Tag>
+    <English>Espionage: %d1 points per turn</English>
+    <French>Espionage: %d1 points per turn</French>
+    <German>Spionage: %d1 Punkte pro Runde</German>
+    <Italian>Espionage: %d1 points per turn</Italian>
+    <Spanish>Espionage: %d1 points per turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_SLIDER</Tag>
+    <English>Commerce investment: %d1%%</English>
+    <French>Commerce investment: %d1%%</French>
+    <German>Kommerzanteil: %d1%%</German>
+    <Italian>Commerce investment: %d1%%</Italian>
+    <Spanish>Commerce investment: %d1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_OUTPUT_HELP</Tag>
+    <English>Your full output reaches every known civilization. Distance and counterintelligence reduce its strength; embassies and trade routes improve access.</English>
+    <French>Your full output reaches every known civilization. Distance and counterintelligence reduce its strength; embassies and trade routes improve access.</French>
+    <German>Ihre volle Leistung wirkt auf jede bekannte Zivilisation. Entfernung und Spionageabwehr schw&#228;chen sie. Botschaften und Handelswege verbessern den Zugang.</German>
+    <Italian>Your full output reaches every known civilization. Distance and counterintelligence reduce its strength; embassies and trade routes improve access.</Italian>
+    <Spanish>Your full output reaches every known civilization. Distance and counterintelligence reduce its strength; embassies and trade routes improve access.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NETWORKS</Tag>
+    <English>Foreign networks</English>
+    <French>Foreign networks</French>
+    <German>Auslandsnetze</German>
+    <Italian>Foreign networks</Italian>
+    <Spanish>Foreign networks</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_STRENGTH_SHORT</Tag>
+    <English>Effective strength: %d1</English>
+    <French>Effective strength: %d1</French>
+    <German>Wirksame St&#228;rke: %d1</German>
+    <Italian>Effective strength: %d1</Italian>
+    <Spanish>Effective strength: %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NO_CONTACTS</Tag>
+    <English>Meet another civilization to establish an intelligence network.</English>
+    <French>Meet another civilization to establish an intelligence network.</French>
+    <German>Nehmen Sie Kontakt zu einer anderen Zivilisation auf, um ein Spionagenetz aufzubauen.</German>
+    <Italian>Meet another civilization to establish an intelligence network.</Italian>
+    <Spanish>Meet another civilization to establish an intelligence network.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_CHOOSE_MODE</Tag>
+    <English>Choose an operation for this civilization</English>
+    <French>Choose an operation for this civilization</French>
+    <German>Operation f&#252;r diese Zivilisation w&#228;hlen</German>
+    <Italian>Choose an operation for this civilization</Italian>
+    <Spanish>Choose an operation for this civilization</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ACCESS</Tag>
+    <English>Access: %d1%%</English>
+    <French>Access: %d1%%</French>
+    <German>Zugang: %d1%%</German>
+    <Italian>Access: %d1%%</Italian>
+    <Spanish>Access: %d1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_YES</Tag>
+    <English>Yes</English>
+    <French>Yes</French>
+    <German>Ja</German>
+    <Italian>Yes</Italian>
+    <Spanish>Yes</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NO</Tag>
+    <English>No</English>
+    <French>No</French>
+    <German>Nein</German>
+    <Italian>No</Italian>
+    <Spanish>No</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_CONNECTIONS</Tag>
+    <English>Embassy: %s1    Direct trade routes: %d2</English>
+    <French>Embassy: %s1    Direct trade routes: %d2</French>
+    <German>Botschaft: %s1    Direkte Handelswege: %d2</German>
+    <Italian>Embassy: %s1    Direct trade routes: %d2</Italian>
+    <Spanish>Embassy: %s1    Direct trade routes: %d2</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_EFFECTIVE</Tag>
+    <English>Effective strength: %d1 per turn</English>
+    <French>Effective strength: %d1 per turn</French>
+    <German>Wirksame St&#228;rke: %d1 pro Runde</German>
+    <Italian>Effective strength: %d1 per turn</Italian>
+    <Spanish>Effective strength: %d1 per turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RELATIONS</Tag>
+    <English>Relations penalty: -%d1</English>
+    <French>Relations penalty: -%d1</French>
+    <German>Beziehungsabzug: -%d1</German>
+    <Italian>Relations penalty: -%d1</Italian>
+    <Spanish>Relations penalty: -%d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_CURRENT</Tag>
+    <English>Active operation: %s1</English>
+    <French>Active operation: %s1</French>
+    <German>Aktive Operation: %s1</German>
+    <Italian>Active operation: %s1</Italian>
+    <Spanish>Active operation: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_QUEUED</Tag>
+    <English>Next turn: %s1</English>
+    <French>Next turn: %s1</French>
+    <German>N&#228;chste Runde: %s1</German>
+    <Italian>Next turn: %s1</Italian>
+    <Spanish>Next turn: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TECH_HELP</Tag>
+    <English>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</English>
+    <French>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</French>
+    <German>Stehlen Sie Forschung f&#252;r eine zuf&#228;llig gew&#228;hlte Technologie. Mehr verf&#252;gbare Technologien erh&#246;hen den Ertrag. Weitere Quellen bringen abnehmenden Nutzen.</German>
+    <Italian>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</Italian>
+    <Spanish>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MILITARY_HELP</Tag>
+    <English>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</English>
+    <French>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</French>
+    <German>Erhalten Sie einen Kampfbonus gegen diese Zivilisation. Starke Netze zeigen Einheiten im Umfeld ihrer bekannten St&#228;dte.</German>
+    <Italian>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</Italian>
+    <Spanish>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICS_HELP</Tag>
+    <English>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</English>
+    <French>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</French>
+    <German>Bauen Sie politischen Druck auf, der Stabilit&#228;t senkt, lokale Unruhen ausl&#246;sen kann und Anarchie bei Staatsformwechseln verl&#228;ngert. Gro&#223;e Bev&#246;lkerungen leisten mehr Widerstand.</German>
+    <Italian>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</Italian>
+    <Spanish>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_HELP</Tag>
+    <English>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</English>
+    <French>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</French>
+    <German>Gelegentliche Berichte enth&#252;llen ein Gebiet um eine fremde Stadt und zeigen dort vor&#252;bergehend das Geschehen. Gro&#223;e Reiche sind schwerer auszukundschaften.</German>
+    <Italian>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</Italian>
+    <Spanish>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_PROJECT</Tag>
+    <English>Shared research project: %s1</English>
+    <French>Shared research project: %s1</French>
+    <German>Gemeinsames Forschungsziel: %s1</German>
+    <Italian>Shared research project: %s1</Italian>
+    <Spanish>Shared research project: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RESEARCH_PROGRESS</Tag>
+    <English>%d1 / %d2 research</English>
+    <French>%d1 / %d2 recherche</French>
+    <German>%d1 / %d2 Forschung</German>
+    <Italian>%d1 / %d2 ricerca</Italian>
+    <Spanish>%d1 / %d2 investigaci&#243;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NO_PROJECT</Tag>
+    <English>A project is chosen when an active network can steal research. Only technologies with fulfilled prerequisites qualify. Existing progress is kept when operations change.</English>
+    <French>A project is chosen when an active network can steal research. Only technologies with fulfilled prerequisites qualify. Existing progress is kept when operations change.</French>
+    <German>Ein Forschungsziel wird gew&#228;hlt, sobald ein aktives Netz Forschung stehlen kann. Alle Voraussetzungen m&#252;ssen erf&#252;llt sein. Fortschritt bleibt bei Operationswechseln erhalten.</German>
+    <Italian>A project is chosen when an active network can steal research. Only technologies with fulfilled prerequisites qualify. Existing progress is kept when operations change.</Italian>
+    <Spanish>A project is chosen when an active network can steal research. Only technologies with fulfilled prerequisites qualify. Existing progress is kept when operations change.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MILITARY_RESULT</Tag>
+    <English>Combat bonus: +%d1%%    City infiltration chance: %d2%% per turn</English>
+    <French>Combat bonus: +%d1%%    City infiltration chance: %d2%% per turn</French>
+    <German>Kampfbonus: +%d1%%    Infiltrationschance: %d2%% pro Runde</German>
+    <Italian>Combat bonus: +%d1%%    City infiltration chance: %d2%% per turn</Italian>
+    <Spanish>Combat bonus: +%d1%%    City infiltration chance: %d2%% per turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_SIEGE_HELP</Tag>
+    <English>At war, leave a land combat unit next to an enemy city. One roll per city each turn can suppress its city defenses for that turn. Terrain and unit bonuses remain.</English>
+    <French>At war, leave a land combat unit next to an enemy city. One roll per city each turn can suppress its city defenses for that turn. Terrain and unit bonuses remain.</French>
+    <German>Lassen Sie im Krieg eine Landkampfeinheit neben einer feindlichen Stadt stehen. Ein Wurf pro Stadt und Runde kann ihre Stadtverteidigung f&#252;r diese Runde ausschalten. Gel&#228;nde- und Einheitenboni bleiben.</German>
+    <Italian>At war, leave a land combat unit next to an enemy city. One roll per city each turn can suppress its city defenses for that turn. Terrain and unit bonuses remain.</Italian>
+    <Spanish>At war, leave a land combat unit next to an enemy city. One roll per city each turn can suppress its city defenses for that turn. Terrain and unit bonuses remain.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_RESULT</Tag>
+    <English>Your pressure can support a stability penalty of up to %d1.</English>
+    <French>Your pressure can support a stability penalty of up to %d1.</French>
+    <German>Ihr Druck kann einen Stabilit&#228;tsabzug von bis zu %d1 aufbauen.</German>
+    <Italian>Your pressure can support a stability penalty of up to %d1.</Italian>
+    <Spanish>Your pressure can support a stability penalty of up to %d1.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_LIMIT</Tag>
+    <English>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</English>
+    <French>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</French>
+    <German>Druck steigt langsam und sinkt nach Ende der Operation. Alle Angreifer zusammen verursachen h&#246;chstens -6 Stabilit&#228;t und +2 Runden Anarchie. Lokale Unruhen haben eine Wartezeit.</German>
+    <Italian>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</Italian>
+    <Spanish>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_RESULT</Tag>
+    <English>Report chance: %d1%% per turn    Current city report: %d2 turns left</English>
+    <French>Report chance: %d1%% per turn    Current city report: %d2 turns left</French>
+    <German>Berichtschance: %d1%% pro Runde    Aktueller Stadtbericht: noch %d2 Runden</German>
+    <Italian>Report chance: %d1%% per turn    Current city report: %d2 turns left</Italian>
+    <Spanish>Report chance: %d1%% per turn    Current city report: %d2 turns left</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_LIMIT</Tag>
+    <English>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</English>
+    <French>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</French>
+    <German>Enth&#252;lltes Gel&#228;nde bleibt bekannt. Aktuelle Stadtsicht endet nach Ablauf des Berichts oder bei Operationswechsel.</German>
+    <Italian>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</Italian>
+    <Spanish>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RISK_LOW</Tag>
+    <English>Low (1% discovery chance per turn)</English>
+    <French>Low (1% discovery chance per turn)</French>
+    <German>Gering (1% Entdeckungsgefahr pro Runde)</German>
+    <Italian>Low (1% discovery chance per turn)</Italian>
+    <Spanish>Low (1% discovery chance per turn)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RISK_MEDIUM</Tag>
+    <English>Medium (3% discovery chance per turn)</English>
+    <French>Medium (3% discovery chance per turn)</French>
+    <German>Mittel (3% Entdeckungsgefahr pro Runde)</German>
+    <Italian>Medium (3% discovery chance per turn)</Italian>
+    <Spanish>Medium (3% discovery chance per turn)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RISK_HIGH</Tag>
+    <English>High (6% discovery chance per turn)</English>
+    <French>High (6% discovery chance per turn)</French>
+    <German>Hoch (6% Entdeckungsgefahr pro Runde)</German>
+    <Italian>High (6% discovery chance per turn)</Italian>
+    <Spanish>High (6% discovery chance per turn)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RISK</Tag>
+    <English>Diplomatic risk: %s1</English>
+    <French>Diplomatic risk: %s1</French>
+    <German>Diplomatisches Risiko: %s1</German>
+    <Italian>Diplomatic risk: %s1</Italian>
+    <Spanish>Diplomatic risk: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FOOTER</Tag>
+    <English>Changes apply next turn. * Queued change. Default: technology stealing.</English>
+    <French>Changes apply next turn. * Queued change. Default: technology stealing.</French>
+    <German>&#196;nderungen gelten ab n&#228;chster Runde. * Vorgemerkt. Standard: Technologiediebstahl.</German>
+    <Italian>Changes apply next turn. * Queued change. Default: technology stealing.</Italian>
+    <Spanish>Changes apply next turn. * Queued change. Default: technology stealing.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNREST</Tag>
+    <English>Foreign political meddling has caused unrest in %s1!</English>
+    <French>Foreign political meddling has caused unrest in %s1!</French>
+    <German>Fremde politische Einmischung hat Unruhen in %s1 ausgel&#246;st!</German>
+    <Italian>Foreign political meddling has caused unrest in %s1!</Italian>
+    <Spanish>Foreign political meddling has caused unrest in %s1!</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DISCOVERED</Tag>
+    <English>Our intelligence operation against %s1 was discovered. Relations have worsened.</English>
+    <French>Our intelligence operation against %s1 was discovered. Relations have worsened.</French>
+    <German>Unsere Geheimdienstoperation gegen %s1 wurde entdeckt. Die Beziehungen haben sich verschlechtert.</German>
+    <Italian>Our intelligence operation against %s1 was discovered. Relations have worsened.</Italian>
+    <Spanish>Our intelligence operation against %s1 was discovered. Relations have worsened.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DETECTED</Tag>
+    <English>We uncovered an intelligence operation by %s1. Relations have worsened.</English>
+    <French>We uncovered an intelligence operation by %s1. Relations have worsened.</French>
+    <German>Wir haben eine Geheimdienstoperation von %s1 aufgedeckt. Die Beziehungen haben sich verschlechtert.</German>
+    <Italian>We uncovered an intelligence operation by %s1. Relations have worsened.</Italian>
+    <Spanish>We uncovered an intelligence operation by %s1. Relations have worsened.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_REPORT</Tag>
+    <English>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</English>
+    <French>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</French>
+    <German>Geheimdienstbericht: Das Gebiet um %s1 wurde kartiert. Das Geschehen in der Stadt ist vor&#252;bergehend sichtbar.</German>
+    <Italian>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</Italian>
+    <Spanish>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_GATES</Tag>
+    <English>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</English>
+    <French>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</French>
+    <German>Unsere Agenten haben die Tore von %s1 ge&#246;ffnet! Die Stadtverteidigung ist f&#252;r diese Runde ausgeschaltet.</German>
+    <Italian>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</Italian>
+    <Spanish>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_GATES_ENEMY</Tag>
+    <English>Enemy agents have infiltrated %s1! City defenses are suppressed for this turn.</English>
+    <French>Enemy agents have infiltrated %s1! City defenses are suppressed for this turn.</French>
+    <German>Feindliche Agenten haben %s1 infiltriert! Die Stadtverteidigung ist f&#252;r diese Runde ausgeschaltet.</German>
+    <Italian>Enemy agents have infiltrated %s1! City defenses are suppressed for this turn.</Italian>
+    <Spanish>Enemy agents have infiltrated %s1! City defenses are suppressed for this turn.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ATTITUDE</Tag>
+    <English>%D1: "Your agents have been operating against us!"</English>
+    <French>%D1: "Your agents have been operating against us!"</French>
+    <German>%D1: "Eure Agenten arbeiten gegen uns!"</German>
+    <Italian>%D1: "Your agents have been operating against us!"</Italian>
+    <Spanish>%D1: "Your agents have been operating against us!"</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_CONTACT</Tag>
+    <English>Intelligence against %s1: %d2 effective points per turn</English>
+    <French>Intelligence against %s1: %d2 effective points per turn</French>
+    <German>Geheimdienst gegen %s1: %d2 wirksame Punkte pro Runde</German>
+    <Italian>Intelligence against %s1: %d2 effective points per turn</Italian>
+    <Spanish>Intelligence against %s1: %d2 effective points per turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COMBAT</Tag>
+    <English>Intelligence advantage: +%d1%%</English>
+    <French>Intelligence advantage: +%d1%%</French>
+    <German>Geheimdienstvorteil: +%d1%%</German>
+    <Italian>Intelligence advantage: +%d1%%</Italian>
+    <Spanish>Intelligence advantage: +%d1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RESISTANCE</Tag>
+    <English>Counterintelligence: -%d1%% effectiveness</English>
+    <French>Counterintelligence: -%d1%% effectiveness</French>
+    <German>Spionageabwehr: -%d1%% Wirkung</German>
+    <Italian>Counterintelligence: -%d1%% effectiveness</Italian>
+    <Spanish>Counterintelligence: -%d1%% effectiveness</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_GREAT_SPY_STRATEGY</Tag>
+    <English>Settle as a Great Spy or establish Scotland Yard to strengthen all intelligence networks and counterintelligence. Great Spies can also help start a Golden Age.</English>
+    <French>Settle as a Great Spy or establish Scotland Yard to strengthen all intelligence networks and counterintelligence. Great Spies can also help start a Golden Age.</French>
+    <German>Siedeln Sie einen Gro&#223;en Spion an oder gr&#252;nden Sie Scotland Yard, um alle Spionagenetze und die Spionageabwehr zu st&#228;rken. Gro&#223;e Spione k&#246;nnen auch ein Goldenes Zeitalter ausl&#246;sen.</German>
+    <Italian>Settle as a Great Spy or establish Scotland Yard to strengthen all intelligence networks and counterintelligence. Great Spies can also help start a Golden Age.</Italian>
+    <Spanish>Settle as a Great Spy or establish Scotland Yard to strengthen all intelligence networks and counterintelligence. Great Spies can also help start a Golden Age.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_BUILDING_STRATEGY</Tag>
+    <English>Strengthens intelligence networks against all known civilizations and improves counterintelligence. Choose an operation for each rival in the intelligence advisor.</English>
+    <French>Strengthens intelligence networks against all known civilizations and improves counterintelligence. Choose an operation for each rival in the intelligence advisor.</French>
+    <German>St&#228;rkt Spionagenetze gegen alle bekannten Zivilisationen und verbessert die Spionageabwehr. W&#228;hlen Sie im Geheimdienstberater eine Operation je Rivalen.</German>
+    <Italian>Strengthens intelligence networks against all known civilizations and improves counterintelligence. Choose an operation for each rival in the intelligence advisor.</Italian>
+    <Spanish>Strengthens intelligence networks against all known civilizations and improves counterintelligence. Choose an operation for each rival in the intelligence advisor.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Tag>
+    <English>Reduces city maintenance and supports intelligence networks.</English>
+    <French>Reduces city maintenance and supports intelligence networks.</French>
+    <German>Senkt den Stadtunterhalt und unterst&#252;tzt Spionagenetze.</German>
+    <Italian>Reduces city maintenance and supports intelligence networks.</Italian>
+    <Spanish>Reduces city maintenance and supports intelligence networks.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_SECURITY_STRATEGY</Tag>
+    <English>Strengthens intelligence networks. Its additional counterintelligence protects your civilization in proportion to this city's share of your population.</English>
+    <French>Strengthens intelligence networks. Its additional counterintelligence protects your civilization in proportion to this city's share of your population.</French>
+    <German>St&#228;rkt Spionagenetze. Zus&#228;tzliche Spionageabwehr sch&#252;tzt Ihre Zivilisation entsprechend dem Bev&#246;lkerungsanteil dieser Stadt.</German>
+    <Italian>Strengthens intelligence networks. Its additional counterintelligence protects your civilization in proportion to this city's share of your population.</Italian>
+    <Spanish>Strengthens intelligence networks. Its additional counterintelligence protects your civilization in proportion to this city's share of your population.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_BUILDING_DEFENSE</Tag>
+    <English>Raises national counterintelligence by up to %d1%%, based on this city's population share.</English>
+    <French>Raises national counterintelligence by up to %d1%%, based on this city's population share.</French>
+    <German>Erh&#246;ht die nationale Spionageabwehr um bis zu %d1%%, entsprechend dem Bev&#246;lkerungsanteil dieser Stadt.</German>
+    <Italian>Raises national counterintelligence by up to %d1%%, based on this city's population share.</Italian>
+    <Spanish>Raises national counterintelligence by up to %d1%%, based on this city's population share.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TECH_SHORT</Tag>
+    <English>Research contribution: +%d1/turn</English>
+    <French>Research contribution: +%d1/turn</French>
+    <German>Forschungsbeitrag: +%d1/Runde</German>
+    <Italian>Research contribution: +%d1/turn</Italian>
+    <Spanish>Research contribution: +%d1/turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MILITARY_SHORT</Tag>
+    <English>Combat advantage: +%d1%%</English>
+    <French>Combat advantage: +%d1%%</French>
+    <German>Kampfvorteil: +%d1%%</German>
+    <Italian>Combat advantage: +%d1%%</Italian>
+    <Spanish>Combat advantage: +%d1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICS_SHORT</Tag>
+    <English>Pressure target: -%d1 stability</English>
+    <French>Pressure target: -%d1 stability</French>
+    <German>Druckziel: -%d1 Stabilit&#228;t</German>
+    <Italian>Pressure target: -%d1 stability</Italian>
+    <Spanish>Pressure target: -%d1 stability</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_SHORT</Tag>
+    <English>Report chance: %d1%%/turn</English>
+    <French>Report chance: %d1%%/turn</French>
+    <German>Berichtschance: %d1%%/Runde</German>
+    <Italian>Report chance: %d1%%/turn</Italian>
+    <Spanish>Report chance: %d1%%/turn</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_SOURCE</Tag>
+    <English>This network supplies up to %d1 research before shared limits.</English>
+    <French>This network supplies up to %d1 research before shared limits.</French>
+    <German>Dieses Netz liefert bis zu %d1 Forschung vor gemeinsamen Begrenzungen.</German>
+    <Italian>This network supplies up to %d1 research before shared limits.</Italian>
+    <Spanish>This network supplies up to %d1 research before shared limits.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RESEARCH_TOTALS</Tag>
+    <English>All networks: %d1 research/turn now; %d2 stolen last turn.</English>
+    <French>Tous les r&#233;seaux : %d1 recherche/tour ; %d2 vol&#233;s au dernier tour.</French>
+    <German>Alle Netze: aktuell %d1 Forschung/Runde; zuletzt %d2 gestohlen.</German>
+    <Italian>Tutte le reti: %d1 ricerca/turno; %d2 rubati nel turno precedente.</Italian>
+    <Spanish>Todas las redes: %d1 investigaci&#243;n/turno; %d2 robados el turno anterior.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_CURRENT_EFFECT</Tag>
+    <English>Current effect</English>
+    <French>Effet actuel</French>
+    <German>Aktuelle Wirkung</German>
+    <Italian>Effetto attuale</Italian>
+    <Spanish>Efecto actual</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TOTAL_RESEARCH_RATE</Tag>
+    <English>Stolen research: +%d1 per turn (all networks)</English>
+    <French>Recherche vol&#233;e : +%d1 par tour (tous les r&#233;seaux)</French>
+    <German>Gestohlene Forschung: +%d1 pro Runde (alle Netze)</German>
+    <Italian>Ricerca rubata: +%d1 per turno (tutte le reti)</Italian>
+    <Spanish>Investigaci&#243;n robada: +%d1 por turno (todas las redes)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_LAST_RESEARCH</Tag>
+    <English>Stolen last turn: %d1 research (all networks)</English>
+    <French>Dernier tour : %d1 recherche vol&#233;e (tous les r&#233;seaux)</French>
+    <German>Letzte Runde: %d1 Forschung gestohlen (alle Netze)</German>
+    <Italian>Turno precedente: %d1 ricerca rubata (tutte le reti)</Italian>
+    <Spanish>Turno anterior: %d1 investigaci&#243;n robada (todas las redes)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TECH_CURRENT_EFFECT</Tag>
+    <English>+%d1 research per turn from %s2</English>
+    <French>+%d1 recherche par tour de %s2</French>
+    <German>+%d1 Forschung pro Runde von %s2</German>
+    <Italian>+%d1 ricerca per turno da %s2</Italian>
+    <Spanish>+%d1 investigaci&#243;n por turno de %s2</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COMBAT_CURRENT_EFFECT</Tag>
+    <English>+%d1%% combat strength against %s2 (max. +8%%)</English>
+    <French>+%d1%% de force contre %s2 (max. +8%%)</French>
+    <German>+%d1%% Kampfst&#228;rke gegen %s2 (max. +8%%)</German>
+    <Italian>+%d1%% forza di combattimento contro %s2 (max. +8%%)</Italian>
+    <Spanish>+%d1%% fuerza de combate contra %s2 (m&#225;x. +8%%)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_INFILTRATION_CURRENT_EFFECT</Tag>
+    <English>%d1%% infiltration chance per turn while besieging (max. 25%%)</English>
+    <French>%d1%% d&#8217;infiltration par tour pendant un si&#232;ge (max. 25%%)</French>
+    <German>%d1%% Infiltrationschance pro Belagerungsrunde (max. 25%%)</German>
+    <Italian>%d1%% probabilit&#224; di infiltrazione per turno d&#8217;assedio (max. 25%%)</Italian>
+    <Spanish>%d1%% de infiltraci&#243;n por turno de asedio (m&#225;x. 25%%)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_INFILTRATION_AT_PEACE</Tag>
+    <English>City infiltration: inactive while at peace.</English>
+    <French>Infiltration des villes : inactive en temps de paix.</French>
+    <German>Stadtinfiltration: im Frieden inaktiv.</German>
+    <Italian>Infiltrazione cittadina: inattiva in tempo di pace.</Italian>
+    <Spanish>Infiltraci&#243;n de ciudades: inactiva en tiempos de paz.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_VISIBLE_CITIES</Tag>
+    <English>Live city visibility: %d1 cities</English>
+    <French>Villes actuellement visibles : %d1</French>
+    <German>Aktuelle Stadtsicht: %d1 St&#228;dte</German>
+    <Italian>Citt&#224; attualmente visibili: %d1</Italian>
+    <Spanish>Ciudades visibles en directo: %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_STABILITY_CURRENT_EFFECT</Tag>
+    <English>%d1 stability in %s2 (max. -6)</English>
+    <French>%d1 stabilit&#233; en %s2 (max. -6)</French>
+    <German>%d1 Stabilit&#228;t in %s2 (max. -6)</German>
+    <Italian>%d1 stabilit&#224; in %s2 (max. -6)</Italian>
+    <Spanish>%d1 estabilidad en %s2 (m&#225;x. -6)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ANARCHY_CURRENT_EFFECT</Tag>
+    <English>+%d1 civic-change anarchy turns (max. +2)</English>
+    <French>+%d1 tours d&#8217;anarchie lors des changements de doctrine (max. +2)</French>
+    <German>+%d1 Runden Anarchie bei Staatsformwechseln (max. +2)</German>
+    <Italian>+%d1 turni di anarchia ai cambi di politica (max. +2)</Italian>
+    <Spanish>+%d1 turnos de anarqu&#237;a al cambiar principios (m&#225;x. +2)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNREST_CURRENT_EFFECT</Tag>
+    <English>Current unrest: %d1 cities</English>
+    <French>Troubles actuels : %d1 villes</French>
+    <German>Aktuelle Unruhen: %d1 St&#228;dte</German>
+    <Italian>Disordini attuali: %d1 citt&#224;</Italian>
+    <Spanish>Disturbios actuales: %d1 ciudades</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COMBINED_MEDDLING</Tag>
+    <English>Combined effects of all political meddling.</English>
+    <French>Effets combin&#233;s de toutes les ing&#233;rences politiques.</French>
+    <German>Gemeinsame Wirkung aller politischen Einmischungen.</German>
+    <Italian>Effetti combinati di tutte le ingerenze politiche.</Italian>
+    <Spanish>Efectos combinados de toda la injerencia pol&#237;tica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_CURRENT_EFFECT</Tag>
+    <English>%d1%% chance per turn to reveal an area (max. 25%%)</English>
+    <French>%d1%% de chance par tour de r&#233;v&#233;ler une zone (max. 25%%)</French>
+    <German>%d1%% Chance pro Runde, ein Gebiet aufzudecken (max. 25%%)</German>
+    <Italian>%d1%% probabilit&#224; per turno di rivelare un&#8217;area (max. 25%%)</Italian>
+    <Spanish>%d1%% de probabilidad por turno de revelar una zona (m&#225;x. 25%%)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_REPORT_DURATION</Tag>
+    <English>Current city report: %d1 turns remaining</English>
+    <French>Rapport urbain actuel : %d1 tours restants</French>
+    <German>Aktueller Stadtbericht: noch %d1 Runden</German>
+    <Italian>Rapporto cittadino attuale: %d1 turni rimasti</Italian>
+    <Spanish>Informe de ciudad actual: quedan %d1 turnos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NO_ACTIVE_PROJECT</Tag>
+    <English>No active technology project.</English>
+    <French>Aucun projet technologique actif.</French>
+    <German>Kein aktives Forschungsziel.</German>
+    <Italian>Nessun progetto tecnologico attivo.</Italian>
+    <Spanish>Ning&#250;n proyecto tecnol&#243;gico activo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICS_CURRENT_SHORT</Tag>
+    <English>Meddling: %d1 stability (combined)</English>
+    <French>Ing&#233;rence : %d1 stabilit&#233; (total)</French>
+    <German>Einmischung: %d1 Stabilit&#228;t (gesamt)</German>
+    <Italian>Ingerenza: %d1 stabilit&#224; (totale)</Italian>
+    <Spanish>Injerencia: %d1 estabilidad (total)</Spanish>
+  </TEXT>
+</Civ4GameText>

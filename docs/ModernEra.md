@@ -87,7 +87,8 @@ no welfare spending levels, demographic model or new victory condition.
 These eight technologies and the three repeat fields cannot be traded. The
 eight AI/automation technologies are also excluded from the old worldwide tech-owner
 discount, so other countries discovering them does not erase the intended
-investment. Espionage retains its normal rules. The costs and effect sizes are
+investment. These technologies can still supply the intelligence network's
+technology-stealing mode once its research prerequisites are met. The costs and effect sizes are
 initial design values, not measured balance results.
 
 The Autonomous Combat Vehicle has strength 42, 2 movement and a production cost
