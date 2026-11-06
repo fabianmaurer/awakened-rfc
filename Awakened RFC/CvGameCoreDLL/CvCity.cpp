@@ -527,6 +527,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iHealRate = 0;
 	m_iEspionageHealthCounter = 0;
 	m_iEspionageHappinessCounter = 0;
+    m_iIntelligenceUnrestTurns = 0;
 	m_iFreshWaterGoodHealth = 0;
 	m_iFreshWaterBadHealth = 0;
 	m_iFeatureGoodHealth = 0;
@@ -1139,6 +1140,12 @@ void CvCity::doTurn()
 	{
 		changeEspionageHappinessCounter(-1);
 	}
+    if (m_iIntelligenceUnrestTurns > 0)
+    {
+        --m_iIntelligenceUnrestTurns;
+        AI_setAssignWorkDirty(true);
+        setInfoDirty(true);
+    }
 
 	if (isOccupation() || (angryPopulation() > 0) || (healthRate() < 0))
 	{
@@ -4752,6 +4759,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness -= std::min(0, GC.getHandicapInfo(getHandicapType()).getHappyBonus());
 		iUnhappiness += std::max(0, getVassalUnhappiness());
 		iUnhappiness += std::max(0, getEspionageHappinessCounter());
+        iUnhappiness += getIntelligenceUnrestTurns() > 0 ? 2 : 0;
 		iUnhappiness += (int)m_aiSlaveRefugeeUnhappinessExpiryTurns.size();
 	}
 
@@ -6247,6 +6255,18 @@ void CvCity::changeEspionageHealthCounter(int iChange)
 	{
 		m_iEspionageHealthCounter += iChange;
 	}
+}
+
+int CvCity::getIntelligenceUnrestTurns() const
+{
+    return m_iIntelligenceUnrestTurns;
+}
+
+void CvCity::startIntelligenceUnrest(int iTurns)
+{
+    m_iIntelligenceUnrestTurns = std::max(m_iIntelligenceUnrestTurns, iTurns);
+    AI_setAssignWorkDirty(true);
+    setInfoDirty(true);
 }
 
 int CvCity::getEspionageHappinessCounter() const
@@ -13347,6 +13367,7 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iHealRate);
 	pStream->Read(&m_iEspionageHealthCounter);
 	pStream->Read(&m_iEspionageHappinessCounter);
+    pStream->Read(&m_iIntelligenceUnrestTurns);
 	pStream->Read(&m_iFreshWaterGoodHealth);
 	pStream->Read(&m_iFreshWaterBadHealth);
 	pStream->Read(&m_iFeatureGoodHealth);
@@ -13658,6 +13679,7 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iHealRate);
 	pStream->Write(m_iEspionageHealthCounter);
 	pStream->Write(m_iEspionageHappinessCounter);
+    pStream->Write(m_iIntelligenceUnrestTurns);
 	pStream->Write(m_iFreshWaterGoodHealth);
 	pStream->Write(m_iFreshWaterBadHealth);
 	pStream->Write(m_iFeatureGoodHealth);
@@ -15438,5 +15460,5 @@ void CvCity::getBuildQueue(std::vector<std::string>& astrQueue) const
 
 int CvCity::getIntelligenceChecksum() const
 {
-    return (m_iIntelligenceSuppressionTurn + 1) * 151 + (m_iIntelligenceSuppressionRollTurn + 1) * 157;
+    return (m_iIntelligenceSuppressionTurn + 1) * 151 + (m_iIntelligenceSuppressionRollTurn + 1) * 157 + m_iIntelligenceUnrestTurns * 163;
 }

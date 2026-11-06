@@ -8920,6 +8920,7 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		iOldAnger = iNewAnger;
 
 		iNewAnger += std::max(0, city.getEspionageHappinessCounter());
+        iNewAnger += city.getIntelligenceUnrestTurns() > 0 ? 2 : 0;
 		iAnger = ((iNewAnger - iOldAnger) + std::min(0, iOldAnger));
 		if (iAnger > 0)
 		{

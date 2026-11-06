@@ -1334,22 +1334,27 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   is untouched; defense resumes its underlying value afterward.
 - **Political meddling:** pressure rises gradually and recovers after operations
   stop. Larger populations resist more effectively. Pressure from all attackers
-  shares a cap of -6 stability and two additional civic-change anarchy turns;
-  civilizations immune to anarchy retain that immunity. Short local unhappiness
-  can occur, with an eight-turn cooldown at Normal speed. The stability effect
+  shares a cap of -6 stability and two additional civic-change anarchy turns
+  at Normal speed (four on XL);
+  civilizations immune to anarchy retain that immunity. Local unrest causes
+  +2 unhappiness for two Normal turns or four XL turns, with a cooldown of
+  eight Normal turns or sixteen XL turns. Severity is independent of duration. The stability effect
   enters the existing diplomacy component, rather than accumulating permanent
   damage each turn.
-- **Map intelligence:** a successful report reveals a 7x7 area around a target
+- **Map intelligence:** a successful report reveals a 7x7 area (11x11 on XL) around a target
   city, prioritizing unmapped areas, and gives temporary city visibility for
-  three turns at Normal speed. The per-turn chance is capped at 25% and declines
+  three turns at Normal speed. The per-turn chance is capped at 25% at Normal speed (12.5% on XL) and declines
   with the target's city count. Geography stays revealed. Live visibility expires
   or ends when the operation changes; reports still provide city intelligence
   when the map is already known.
 
-Effective operations risk discovery each turn: 1% for technology/maps, 3% for
-military operations, and 6% for politics. Discovery adds diplomatic resentment,
+At Normal speed, effective operations risk discovery each turn: 1% for
+technology/maps, 3% for military operations, and 6% for politics. On XL these
+chances are 0.5%, 1.5% and 3%. Discovery adds diplomatic resentment,
 with respective caps of -1, -3 and -6 attitude. Existing resentment survives
-mode changes and decays by two hundredths of an attitude point per turn. The
+mode changes and decays by two hundredths of an attitude point per Normal
+turn, or one hundredth per XL turn. Non-combat event chances scale with the
+calendar; military infiltration continues to roll every gameplay turn. The
 advisor and diplomatic attitude tooltip show the resulting penalty. The AI
 chooses modes and budgets for catch-up, warfare, political hostility and mapping.
 

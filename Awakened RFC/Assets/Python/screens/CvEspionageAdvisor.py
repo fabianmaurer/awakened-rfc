@@ -18,6 +18,10 @@ def tr(key, args=()):
     return text.getText("TXT_KEY_INTEL_" + key, args)
 
 
+def chanceText(basisPoints):
+    return (u"%d.%02d" % (basisPoints / 100, basisPoints % 100)).rstrip(u"0").rstrip(u".")
+
+
 class CvEspionageAdvisor:
     def __init__(self):
         self.SCREEN_NAME = "EspionageAdvisor"
@@ -103,7 +107,7 @@ class CvEspionageAdvisor:
         while city and not city.isNone():
             if city.getEspionageVisibility(team):
                 visible += 1
-            if city.getEspionageHappinessCounter() > 0:
+            if city.getEspionageHappinessCounter() > 0 or city.getIntelligenceUnrestTurns() > 0:
                 unrest += 1
             city, iterator = rival.nextCity(iterator, False)
         return visible, unrest
@@ -180,7 +184,7 @@ class CvEspionageAdvisor:
             elif active == 2:
                 amount = -rival.getIntelligenceData(-1, 20)
             else:
-                amount = player.getIntelligenceData(i, 10)
+                amount = chanceText(player.getIntelligenceData(i, 24))
             summary = tr(summaryKeys[active], (amount,))
             effectLabel = self.name()
             screen.setLabelAt(effectLabel, scroll, u"<font=1>%s</font>" % summary,
@@ -256,27 +260,28 @@ class CvEspionageAdvisor:
             self.label(tr("VISIBLE_CITIES", (visible,)), 352, y + 64)
         elif active == 2:
             penalty = rival.getIntelligenceData(-1, 20)
-            anarchy = penalty / 3
-            if rival.getMaxAnarchyTurns() == 0:
-                anarchy = 0
+            anarchy = rival.getIntelligenceData(-1, 25)
             self.label(tr("STABILITY_CURRENT_EFFECT", (-penalty, nation)), 352, y, True)
-            self.label(tr("ANARCHY_CURRENT_EFFECT", (anarchy,)), 352, y + 32)
+            self.label(tr("ANARCHY_CURRENT_EFFECT", (anarchy, rival.getIntelligenceData(-1, 26))), 352, y + 32)
             self.label(tr("UNREST_CURRENT_EFFECT", (unrest,)), 352, y + 64)
             self.label(tr("COMBINED_MEDDLING"), 352, y + 104)
         else:
-            self.label(tr("MAP_CURRENT_EFFECT", (player.getIntelligenceData(i, 10),)), 352, y, True)
+            self.label(tr("MAP_CURRENT_EFFECT", (chanceText(player.getIntelligenceData(i, 24)), chanceText(player.getIntelligenceData(-1, 29)))), 352, y, True)
             self.label(tr("VISIBLE_CITIES", (visible,)), 352, y + 32)
             turns = player.getIntelligenceData(i, 11)
             if visible == 0:
                 turns = 0
             self.label(tr("REPORT_DURATION", (turns,)), 352, y + 64)
+            diameter = 2 * player.getIntelligenceData(-1, 28) + 1
+            self.label(tr("MAP_AREA", (diameter, diameter)), 352, y + 96)
         if active != pending:
             self.label(tr("QUEUED", (self.modeName(pending),)), 352, 578)
-        risk = tr("RISK_LOW")
+        discovery = chanceText(player.getIntelligenceData(i, 27))
+        risk = tr("RISK_LOW", (discovery,))
         if active == 1:
-            risk = tr("RISK_MEDIUM")
+            risk = tr("RISK_MEDIUM", (discovery,))
         elif active == 2:
-            risk = tr("RISK_HIGH")
+            risk = tr("RISK_HIGH", (discovery,))
         self.label(tr("RISK", (risk,)), 352, 607)
         self.panel(336, 638, 668, 65)
         self.label(tr("ACCESS", (player.getIntelligenceData(i, 2),)), 352, 649)

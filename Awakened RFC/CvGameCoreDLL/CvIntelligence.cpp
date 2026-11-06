@@ -18,10 +18,38 @@ namespace
 {
     // Mode IDs are also the values sent by the existing synchronized spending message.
     enum { INTEL_TECHNOLOGY, INTEL_MILITARY, INTEL_POLITICS, INTEL_MAPS };
+    int intelligenceSpeedPercent()
+    {
+        GameSpeedTypes eNormal = (GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL");
+        int iNormal = GC.getGameSpeedInfo(eNormal).getResearchPercent();
+        return std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent() * 100 / std::max(1, iNormal));
+    }
+
     int scaledTurns(int iTurns)
     {
-        return std::max(1, iTurns * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent() / 100);
+        return iTurns <= 0 ? 0 : std::max(1, iTurns * intelligenceSpeedPercent() / 100);
     }
+
+    int scaledChance(int iPercent)
+    {
+        // Basis points retain half-percent chances on the XL calendar.
+        return range(iPercent * 10000 / intelligenceSpeedPercent(), 0, 10000);
+    }
+
+    int scaledAnarchyTurns(int iTurns)
+    {
+        if (iTurns <= 0) return 0;
+        GameSpeedTypes eNormal = (GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL");
+        return std::max(1, iTurns * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getAnarchyPercent() /
+            std::max(1, GC.getGameSpeedInfo(eNormal).getAnarchyPercent()));
+    }
+
+    int mapReportRadius()
+    {
+        // Scale the reference world's radius 3 with the supported geography widths.
+        return std::max(1, (3 * GC.getMapINLINE().getGridWidth() + 62) / 124);
+    }
+
 }
 
 bool CvPlayer::canIntelligenceTarget(PlayerTypes eTarget) const
@@ -163,12 +191,12 @@ int CvPlayer::getIntelligenceStabilityPenalty() const
 
 int CvPlayer::getIntelligenceAnarchyExtra() const
 {
-    return getIntelligenceStabilityPenalty() / 3; // at most two normal-speed turns
+    return getMaxAnarchyTurns() == 0 ? 0 : scaledAnarchyTurns(getIntelligenceStabilityPenalty() / 3);
 }
 
 int CvPlayer::getIntelligenceRelationPenalty(TeamTypes eTarget) const
 {
-    return (eTarget >= 0 && eTarget < MAX_TEAMS) ? (m_aiIntelligenceExposure[eTarget] + 99) / 100 : 0;
+    return (eTarget >= 0 && eTarget < MAX_TEAMS) ? (m_aiIntelligenceExposure[eTarget] + 9999) / 10000 : 0;
 }
 
 bool CvPlayer::hasIntelligenceCityVisibility(const CvCity* pCity) const
@@ -190,6 +218,10 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     if (iField == 21) return m_eIntelligenceResearch;
     if (iField == 22) return getIntelligenceResearchRate(m_eIntelligenceResearch);
     if (iField == 23) return m_iIntelligenceLastResearch;
+    if (iField == 25) return getIntelligenceAnarchyExtra();
+    if (iField == 26) return scaledAnarchyTurns(2);
+    if (iField == 28) return mapReportRadius();
+    if (iField == 29) return scaledChance(25);
     if (iTarget < 0 || iTarget >= NUM_MAJOR_PLAYERS) return 0;
     PlayerTypes eTarget = (PlayerTypes)iTarget;
     TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
@@ -205,7 +237,10 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     case 7: return getIntelligenceSuppressionChance(eTarget);
     case 8: return getIntelligenceRelationPenalty(eTeam);
     case 9: return getIntelligenceDefense(eTarget);
-    case 10: return std::min(25, getIntelligenceRate(eTarget) * 25 / (30 + GET_PLAYER(eTarget).getNumCities() * 3));
+    case 10: return getIntelligenceData(iTarget, 24) / 100;
+    case 24: return scaledChance(std::min(25, getIntelligenceRate(eTarget) * 25 / (30 + GET_PLAYER(eTarget).getNumCities() * 3)));
+    case 27:
+        return scaledChance(getIntelligenceMode(eTeam) == INTEL_POLITICS ? 6 : (getIntelligenceMode(eTeam) == INTEL_MILITARY ? 3 : 1));
     case 11: return m_aiIntelligenceReportUntil[eTeam] > GC.getGameINLINE().getGameTurn() ? m_aiIntelligenceReportUntil[eTeam] - GC.getGameINLINE().getGameTurn() : 0;
     case 14:
         return m_eIntelligenceResearch != NO_TECH && !GET_TEAM(getTeam()).isHasTech(m_eIntelligenceResearch) &&
@@ -231,7 +266,7 @@ void CvPlayer::doIntelligencePressure()
     else m_iIntelligencePressure = std::max(iTarget, m_iIntelligencePressure - iStep);
     if (m_iIntelligenceUnrestCooldown > 0) --m_iIntelligenceUnrestCooldown;
     if (getIntelligenceStabilityPenalty() > 0 && m_iIntelligenceUnrestCooldown == 0 &&
-        GC.getGameINLINE().getSorenRandNum(100, "Intelligence unrest") < getIntelligenceStabilityPenalty())
+        GC.getGameINLINE().getSorenRandNum(10000, "Intelligence unrest") < scaledChance(getIntelligenceStabilityPenalty()))
     {
         int iLoop;
         CvCity* pCity;
@@ -240,7 +275,7 @@ void CvPlayer::doIntelligencePressure()
         for (pCity = firstCity(&iLoop); pCity && iOrdinal > 0; pCity = nextCity(&iLoop)) --iOrdinal;
         if (pCity)
         {
-            pCity->changeEspionageHappinessCounter(scaledTurns(2));
+            pCity->startIntelligenceUnrest(scaledTurns(2));
             gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
                 gDLL->getText("TXT_KEY_INTEL_UNREST", pCity->getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
                 NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), pCity->getX_INLINE(), pCity->getY_INLINE(), true, true);
@@ -259,7 +294,7 @@ void CvPlayer::doEspionagePoints()
     {
         m_aiIntelligenceMode[t] = m_aiEspionageSpendingWeightAgainstTeam[t];
         m_aiIntelligenceStrength[t] = 0;
-        if (m_aiIntelligenceExposure[t] > 0) m_aiIntelligenceExposure[t] = std::max(0, m_aiIntelligenceExposure[t] - 2);
+        if (m_aiIntelligenceExposure[t] > 0) m_aiIntelligenceExposure[t] = std::max(0, m_aiIntelligenceExposure[t] - std::max(1, 20000 / intelligenceSpeedPercent()));
     }
     if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) return;
     int iTurn = GC.getGameINLINE().getGameTurn();
@@ -283,10 +318,10 @@ void CvPlayer::doEspionagePoints()
             int iMode = getIntelligenceMode(eTeam);
             int iSeverity = iMode == INTEL_POLITICS ? 3 : (iMode == INTEL_MILITARY ? 2 : 1);
             int iRisk = iMode == INTEL_POLITICS ? 6 : (iMode == INTEL_MILITARY ? 3 : 1);
-            if (GC.getGameINLINE().getSorenRandNum(100, "Intelligence discovery") < iRisk)
+            if (GC.getGameINLINE().getSorenRandNum(10000, "Intelligence discovery") < scaledChance(iRisk))
             {
                 m_aiIntelligenceExposure[eTeam] = std::max(m_aiIntelligenceExposure[eTeam],
-                    std::min(iMode == INTEL_POLITICS ? 600 : (iMode == INTEL_MILITARY ? 300 : 100), m_aiIntelligenceExposure[eTeam] + 100 * iSeverity));
+                    std::min(iMode == INTEL_POLITICS ? 60000 : (iMode == INTEL_MILITARY ? 30000 : 10000), m_aiIntelligenceExposure[eTeam] + 10000 * iSeverity));
                 gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
                     gDLL->getText("TXT_KEY_INTEL_DISCOVERED", kTarget.getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
                 gDLL->getInterfaceIFace()->addMessage(eTarget, false, GC.getEVENT_MESSAGE_TIME(),
@@ -313,14 +348,15 @@ void CvPlayer::doEspionagePoints()
                     if (bAdjacent) pCity->rollIntelligenceSuppression(getID(), getIntelligenceSuppressionChance(eTarget));
                 }
             }
-            if (iMode == INTEL_MAPS && GC.getGameINLINE().getSorenRandNum(100, "Intelligence map report") < getIntelligenceData(i, 10))
+            if (iMode == INTEL_MAPS && GC.getGameINLINE().getSorenRandNum(10000, "Intelligence map report") < getIntelligenceData(i, 24))
             {
                 CvCity* pBest = NULL;
+                const int iRadius = mapReportRadius();
                 int iBest = -1, iCityLoop;
                 for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop))
                 {
                     int iUnknown = 0;
-                    for (int dx = -3; dx <= 3; ++dx) for (int dy = -3; dy <= 3; ++dy)
+                    for (int dx = -iRadius; dx <= iRadius; ++dx) for (int dy = -iRadius; dy <= iRadius; ++dy)
                     {
                         CvPlot* pPlot = plotXY(pCity->getX_INLINE(), pCity->getY_INLINE(), dx, dy);
                         if (pPlot && !pPlot->isRevealed(getTeam(), false)) ++iUnknown;
@@ -330,7 +366,7 @@ void CvPlayer::doEspionagePoints()
                 }
                 if (pBest)
                 {
-                    for (int dx = -3; dx <= 3; ++dx) for (int dy = -3; dy <= 3; ++dy)
+                    for (int dx = -iRadius; dx <= iRadius; ++dx) for (int dy = -iRadius; dy <= iRadius; ++dy)
                     {
                         CvPlot* pPlot = plotXY(pBest->getX_INLINE(), pBest->getY_INLINE(), dx, dy);
                         if (pPlot) pPlot->setRevealed(getTeam(), true, false, NO_TEAM, true);

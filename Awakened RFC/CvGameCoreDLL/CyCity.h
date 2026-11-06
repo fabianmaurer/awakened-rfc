@@ -220,6 +220,7 @@ public:
 
 	int getEspionageHealthCounter();
 	void changeEspionageHealthCounter(int iChange);
+    int getIntelligenceUnrestTurns();
 	int getEspionageHappinessCounter();
 	void changeEspionageHappinessCounter(int iChange);
 

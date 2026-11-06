@@ -953,6 +953,11 @@ void CyCity::changeEspionageHealthCounter(int iChange)
 		m_pCity->changeEspionageHealthCounter(iChange);
 }
 
+int CyCity::getIntelligenceUnrestTurns()
+{
+    return m_pCity ? m_pCity->getIntelligenceUnrestTurns() : 0;
+}
+
 int CyCity::getEspionageHappinessCounter()
 {
 	return m_pCity ? m_pCity->getEspionageHappinessCounter() : -1;

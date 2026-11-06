@@ -242,11 +242,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_POLITICAL_LIMIT</Tag>
-    <English>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</English>
-    <French>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</French>
-    <German>Druck steigt langsam und sinkt nach Ende der Operation. Alle Angreifer zusammen verursachen h&#246;chstens -6 Stabilit&#228;t und +2 Runden Anarchie. Lokale Unruhen haben eine Wartezeit.</German>
-    <Italian>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</Italian>
-    <Spanish>Pressure builds gradually and recovers when operations stop. All attackers together can cause at most -6 stability and +2 anarchy turns. Local unrest has a cooldown.</Spanish>
+    <English>Combined pressure causes at most -6 stability and +2 anarchy turns at Normal speed, or +4 on XL. Unrest causes +2 unhappiness for 2 Normal turns or 4 XL turns. Pressure recovers after operations stop.</English>
+    <French>La pression totale cause au plus -6 de stabilit&#233; et +2 tours d&#8217;anarchie en vitesse normale, ou +4 en XL. Les troubles causent +2 m&#233;contentements pendant 2 tours normaux ou 4 tours XL. La pression baisse apr&#232;s les op&#233;rations.</French>
+    <German>Gemeinsamer Druck verursacht h&#246;chstens -6 Stabilit&#228;t und +2 Runden Anarchie bei normalem Tempo, auf XL +4. Unruhen verursachen +2 Unzufriedenheit f&#252;r 2 normale oder 4 XL-Runden. Nach Ende der Operation sinkt der Druck.</German>
+    <Italian>La pressione totale causa al massimo -6 stabilit&#224; e +2 turni di anarchia a velocit&#224; normale, o +4 su XL. I disordini causano +2 infelicit&#224; per 2 turni normali o 4 turni XL. La pressione cala al termine delle operazioni.</Italian>
+    <Spanish>La presi&#243;n total causa como m&#225;ximo -6 estabilidad y +2 turnos de anarqu&#237;a a velocidad normal, o +4 en XL. Los disturbios causan +2 infelicidad durante 2 turnos normales o 4 turnos XL. La presi&#243;n baja al terminar las operaciones.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MAP_RESULT</Tag>
@@ -266,27 +266,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK_LOW</Tag>
-    <English>Low (1% discovery chance per turn)</English>
-    <French>Low (1% discovery chance per turn)</French>
-    <German>Gering (1% Entdeckungsgefahr pro Runde)</German>
-    <Italian>Low (1% discovery chance per turn)</Italian>
-    <Spanish>Low (1% discovery chance per turn)</Spanish>
+    <English>Low (%s1%% discovery chance per turn)</English>
+    <French>Faible (%s1%% de risque de d&#233;couverte par tour)</French>
+    <German>Gering (%s1%% Entdeckungsgefahr pro Runde)</German>
+    <Italian>Basso (%s1%% di rischio di scoperta per turno)</Italian>
+    <Spanish>Bajo (%s1%% de riesgo de descubrimiento por turno)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK_MEDIUM</Tag>
-    <English>Medium (3% discovery chance per turn)</English>
-    <French>Medium (3% discovery chance per turn)</French>
-    <German>Mittel (3% Entdeckungsgefahr pro Runde)</German>
-    <Italian>Medium (3% discovery chance per turn)</Italian>
-    <Spanish>Medium (3% discovery chance per turn)</Spanish>
+    <English>Medium (%s1%% discovery chance per turn)</English>
+    <French>Moyen (%s1%% de risque de d&#233;couverte par tour)</French>
+    <German>Mittel (%s1%% Entdeckungsgefahr pro Runde)</German>
+    <Italian>Medio (%s1%% di rischio di scoperta per turno)</Italian>
+    <Spanish>Medio (%s1%% de riesgo de descubrimiento por turno)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK_HIGH</Tag>
-    <English>High (6% discovery chance per turn)</English>
-    <French>High (6% discovery chance per turn)</French>
-    <German>Hoch (6% Entdeckungsgefahr pro Runde)</German>
-    <Italian>High (6% discovery chance per turn)</Italian>
-    <Spanish>High (6% discovery chance per turn)</Spanish>
+    <English>High (%s1%% discovery chance per turn)</English>
+    <French>&#201;lev&#233; (%s1%% de risque de d&#233;couverte par tour)</French>
+    <German>Hoch (%s1%% Entdeckungsgefahr pro Runde)</German>
+    <Italian>Alto (%s1%% di rischio di scoperta per turno)</Italian>
+    <Spanish>Alto (%s1%% de riesgo de descubrimiento por turno)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK</Tag>
@@ -450,11 +450,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MAP_SHORT</Tag>
-    <English>Report chance: %d1%%/turn</English>
-    <French>Report chance: %d1%%/turn</French>
-    <German>Berichtschance: %d1%%/Runde</German>
-    <Italian>Report chance: %d1%%/turn</Italian>
-    <Spanish>Report chance: %d1%%/turn</Spanish>
+    <English>Report chance: %s1%%/turn</English>
+    <French>Rapport : %s1%%/tour</French>
+    <German>Berichtschance: %s1%%/Runde</German>
+    <Italian>Rapporto: %s1%%/turno</Italian>
+    <Spanish>Informe: %s1%%/turno</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_SOURCE</Tag>
@@ -546,11 +546,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_ANARCHY_CURRENT_EFFECT</Tag>
-    <English>+%d1 civic-change anarchy turns (max. +2)</English>
-    <French>+%d1 tours d&#8217;anarchie lors des changements de doctrine (max. +2)</French>
-    <German>+%d1 Runden Anarchie bei Staatsformwechseln (max. +2)</German>
-    <Italian>+%d1 turni di anarchia ai cambi di politica (max. +2)</Italian>
-    <Spanish>+%d1 turnos de anarqu&#237;a al cambiar principios (m&#225;x. +2)</Spanish>
+    <English>+%d1 civic-change anarchy turns (max. +%d2)</English>
+    <French>+%d1 tours d&#8217;anarchie lors des changements de doctrine (max. +%d2)</French>
+    <German>+%d1 Runden Anarchie bei Staatsformwechseln (max. +%d2)</German>
+    <Italian>+%d1 turni di anarchia ai cambi di politica (max. +%d2)</Italian>
+    <Spanish>+%d1 turnos de anarqu&#237;a al cambiar principios (m&#225;x. +%d2)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_UNREST_CURRENT_EFFECT</Tag>
@@ -570,11 +570,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MAP_CURRENT_EFFECT</Tag>
-    <English>%d1%% chance per turn to reveal an area (max. 25%%)</English>
-    <French>%d1%% de chance par tour de r&#233;v&#233;ler une zone (max. 25%%)</French>
-    <German>%d1%% Chance pro Runde, ein Gebiet aufzudecken (max. 25%%)</German>
-    <Italian>%d1%% probabilit&#224; per turno di rivelare un&#8217;area (max. 25%%)</Italian>
-    <Spanish>%d1%% de probabilidad por turno de revelar una zona (m&#225;x. 25%%)</Spanish>
+    <English>%s1%% chance per turn to reveal an area (max. %s2%%)</English>
+    <French>%s1%% de chance par tour de r&#233;v&#233;ler une zone (max. %s2%%)</French>
+    <German>%s1%% Chance pro Runde, ein Gebiet aufzudecken (max. %s2%%)</German>
+    <Italian>%s1%% probabilit&#224; per turno di rivelare un&#8217;area (max. %s2%%)</Italian>
+    <Spanish>%s1%% de probabilidad por turno de revelar una zona (m&#225;x. %s2%%)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_REPORT_DURATION</Tag>
@@ -599,5 +599,13 @@
     <German>Einmischung: %d1 Stabilit&#228;t (gesamt)</German>
     <Italian>Ingerenza: %d1 stabilit&#224; (totale)</Italian>
     <Spanish>Injerencia: %d1 estabilidad (total)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MAP_AREA</Tag>
+    <English>Area revealed per report: %d1 x %d2 tiles</English>
+    <French>Zone r&#233;v&#233;l&#233;e par rapport : %d1 x %d2 cases</French>
+    <German>Gebiet je Bericht: %d1 x %d2 Felder</German>
+    <Italian>Area rivelata per rapporto: %d1 x %d2 caselle</Italian>
+    <Spanish>Zona revelada por informe: %d1 x %d2 casillas</Spanish>
   </TEXT>
 </Civ4GameText>

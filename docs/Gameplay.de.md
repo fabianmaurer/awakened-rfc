@@ -1111,20 +1111,25 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
 - **Politische Einmischung:** Druck steigt langsam und sinkt nach Ende der
   Operation. Große Bevölkerungen leisten mehr Widerstand. Alle Angreifer
   zusammen verursachen höchstens -6 Stabilität und zwei zusätzliche Runden
-  Anarchie bei Staatsformwechseln. Anarchieimmunität bleibt erhalten. Kurze
-  lokale Unzufriedenheit ist möglich; bei normalem Spieltempo liegen mindestens
-  acht Runden zwischen Vorfällen. Der Stabilitätseffekt gehört zur Diplomatie
+  Anarchie bei normalem Spieltempo, auf XL vier. Anarchieimmunität bleibt
+  erhalten. Lokale Unruhen verursachen +2 Unzufriedenheit für zwei normale
+  oder vier XL-Runden. Zwischen Vorfällen liegen mindestens acht normale
+  oder sechzehn XL-Runden. Stärke und Dauer werden getrennt berechnet. Der Stabilitätseffekt gehört zur Diplomatie
   und verursacht keinen fortlaufend angesammelten dauerhaften Schaden.
-- **Kartenspionage:** Berichte enthüllen ein Gebiet von 7x7 Feldern um eine
+- **Kartenspionage:** Berichte enthüllen ein Gebiet von 7x7 Feldern (auf XL 11x11) um eine
   Zielstadt und zeigen dort bei normalem Spieltempo drei Runden das Geschehen.
   Unbekanntes Gebiet wird bevorzugt. Größere Reiche senken die Berichtschance,
-  die höchstens 25% pro Runde beträgt. Gelände bleibt bekannt; aktuelle Sicht
+  die bei normalem Tempo höchstens 25% und auf XL 12,5% pro Runde beträgt. Gelände bleibt bekannt; aktuelle Sicht
   endet mit dem Bericht oder beim Moduswechsel.
 
 Wirksame Operationen können pro Runde entdeckt werden: Technologie/Karten mit
-1%, Militär mit 3%, Politik mit 6%. Entdeckungen verschlechtern die Haltung des
+1%, Militär mit 3%, Politik mit 6% bei normalem Tempo. Auf XL gelten
+0,5%, 1,5% und 3%. Entdeckungen verschlechtern die Haltung des
 Ziels um höchstens -1, -3 beziehungsweise -6. Bestehende Abzüge überdauern
-Moduswechsel und sinken pro Runde um zwei Hundertstel eines Haltungspunkts.
+Moduswechsel und sinken pro normaler Runde um zwei Hundertstel eines
+Haltungspunkts, pro XL-Runde um ein Hundertstel. Nichtmilitärische
+Ereignischancen folgen dem Kalender; militärische Infiltration wird
+weiterhin jede Spielrunde geprüft.
 Berater und Diplomatie-Tooltip zeigen den Abzug. Die KI wählt passende Operationen
 und Budgets. Werte sind vorläufig; Darstellung, Balance und Mehrspielerbetrieb
 benötigen eine vom Benutzer durchgeführte Prüfung im Spiel. Das neue

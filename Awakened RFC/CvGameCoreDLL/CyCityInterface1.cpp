@@ -212,6 +212,7 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 
 		.def("getEspionageHealthCounter", &CyCity::getEspionageHealthCounter, "int ()")
 		.def("changeEspionageHealthCounter", &CyCity::changeEspionageHealthCounter, "void (int iChange)")
+        .def("getIntelligenceUnrestTurns", &CyCity::getIntelligenceUnrestTurns, "int ()")
 		.def("getEspionageHappinessCounter", &CyCity::getEspionageHappinessCounter, "int ()")
 		.def("changeEspionageHappinessCounter", &CyCity::changeEspionageHappinessCounter, "void (int iChange)")
 
