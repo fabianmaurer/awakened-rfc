@@ -219,7 +219,7 @@ def native():
         elif key in ('Crusades.regions', 'Arabia.egypt'):
             result[key] = [n for i in range(0, len(value), 4)
                            for n in rectangle(value[i:i + 4])]
-        elif key in ('World.rome', 'World.mecca'):
+        elif key in ('World.rome', 'World.mecca', 'Jihad.egyptStage', 'Jihad.persiaStage'):
             result[key] = [axis(n, i % 2 == 1) for i, n in enumerate(value)]
         elif 'iAmericanEdge' in key:
             result[key] = [edge(n + 1) - 1 for n in value]

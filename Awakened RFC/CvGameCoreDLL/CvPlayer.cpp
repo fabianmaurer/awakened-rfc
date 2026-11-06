@@ -8401,8 +8401,9 @@ void CvPlayer::createJihadCampaign(int iCampaign, int iRecruitPackages)
     if (pStage == NULL) return;
     if (iCampaign > 0)
     {
-        const int iTargetX = iCampaign == 1 ? 70 : 82;
-        const int iTargetY = iCampaign == 1 ? 35 : 39;
+        const char* szStage = iCampaign == 1 ? "Jihad.egyptStage" : "Jihad.persiaStage";
+        const int iTargetX = scenarioGeographyValue(szStage, 0);
+        const int iTargetY = scenarioGeographyValue(szStage, 1);
         int iBestDistance = MAX_INT;
         int iCityLoop;
         for (CvCity* pCity = firstCity(&iCityLoop); pCity != NULL; pCity = nextCity(&iCityLoop))

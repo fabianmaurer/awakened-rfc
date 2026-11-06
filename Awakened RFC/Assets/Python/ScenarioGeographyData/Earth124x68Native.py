@@ -297,5 +297,7 @@ VALUES = {'Caliphate.capitalX': [78, 69, 51],
  'CvPlayer.founding_4': [35],
  'CvPlayer.founding_5': [35],
  'World.rome': [60, 44],
+ 'Jihad.egyptStage': [70, 35],
+ 'Jihad.persiaStage': [82, 39],
  'World.mecca': [75, 33],
  'Arabia.egypt': [65, 30, 72, 37]}
