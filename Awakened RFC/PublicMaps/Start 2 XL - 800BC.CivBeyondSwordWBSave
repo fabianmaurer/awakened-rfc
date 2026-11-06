@@ -74248,14 +74248,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	RouteType=ROUTE_ROAD
-BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=4
-		UnitAIType=UNITAI_WORKER
-	EndUnit
-BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=4
-		UnitAIType=UNITAI_WORKER
-	EndUnit
+
 EndPlot
 BeginPlot
 	x=105,y=66
@@ -76519,6 +76512,14 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	RouteType=ROUTE_ROAD
+BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=4
+		UnitAIType=UNITAI_WORKER
+	EndUnit
+BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=4
+		UnitAIType=UNITAI_WORKER
+	EndUnit
 BeginUnit
 		UnitType=UNIT_GALLEY, UnitOwner=4
 		UnitAIType=UNITAI_ASSAULT_SEA
@@ -82373,7 +82374,6 @@ BeginPlot
 	TerrainType=TERRAIN_COAST
 	PlotType=3
 	BonusType=BONUS_FISH
-	ImprovementType=IMPROVEMENT_FISHING_BOATS
 
 EndPlot
 BeginPlot
@@ -85320,17 +85320,13 @@ BeginPlot
 	PlotType=1
 	BonusType=BONUS_COPPER
 	RouteType=ROUTE_ROAD
-BeginUnit
-		UnitType=UNIT_WORKER, UnitOwner=3
-		UnitAIType=UNITAI_WORKER
-	EndUnit
+
 EndPlot
 BeginPlot
 	x=120,y=71
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BonusType=BONUS_SHEEP
-	ImprovementType=IMPROVEMENT_PASTURE
 
 EndPlot
 BeginPlot
@@ -86036,7 +86032,6 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BonusType=BONUS_IRON
-	ImprovementType=IMPROVEMENT_MINE
 
 EndPlot
 BeginPlot
@@ -87418,6 +87413,10 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
+		UnitType=UNIT_WORKER, UnitOwner=3
+		UnitAIType=UNITAI_WORKER
+	EndUnit
+BeginUnit
 		UnitType=UNIT_BABYLON_BOWMAN, UnitOwner=3
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
@@ -87458,6 +87457,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	RouteType=ROUTE_ROAD
+	ImprovementType=IMPROVEMENT_MINE
 
 EndPlot
 BeginPlot
@@ -88154,6 +88154,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BonusType=BONUS_SHEEP
+	ImprovementType=IMPROVEMENT_PASTURE
 
 EndPlot
 BeginPlot
@@ -100137,11 +100138,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BonusType=BONUS_WHEAT
-	ImprovementType=IMPROVEMENT_FARM
-BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=1
-		UnitAIType=UNITAI_WORKER
-	EndUnit
+
 EndPlot
 BeginPlot
 	x=141,y=68
@@ -100864,6 +100861,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BonusType=BONUS_SHEEP
+	ImprovementType=IMPROVEMENT_PASTURE
 
 EndPlot
 BeginPlot
@@ -100878,7 +100876,6 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BonusType=BONUS_COW
-	ImprovementType=IMPROVEMENT_PASTURE
 
 EndPlot
 BeginPlot
@@ -103009,6 +103006,7 @@ BeginPlot
 	x=145,y=64
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+	ImprovementType=IMPROVEMENT_FARM
 
 EndPlot
 BeginPlot
@@ -103016,6 +103014,10 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	RouteType=ROUTE_ROAD
+BeginUnit
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=1
+		UnitAIType=UNITAI_WORKER
+	EndUnit
 BeginUnit
 		UnitType=UNIT_WARRIOR, UnitOwner=1
 		UnitAIType=UNITAI_CITY_DEFENSE
@@ -103036,9 +103038,9 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
-
 	isNOfRiver
 	RiverWEDirection=1
+
 EndPlot
 BeginPlot
 	x=145,y=67
@@ -103737,9 +103739,9 @@ BeginPlot
 	FeatureType=FEATURE_FOREST, FeatureVariety=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
-
 	isNOfRiver
 	RiverWEDirection=1
+
 EndPlot
 BeginPlot
 	x=146,y=67
@@ -107301,6 +107303,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	RouteType=ROUTE_ROAD
+	ImprovementType=IMPROVEMENT_FARM
 
 EndPlot
 BeginPlot
@@ -107992,7 +107995,6 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BonusType=BONUS_WHEAT
-	ImprovementType=IMPROVEMENT_FARM
 
 EndPlot
 BeginPlot

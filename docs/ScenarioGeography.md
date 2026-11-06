@@ -3,7 +3,8 @@
 WorldBuilder scenarios select a geography profile through `SCENARIOS` in
 `Assets/Python/ScenarioGeography.py`. The five original start dates explicitly
 select `Earth124x68`; the alternative large 3000 BC start selects `Earth160x88`
-and both XL starts (3000 BC and 800 BC) select `Earth200x110`. The large start is currently
+and both XL starts (3000 BC and 800 BC) select `Earth200x110`. Uruk's two
+3000 BC XL farms lie inside its initial border. The large start is currently
 archived in `tools/scenario_templates/disabled`, outside the playable mod
 ([map details](LargeWorld.md)). Selection is by scenario filename, not map dimensions or
 start turn. A copied or renamed scenario needs its own registry entry.

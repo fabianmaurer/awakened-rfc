@@ -21,6 +21,19 @@ TARGET = MAPS / 'Start 2 XL - 800BC.CivBeyondSwordWBSave'
 DESCRIPTION = 'TXT_KEY_ARFC_800_BC_XL_DESC'
 PAYLOAD = re.compile(r'Begin(City|Unit)\b.*?End\1', re.S)
 
+# Scaling old coordinates can put workers and development beyond their cities'
+# unchanged starting culture radii. Keep these sites inside their owner's borders.
+WORKER_START_SITES = {1: (145, 65), 3: (123, 65), 4: (108, 67)}
+STARTING_DEVELOPMENT_SITES = {
+    (75, 42): (124, 67),  # sheep pasture inside Babili's second culture ring
+    (76, 42): (123, 68),  # mine southwest of Ninua
+    (88, 40): (144, 65),  # wheat farm west of Delhi
+    (89, 40): (142, 65),  # sheep pasture inside Delhi's third culture ring
+    (90, 38): (145, 64),  # farm south of Delhi
+    (91, 39): (151, 65),  # farm east of Patliputra
+    (92, 39): (150, 64),  # rice farm south of Patliputra
+}
+
 
 def read_map(path):
     text = path.read_text(encoding='utf-8-sig')
@@ -136,6 +149,14 @@ def main():
         entries = [m[0] for m in PAYLOAD.finditer(block)]
         if not entries:
             continue
+        for entry in entries[:]:
+            worker = re.search(r'UnitType=UNIT_(?:INDIAN_FAST_)?WORKER, UnitOwner=(\d+)', entry)
+            if worker and int(worker[1]) in WORKER_START_SITES:
+                dest = WORKER_START_SITES[int(worker[1])]
+                payloads.setdefault(dest, []).append(entry)
+                entries.remove(entry)
+        if not entries:
+            continue
         dest = resolve(pos)
         if 'BeginCity' in block:
             if dest in city_sites or not land(plots[dest]):
@@ -172,6 +193,11 @@ def main():
     for pos, lines in source.items():
         improvement = value(lines, 'ImprovementType')
         if improvement is None:
+            continue
+        if pos == (72, 39) and improvement == 'IMPROVEMENT_FISHING_BOATS':
+            # XL's nearest fish is outside both Sur's and Jerusalem's borders;
+            # there is no suitable owned fishery for this inherited improvement.
+            omitted.append((pos, improvement))
             continue
         try:
             dest = resolve(pos)
@@ -210,6 +236,10 @@ def main():
                                              value(plots[p], 'BonusType') != value(lines, 'BonusType'),
                                              improvement == 'IMPROVEMENT_FARM' and not river(plots, p),
                                              (p[0] - dest[0]) ** 2 + (p[1] - dest[1]) ** 2, p))
+            if pos in STARTING_DEVELOPMENT_SITES:
+                dest = STARTING_DEVELOPMENT_SITES[pos]
+                if not suitable(dest):
+                    raise ValueError('Invalid authored development site: ' + str(dest))
         if dest in city_sites or value(plots[dest], 'ImprovementType') is not None:
             raise ValueError('Development placement collision: ' + str(pos))
         put(plots[dest], 'ImprovementType', improvement)

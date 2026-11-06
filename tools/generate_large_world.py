@@ -923,6 +923,11 @@ def make_map(profile_values):
                     review=review, protected=protected, valleys=valleys,
                     event_fisheries=event_fisheries,
                     settlements=resource_free_settlements(profile_values) if review else ())
+    if review:
+        # Uruk has no starting culture. Keep its western farm in the first ring
+        # rather than two tiles away after scaling the standard map.
+        plots[123, 62].remove('ImprovementType=IMPROVEMENT_FARM')
+        plots[124, 62].append('ImprovementType=IMPROVEMENT_FARM')
     for old, new in [('grid width=124', 'grid width=%d' % WIDTH), ('grid height=68', 'grid height=%d' % HEIGHT),
                      ('num plots written=8432', 'num plots written=%d' % (WIDTH * HEIGHT)),
                      ('Description=TXT_KEY_RHYES_WB_DESC', 'Description=' + DESCRIPTION)]:
