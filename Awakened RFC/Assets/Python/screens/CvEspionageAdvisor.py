@@ -8,6 +8,11 @@ gc = CyGlobalContext()
 text = CyTranslator()
 art = CyArtFileMgr()
 
+INTEL_ART = "Art/Interface/Buttons/Intelligence/"
+PANEL_COLOR = (42, 42, 46)
+TILE_COLOR = (55, 55, 60)
+SELECTED_COLOR = (158, 0, 0)
+
 
 def tr(key, args=()):
     return text.getText("TXT_KEY_INTEL_" + key, args)
@@ -33,7 +38,7 @@ class CvEspionageAdvisor:
         size = "3b"
         if not large:
             size = "2"
-        self.getScreen().setLabel(self.name(), "Background", u"<font=%s>%s</font>" % (size, value),
+        self.getScreen().setLabel(self.name(), "Background", u"<font=%s><color=230,230,235,255>%s</color></font>" % (size, value),
             CvUtil.FONT_LEFT_JUSTIFY, x, y, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
     def body(self, value, x, y, w, h):
@@ -41,7 +46,10 @@ class CvEspionageAdvisor:
             x, y, w, h, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
     def panel(self, x, y, w, h):
-        self.getScreen().addPanel(self.name(), u"", u"", True, False, x, y, w, h, PanelStyles.PANEL_STYLE_MAIN)
+        name = self.name()
+        screen = self.getScreen()
+        screen.addPanel(name, u"", u"", True, False, x, y, w, h, PanelStyles.PANEL_STYLE_TECH)
+        screen.setPanelColor(name, PANEL_COLOR[0], PANEL_COLOR[1], PANEL_COLOR[2])
 
     def modeName(self, mode):
         return tr("MODE_%d" % mode)
@@ -55,13 +63,17 @@ class CvEspionageAdvisor:
         screen.setRenderInterfaceOnly(True)
         screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
         screen.setDimensions(screen.centerX(0), screen.centerY(0), 1024, 768)
-        screen.addDDSGFC("IntelBackground", art.getInterfaceArtInfo("SCREEN_BG_OPAQUE").getPath(),
+        screen.addDDSGFC("IntelBackground", INTEL_ART + "Background.dds",
             0, 0, 1024, 768, WidgetTypes.WIDGET_GENERAL, -1, -1)
-        screen.addPanel("IntelTop", u"", u"", True, False, 0, 0, 1024, 55, PanelStyles.PANEL_STYLE_TOPBAR)
-        screen.addPanel("IntelBottom", u"", u"", True, False, 0, 713, 1024, 55, PanelStyles.PANEL_STYLE_BOTTOMBAR)
-        screen.setLabel("IntelTitle", "Background", u"<font=4b>%s</font>" % tr("TITLE").upper(),
+        screen.showWindowBackground(False)
+        screen.deleteWidget("IntelBottom")
+        screen.deleteWidget("IntelBottomRule")
+        screen.addPanel("IntelTop", u"", u"", True, False, 0, 0, 1024, 55, PanelStyles.PANEL_STYLE_TECH)
+        screen.setPanelColor("IntelTop", 30, 30, 34)
+        screen.addDDSGFC("IntelTopRule", INTEL_ART + "Selected.dds", 0, 53, 1024, 2, WidgetTypes.WIDGET_GENERAL, -1, -1)
+        screen.setLabel("IntelTitle", "Background", u"<font=4b><color=220,120,120,255>%s</color></font>" % tr("TITLE").upper(),
             CvUtil.FONT_CENTER_JUSTIFY, 512, 13, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-        screen.setText("IntelExit", "Background", u"<font=4>%s</font>" % text.getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()),
+        screen.setText("IntelExit", "Background", u"<font=4><color=230,230,235,255>%s</color></font>" % text.getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()),
             CvUtil.FONT_RIGHT_JUSTIFY, 994, 726, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
         self.drawContents()
 
@@ -130,24 +142,36 @@ class CvEspionageAdvisor:
             if known:
                 self.iTargetPlayer = known[0]
         scroll = self.name()
-        screen.addScrollPanel(scroll, u"", 20, 192, 302, 511, PanelStyles.PANEL_STYLE_EXTERNAL)
+        self.panel(20, 192, 302, 511)
+        screen.addScrollPanel(scroll, u"", 20, 192, 302, 511, PanelStyles.PANEL_STYLE_EMPTY)
         for row, i in enumerate(known):
             rival = gc.getPlayer(i)
-            y = row * 79
+            y = row * 84
+            tile = self.name()
+            screen.attachPanelAt(scroll, tile, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH,
+                4, y + 3, 274, 74, WidgetTypes.WIDGET_GENERAL, 7100, i)
+            if i == self.iTargetPlayer:
+                screen.setPanelColor(tile, SELECTED_COLOR[0], SELECTED_COLOR[1], SELECTED_COLOR[2])
+            else:
+                screen.setPanelColor(tile, TILE_COLOR[0], TILE_COLOR[1], TILE_COLOR[2])
             active = player.getIntelligenceData(i, 0)
             pending = player.getIntelligenceData(i, 1)
-            color = u"<color=255,220,125,255>"
+            color = u"<color=255,235,235,255>"
             if i != self.iTargetPlayer:
                 color = u"<color=230,230,230,255>"
             screen.setImageButtonAt(self.name(), scroll, gc.getLeaderHeadInfo(rival.getLeaderType()).getButton(),
-                7, y + 7, 48, 48, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            screen.setTextAt(self.name(), scroll, u"<font=2b>%s%s</color></font>" % (color, rival.getCivilizationShortDescription(0)),
-                CvUtil.FONT_LEFT_JUSTIFY, 65, y + 5, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
+                12, y + 14, 48, 48, WidgetTypes.WIDGET_GENERAL, 7100, i)
+            civLabel = self.name()
+            screen.setLabelAt(civLabel, scroll, u"<font=2b>%s%s</color></font>" % (color, rival.getCivilizationShortDescription(0)),
+                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 10, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
+            screen.setHitTest(civLabel, HitTestTypes.HITTEST_NOHIT)
             modeText = self.modeName(active)
             if pending != active:
                 modeText += u" *"
-            screen.setLabelAt(self.name(), scroll, u"<font=2>%s</font>" % modeText,
-                CvUtil.FONT_LEFT_JUSTIFY, 65, y + 28, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+            modeLabel = self.name()
+            screen.setLabelAt(modeLabel, scroll, u"<font=2>%s</font>" % modeText,
+                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 33, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
+            screen.setHitTest(modeLabel, HitTestTypes.HITTEST_NOHIT)
             summaryKeys = ["TECH_SHORT", "MILITARY_SHORT", "POLITICS_CURRENT_SHORT", "MAP_SHORT"]
             if active == 0:
                 amount = self.researchContributions.get(i, 0)
@@ -158,13 +182,14 @@ class CvEspionageAdvisor:
             else:
                 amount = player.getIntelligenceData(i, 10)
             summary = tr(summaryKeys[active], (amount,))
-            screen.setLabelAt(self.name(), scroll, u"<font=1>%s</font>" % summary,
-                CvUtil.FONT_LEFT_JUSTIFY, 65, y + 50, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+            effectLabel = self.name()
+            screen.setLabelAt(effectLabel, scroll, u"<font=1>%s</font>" % summary,
+                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 55, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
+            screen.setHitTest(effectLabel, HitTestTypes.HITTEST_NOHIT)
         if not known:
             self.body(tr("NO_CONTACTS"), 350, 220, 620, 150)
             return
         self.drawTarget(player)
-        self.label(tr("FOOTER"), 30, 727)
 
     def drawTarget(self, player):
         screen = self.getScreen()
@@ -174,15 +199,28 @@ class CvEspionageAdvisor:
         pending = player.getIntelligenceData(i, 1)
         self.label(rival.getCivilizationShortDescription(0), 342, 163, True)
         self.panel(336, 192, 668, 120)
-        self.label(tr("CHOOSE_MODE"), 351, 204)
+        self.modeHint = self.name()
+        self.showModeHint(tr("CHOOSE_MODE"))
+        # Reuse the exact top-bar glyphs and their native transparent rendering.
+        iconStyles = (
+            "Button_HUDAdvisorTechnology_Style",
+            "Button_HUDAdvisorMilitary_Style",
+            "Button_HUDAdvisorVictory_Style",
+            "Button_HUDAdvisorForeign_Style",
+        )
         for mode in range(4):
-            x = 350 + (mode % 2) * 324
-            y = 233 + (mode // 2) * 36
-            caption = self.modeName(mode)
+            # Highlight only the player's selection; queued timing is shown below.
+            state = "Neutral"
             if mode == pending:
-                caption = u"<color=255,220,125,255>%s</color>" % caption
-            screen.setButtonGFC(self.name(), caption, "", x, y, 312, 30,
-                WidgetTypes.WIDGET_GENERAL, 7101, mode, ButtonStyles.BUTTON_STYLE_STANDARD)
+                state = "Selected"
+            x = 390 + mode * 160
+            screen.setImageButton(self.name(), INTEL_ART + state + ".dds",
+                x, 224, 80, 80, WidgetTypes.WIDGET_GENERAL, 7101, mode)
+            iconButton = self.name()
+            # Restore the original, smoothly rendered top-bar icons at native scale.
+            screen.setImageButton(iconButton, "", x + 8, 232, 64, 64,
+                WidgetTypes.WIDGET_GENERAL, 7101, mode)
+            screen.setStyle(iconButton, iconStyles[mode])
         self.panel(336, 320, 668, 310)
         self.label(self.modeName(active), 352, 333, True)
         self.label(tr("CURRENT_EFFECT"), 352, 367)
@@ -201,8 +239,8 @@ class CvEspionageAdvisor:
                 cost = max(1, team.getResearchCost(tech))
                 name = self.name()
                 screen.addStackedBarGFC(name, 352, y + 124, 630, 21, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_GENERAL, -1, -1)
-                screen.setStackedBarColors(name, InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_RESEARCH_STORED"))
-                screen.setStackedBarColors(name, InfoBarTypes.INFOBAR_RATE, gc.getInfoTypeForString("COLOR_RESEARCH_RATE"))
+                screen.setStackedBarColors(name, InfoBarTypes.INFOBAR_STORED, gc.getInfoTypeForString("COLOR_PLAYER_DARK_RED"))
+                screen.setStackedBarColors(name, InfoBarTypes.INFOBAR_RATE, gc.getInfoTypeForString("COLOR_PLAYER_VERYDARK_RED_TEXT"))
                 screen.setStackedBarColors(name, InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_EMPTY"))
                 screen.setBarPercentage(name, InfoBarTypes.INFOBAR_STORED, min(1.0, float(progress) / cost))
                 screen.setBarPercentage(name, InfoBarTypes.INFOBAR_RATE, min(1.0, float(self.researchRate) / max(1, cost - progress)))
@@ -249,7 +287,25 @@ class CvEspionageAdvisor:
         self.label(tr("CONNECTIONS", (embassy, player.getIntelligenceData(i, 3))), 352, 677)
         self.label(tr("RELATIONS", (player.getIntelligenceData(i, 8),)), 780, 677)
 
+    def showModeHint(self, value):
+        self.getScreen().setLabel(self.modeHint, "Background", u"<font=2>%s</font>" % value,
+            CvUtil.FONT_LEFT_JUSTIFY, 351, 204, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
     def handleInput(self, inputClass):
+        if inputClass.getData1() == 7101:
+            if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
+                mode = inputClass.getData2()
+                player = gc.getPlayer(self.iActivePlayer)
+                caption = self.modeName(mode)
+                if mode == player.getIntelligenceData(self.iTargetPlayer, 0):
+                    caption = tr("CURRENT", (caption,))
+                elif mode == player.getIntelligenceData(self.iTargetPlayer, 1):
+                    caption = tr("QUEUED", (caption,))
+                self.showModeHint(caption)
+                return 1
+            if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CURSOR_MOVE_OFF:
+                self.showModeHint(tr("CHOOSE_MODE"))
+                return 1
         if inputClass.getNotifyCode() != NotifyCode.NOTIFY_CLICKED:
             return 0
         if inputClass.getData1() == 7100:
