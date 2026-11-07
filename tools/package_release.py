@@ -35,6 +35,11 @@ files. Changes are
 intended for new games; compatibility with older saves is not guaranteed.
 All multiplayer participants must use the same release.
 
+Optional graphics: after installing the mod, run the PowerShell installer
+"Install Graphics Upgrade.ps1" inside the mod folder. It downloads the latest
+GraphicsUpgrade release and installs it beside the Beyond the Sword executable.
+See the repository README for details and update instructions.
+
 No compiler, separate Python installation or original RFC mod is required
 to play. The compiled game DLL, scripts and assets are included.
 
@@ -61,8 +66,8 @@ def runtime_files(include_reporting=False):
             raise ValueError('Missing runtime directory: ' + str(MOD / folder))
     if not any((MOD / 'PublicMaps').glob('*.CivBeyondSwordWBSave')):
         raise ValueError('No playable scenarios found in PublicMaps.')
-    paths = [config]
-    for folder in ('Assets', 'PublicMaps', 'Resource'):
+    paths = [config, MOD / 'Install Graphics Upgrade.ps1']
+    for folder in ('Assets', 'PublicMaps', 'Resource', 'GraphicsUpgrade'):
         for path in (MOD / folder).rglob('*'):
             relative = path.relative_to(MOD)
             if not include_reporting and relative.as_posix() in REPORTING_FILES:

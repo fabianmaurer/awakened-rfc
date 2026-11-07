@@ -9,6 +9,28 @@ A multiplayer overhaul of **Rhye's and Fall Multiplayer** for
 more consistent economics, new civics, and trade that shapes culture and religion.
 RFC's world maps, historical spawns, unique powers and victory goals remain.
 
+## Optional graphics upgrade
+
+[GraphicsUpgrade by Deliverator](https://github.com/deliverator23/Civ4BTS-GraphicsUpgrade)
+adds reflective water, sun shadows and adjustable lighting. It is a separate
+Direct3D add-on that affects all Beyond the Sword games, not just Awakened RFC.
+With the game closed, install Awakened RFC in `Beyond the Sword/Mods`, then run
+this in PowerShell from the installed mod folder:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File '.\Install Graphics Upgrade.ps1'
+```
+
+Run the same command to fetch the latest upstream release. The installer keeps
+your settings, refuses to overwrite a pre-existing or modified proxy and records
+hashes of the files it manages. If you already use ReShade, DXVK or another
+`d3d9.dll`, follow upstream's chaining instructions instead. Check upstream
+release notes when updating: settings changes may require manual adjustments.
+The installer needs internet access and write access to the game folder.
+GraphicsUpgrade is optional for multiplayer; its compatibility with this mod
+has not yet been verified in game. See the upstream documentation for hotkeys,
+settings, troubleshooting and removal.
+
 ## What changes?
 
 - **25 new civics in five columns**, with new artwork and historically suited
