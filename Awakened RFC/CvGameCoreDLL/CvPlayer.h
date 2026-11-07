@@ -249,7 +249,13 @@ public:
 	int calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const;																	// Exposed to Python
 	int calculateUnitSupply() const;																																			// Exposed to Python
 	int calculatePreInflatedCosts() const;																																// Exposed to Python
+	int inflateOneTimeCost(int iCost) const;
 	int calculateInflationRate() const;																																		// Exposed to Python
+	int getMetalInflationTimes100() const;
+	int getMetalInflationChangeTimes10000() const;
+	int getPreciousMetalIncome() const;
+	int getMetalInflationCommerce() const;
+	void doMetalInflation();
 	int calculateInflatedCosts() const;																																		// Exposed to Python
 
 	int calculateBaseNetGold() const;
@@ -1211,6 +1217,7 @@ protected:
 	int m_iCombatExperience;
 	int m_iPopRushHurryCount;
 	int m_iInflationModifier;
+	int m_iMetalInflationTimes10000;
     int m_iArabianJihadEndTurn;
     int m_iCaliphatePartitionDecision;
     bool m_bCaliphatePartitioned;

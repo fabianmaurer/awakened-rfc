@@ -94,7 +94,8 @@ class Slavery:
 			bPlayerSlaveMarket = bSlaveMarket and iPlayer != iOldOwner
 			target = self._nearbyCity(player, x, y, bPlayerSlaveMarket and self._hasSlavery(player))
 			if target is None: continue
-			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), price, culture)
+			playerPrice = price * (100 + player.calculateInflationRate()) / 100
+			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), playerPrice, culture)
 			self._offerCaptureAftermath(iPlayer, data)
 
 	def _offerCaptureAftermath(self, iPlayer, data):

@@ -23,7 +23,7 @@ PAYLOAD = re.compile(r'Begin(City|Unit)\b.*?End\1', re.S)
 
 # Scaling old coordinates can put workers and development beyond their cities'
 # unchanged starting culture radii. Keep these sites inside their owner's borders.
-WORKER_START_SITES = {1: (145, 65), 3: (123, 65), 4: (108, 67)}
+WORKER_START_SITES = {1: (145, 65), 3: (123, 65), 4: world.XL_CAPITAL_OVERRIDES[4]}
 STARTING_DEVELOPMENT_SITES = {
     (75, 42): (124, 67),  # sheep pasture inside Babili's second culture ring
     (76, 42): (123, 68),  # mine southwest of Ninua

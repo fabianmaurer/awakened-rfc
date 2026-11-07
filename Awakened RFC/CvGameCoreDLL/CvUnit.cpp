@@ -4985,7 +4985,7 @@ void CvUnit::updatePlunder(int iChange, bool bUpdatePlotGroups)
 
 int CvUnit::sabotageCost(const CvPlot* pPlot) const
 {
-	return GC.getDefineINT("BASE_SPY_SABOTAGE_COST");
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_SABOTAGE_COST"));
 }
 
 
@@ -5172,7 +5172,7 @@ int CvUnit::destroyCost(const CvPlot* pPlot) const
 		bLimited = isLimitedProject(pCity->getProductionProject());
 	}
 
-	return (GC.getDefineINT("BASE_SPY_DESTROY_COST") + (pCity->getProduction() * ((bLimited) ? GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER_LIMITED") : GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER"))));
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_DESTROY_COST") + (pCity->getProduction() * ((bLimited) ? GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER_LIMITED") : GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER"))));
 }
 
 
@@ -5335,7 +5335,7 @@ int CvUnit::stealPlansCost(const CvPlot* pPlot) const
 		return 0;
 	}
 
-	return (GC.getDefineINT("BASE_SPY_STEAL_PLANS_COST") + ((GET_TEAM(pCity->getTeam()).getTotalLand() + GET_TEAM(pCity->getTeam()).getTotalPopulation()) * GC.getDefineINT("SPY_STEAL_PLANS_COST_MULTIPLIER")));
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_STEAL_PLANS_COST") + ((GET_TEAM(pCity->getTeam()).getTotalLand() + GET_TEAM(pCity->getTeam()).getTotalPopulation()) * GC.getDefineINT("SPY_STEAL_PLANS_COST_MULTIPLIER")));
 }
 
 
@@ -7028,7 +7028,7 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 
 	iPrice -= (iPrice * getUpgradeDiscount()) / 100;
 
-	return iPrice;
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(iPrice);
 }
 
 

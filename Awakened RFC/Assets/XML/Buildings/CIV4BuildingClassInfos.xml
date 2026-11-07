@@ -1913,5 +1913,17 @@
 <BuildingClassInfo><Type>BUILDINGCLASS_NETWORKED_PRODUCTION</Type><Description>TXT_KEY_BUILDING_NETWORKED_PRODUCTION</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_NETWORKED_PRODUCTION</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>
 <BuildingClassInfo><Type>BUILDINGCLASS_GENERAL_AI</Type><Description>TXT_KEY_BUILDING_GENERAL_AI</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_GENERAL_AI</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>
 <BuildingClassInfo><Type>BUILDINGCLASS_FULL_AUTOMATION</Type><Description>TXT_KEY_BUILDING_FULL_AUTOMATION</Description><iMaxGlobalInstances>-1</iMaxGlobalInstances><iMaxTeamInstances>-1</iMaxTeamInstances><iMaxPlayerInstances>-1</iMaxPlayerInstances><iExtraPlayerInstances>0</iExtraPlayerInstances><bNoLimit>0</bNoLimit><bMonument>0</bMonument><DefaultBuilding>BUILDING_FULL_AUTOMATION</DefaultBuilding><VictoryThresholds/></BuildingClassInfo>
+<BuildingClassInfo>
+			<Type>BUILDINGCLASS_COIN_MINT</Type>
+			<Description>TXT_KEY_BUILDING_COIN_MINT</Description>
+			<iMaxGlobalInstances>-1</iMaxGlobalInstances>
+			<iMaxTeamInstances>-1</iMaxTeamInstances>
+			<iMaxPlayerInstances>-1</iMaxPlayerInstances>
+			<iExtraPlayerInstances>0</iExtraPlayerInstances>
+			<bNoLimit>0</bNoLimit>
+			<bMonument>0</bMonument>
+			<DefaultBuilding>BUILDING_COIN_MINT</DefaultBuilding>
+			<VictoryThresholds />
+		</BuildingClassInfo>
 </BuildingClassInfos>
 </Civ4BuildingClassInfos>

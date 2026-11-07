@@ -405,6 +405,51 @@ stores run out. Only a positive surplus is converted into production.
 use hundredths of a percentage point. Existing saves begin with zero fractional
 growth remainder and use the new rate immediately.
 
+## Precious metals and inflation
+
+Worked gold and silver deposits each give **+1 gold**, replacing their base commerce.
+A mine adds **+6 gold on gold** or **+4 gold on silver**, for totals of **7 or 5 gold**.
+These mines add no production, including from railroads or mine modifiers; natural
+terrain production remains. Copper mines retain their normal production.
+All metal income is added after city gold modifiers, independently of the sliders.
+Unworked deposits and trade connections alone provide no income.
+
+The **Coin Mint** costs 80 production and requires Currency plus an owned copper,
+silver or gold mine in the city's workable radius. Each worked copper/silver/gold
+mine gains **+1/+2/+3 gold**, respectively: totals of **1/7/10 direct gold**.
+An imported resource does not qualify. The building can remain after losing its
+mines, but generates income only from mines actually worked by that city.
+The Malian Mint remains a separate forge replacement with its existing effects.
+Tile icons, tile help, build previews and the city gold breakdown show the income.
+Automation values it alongside commerce, without multiplying it by city gold bonuses.
+
+Precious-metal inflation starts at zero and is saved per player. Each normal turn,
+its change in percentage points is
+**worked metal income / total commerce - 0.10 × (1 + current inflation / 10)**,
+using the percentage number (20 for 20%). Recovery strengthens as inflation rises,
+balancing sustained metal income at an equilibrium.
+Income includes the base gold from deposits, gold/silver mine income, and all
+Mint bonuses, including copper. Resource trades do not generate this income;
+only productive cities count.
+Commerce is the empire's city commerce yield, including trade routes, before sliders.
+A zero-commerce economy uses one commerce for this calculation.
+
+- Ratios of 10% or less lead toward zero inflation. A sustained 20% ratio settles
+  at 10% inflation; 30% settles at 20%, and 50% at 40%.
+- With no metal income, inflation falls by 0.20 points at 10% inflation,
+  0.30 points at 20%, and 0.60 points at 50% per normal turn, stopping at zero.
+- There is no per-turn rise cap or overall ceiling; inflation cannot fall below zero.
+- XL halves the per-turn changes. Other speeds scale with their growth percentage.
+- Inflation increases unit costs, supply, maintenance and civic upkeep, as well as
+  one-time prices such as upgrades, hurrying production and slave-market purchases.
+  Recurring costs use fractional inflation; one-time prices use whole percentages.
+  Inflation is not calendar-driven.
+
+For example, 21 metal income and 60 commerce increase inflation by 0.25 points
+at zero inflation, or 0.05 points at 20%, per normal turn; the equilibrium is 25%.
+The finance advisor's inflation tooltip shows the current level,
+projected change, metal income, commerce and added upkeep.
+
 ## Land reclamation
 
 - **Burn forest** lets workers and Fast Workers remove forest from the start without gaining production. It takes the same time as chopping (300 base work). **Bronze Working** replaces it with normal chopping that grants production.

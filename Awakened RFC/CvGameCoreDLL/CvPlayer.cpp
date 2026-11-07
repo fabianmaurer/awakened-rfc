@@ -499,6 +499,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
     for (int iJihadTeam = 0; iJihadTeam < MAX_TEAMS; ++iJihadTeam) m_abArabianJihadEnemies[iJihadTeam] = false;
 	m_iPopRushHurryCount = 0;
 	m_iInflationModifier = 0;
+	m_iMetalInflationTimes10000 = 0;
 	m_uiStartTime = 0;
 
 	m_bAlive = false;
@@ -2900,6 +2901,7 @@ void CvPlayer::doTurn()
 	setConscriptCount(0);
 
 	AI_assignWorkingPlots();
+	doMetalInflation();
 
 	//Rhye - comment this for communications cut?
 	if (0 == GET_TEAM(getTeam()).getHasMetCivCount(true) || GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
@@ -7583,23 +7585,66 @@ int CvPlayer::calculatePreInflatedCosts() const
 }
 
 
-int CvPlayer::calculateInflationRate() const
+int CvPlayer::getPreciousMetalIncome() const
 {
-	// Inflation must not increase automatically over the course of an RFCMP game.
-	return 0;
+	int iTotal = 0, iLoop;
+	for (const CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+		if (!pCity->isDisorder()) iTotal += pCity->getWorkedPlotGold();
+	return iTotal;
 }
 
+int CvPlayer::getMetalInflationCommerce() const
+{
+	int iTotal = 0, iLoop;
+	for (const CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+		if (!pCity->isDisorder()) iTotal += pCity->getYieldRate(YIELD_COMMERCE);
+	return iTotal;
+}
+
+int CvPlayer::getMetalInflationTimes100() const
+{
+	return m_iMetalInflationTimes10000 / 100;
+}
+
+int CvPlayer::getMetalInflationChangeTimes10000() const
+{
+	if (isBarbarian()) return 0;
+	const int iPressure = GC.getDefineINT("RFCMP_METAL_INFLATION_PRESSURE_TIMES10000");
+	const int iDecay = GC.getDefineINT("RFCMP_METAL_INFLATION_DECAY_TIMES10000");
+	const __int64 iGross = (__int64)getPreciousMetalIncome() * iPressure / std::max(1, getMetalInflationCommerce());
+	// Stronger recovery balances sustained metal income at an equilibrium.
+	const __int64 iRecovery = (__int64)iDecay * ((__int64)100000 + m_iMetalInflationTimes10000) / 100000;
+	const __int64 iNet = iGross - iRecovery;
+	const __int64 iChange = iNet * 100 /
+		std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent());
+	// Only guard the integer storage range; there is no gameplay ceiling.
+	return (int)std::max((__int64)0, std::min((__int64)MAX_INT,
+		(__int64)m_iMetalInflationTimes10000 + iChange)) - m_iMetalInflationTimes10000;
+}
+
+void CvPlayer::doMetalInflation()
+{
+	m_iMetalInflationTimes10000 += getMetalInflationChangeTimes10000();
+	if (getID() == GC.getGameINLINE().getActivePlayer())
+		gDLL->getInterfaceIFace()->setDirty(Financial_Screen_DIRTY_BIT, true);
+}
+
+int CvPlayer::inflateOneTimeCost(int iCost) const
+{
+	return (int)std::min((__int64)MAX_INT, (__int64)std::max(0, iCost) *
+		((__int64)100 + calculateInflationRate()) / 100);
+}
+
+int CvPlayer::calculateInflationRate() const
+{
+	// Resource pressure replaces calendar-based inflation.
+	return m_iMetalInflationTimes10000 / 10000;
+}
 
 int CvPlayer::calculateInflatedCosts() const
 {
-	int iCosts;
-
-	iCosts = calculatePreInflatedCosts();
-
-	iCosts *= std::max(0, (calculateInflationRate() + 100));
-	iCosts /= 100;
-
-	return iCosts;
+	return (int)std::min((__int64)MAX_INT, (__int64)calculatePreInflatedCosts() *
+		((__int64)1000000 + m_iMetalInflationTimes10000) / 1000000);
 }
 
 
@@ -18297,6 +18342,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
 
 	pStream->Read(&m_iPopRushHurryCount);
 	pStream->Read(&m_iInflationModifier);
+	pStream->Read(&m_iMetalInflationTimes10000);
     pStream->Read(&m_iArabianJihadEndTurn);
     pStream->Read(&m_iCaliphatePartitionDecision);
     pStream->Read(&m_bCaliphatePartitioned);
@@ -18758,6 +18804,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 
 	pStream->Write(m_iPopRushHurryCount);
 	pStream->Write(m_iInflationModifier);
+	pStream->Write(m_iMetalInflationTimes10000);
     pStream->Write(m_iArabianJihadEndTurn);
     pStream->Write(m_iCaliphatePartitionDecision);
     pStream->Write(m_bCaliphatePartitioned);

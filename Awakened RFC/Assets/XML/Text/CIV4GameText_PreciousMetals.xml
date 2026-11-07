@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_INLINE_GOLD</Tag>
+    <English>, %d1_Num[ICON_GOLD]</English>
+    <French>, %d1_Num[ICON_GOLD]</French>
+    <German>, %d1_Num[ICON_GOLD]</German>
+    <Italian>, %d1_Num[ICON_GOLD]</Italian>
+    <Spanish>, %d1_Num[ICON_GOLD]</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_GOLD_CHANGE</Tag>
+    <English>%D1_Change[ICON_GOLD]</English>
+    <French>%D1_Change[ICON_GOLD]</French>
+    <German>%D1_Change[ICON_GOLD]</German>
+    <Italian>%D1_Change[ICON_GOLD]</Italian>
+    <Spanish>%D1_Change[ICON_GOLD]</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_RESOURCE_HELP</Tag>
+    <English>+1 gold when worked. A mine adds +%d1_Num gold and no production.</English>
+    <French>+1 or si exploit&#233;e. Une mine ajoute +%d1_Num or, sans production.</French>
+    <German>Bei Bearbeitung +1 Gold. Eine Mine bringt weitere +%d1_Num Gold, aber keine Produktion.</German>
+    <Italian>+1 oro se lavorata. Una miniera aggiunge +%d1_Num oro e nessuna produzione.</Italian>
+    <Spanish>+1 oro al trabajarlo. Una mina a&#241;ade +%d1_Num oro y ninguna producci&#243;n.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_MINE_HELP</Tag>
+    <English>Gold and silver mines add +6 and +4 gold when worked, with no added production.</English>
+    <French>Les mines d'or et d'argent ajoutent +6 et +4 or si exploit&#233;es, sans production suppl&#233;mentaire.</French>
+    <German>Gold- und Silberminen bringen bei Bearbeitung +6 bzw. +4 Gold, aber keine zus&#228;tzliche Produktion.</German>
+    <Italian>Le miniere d'oro e d'argento aggiungono +6 e +4 oro se lavorate, senza produzione aggiuntiva.</Italian>
+    <Spanish>Las minas de oro y plata a&#241;aden +6 y +4 oro al trabajarlas, sin producci&#243;n adicional.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_CITY_GOLD</Tag>
+    <English>+%d1_Num gold from worked metals (unmodified)</English>
+    <French>+%d1_Num or des m&#233;taux exploit&#233;s (sans bonus)</French>
+    <German>+%d1_Num Gold durch bearbeitete Metalle (unver&#228;ndert)</German>
+    <Italian>+%d1_Num oro dai metalli lavorati (senza modificatori)</Italian>
+    <Spanish>+%d1_Num oro de metales trabajados (sin modificadores)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_PRECIOUS_METAL_OUTPUT</Tag>
+    <English>Gold yield</English>
+    <French>Rendement en or</French>
+    <German>Goldertrag</German>
+    <Italian>Resa in oro</Italian>
+    <Spanish>Rendimiento de oro</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_COIN_MINT</Tag>
+    <English>Coin Mint</English>
+    <French>Atelier mon&#233;taire</French>
+    <German>M&#252;nzst&#228;tte</German>
+    <Italian>Zecca</Italian>
+    <Spanish>Casa de moneda</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_COIN_MINT_HELP</Tag>
+    <English>Worked copper, silver and gold mines gain +1, +2 and +3 gold. City gold modifiers do not apply.</English>
+    <French>Les mines de cuivre, argent et or exploit&#233;es gagnent +1, +2 et +3 or, sans bonus d&#8217;or de la ville.</French>
+    <German>Bearbeitete Kupfer-, Silber- und Goldminen bringen +1, +2 und +3 Gold. Goldmodifikatoren der Stadt gelten nicht.</German>
+    <Italian>Le miniere lavorate di rame, argento e oro ottengono +1, +2 e +3 oro, senza modificatori cittadini.</Italian>
+    <Spanish>Las minas trabajadas de cobre, plata y oro dan +1, +2 y +3 oro, sin modificadores de oro urbanos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_COIN_MINT_REQUIRES</Tag>
+    <English>Requires a local copper, silver or gold mine.</English>
+    <French>N&#233;cessite une mine locale de cuivre, d&#8217;argent ou d&#8217;or.</French>
+    <German>Ben&#246;tigt eine &#246;rtliche Kupfer-, Silber- oder Goldmine.</German>
+    <Italian>Richiede una miniera locale di rame, argento o oro.</Italian>
+    <Spanish>Requiere una mina local de cobre, plata u oro.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_COIN_MINT_PEDIA</Tag>
+    <English>Turns local metals into coin.</English>
+    <French>Transforme les m&#233;taux locaux en monnaie.</French>
+    <German>Pr&#228;gt M&#252;nzen aus &#246;rtlichen Metallen.</German>
+    <Italian>Trasforma i metalli locali in monete.</Italian>
+    <Spanish>Convierte metales locales en moneda.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_METAL_INFLATION_STATUS</Tag>
+    <English>Inflation: %s1_Rate. Change: %s2_Change points/turn.</English>
+    <French>Inflation : %s1_Rate. Variation : %s2_Change points/tour.</French>
+    <German>Inflation: %s1_Rate. &#196;nderung: %s2_Change Punkte/Runde.</German>
+    <Italian>Inflazione: %s1_Rate. Variazione: %s2_Change punti/turno.</Italian>
+    <Spanish>Inflaci&#243;n: %s1_Rate. Cambio: %s2_Change puntos/turno.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_METAL_INFLATION_RATIO</Tag>
+    <English>Metal income: %d1_Gold. Commerce: %d2_Commerce.</English>
+    <French>Revenu des m&#233;taux : %d1_Gold. Commerce : %d2_Commerce.</French>
+    <German>Metalleinkommen: %d1_Gold. Wirtschaft: %d2_Commerce.</German>
+    <Italian>Reddito dai metalli: %d1_Gold. Commercio: %d2_Commerce.</Italian>
+    <Spanish>Ingresos de metales: %d1_Gold. Comercio: %d2_Commerce.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_METAL_INFLATION_RULE</Tag>
+    <English>Metal income raises inflation; higher inflation strengthens recovery.</English>
+    <French>Les revenus des m&#233;taux augmentent l&#8217;inflation ; une inflation forte renforce sa baisse.</French>
+    <German>Metalleinkommen erh&#246;ht die Inflation; hohe Inflation verst&#228;rkt den R&#252;ckgang.</German>
+    <Italian>Il reddito dai metalli aumenta l&#8217;inflazione; un&#8217;inflazione alta ne accelera il calo.</Italian>
+    <Spanish>Los ingresos de metales elevan la inflaci&#243;n; una inflaci&#243;n alta refuerza su descenso.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_METAL_INFLATION_COST</Tag>
+    <English>Additional upkeep: %d1_Gold[ICON_GOLD].</English>
+    <French>Entretien suppl&#233;mentaire : %d1_Gold[ICON_GOLD].</French>
+    <German>Zus&#228;tzlicher Unterhalt: %d1_Gold[ICON_GOLD].</German>
+    <Italian>Mantenimento aggiuntivo: %d1_Gold[ICON_GOLD].</Italian>
+    <Spanish>Mantenimiento adicional: %d1_Gold[ICON_GOLD].</Spanish>
+  </TEXT>
+</Civ4GameText>

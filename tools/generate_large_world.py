@@ -25,6 +25,7 @@ NAME = 'Earth160x88'
 TARGET = ROOT / 'tools/scenario_templates/disabled/Start 1b - 3000 BC - Large World.CivBeyondSwordWBSave'
 DESCRIPTION = 'TXT_KEY_ARFC_LARGE_WORLD_DESC'
 ATLAS_NAME = 'LargeWorldResources.tsv'
+XL_CAPITAL_OVERRIDES = {4: (109, 67)}  # Athens on Attica's outer Aegean coast.
 
 
 def resource_free_settlements(profile_values):
@@ -35,7 +36,7 @@ def resource_free_settlements(profile_values):
         'NativeAmerica.configureRegions.capital_1', 'NativeAmerica.configureRegions.capital_2',
         'Korea.setup.capital_1', 'Korea.setup.capital_2', 'Korea.setup.capital_3'))
     # Authored 800 BC settlements, including secondary and Independent cities.
-    result.update(((36, 57), (95, 76), (108, 67), (110, 59), (111, 54),
+    result.update(((36, 57), (95, 76), (109, 67), (110, 59), (111, 54),
                    (118, 62), (118, 65), (123, 65), (124, 69), (128, 65),
                    (137, 77), (142, 62), (145, 65), (150, 65), (165, 76),
                    (166, 70), (172, 71)))
@@ -191,6 +192,10 @@ def values():
         else:
             result[key] = coordinate(value)
     if NAME == 'Earth200x110':
+        capitals = list(result['Consts.tCapitals'])
+        for civilization, pos in XL_CAPITAL_OVERRIDES.items():
+            capitals[civilization] = pos
+        result['Consts.tCapitals'] = tuple(capitals)
         # Huge-only regional centres. Turns use the existing RFC calendar;
         # the fourth field is mutable founding-retry state, initially zero.
         result.update({
@@ -248,6 +253,10 @@ def compact(planes, city_names=False, refinements=None):
     ys = [min(67, int((y + .5) * 68 / HEIGHT)) for y in range(HEIGHT)]
     projected = tuple(tuple(tuple(plane[67 - ys[HEIGHT - 1 - y]][x] for x in xs)
                             for y in range(HEIGHT)) for plane in planes)
+    coast_sources = {}
+    if NAME == 'Earth200x110':
+        from large_world_coasts import grid_sources
+        coast_sources = grid_sources(TARGET.read_text(encoding='utf-8-sig'))
     if city_names and NAME == 'Earth200x110':
         from large_world_city_names import refine
         profile_values = values()
@@ -256,12 +265,19 @@ def compact(planes, city_names=False, refinements=None):
                          if key.startswith('Barbs.l') and isinstance(value, list) and len(value) == 4)
     for civilization, (plane, rows) in enumerate(zip(planes, projected)):
         if NAME == 'Earth200x110':
+            if coast_sources:
+                coast_rows = [list(row) for row in rows]
+                for (x, y), (sx, sy) in coast_sources.items():
+                    coast_rows[HEIGHT - 1 - y][x] = plane[67 - sy][sx]
+                rows = tuple(tuple(row) for row in coast_rows)
             # Cyprus gains a lowland beside its original summit cell. Keep
             # naming and AI geography on that land instead of the old sea grid.
             row = list(rows[HEIGHT - 1 - 65])
             for x in (114, 115):
                 row[x] = 'Salamis' if city_names else plane[67 - 40][71]
             rows = rows[:HEIGHT - 1 - 65] + (tuple(row),) + rows[HEIGHT - 65:]
+            from large_world_islands import refine_grids
+            rows = refine_grids(rows, plane, city_names, civilization, refinements)
             if city_names:
                 rows, changes = refine(rows, civilization, projected, protected)
                 if refinements is not None:
@@ -643,6 +659,10 @@ def refine_starts(plots, source, profile_values):
 
     for key in ('Consts.tCapitals', 'Consts.tReserveCapitals'):
         profile_values[key] = tuple(resolve(point) for point in BASE.VALUES[key])
+    capitals = list(profile_values['Consts.tCapitals'])
+    for civilization, pos in XL_CAPITAL_OVERRIDES.items():
+        capitals[civilization] = pos
+    profile_values['Consts.tCapitals'] = tuple(capitals)
     # These setup routines can replace the ordinary capital table at runtime.
     for key in ('NativeAmerica.configureRegions.capital_1', 'NativeAmerica.configureRegions.capital_2',
                 'Korea.setup.capital_1', 'Korea.setup.capital_2', 'Korea.setup.capital_3'):
@@ -732,6 +752,42 @@ def make_map(profile_values):
                 fields.append(s)
             plots[x, y], origins[x, y] = fields, (sx, sy)
 
+    if NAME == 'Earth200x110':
+        from large_world_coasts import refine as refine_coasts, near as coast_neighbours
+        river_reference = {point: list(fields) for point, fields in plots.items()}
+        from large_world_city_names import load_sites
+        from large_world_islands import SMALL_SHAPES, CARIBBEAN_NAMES, ADDITIONS, JAPAN_CONNECTIONS
+        coast_sites = set(placements) | resource_free_settlements(profile_values)
+        coast_sites.update((x, y) for civ, x, y, name, variants in load_sites())
+        coast_sites.update(set().union(*SMALL_SHAPES.values()))
+        coast_sites.update(CARIBBEAN_NAMES)
+        coast_sites.update(ADDITIONS)
+        coast_sites.update(JAPAN_CONNECTIONS)
+        from large_world_resources import XL_RESOURCE_REFUGES
+        coast_sites.update(XL_RESOURCE_REFUGES)
+        coast_sites.update(((109, 68), (109, 66), (106, 65), (110, 63),
+                            (111, 64), (112, 63), (175, 49), (176, 50),
+                            (183, 89), (184, 88)))
+        birth_shores = set()
+        for key in ('Consts.tCapitals', 'Consts.tReserveCapitals'):
+            for point in BASE.VALUES[key]:
+                if point:
+                    birth_shores.update(footprint(point))
+        for key in ('NativeAmerica.configureRegions.capital_1', 'NativeAmerica.configureRegions.capital_2',
+                    'Korea.setup.capital_1', 'Korea.setup.capital_2', 'Korea.setup.capital_3'):
+            birth_shores.update(footprint(BASE.VALUES[key]))
+        for key, value in BASE.VALUES.items():
+            if key.startswith('Barbs.l') and len(value) == 4 and isinstance(value[0], int):
+                birth_shores.update(footprint(tuple(value[:2])))
+        # XL also has authored founding sites which have no reference-map entry.
+        birth_shores.update(tuple(value[:2]) for key, value in profile_values.items()
+                            if key.startswith('Barbs.l') and len(value) == 4
+                            and isinstance(value[0], int))
+        coast_sites.update(birth_shores)
+        for point in birth_shores:
+            coast_sites.update(coast_neighbours(point))
+        coast_original = refine_coasts(plots, origins, blocks, coast_sites)
+
     shoulders = refine_mountains(plots, blocks) if NAME == 'Earth200x110' else set()
     historic_sites = refine_historic_regions(plots) if NAME == 'Earth200x110' else set()
     # The coarse Amazon mask overlapped the Bolivian highlands. Keep this small
@@ -739,7 +795,7 @@ def make_map(profile_values):
     # it must not turn Potosi and the plateau valleys into tropical wilderness.
     uplands = set()
     if NAME == 'Earth200x110':
-        # Fine relief on the enlarged Greek projection. Keep Athens (108,67)
+        # Fine relief on the enlarged Greek projection. Keep Athens (109,67)
         # flat, distinguish Attic uplands and one Peloponnesian valley, and
         # give Crete a broken upland spine with three usable lowland tiles.
         for pos, relief in (((109, 68), 1), ((109, 66), 1), ((106, 65), 2),
@@ -747,6 +803,10 @@ def make_map(profile_values):
             fields = plots[pos]
             old = next(f for f in fields if f.startswith('PlotType='))
             fields[fields.index(old)] = 'PlotType=%d' % relief
+        # Productive cereal farmland beside Sparta, amid drier uplands.
+        fields = plots[106, 65]
+        terrain = next(f for f in fields if f.startswith('TerrainType='))
+        fields[fields.index(terrain)] = 'TerrainType=TERRAIN_GRASS'
         # The source Venice/Aquileia cell is hills, interrupting the eastern
         # lowland. Flatten only its enlarged footprint, below the Alpine belt.
         for pos in footprint((61, 47)):
@@ -764,17 +824,43 @@ def make_map(profile_values):
                 uplands.add(pos)
         print('Andean plateau terrain tiles:', len(uplands))
     route_sites = open_routes(plots)
-    ocean_ice(plots, origins)
     if NAME == 'Earth200x110':
         refine_starts(plots, blocks, profile_values)
 
+    island_regions = {}
+    if NAME == 'Earth200x110':
+        from large_world_city_names import load_sites
+        from large_world_islands import refine
+        island_starts = set(placements) | resource_free_settlements(profile_values)
+        island_starts.update(tuple(value[:2]) for key, value in profile_values.items()
+                             if key.startswith('Barbs.l') and len(value) == 4
+                             and isinstance(value[0], int))
+        naming_sites = {(x, y) for civ, x, y, name, variants in load_sites()}
+        island_regions, removed = refine(
+            plots, blocks, origins, island_starts, naming_sites,
+            ROOT / 'docs/XLIslandReview.tsv')
+        from large_world_coasts import repair_river_mouths
+        repair_river_mouths(plots, river_reference)
+    ocean_ice(plots, origins)
+    if NAME == 'Earth200x110':
+        from large_world_coasts import write_review
+        write_review(plots, coast_original, ROOT / 'docs/XLCoastlineReview.tsv')
+
     anchors = list(profile_values['Consts.tCapitals'])
+    mali_valley = set()
+    if NAME == 'Earth200x110':
+        # The Sahara mask must not cut the inhabited Niger bend or the Sahel
+        # immediately west of the inland delta. Preserve a narrow valley only.
+        mali_valley = ({(82, 49), (83, 49), (89, 50), (89, 49), (90, 49), (91, 49)} |
+                      {(91, 48)} | {(x, 47) for x in range(91, 97)})
     for key, value in profile_values.items():
         if key.startswith('Barbs.l') and len(value) == 4 and isinstance(value[0], int):
             anchors.append(tuple(value[:2]))
     candidates = []
     for (x, y), fields in plots.items():
         if not usable(fields):
+            continue
+        if (x, y) in mali_valley:
             continue
         if any(max(abs(x - ax), abs(y - ay)) <= 2 for ax, ay in anchors):
             continue
@@ -799,6 +885,11 @@ def make_map(profile_values):
     # Births and historical settlement sites retain access. Villages inside a
     # wasteland move to accessible fringes; resources are authored afterward.
     protected = set(placements) | route_sites | uplands | historic_sites
+    if NAME == 'Earth200x110':
+        # A refined lake/sea shore can expose a formerly coastal naming site to
+        # the inland wilderness mask. Keep authored towns habitable as before.
+        protected.update(naming_sites)
+        protected.update(XL_RESOURCE_REFUGES)
     for key in FOOTPRINT_KEYS - {'Victory.tMediterraneanExceptions', 'RiseAndFall.conquerorBlockedPlots'}:
         protected.update(profile_values[key])
     event_sites = set(anchors)
@@ -906,11 +997,39 @@ def make_map(profile_values):
     for pos in profile_values['Consts.tCapitals']:
         if not usable(plots[pos]) or any('_IMPASSABLE' in s for s in plots[pos]):
             raise ValueError('Invalid civilization start: ' + str(pos))
+    if NAME == 'Earth200x110':
+        for pos in resource_free_settlements(profile_values) | event_sites:
+            if not usable(plots[pos]) or any('_IMPASSABLE' in s for s in plots[pos]):
+                raise ValueError('Invalid historical/setup site: ' + str(pos))
     # Resource history is a separate final authoring pass. It sees the finished
     # geography, including opened mountain passes and permanent ocean ice.
     review = NAME == 'Earth200x110'
+    if review:
+        # Peten/Belize and adjoining humid lowlands should surround the Maya
+        # start with tropical forest. Resizing inherited an oversized clearing
+        # south of the Yucatan jungle. Agriculture is cleared by the atlas below.
+        maya_lowlands = ({(x, 57) for x in range(33, 37)} |
+                        {(33, 58)} | {(x, 56) for x in range(35, 39)})
+        for pos in maya_lowlands - resource_free_settlements(profile_values):
+            fields = plots[pos]
+            if (plot_type(fields) not in (1, 2) or
+                    any(f.startswith('ImprovementType=') or '_IMPASSABLE' in f for f in fields)):
+                continue
+            fields[:] = [f for f in fields if not f.startswith('FeatureType=')]
+            fields.append('FeatureType=FEATURE_JUNGLE, FeatureVariety=0')
+        # Complete humid forest belts in the southern Western Ghats and
+        # Bengal/Assam. Retain the drier Deccan and northwest's existing cover.
+        india_wet_forests = {(145, 51), (145, 50), (146, 49),
+                             (154, 64), (154, 63), (156, 64), (157, 64)}
+        for pos in india_wet_forests - resource_free_settlements(profile_values):
+            fields = plots[pos]
+            if (plot_type(fields) not in (1, 2) or
+                    not any(f in fields for f in ('TerrainType=TERRAIN_GRASS', 'TerrainType=TERRAIN_PLAINS')) or
+                    any(f.startswith(('FeatureType=', 'ImprovementType=')) for f in fields)):
+                continue
+            fields.append('FeatureType=FEATURE_JUNGLE, FeatureVariety=0')
     valleys = correct_floodplains(plots, origins) if review else set()
-    from large_world_resources import place_resources
+    from large_world_resources import place_resources, FIELDS
     event_fisheries = ()
     if review:
         # These two founding events install fishing boats on an existing bonus.
@@ -922,8 +1041,50 @@ def make_map(profile_values):
     place_resources(plots, origins, axis, DATA, NAME, ATLAS_NAME,
                     review=review, protected=protected, valleys=valleys,
                     event_fisheries=event_fisheries,
+                    island_regions=island_regions,
                     settlements=resource_free_settlements(profile_values) if review else ())
     if review:
+        # Open dry savanna replaces the Sahara's southern encroachment;
+        # preserve genuine river floodplains and the inland delta's marsh.
+        for pos in mali_valley:
+            fields = plots[pos]
+            if ('TerrainType=TERRAIN_DESERT' in fields and
+                    not any(f.startswith('FeatureType=FEATURE_FLOOD_PLAINS') for f in fields)):
+                fields[fields.index('TerrainType=TERRAIN_DESERT')] = 'TerrainType=TERRAIN_PLAINS'
+        # Seasonal woodland marks the savanna/Guinean forest transition.
+        # Keep the wetter coastal rainforest farther south intact.
+        mali_woodlands = {(79, 48), (80, 48), (79, 47), (80, 47),
+                          (87, 47), (88, 47), (85, 46), (86, 46)}
+        for pos in mali_woodlands:
+            fields = plots[pos]
+            fields[:] = ['FeatureType=FEATURE_FOREST, FeatureVariety=0'
+                         if f.startswith('FeatureType=FEATURE_JUNGLE') else f for f in fields]
+        # Humid maritime/coastal Southeast Asia retains rainforest, including
+        # wooded hills. Inland monsoon patches use deciduous forest instead.
+        # Place this cover after the atlas so existing resource sites stay fixed.
+        # Leave marshes, crop clearings and drier eastern islands alone.
+        southeast_asia_forests = {
+            'JUNGLE': {
+                (158, 58), (158, 59), (159, 58), (159, 59), (161, 57),
+                (163, 53), (164, 53), (165, 58), (165, 59), (166, 58),
+                (166, 53), (166, 54), (166, 56), (167, 54), (167, 55), (167, 56),
+                (163, 47), (163, 48), (164, 48),
+                (158, 48), (159, 48), (159, 47), (160, 44), (161, 43), (162, 43),
+                (168, 40), (169, 40), (169, 41), (170, 40), (170, 41),
+                (175, 58), (176, 50), (175, 49), (175, 45), (175, 43),
+            },
+            'FOREST': {(163, 55), (164, 55), (163, 56), (164, 56),
+                       (165, 56), (163, 57), (163, 60), (164, 60)},
+        }
+        for feature, sites in southeast_asia_forests.items():
+            for pos in sites - resource_free_settlements(profile_values):
+                fields = plots[pos]
+                if (plot_type(fields) not in (1, 2) or
+                        not any(f in fields for f in ('TerrainType=TERRAIN_GRASS', 'TerrainType=TERRAIN_PLAINS')) or
+                        any(f.startswith(('FeatureType=', 'ImprovementType=')) for f in fields) or
+                        any('BonusType=BONUS_' + bonus in fields for bonus in FIELDS)):
+                    continue
+                fields.append('FeatureType=FEATURE_%s, FeatureVariety=0' % feature)
         # Uruk has no starting culture. Keep its western farm in the first ring
         # rather than two tiles away after scaling the standard map.
         plots[123, 62].remove('ImprovementType=IMPROVEMENT_FARM')
@@ -939,7 +1100,7 @@ def make_map(profile_values):
     for i, player in enumerate(players):
         changed = re.sub(r'(StartingX=)(\d+)', lambda m: m[1] + str(axis(int(m[2]))), player)
         changed = re.sub(r'(StartingY=)(\d+)', lambda m: m[1] + str(axis(int(m[2]), True)), changed)
-        if i < 4:
+        if i < 4 or (NAME == 'Earth200x110' and i in XL_CAPITAL_OVERRIDES):
             x, y = profile_values['Consts.tCapitals'][i]
             changed = changed.replace('EndPlayer', '\tStartingX=%d\n\tStartingY=%d\nEndPlayer' % (x, y))
         header = header.replace(player, changed, 1)
@@ -984,7 +1145,7 @@ def feature_xml():
     """One display-only fog feature; normal plot features remain unchanged."""
     path = MOD / 'Assets/XML/Terrain/CIV4FeatureInfos.xml'
     text = path.read_text(encoding='utf-8')
-    retired = 'DEEP_DESERT|DEEP_JUNGLE|REMOTE_FOREST|FROZEN_WILDERNESS|IMPASSABLE'
+    retired = 'DEEP_DESERT|DEEP_JUNGLE|REMOTE_FOREST|FROZEN_WILDERNESS'
     text = re.sub(r'\s*<FeatureInfo>\s*<Type>FEATURE_(?:' + retired + r')</Type>.*?</FeatureInfo>', '', text, flags=re.S)
     block = re.search(r'<FeatureInfo>\s*<Type>FEATURE_FALLOUT</Type>.*?</FeatureInfo>', text, re.S)[0]
     for tag, value in (('Type', 'FEATURE_IMPASSABLE'), ('Description', 'TXT_KEY_ARFC_IMPASSABLE_LAND'),
@@ -998,11 +1159,16 @@ def feature_xml():
     for tag in ('bImpassable', 'bNoCity', 'bNoImprovement', 'bNukeImmune'):
         block = re.sub('<' + tag + '>.*?</' + tag + '>', '<' + tag + '>1</' + tag + '>', block)
     block = re.sub('<iAdvancedStartRemoveCost>.*?</iAdvancedStartRemoveCost>', '<iAdvancedStartRemoveCost>-1</iAdvancedStartRemoveCost>', block)
-    text = re.sub(r'\s*</FeatureInfos>', '\n\t\t' + block + '\n\t</FeatureInfos>', text)
+    # Preserve feature IDs when later display features (e.g. gold) follow fog.
+    existing = r'<FeatureInfo>\s*<Type>FEATURE_IMPASSABLE</Type>.*?</FeatureInfo>'
+    if re.search(existing, text, re.S):
+        text = re.sub(existing, lambda _: block, text, flags=re.S)
+    else:
+        text = re.sub(r'\s*</FeatureInfos>', '\n\t\t' + block + '\n\t</FeatureInfos>', text)
     path.write_text(text, encoding='utf-8', newline='\n')
     path = MOD / 'Assets/XML/Art/CIV4ArtDefines_Feature.xml'
     text = path.read_text(encoding='utf-8')
-    text = re.sub(r'\s*<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_(?:DEEP_DESERT|DEEP_JUNGLE|FROZEN_WILDERNESS|IMPASSABLE)</Type>.*?</FeatureArtInfo>', '', text, flags=re.S)
+    text = re.sub(r'\s*<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_(?:DEEP_DESERT|DEEP_JUNGLE|FROZEN_WILDERNESS)</Type>.*?</FeatureArtInfo>', '', text, flags=re.S)
     block = re.search(r'<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_FALLOUT</Type>.*?</FeatureArtInfo>', text, re.S)[0]
     block = block.replace('ART_DEF_FEATURE_FALLOUT', 'ART_DEF_FEATURE_IMPASSABLE')
     block = re.sub(r'<ModelFile>.*?</ModelFile>', '<ModelFile>Art/Terrain/Features/Wasteland/ImpassableFog.nif</ModelFile>', block)
@@ -1013,7 +1179,11 @@ def feature_xml():
     # additional entity. Support all three forest varieties, like herd overlays.
     variety = re.search(r'<FeatureVariety>.*?</FeatureVariety>', block, re.S)[0]
     block = block.replace(variety, '\n'.join([variety] * 3))
-    text = re.sub(r'\s*</FeatureArtInfos>', '\n\t\t' + block + '\n\t</FeatureArtInfos>', text)
+    existing = r'<FeatureArtInfo>\s*<Type>ART_DEF_FEATURE_IMPASSABLE</Type>.*?</FeatureArtInfo>'
+    if re.search(existing, text, re.S):
+        text = re.sub(existing, lambda _: block, text, flags=re.S)
+    else:
+        text = re.sub(r'\s*</FeatureArtInfos>', '\n\t\t' + block + '\n\t</FeatureArtInfos>', text)
     path.write_text(text, encoding='utf-8', newline='\n')
 
 

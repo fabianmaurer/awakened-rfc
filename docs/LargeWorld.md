@@ -41,9 +41,9 @@ XL start also uses the same starting civic profiles as standard 800 BC;
 its doubled engine turn is converted to the reference calendar for both.
 
 Resources follow the XL atlas, including 60 introductions already due by
-800 BC. Roads expand with the map; 51 starting improvements fit the local XL
-terrain and resources. Four old pastures, quarries, camps or plantations with
-no suitable local resource are omitted. Merv, Anuradhapura, Palembang and Great
+800 BC. Roads expand with the map; 50 starting improvements fit the local XL
+terrain and resources. Five placements without a suitable local tile or
+resource are omitted. Merv, Anuradhapura, Palembang and Great
 Zimbabwe retain their later founding events in both ancient XL starts.
 
 Generate with `python tools/generate_800_bc_xl_scenario.py`, after generating
@@ -88,20 +88,54 @@ grid vocabulary and historical regional centres, including
 ## Additional Huge World start
 
 Select **Start 1 XL - 3000BC** for the additional 200 x 110 map.
-It has 22,000 tiles, 56.25% more than Large World, with 5,032 passable land
-tiles. Of its 8,390 land tiles, 3,358 (40.0%) are blocked by wasteland, peaks
+It has 22,000 tiles, 56.25% more than Large World, with 4,790 passable land
+tiles. Of its 8,134 land tiles, 3,344 (41.1%) are blocked by wasteland, peaks
 or ice, compared with 37.7% in Large World. It starts in 3000 BC with the same
 four founding civilizations and later RFC births.
 
 The map retains RFC's enlarged European proportions and compressed oceans at
-the larger grid scale. Europe keeps its settlement belt and ordinary mountain
-barriers. Additional wilderness extends the Saharan, Congo, Amazon, Canadian,
+the larger grid scale. Taiwan occupies two coastal tiles. Europe keeps its
+settlement belt and ordinary mountain barriers. Additional wilderness extends
+the Saharan, Congo, Amazon, Canadian,
 Alaskan, Siberian and Australian interiors, with new Gobi and Patagonian
 barriers. This uses the EU4-inspired regional inventory below, with deliberately
 broad interiors outside Europe; it does not copy EU4 province boundaries.
 Coastal fringes, all 33 major birth sites and the 26 named route networks retain
-access. Route authoring protects 571 tiles and opens 21 peak tiles.
+access. Route authoring protects 566 tiles and opens 21 peak tiles.
 There are no prebuilt roads or technology unlocks for the wastelands.
+
+The [island review](XLIslandReview.tsv) covers all 111 reference land components.
+After shoreline refinement, 70 island components lose 251 excess tiles; none falls
+below its non-XL land count. Approximate area budgets follow nearby mainland
+scale, including RFC's enlarged Europe. The Caribbean adds eight separate
+islands and expands Hispaniola to four tiles, adding ten land tiles overall.
+New islands have town names, inherited regional AI geography and nearby fisheries;
+sea lanes, historical city sites and physical island necks remain intact.
+Japan retains its original traversable crossings. Jamaica and Sri Lanka retain
+enough land for their original resources and dated introductions.
+The Peten/Belize lowlands around the Maya start retain tropical jungle, with
+clearings for historical settlements and cultivated resources.
+India's humid jungle belts extend through the southern Western Ghats and
+Bengal/Assam, while the drier interior retains its existing vegetation.
+Southeast Asian rainforest extends over humid coasts and maritime islands,
+including wooded hills; selected mainland monsoon areas use deciduous forest.
+Existing marshes, montane forests and agricultural clearings remain distinct.
+Around Mali, the Niger bend retains a narrow traversable valley through the
+Sahara mask. Dry savanna and seasonal woodland soften the transition to the
+Guinean rainforest; genuine floodplains and inland-delta marshes remain intact.
+`tools/large_world_islands.py` maintains these corrections before resources are placed.
+
+The [worldwide coastline review](XLCoastlineReview.tsv) compares every region's
+enlarged source shoreline with the finished map. Interpolated corners replace
+block-shaped coastal steps, with connectivity guards for peninsulas, islands,
+straits and lakes. Britain and Ireland retain their original XL outlines;
+Iceland gains a connected Westfjords neck, and Baja California has a tapered
+northwest/southeast outline beside the open Gulf. River segments bordering
+water are removed, and displaced mouths extend to the revised shores along
+land edges. All downstream endpoints reach coastal corners, including lake
+inlets. New coastal land inherits
+nearby terrain, names and AI geography. `tools/large_world_coasts.py` authors this
+pass; historical/setup sites and their immediate shores remain protected.
 
 The connectivity pass adds eastern and southern Tibetan approaches, extends
 the Andean corridor through central Chile, opens a central Andes-Pampas
@@ -115,8 +149,9 @@ and [Nepal-Tibet approaches](https://www.asiasocietymuseum.org/buddhist_trade/hi
 not claims that these trade networks already operated in 3000 BC.
 
 The shared historical resource atlas is placed against the new finished terrain:
-788 initial resources and 186 later introductions, with 25 unsuitable sites
+804 initial resources and 189 later introductions, with 21 unsuitable sites
 omitted rather than moved far away. See [HugeWorldResources.tsv](HugeWorldResources.tsv).
+All 982 original XL atlas sites remain represented, with 11 additional sites.
 The independent `Earth200x110` profile supplies all geography grids, event
 coordinates and its own resource schedule. Generate this variant with
 `python tools/generate_large_world.py --huge`; the command without that flag
@@ -151,7 +186,7 @@ The distribution follows productive coastal regions, not a uniform ocean quota;
 [NOAA's upwelling overview](https://oceanexplorer.noaa.gov/ocean-fact/upwelling/)
 provides the ecological basis for the richer current systems.
 
-All 44 remaining floodplain tiles are flat desert beside a river. Invalid
+All 48 remaining floodplain tiles are flat desert beside a river. Invalid
 off-river copies normally retain their underlying terrain: nine outer Nile
 tiles remain desert. Fourteen tiles in explicitly reviewed Niger inland-delta,
 Mesopotamian and Indus alluvial fringes use plains to represent broader seasonal
@@ -195,7 +230,7 @@ Huge World's mountain refinement replaces rectangular enlargement at range
 edges with interpolated foothills, retaining source summit anchors and links
 between neighboring peaks. Mountain-region boundaries use the finer grid;
 they cannot turn the softened shoulders straight back into peaks. The finished
-map has 716 peaks instead of 1,148, with the largest visible changes along the
+map has 703 peaks instead of 1,148, with the largest visible changes along the
 Rockies, Andes and central Asian ranges. Broad range interiors remain mountainous.
 Some additional edge land is traversable; this is a gameplay change as well as
 a visual adjustment. Routes and resources are regenerated against the new relief,
@@ -203,7 +238,7 @@ and resource placement excludes enclosed foothill pockets without coastal access
 The four enlarged Venice/Aquileia hill tiles are flattened to continue the
 eastern lowland toward the Adriatic; the Alpine foothills to their north remain.
 
-Crete has three passable hills and three lowland tiles, with sheep, wine and
+Crete has one hill and one lowland tile, with sheep, wine and
 one adjacent fish site. Its named supplies stay on the island or its immediate
 shore. This represents its [mountainous relief](https://www.crete.gov.gr/perifereia/),
 [pastoral economy](https://ashmolean.web.ox.ac.uk/article/dining-with-the-minoans)
@@ -383,10 +418,30 @@ Existing historical birth, trade and technology rules otherwise remain.
 
 Placement stays within a small local geographic envelope (at most 3.2 enlarged
 tiles from the atlas anchor), on the same local land/sea patch, outside barriers
-and ice. Twenty-one unsuitable, crowded or inaccessible sites are omitted rather
+and ice. Nineteen unsuitable, crowded or inaccessible sites are omitted rather
 than moved far away. Small islands cannot display every historical commodity on
 Civ4's one-bonus-per-tile grid. Counts are not normalized for civilization balance;
 this is a history-first atlas, not a campaign balance claim.
+
+The precious-metal review gives XL 51 gold and 32 silver tiles in both starts.
+Witwatersrand and Potosi have three tiles each; Minas Gerais, Victoria,
+Zacatecas/Fresnillo and Guanajuato have two each. Gold also represents Alaska,
+the Klondike, Timmins/Abitibi, Muruntau and Benguet; Banska Stiavnica gains silver.
+Huancavelica's mercury district no longer supplies silver. Sado is a separate
+one-tile gold island, while the former mainland Sado silver represents Ikuno.
+A Yukon foothill and northern Luzon pass are opened for access. Other resources
+and introduction dates are retained; one nearby fishery shifts as Sado gains
+coastal waters. Minerals remain available from turn zero.
+
+Review references: [Witwatersrand](https://scielo.org.za/scielo.php?pid=S2225-62532023000400005&script=sci_arttext),
+[Potosi](https://whc.unesco.org/en/list/420/),
+[Guanajuato](https://whc.unesco.org/en/list/482/),
+[Zacatecas](https://whc.unesco.org/en/list/676/),
+[Minas Gerais](https://whc.unesco.org/en/list/124),
+[Victoria](https://www.ga.gov.au/bigobj/GA5409.pdf),
+[Huancavelica](https://whc.unesco.org/en/tentativelists/6263/),
+[Sado](https://whc.unesco.org/en/list/1698), and
+[Ikuno](https://www.city.asago.hyogo.jp/soshiki/24/1119.html).
 
 Evidence and authoring references:
 
@@ -408,6 +463,11 @@ Evidence and authoring references:
   [Chinese wheat](https://www.nature.com/articles/s41477-018-0141-x).
 
 ## Maintaining the scenario
+
+Athens starts at (109,67) on Attica's outer Aegean coast in XL. The Greek birth
+anchor and the 800 BC city, starting units and workers use this same tile.
+Sparta's nearby valley tile (106,65) is grassland with wheat representing
+Eurotas cereal farming; the surrounding hills and existing fishery remain.
 
 Run `python tools/generate_large_world.py`. It emits the WorldBuilder map,
 resource introduction schedule and atlas, geography values, native coordinates,

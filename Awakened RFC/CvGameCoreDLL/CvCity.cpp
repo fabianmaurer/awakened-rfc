@@ -2049,6 +2049,9 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 			return false;
 	}
 
+	if (!bTestVisible && eBuilding == GC.getInfoTypeForString("BUILDING_COIN_MINT") && !hasLocalMintMetal())
+		return false;
+
 	if (getNumBuilding(eBuilding) >= GC.getCITY_MAX_NUM_BUILDINGS())
 	{
 		return false;
@@ -4258,6 +4261,15 @@ void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolet
 
 	if (eBuilding == GC.getInfoTypeForString("BUILDING_COOLING_HOUSE"))
 		updateYield();
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_COIN_MINT"))
+	{
+		for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+		{
+			CvPlot* pPlot = getCityIndexPlot(i);
+			if (pPlot != NULL && pPlot->getWorkingCity() == this) pPlot->updateSymbols();
+		}
+	}
+
 }
 
 
@@ -5185,7 +5197,7 @@ int CvCity::getHurryGold(HurryTypes eHurry, int iHurryCost) const
 
 	iGold = (iHurryCost * GC.getHurryInfo(eHurry).getGoldPerProduction());
 
-	return std::max(1, iGold);
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(std::max(1, iGold));
 }
 
 
@@ -5730,6 +5742,57 @@ void CvCity::changeNumGreatPeople(int iChange)
 	}
 }
 
+
+bool CvCity::hasLocalMintMetal() const
+{
+	for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+	{
+		const CvPlot* pPlot = getCityIndexPlot(i);
+		if (pPlot == NULL || pPlot->getOwnerINLINE() != getOwnerINLINE() || pPlot->isImpassable() ||
+			pPlot->getImprovementType() != GC.getInfoTypeForString("IMPROVEMENT_MINE")) continue;
+		const BonusTypes eBonus = pPlot->getBonusType(getTeam());
+		if (eBonus == GC.getInfoTypeForString("BONUS_COPPER") || eBonus == GC.getInfoTypeForString("BONUS_SILVER") ||
+			eBonus == GC.getInfoTypeForString("BONUS_GOLD")) return true;
+	}
+	return false;
+}
+
+int CvCity::getMintGold(const CvPlot* pPlot, ImprovementTypes eImprovement, bool bAssumeMint) const
+{
+	if (pPlot == NULL || pPlot->getOwnerINLINE() != getOwnerINLINE() ||
+		eImprovement != GC.getInfoTypeForString("IMPROVEMENT_MINE")) return 0;
+	if (!bAssumeMint && getNumActiveBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_COIN_MINT")) == 0) return 0;
+	const BonusTypes eBonus = pPlot->getBonusType(getTeam());
+	if (eBonus == GC.getInfoTypeForString("BONUS_GOLD")) return 3;
+	if (eBonus == GC.getInfoTypeForString("BONUS_SILVER")) return 2;
+	if (eBonus == GC.getInfoTypeForString("BONUS_COPPER")) return 1;
+	return 0;
+}
+
+int CvCity::getMintGoldPotential() const
+{
+	int iGold = 0;
+	for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+	{
+		const CvPlot* pPlot = getCityIndexPlot(i);
+		if (isWorkingPlot(i) && pPlot != NULL && pPlot->getWorkingCity() == this)
+			iGold += getMintGold(pPlot, pPlot->getImprovementType(), true);
+	}
+	return iGold;
+}
+
+int CvCity::getWorkedPlotGold() const
+{
+	int iGold = 0;
+	for (int i = 0; i < NUM_CITY_PLOTS; ++i)
+	{
+		const CvPlot* pPlot = getCityIndexPlot(i);
+		if (!isWorkingPlot(i) || pPlot == NULL || pPlot->getWorkingCity() != this ||
+			pPlot->getOwnerINLINE() != getOwnerINLINE()) continue;
+		iGold += pPlot->calculateGold();
+	}
+	return iGold;
+}
 
 int CvCity::countWorkedDeepArchives() const
 {
@@ -9197,6 +9260,7 @@ void CvCity::updateCommerce(CommerceTypes eIndex)
 	{
 		iNewCommerce = (getBaseCommerceRateTimes100(eIndex) * getTotalCommerceRateModifier(eIndex)) / 100;
 		iNewCommerce += getYieldRate(YIELD_PRODUCTION) * getProductionToCommerceModifier(eIndex);
+		if (eIndex == COMMERCE_GOLD) iNewCommerce += 100 * getWorkedPlotGold();
 	}
 
 	if (iOldCommerce != iNewCommerce)
@@ -11122,6 +11186,7 @@ void CvCity::setWorkingPlot(int iIndex, bool bNewValue)
 	}
 
 	updateCommerce(COMMERCE_RESEARCH);
+	updateCommerce(COMMERCE_GOLD);
 }
 
 

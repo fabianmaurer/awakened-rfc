@@ -3952,6 +3952,13 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 				iValue += (kBuilding.getDomainProductionModifier(DOMAIN_SEA) / 4);
 			}
 
+			if (eBuilding == GC.getInfoTypeForString("BUILDING_COIN_MINT") &&
+				((iFocusFlags & BUILDINGFOCUS_GOLD) || iPass > 0))
+			{
+				const int iMintGold = getMintGoldPotential();
+				iValue += iMintGold * 4 * kOwner.AI_commerceWeight(COMMERCE_GOLD) / 100 * (bFinancialTrouble ? 2 : 1);
+			}
+
 			if ((iFocusFlags & BUILDINGFOCUS_MAINTENANCE) || (iFocusFlags & BUILDINGFOCUS_GOLD) || (iPass > 0))
 			{
 
@@ -7698,22 +7705,25 @@ void CvCityAI::AI_juggleCitizens()
 }
 
 
-bool CvCityAI::AI_potentialPlot(short* piYields)
+bool CvCityAI::AI_potentialPlot(short* piYields, int iDirectGold)
 {
 	int iNetFood = piYields[YIELD_FOOD] - GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	// Direct gold supports the economy just as commerce does. Otherwise a
+	// low-food precious-metal mine can incorrectly receive the 1/16 penalty.
+	const int iEconomicYield = piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] + iDirectGold;
 
 	if (iNetFood < 0)
 	{
  		if (piYields[YIELD_FOOD] == 0)
 		{
-			if (piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] < 2)
+			if (iEconomicYield < 2)
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if (piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] == 0)
+			if (iEconomicYield == 0)
 			{
 				return false;
 			}
@@ -7754,7 +7764,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 			{
 				iFoodCount += pLoopPlot->getYield(YIELD_FOOD);
 			}
-			else if ((pLoopPlot->getWorkingCity() == this) && AI_potentialPlot(pLoopPlot->getYield()))
+			else if ((pLoopPlot->getWorkingCity() == this) && AI_potentialPlot(pLoopPlot->getYield(), pLoopPlot->calculateGold()))
 			{
 				abPlotAvailable[iI] = true;
 			}
@@ -7827,7 +7837,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 }
 
 
-int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood, bool bIgnoreGrowth, bool bIgnoreStarvation, bool bWorkerOptimization)
+int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood, bool bIgnoreGrowth, bool bIgnoreStarvation, bool bWorkerOptimization, int iFlatGold)
 {
 	CitizenEvaluationCache* pConditions = CitizenEvaluationCache::active;
 	if (pConditions != NULL && pConditions->city != this)
@@ -7890,6 +7900,7 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 			iCommerceTimes100 += piCommerceYields[iJ] * 100;
 		}
 		aiCommerceYieldsTimes100[iJ] += (iCommerceTimes100 * iModifier) / 100;
+		if (iJ == COMMERCE_GOLD) aiCommerceYieldsTimes100[iJ] += iFlatGold * 100;
 	}
 
 	if (isProductionProcess() && !bWorkerOptimization)
@@ -8414,7 +8425,9 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 	}
 	
 	
-	int iYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation) * 100);
+	short aiDirectCommerce[NUM_COMMERCE_TYPES] = {0};
+	aiDirectCommerce[COMMERCE_GOLD] = pPlot->calculateGold();
+	int iYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation, false, aiDirectCommerce[COMMERCE_GOLD]) * 100);
 
 	if (eFinalImprovement != NO_IMPROVEMENT)
 	{
@@ -8423,7 +8436,8 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 			iYieldDiff = (pPlot->calculateImprovementYieldChange(eFinalImprovement, ((YieldTypes)iI), getOwnerINLINE()) - pPlot->calculateImprovementYieldChange(eCurrentImprovement, ((YieldTypes)iI), getOwnerINLINE()));
 			aiYields[iI] += iYieldDiff;
 		}
-		int iFinalYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation) * 100);
+		aiDirectCommerce[COMMERCE_GOLD] += pPlot->calculateImprovementGold(eFinalImprovement, getTeam()) - pPlot->calculateImprovementGold(eCurrentImprovement, getTeam());
+		int iFinalYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation, false, aiDirectCommerce[COMMERCE_GOLD]) * 100);
 		
 		if (iFinalYieldValue > iYieldValue)
 		{
@@ -8436,8 +8450,8 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 	}
 	// unless we are emph food (and also food not production)
 	if (!(AI_isEmphasizeYield(YIELD_FOOD) && !isFoodProduction()))
-		// if this plot is super bad (less than 2 food and less than combined 2 prod/commerce
-		if (!AI_potentialPlot(aiYields))
+		// Penalize genuinely poor plots, counting direct gold alongside commerce.
+		if (!AI_potentialPlot(aiYields, aiDirectCommerce[COMMERCE_GOLD]))
 			// undervalue it even more!
 			iYieldValue /= 16;
 	iValue += iYieldValue;
@@ -8882,6 +8896,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 						aiDiffYields[iJ] = (aiFinalYields[iJ] - (2 * pPlot->getYield(((YieldTypes)iJ))));
 					}
 
+					aiDiffYields[YIELD_COMMERCE] += 2 * (pPlot->calculateImprovementGold(eImprovement, getTeam()) - pPlot->calculateImprovementGold(pPlot->getImprovementType(), getTeam()));
 					const int iArchiveValue = getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 4 : 5;
 					if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
 						aiDiffYields[YIELD_COMMERCE] += 2 * iArchiveValue;

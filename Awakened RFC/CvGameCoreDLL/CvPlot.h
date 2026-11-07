@@ -350,6 +350,8 @@ public:
 	int calculateYield(YieldTypes eIndex, bool bDisplay = false) const;												// Exposed to Python
 	bool hasYield() const;																																		// Exposed to Python
 	void updateYield();
+	int calculateImprovementGold(ImprovementTypes eImprovement, TeamTypes eTeam) const;
+	int calculateGold(bool bDisplay = false) const;
 	int calculateMaxYield(YieldTypes eYield) const;
 	int getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUpgrade) const;
 

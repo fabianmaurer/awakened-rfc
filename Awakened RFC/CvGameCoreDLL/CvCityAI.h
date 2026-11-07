@@ -176,9 +176,9 @@ protected:
 	bool AI_removeWorstCitizen(SpecialistTypes eIgnoreSpecialist = NO_SPECIALIST);
 	void AI_juggleCitizens();
 
-	bool AI_potentialPlot(short* piYields);
+	bool AI_potentialPlot(short* piYields, int iDirectGold = 0);
 	bool AI_foodAvailable(int iExtra = 0);
-	int AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood = false, bool bIgnoreGrowth = false, bool bIgnoreStarvation = false, bool bWorkerOptimization = false);
+	int AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood = false, bool bIgnoreGrowth = false, bool bIgnoreStarvation = false, bool bWorkerOptimization = false, int iFlatGold = 0);
 	int AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood = false, bool bIgnoreGrowth = false, bool bIgnoreStarvation = false);
 
 	int AI_experienceWeight();

@@ -774,7 +774,20 @@ void CvPlot::updateSymbols()
 		PlayerTypes eViewerOwner = getRevealedOwner(eActiveTeam, true);
 		if (eViewerOwner == NO_PLAYER) eViewerOwner = GC.getGameINLINE().getActivePlayer();
 		const bool bEskimo = eViewerOwner == NO_PLAYER || GET_PLAYER(eViewerOwner).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO");
-		eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_OUTPUT_3" : "FEATURE_ARCHIVE_OUTPUT_5");
+		if (calculateGold(true) > 0)
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_GOLD_OUTPUT_3" : "FEATURE_ARCHIVE_GOLD_OUTPUT_5");
+		else
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_OUTPUT_3" : "FEATURE_ARCHIVE_OUTPUT_5");
+	}
+	if (eBadge == NO_FEATURE)
+	{
+		const int iGold = calculateGold(true);
+		if (iGold > 0)
+		{
+			CvString szFeature;
+			szFeature.Format("FEATURE_GOLD_OUTPUT_%d", iGold);
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(szFeature);
+		}
 	}
 	if (eBadge == NO_FEATURE)
 	{
@@ -6365,6 +6378,31 @@ int CvPlot::getHuntingGroundsYieldLoss(PlayerTypes ePlayer) const
 	return iLoss;
 }
 
+int CvPlot::calculateImprovementGold(ImprovementTypes eImprovement, TeamTypes eTeam) const
+{
+	if (eImprovement != GC.getInfoTypeForString("IMPROVEMENT_MINE")) return 0;
+	const BonusTypes eBonus = getBonusType(eTeam);
+	int iGold = 0;
+	if (eBonus == GC.getInfoTypeForString("BONUS_GOLD")) iGold = 6;
+	else if (eBonus == GC.getInfoTypeForString("BONUS_SILVER")) iGold = 4;
+	const CvCity* pCity = getWorkingCity();
+	if (pCity != NULL && (eBonus == GC.getInfoTypeForString("BONUS_GOLD") ||
+		eBonus == GC.getInfoTypeForString("BONUS_SILVER") || eBonus == GC.getInfoTypeForString("BONUS_COPPER")))
+		iGold += pCity->getMintGold(this, eImprovement);
+	return iGold;
+}
+
+int CvPlot::calculateGold(bool bDisplay) const
+{
+	if (getTerrainType() == NO_TERRAIN || !isPotentialCityWork()) return 0;
+	const TeamTypes eTeam = bDisplay ? GC.getGameINLINE().getActiveTeam() : getTeam();
+	if (bDisplay && eTeam == NO_TEAM) return 0;
+	const BonusTypes eBonus = getBonusType(eTeam);
+	const int iBaseGold = eBonus == GC.getInfoTypeForString("BONUS_GOLD") || eBonus == GC.getInfoTypeForString("BONUS_SILVER") ? 1 : 0;
+	const ImprovementTypes eImprovement = bDisplay ? getRevealedImprovementType(eTeam, false) : getImprovementType();
+	return iBaseGold + calculateImprovementGold(eImprovement, eTeam);
+}
+
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
 	PROFILE_FUNC();
@@ -6373,6 +6411,12 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 	int iBestYield;
 	int iYield;
 	int iI;
+
+	// Precious-metal extraction adds gold, not production, including railroad
+	// and civic mine bonuses. Natural hill/terrain production is unaffected.
+	const BonusTypes eProductionBonus = getBonusType(ePlayer == NO_PLAYER ? NO_TEAM : GET_PLAYER(ePlayer).getTeam());
+	if (eYield == YIELD_PRODUCTION && eImprovement == GC.getInfoTypeForString("IMPROVEMENT_MINE") &&
+		(eProductionBonus == GC.getInfoTypeForString("BONUS_GOLD") || eProductionBonus == GC.getInfoTypeForString("BONUS_SILVER"))) return 0;
 
 	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS"))
 	{
@@ -6643,7 +6687,7 @@ bool CvPlot::hasYield() const
 		}
 	}
 
-	return false;
+	return calculateGold() > 0;
 }
 
 
@@ -6689,7 +6733,14 @@ void CvPlot::updateYield()
 		}
 	}
 
-	if (bChange)
+	// Gold is direct commerce, so it can change without a standard yield change.
+	pWorkingCity = getWorkingCity();
+	if (pWorkingCity != NULL)
+	{
+		if (isBeingWorked()) pWorkingCity->updateCommerce(COMMERCE_GOLD);
+		pWorkingCity->AI_setAssignWorkDirty(true);
+	}
+	if (bChange || calculateGold() > 0 || m_pArchiveOutputSymbol != NULL)
 	{
 		updateSymbols();
 	}

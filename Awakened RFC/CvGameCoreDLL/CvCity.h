@@ -297,6 +297,10 @@ public:
 	void changeNumGreatPeople(int iChange);															
 
 	int countWorkedDeepArchives() const;
+	int getWorkedPlotGold() const;
+	bool hasLocalMintMetal() const;
+	int getMintGold(const CvPlot* pPlot, ImprovementTypes eImprovement, bool bAssumeMint = false) const;
+	int getMintGoldPotential() const;
 	int getBaseGreatPeopleRate() const;																		// Exposed to Python
 	int getGreatPeopleRate() const;																				// Exposed to Python
 	int getTotalGreatPeopleRateModifier() const;													// Exposed to Python

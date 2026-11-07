@@ -1747,4 +1747,8 @@
 	<Define><DefineName>AP_CRUSADE_BASE_TURNS</DefineName><iDefineIntVal>30</iDefineIntVal></Define>
 	<Define><DefineName>AP_CRUSADE_INACTIVITY_TURNS</DefineName><iDefineIntVal>8</iDefineIntVal></Define>
 	<Define><DefineName>AP_PAPAL_RETRY_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+
+    <!-- Metal inflation: 10,000 units = one percentage point; rates scale with game speed. -->
+    <Define><DefineName>RFCMP_METAL_INFLATION_PRESSURE_TIMES10000</DefineName><iDefineIntVal>10000</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_METAL_INFLATION_DECAY_TIMES10000</DefineName><iDefineIntVal>1000</iDefineIntVal></Define>
 </Civ4Defines>

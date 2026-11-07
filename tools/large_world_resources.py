@@ -11,6 +11,10 @@ from collections import Counter
 from pathlib import Path
 import pprint
 
+# Existing XL deposits at a delta shore and a wilderness margin. Keep their
+# original usable cells when refining the coast and applying inland barriers.
+XL_RESOURCE_REFUGES = {(64, 43), (167, 23)}  # Carajas iron; Yilgarn iron.
+
 
 # Commodity | first year (-3000 = initial) | region: reference x,y; ...
 # Coarse regional markers, not claims that an entire region grew a crop in one
@@ -144,12 +148,64 @@ XL_SITES = """
 SHEEP|-3000|Crete uplands:68,39
 WINE|-3000|Crete vineyards:69,39
 FISH|-3000|Crete coastal fish:68,38
+FISH|-3000|Bahamas banks:29,40; Puerto Rico shelf:33,37; Leeward Islands shelf:34,35; Windward Islands shelf:34,33; Trinidad shelf:35,32
+SUGAR|1600|Guadeloupe:34,34; Barbados:35,33
 FISH|-3000|Egyptian Mediterranean coast:68,36; Cyrenaican coast:65,37; Tripolitanian coast:61,37; Algerian coast:55,40
 WHEAT|-3000|Cyrenaican farmland:65,36
+WHEAT|-3000|Eurotas valley cereals:66,40
 SHEEP|-3000|Marmarican pasture:67,36; Tripolitanian pasture:60,36
 WINE|-3000|Cyrenaican vineyards:64,36
 HORSE|-1600|Eastern Nile delta:69,35
 """
+
+# Exact XL placements from the precious-metal review. Apply after the general
+# atlas so new deposits do not displace unrelated crops or future introductions.
+# These retain the atlas's existing turn-zero mineral availability.
+XL_METAL_SITES = (
+    ('GOLD', 'Witwatersrand West Rand', (106, 20)),
+    ('GOLD', 'Witwatersrand Orange Free State', (107, 19)),
+    ('GOLD', 'Minas Gerais Mariana', (61, 30)),
+    ('GOLD', 'Victoria Bendigo', (181, 19)),
+    ('GOLD', 'Alaska interior', (15, 95)),
+    ('GOLD', 'Klondike', (16, 95)),
+    ('GOLD', 'Timmins Abitibi', (42, 82)),
+    ('GOLD', 'Muruntau Kyzylkum', (138, 78)),
+    ('GOLD', 'Benguet Luzon', (175, 58)),
+    ('GOLD', 'Japan Sado', (183, 78)),
+    ('SILVER', 'Potosi western lodes', (53, 33)),
+    ('SILVER', 'Potosi southern lodes', (54, 32)),
+    ('SILVER', 'Fresnillo Zacatecas', (30, 65)),
+    ('SILVER', 'Guanajuato La Luz', (27, 62)),
+    ('SILVER', 'Banska Stiavnica', (102, 81)),
+    ('SILVER', 'Japan Ikuno', (181, 73)),
+)
+XL_METAL_REPLACED = {
+    ('GOLD', 'Japan Sado'), ('GOLD', 'Alaska Yukon'), ('GOLD', 'Klondike'),
+    ('SILVER', 'Japan Sado'), ('SILVER', 'Peru Huancavelica'),
+}
+
+
+def review_xl_metals(plots, catalog, reserved, settlements):
+    """Retain other atlas sites; represent giant provinces with several tiles."""
+    for bonus, year, label, pos in catalog[:]:
+        if (bonus, label) in XL_METAL_REPLACED:
+            plots[pos][:] = [f for f in plots[pos] if not f.startswith('BonusType=')]
+            reserved.remove(pos)
+            catalog.remove((bonus, year, label, pos))
+    # One Yukon foothill and Luzon's northern pass make the deposits accessible.
+    for pos in ((16, 95), (175, 57)):
+        fields = plots[pos]
+        fields[fields.index('PlotType=0')] = 'PlotType=1'
+    for bonus, label, pos in XL_METAL_SITES:
+        fields = plots[pos]
+        if (pos in reserved or pos in settlements or 'PlotType=3' in fields
+                or 'PlotType=0' in fields
+                or any('_IMPASSABLE' in f or 'FEATURE_ICE' in f for f in fields)):
+            raise ValueError('Invalid XL metal deposit: %s %s %s' %
+                             (label, fields, [site for site in catalog if site[3] == pos]))
+        fields.append('BonusType=BONUS_' + bonus)
+        reserved.add(pos)
+        catalog.append((bonus, -3000, label, pos))
 
 # XL availability review: allow early local exploitation rather than waiting
 # for widespread cultivation or commercial prominence. These are generous
@@ -222,11 +278,28 @@ def sites(review=False):
             x, y = map(int, xy.split(','))
             if review and label == 'Cyprus':
                 x, y = 71, 40  # The island, not the original Syrian atlas anchor.
+            if review:
+                # The old approximate anchors were east of New Guinea and on
+                # New Zealand's opposite island. Narrower shores expose this
+                # drift; keep each named supply on its intended island.
+                if label == 'New Guinea':
+                    x, y = 116, 26
+                elif label in ('New Zealand South Island', 'New Zealand Canterbury'):
+                    x, y = 121, 7
+                elif label == 'New Zealand North Island':
+                    x, y = 122, 10
+                elif label in ('Hispaniola', 'Caribbean', 'Caribbean indigo'):
+                    x, y = 30, 37
+                elif label == 'Trinidad':
+                    x, y = 35, 31
+                elif label == 'Sakhalin':
+                    x, y = 114, 54
             yield bonus, int(year), label, (x, y)
 
 
 def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas_name='LargeWorldResources.tsv',
-                    review=False, protected=(), valleys=(), event_fisheries=(), settlements=()):
+                    review=False, protected=(), valleys=(), event_fisheries=(), settlements=(),
+                    island_regions=None):
     """Replace all bonuses after geography; reserve later sites from turn zero.
 
     Random-map BonusInfo climate restrictions (e.g. silver only on tundra)
@@ -303,8 +376,9 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
         # Productive agriculture and characteristic island exports take
         # precedence over ubiquitous quarry stone at this coarse resolution.
         signature = ('Sri Lanka cinnamon', 'New Guinea', 'New Guinea early cultivation', 'Moluccas cloves', 'Banda nutmeg')
-        island_sugar = bonus == 'SUGAR' and label in ('Cuba', 'Hispaniola', 'Jamaica', 'Sicily', 'Canaries', 'Mauritius', 'Madeira')
-        rank = 0 if label in signature or island_sugar else 1 if bonus in FIELDS else 2 if bonus not in MINERALS else 4 if bonus in ('STONE', 'MARBLE') else 3
+        island_sugar = bonus == 'SUGAR' and label in ('Cuba', 'Hispaniola', 'Jamaica', 'Guadeloupe', 'Barbados', 'Sicily', 'Canaries', 'Mauritius', 'Madeira')
+        island_gems = review and bonus == 'GEMS' and label == 'Sri Lanka'
+        rank = 0 if label in signature or island_sugar or island_gems else 1 if bonus in FIELDS else 2 if bonus not in MINERALS else 4 if bonus in ('STONE', 'MARBLE') else 3
         return rank, year, bonus, label
     for bonus, year, label, origin in sorted(sites(review), key=priority):
         center = axis(origin[0]), axis(origin[1], True)
@@ -312,6 +386,12 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
         choices = []
         for pos, fields in plots.items():
             dx, dy = pos[0]-center[0], pos[1]-center[1]
+            # A narrowed island must not export its dated land resources across
+            # the newly opened strait onto a neighbouring island or mainland.
+            if (island_regions and origin in island_regions and bonus not in SEA
+                    and not (bonus == 'OIL' and 'offshore' in label.lower())
+                    and pos not in island_regions[origin]):
+                continue
             if review and label == 'Cyprus' and pos not in ((114, 65), (115, 65)):
                 continue
             if review and label.startswith('Crete '):
@@ -359,7 +439,7 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
                 river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
                          'isNOfRiver' in plots.get((pos[0], pos[1] + 1), ()) or
                          'isWOfRiver' in plots.get(((pos[0] - 1) % width, pos[1]), ()))
-                if (pos in protected or river or any(f.startswith('ImprovementType=') for f in fields)
+                if ((pos in protected and pos not in XL_RESOURCE_REFUGES) or river or any(f.startswith('ImprovementType=') for f in fields)
                         or feature in ('FEATURE_FLOOD_PLAINS', 'FEATURE_OASIS', 'FEATURE_MUD')):
                     continue
             # Prefer existing relief/vegetation, then proximity. No displaced
@@ -389,6 +469,8 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
             fs = plots.get(pos, ())
             if review and (bonus in SEA or (bonus == 'OIL' and 'offshore' in label.lower())):
                 return pos in ocean
+            if island_regions and origin in island_regions and pos not in island_regions[origin]:
+                return False
             return bool(fs) and ('PlotType=3' in fs) == (bonus in SEA or (bonus == 'OIL' and 'offshore' in label.lower()))
         anchor = min((p for p in plots if medium(p) and abs(p[0]-center[0]) <= 2 and abs(p[1]-center[1]) <= 2),
                      key=lambda p: ((p[0]-center[0])**2+(p[1]-center[1])**2, p), default=None)
@@ -422,6 +504,9 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
         else:
             additions.append((year, 'BONUS_' + bonus, pos))
         catalog.append((bonus, year, label, pos))
+    if review:
+        review_xl_metals(plots, catalog, reserved, settlements)
+        omitted[:] = [site for site in omitted if site not in XL_METAL_REPLACED]
     # Swamp is decorative terrain art, not a traded economic resource. Rebuild
     # it from the finished marsh rather than retaining source-map positions.
     for pos, fields in plots.items():

@@ -101,16 +101,10 @@
   "Japan": [
     {"civ": "Japan", "x": 180, "y": 69, "name": "Saga"},
     {"civ": "Japan", "x": 183, "y": 70, "name": "Takamatsu"},
-    {"civ": "Japan", "x": 181, "y": 72, "name": "Okayama"},
     {"civ": "Japan", "x": 182, "y": 73, "name": "Himeji"},
-    {"civ": "Japan", "x": 184, "y": 71, "name": "Nara"},
-    {"civ": "Japan", "x": 186, "y": 73, "name": "Hamamatsu"},
     {"civ": "Japan", "x": 186, "y": 75, "name": "Matsumoto"},
     {"civ": "Japan", "x": 187, "y": 74, "name": "Kamakura"},
-    {"civ": "Japan", "x": 187, "y": 77, "name": "Utsunomiya"},
-    {"civ": "Japan", "x": 188, "y": 78, "name": "Fukushima"},
-    {"civ": "Japan", "x": 186, "y": 80, "name": "Hirosaki"},
-    {"civ": "Japan", "x": 188, "y": 83, "name": "Abashiri"}
+    {"civ": "Japan", "x": 187, "y": 77, "name": "Utsunomiya"}
   ],
   "Ethiopia and the Horn; West African river and trade centres": [
     {"civ": "Ethiopia", "x": 116, "y": 46, "name": "Gondar"},
@@ -187,6 +181,10 @@
     {"civ": "Portugal", "x": 80, "y": 66, "name": "Lagos"}
   ],
   "France, Britain and Ireland": [
+    {"civ": "England", "x": 83, "y": 98, "name": "Elgin"},
+    {"civ": "England", "x": 82, "y": 96, "name": "Dumbarton", "variants": {"Glasgow": "Alt Clut"}},
+    {"civ": "England", "x": 82, "y": 89, "name": "Caernarfon", "variants": {"Deva": "Segontium"}},
+    {"civ": "England", "x": 85, "y": 86, "name": "Winchester", "variants": {"Londinium": "Venta Belgarum", "Londres": "Winchester"}},
     {"civ": "France", "x": 85, "y": 78, "name": "Poitiers"},
     {"civ": "France", "x": 86, "y": 76, "name": "Agen"},
     {"civ": "France", "x": 89, "y": 77, "name": "Albi"},
@@ -199,15 +197,11 @@
     {"civ": "France", "x": 91, "y": 81, "name": "Troyes"},
     {"civ": "France", "x": 91, "y": 83, "name": "Arras"},
     {"civ": "England", "x": 85, "y": 88, "name": "St Albans", "variants": {"Londinium": "Verulamium", "Londres": "St Albans"}},
-    {"civ": "England", "x": 85, "y": 86, "name": "Winchester", "variants": {"Londinium": "Venta Belgarum", "Londres": "Winchester"}},
     {"civ": "England", "x": 83, "y": 87, "name": "Bristol", "variants": {"Aquae Sulis": "Abona"}},
-    {"civ": "England", "x": 82, "y": 89, "name": "Caernarfon", "variants": {"Deva": "Segontium"}},
     {"civ": "England", "x": 83, "y": 90, "name": "Shrewsbury"},
     {"civ": "England", "x": 85, "y": 90, "name": "Lincoln", "variants": {"Ratae": "Lindum"}},
     {"civ": "England", "x": 84, "y": 92, "name": "Lancaster"},
     {"civ": "England", "x": 86, "y": 93, "name": "Durham"},
-    {"civ": "England", "x": 82, "y": 96, "name": "Dumbarton", "variants": {"Glasgow": "Alt Clut"}},
-    {"civ": "England", "x": 83, "y": 98, "name": "Elgin"},
     {"civ": "England", "x": 79, "y": 92, "name": "Athlone"},
     {"civ": "England", "x": 80, "y": 93, "name": "Drogheda"}
   ],
@@ -265,24 +259,24 @@
     {"civ": "America", "x": 48, "y": 80, "name": "Portsmouth"}
   ],
   "British Isles: market towns and regional centres": [
+    {"civ": "England", "x": 82, "y": 97, "name": "Fort William"},
+    {"civ": "England", "x": 86, "y": 96, "name": "Peterhead"},
+    {"civ": "England", "x": 82, "y": 90, "name": "Wrexham"},
+    {"civ": "England", "x": 82, "y": 88, "name": "Gloucester", "variants": {"Aquae Sulis": "Glevum"}},
+    {"civ": "England", "x": 83, "y": 86, "name": "Taunton"},
     {"civ": "England", "x": 78, "y": 89, "name": "Kinsale"},
     {"civ": "England", "x": 78, "y": 93, "name": "Tuam"},
     {"civ": "England", "x": 79, "y": 93, "name": "Kildare"},
     {"civ": "England", "x": 79, "y": 94, "name": "Downpatrick"},
-    {"civ": "England", "x": 83, "y": 86, "name": "Taunton"},
-    {"civ": "England", "x": 82, "y": 88, "name": "Gloucester", "variants": {"Aquae Sulis": "Glevum"}},
     {"civ": "England", "x": 84, "y": 87, "name": "Reading"},
     {"civ": "England", "x": 84, "y": 89, "name": "Worcester"},
-    {"civ": "England", "x": 82, "y": 90, "name": "Wrexham"},
     {"civ": "England", "x": 84, "y": 93, "name": "Preston"},
     {"civ": "England", "x": 86, "y": 91, "name": "Beverley"},
     {"civ": "England", "x": 85, "y": 92, "name": "Hexham"},
     {"civ": "England", "x": 87, "y": 89, "name": "Ipswich"},
     {"civ": "England", "x": 87, "y": 90, "name": "King's Lynn"},
     {"civ": "England", "x": 83, "y": 96, "name": "Stirling"},
-    {"civ": "England", "x": 86, "y": 96, "name": "Peterhead"},
-    {"civ": "England", "x": 84, "y": 95, "name": "Perth"},
-    {"civ": "England", "x": 82, "y": 97, "name": "Fort William"}
+    {"civ": "England", "x": 84, "y": 95, "name": "Perth"}
   ],
   "France: local valleys and provincial towns": [
     {"civ": "France", "x": 85, "y": 77, "name": "Saintes", "variants": {"Lapurdum": "Mediolanum Santonum"}},
@@ -380,7 +374,6 @@
     {"civ": "Greece", "x": 108, "y": 73, "name": "Perinthos"},
     {"civ": "Greece", "x": 108, "y": 74, "name": "Mesembria"},
     {"civ": "Greece", "x": 107, "y": 74, "name": "Beroe"},
-    {"civ": "Greece", "x": 110, "y": 64, "name": "Gortyn", "variants": {"Gortyna": "Gortyna"}},
     {"civ": "Greece", "x": 114, "y": 72, "name": "Nikomedeia"},
     {"civ": "Greece", "x": 115, "y": 72, "name": "Gordion"}
   ],
@@ -462,13 +455,11 @@
   ],
   "Japan: castle towns and regional ports": [
     {"civ": "Japan", "x": 179, "y": 69, "name": "Sasebo"},
-    {"civ": "Japan", "x": 179, "y": 70, "name": "Kurume"},
     {"civ": "Japan", "x": 184, "y": 74, "name": "Fukui"},
     {"civ": "Japan", "x": 184, "y": 76, "name": "Nagaoka"},
     {"civ": "Japan", "x": 185, "y": 74, "name": "Kofu"},
     {"civ": "Japan", "x": 185, "y": 75, "name": "Takayama"},
     {"civ": "Japan", "x": 187, "y": 75, "name": "Odawara"},
-    {"civ": "Japan", "x": 188, "y": 77, "name": "Mito"},
     {"civ": "Japan", "x": 185, "y": 78, "name": "Yamagata"},
     {"civ": "Japan", "x": 186, "y": 79, "name": "Hachinohe"},
     {"civ": "Japan", "x": 184, "y": 84, "name": "Otaru"},
@@ -538,7 +529,6 @@
     {"civ": "Khmer", "x": 169, "y": 47, "name": "Kuching"},
     {"civ": "Khmer", "x": 175, "y": 44, "name": "Parepare"},
     {"civ": "Khmer", "x": 175, "y": 56, "name": "Vigan"},
-    {"civ": "Khmer", "x": 176, "y": 53, "name": "Batangas"},
     {"civ": "Khmer", "x": 177, "y": 52, "name": "Butuan"},
     {"civ": "Khmer", "x": 175, "y": 58, "name": "Tuguegarao"}
   ],

@@ -2650,6 +2650,17 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					}
 				}
 
+				if (eImprovement != NO_IMPROVEMENT)
+				{
+					const int iGoldChange = pMissionPlot->calculateImprovementGold(eImprovement, pHeadSelectedUnit->getTeam()) -
+						pMissionPlot->calculateImprovementGold(pMissionPlot->getImprovementType(), pHeadSelectedUnit->getTeam());
+					if (iGoldChange != 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_GOLD_CHANGE", iGoldChange));
+					}
+				}
+
 				if (GC.getBuildInfo(eBuild).isKill())
 				{
 					szBuffer.append(NEWLINE);
@@ -2724,7 +2735,8 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						GAMETEXT.setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_ACTION_IRRIGATED").c_str(), L": ", L"", GC.getImprovementInfo(eImprovement).getIrrigatedYieldChangeArray());
 					}
 
-					if (eRoute == NO_ROUTE)
+					if (eRoute == NO_ROUTE && !(eImprovement == GC.getInfoTypeForString("IMPROVEMENT_MINE") &&
+						(eBonus == GC.getInfoTypeForString("BONUS_GOLD") || eBonus == GC.getInfoTypeForString("BONUS_SILVER"))))
 					{
 						for (iI = 0; iI < GC.getNumRouteInfos(); iI++)
 						{

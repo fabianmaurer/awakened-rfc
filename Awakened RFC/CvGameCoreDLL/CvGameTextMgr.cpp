@@ -2958,6 +2958,10 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 				szString.append(gDLL->getText(bEskimo ? "TXT_KEY_ARCHIVE_INLINE_OUTPUT" : "TXT_KEY_ARCHIVE_INLINE_RESEARCH", bEskimo ? 3 : 5));
 			}
 
+		const int iPlotGold = pPlot->calculateGold(true);
+		if (iPlotGold > 0)
+			szString.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_INLINE_GOLD", iPlotGold));
+
 		if (pPlot->isFreshWater())
 		{
 			szString.append(NEWLINE);
@@ -3050,6 +3054,12 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 										}
 									}
 
+									const int iMineGold = pPlot->calculateImprovementGold((ImprovementTypes)GC.getBuildInfo((BuildTypes)iI).getImprovement(), GC.getGameINLINE().getActiveTeam());
+									if (iMineGold > 0)
+									{
+										setListHelp(szString, L"\n", gDLL->getText("TXT_KEY_PRECIOUS_METAL_GOLD_CHANGE", iMineGold).c_str(), L", ", bFirst);
+										bFirst = false;
+									}
 									if (!bFirst)
 									{
 										szString.append(gDLL->getText("TXT_KEY_BONUS_WITH_IMPROVEMENT", kImprovementInfo.getTextKeyWide()));
@@ -6801,6 +6811,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 
 
+
 	if (pCity != NULL)
 	{
 		ePlayer = pCity->getOwnerINLINE();
@@ -7979,6 +7990,17 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_COOLING_HOUSE_HELP"));
 	}
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_COIN_MINT"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_COIN_MINT_HELP"));
+		if (pCity == NULL || !pCity->hasLocalMintMetal())
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_COIN_MINT_REQUIRES"));
+		}
+	}
+
 }
 
 void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, BuildingTypes eBuilding, bool bCivilopediaText, bool bTechChooserText, const CvCity* pCity)
@@ -9339,6 +9361,12 @@ void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, b
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BONUS_REVEALED_BY", GC.getTechInfo((TechTypes)GC.getBonusInfo(eBonus).getTechReveal()).getTextKeyWide()));
 		}
+	}
+
+	if (eBonus == GC.getInfoTypeForString("BONUS_GOLD") || eBonus == GC.getInfoTypeForString("BONUS_SILVER"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_RESOURCE_HELP", eBonus == GC.getInfoTypeForString("BONUS_GOLD") ? 6 : 4));
 	}
 
 	ImprovementTypes eImprovement = NO_IMPROVEMENT;
@@ -10901,6 +10929,12 @@ void CvGameTextMgr::setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTyp
 		}
 	}
 
+	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_MINE"))
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_MINE_HELP"));
+	}
+
 	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS") || eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
 	{
 		szBuffer.append(NEWLINE);
@@ -11465,20 +11499,22 @@ void CvGameTextMgr::setTerrainHelp(CvWStringBuffer &szBuffer, TerrainTypes eTerr
 
 void CvGameTextMgr::buildFinanceInflationString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer)
 {
-	if (NO_PLAYER == ePlayer)
-	{
-		return;
-	}
-	CvPlayer& kPlayer = GET_PLAYER(ePlayer);
-
-	int iInflationRate = kPlayer.calculateInflationRate();
-	if (iInflationRate != 0)
-	{
-		int iPreInflation = kPlayer.calculatePreInflatedCosts();
-		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_FINANCE_ADVISOR_INFLATION", iPreInflation, iInflationRate, iInflationRate, iPreInflation, (iPreInflation * iInflationRate) / 100));
-	}
+	if (ePlayer == NO_PLAYER) return;
+	const CvPlayer& kPlayer = GET_PLAYER(ePlayer);
+	const int iRate = kPlayer.getMetalInflationTimes100();
+	const int iChange = kPlayer.getMetalInflationChangeTimes10000() / 100;
+	const CvWString szRate = CvWString::format(L"%d.%02d%%", iRate / 100, iRate % 100);
+	const CvWString szChange = CvWString::format(L"%s%d.%02d", iChange < 0 ? L"-" : L"+", abs(iChange) / 100, abs(iChange) % 100);
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_METAL_INFLATION_STATUS", szRate.GetCString(), szChange.GetCString()));
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_METAL_INFLATION_RATIO", kPlayer.getPreciousMetalIncome(), kPlayer.getMetalInflationCommerce()));
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_METAL_INFLATION_RULE"));
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_METAL_INFLATION_COST", kPlayer.calculateInflatedCosts() - kPlayer.calculatePreInflatedCosts()));
 }
+
 
 void CvGameTextMgr::buildFinanceUnitCostString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer)
 {
@@ -12250,6 +12286,13 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 		}
 	}
 
+	if (eCommerceType == COMMERCE_GOLD && city.getWorkedPlotGold() > 0)
+	{
+		const int iPlotGold = city.getWorkedPlotGold();
+		szBuffer.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_CITY_GOLD", iPlotGold));
+		szBuffer.append(NEWLINE);
+		iModYield += 100 * iPlotGold;
+	}
 	FAssertMsg(iModYield == city.getCommerceRateTimes100(eCommerceType), "Commerce yield does not match actual value");
 
 	CvWString szYield = CvWString::format(L"%d.%02d", iModYield/100, iModYield%100);
