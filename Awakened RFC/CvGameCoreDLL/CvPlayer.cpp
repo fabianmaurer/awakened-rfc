@@ -5415,7 +5415,12 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 	{
 		if (GC.getFeatureInfo(pPlot->getFeatureType()).isNoCity())
 		{
-			return false;
+			const bool bCanClearJungle = pPlot->getFeatureType() == GC.getInfoTypeForString("FEATURE_JUNGLE") &&
+				GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_IRON_WORKING"));
+			if (!bCanClearJungle)
+			{
+				return false;
+			}
 		}
 	}
 
