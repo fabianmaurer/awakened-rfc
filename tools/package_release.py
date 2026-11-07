@@ -56,13 +56,13 @@ def runtime_files(include_reporting=False):
     if expected not in dll or other in dll:
         raise ValueError('DLL reporting mode does not match package mode; rebuild with '
                          'ARFC_ENABLE_REPORTING=' + ('1' if include_reporting else '0'))
-    for folder in ('Assets', 'PublicMaps'):
+    for folder in ('Assets', 'PublicMaps', 'Resource'):
         if not (MOD / folder).is_dir():
             raise ValueError('Missing runtime directory: ' + str(MOD / folder))
     if not any((MOD / 'PublicMaps').glob('*.CivBeyondSwordWBSave')):
         raise ValueError('No playable scenarios found in PublicMaps.')
     paths = [config]
-    for folder in ('Assets', 'PublicMaps'):
+    for folder in ('Assets', 'PublicMaps', 'Resource'):
         for path in (MOD / folder).rglob('*'):
             relative = path.relative_to(MOD)
             if not include_reporting and relative.as_posix() in REPORTING_FILES:
