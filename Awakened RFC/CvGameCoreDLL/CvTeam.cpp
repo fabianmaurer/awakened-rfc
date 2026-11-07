@@ -5294,7 +5294,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 					{
 						for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
 						{
-							if (GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex)
+							if (!isRegionalReligion((ReligionTypes)iI) && GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex)
 							{
 								iBestValue = MAX_INT;
 								eBestPlayer = NO_PLAYER;

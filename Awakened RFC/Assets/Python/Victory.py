@@ -520,6 +520,17 @@ class Victory:
                                                 
                 elif (iPlayer == iIndia):
                         if (pIndia.isAlive()):                                                            
+                                if self.getGoal(iIndia, 1) == -1:
+                                        religions = [False] * con.iNumReligions
+                                        for pyCity in PyPlayer(iIndia).getCityList():
+                                                city = pyCity.GetCy()
+                                                for religion in range(con.iNumReligions):
+                                                        if city.isHasReligion(religion):
+                                                                religions[religion] = True
+                                        if sum(religions) >= 5:
+                                                self.setGoal(iIndia, 1, 1)
+                                        elif iGameTurn >= i1200AD:
+                                                self.setGoal(iIndia, 1, 0)
                                                                 
                                 if (iGameTurn == i1200AD):
                                         iPop = pIndia.getRealPopulation()
@@ -1503,23 +1514,6 @@ class Victory:
                                         self.setGoal(iIndia, 0, 0)
                         if (self.getReligionFounded(con.iHinduism) == 1 and self.getReligionFounded(con.iBuddhism) == 1):
                                 self.setGoal(iIndia, 0, 1)     
-
-                if (self.getGoal(iIndia, 1) == -1):
-                        iCounter = 0
-                        for i in range(con.iNumReligions):
-                                if (self.getReligionFounded(i) == 1):
-                                        iCounter += 1
-                        if (iCounter >= 5):
-                                self.setGoal(iIndia, 1, 1)
-
-                        if (self.getGoal(iIndia, 1) == -1):
-                                iFounded = 0
-                                for iLoopReligion in range(con.iNumReligions):
-                                        if (gc.getGame().isReligionFounded(iLoopReligion)):
-                                                iFounded += 1
-                                if (iFounded == con.iNumReligions):
-                                        self.setGoal(iIndia, 1, 0)
-
 
                 if (iPlayer == iEthiopia):
                         if (pEthiopia.isAlive()):

@@ -6185,6 +6185,7 @@ void CvGame::setHolyCity(ReligionTypes eIndex, CvCity* pNewValue, bool bAnnounce
             const bool bIslamFounding = bSpreadReligion && bNewReligion &&
                 eIndex == (ReligionTypes)GC.getInfoTypeForString("RELIGION_ISLAM");
             if (bIslamFounding) GET_PLAYER(pHolyCity->getOwnerINLINE()).prepareIslamFounding();
+			if (bSpreadReligion && bNewReligion && isRegionalReligion(eIndex)) setReligionSlotTaken(eIndex, true);
 			if (bSpreadReligion) pHolyCity->setHasReligion(eIndex, true, bAnnounce, true, true);
 			pHolyCity->changeReligionInfluence(eIndex, GC.getDefineINT("HOLY_CITY_INFLUENCE"));
 
@@ -6639,7 +6640,7 @@ void CvGame::doHolyCity()
 	{
 		iI = ((iLoop + iRandOffset) % GC.getNumReligionInfos());
 
-		if (!isReligionSlotTaken((ReligionTypes)iI))
+		if (!isRegionalReligion((ReligionTypes)iI) && !isReligionSlotTaken((ReligionTypes)iI))
 		{
 			iBestValue = MAX_INT;
 			eBestTeam = NO_TEAM;

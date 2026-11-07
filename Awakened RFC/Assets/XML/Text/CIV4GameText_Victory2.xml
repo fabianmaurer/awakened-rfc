@@ -150,11 +150,11 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UHV_IND2</Tag>
-		<English>Found at least 5 religions</English>
-		<French>Fonder au moins 5 religions</French>
-		<German>Begr&#252;nden Sie mindestens 5 Religionen</German>
-		<Italian>Fonda almeno 5 religioni</Italian>
-		<Spanish>Fundar al menos 5 religiones</Spanish>
+		<English>Have 5 religions in your cities by 1200 AD</English>
+		<French>Avoir 5 religions dans vos villes avant 1200 ap. J.-C.</French>
+		<German>Habt bis 1200 n. Chr. 5 Religionen in Euren St&#228;dten</German>
+		<Italian>Avere 5 religioni nelle tue citt&#224; entro il 1200 d.C.</Italian>
+		<Spanish>Tener 5 religiones en tus ciudades para 1200 d. C.</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_UHV_IND3</Tag>

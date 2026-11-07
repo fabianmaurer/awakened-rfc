@@ -2162,3 +2162,15 @@ void getUnitAIString(CvWString& szString, UnitAITypes eUnitAI)
 	default: szString = CvWString::format(L"unknown(%d)", eUnitAI); break;
 	}
 }
+
+// Religions founded by the regional historical rules, not technology races.
+bool isRegionalReligion(ReligionTypes eReligion)
+{
+    return eReligion == GC.getInfoTypeForString("RELIGION_JUDAISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_ISLAM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_HINDUISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_BUDDHISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_CONFUCIANISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_TAOISM");
+}

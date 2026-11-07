@@ -1542,7 +1542,7 @@ bool CvDLLButtonPopup::launchChooseTechPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 					for (int iJ = 0; iJ < GC.getNumReligionInfos(); iJ++)
 					{
-						if (GC.getReligionInfo((ReligionTypes)iJ).getTechPrereq() == iI)
+						if (!isRegionalReligion((ReligionTypes)iJ) && GC.getReligionInfo((ReligionTypes)iJ).getTechPrereq() == iI)
 						{
 							if (!(GC.getGameINLINE().isReligionSlotTaken((ReligionTypes)iJ)))
 							{
@@ -2585,7 +2585,7 @@ bool CvDLLButtonPopup::launchFoundReligionPopup(CvPopup* pPopup, CvPopupInfo &in
 	for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
 	{
 		CvReligionInfo& kReligion = GC.getReligionInfo((ReligionTypes)iReligion);
-		if (!GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
+		if (!isRegionalReligion((ReligionTypes)iReligion) && !GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
 		{
 			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, kReligion.getDescription(), kReligion.getButton(), iReligion, WIDGET_GENERAL);			
 			bFound = true;

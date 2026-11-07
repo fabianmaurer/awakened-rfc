@@ -714,7 +714,7 @@ class CvTechChooser:
 
 			# Religions unlocked
 			for j in range( gc.getNumReligionInfos() ):
-				if ( gc.getReligionInfo(j).getTechPrereq() == i ):
+				if ( gc.getReligionInfo(j).getTechPrereq() == i and j not in (gc.getInfoTypeForString("RELIGION_JUDAISM"), gc.getInfoTypeForString("RELIGION_CHRISTIANITY"), gc.getInfoTypeForString("RELIGION_ISLAM"), gc.getInfoTypeForString("RELIGION_HINDUISM"), gc.getInfoTypeForString("RELIGION_BUDDHISM"), gc.getInfoTypeForString("RELIGION_CONFUCIANISM"), gc.getInfoTypeForString("RELIGION_TAOISM")) ):
 					szFoundReligion = "FoundReligionButton" + str( ( i * 1000 ) + j )
 					if gc.getGame().isOption(GameOptionTypes.GAMEOPTION_PICK_RELIGION):
 						szButton = ArtFileMgr.getInterfaceArtInfo("INTERFACE_POPUPBUTTON_RELIGION").getPath()

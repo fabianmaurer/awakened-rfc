@@ -9495,7 +9495,7 @@ void CvGameTextMgr::setReligionHelp(CvWStringBuffer &szBuffer, ReligionTypes eRe
 
 	if (!bCivilopedia)
 	{
-		if (religion.getTechPrereq() != NO_TECH)
+		if (!isRegionalReligion(eReligion) && religion.getTechPrereq() != NO_TECH)
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_RELIGION_FOUNDED_FIRST", GC.getTechInfo((TechTypes)religion.getTechPrereq()).getTextKeyWide()));
@@ -9554,7 +9554,7 @@ void CvGameTextMgr::setReligionHelpCity(CvWStringBuffer &szBuffer, ReligionTypes
 
 		if (!(GC.getGameINLINE().isReligionFounded(eReligion)) && !GC.getGameINLINE().isOption(GAMEOPTION_PICK_RELIGION))
 		{
-			if (GC.getReligionInfo(eReligion).getTechPrereq() != NO_TECH)
+			if (!isRegionalReligion(eReligion) && GC.getReligionInfo(eReligion).getTechPrereq() != NO_TECH)
 			{
 				szBuffer.append(gDLL->getText("TXT_KEY_RELIGION_FOUNDED_FIRST", GC.getTechInfo((TechTypes)(GC.getReligionInfo(eReligion).getTechPrereq())).getTextKeyWide()));
 			}
@@ -10531,7 +10531,7 @@ bool CvGameTextMgr::buildFoundReligionString(CvWStringBuffer &szBuffer, TechType
 {
 	CvWString szTempBuffer;
 
-	if (GC.getReligionInfo((ReligionTypes) iReligionType).getTechPrereq() == eTech)
+	if (!isRegionalReligion((ReligionTypes)iReligionType) && GC.getReligionInfo((ReligionTypes) iReligionType).getTechPrereq() == eTech)
 	{
 		if (!bPlayerContext || (GC.getGameINLINE().countKnownTechNumTeams(eTech) == 0))
 		{

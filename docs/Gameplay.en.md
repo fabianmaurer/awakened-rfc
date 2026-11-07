@@ -192,6 +192,22 @@ former-colony claims, local culture conversion and nearby unit flips stay within
 these bounds, excluding Rome (60,44) and its adjacent tiles. Ancient Rome's birth
 area and stability regions are unchanged.
 
+## Regional religion founding
+
+Religions arise in eligible regional cities belonging to any owner; the city owner receives founding credit. The game checks every turn after the earliest date and waives the technology requirement at the fallback date.
+
+| Religion | Region | Earliest date and technology | Fallback |
+|---|---|---|---|
+| Hinduism | Northern India | 1500 BC, Meditation | 1000 BC |
+| Buddhism | Northern India | 500 BC, Priesthood | 200 BC |
+| Confucianism | China | 500 BC, Mathematics | 200 BC |
+| Daoism | China | 400 BC, Calendar | 200 BC |
+| Judaism | Levant | 1500 BC, Monotheism | 1000 BC |
+| Christianity | Levant | 33 AD, Theology | 200 AD |
+| Islam | Arabia | 622 AD, Divine Right | 650 AD |
+
+Jerusalem is preferred for Judaism and Christianity, and Mecca for Islam. Before its fallback, Christianity requires either Jerusalem or a city containing Judaism; afterwards it may arise in any eligible Levantine city, still preferring Jewish cities after Jerusalem. The other religions prefer their historical heartlands, then population; Buddhism and Daoism prefer a different holy city from Hinduism and Confucianism respectively. If no eligible city exists, founding waits. These religions are excluded from the ordinary technology race and Choose Religions selection. India's historical victory requires it to found Hinduism and Buddhism and to have five distinct religions across its cities by 1200 AD.
+
 ## Cultural border expansion
 
 Cities begin with their center and eight neighboring tiles. Further culture

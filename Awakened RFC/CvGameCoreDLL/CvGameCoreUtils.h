@@ -355,6 +355,7 @@ int countPlotGroup(FAStarNode* parent, FAStarNode* node, int data, const void* p
 int baseYieldToSymbol(int iNumYieldTypes, int iYieldStack);
 
 bool isPickableName(const TCHAR* szName);
+bool isRegionalReligion(ReligionTypes eReligion);
 
 DllExport int* shuffle(int iNum, CvRandom& rand);
 void shuffleArray(int* piShuffle, int iNum, CvRandom& rand);

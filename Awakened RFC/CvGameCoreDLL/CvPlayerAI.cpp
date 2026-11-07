@@ -18719,7 +18719,7 @@ int CvPlayerAI::AI_calculateUnitAIViability(UnitAITypes eUnitAI, DomainTypes eDo
 ReligionTypes CvPlayerAI::AI_chooseReligion()
 {
 	ReligionTypes eFavorite = (ReligionTypes)GC.getLeaderHeadInfo(getLeaderType()).getFavoriteReligion();
-	if (NO_RELIGION != eFavorite && !GC.getGameINLINE().isReligionFounded(eFavorite))
+	if (NO_RELIGION != eFavorite && !isRegionalReligion(eFavorite) && !GC.getGameINLINE().isReligionFounded(eFavorite))
 	{
 		return eFavorite;
 	}
@@ -18727,7 +18727,7 @@ ReligionTypes CvPlayerAI::AI_chooseReligion()
 	std::vector<ReligionTypes> aeReligions;
 	for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
 	{
-		if (!GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
+		if (!isRegionalReligion((ReligionTypes)iReligion) && !GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
 		{
 			aeReligions.push_back((ReligionTypes)iReligion);
 		}
