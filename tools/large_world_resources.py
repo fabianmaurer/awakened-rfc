@@ -492,6 +492,9 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
         reserved.add(pos)
         if review:
             year = XL_EARLIER_YEARS.get((bonus, label), year)
+        # Ancient resources must be visible before players choose city sites.
+        if year < 0:
+            year = -3000
         fields = plots[pos]
         if rocky and 'PlotType=2' in fields:
             fields[fields.index('PlotType=2')] = 'PlotType=1'

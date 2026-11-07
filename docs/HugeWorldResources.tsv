@@ -8,7 +8,7 @@ SPICES	-3000	Banda nutmeg	186	40
 SPICES	-3000	Moluccas cloves	186	43
 SPICES	-3000	Sri Lanka cinnamon	150	48
 SUGAR	-3000	New Guinea	188	41
-PIG	-1500	New Guinea	185	43
+PIG	-3000	New Guinea	185	43
 SUGAR	1000	Sicily	99	65
 SUGAR	1500	Madeira	76	61
 SUGAR	1600	Barbados	57	53
@@ -134,88 +134,88 @@ WINE	-3000	Georgia	124	73
 WINE	-3000	Levant	118	61
 WINE	-3000	Nile delta	111	57
 WINE	-3000	Zagros	130	68
-HORSE	-2200	Kazakhstan steppe	141	86
-HORSE	-2200	Pontic steppe	115	81
-HORSE	-2200	lower Volga Don	123	83
-RICE	-2000	Assam	158	63
-RICE	-2000	Bengal	153	62
-RICE	-2000	Odisha	153	61
-RICE	-2000	Yunnan	162	67
+HORSE	-3000	Kazakhstan steppe	141	86
+HORSE	-3000	Pontic steppe	115	81
+HORSE	-3000	lower Volga Don	123	83
+RICE	-3000	Assam	158	63
+RICE	-3000	Bengal	153	62
+RICE	-3000	Odisha	153	61
+RICE	-3000	Yunnan	162	67
 RICE	-3000	middle Ganges	150	64
-WHEAT	-2000	Gansu Hexi	158	78
-WHEAT	-2500	Shandong	171	76
-WHEAT	-2000	Tarim oases	152	76
-WHEAT	-2500	north China	165	75
-HORSE	-1600	Eastern Nile delta	112	57
-CORN	-2500	Bolivia valleys	54	34
-CORN	-2000	Chile central	49	23
+WHEAT	-3000	Gansu Hexi	158	78
+WHEAT	-3000	Shandong	171	76
+WHEAT	-3000	Tarim oases	152	76
+WHEAT	-3000	north China	165	75
+HORSE	-3000	Eastern Nile delta	112	57
+CORN	-3000	Bolivia valleys	54	34
+CORN	-3000	Chile central	49	23
 CORN	-3000	Colombian valleys	45	44
-CORN	-2500	Peru highland valleys	46	39
+CORN	-3000	Peru highland valleys	46	39
 CORN	-3000	Yucatan	37	60
 COTTON	-3000	Maya lowlands	36	59
 COTTON	-3000	Mesoamerica Gulf	35	60
-HORSE	-1500	Anatolia	119	71
-HORSE	-1500	Balkans	106	76
-HORSE	-1500	Central Europe	100	83
-HORSE	-1500	Indus northwest	142	66
-HORSE	-1500	Iran	134	69
-HORSE	-1500	Mesopotamia	125	68
-HORSE	-1500	Mongolia	162	83
-HORSE	-1500	Ukraine	112	83
-HORSE	-1500	north China	166	78
-RICE	-1500	Mekong	165	56
-RICE	-1500	Red River	163	62
-RICE	-1500	central Thailand	163	55
-RICE	-1500	lower Burma	158	57
-RICE	-1500	south India	149	54
+HORSE	-3000	Anatolia	119	71
+HORSE	-3000	Balkans	106	76
+HORSE	-3000	Central Europe	100	83
+HORSE	-3000	Indus northwest	142	66
+HORSE	-3000	Iran	134	69
+HORSE	-3000	Mesopotamia	125	68
+HORSE	-3000	Mongolia	162	83
+HORSE	-3000	Ukraine	112	83
+HORSE	-3000	north China	166	78
+RICE	-3000	Mekong	165	56
+RICE	-3000	Red River	163	62
+RICE	-3000	central Thailand	163	55
+RICE	-3000	lower Burma	158	57
+RICE	-3000	south India	149	54
 SHEEP	-3000	Central Asian steppe	140	86
-SHEEP	-2500	Mongolia	162	84
-SHEEP	-2500	north China	165	78
+SHEEP	-3000	Mongolia	162	84
+SHEEP	-3000	north China	165	78
 COW	-3000	east Africa	112	38
-COW	-2500	north China	166	76
-COW	-1000	southern Africa	109	26
-PIG	-1000	Japan	185	74
+COW	-3000	north China	166	76
+COW	-3000	southern Africa	109	26
+PIG	-3000	Japan	185	74
 PIG	-3000	Java	168	40
-PIG	-2000	Korea	177	77
+PIG	-3000	Korea	177	77
 PIG	-3000	Southeast Asia	163	57
-SUGAR	-1000	Bengal	154	63
-SUGAR	-1000	Ganges	151	63
-SUGAR	-1000	south India	148	54
-WHEAT	-1000	Ethiopian highlands	118	48
-WHEAT	-1000	eastern Ganges	152	63
-WINE	-2000	Etruria	97	73
+SUGAR	-3000	Bengal	154	63
+SUGAR	-3000	Ganges	151	63
+SUGAR	-3000	south India	148	54
+WHEAT	-3000	Ethiopian highlands	118	48
+WHEAT	-3000	eastern Ganges	152	63
+WINE	-3000	Etruria	97	73
 WINE	-3000	Greece north	107	71
-WINE	-1500	Iberian south	84	67
-WINE	-2000	Italy Campania	99	70
+WINE	-3000	Iberian south	84	67
+WINE	-3000	Italy Campania	99	70
 WINE	-3000	Sicily	98	65
-WINE	-1500	Tunisia	93	62
-HORSE	-500	Arabia north	123	59
-HORSE	-500	Britain	85	88
-HORSE	-500	Central Asian oases	137	78
-HORSE	-500	Gaul	90	80
-HORSE	-500	Iberia	83	70
-HORSE	-500	Numidia	90	62
-RICE	-500	Japan Kyushu	179	69
-RICE	-500	Java	171	41
-RICE	-500	Korea	176	77
-RICE	-500	Luzon	176	55
-RICE	-1000	Niger inland delta African rice	87	49
-RICE	-500	Sri Lanka	151	47
-RICE	-500	Sumatra	162	44
-RICE	-1000	upper Guinea African rice	83	46
-WINE	-1000	Gaul Mediterranean	91	76
-WINE	-1000	Iberian interior	86	71
-WINE	-500	Bordeaux	86	78
-WINE	-500	Burgundy	91	80
-WINE	-500	Moselle	94	83
-WINE	-500	Rhine	95	82
-CORN	-500	Mississippi middle	37	75
-CORN	-500	Ohio valley	41	76
-CORN	-2200	southwest pueblos	27	69
-COTTON	-500	Central Asia	136	76
-COTTON	-2000	Deccan	147	56
-COTTON	-2000	Ganges	149	64
-COTTON	-500	Nubia	112	50
+WINE	-3000	Tunisia	93	62
+HORSE	-3000	Arabia north	123	59
+HORSE	-3000	Britain	85	88
+HORSE	-3000	Central Asian oases	137	78
+HORSE	-3000	Gaul	90	80
+HORSE	-3000	Iberia	83	70
+HORSE	-3000	Numidia	90	62
+RICE	-3000	Japan Kyushu	179	69
+RICE	-3000	Java	171	41
+RICE	-3000	Korea	176	77
+RICE	-3000	Luzon	176	55
+RICE	-3000	Niger inland delta African rice	87	49
+RICE	-3000	Sri Lanka	151	47
+RICE	-3000	Sumatra	162	44
+RICE	-3000	upper Guinea African rice	83	46
+WINE	-3000	Gaul Mediterranean	91	76
+WINE	-3000	Iberian interior	86	71
+WINE	-3000	Bordeaux	86	78
+WINE	-3000	Burgundy	91	80
+WINE	-3000	Moselle	94	83
+WINE	-3000	Rhine	95	82
+CORN	-3000	Mississippi middle	37	75
+CORN	-3000	Ohio valley	41	76
+CORN	-3000	southwest pueblos	27	69
+COTTON	-3000	Central Asia	136	76
+COTTON	-3000	Deccan	147	56
+COTTON	-3000	Ganges	149	64
+COTTON	-3000	Nubia	112	50
 SUGAR	500	Java	169	41
 SUGAR	500	south China	170	66
 RICE	900	Iberian Valencia	87	70
@@ -223,8 +223,8 @@ CORN	0	Great Lakes south	38	78
 CORN	0	Iroquois country	47	81
 CORN	0	Mississippi lower	37	71
 CORN	0	southeastern US	43	72
-CORN	-1000	southern Brazil	62	29
-COTTON	-2000	Bengal	153	63
+CORN	-3000	southern Brazil	62	29
+COTTON	-3000	Bengal	153	63
 COTTON	1000	Egypt	111	58
 COTTON	1000	Iberian south	83	67
 COTTON	1000	Syria	120	65
@@ -592,12 +592,12 @@ WHALE	-3000	Norway whales	92	100
 WHALE	-3000	Patagonia whales	58	14
 WHALE	-3000	Peru whales	38	38
 WHALE	-3000	South Africa whales	104	14
-BANANA	-1500	Java	170	41
-BANANA	-1500	Malaysia	162	48
-BANANA	-1500	Philippines	175	55
-BANANA	-1500	Sri Lanka	151	48
-BANANA	-1500	Sumatra	163	43
-BANANA	-1500	south India	149	55
+BANANA	-3000	Java	170	41
+BANANA	-3000	Malaysia	162	48
+BANANA	-3000	Philippines	175	55
+BANANA	-3000	Sri Lanka	151	48
+BANANA	-3000	Sumatra	163	43
+BANANA	-3000	south India	149	55
 SILK	200	India Assam	157	62
 SILK	200	Japan	182	73
 SILK	200	Korea	178	76

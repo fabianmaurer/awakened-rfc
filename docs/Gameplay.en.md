@@ -425,7 +425,7 @@ Automation values it alongside commerce, without multiplying it by city gold bon
 
 Precious-metal inflation starts at zero and is saved per player. Each normal turn,
 its change in percentage points is
-**worked metal income / total commerce - 0.10 × (1 + current inflation / 10)**,
+**worked metal income / total commerce - 0.10 × (1 + current inflation / 1000)**,
 using the percentage number (20 for 20%). Recovery strengthens as inflation rises,
 balancing sustained metal income at an equilibrium.
 Income includes the base gold from deposits, gold/silver mine income, and all
@@ -435,9 +435,9 @@ Commerce is the empire's city commerce yield, including trade routes, before sli
 A zero-commerce economy uses one commerce for this calculation.
 
 - Ratios of 10% or less lead toward zero inflation. A sustained 20% ratio settles
-  at 10% inflation; 30% settles at 20%, and 50% at 40%.
-- With no metal income, inflation falls by 0.20 points at 10% inflation,
-  0.30 points at 20%, and 0.60 points at 50% per normal turn, stopping at zero.
+  at 1000% inflation; 30% settles at 2000%, and 50% at 4000%.
+- With no metal income, inflation falls by 0.101 points at 10% inflation,
+  0.102 points at 20%, and 0.105 points at 50% per normal turn, stopping at zero.
 - There is no per-turn rise cap or overall ceiling; inflation cannot fall below zero.
 - XL halves the per-turn changes. Other speeds scale with their growth percentage.
 - Inflation increases unit costs, supply, maintenance and civic upkeep, as well as

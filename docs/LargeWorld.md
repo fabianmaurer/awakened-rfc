@@ -40,8 +40,8 @@ Both XL selection menus use the historical country-name previews. The 800 BC
 XL start also uses the same starting civic profiles as standard 800 BC;
 its doubled engine turn is converted to the reference calendar for both.
 
-Resources follow the XL atlas, including 60 introductions already due by
-800 BC. Roads expand with the map; 50 starting improvements fit the local XL
+Resources follow the XL atlas, with all BC introductions present from the
+start. Roads expand with the map; 50 starting improvements fit the local XL
 terrain and resources. Five placements without a suitable local tile or
 resource are omitted. Merv, Anuradhapura, Palembang and Great
 Zimbabwe retain their later founding events in both ancient XL starts.
@@ -375,25 +375,12 @@ resources. Random-map restrictions such as silver appearing only on tundra are
 not historical geology and do not constrain this authored map. Neither terrain
 nor relief is changed to accommodate a deposit.
 
-Crops and livestock distinguish initial regional availability from later spread.
-Maize begins in the Americas; Eurasian livestock and wheat reach American
-regions after contact; Australian pastoral/agricultural introductions are later.
-Horse supply begins on the Pontic-Caspian steppe around 2200 BC and subsequently
-spreads. On XL, horses appear in the eastern Nile Delta around 1600 BC,
-providing Egypt with local supply for War Chariots; they are already present
-in the 800 BC start. Initial silk, sugarcane and spice locations follow their native/early
-production regions rather than later colonial plantations. Bonuses represent
-local supply, not imports. Missing crops such as millet, sorghum, potatoes and
-cassava are not silently represented by unrelated wheat or maize bonuses.
-
-XL dates favor early local availability over widespread cultivation or commercial
-prominence. The availability review advances 52 placements: 12 wine, 12 cotton,
-14 maize, nine livestock, two wheat and three rice sites. Twelve become initial
-resources; the other 40 retain earlier scheduled introductions. These are
-generous gameplay milestones, not claims of proven cultivation at every site.
-Minerals remain initial, and meaningful introductions between regions remain,
-including maize outside the Americas, horses in Egypt and livestock in Australia.
-The exact dates and locations are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
+All resources previously scheduled for BC dates are present from the start of
+both Large World maps, including the eastern Nile Delta horses on XL. This lets
+players choose city sites with those resources in mind; normal technology
+requirements still govern resource visibility. Later introductions, such as
+livestock in the Americas and Australia, retain their scheduled dates. The
+locations and dates are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
 North Africa's XL coast has four additional fisheries off Algeria, Tripolitania,
 Cyrenaica and Egypt. Cyrenaican wheat and wine, plus Tripolitanian and Marmarican
 sheep, support a few productive coastal cities without filling the desert interior.

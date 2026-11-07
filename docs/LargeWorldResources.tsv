@@ -5,7 +5,7 @@ SPICES	-3000	Banda nutmeg	149	34
 SPICES	-3000	Moluccas cloves	148	34
 SPICES	-3000	Sri Lanka cinnamon	120	38
 SUGAR	-3000	New Guinea	153	35
-PIG	-1000	New Guinea	152	35
+PIG	-3000	New Guinea	152	35
 SUGAR	1000	Sicily	78	52
 SUGAR	1500	Madeira	61	49
 SUGAR	1600	Cuba	34	49
@@ -122,75 +122,75 @@ WINE	-3000	Georgia	99	59
 WINE	-3000	Levant	95	52
 WINE	-3000	Nile delta	89	46
 WINE	-3000	Zagros	103	54
-HORSE	-2200	Kazakhstan steppe	113	69
-HORSE	-2200	Pontic steppe	92	65
-HORSE	-2200	lower Volga Don	98	66
-RICE	-2000	Assam	124	51
-RICE	-2000	Bengal	122	49
-RICE	-2000	Odisha	122	48
-RICE	-2000	Yunnan	130	54
-RICE	-2000	middle Ganges	120	50
-WHEAT	-2000	Gansu Hexi	127	62
-WHEAT	-2000	Shandong	137	59
-WHEAT	-2000	Tarim oases	121	61
-WHEAT	-2000	north China	132	60
-CORN	-1500	Bolivia valleys	43	26
-CORN	-1500	Chile central	39	18
-CORN	-1500	Colombian valleys	36	35
-CORN	-1500	Peru highland valleys	37	31
-CORN	-1500	Yucatan	30	48
-COTTON	-1500	Maya lowlands	29	47
-COTTON	-1500	Mesoamerica Gulf	28	48
-HORSE	-1500	Anatolia	95	57
-HORSE	-1500	Balkans	85	60
-HORSE	-1500	Central Europe	80	66
-HORSE	-1500	Indus northwest	114	54
-HORSE	-1500	Iran	107	54
-HORSE	-1500	Mesopotamia	100	55
-HORSE	-1500	Mongolia	129	66
-HORSE	-1500	Ukraine	89	66
-HORSE	-1500	north China	133	62
-RICE	-1500	Mekong	132	44
-RICE	-1500	Red River	130	49
-RICE	-1500	central Thailand	130	44
-RICE	-1500	lower Burma	127	45
-RICE	-1500	south India	119	43
-SHEEP	-1500	Central Asian steppe	112	69
-SHEEP	-1500	Mongolia	130	67
-SHEEP	-1500	north China	132	62
-COW	-1000	east Africa	89	30
-COW	-1000	north China	133	61
-COW	-1000	southern Africa	87	21
-PIG	-1000	Japan	146	58
-PIG	-1000	Java	134	33
-PIG	-1000	Korea	141	61
-PIG	-1000	Southeast Asia	130	45
-SUGAR	-1000	Bengal	123	50
-SUGAR	-1000	Ganges	120	52
-SUGAR	-1000	south India	118	43
-WHEAT	-1000	Ethiopian highlands	94	38
-WHEAT	-1000	eastern Ganges	121	51
-WINE	-1000	Etruria	78	58
-WINE	-1000	Greece north	86	57
-WINE	-1000	Iberian south	67	53
-WINE	-1000	Italy Campania	79	56
-WINE	-1000	Sicily	77	52
-WINE	-1000	Tunisia	74	49
-HORSE	-500	Arabia north	98	47
-HORSE	-500	Britain	68	70
-HORSE	-500	Central Asian oases	110	62
-HORSE	-500	Gaul	72	64
-HORSE	-500	Iberia	67	56
-HORSE	-500	Numidia	72	49
-RICE	-500	Japan Kyushu	143	55
-RICE	-500	Java	134	32
-RICE	-500	Korea	141	62
-RICE	-500	Luzon	141	44
-RICE	-500	Niger inland delta African rice	70	39
-RICE	-500	Sumatra	129	35
-RICE	-500	upper Guinea African rice	66	36
-WINE	-500	Gaul Mediterranean	72	61
-WINE	-500	Iberian interior	69	57
+HORSE	-3000	Kazakhstan steppe	113	69
+HORSE	-3000	Pontic steppe	92	65
+HORSE	-3000	lower Volga Don	98	66
+RICE	-3000	Assam	124	51
+RICE	-3000	Bengal	122	49
+RICE	-3000	Odisha	122	48
+RICE	-3000	Yunnan	130	54
+RICE	-3000	middle Ganges	120	50
+WHEAT	-3000	Gansu Hexi	127	62
+WHEAT	-3000	Shandong	137	59
+WHEAT	-3000	Tarim oases	121	61
+WHEAT	-3000	north China	132	60
+CORN	-3000	Bolivia valleys	43	26
+CORN	-3000	Chile central	39	18
+CORN	-3000	Colombian valleys	36	35
+CORN	-3000	Peru highland valleys	37	31
+CORN	-3000	Yucatan	30	48
+COTTON	-3000	Maya lowlands	29	47
+COTTON	-3000	Mesoamerica Gulf	28	48
+HORSE	-3000	Anatolia	95	57
+HORSE	-3000	Balkans	85	60
+HORSE	-3000	Central Europe	80	66
+HORSE	-3000	Indus northwest	114	54
+HORSE	-3000	Iran	107	54
+HORSE	-3000	Mesopotamia	100	55
+HORSE	-3000	Mongolia	129	66
+HORSE	-3000	Ukraine	89	66
+HORSE	-3000	north China	133	62
+RICE	-3000	Mekong	132	44
+RICE	-3000	Red River	130	49
+RICE	-3000	central Thailand	130	44
+RICE	-3000	lower Burma	127	45
+RICE	-3000	south India	119	43
+SHEEP	-3000	Central Asian steppe	112	69
+SHEEP	-3000	Mongolia	130	67
+SHEEP	-3000	north China	132	62
+COW	-3000	east Africa	89	30
+COW	-3000	north China	133	61
+COW	-3000	southern Africa	87	21
+PIG	-3000	Japan	146	58
+PIG	-3000	Java	134	33
+PIG	-3000	Korea	141	61
+PIG	-3000	Southeast Asia	130	45
+SUGAR	-3000	Bengal	123	50
+SUGAR	-3000	Ganges	120	52
+SUGAR	-3000	south India	118	43
+WHEAT	-3000	Ethiopian highlands	94	38
+WHEAT	-3000	eastern Ganges	121	51
+WINE	-3000	Etruria	78	58
+WINE	-3000	Greece north	86	57
+WINE	-3000	Iberian south	67	53
+WINE	-3000	Italy Campania	79	56
+WINE	-3000	Sicily	77	52
+WINE	-3000	Tunisia	74	49
+HORSE	-3000	Arabia north	98	47
+HORSE	-3000	Britain	68	70
+HORSE	-3000	Central Asian oases	110	62
+HORSE	-3000	Gaul	72	64
+HORSE	-3000	Iberia	67	56
+HORSE	-3000	Numidia	72	49
+RICE	-3000	Japan Kyushu	143	55
+RICE	-3000	Java	134	32
+RICE	-3000	Korea	141	62
+RICE	-3000	Luzon	141	44
+RICE	-3000	Niger inland delta African rice	70	39
+RICE	-3000	Sumatra	129	35
+RICE	-3000	upper Guinea African rice	66	36
+WINE	-3000	Gaul Mediterranean	72	61
+WINE	-3000	Iberian interior	69	57
 WINE	200	Bordeaux	69	62
 WINE	200	Burgundy	72	63
 WINE	200	Moselle	75	66
@@ -473,11 +473,11 @@ WHALE	-3000	Norway whales	73	82
 WHALE	-3000	Patagonia whales	48	9
 WHALE	-3000	Peru whales	29	30
 WHALE	-3000	South Africa whales	83	9
-BANANA	-1500	Java	136	33
-BANANA	-1500	Malaysia	129	39
-BANANA	-1500	Philippines	140	44
-BANANA	-1500	Sumatra	130	34
-BANANA	-1500	south India	118	42
+BANANA	-3000	Java	136	33
+BANANA	-3000	Malaysia	129	39
+BANANA	-3000	Philippines	140	44
+BANANA	-3000	Sumatra	130	34
+BANANA	-3000	south India	118	42
 SILK	200	India Assam	126	51
 SILK	200	Japan	148	58
 SILK	200	Korea	142	61
