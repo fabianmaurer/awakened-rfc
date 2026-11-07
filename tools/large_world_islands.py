@@ -253,6 +253,23 @@ def refine(plots, source, origins, protected, naming_sites, report_path):
                     break
             for point in footprint - kept:
                 plots[point] = ['TerrainType=TERRAIN_COAST', 'PlotType=3']
+        if name == 'Madagascar':
+            # Keep the long southwest-to-northeast outline, with a narrow
+            # northern tip and a broader middle around the existing river.
+            outline = {(122, 29), (123, 29),
+                       (121, 28), (122, 28), (123, 28),
+                       (120, 27), (121, 27), (122, 27),
+                       (119, 26), (120, 26), (121, 26), (122, 26),
+                       (119, 25), (120, 25), (121, 25),
+                       (119, 24), (120, 24), (121, 24),
+                       (119, 23), (120, 23)}
+            if not outline <= kept or (kept - outline) & fixed:
+                raise ValueError('Madagascar coastline conflicts with protected sites')
+            cut = kept - outline
+            kept = outline
+            removed.update(cut)
+            for point in cut:
+                plots[point] = ['TerrainType=TERRAIN_COAST', 'PlotType=3']
         if len(original) <= 100 and box[1] > 1 and budget is not None:
             for point in original:
                 islands[point] = kept
