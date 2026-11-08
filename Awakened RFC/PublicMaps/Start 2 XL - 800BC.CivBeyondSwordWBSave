@@ -78156,6 +78156,7 @@ BeginPlot
 	TerrainType=TERRAIN_COAST
 	PlotType=3
 
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=110,y=72

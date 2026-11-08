@@ -7618,8 +7618,8 @@ int CvPlayer::getMetalInflationChangeTimes10000() const
 	const int iDecay = GC.getDefineINT("RFCMP_METAL_INFLATION_DECAY_TIMES10000");
 	const int iChangeMultiplier = GC.getDefineINT("RFCMP_METAL_INFLATION_CHANGE_MULTIPLIER");
 	const __int64 iGross = (__int64)getPreciousMetalIncome() * iPressure / std::max(1, getMetalInflationCommerce());
-	// Recovery increases by its base amount for every 25 percentage points of inflation.
-	const __int64 iRecovery = (__int64)iDecay * ((__int64)250000 + m_iMetalInflationTimes10000) / 250000;
+	// Recovery increases by its base amount for every 12.5 percentage points of inflation.
+	const __int64 iRecovery = (__int64)iDecay * ((__int64)125000 + m_iMetalInflationTimes10000) / 125000;
 	const __int64 iNet = iGross - iRecovery;
 	const __int64 iChange = iNet * iChangeMultiplier * 100 /
 		std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent());
