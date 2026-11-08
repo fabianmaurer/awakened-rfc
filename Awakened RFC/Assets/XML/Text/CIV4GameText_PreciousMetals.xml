@@ -58,11 +58,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_COIN_MINT_HELP</Tag>
-    <English>Worked copper, silver and gold mines gain +1, +2 and +3 gold. City gold modifiers do not apply.</English>
-    <French>Les mines de cuivre, argent et or exploit&#233;es gagnent +1, +2 et +3 or, sans bonus d&#8217;or de la ville.</French>
-    <German>Bearbeitete Kupfer-, Silber- und Goldminen bringen +1, +2 und +3 Gold. Goldmodifikatoren der Stadt gelten nicht.</German>
-    <Italian>Le miniere lavorate di rame, argento e oro ottengono +1, +2 e +3 oro, senza modificatori cittadini.</Italian>
-    <Spanish>Las minas trabajadas de cobre, plata y oro dan +1, +2 y +3 oro, sin modificadores de oro urbanos.</Spanish>
+    <English>+1[ICON_GOLD] from copper mines[NEWLINE]+2[ICON_GOLD] from silver mines[NEWLINE]+3[ICON_GOLD] from gold mines</English>
+    <French>+1[ICON_GOLD] des mines de cuivre[NEWLINE]+2[ICON_GOLD] des mines d&#8217;argent[NEWLINE]+3[ICON_GOLD] des mines d&#8217;or</French>
+    <German>+1[ICON_GOLD] durch Kupferminen[NEWLINE]+2[ICON_GOLD] durch Silberminen[NEWLINE]+3[ICON_GOLD] durch Goldminen</German>
+    <Italian>+1[ICON_GOLD] dalle miniere di rame[NEWLINE]+2[ICON_GOLD] dalle miniere d&#8217;argento[NEWLINE]+3[ICON_GOLD] dalle miniere d&#8217;oro</Italian>
+    <Spanish>+1[ICON_GOLD] de las minas de cobre[NEWLINE]+2[ICON_GOLD] de las minas de plata[NEWLINE]+3[ICON_GOLD] de las minas de oro</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_COIN_MINT_REQUIRES</Tag>

@@ -1750,5 +1750,7 @@
 
     <!-- Metal inflation: 10,000 units = one percentage point; rates scale with game speed. -->
     <Define><DefineName>RFCMP_METAL_INFLATION_PRESSURE_TIMES10000</DefineName><iDefineIntVal>10000</iDefineIntVal></Define>
-    <Define><DefineName>RFCMP_METAL_INFLATION_DECAY_TIMES10000</DefineName><iDefineIntVal>1000</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_METAL_INFLATION_DECAY_TIMES10000</DefineName><iDefineIntVal>500</iDefineIntVal></Define>
+    <!-- Speeds adjustment toward equilibrium without changing it. -->
+    <Define><DefineName>RFCMP_METAL_INFLATION_CHANGE_MULTIPLIER</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
 </Civ4Defines>

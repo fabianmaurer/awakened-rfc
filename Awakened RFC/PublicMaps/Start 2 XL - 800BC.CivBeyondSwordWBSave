@@ -77373,6 +77373,7 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 
+	BonusType=BONUS_WHEAT
 EndPlot
 BeginPlot
 	x=109,y=74
@@ -78166,7 +78167,6 @@ BeginPlot
 	x=110,y=73
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
-	BonusType=BONUS_WHEAT
 
 EndPlot
 BeginPlot
@@ -78906,6 +78906,7 @@ BeginPlot
 	TerrainType=TERRAIN_COAST
 	PlotType=3
 
+	BonusType=BONUS_FISH
 EndPlot
 BeginPlot
 	x=111,y=74

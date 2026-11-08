@@ -7232,6 +7232,13 @@ void CvGame::createAnimals()
 	int iLoop;
 	int iI, iJ;
 
+	// Keep wildlife replenishment on the same historical cadence at slower speeds.
+	const int iSpawnInterval = std::max(1, GC.getGameSpeedInfo(getGameSpeedType()).getBarbPercent() / 100);
+	if (getElapsedGameTurns() % iSpawnInterval != 0)
+	{
+		return;
+	}
+
 	if (GC.getEraInfo(getCurrentEra()).isNoAnimals())
 	{
 		return;
@@ -7247,7 +7254,7 @@ void CvGame::createAnimals()
 		return;
 	}
 
-	if (getElapsedGameTurns() < 5)
+	if (getElapsedGameTurns() < (5 * GC.getGameSpeedInfo(getGameSpeedType()).getBarbPercent()) / 100)
 	{
 		return;
 	}

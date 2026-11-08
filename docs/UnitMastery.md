@@ -68,7 +68,7 @@ Gameplay and multiplayer validation are user-operated and remain unverified.
 | Celtic Gallic Warrior | 300 | +15% hills defense. | Double movement in hills. | +40% hills attack; +40% withdrawal chance. |
 | Legion | 300 | +10% combat strength. | Units on the same tile heal 15 extra HP per turn. | +35% combat strength; Immune to first strikes. |
 | Axeman | 126 | +15% against melee units. | +25% forest attack; +25% forest defense. | +30% combat strength; Immune to first strikes. |
-| Greek Phalanx | 126 | +15% defense against Chariots. | +25% hills defense; +1 first strikes. | +40% against mounted units; +25% against melee units. |
+| Greek Phalanx | 126 | +15% against melee units. | +25% hills defense; +1 first strikes. | +40% against mounted units; +25% against melee units. |
 | Sumerian Vulture | 126 | +15% city attack. | Heals 15 extra HP per turn. | Can attack multiple times per turn; +1 movement. |
 | Native America Dog Soldier | 126 | +15% against melee units. | Units on the same tile heal 15 extra HP per turn. | +40% against melee units; +2 first strikes. |
 | Maceman | 1200 | +15% city attack. | +25% against melee units; +25% against gunpowder units. | +35% combat strength; Immune to first strikes. |

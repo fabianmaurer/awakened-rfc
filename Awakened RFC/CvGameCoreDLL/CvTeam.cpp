@@ -4741,7 +4741,7 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 							if (pLoopCity->getNumBuilding(eIndex) > 0)
 							{
 								const CvPlayer& owner = GET_PLAYER((PlayerTypes)iI);
-								const bool bProtectedObelisk = eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+								const bool bProtectedObelisk = (eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") || eIndex == GC.getInfoTypeForString("BUILDING_PYRAMID")) &&
 									owner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
 									owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"));
 								if (!bProtectedObelisk)

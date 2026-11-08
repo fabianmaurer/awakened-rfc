@@ -441,19 +441,20 @@ Automation values it alongside commerce, without multiplying it by city gold bon
 
 Precious-metal inflation starts at zero and is saved per player. Each normal turn,
 its change in percentage points is
-**worked metal income / total commerce - 0.10 × (1 + current inflation / 1000)**,
+**50 × (worked metal income / total commerce - 0.05 × (1 + current inflation / 25))**,
 using the percentage number (20 for 20%). Recovery strengthens as inflation rises,
-balancing sustained metal income at an equilibrium.
+balancing sustained metal income at an equilibrium. The change multiplier controls
+how quickly inflation approaches that equilibrium without changing it.
 Income includes the base gold from deposits, gold/silver mine income, and all
 Mint bonuses, including copper. Resource trades do not generate this income;
 only productive cities count.
 Commerce is the empire's city commerce yield, including trade routes, before sliders.
 A zero-commerce economy uses one commerce for this calculation.
 
-- Ratios of 10% or less lead toward zero inflation. A sustained 20% ratio settles
-  at 1000% inflation; 30% settles at 2000%, and 50% at 4000%.
-- With no metal income, inflation falls by 0.101 points at 10% inflation,
-  0.102 points at 20%, and 0.105 points at 50% per normal turn, stopping at zero.
+- Ratios of 5% or less lead toward zero inflation. A sustained 15% ratio settles
+  at 50% inflation; 25% settles at 100%, and 35% at 150%.
+- With no metal income, inflation falls by 3.5 points at 10% inflation,
+  4.5 points at 20%, and 7.5 points at 50% per normal turn, stopping at zero.
 - There is no per-turn rise cap or overall ceiling; inflation cannot fall below zero.
 - XL halves the per-turn changes. Other speeds scale with their growth percentage.
 - Inflation increases unit costs, supply, maintenance and civic upkeep, as well as
@@ -461,8 +462,8 @@ A zero-commerce economy uses one commerce for this calculation.
   Recurring costs use fractional inflation; one-time prices use whole percentages.
   Inflation is not calendar-driven.
 
-For example, 21 metal income and 60 commerce increase inflation by 0.25 points
-at zero inflation, or 0.05 points at 20%, per normal turn; the equilibrium is 25%.
+For example, 21 metal income and 60 commerce increase inflation by about 15 points
+at zero inflation, or 13 points at 20%, per normal turn; the equilibrium is 150%.
 The finance advisor's inflation tooltip shows the current level,
 projected change, metal income, commerce and added upkeep.
 

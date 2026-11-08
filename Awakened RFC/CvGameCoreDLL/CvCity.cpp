@@ -8189,6 +8189,10 @@ void CvCity::initCulturePlots()
 			if (pPlot->isPeak()) iTerrainCost += 30;
 			if (pPlot->getFeatureType() != NO_FEATURE) iTerrainCost += 5;
 			if (pPlot->isRiver()) iTerrainCost -= 5;
+			// Favor naturally productive tiles, without exposing unrevealed bonuses.
+			iTerrainCost -= 3 * pPlot->calculateNatureYield(YIELD_FOOD, NO_TEAM);
+			iTerrainCost -= 3 * pPlot->calculateNatureYield(YIELD_PRODUCTION, NO_TEAM);
+			iTerrainCost -= pPlot->calculateNatureYield(YIELD_COMMERCE, NO_TEAM);
 			// Use only revealed bonuses; hidden resources must not affect borders.
 			if (pPlot->getBonusType(getTeam()) != NO_BONUS) iTerrainCost -= 5;
 			aPlots.push_back(std::make_pair(iRange * 1000 + iTerrainCost, iIndex));

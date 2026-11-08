@@ -7070,7 +7070,7 @@ void CvPlayer::removeBuildingClass(BuildingClassTypes eBuildingClass)
 // courtesy of the Gourd Bros...
 bool CvPlayer::isBuildingObsolete(BuildingTypes eBuilding) const
 {
-	if (eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+	if ((eBuilding == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") || eBuilding == GC.getInfoTypeForString("BUILDING_PYRAMID")) &&
 		getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
 		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM")))
 		return false;
@@ -7616,11 +7616,12 @@ int CvPlayer::getMetalInflationChangeTimes10000() const
 	if (isBarbarian()) return 0;
 	const int iPressure = GC.getDefineINT("RFCMP_METAL_INFLATION_PRESSURE_TIMES10000");
 	const int iDecay = GC.getDefineINT("RFCMP_METAL_INFLATION_DECAY_TIMES10000");
+	const int iChangeMultiplier = GC.getDefineINT("RFCMP_METAL_INFLATION_CHANGE_MULTIPLIER");
 	const __int64 iGross = (__int64)getPreciousMetalIncome() * iPressure / std::max(1, getMetalInflationCommerce());
-	// Stronger recovery balances sustained metal income at an equilibrium.
-	const __int64 iRecovery = (__int64)iDecay * ((__int64)10000000 + m_iMetalInflationTimes10000) / 10000000;
+	// Recovery increases by its base amount for every 25 percentage points of inflation.
+	const __int64 iRecovery = (__int64)iDecay * ((__int64)250000 + m_iMetalInflationTimes10000) / 250000;
 	const __int64 iNet = iGross - iRecovery;
-	const __int64 iChange = iNet * 100 /
+	const __int64 iChange = iNet * iChangeMultiplier * 100 /
 		std::max(1, GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getGrowthPercent());
 	// Only guard the integer storage range; there is no gameplay ceiling.
 	return (int)std::max((__int64)0, std::min((__int64)MAX_INT,
@@ -10927,7 +10928,8 @@ int CvPlayer::getStateReligionCount() const
 
 bool CvPlayer::isStateReligion() const	 
 {
-	return (getStateReligionCount() > 0);
+	return (getStateReligionCount() > 0 && !(getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+		isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"))));
 }
 
 
@@ -13671,6 +13673,29 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 				if (iCount != 0)
 					pCity->processBuilding(eObelisk, eNewValue == eDivineKingship ? iCount : -iCount, true, true);
 			}
+		}
+
+
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
+			((eOldCivic == eDivineKingship) != (eNewValue == eDivineKingship)))
+		{
+			const BuildingTypes ePyramids = (BuildingTypes)GC.getInfoTypeForString("BUILDING_PYRAMID");
+			if (GET_TEAM(getTeam()).isObsoleteBuilding(ePyramids))
+			{
+				int iLoop;
+				for (CvCity* pCity = firstCity(&iLoop); pCity != NULL; pCity = nextCity(&iLoop))
+				{
+					int iCount = pCity->getNumBuilding(ePyramids);
+					if (iCount != 0)
+						pCity->processBuilding(ePyramids, eNewValue == eDivineKingship ? iCount : -iCount, true, true);
+				}
+			}
+			updateMaintenance();
+			updateReligionHappiness();
+			updateReligionCommerce();
+			GC.getGameINLINE().updateSecretaryGeneral();
+			GC.getGameINLINE().AI_makeAssignWorkDirty();
+			gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
 		}
 
 		// Reprocess cached religious-building effects when entering/leaving atheism.
