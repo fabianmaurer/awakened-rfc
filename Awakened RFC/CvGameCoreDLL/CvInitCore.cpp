@@ -1789,6 +1789,12 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 					wcsicmp(szFileName, L"Start 3b - 900 AD.CivBeyondSwordWBSave") == 0;
 			if (wcsicmp(szFileName, L"Start 4 - 1453 AD.CivBeyondSwordWBSave") == 0)
 				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
+			// The setup screen must use the authored roster, not a game turn
+			// left over from an earlier game. Once a game is active, retain the
+			// normal birth gate for players joining later.
+			if (!gDLL->isGameActive() &&
+				wcsicmp(szFileName, L"Start 2 XL - 800BC.CivBeyondSwordWBSave") == 0)
+				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
 		}
 		if (eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) return false;
 
