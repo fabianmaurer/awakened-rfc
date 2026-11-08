@@ -1,6 +1,7 @@
 // city.cpp
 
 #include "CvGameCoreDLL.h"
+#include "TradePlanning.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
 #include "CvGlobals.h"
@@ -8483,16 +8484,46 @@ int CvCity::getFoodTradeWellbeingScore() const
     return 2 * (happyLevel() - unhappyLevel()) + goodHealth() - badHealth();
 }
 
-// Reused only within one route-selection pass: no stale cross-turn state.
-struct FoodTradeAttraction
+// Cache lifetime ends before any subsequent gameplay mutation.
+TradePlanningCache* TradePlanningCache::current = NULL;
+TradePlanningCache::TradePlanningCache() : m_previous(current)
 {
-    int population, wealth, happiness, health;
-    FoodTradeAttraction(const CvCity* city)
-        : population(std::max(1, city->getPopulation())),
-          wealth(city->getLocalTradeWealth()),
-          happiness(city->happyLevel() - city->unhappyLevel()),
-          health(city->goodHealth() - city->badHealth()) {}
-};
+    if (!current && GC.getDefineINT("RFCMP_PERF_TRADE_CACHE") != 0) current = this;
+}
+TradePlanningCache::~TradePlanningCache() { current = m_previous; }
+bool FoodTradeAttraction::operator==(const FoodTradeAttraction& other) const
+{
+    return population == other.population && wealth == other.wealth && happiness == other.happiness && health == other.health;
+}
+FoodTradeAttraction::FoodTradeAttraction(const CvCity* city, bool useCache)
+{
+    TradePlanningCache* cache = useCache ? TradePlanningCache::current : NULL;
+    if (cache) {
+        std::map<const CvCity*, FoodTradeAttraction>::const_iterator found = cache->attractions.find(city);
+        if (found != cache->attractions.end()) {
+            *this = found->second;
+            observerPerformanceCount("count.perf.trade.attractionHits");
+#if ARFC_ENABLE_REPORTING
+            if (observerPerformanceSample(city->getID() * 131u + city->getOwnerINLINE())) {
+                ObserverPerformanceScope check("check.perf.trade.attractionReference");
+                const FoodTradeAttraction reference(city, false);
+                observerPerformanceCount("count.perf.trade.attractionSamples");
+                if (!(*this == reference)) observerPerformanceCount("count.perf.trade.attractionMismatch");
+            }
+#endif
+            return;
+        }
+    }
+    ObserverPerformanceScope work("perf.trade.attractionCompute");
+    population = std::max(1, city->getPopulation());
+    wealth = city->getLocalTradeWealth();
+    happiness = city->happyLevel() - city->unhappyLevel();
+    health = city->goodHealth() - city->badHealth();
+    if (cache) {
+        cache->attractions.insert(std::make_pair(city, *this));
+        observerPerformanceCount("count.perf.trade.attractionMisses");
+    }
+}
 
 static int foodTradePressure(const FoodTradeAttraction& own, const FoodTradeAttraction& other)
 {
@@ -8974,7 +9005,7 @@ static void buildTradeInfrastructure(const CvCity* pCity, std::vector<bool>& rea
         }
     }
 }
-static bool cityHasHarbor(const CvCity* pCity)
+static bool cityHasHarborUncached(const CvCity* pCity)
 {
     BuildingClassTypes eHarbor = (BuildingClassTypes)GC.getInfoTypeForString("BUILDINGCLASS_HARBOR");
     if (eHarbor == NO_BUILDINGCLASS) return false;
@@ -8983,6 +9014,29 @@ static bool cityHasHarbor(const CvCity* pCity)
             return true;
     return false;
 }
+static bool cityHasHarbor(const CvCity* city)
+{
+    TradePlanningCache* cache = TradePlanningCache::current;
+    if (cache) {
+        std::map<const CvCity*, bool>::const_iterator found = cache->harbors.find(city);
+        if (found != cache->harbors.end()) {
+            observerPerformanceCount("count.perf.trade.harborHits");
+#if ARFC_ENABLE_REPORTING
+            if (observerPerformanceSample(city->getID() * 131u + city->getOwnerINLINE())) {
+                ObserverPerformanceScope check("check.perf.trade.harborReference");
+                observerPerformanceCount("count.perf.trade.harborSamples");
+                if (found->second != cityHasHarborUncached(city)) observerPerformanceCount("count.perf.trade.harborMismatch");
+            }
+#endif
+            return found->second;
+        }
+    }
+    ObserverPerformanceScope work("perf.trade.harborCompute");
+    const bool result = cityHasHarborUncached(city);
+    if (cache) { cache->harbors[city] = result; observerPerformanceCount("count.perf.trade.harborMisses"); }
+    return result;
+}
+
 static int tradeInfrastructureEfficiency(const CvCity* pCity, const CvCity* pPartner, bool bConnected, bool bRoadConnected)
 {
     if (bConnected)
@@ -12002,6 +12056,7 @@ void CvCity::clearTradeRoutes()
 void CvCity::updateTradeRoutes()
 {
 	OBSERVER_PERFORMANCE("CvCity::updateTradeRoutes");
+    TradePlanningCache planningCache;
     std::vector<bool> reachable;
     std::vector<bool> roads;
     buildTradeInfrastructure(this, reachable, roads);

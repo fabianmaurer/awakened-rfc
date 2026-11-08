@@ -10223,6 +10223,7 @@ int CvPlayerAI::AI_plotTargetMissionAIs(CvPlot* pPlot, MissionAITypes eMissionAI
 
 int CvPlayerAI::AI_plotTargetMissionAIs(CvPlot* pPlot, MissionAITypes* aeMissionAI, int iMissionAICount, int& iClosestTargetRange, CvSelectionGroup* pSkipSelectionGroup, int iRange) const
 {
+	OBSERVER_PERFORMANCE("playerAI.plotTargetMissionAIs");
 	PROFILE_FUNC();
 
 	int iCount = 0;
@@ -10270,6 +10271,7 @@ int CvPlayerAI::AI_unitTargetMissionAIs(CvUnit* pUnit, MissionAITypes eMissionAI
 
 int CvPlayerAI::AI_unitTargetMissionAIs(CvUnit* pUnit, MissionAITypes* aeMissionAI, int iMissionAICount, CvSelectionGroup* pSkipSelectionGroup) const
 {
+	OBSERVER_PERFORMANCE("playerAI.unitTargetMissionAIs");
 	PROFILE_FUNC();
 
 	CvSelectionGroup* pLoopSelectionGroup;
@@ -19043,6 +19045,7 @@ void CvPlayerAI::AI_invalidateCloseBordersAttitudeCache()
 
 bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
+	OBSERVER_PERFORMANCE("playerAI.isPlotThreatened");
 	PROFILE_FUNC();
 
 	CvArea *pPlotArea = pPlot->area();

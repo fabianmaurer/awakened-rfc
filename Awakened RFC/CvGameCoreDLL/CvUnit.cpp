@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvUnitMastery.h"
+#include "ObserverPerformance.h"
 #include "CvUnit.h"
 #include "CvArea.h"
 #include "CvPlot.h"
@@ -7189,6 +7190,7 @@ CvCity* CvUnit::getUpgradeCity(bool bSearch) const
 // NULL result means the upgrade is not possible
 CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue) const
 {
+	OBSERVER_PERFORMANCE("unitTask.getUpgradeCity");
 	if (eUnit == NO_UNIT)
 	{
 		return false;

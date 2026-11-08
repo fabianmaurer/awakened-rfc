@@ -9,6 +9,7 @@
 #include "CvDLLEntityIFaceBase.h"
 #include "CvGameCoreUtils.h"
 #include "FProfiler.h"
+#include "ObserverPerformance.h"
 #include "CVInfos.h"
 
 // Public Functions...
@@ -170,6 +171,8 @@ bool CvSelectionGroupAI::AI_update()
 		iTempHack++;
 		if (iTempHack > 100)
 		{
+			observerPerformanceCount("count.perf.ai.legacyLoopLimit");
+			observerPerformanceDecision("legacy_loop_limit", getHeadUnit(), iTempHack);
 			FAssert(false);
 			CvUnit* pHeadUnit = getHeadUnit();
 			if (NULL != pHeadUnit)

@@ -114,7 +114,36 @@ def window_report(title, window):
         if row['calculation'] in candidates:
             share = row['inclusive_interval_percent']
             lines.append(f'| {row["calculation"]} | {share:.2f} | {share/2:.2f} | {share*.75:.2f} | {share*.875:.2f} |')
-    return lines + [''] + culture_report(window)
+    return lines + [''] + tuning_report(window) + culture_report(window)
+
+
+def tuning_report(window):
+    counters = [row for row in window['calculations'] if row['calculation'].startswith('count.perf.')]
+    if not counters:
+        return []
+    lines = ['## Optimization evidence', '',
+             'Counters report events or summed work, not measured savings. Configuration values are recorded at every native flush. '
+             'Shadow checks run only in authenticated performance recordings; their time is included in total turn time. '
+             'Set SHADOW_INTERVAL to 0 for clean timing comparisons. Zero samples do not validate an approach.', '',
+             '| Setting | Value |', '| --- | ---: |']
+    for row in sorted(counters, key=lambda row: row['calculation']):
+        if row['calculation'].startswith('count.perf.config.'):
+            lines.append(f"| {row['calculation'].removeprefix('count.perf.config.')} | {row['work_units'] / max(1, row['calls']):g} |")
+    lines += ['', '| Counter | Total work/events | Per recorded boundary |', '| --- | ---: | ---: |']
+    for row in sorted(counters, key=lambda row: row['calculation']):
+        if not row['calculation'].startswith('count.perf.config.'):
+            lines.append(f"| {row['calculation'].removeprefix('count.perf.')} | {row['work_units']:.0f} | {row['work_units'] / max(1, window['boundaries']):.2f} |")
+    checks = [row for row in window['calculations'] if row['calculation'].startswith('check.perf.')]
+    if checks:
+        lines += ['', '| Sampled comparison | Calls | Inclusive seconds |', '| --- | ---: | ---: |']
+        for row in checks:
+            lines.append(f"| {row['calculation']} | {row['calls']:.0f} | {row['inclusive_seconds']:.3f} |")
+    lines += ['', 'Shadow checks are included in turn timings. '
+              'Trade cache mismatch counters indicate invalid cached inputs; missing counters mean no observed events. '
+              '`performance-outcomes.csv` records per-player totals and planning hashes for locating divergences. '
+              '`performance-decisions.csv` identifies units reaching the original AI loop limit. '
+              'Older recordings can contain counters for experiments that have since been removed.', '']
+    return lines
 
 
 def culture_report(window):

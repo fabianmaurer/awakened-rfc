@@ -32,6 +32,7 @@
 #include <errno.h>
 #include "CvSelectionGroup.h"
 #include "CvUnit.h"
+#include "CvCityAI.h"
 
 #if ARFC_ENABLE_REPORTING
 // Bind early benchmark seeding to the same private config/token/PID as Python.
@@ -79,6 +80,8 @@ namespace {
     double observerFrequency = 1;
     std::string observerTimingPath;
     std::string observerRuntimePath;
+    std::string observerDecisionPath;
+    std::string observerOutcomesPath;
     __int64 observerLastWall = 0;
     double observerLastProcess = 0, observerLastThread = 0;
     int observerLastTurn = 0;
@@ -96,8 +99,56 @@ namespace {
         thread = observerFileSeconds(kernel) + observerFileSeconds(user);
         return true;
     }
+    unsigned int observerHash(unsigned int hash, int value) {
+        return (hash ^ (unsigned int)value) * 16777619u;
+    }
+    void observerOutcomes() {
+        if (!g_observerPerformance || observerOutcomesPath.empty()) return;
+        ObserverPerformanceScope scope("reporting.outcomes");
+        FILE* file = fopen(observerOutcomesPath.c_str(), "a");
+        if (!file) return;
+        for (int owner = 0; owner < MAX_PLAYERS; ++owner) {
+            CvPlayer& player = GET_PLAYER((PlayerTypes)owner);
+            if (!player.isAlive()) continue;
+            unsigned int assignments = 2166136261u, builds = assignments, missions = assignments, routes = assignments;
+            int loop;
+            for (CvCity* city = player.firstCity(&loop); city; city = player.nextCity(&loop)) {
+                assignments = observerHash(assignments, city->getID());
+                builds = observerHash(builds, city->getID());
+                routes = observerHash(routes, city->getID());
+                for (int plot = 0; plot < NUM_CITY_PLOTS; ++plot) {
+                    assignments = observerHash(assignments, city->isWorkingPlot(plot));
+                    builds = observerHash(builds, city->AI_getBestBuild(plot));
+                    builds = observerHash(builds, city->AI_getBestBuildValue(plot));
+                }
+                for (int specialist = 0; specialist < GC.getNumSpecialistInfos(); ++specialist)
+                    assignments = observerHash(assignments, city->getSpecialistCount((SpecialistTypes)specialist));
+                for (int route = 0; route < city->getTradeRoutes(); ++route) {
+                    CvCity* partner = city->getTradeCity(route);
+                    routes = observerHash(routes, partner ? partner->getOwnerINLINE() : -1);
+                    routes = observerHash(routes, partner ? partner->getID() : -1);
+                }
+            }
+            for (CvUnit* unit = player.firstUnit(&loop); unit; unit = player.nextUnit(&loop)) {
+                missions = observerHash(missions, unit->getID());
+                missions = observerHash(missions, unit->getX_INLINE()); missions = observerHash(missions, unit->getY_INLINE());
+                missions = observerHash(missions, unit->getUnitType()); missions = observerHash(missions, unit->AI_getUnitAIType());
+                missions = observerHash(missions, unit->movesLeft());
+                const MissionData* mission = unit->getGroup()->headMissionQueueNode() ? &unit->getGroup()->headMissionQueueNode()->m_data : NULL;
+                missions = observerHash(missions, mission ? mission->eMissionType : -1);
+                missions = observerHash(missions, mission ? mission->iData1 : -1);
+                missions = observerHash(missions, mission ? mission->iData2 : -1);
+            }
+            const TechTypes research = player.getCurrentResearch();
+            fprintf(file, "%d,%d,%d,%d,%d,%d,%d,%d,%u,%u,%u,%u\n", GC.getGameINLINE().getGameTurn(), owner,
+                player.getNumCities(), player.getNumUnits(), player.getTotalPopulation(), player.getGold(), (int)research,
+                research == NO_TECH ? 0 : GET_TEAM(player.getTeam()).getResearchProgress(research), assignments, builds, missions, routes);
+        }
+        fclose(file);
+    }
     void observerRuntimeSample() {
         if (observerRuntimePath.empty()) return;
+        observerOutcomes();
         LARGE_INTEGER now;
         QueryPerformanceCounter(&now);
         double process, thread;
@@ -134,6 +185,18 @@ void observerPerformanceStart()
     fprintf(file, "turn,calculation,calls,inclusive_seconds,exclusive_seconds,max_seconds,lt_100us,lt_1ms,lt_10ms,lt_100ms,ge_100ms,work_units,lt_100us_seconds,lt_1ms_seconds,lt_10ms_seconds,lt_100ms_seconds,ge_100ms_seconds\n");
     fclose(file);
     observerTimings.clear();
+    observerOutcomesPath = observerTimingPath.substr(0, observerTimingPath.find_last_of("\\/") + 1) + "performance-outcomes.csv";
+    file = fopen(observerOutcomesPath.c_str(), "w");
+    if (file) {
+        fprintf(file, "turn,owner,cities,units,population,gold,research,research_progress,assignment_hash,build_hash,mission_hash,route_hash\n");
+        fclose(file);
+    }
+    observerDecisionPath = observerTimingPath.substr(0, observerTimingPath.find_last_of("\\/") + 1) + "performance-decisions.csv";
+    file = fopen(observerDecisionPath.c_str(), "w");
+    if (file) {
+        fprintf(file, "turn,reason,owner,unit,x,y,unit_ai,value,unit_type,moves_left,group_units,activity,mission,data1,data2,flags\n");
+        fclose(file);
+    }
     observerRuntimePath = observerTimingPath.substr(0, observerTimingPath.find_last_of("\\/") + 1) + "performance-runtime.csv";
     file = fopen(observerRuntimePath.c_str(), "w");
     if (file) {
@@ -147,10 +210,32 @@ void observerPerformanceStart()
     observerLastTurn = GC.getGameINLINE().getGameTurn();
     g_observerPerformance = true;
 }
+bool observerPerformanceSample(unsigned int salt)
+{
+    if (!g_observerPerformance) return false;
+    const int interval = GC.getDefineINT("RFCMP_PERF_SHADOW_INTERVAL");
+    return interval > 0 && ((unsigned int)GC.getGameINLINE().getGameTurn() * 2654435761u + salt) % interval == 0;
+}
+void observerPerformanceDecision(const char* reason, const CvUnit* unit, int value)
+{
+    if (!g_observerPerformance || !unit || observerDecisionPath.empty()) return;
+    FILE* file = fopen(observerDecisionPath.c_str(), "a");
+    if (!file) return;
+    const CvSelectionGroup* group = unit->getGroup();
+    const MissionData* mission = group->headMissionQueueNode() ? &group->headMissionQueueNode()->m_data : NULL;
+    fprintf(file, "%d,%s,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n", GC.getGameINLINE().getGameTurn(), reason,
+        (int)unit->getOwnerINLINE(), unit->getID(), unit->getX_INLINE(), unit->getY_INLINE(),
+        (int)unit->AI_getUnitAIType(), value, (int)unit->getUnitType(), unit->movesLeft(), group->getNumUnits(),
+        (int)group->getActivityType(), mission ? mission->eMissionType : -1,
+        mission ? mission->iData1 : -1, mission ? mission->iData2 : -1, mission ? mission->iFlags : -1);
+    fclose(file);
+}
 void observerPerformanceFlush()
 {
     if (observerTimingPath.empty() || observerTimings.empty()) return;
     observerRuntimeSample();
+    observerPerformanceCount("count.perf.config.TRADE_CACHE", GC.getDefineINT("RFCMP_PERF_TRADE_CACHE"));
+    observerPerformanceCount("count.perf.config.SHADOW_INTERVAL", GC.getDefineINT("RFCMP_PERF_SHADOW_INTERVAL"));
     FILE* file = fopen(observerTimingPath.c_str(), "a");
     if (!file) return;
     for (ObserverTimings::iterator it = observerTimings.begin(); it != observerTimings.end(); ++it) {

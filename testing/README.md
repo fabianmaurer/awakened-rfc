@@ -196,7 +196,8 @@ leave it off for comparable performance measurements. The setting is recorded
 in run metadata and is not saved in checkpoints.
 
 By default, AI simulations use an **interface-only black progress screen** with a centered
-green progress bar on a white track. Map rendering, normal HUD/minimap/scoreboard
+green progress bar on a white track, with a localized completed/target turn counter
+below it. Map rendering, normal HUD/minimap/scoreboard
 refreshes, and spectator reveal overrides are disabled. No zoom setup runs.
 Movement display, combat presentation, enemy glow and mission-animation delays
 are suppressed only while observer AI control is active. This includes balance,
@@ -298,7 +299,8 @@ exceptions that reached the debugger after application handlers failed. Capture
 does not suppress application exceptions or change gameplay decisions.
 
 Each batch preserves its exact `CvGameCoreDLL.dll` in `crash-build/`, along with
-matching PDB/map files when available and the native source diff. Reporting Release
+matching PDB/map files when available and the native source diff. Untracked native
+`.cpp`/`.h` additions are retained under `crash-build/native-source-extra/`. Reporting Release
 builds now generate optimized VC7.1 debug symbols; rebuild once after this change.
 Keep the batch folder for analysis after subsequent DLL rebuilds. In WinDbg, add
 `crash-build/` to the symbol/image paths, open the dump and select the JSON's
@@ -375,17 +377,57 @@ elapsed time now uses the same high-resolution timer as turn boundaries.
 `unitAI.AI_*Move` timers additionally distinguish combat, worker, exploration,
 settler, missionary, naval and air roles. These include nested pathfinding and
 danger timings; compare inclusive parent totals rather than adding them.
+Captive, barbarian and the remaining movement roles are timed separately too.
+`unitTask.*` timers cover regrouping, city targeting/guarding, pillaging,
+post-attack decisions, follower actions and upgrade-city searches. Work units count
+visited candidates for captive cities, regrouping units, target cities and pillage
+tiles. `playerAI.*` timers separate mission-target scans and exact movement-threat
+queries. Existing report tables include these scopes automatically.
 
-Trade-route selection now computes the origin city's attraction once per pass
-and reuses candidate food pressure, infrastructure efficiency and base profit
-instead of recalculating them for food demand and route income. Attraction is
-not cached across route updates, and route-update timing and candidate ordering
-are preserved. The next recording must measure the actual gain.
+### Retained turn-time improvements and evidence
 
-City AI road-connection planning checks candidate distance before pathfinding,
-skipping cities that cannot beat the nearest disconnected candidate already
-found. Candidate ordering and tie handling are preserved.
-`cityAI.updateRouteToCity` measures this planning routine separately.
+The existing shared worker search remains. The retained November 8 gameplay
+optimization caches harbor presence and food-trade attraction only during one
+synchronous trade-route update pass, including nested city updates. It does not
+cache across turns, civic transitions or later mutations, change update ordering,
+or draw gameplay RNG. In the completed recording it avoided 81% of scoped
+attraction recalculations and 85% of scoped harbor scans. All 153,670 sampled
+native getter comparisons matched. These are work reductions, not measured
+whole-trade or turn-time speedup factors.
+
+Two defines remain in `Assets/XML/GlobalDefines.xml`:
+
+| Define | Default | Purpose |
+| --- | ---: | --- |
+| `RFCMP_PERF_TRADE_CACHE` | 1 | Enable the pass-scoped trade cache. Set to 0 for an uncached comparison. |
+| `RFCMP_PERF_SHADOW_INTERVAL` | 64 | Reporting-only deterministic cache/reference sampling. Set to 0 for clean timing runs. It does not draw gameplay RNG. |
+
+Reports show configuration, `count.perf.trade.*` hit/miss/sample/mismatch counters,
+`perf.trade.*Compute` timing and `check.perf.trade.*Reference` shadow timing under
+**Optimization evidence**. Mismatches invalidate the cache-lifetime assumption;
+zero samples provide no validation. Shadow time is included in turn timings.
+Reporting remains compiled out of production DLLs and disabled in ordinary launches.
+
+Expanded unit/mission/upgrade timings and the visible loading-screen turn counter
+remain. `performance-outcomes.csv` records cities, units, population, gold and
+research per player plus hashes of citizen assignments, improvement plans,
+unit positions/missions and trade partners. These locate the first divergence
+in matched runs, not full game-state equivalence; their cost is timed as
+`reporting.outcomes`. `performance-decisions.csv` identifies units reaching the
+original 100-iteration AI loop guard, without changing that fallback.
+
+Bounded guard searches, target reuse/pruning, settlement/improvement planning
+deferrals, clean-assignment skipping, civic refresh batching and the early
+repeated-decision stop were removed. Their speed or gameplay evidence was
+insufficient. In particular, isolated modeling of the implemented target bound
+skipped only 1 of 512 requests on broad synthetic maps, with effectively unchanged
+Python time. Its earlier 83% result used a tighter model-specific bound.
+
+Historical recordings and offline results remain under ignored `testing/runs/`.
+The final isolated result folder also preserves the benchmark/replay source under
+`source/`; these models are research evidence, not installed game algorithms.
+Python models and differing full-game trajectories do not establish native
+turn-time gains. In-game multiplayer validation remains user-operated.
 
 ### Expanded parallelism assessment
 

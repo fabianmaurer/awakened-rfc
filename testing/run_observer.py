@@ -203,6 +203,17 @@ def main():
     source_diff = subprocess.run(['git', 'diff', 'HEAD', '--', 'Awakened RFC/CvGameCoreDLL'],
                                  cwd=ROOT, capture_output=True, check=True).stdout
     (evidence / 'native-source.patch').write_bytes(source_diff)
+    # Git's tracked diff omits newly introduced native sources.
+    untracked = subprocess.run(['git', 'ls-files', '--others', '--exclude-standard', '-z', '--',
+                                'Awakened RFC/CvGameCoreDLL'], cwd=ROOT, capture_output=True, check=True).stdout
+    for relative in untracked.decode('utf-8').split('\0'):
+        if not relative:
+            continue
+        source = (ROOT / relative).resolve()
+        if source.is_relative_to(native.resolve()) and source.suffix.lower() in ('.cpp', '.h'):
+            target = evidence / 'native-source-extra' / source.relative_to(native.resolve())
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
     print('Batch: ' + str(batch), flush=True)
     results = []
     results_lock = threading.Lock()

@@ -77,6 +77,7 @@ void CvUnitAI::AI_reset(UnitAITypes eUnitAI)
 	m_eUnitAIType = eUnitAI;
 	
 	m_iAutomatedAbortTurn = -1;
+
 }
 
 void CvUnitAI::AI_recordObserverCityTarget(const char* reason, const CvCity* city)
@@ -467,6 +468,7 @@ bool CvUnitAI::AI_update()
 // Returns true if took an action or should wait to move later...
 bool CvUnitAI::AI_follow()
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_follow");
 	if (AI_followBombard())
 	{
 		return true;
@@ -1161,6 +1163,7 @@ int CvUnitAI::AI_sacrificeValue(const CvPlot* pPlot) const
 
 void CvUnitAI::AI_animalMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_animalMove");
 	PROFILE_FUNC();
 
 	// Polar bears seek nearby defended settlements instead of only wandering.
@@ -1779,6 +1782,7 @@ void CvUnitAI::AI_workerMove()
 
 void CvUnitAI::AI_barbAttackMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_barbAttackMove");
 	PROFILE_FUNC();
 
 	// Plunder the current enemy tile before selecting another destination.
@@ -1916,6 +1920,7 @@ bool CvUnitAI::AI_slaveMilitaryNeeded() const
 
 bool CvUnitAI::AI_slaveMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_slaveMove");
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	const bool bUnarmed = getUnitType() == GC.getInfoTypeForString("UNIT_SLAVE");
 	const bool bMilitaryNeed = AI_slaveMilitaryNeeded();
@@ -1951,6 +1956,7 @@ bool CvUnitAI::AI_slaveMove()
 	int iLoop;
 	for (CvCity* pCity = kPlayer.firstCity(&iLoop); pCity != NULL; pCity = kPlayer.nextCity(&iLoop))
 	{
+		observerPerformanceScope.addWork();
 		if (!AI_plotValid(pCity->plot()) || pCity->plot()->isVisibleEnemyUnit(this) ||
 			kPlayer.AI_isPlotDanger(pCity->plot(), 2)) continue;
 		// A weapons purchase can use a safe destination even without Slavery.
@@ -2375,6 +2381,7 @@ void CvUnitAI::AI_attackMove()
 
 void CvUnitAI::AI_paratrooperMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_paratrooperMove");
 	PROFILE_FUNC();
 
 	{
@@ -2941,6 +2948,7 @@ void CvUnitAI::AI_attackCityLemmingMove()
 
 void CvUnitAI::AI_collateralMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_collateralMove");
 	PROFILE_FUNC();
 	
 	if (AI_leaveAttack(1, 20, 100))
@@ -3497,8 +3505,8 @@ void CvUnitAI::AI_counterMove()
 
 void CvUnitAI::AI_cityDefenseMove()
 {
-    if (!isHuman() && AI_jihadCampaignEscort()) return;
 	OBSERVER_PERFORMANCE("unitAI.AI_cityDefenseMove");
+    if (!isHuman() && AI_jihadCampaignEscort()) return;
 	PROFILE_FUNC();
 	
 	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 3) > 0);
@@ -3933,6 +3941,7 @@ void CvUnitAI::AI_missionaryMove()
 
 void CvUnitAI::AI_prophetMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_prophetMove");
 	PROFILE_FUNC();
 
 	if (AI_construct(1))
@@ -4014,6 +4023,7 @@ void CvUnitAI::AI_prophetMove()
 
 void CvUnitAI::AI_artistMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_artistMove");
 	PROFILE_FUNC();
 	
 	if (AI_artistCultureVictoryMove())
@@ -4100,6 +4110,7 @@ void CvUnitAI::AI_artistMove()
 
 void CvUnitAI::AI_scientistMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_scientistMove");
 	PROFILE_FUNC();
 
 	if (AI_discover(true, true))
@@ -4191,6 +4202,7 @@ void CvUnitAI::AI_scientistMove()
 
 void CvUnitAI::AI_generalMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_generalMove");
 	PROFILE_FUNC();
 
 	std::vector<UnitAITypes> aeUnitAITypes;
@@ -4274,6 +4286,7 @@ void CvUnitAI::AI_generalMove()
 
 void CvUnitAI::AI_merchantMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_merchantMove");
 	PROFILE_FUNC();
 
 	if (AI_construct())
@@ -4360,6 +4373,7 @@ void CvUnitAI::AI_merchantMove()
 
 void CvUnitAI::AI_engineerMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_engineerMove");
 	PROFILE_FUNC();
 
 	if (AI_construct())
@@ -4446,6 +4460,7 @@ void CvUnitAI::AI_engineerMove()
 
 void CvUnitAI::AI_spyMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_spyMove");
 	CvTeamAI& kTeam = GET_TEAM(getTeam());
 	int iEspionageChance = 0;
 	if (plot()->isOwned() && (plot()->getTeam() != getTeam()))
@@ -4611,6 +4626,7 @@ void CvUnitAI::AI_spyMove()
 
 void CvUnitAI::AI_ICBMMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_ICBMMove");
 //	CvCity* pCity = plot()->getPlotCity();
 
 //	if (pCity != NULL)
@@ -4785,6 +4801,7 @@ void CvUnitAI::AI_workerSeaMove()
 
 void CvUnitAI::AI_barbAttackSeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_barbAttackSeaMove");
 	PROFILE_FUNC();
 
 	if (GC.getGameINLINE().getSorenRandNum(2, "AI Barb") == 0)
@@ -4832,6 +4849,7 @@ void CvUnitAI::AI_barbAttackSeaMove()
 
 void CvUnitAI::AI_pirateSeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_pirateSeaMove");
 	PROFILE_FUNC();
 
 	CvArea* pWaterArea;
@@ -5138,6 +5156,7 @@ void CvUnitAI::AI_reserveSeaMove()
 
 void CvUnitAI::AI_escortSeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_escortSeaMove");
 	PROFILE_FUNC();
 
 //	// if we have cargo, possibly convert to UNITAI_ASSAULT_SEA (this will most often happen with galleons)
@@ -5872,6 +5891,7 @@ void CvUnitAI::AI_missionarySeaMove()
 
 void CvUnitAI::AI_spySeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_spySeaMove");
 	PROFILE_FUNC();
 
 	CvCity* pCity;
@@ -5929,6 +5949,7 @@ void CvUnitAI::AI_spySeaMove()
 
 void CvUnitAI::AI_carrierSeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_carrierSeaMove");
 	if (AI_seaRetreatFromCityDanger())
 	{
 		return;
@@ -6018,6 +6039,7 @@ void CvUnitAI::AI_carrierSeaMove()
 
 void CvUnitAI::AI_missileCarrierSeaMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_missileCarrierSeaMove");
 	bool bIsStealth = (getInvisibleType() != NO_INVISIBLE);
 
 	if (AI_seaRetreatFromCityDanger())
@@ -6261,6 +6283,7 @@ void CvUnitAI::AI_defenseAirMove()
 
 void CvUnitAI::AI_carrierAirMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_carrierAirMove");
 	// XXX maybe protect land troops?
 
 	if (getDamage() > 0)
@@ -6344,6 +6367,7 @@ void CvUnitAI::AI_carrierAirMove()
 
 void CvUnitAI::AI_missileAirMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_missileAirMove");
 	CvCity* pCity = plot()->getPlotCity();
 
 	if (pCity != NULL)
@@ -7401,6 +7425,7 @@ bool CvUnitAI::AI_shadow(UnitAITypes eUnitAI, int iMax, int iMaxRatio, bool bWit
 // Returns true if a group was joined or a mission was pushed...
 bool CvUnitAI::AI_group(UnitAITypes eUnitAI, int iMaxGroup, int iMaxOwnUnitAI, int iMinUnitAI, bool bIgnoreFaster, bool bIgnoreOwnUnitType, bool bStackOfDoom, int iMaxPath, bool bAllowRegrouping)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_group");
 	PROFILE_FUNC();
 
 	CvUnit* pLoopUnit;
@@ -7442,6 +7467,7 @@ bool CvUnitAI::AI_group(UnitAITypes eUnitAI, int iMaxGroup, int iMaxOwnUnitAI, i
 
 	for(pLoopUnit = GET_PLAYER(getOwnerINLINE()).firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = GET_PLAYER(getOwnerINLINE()).nextUnit(&iLoop))
 	{
+		observerPerformanceScope.addWork();
 		CvSelectionGroup* pLoopGroup = pLoopUnit->getGroup();
 		CvPlot* pPlot = pLoopUnit->plot();
 		if (AI_plotValid(pPlot))
@@ -7511,6 +7537,7 @@ bool CvUnitAI::AI_group(UnitAITypes eUnitAI, int iMaxGroup, int iMaxOwnUnitAI, i
 
 bool CvUnitAI::AI_groupMergeRange(UnitAITypes eUnitAI, int iMaxRange, bool bBiggerOnly, bool bAllowRegrouping, bool bIgnoreFaster)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_groupMergeRange");
 	PROFILE_FUNC();
 
 
@@ -7799,6 +7826,7 @@ bool CvUnitAI::AI_guardCityBestDefender()
 
 bool CvUnitAI::AI_guardCityMinDefender(bool bSearch)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_guardCityMinDefender");
 	PROFILE_FUNC();
 	
 	CvCity* pPlotCity = plot()->getPlotCity();
@@ -7995,6 +8023,7 @@ bool CvUnitAI::AI_jihadCampaignGarrison()
 
 bool CvUnitAI::AI_guardCity(bool bLeave, bool bSearch, int iMaxPath)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_guardCity");
 	PROFILE_FUNC();
     // Campaigns use a bounded local garrison policy, including calls made by
     // other combat routines. Generic empire-wide guard demand cannot strip them.
@@ -9133,6 +9162,7 @@ bool CvUnitAI::AI_heal(int iDamagePercent, int iMaxPath)
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_afterAttack()
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_afterAttack");
 	if (!isMadeAttack())
 	{
 		return false;
@@ -11433,6 +11463,7 @@ CvCity* CvUnitAI::AI_jihadCampaignTarget(bool bEgyptCoastOnly)
 
 bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrderedCity)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_targetCity");
 	PROFILE_FUNC();
 	AI_recordObserverCityTarget("no_reachable_city");
 
@@ -11473,6 +11504,7 @@ bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrd
 			{
 				for (pLoopCity = GET_PLAYER((PlayerTypes)iI).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes)iI).nextCity(&iLoop))
 				{
+					observerPerformanceScope.addWork();
 					if (AI_plotValid(pLoopCity->plot()) && AI_potentialEnemy(GET_PLAYER((PlayerTypes)iI).getTeam(), pLoopCity->plot()))
 					{
 						if (!atPlot(pLoopCity->plot()) && generatePath(pLoopCity->plot(), iFlags, true, &iPathTurns))
@@ -11587,6 +11619,7 @@ bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrd
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_targetBarbCity()
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_targetBarbCity");
 	PROFILE_FUNC();
 
 	CvCity* pLoopCity;
@@ -12606,6 +12639,7 @@ bool CvUnitAI::AI_seaBombardRange(int iMaxRange)
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_pillage(int iBonusValueThreshold)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_pillage");
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
@@ -12622,6 +12656,7 @@ bool CvUnitAI::AI_pillage(int iBonusValueThreshold)
 
 	for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
 	{
+		observerPerformanceScope.addWork();
 		pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
 
 		if (AI_plotValid(pLoopPlot) && !(pLoopPlot->isBarbarian()))
@@ -12738,6 +12773,7 @@ bool CvUnitAI::AI_canPillage(CvPlot& kPlot) const
 // Returns true if a mission was pushed...
 bool CvUnitAI::AI_pillageRange(int iRange, int iBonusValueThreshold)
 {
+	OBSERVER_PERFORMANCE("unitTask.AI_pillageRange");
 	PROFILE_FUNC();
 
 	CvPlot* pLoopPlot;
@@ -17899,6 +17935,7 @@ bool CvUnitAI::AI_moveIntoCity(int iRange)
 //returns true if a mission is pushed.
 bool CvUnitAI::AI_artistCultureVictoryMove()
 {
+	OBSERVER_PERFORMANCE("unitAI.AI_artistCultureVictoryMove");
     bool bGreatWork = false;
     bool bJoin = true;
 

@@ -1,6 +1,7 @@
 // player.cpp
 
 #include "CvGameCoreDLL.h"
+#include "TradePlanning.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvGlobals.h"
@@ -3268,6 +3269,7 @@ void CvPlayer::updateCitySight(bool bIncrement, bool bUpdatePlotGroups)
 void CvPlayer::updateTradeRoutes()
 {
 	OBSERVER_PERFORMANCE("CvPlayer::updateTradeRoutes");
+    TradePlanningCache planningCache;
 	CLLNode<int>* pCityNode;
 	CvCity* pLoopCity;
 	CvCity* pListCity;

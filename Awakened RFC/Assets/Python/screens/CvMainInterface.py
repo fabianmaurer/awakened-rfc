@@ -651,11 +651,15 @@ class CvMainInterface:
 					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE, 0.0)
 					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_RATE_EXTRA, 0.0)
 					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
+					progressText = u"<font=3>" + localText.getText("TXT_KEY_OBSERVER_RUN_PROGRESS", (observer.turns, observer.limit)) + u"</font>"
+					screen.setLabel("ObserverProgressText", "Background", progressText, CvUtil.FONT_CENTER_JUSTIFY, xResolution / 2, yResolution / 2 + 30, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 					self.observerProgressDisplay = progress
 				screen.show("ObserverSimulationBackground")
 				screen.moveToFront("ObserverSimulationBackground")
 				screen.show("ObserverProgressBar")
 				screen.moveToFront("ObserverProgressBar")
+				screen.show("ObserverProgressText")
+				screen.moveToFront("ObserverProgressText")
 				return
 			else:
 				if getattr(self, 'observerSimulationSize', None) is not None:
@@ -663,6 +667,7 @@ class CvMainInterface:
 					screen.hide("ObserverSimulationBackground")
 					self.observerSimulationSize = None
 				screen.hide("ObserverProgressBar")
+				screen.hide("ObserverProgressText")
 				self.observerProgressDisplay = None
 			screen.hide("ObserverProgressOverlay")
 		

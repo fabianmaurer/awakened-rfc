@@ -1753,4 +1753,7 @@
     <Define><DefineName>RFCMP_METAL_INFLATION_DECAY_TIMES10000</DefineName><iDefineIntVal>500</iDefineIntVal></Define>
     <!-- Speeds adjustment toward equilibrium without changing it. -->
     <Define><DefineName>RFCMP_METAL_INFLATION_CHANGE_MULTIPLIER</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <!-- Pass-scoped trade cache; shadow sampling is reporting-only (zero disables checks). -->
+    <Define><DefineName>RFCMP_PERF_TRADE_CACHE</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_PERF_SHADOW_INTERVAL</DefineName><iDefineIntVal>64</iDefineIntVal></Define>
 </Civ4Defines>
