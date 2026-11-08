@@ -5,7 +5,7 @@ from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
 MAPS = ROOT / 'Awakened RFC/PublicMaps'
-TARGET = MAPS / 'Start 3b - 900 AD.CivBeyondSwordWBSave'
+TARGET = ROOT / 'tools/scenario_templates/disabled/Start 3b - 900 AD.CivBeyondSwordWBSave'
 ACTIVE = (0, 2, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 27, 30, 31, 32)
 # English, French, German, Italian, Spanish. Contemporary representatives of
 # aggregated RFC slots, not claims to rule every region represented by a slot.

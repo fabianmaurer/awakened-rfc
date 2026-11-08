@@ -13,7 +13,9 @@ RFC's world maps, historical spawns, unique powers and victory goals remain.
 
 [GraphicsUpgrade by Deliverator](https://github.com/deliverator23/Civ4BTS-GraphicsUpgrade)
 adds reflective water, sun shadows and adjustable lighting. It is a separate
-Direct3D add-on that affects all Beyond the Sword games, not just Awakened RFC.
+Direct3D add-on installed alongside Beyond the Sword. New installations leave
+its effects off by default; Awakened RFC enables water and shadows in its own settings.
+Existing GraphicsUpgrade settings are preserved.
 With the game closed, install Awakened RFC in `Beyond the Sword/Mods`, then run
 this in PowerShell from the installed mod folder:
 
@@ -152,7 +154,7 @@ culture and espionage, distinct from gold income.
    the original mod can remain alongside it.
 2. Load it from the game's mod menu or use [the launcher](<Launch Awakened RFC.bat>)
    (configured for Steam).
-3. Choose **3000 BC**, **800 BC**, **600 AD**, **900 AD** or **1453 AD**. All multiplayer peers need identical
+3. Choose **3000 BC**, **800 BC**, **600 AD** or **1453 AD**. All multiplayer peers need identical
    mod files and DLLs.
 
 Start a new game after changes
@@ -182,6 +184,14 @@ or Civilopedia. Apply the same rule to every translation. For example:
 **"Specialists gain +2 research."**
 
 ### Package a playable release
+
+For a dated release folder containing both the production ZIP and Windows
+installer, install Inno Setup 6, Python 3.9 or newer, and the legacy DLL build
+prerequisites, then double-click `Create Release.bat` at the repository root.
+The script builds the DLL and writes both files to `dist/YYYY-MM-DD-HHMMSS`.
+Close Beyond the Sword before building.
+The installer asks for the Beyond the Sword game folder, backs up an existing
+Awakened RFC folder, and offers the optional online GraphicsUpgrade installation.
 
 Run `python tools/package_release.py --version v0.1.0` with Python 3.9 or newer.
 This creates `dist/Awakened-RFC-v0.1.0.zip`, ready to attach to a GitHub release.

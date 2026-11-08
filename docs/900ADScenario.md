@@ -1,6 +1,7 @@
 # 900 AD: European settler start
 
-Choose `Start 3b - 900 AD.CivBeyondSwordWBSave` in the scenario menu.
+This scenario is temporarily disabled. Its map is preserved in
+`tools/scenario_templates/disabled`.
 France, Spain, Germany, Russia, England and the Vikings all begin immediately
 without cities. The date is turn 211, after Russia's normal birth at turn 207,
 the latest normal birth among these six civilizations.

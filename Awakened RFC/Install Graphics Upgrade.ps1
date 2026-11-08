@@ -1,6 +1,20 @@
 # Installs or updates Deliverator's optional GraphicsUpgrade beside BtS.
 # Run from an installed Mods\Awakened RFC folder, with the game closed.
 $ErrorActionPreference = 'Stop'
+function Set-IniValue([string]$text, [string]$section, [string]$key, [string]$value) {
+    $header = '(?im)^[ \t]*\[' + [regex]::Escape($section) + '\][ \t]*\r?$'
+    $match = [regex]::Match($text, $header)
+    if (-not $match.Success) { return $text.TrimEnd() + "`r`n`r`n[$section]`r`n$key=$value`r`n" }
+    $start = $match.Index + $match.Length
+    $next = [regex]::Match($text.Substring($start), '(?m)^[ \t]*\[[^\]\r\n]+\]')
+    $end = if ($next.Success) { $start + $next.Index } else { $text.Length }
+    $body = $text.Substring($start, $end - $start)
+    $keyPattern = '(?im)^[ \t]*' + [regex]::Escape($key) + '[ \t]*=[^\r\n]*'
+    if ([regex]::IsMatch($body, $keyPattern)) {
+        $body = [regex]::Replace($body, $keyPattern, "$key=$value")
+    } else { $body = "`r`n$key=$value" + $body }
+    return $text.Substring(0, $start) + $body + $text.Substring($end)
+}
 $game = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 if (-not (Test-Path -LiteralPath (Join-Path $game 'Civ4BeyondSword.exe') -PathType Leaf)) {
     throw 'Place Awakened RFC in the Beyond the Sword Mods folder before running this installer.'
@@ -60,13 +74,19 @@ try {
     }
     $settings = Join-Path $game 'GraphicsUpgrade.ini'
     if (-not (Test-Path -LiteralPath $settings)) {
-        Copy-Item -LiteralPath (Join-Path $source 'GraphicsUpgrade.ini') -Destination $settings
+        $config = Get-Content -LiteralPath (Join-Path $source 'GraphicsUpgrade.ini') -Raw
+        foreach ($section in @('water', 'reflection', 'shadows', 'lighting')) {
+            $config = Set-IniValue $config $section 'Enabled' '0'
+        }
+        $config = Set-IniValue $config 'textures' 'Anisotropy' '1'
+        $config = Set-IniValue $config 'textures' 'DetailNormals' '0'
+        Set-Content -LiteralPath $settings -Value $config -Encoding Default
     } else {
         Write-Host 'Kept your existing GraphicsUpgrade.ini. Check upstream release notes for changed settings.'
     }
     @{ version = $release.tag_name; files = $new } | ConvertTo-Json | Set-Content -LiteralPath $manifestPath -Encoding UTF8
     Write-Host "Installed GraphicsUpgrade $($release.tag_name) in $game"
-    Write-Host 'GraphicsUpgrade affects all BtS games. Start Awakened RFC normally.'
+    Write-Host 'Start Awakened RFC normally. Existing global settings are preserved.'
 } finally {
     Remove-Item -LiteralPath $temp -Recurse -Force
 }
