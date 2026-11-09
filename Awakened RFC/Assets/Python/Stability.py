@@ -60,11 +60,17 @@ class Stability:
             
         def getStability( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lStability'][iCiv]
+                value = scriptDict['lStability'][iCiv]
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        return max(0, value)
+                return value
 
         def setStability( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        iNewValue = max(0, iNewValue)
                 scriptDict['lStability'][iCiv] = iNewValue
+                gc.getPlayer(iCiv).setIntelligenceStability(iNewValue)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getStatePropertyCountdown( self, iCiv ):

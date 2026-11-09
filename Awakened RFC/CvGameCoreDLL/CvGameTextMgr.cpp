@@ -1803,7 +1803,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
             if (iModifier != 0)
             {
                 szString.append(NEWLINE);
-                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", iModifier));
+                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", CvWString::format(L"%d.%d", (iModifier + 5) / 100, ((iModifier + 5) % 100) / 10).GetCString()));
             }
 			iModifier = pAttacker->getExtraCombatPercent();
 
@@ -1985,7 +1985,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
             if (iModifier != 0)
             {
                 szString.append(NEWLINE);
-                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", iModifier));
+                szString.append(gDLL->getText("TXT_KEY_INTEL_COMBAT", CvWString::format(L"%d.%d", (iModifier + 5) / 100, ((iModifier + 5) % 100) / 10).GetCString()));
             }
 			iModifier = pDefender->getExtraCombatPercent();
 
@@ -11228,6 +11228,14 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 			szBuffer.append(szTempBuffer);
 		}
 
+        iAttitudeChange = GET_PLAYER(ePlayer).getDynasticRelationBonus(eTargetPlayer);
+        if (iPass == 0 && iAttitudeChange > 0)
+        {
+            szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"),
+                gDLL->getText("TXT_KEY_INTEL_DYNASTIC_ATTITUDE", iAttitudeChange).GetCString());
+            szBuffer.append(NEWLINE);
+            szBuffer.append(szTempBuffer);
+        }
         iAttitudeChange = -GET_PLAYER(eTargetPlayer).getIntelligenceRelationPenalty(GET_PLAYER(ePlayer).getTeam());
         if (iPass == 1 && iAttitudeChange < 0)
         {

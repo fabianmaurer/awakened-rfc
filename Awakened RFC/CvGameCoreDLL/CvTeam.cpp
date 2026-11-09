@@ -1167,6 +1167,13 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 	if (!isAtWar(eTeam))
 	{
+        // Penalize the initiator once; defensive-pact and vassal recursion are not new decisions.
+        static int iDynasticDeclarationDepth = 0;
+        const bool bDynasticInitiator = (iDynasticDeclarationDepth++ == 0);
+        if (bDynasticInitiator)
+            for (int iPlayer = 0; iPlayer < NUM_MAJOR_PLAYERS; ++iPlayer)
+                if (GET_PLAYER((PlayerTypes)iPlayer).isAlive() && GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())
+                    GET_PLAYER((PlayerTypes)iPlayer).onDynasticWar(eTeam);
 		//FAssertMsg((isHuman() || isMinorCiv() || GET_TEAM(eTeam).isMinorCiv() || isBarbarian() || GET_TEAM(eTeam).isBarbarian() || AI_isSneakAttackReady(eTeam) || (GET_TEAM(eTeam).getAtWarCount(true) > 0) || !(GC.getGameINLINE().isFinalInitialized()) || gDLL->GetWorldBuilderMode() || getVassalCount() > 0  || isAVassal() || GET_TEAM(eTeam).getVassalCount() > 0  || GET_TEAM(eTeam).isAVassal() || getDefensivePactCount() > 0), "Possibly accidental AI war!!!");
 
 		for (pLoopDeal = GC.getGameINLINE().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGameINLINE().nextDeal(&iLoop))
@@ -1559,6 +1566,7 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 				}
 			}
 		}
+        --iDynasticDeclarationDepth;
 	}
 }
 

@@ -728,6 +728,15 @@ keine freiwillige Vasallisierung anbieten oder annehmen
 eines Szenarios. Kapitulation im Krieg und freiwillige Entscheidungen menschlich
 gesteuerter Teams folgen weiterhin den bisherigen Regeln.
 
+Freiwillige Vasallenangebote der KI erfordern mindestens erfreute Beziehungen und
+einen möglichen Lehnsherrn mit mindestens doppelter eigener Militärmacht gegenüber
+der anbietenden Partei einschließlich ihrer Vasallen. Zusätzlich muss ein stärkerer
+Hauptgegner im Krieg oder ein bekannter feindseliger Landnachbar mit mindestens
+1,5-facher Macht drohen; dessen Haltung muss verärgert oder schlechter sein.
+Bei erfüllten Bedingungen beträgt die Chance je Gelegenheit 25% bei normalem Tempo,
+auf XL 12,5%. Dies gilt gegenüber Menschen und anderen KIs. Angefragte Abkommen,
+Kriegskapitulation und dynastische Personalunionen behalten ihre bisherigen Abläufe.
+
 ### Garnisonen in Festungen
 
 Eine Festung mit mindestens einer kampffähigen Landeinheit einer regulären
@@ -1099,16 +1108,34 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   abnehmenden Nutzen; insgesamt ist der Ertrag auf die dreifache Spionageleistung
   begrenzt. Fortschritt bleibt bei Moduswechseln erhalten. Ohne passende Quelle
   ruht das Ziel. Überschüsse fließen in dieser Runde nicht in ein zweites Ziel.
-- **Militärspionage:** Bis zu +8% Kampfstärke gegen das Ziel, abhängig von dessen
-  Armeegröße. Ab +3% werden bekannte Städte und Einheiten in deren Umfeld
-  sichtbar. Im Krieg ermöglicht eine benachbarte angriffsfähige Landeinheit an
-  der Spielerrundengrenze einen Infiltrationswurf mit höchstens 25% Erfolgschance.
-  Pro Stadt und Spielrunde gibt es nur einen Wurf, gemeinsam für alle Angreifer.
-  Erfolg schaltet die Stadtverteidigung für diese Spielrunde aus. Gelände-,
-  Einheiten- und Verschanzungsboni bleiben erhalten. Gespeicherter
-  Bombardierungsschaden wird nicht verändert; danach gilt wieder der
-  zugrunde liegende Verteidigungswert.
-- **Politische Einmischung:** Druck steigt langsam und sinkt nach Ende der
+- **Militärspionage:** Jedes Zielteam hat einen eigenen Aufbau `B`. Pro normaler
+  Runde bleiben 95% erhalten; hinzu kommt die wirksame Spionageleistung nach
+  Zugang und Abwehr. Auf XL bleiben 97,5% erhalten und die halbe Leistung kommt
+  hinzu. Der Abbau läuft auch ohne Finanzierung und in anderen Modi weiter;
+  Effekte gelten nur im Militärmodus. Ohne Finanzierung halbiert sich der Aufbau
+  nach etwa 13,5 normalen Runden. Bei `U` feindlichen Militäreinheiten ist der
+  gemeinsame Wirkungsanteil `B / (B + 20 * (40 + U))`. Kampfbonus und
+  Infiltrationschance nähern sich 30%, die Truppenaufklärung 100%. Effekte
+  behalten intern Hundertstelprozent und werden mit einer Nachkommastelle angezeigt.
+  Die endgültige Kampfstärke nutzt die normale Rundung des Spiels.
+  Große Armeen erfordern mehr Aufbau. Zusätzliche Investitionen bringen
+  abnehmenden Nutzen. Eine feste Auswahl feindlicher Land-, See- und
+  Luftkampfeinheiten wird auf ihren Bewegungen verfolgt. Sichtbar sind nur die
+  besetzten Felder; normale Unsichtbarkeitsregeln gelten weiter. Andere Einheiten
+  auf demselben Feld können dadurch ebenfalls sichtbar werden. Es entsteht keine
+  Sicht auf das Stadtumfeld. Beim Wegzug oder Tod endet die Sicht auf das Feld,
+  sofern keine andere Quelle es weiter aufklärt. Im Krieg ermöglicht eine
+  benachbarte angriffsfähige Landeinheit einen Infiltrationswurf pro Stadt und
+  Spielrunde, gemeinsam für alle Angreifer. Erfolg schaltet die Stadtverteidigung
+  für diese Spielrunde aus. Gelände-, Einheiten- und Verschanzungsboni sowie
+  gespeicherter Bombardierungsschaden bleiben erhalten.
+  Beispiel: Gegen 100 Militäreinheiten ergibt eine wirksame Spionageleistung von
+  100 pro normaler Runde nach 10, 20 und 40 Runden +6,7%, +9,4% und +11,5% Kampfstärke.
+  Langfristig sind es +12,5%, etwa 12,5% Infiltrationschance und 41,7% Truppenabdeckung.
+  Bei 400 beziehungsweise 1.000 Leistung erreicht der Kampfbonus langfristig +22,2%
+  beziehungsweise +26,3%.
+- **Politische Einmischung:** Monarchien nutzen stattdessen dynastische Politik
+  (siehe unten). Für andere Staatsformen gilt: Druck steigt langsam und sinkt nach Ende der
   Operation. Große Bevölkerungen leisten mehr Widerstand. Alle Angreifer
   zusammen verursachen höchstens -6 Stabilität und zwei zusätzliche Runden
   Anarchie bei normalem Spieltempo, auf XL vier. Anarchieimmunität bleibt
@@ -1134,3 +1161,50 @@ Berater und Diplomatie-Tooltip zeigen den Abzug. Die KI wählt passende Operatio
 und Budgets. Werte sind vorläufig; Darstellung, Balance und Mehrspielerbetrieb
 benötigen eine vom Benutzer durchgeführte Prüfung im Spiel. Das neue
 Speicherformat ist für neue Partien vorgesehen.
+
+### Dynastische Politik
+
+Monarchien ersetzen politische Einmischung durch Heiratspolitik gegenüber anderen
+Monarchien. Einfluss wächst wie militärischer Aufbau und verliert pro normaler
+Runde 5%, auf XL 2,5%. XL halbiert auch den Zuwachs. Jeder negative Stabilitätspunkt
+des Ziels erhöht den Zuwachs um 2%, bis zur Verdopplung bei -50; positive Stabilität
+wirkt nicht erschwerend. Größe und Religion sind keine Bedingungen dieser Operation.
+Der Wirkungsanteil ist `B / (B + 100)` bei Aufbau `B`.
+
+| Stufe | Chance pro normaler Runde |
+| --- | --- |
+| Unbedeutend | 0% bis +20% |
+| Entfernte Verwandte | -5% bis +15% |
+| Nahe Verwandte | -10% bis +10% |
+| Personalunion | -10% bis +10% |
+| Eingliederung | Keine weiteren Würfe |
+
+Die Chance ist `20% * B / (B + 100)` abzüglich 0, 5 oder 10 Prozentpunkten.
+XL halbiert die gesamte vorzeichenbehaftete Chance. Positive Chancen bewirken
+Aufstieg, negative Rückschritt um eine Stufe. Pro Zielteam gibt es je Spielrunde
+höchstens einen Wurf. Krieg stoppt Aufbau und Aufstieg; der Einfluss verfällt weiter.
+Entfernte Verwandte geben beidseitig +1 Beziehungen, nahe Verwandte und spätere
+Stufen +2. Eine Kriegserklärung gegen nahe Verwandte kostet den Angreifer für
+20 normale beziehungsweise 40 XL-Runden 6 Stabilität, ohne zusätzliche Anarchie.
+
+Die Personalunion macht das Ziel zum freiwilligen Vasallen. Fremde Vasallen können
+nicht übernommen werden; ein Vasall kann kein Lehnsherr werden. Die Spieloption
+ohne Vasallen verhindert diesen Schritt. Rückschritt beendet nur eine durch dieses
+Netz geschaffene Vasallenbindung. Eine anderweitig beendete Personalunion fällt
+auf nahe Verwandte zurück.
+
+Die Eingliederung überträgt jede Spielrunde die nächste Stadt zur nächstgelegenen
+Stadt des Erben, einmal je Zielteam. Garnisonen wechseln mit der Stadt; mit der
+letzten Stadt wechseln die übrigen Einheiten. Es gibt keine Eroberungsprämien.
+Es wird nicht mehr gewürfelt. Die Übertragungen laufen auch ohne Finanzierung und
+nach Staatsformwechseln weiter, ruhen aber bei Krieg oder beendeter Vasallenschaft.
+Solange die Union besteht, fällt die Stabilität des eingegliederten Landes nicht
+unter null. Politischer Druck löst dort auch keine zusätzliche Anarchie oder
+lokalen Unruhen aus. Andere Ursachen für Stadtverluste bleiben wirksam.
+
+Beim bisherigen Erbfall durch Zusammenbruch bleiben die 50%-Chance und alle
+Bedingungen bestehen. Kandidaten erhalten das Gewicht
+`100 + 100 * Stufe + 400 * B / (B + 100)`. Etablierte Dynastien und hoher Einfluss
+werden dadurch bevorzugt. Die KI bevorzugt Heiratspolitik gegenüber Monarchien
+maßvoll und hält ihre Wahl für zehn normale Runden. Krieg, großer technologischer
+Rückstand und Finanznot beeinflussen diese Wahl weiter.

@@ -229,6 +229,7 @@ public:
 	int getAdvancedStartVisibilityCost(bool bAdd, CyPlot* pPlot);
 
 	int getIntelligenceData(int iTarget, int iField);
+    void setIntelligenceStability(int iValue);
 	int getEspionageSpending(int /*PlayerTypes*/ ePlayer);
 	bool canDoEspionageMission(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);
 	int getEspionageMissionCost(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);

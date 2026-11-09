@@ -50,6 +50,18 @@ namespace
         return std::max(1, (3 * GC.getMapINLINE().getGridWidth() + 62) / 124);
     }
 
+    int decayIntelligenceStock(int iStock)
+    {
+        const int iDecay = std::min(10000, std::max(1, 50000 / intelligenceSpeedPercent()));
+        return iStock - (int)(((__int64)iStock * iDecay + 9999) / 10000);
+    }
+
+    int growIntelligenceStock(int iStock, int iRate)
+    {
+        return (int)std::min((__int64)MAX_INT / 2,
+            iStock + (__int64)iRate * 10000 / intelligenceSpeedPercent());
+    }
+
 }
 
 bool CvPlayer::canIntelligenceTarget(PlayerTypes eTarget) const
@@ -122,8 +134,9 @@ int CvPlayer::getIntelligenceDefense(PlayerTypes eTarget) const
 int CvPlayer::getIntelligenceRate(PlayerTypes eTarget) const
 {
     if (!canIntelligenceTarget(eTarget)) return 0;
-    int iAttack = getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(eTarget) / 100;
-    return iAttack * (iAttack + 20) / std::max(1, iAttack + 20 + getIntelligenceDefense(eTarget));
+    const __int64 iAttack = (__int64)getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(eTarget) / 100;
+    return (int)std::min((__int64)MAX_INT, iAttack * (iAttack + 20) /
+        std::max((__int64)1, iAttack + 20 + getIntelligenceDefense(eTarget)));
 }
 
 int CvPlayer::getIntelligenceMode(TeamTypes eTarget) const
@@ -160,16 +173,79 @@ int CvPlayer::getIntelligenceResearchRate(TechTypes eTech) const
 
 int CvPlayer::getIntelligenceMilitaryBonus(PlayerTypes eTarget) const
 {
+    // Basis points preserve marginal gains near the limit in combat as well as in the advisor.
+    return 30 * getIntelligenceMilitaryCoverage(eTarget) / 100;
+}
+
+int CvPlayer::getIntelligenceMilitaryCoverage(PlayerTypes eTarget) const
+{
     if (!canIntelligenceTarget(eTarget) || getIntelligenceMode(GET_PLAYER(eTarget).getTeam()) != INTEL_MILITARY) return 0;
-    int iStrength = m_aiIntelligenceStrength[GET_PLAYER(eTarget).getTeam()];
-    return std::min(8, iStrength * 8 / (20 + GET_PLAYER(eTarget).getNumMilitaryUnits() / 2));
+    const int iStock = m_aiIntelligenceMilitaryStock[GET_PLAYER(eTarget).getTeam()];
+    // One shared saturation curve: half effect at 20 * (40 + enemy military units).
+    // Use 64-bit arithmetic and basis points so very large networks still have diminishing returns.
+    const __int64 iHalf = (__int64)2000 * (40 + GET_PLAYER(eTarget).getNumMilitaryUnits());
+    return (int)((__int64)10000 * iStock / (iStock + iHalf));
 }
 
 int CvPlayer::getIntelligenceSuppressionChance(PlayerTypes eTarget) const
 {
-    if (getIntelligenceMilitaryBonus(eTarget) <= 0) return 0;
-    return std::min(25, m_aiIntelligenceStrength[GET_PLAYER(eTarget).getTeam()] * 25 /
-        (40 + GET_PLAYER(eTarget).getNumMilitaryUnits()));
+    // Basis points, independent of whole-percent combat rounding.
+    return 30 * getIntelligenceMilitaryCoverage(eTarget) / 100;
+}
+
+void CvPlayer::refreshIntelligenceTracking()
+{
+    if (getTeam() == NO_TEAM) return;
+    for (int i = 0; i < MAX_PLAYERS; ++i)
+    {
+        int iLoop;
+        CvPlayer& kOwner = GET_PLAYER((PlayerTypes)i);
+        for (CvUnit* pUnit = kOwner.firstUnit(&iLoop); pUnit; pUnit = kOwner.nextUnit(&iLoop))
+            pUnit->updateIntelligenceTracking(getTeam());
+    }
+}
+
+void CvUnit::updateIntelligenceTracking(TeamTypes eObserver)
+{
+    if (eObserver < 0 || eObserver >= MAX_CIV_TEAMS) return;
+    int iCoverage = 0;
+    if (canFight() || canAirAttack())
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        {
+            const CvPlayer& kObserver = GET_PLAYER((PlayerTypes)i);
+            if (kObserver.isAlive() && kObserver.getTeam() == eObserver)
+                iCoverage = std::max(iCoverage, kObserver.getIntelligenceMilitaryCoverage(getOwnerINLINE()));
+        }
+    // A stable per-unit selection follows the same troops as they move. No UI-local or movement RNG.
+    // Unsigned mixing is portable to the legacy compiler; only the synchronized identity is used.
+    unsigned int iHash = (unsigned int)getID() ^ ((unsigned int)(getOwnerINLINE() + 1) * 0x9e3779b9U) ^
+        ((unsigned int)(eObserver + 1) * 0x85ebca6bU);
+    iHash ^= iHash >> 16;
+    iHash *= 0x7feb352dU;
+    iHash ^= iHash >> 15;
+    iHash *= 0x846ca68bU;
+    iHash ^= iHash >> 16;
+    const bool bTracked = (int)(iHash % 10000) < iCoverage;
+    if (m_abIntelligenceTracked[eObserver] == bTracked) return;
+    m_abIntelligenceTracked[eObserver] = bTracked;
+    if (plot()) plot()->changeVisibilityCount(eObserver, bTracked ? 1 : -1, NO_INVISIBLE, true);
+}
+
+void CvUnit::changeIntelligenceSight(CvPlot* pPlot, bool bIncrement, bool bUpdatePlotGroups) const
+{
+    // Only the occupied tile, with normal invisible-unit rules. No adjacent or recon sight.
+    if (!pPlot) return;
+    for (int i = 0; i < MAX_CIV_TEAMS; ++i)
+        if (m_abIntelligenceTracked[i])
+            pPlot->changeVisibilityCount((TeamTypes)i, bIncrement ? 1 : -1, NO_INVISIBLE, bUpdatePlotGroups);
+}
+
+int CvUnit::getIntelligenceTrackingChecksum() const
+{
+    int iValue = 0;
+    for (int i = 0; i < MAX_CIV_TEAMS; ++i)
+        if (m_abIntelligenceTracked[i]) iValue += (i + 1) * 157;
+    return iValue;
 }
 
 int CvPlayer::getIntelligencePoliticalTarget() const
@@ -178,7 +254,7 @@ int CvPlayer::getIntelligencePoliticalTarget() const
     for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
     {
         const CvPlayer& kOther = GET_PLAYER((PlayerTypes)i);
-        if (kOther.canIntelligenceTarget(getID()) && kOther.getIntelligenceMode(getTeam()) == INTEL_POLITICS)
+        if (!kOther.isDynasticIntelligence() && kOther.canIntelligenceTarget(getID()) && kOther.getIntelligenceMode(getTeam()) == INTEL_POLITICS)
             iPressure += kOther.m_aiIntelligenceStrength[getTeam()] * 1200 / (20 + getTotalPopulation());
     }
     return std::min(600, iPressure);
@@ -186,12 +262,208 @@ int CvPlayer::getIntelligencePoliticalTarget() const
 
 int CvPlayer::getIntelligenceStabilityPenalty() const
 {
-    return GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE) ? 0 : m_iIntelligencePressure / 100;
+    return GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE) || isBeingDynasticallyIncorporated() ? 0 :
+        m_iIntelligencePressure / 100 + (m_iDynasticWarTurns > 0 ? 6 : 0);
 }
 
 int CvPlayer::getIntelligenceAnarchyExtra() const
 {
-    return getMaxAnarchyTurns() == 0 ? 0 : scaledAnarchyTurns(getIntelligenceStabilityPenalty() / 3);
+    return getMaxAnarchyTurns() == 0 || GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE) ||
+        isBeingDynasticallyIncorporated() ? 0 : scaledAnarchyTurns(m_iIntelligencePressure / 300);
+}
+
+bool CvPlayer::isDynasticIntelligence() const
+{
+    const CivicTypes eMonarchy = (CivicTypes)GC.getInfoTypeForString("CIVIC_MONARCHY");
+    return eMonarchy != NO_CIVIC && getCivics((CivicOptionTypes)GC.getCivicInfo(eMonarchy).getCivicOptionType()) == eMonarchy;
+}
+
+bool CvPlayer::canDynasticTarget(PlayerTypes eTarget) const
+{
+    return canIntelligenceTarget(eTarget) && getNumCities() > 0 && GET_PLAYER(eTarget).getNumCities() > 0 &&
+        isDynasticIntelligence() && GET_PLAYER(eTarget).isDynasticIntelligence();
+}
+
+bool CvPlayer::canFormDynasticUnion(PlayerTypes eTarget) const
+{
+    if (!canDynasticTarget(eTarget) || GC.getGameINLINE().isOption(GAMEOPTION_NO_VASSAL_STATES)) return false;
+    const CvTeam& kOurs = GET_TEAM(getTeam());
+    const CvTeam& kTheirs = GET_TEAM(GET_PLAYER(eTarget).getTeam());
+    return !kOurs.isAVassal() && !kOurs.isAtWar(kTheirs.getID()) && !kTheirs.isArabianJihadWar(getTeam()) &&
+        (!kTheirs.isAVassal() || kTheirs.isVassal(getTeam()));
+}
+
+int CvPlayer::getDynasticChance(PlayerTypes eTarget) const
+{
+    if (!canDynasticTarget(eTarget)) return 0;
+    const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    const int iStage = m_aiDynasticStage[eTeam];
+    if (iStage >= 4) return 0; // Incorporation is terminal.
+    const int iStock = m_aiDynasticStock[eTeam];
+    const int iOffset = iStage == 0 ? 0 : (iStage == 1 ? 500 : 1000);
+    int iChance = (int)((__int64)2000 * iStock / ((__int64)iStock + 10000)) - iOffset;
+    // War blocks advancement, but an unsupported dynasty can still regress.
+    if (iChance > 0 && (GET_TEAM(getTeam()).isAtWar(eTeam) ||
+        getIntelligenceMode(eTeam) != INTEL_POLITICS || (iStage == 2 && !canFormDynasticUnion(eTarget)))) return 0;
+    return range(iChance * 100 / intelligenceSpeedPercent(), -10000, 10000);
+}
+
+int CvPlayer::getDynasticRelationBonus(PlayerTypes eTarget) const
+{
+    if (!canDynasticTarget(eTarget)) return 0;
+    int iStage = m_aiDynasticStage[GET_PLAYER(eTarget).getTeam()];
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const CvPlayer& kOther = GET_PLAYER((PlayerTypes)i);
+        if (kOther.isAlive() && kOther.getTeam() == GET_PLAYER(eTarget).getTeam())
+            iStage = std::max(iStage, kOther.m_aiDynasticStage[getTeam()]);
+    }
+    return std::min(2, iStage);
+}
+
+int CvPlayer::getDynasticInheritanceWeight(PlayerTypes eTarget) const
+{
+    if (eTarget < 0 || eTarget >= NUM_MAJOR_PLAYERS) return 100;
+    TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    int iStock = m_aiDynasticStock[eTeam];
+    return 100 + 100 * m_aiDynasticStage[eTeam] + (int)((__int64)400 * iStock / ((__int64)iStock + 10000));
+}
+
+bool CvPlayer::isBeingDynasticallyIncorporated() const
+{
+    if (!isAlive() || getTeam() == NO_TEAM || GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) return false;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const CvPlayer& kHeir = GET_PLAYER((PlayerTypes)i);
+        if (kHeir.isAlive() && kHeir.m_aiDynasticStage[getTeam()] == 4 &&
+            GET_TEAM(getTeam()).isVassal(kHeir.getTeam())) return true;
+    }
+    return false;
+}
+
+void CvPlayer::setIntelligenceStability(int iValue)
+{
+    m_iIntelligenceStability = iValue;
+}
+
+void CvPlayer::onDynasticWar(TeamTypes eTarget)
+{
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() == eTarget &&
+            getDynasticRelationBonus((PlayerTypes)i) >= 2)
+        {
+            m_iDynasticWarTurns = std::max(m_iDynasticWarTurns, scaledTurns(20));
+            gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+                gDLL->getText("TXT_KEY_INTEL_DYNASTIC_WAR", 6, scaledTurns(20)), NULL, MESSAGE_TYPE_MINOR_EVENT);
+            break;
+        }
+}
+
+void CvPlayer::doDynasticIntelligence(PlayerTypes eTarget)
+{
+    if (!canIntelligenceTarget(eTarget)) return;
+    CvPlayer& kTarget = GET_PLAYER(eTarget);
+    const TeamTypes eTeam = kTarget.getTeam();
+    const int iTurn = GC.getGameINLINE().getGameTurn();
+    if (m_aiDynasticLastRoll[eTeam] == iTurn) return;
+    m_aiDynasticLastRoll[eTeam] = iTurn;
+    if (m_aiDynasticStage[eTeam] == 4)
+    {
+        incorporateDynasticCity(eTarget);
+        return;
+    }
+    if (!canDynasticTarget(eTarget)) return;
+    // Broken personal unions revert to kinship. Completed incorporation never rolls again.
+    if (m_aiDynasticStage[eTeam] == 3 && !GET_TEAM(eTeam).isVassal(getTeam()))
+    {
+        m_aiDynasticStage[eTeam] = 2;
+        m_abDynasticUnion[eTeam] = false;
+    }
+    if (getIntelligenceMode(eTeam) == INTEL_POLITICS && !GET_TEAM(getTeam()).isAtWar(eTeam))
+    {
+        int iRate = getIntelligenceRate(eTarget);
+        // Negative stability helps; positive stability never penalizes the network.
+        iRate = (int)std::min((__int64)MAX_INT,
+            (__int64)iRate * (100 + 2 * range(-kTarget.m_iIntelligenceStability, 0, 50)) / 100);
+        m_aiDynasticStock[eTeam] = growIntelligenceStock(m_aiDynasticStock[eTeam], iRate);
+    }
+    const int iChance = getDynasticChance(eTarget);
+    if (iChance == 0 || GC.getGameINLINE().getSorenRandNum(10000, "Dynastic stage") >= abs(iChance)) return;
+    const int iOldStage = m_aiDynasticStage[eTeam];
+    const int iNewStage = iOldStage + (iChance > 0 ? 1 : -1);
+    if (iNewStage == 3 && iOldStage == 2)
+    {
+        const bool bAlreadyVassal = GET_TEAM(eTeam).isVassal(getTeam());
+        if (!canFormDynasticUnion(eTarget)) return;
+        if (!bAlreadyVassal) GET_TEAM(getTeam()).assignVassal(eTeam, false);
+        if (!GET_TEAM(eTeam).isVassal(getTeam())) return;
+        m_abDynasticUnion[eTeam] = !bAlreadyVassal;
+    }
+    m_aiDynasticStage[eTeam] = iNewStage;
+    if (iOldStage == 3 && iNewStage == 2)
+    {
+        if (m_abDynasticUnion[eTeam] && GET_TEAM(eTeam).isVassal(getTeam())) GET_TEAM(getTeam()).freeVassal(eTeam);
+        m_abDynasticUnion[eTeam] = false;
+    }
+    CvWString szStage = gDLL->getText(CvString::format("TXT_KEY_INTEL_DYNASTIC_STAGE_%d", iNewStage).c_str());
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_DYNASTIC_CHANGED", kTarget.getCivilizationShortDescriptionKey(), szStage.GetCString()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() == eTeam)
+            gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
+                gDLL->getText("TXT_KEY_INTEL_DYNASTIC_CHANGED", getCivilizationShortDescriptionKey(), szStage.GetCString()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+    if (iNewStage == 4) incorporateDynasticCity(eTarget);
+}
+
+void CvPlayer::incorporateDynasticCity(PlayerTypes eTarget)
+{
+    const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    if (GET_TEAM(getTeam()).isAtWar(eTeam) || !GET_TEAM(eTeam).isVassal(getTeam())) return;
+    const int iTurn = GC.getGameINLINE().getGameTurn();
+    CvCity* pBest = NULL;
+    int iBestDistance = MAX_INT;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        CvPlayer& kOwner = GET_PLAYER((PlayerTypes)i);
+        if (kOwner.getTeam() != eTeam) continue;
+        if (kOwner.m_iDynasticCityTurn == iTurn) return;
+        int iLoop;
+        for (CvCity* pCity = kOwner.firstCity(&iLoop); pCity; pCity = kOwner.nextCity(&iLoop))
+        {
+            int iOurLoop;
+            for (CvCity* pOurs = firstCity(&iOurLoop); pOurs; pOurs = nextCity(&iOurLoop))
+            {
+                const int iDistance = plotDistance(pOurs->getX_INLINE(), pOurs->getY_INLINE(), pCity->getX_INLINE(), pCity->getY_INLINE());
+                if (iDistance < iBestDistance) { iBestDistance = iDistance; pBest = pCity; }
+            }
+        }
+    }
+    if (!pBest) return;
+    // Commit the once-per-game-turn guard before city-acquisition Python callbacks.
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (GET_PLAYER((PlayerTypes)i).getTeam() == eTeam) GET_PLAYER((PlayerTypes)i).m_iDynasticCityTurn = iTurn;
+    CvPlayer& kOldOwner = GET_PLAYER(pBest->getOwnerINLINE());
+    const PlayerTypes eOldOwner = kOldOwner.getID();
+    const CvWString szCityName = pBest->getName();
+    // On the final city, preserve the remaining army instead of deleting it on elimination.
+    std::vector<IDInfo> aUnits;
+    int iLoop;
+    for (CvUnit* pUnit = kOldOwner.firstUnit(&iLoop); pUnit; pUnit = kOldOwner.nextUnit(&iLoop))
+        if (kOldOwner.getNumCities() == 1 || pUnit->plot() == pBest->plot()) aUnits.push_back(pUnit->getIDInfo());
+    for (int i = 0; i < (int)aUnits.size(); ++i)
+    {
+        CvUnit* pOld = ::getUnit(aUnits[i]);
+        if (!pOld) continue;
+        CvUnit* pNew = initUnit(pOld->getUnitType(), pOld->getX_INLINE(), pOld->getY_INLINE(), pOld->AI_getUnitAIType());
+        pNew->convert(pOld);
+        pNew->finishMoves();
+    }
+    acquireCity(pBest, false, true, true);
+    // City acquisition may change IDs; use the copied name for the announcement.
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_DYNASTIC_CITY", szCityName.GetCString(), getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+    gDLL->getInterfaceIFace()->addMessage(eOldOwner, false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_DYNASTIC_CITY", szCityName.GetCString(), getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
 }
 
 int CvPlayer::getIntelligenceRelationPenalty(TeamTypes eTarget) const
@@ -205,8 +477,6 @@ bool CvPlayer::hasIntelligenceCityVisibility(const CvCity* pCity) const
     if (!canIntelligenceTarget(eTarget)) return false;
     TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
     if (m_aiIntelligenceStrength[eTeam] <= 0) return false;
-    if (getIntelligenceMode(eTeam) == INTEL_MILITARY && getIntelligenceMilitaryBonus(eTarget) >= 3)
-        return pCity->isRevealed(getTeam(), false);
     return getIntelligenceMode(eTeam) == INTEL_MAPS && m_aiIntelligenceReportCity[eTeam] == pCity->getID() &&
         m_aiIntelligenceReportUntil[eTeam] > GC.getGameINLINE().getGameTurn();
 }
@@ -222,6 +492,10 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     if (iField == 26) return scaledAnarchyTurns(2);
     if (iField == 28) return mapReportRadius();
     if (iField == 29) return scaledChance(25);
+    if (iField == 32) return isDynasticIntelligence() ? 1 : 0;
+    if (iField == 41) return m_iDynasticWarTurns;
+    if (iField == 42) return isBeingDynasticallyIncorporated() ? 1 : 0;
+    if (iField == 45) return scaledTurns(20);
     if (iTarget < 0 || iTarget >= NUM_MAJOR_PLAYERS) return 0;
     PlayerTypes eTarget = (PlayerTypes)iTarget;
     TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
@@ -235,11 +509,21 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     case 5: return getIntelligenceRate(eTarget);
     case 6: return getIntelligenceMilitaryBonus(eTarget);
     case 7: return getIntelligenceSuppressionChance(eTarget);
+    case 30: return getIntelligenceMilitaryCoverage(eTarget);
+    case 31: return m_aiIntelligenceMilitaryStock[eTeam] / 100;
+    case 33: return m_aiDynasticStage[eTeam];
+    case 34: return m_aiDynasticStock[eTeam] / 100;
+    case 35: return getDynasticChance(eTarget);
+    case 36: return canDynasticTarget(eTarget) ? 1 : 0;
+    case 37: return getDynasticRelationBonus(eTarget);
+    case 38: return getDynasticInheritanceWeight(eTarget);
+    case 39: return canFormDynasticUnion(eTarget) ? 1 : 0;
     case 8: return getIntelligenceRelationPenalty(eTeam);
     case 9: return getIntelligenceDefense(eTarget);
     case 10: return getIntelligenceData(iTarget, 24) / 100;
     case 24: return scaledChance(std::min(25, getIntelligenceRate(eTarget) * 25 / (30 + GET_PLAYER(eTarget).getNumCities() * 3)));
     case 27:
+        if (isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS) return 0;
         return scaledChance(getIntelligenceMode(eTeam) == INTEL_POLITICS ? 6 : (getIntelligenceMode(eTeam) == INTEL_MILITARY ? 3 : 1));
     case 11: return m_aiIntelligenceReportUntil[eTeam] > GC.getGameINLINE().getGameTurn() ? m_aiIntelligenceReportUntil[eTeam] - GC.getGameINLINE().getGameTurn() : 0;
     case 14:
@@ -252,7 +536,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
         int iAttack = getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(eTarget) / 100;
         return iAttack > 0 ? 100 - getIntelligenceRate(eTarget) * 100 / iAttack : 0;
     }
-    case 12: return canIntelligenceTarget(eTarget) && getIntelligenceMode(eTeam) == INTEL_POLITICS ?
+    case 12: return !isDynasticIntelligence() && canIntelligenceTarget(eTarget) && getIntelligenceMode(eTeam) == INTEL_POLITICS ?
         std::min(600, m_aiIntelligenceStrength[eTeam] * 1200 / (20 + GET_PLAYER(eTarget).getTotalPopulation())) : 0;
     }
     return 0;
@@ -260,13 +544,14 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
 
 void CvPlayer::doIntelligencePressure()
 {
+    if (m_iDynasticWarTurns > 0) --m_iDynasticWarTurns;
     int iTarget = getIntelligencePoliticalTarget();
     int iStep = std::max(1, 2000 / GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent());
     if (iTarget > m_iIntelligencePressure) m_iIntelligencePressure = std::min(iTarget, m_iIntelligencePressure + iStep);
     else m_iIntelligencePressure = std::max(iTarget, m_iIntelligencePressure - iStep);
     if (m_iIntelligenceUnrestCooldown > 0) --m_iIntelligenceUnrestCooldown;
-    if (getIntelligenceStabilityPenalty() > 0 && m_iIntelligenceUnrestCooldown == 0 &&
-        GC.getGameINLINE().getSorenRandNum(10000, "Intelligence unrest") < scaledChance(getIntelligenceStabilityPenalty()))
+    if (!isBeingDynasticallyIncorporated() && m_iIntelligencePressure >= 100 && m_iIntelligenceUnrestCooldown == 0 &&
+        GC.getGameINLINE().getSorenRandNum(10000, "Intelligence unrest") < scaledChance(m_iIntelligencePressure / 100))
     {
         int iLoop;
         CvCity* pCity;
@@ -289,14 +574,22 @@ void CvPlayer::doEspionagePoints()
     OBSERVER_PERFORMANCE("CvPlayer::doEspionagePoints");
     m_iIntelligenceLastResearch = 0;
     if (getID() >= NUM_MAJOR_PLAYERS || isMinorCiv()) return;
-    // Commit queued choices only at a turn boundary. Strength is fixed for combat.
+    // Commit queued choices and update network buildup only at a turn boundary.
     for (int t = 0; t < MAX_TEAMS; ++t)
     {
         m_aiIntelligenceMode[t] = m_aiEspionageSpendingWeightAgainstTeam[t];
         m_aiIntelligenceStrength[t] = 0;
+        // Decay even when funding stops or a different operation is selected.
+        // Normal: B_next = 0.95 * B + effective output. XL uses half-sized steps.
+        m_aiIntelligenceMilitaryStock[t] = decayIntelligenceStock(m_aiIntelligenceMilitaryStock[t]);
+        m_aiDynasticStock[t] = decayIntelligenceStock(m_aiDynasticStock[t]);
         if (m_aiIntelligenceExposure[t] > 0) m_aiIntelligenceExposure[t] = std::max(0, m_aiIntelligenceExposure[t] - std::max(1, 20000 / intelligenceSpeedPercent()));
     }
-    if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) return;
+    if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
+    {
+        refreshIntelligenceTracking();
+        return;
+    }
     int iTurn = GC.getGameINLINE().getGameTurn();
     GET_TEAM(getTeam()).changeEspionagePointsEver(getCommerceRate(COMMERCE_ESPIONAGE));
     for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
@@ -313,7 +606,18 @@ void CvPlayer::doEspionagePoints()
         TeamTypes eTeam = kTarget.getTeam();
         int iStrength = getIntelligenceRate(eTarget);
         m_aiIntelligenceStrength[eTeam] = iStrength;
-        if (iStrength > 0)
+        bool bFirst = true;
+        for (int j = 0; j < i; ++j)
+            if (GET_PLAYER((PlayerTypes)j).getTeam() == eTeam && canIntelligenceTarget((PlayerTypes)j)) bFirst = false;
+        if (bFirst) doDynasticIntelligence(eTarget);
+        if (getIntelligenceMode(eTeam) == INTEL_MILITARY)
+        {
+            // Count each target team once, including in team games. Leave headroom for arithmetic.
+            if (bFirst)
+                m_aiIntelligenceMilitaryStock[eTeam] = growIntelligenceStock(m_aiIntelligenceMilitaryStock[eTeam], iStrength);
+        }
+        if (!(isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS) &&
+            (iStrength > 0 || (getIntelligenceMode(eTeam) == INTEL_MILITARY && m_aiIntelligenceMilitaryStock[eTeam] > 0)))
         {
             int iMode = getIntelligenceMode(eTeam);
             int iSeverity = iMode == INTEL_POLITICS ? 3 : (iMode == INTEL_MILITARY ? 2 : 1);
@@ -327,28 +631,32 @@ void CvPlayer::doEspionagePoints()
                 gDLL->getInterfaceIFace()->addMessage(eTarget, false, GC.getEVENT_MESSAGE_TIME(),
                     gDLL->getText("TXT_KEY_INTEL_DETECTED", getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
             }
-            if (iMode == INTEL_MILITARY && GET_TEAM(getTeam()).isAtWar(eTeam))
+        }
+        // A decaying network can still infiltrate after funding is reduced to zero.
+        if (getIntelligenceMode(eTeam) == INTEL_MILITARY && GET_TEAM(getTeam()).isAtWar(eTeam))
+        {
+            int iCityLoop;
+            for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop))
             {
-                int iCityLoop;
-                for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop))
+                bool bAdjacent = false;
+                for (int d = 0; d < NUM_DIRECTION_TYPES && !bAdjacent; ++d)
                 {
-                    bool bAdjacent = false;
-                    for (int d = 0; d < NUM_DIRECTION_TYPES && !bAdjacent; ++d)
+                    CvPlot* pAdjacent = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)d);
+                    if (!pAdjacent) continue;
+                    CLLNode<IDInfo>* pNode = pAdjacent->headUnitNode();
+                    for (; pNode; pNode = pAdjacent->nextUnitNode(pNode))
                     {
-                        CvPlot* pAdjacent = plotDirection(pCity->getX_INLINE(), pCity->getY_INLINE(), (DirectionTypes)d);
-                        if (!pAdjacent) continue;
-                        CLLNode<IDInfo>* pNode = pAdjacent->headUnitNode();
-                        for (; pNode; pNode = pAdjacent->nextUnitNode(pNode))
-                        {
-                            CvUnit* pUnit = ::getUnit(pNode->m_data);
-                            if (pUnit && pUnit->getOwnerINLINE() == getID() && pUnit->canAttack() && pUnit->getDomainType() == DOMAIN_LAND)
-                            { bAdjacent = true; break; }
-                        }
+                        CvUnit* pUnit = ::getUnit(pNode->m_data);
+                        if (pUnit && pUnit->getOwnerINLINE() == getID() && pUnit->canAttack() && pUnit->getDomainType() == DOMAIN_LAND)
+                        { bAdjacent = true; break; }
                     }
-                    if (bAdjacent) pCity->rollIntelligenceSuppression(getID(), getIntelligenceSuppressionChance(eTarget));
                 }
+                if (bAdjacent) pCity->rollIntelligenceSuppression(getID(), getIntelligenceSuppressionChance(eTarget));
             }
-            if (iMode == INTEL_MAPS && GC.getGameINLINE().getSorenRandNum(10000, "Intelligence map report") < getIntelligenceData(i, 24))
+        }
+        if (iStrength > 0)
+        {
+            if (getIntelligenceMode(eTeam) == INTEL_MAPS && GC.getGameINLINE().getSorenRandNum(10000, "Intelligence map report") < getIntelligenceData(i, 24))
             {
                 CvCity* pBest = NULL;
                 const int iRadius = mapReportRadius();
@@ -382,6 +690,7 @@ void CvPlayer::doEspionagePoints()
         int iCityLoop;
         for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop)) pCity->updateEspionageVisibility(true);
     }
+    refreshIntelligenceTracking();
     // One shared project prevents several stolen technologies completing at once.
     if (m_eIntelligenceResearch != NO_TECH &&
         (GET_TEAM(getTeam()).isHasTech(m_eIntelligenceResearch) || !canResearch(m_eIntelligenceResearch)))
@@ -414,10 +723,17 @@ void CvPlayer::doEspionagePoints()
 int CvPlayer::getIntelligenceChecksum() const
 {
     int iValue = (m_eIntelligenceResearch + 1) * 101 + m_iIntelligencePressure * 103 +
-        m_iIntelligenceUnrestCooldown * 107 + m_iIntelligenceLastResearch * 109;
+        m_iIntelligenceUnrestCooldown * 107 + m_iIntelligenceLastResearch * 109 +
+        m_iIntelligenceStability * 157 + m_iDynasticWarTurns * 163 + (m_iDynasticCityTurn + 1) * 167;
     for (int i = 0; i < MAX_TEAMS; ++i)
         iValue += (i + 1) * (m_aiIntelligenceMode[i] * 113 + m_aiEspionageSpendingWeightAgainstTeam[i] * 127 +
             m_aiIntelligenceStrength[i] * 131 + m_aiIntelligenceExposure[i] * 137 +
+            m_aiIntelligenceMilitaryStock[i] * 151 +
+            m_aiDynasticStock[i] * 173 + m_aiDynasticStage[i] * 179 +
+            (m_aiDynasticLastRoll[i] + 1) * 181 + m_abDynasticUnion[i] * 191 +
             (m_aiIntelligenceReportCity[i] + 1) * 139 + (m_aiIntelligenceReportUntil[i] + 1) * 149);
+    int iLoop;
+    for (CvUnit* pUnit = firstUnit(&iLoop); pUnit; pUnit = nextUnit(&iLoop))
+        iValue += (pUnit->getID() + 1) * pUnit->getIntelligenceTrackingChecksum();
     return iValue;
 }

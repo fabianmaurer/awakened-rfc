@@ -19,7 +19,8 @@ def tr(key, args=()):
 
 
 def chanceText(basisPoints):
-    return (u"%d.%02d" % (basisPoints / 100, basisPoints % 100)).rstrip(u"0").rstrip(u".")
+    basisPoints += 5
+    return (u"%d.%d" % (basisPoints / 100, basisPoints % 100 / 10)).rstrip(u"0").rstrip(u".")
 
 
 class CvEspionageAdvisor:
@@ -56,6 +57,8 @@ class CvEspionageAdvisor:
         screen.setPanelColor(name, PANEL_COLOR[0], PANEL_COLOR[1], PANEL_COLOR[2])
 
     def modeName(self, mode):
+        if mode == 2 and gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 32):
+            return tr("DYNASTIC_MODE")
         return tr("MODE_%d" % mode)
 
     def interfaceScreen(self):
@@ -180,12 +183,14 @@ class CvEspionageAdvisor:
             if active == 0:
                 amount = self.researchContributions.get(i, 0)
             elif active == 1:
-                amount = player.getIntelligenceData(i, 6)
+                amount = chanceText(player.getIntelligenceData(i, 6))
             elif active == 2:
                 amount = -rival.getIntelligenceData(-1, 20)
             else:
                 amount = chanceText(player.getIntelligenceData(i, 24))
             summary = tr(summaryKeys[active], (amount,))
+            if active == 2 and player.getIntelligenceData(-1, 32):
+                summary = tr("DYNASTIC_STAGE_%d" % player.getIntelligenceData(i, 33))
             effectLabel = self.name()
             screen.setLabelAt(effectLabel, scroll, u"<font=1>%s</font>" % summary,
                 CvUtil.FONT_LEFT_JUSTIFY, 70, y + 55, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
@@ -252,19 +257,48 @@ class CvEspionageAdvisor:
             else:
                 self.label(tr("NO_ACTIVE_PROJECT"), 352, y + 96)
         elif active == 1:
-            self.label(tr("COMBAT_CURRENT_EFFECT", (player.getIntelligenceData(i, 6), nation)), 352, y, True)
+            self.label(tr("COMBAT_CURRENT_EFFECT", (chanceText(player.getIntelligenceData(i, 6)), nation)), 352, y, True)
             if gc.getTeam(player.getTeam()).isAtWar(rival.getTeam()):
-                self.label(tr("INFILTRATION_CURRENT_EFFECT", (player.getIntelligenceData(i, 7),)), 352, y + 32)
+                self.label(tr("INFILTRATION_CURRENT_EFFECT", (chanceText(player.getIntelligenceData(i, 7)),)), 352, y + 32)
             else:
                 self.label(tr("INFILTRATION_AT_PEACE"), 352, y + 32)
-            self.label(tr("VISIBLE_CITIES", (visible,)), 352, y + 64)
+            self.label(tr("TROOP_COVERAGE", (chanceText(player.getIntelligenceData(i, 30)),)), 352, y + 64)
+            self.label(tr("MILITARY_BUILDUP", (player.getIntelligenceData(i, 31),)), 352, y + 96)
         elif active == 2:
-            penalty = rival.getIntelligenceData(-1, 20)
-            anarchy = rival.getIntelligenceData(-1, 25)
-            self.label(tr("STABILITY_CURRENT_EFFECT", (-penalty, nation)), 352, y, True)
-            self.label(tr("ANARCHY_CURRENT_EFFECT", (anarchy, rival.getIntelligenceData(-1, 26))), 352, y + 32)
-            self.label(tr("UNREST_CURRENT_EFFECT", (unrest,)), 352, y + 64)
-            self.label(tr("COMBINED_MEDDLING"), 352, y + 104)
+            if player.getIntelligenceData(-1, 32):
+                stage = player.getIntelligenceData(i, 33)
+                self.label(tr("DYNASTIC_STAGE_%d" % stage), 352, y, True)
+                if stage == 4:
+                    if gc.getTeam(rival.getTeam()).isVassal(player.getTeam()):
+                        self.label(tr("DYNASTIC_INCORPORATING"), 352, y + 32)
+                        self.label(tr("DYNASTIC_PROTECTED"), 352, y + 64)
+                    else:
+                        self.label(tr("DYNASTIC_INCORPORATION_PAUSED"), 352, y + 32)
+                elif not player.getIntelligenceData(i, 36):
+                    self.label(tr("DYNASTIC_REQUIRES"), 352, y + 32)
+                else:
+                    chance = player.getIntelligenceData(i, 35)
+                    chanceKey = "DYNASTIC_ADVANCE"
+                    if chance < 0:
+                        chanceKey = "DYNASTIC_REGRESS"
+                    self.label(tr(chanceKey, (chanceText(abs(chance)),)), 352, y + 32)
+                    self.label(tr("DYNASTIC_BUILDUP", (player.getIntelligenceData(i, 34),)), 352, y + 64)
+                self.label(tr("DYNASTIC_RELATIONS", (player.getIntelligenceData(i, 37),)), 352, y + 96)
+                if gc.getTeam(player.getTeam()).isAtWar(rival.getTeam()):
+                    self.label(tr("DYNASTIC_WAR_PAUSED"), 352, y + 128)
+                elif stage == 2 and not player.getIntelligenceData(i, 39):
+                    self.label(tr("DYNASTIC_UNION_BLOCKED"), 352, y + 128)
+                elif stage < 4:
+                    self.label(tr("DYNASTIC_INSTABILITY_HELP"), 352, y + 128)
+                if stage >= 2:
+                    self.label(tr("DYNASTIC_KIN_WAR_HELP", (player.getIntelligenceData(-1, 45),)), 352, y + 160)
+            else:
+                penalty = rival.getIntelligenceData(-1, 20)
+                anarchy = rival.getIntelligenceData(-1, 25)
+                self.label(tr("STABILITY_CURRENT_EFFECT", (-penalty, nation)), 352, y, True)
+                self.label(tr("ANARCHY_CURRENT_EFFECT", (anarchy, rival.getIntelligenceData(-1, 26))), 352, y + 32)
+                self.label(tr("UNREST_CURRENT_EFFECT", (unrest,)), 352, y + 64)
+                self.label(tr("COMBINED_MEDDLING"), 352, y + 104)
         else:
             self.label(tr("MAP_CURRENT_EFFECT", (chanceText(player.getIntelligenceData(i, 24)), chanceText(player.getIntelligenceData(-1, 29)))), 352, y, True)
             self.label(tr("VISIBLE_CITIES", (visible,)), 352, y + 32)
@@ -281,7 +315,10 @@ class CvEspionageAdvisor:
         if active == 1:
             risk = tr("RISK_MEDIUM", (discovery,))
         elif active == 2:
-            risk = tr("RISK_HIGH", (discovery,))
+            if player.getIntelligenceData(-1, 32):
+                risk = tr("DYNASTIC_DIPLOMACY")
+            else:
+                risk = tr("RISK_HIGH", (discovery,))
         self.label(tr("RISK", (risk,)), 352, 607)
         self.panel(336, 638, 668, 65)
         self.label(tr("ACCESS", (player.getIntelligenceData(i, 2),)), 352, 649)

@@ -309,6 +309,10 @@ public:
 	bool isNoCapture() const;																							// Exposed to Python 
 	bool isRivalTerritory() const;																				// Exposed to Python 
 	bool isMilitaryHappiness() const;																			// Exposed to Python
+
+    void updateIntelligenceTracking(TeamTypes eObserver);
+    void changeIntelligenceSight(CvPlot* pPlot, bool bIncrement, bool bUpdatePlotGroups) const;
+    int getIntelligenceTrackingChecksum() const;
 	bool isInvestigate() const;																						// Exposed to Python
 	bool isCounterSpy() const;																						// Exposed to Python
 	bool isSpy() const;
@@ -799,6 +803,7 @@ protected:
 	int m_iMoves;
 	int m_iExperience;
 	int m_iExplorationExperienceRemainder;
+    bool m_abIntelligenceTracked[MAX_TEAMS];
 	int m_iLevel;
 	int m_iCargo;
 	int m_iCargoCapacity;

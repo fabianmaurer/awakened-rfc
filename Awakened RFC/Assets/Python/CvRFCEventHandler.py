@@ -463,7 +463,6 @@ class CvRFCEventHandler:
                         return
 
                 iTeamX,iHasMetTeamY = argsList
-                self.rnf.onFirstContact(iTeamX, iHasMetTeamY)
                 self.pla.onFirstContact(iTeamX, iHasMetTeamY)
 
         #Rhye - start

@@ -960,6 +960,43 @@ void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 		{
 			int iMaxCityCount = 4;
 			AI_updateCitySites(AI_getMinFoundValue(), iMaxCityCount);
+			// Keep one known coastal overseas opportunity in the shared site list,
+			// even when stronger home sites occupy the ordinary shortlist.
+			if (!isHuman() && !isMinorCiv() && getCapitalCity() != NULL &&
+				GET_TEAM(getTeam()).isHasTech((TechTypes)OPTICS))
+			{
+				bool bHasOverseas = false;
+				for (int iSite = 0; iSite < AI_getNumCitySites(); ++iSite)
+				{
+					CvPlot* pSite = AI_getCitySite(iSite);
+					if (pSite->getArea() != getCapitalCity()->getArea() && pSite->isCoastalLand())
+						bHasOverseas = true;
+				}
+				if (!bHasOverseas)
+				{
+					CvPlot* pBestOverseas = NULL;
+					int iBestOverseasValue = AI_getMinFoundValue();
+					for (int iPlot = 0; iPlot < GC.getMapINLINE().numPlotsINLINE(); ++iPlot)
+					{
+						CvPlot* pCandidate = GC.getMapINLINE().plotByIndexINLINE(iPlot);
+						if (!pCandidate->isRevealed(getTeam(), false) || !pCandidate->isCoastalLand() ||
+							pCandidate->getArea() == getCapitalCity()->getArea() || AI_isPlotCitySite(pCandidate)) continue;
+						int iFoundValue = pCandidate->getFoundValue(getID());
+						if (iFoundValue > iBestOverseasValue)
+						{
+							iBestOverseasValue = iFoundValue;
+							pBestOverseas = pCandidate;
+						}
+					}
+					if (pBestOverseas != NULL)
+					{
+						m_aiAICitySites.push_back(GC.getMapINLINE().plotNum(pBestOverseas->getX_INLINE(), pBestOverseas->getY_INLINE()));
+						AI_recalculateFoundValues(pBestOverseas->getX_INLINE(), pBestOverseas->getY_INLINE(), CITY_PLOTS_RADIUS, 2 * CITY_PLOTS_RADIUS);
+						observerPerformanceCount("count.colony.overseasSiteSelected");
+					}
+					else observerPerformanceCount("count.colony.noKnownOverseasSite");
+				}
+			}
 		}
 	}
 }
@@ -5965,6 +6002,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
     iAttitude -= GET_PLAYER(ePlayer).getIntelligenceRelationPenalty(getTeam());
+    iAttitude += getDynasticRelationBonus(ePlayer);
 
 	return range(iAttitude, -100, 100);
 }
@@ -9065,6 +9103,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, CvArea* pArea
 		case UNITAI_MISSILE_CARRIER_SEA:
 			if (GC.getUnitInfo(eUnit).getCargoSpace() > 0)
 			{
+				if ((eUnitAI == UNITAI_MISSIONARY_SEA || eUnitAI == UNITAI_SPY_SEA) &&
+					GC.getUnitInfo(eUnit).getSpecialCargo() == NO_SPECIALUNIT &&
+					GC.getUnitInfo(eUnit).getDomainCargo() == DOMAIN_LAND) bValid = true;
 				if (GC.getUnitInfo(eUnit).getSpecialCargo() != NO_SPECIALUNIT)
 				{
 					for (int i = 0; i < NUM_UNITAI_TYPES; ++i)
@@ -12777,7 +12818,7 @@ void CvPlayerAI::AI_doCommerce()
     if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
     {
         int iBestCatchup = 0;
-        bool bWar = false, bContact = false;
+        bool bWar = false, bContact = false, bDynasty = false;
         for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
         {
             PlayerTypes eTarget = (PlayerTypes)i;
@@ -12787,16 +12828,30 @@ void CvPlayerAI::AI_doCommerce()
             int iTechs = getIntelligenceTechCount(eTarget);
             int iMode = 0;
             if (GET_TEAM(getTeam()).isAtWar(eTargetTeam)) { iMode = 1; bWar = true; }
-            else if (iTechs > 0) iBestCatchup = std::max(iBestCatchup, iTechs);
-            else if (AI_getAttitudeVal(eTarget) <= -6 && !GET_TEAM(getTeam()).isVassal(eTargetTeam) &&
-                !GET_TEAM(eTargetTeam).isVassal(getTeam())) iMode = 2;
-            else iMode = 3;
+            else
+            {
+                if (iTechs > 0) iBestCatchup = std::max(iBestCatchup, iTechs);
+                int iPlanTurns = std::max(1, 10 * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent() /
+                    std::max(1, GC.getGameSpeedInfo((GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL")).getResearchPercent()));
+                // Hold a preference for ten Normal turns so investment has time to build.
+                int iChoice = (getID() * 37 + (int)eTargetTeam * 17 + GC.getGameINLINE().getGameTurn() / iPlanTurns * 29) % 100;
+                int iPreference = (iTechs >= 7 ? 45 : (iTechs >= 3 ? 55 : 65));
+                if (getIntelligenceData(i, 33) > 1) iPreference += 10;
+                if (canDynasticTarget(eTarget) && getIntelligenceData(i, 33) < 4 && !GET_TEAM(getTeam()).isAVassal() &&
+                    (!GET_TEAM(eTargetTeam).isAVassal() || GET_TEAM(eTargetTeam).isVassal(getTeam())) && iChoice < iPreference)
+                { iMode = 2; bDynasty = true; }
+                else if (iTechs > 0) iMode = 0;
+                else if (!isDynasticIntelligence() && AI_getAttitudeVal(eTarget) <= -6 &&
+                    !GET_TEAM(getTeam()).isVassal(eTargetTeam) && !GET_TEAM(eTargetTeam).isVassal(getTeam())) iMode = 2;
+                else iMode = 3;
+            }
             setEspionageSpendingWeightAgainstTeam(eTargetTeam, iMode);
         }
         int iDesired = bContact ? 10 : 0;
         if (iBestCatchup >= 3) iDesired = 30;
         if (iBestCatchup >= 7) iDesired = 40;
         if (bWar) iDesired = std::max(iDesired, 20);
+        if (bDynasty) iDesired = std::max(iDesired, 20);
         if (bFirstTech) iDesired = std::min(iDesired, 10);
         if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3)) iDesired = 0;
         while (getCommercePercent(COMMERCE_ESPIONAGE) < iDesired && getCommercePercent(COMMERCE_RESEARCH) >= 10)
@@ -13371,7 +13426,30 @@ void CvPlayerAI::AI_doDiplo()
 											{
 												setTradeItem(&item, TRADE_VASSAL);
 
-												if (canTradeItem((PlayerTypes)iI, item, true))
+												// Seek a trusted, substantially stronger protector only under a concrete military threat.
+												CvTeamAI& kOfferTeam = GET_TEAM(getTeam());
+												CvTeamAI& kMasterTeam = GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam());
+												const int iOurPower = std::max(1, kOfferTeam.getPower(true));
+												bool bNeedsProtection = false;
+												if ((__int64)kMasterTeam.getPower(false) >= (__int64)2 * iOurPower &&
+												    kOfferTeam.AI_getAttitude(kMasterTeam.getID()) >= ATTITUDE_PLEASED)
+												{
+												    for (int iThreat = 0; iThreat < MAX_CIV_TEAMS && !bNeedsProtection; ++iThreat)
+												    {
+												        CvTeamAI& kThreat = GET_TEAM((TeamTypes)iThreat);
+												        if (!kThreat.isAlive() || kThreat.isMinorCiv() || kThreat.getID() == getTeam() ||
+												            kThreat.getID() == kMasterTeam.getID() || !kOfferTeam.isHasMet(kThreat.getID()) ||
+												            kThreat.isVassal(getTeam()) || kOfferTeam.isVassal(kThreat.getID())) continue;
+												        const int iThreatPower = kThreat.getPower(true);
+												        if (kOfferTeam.isAtWar(kThreat.getID()))
+												            bNeedsProtection = iThreatPower > iOurPower;
+												        else
+												            bNeedsProtection = (__int64)2 * iThreatPower >= (__int64)3 * iOurPower &&
+												                kThreat.AI_isLandTarget(getTeam()) && kThreat.AI_getAttitude(getTeam()) <= ATTITUDE_ANNOYED;
+												    }
+												}
+												if (bNeedsProtection && canTradeItem((PlayerTypes)iI, item, true) &&
+												    GC.getGameINLINE().getSorenRandNum(4 * historicalTurns(1), "AI offer voluntary vassalage") == 0)
 												{
 													ourList.clear();
 													theirList.clear();

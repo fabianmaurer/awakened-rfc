@@ -316,6 +316,9 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 
 	AI_init(eUnitAI);
 
+	for (int iObserver = 0; iObserver < MAX_CIV_TEAMS; ++iObserver)
+        updateIntelligenceTracking((TeamTypes)iObserver);
+
 	CvEventReporter::getInstance().unitCreated(this);
 }
 
@@ -358,6 +361,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iMoves = 0;
 	m_iExperience = 0;
 	m_iExplorationExperienceRemainder = 0;
+    for (int iObserver = 0; iObserver < MAX_TEAMS; ++iObserver) m_abIntelligenceTracked[iObserver] = false;
 	m_iLevel = 1;
 	m_iCargo = 0;
 	m_iAttackPlotX = INVALID_PLOT_COORD;
@@ -7992,6 +7996,7 @@ int CvUnit::baseCombatStr() const
 int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDetails* pCombatDetails) const
 {
 	int iCombat;
+    int iIntelligenceModifier = 0; // Basis points, separate from whole-percent legacy modifiers.
 
 	FAssertMsg((pPlot == NULL) || (pPlot->getTerrainType() != NO_TERRAIN), "(pPlot == NULL) || (pPlot->getTerrainType() is not expected to be equal with NO_TERRAIN)");
 	
@@ -8312,10 +8317,9 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		{
 			FAssertMsg(pAttacker != this, "pAttacker is not expected to be equal with this");
 
-			iExtraModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pAttacker->getOwnerINLINE()) -
+			iIntelligenceModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pAttacker->getOwnerINLINE()) -
                 (pAttacker->getDomainType() == DOMAIN_AIR ? 0 : GET_PLAYER(pAttacker->getOwnerINLINE()).getIntelligenceMilitaryBonus(getOwnerINLINE()));
-            iTempModifier += iExtraModifier;
-            if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += iExtraModifier;
+            if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += iIntelligenceModifier / 100;
 
             iExtraModifier = unitClassDefenseModifier(pAttacker->getUnitClassType());
 			iTempModifier += iExtraModifier;
@@ -8434,18 +8438,15 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 	if (pCombatDetails != NULL)
 	{
-		pCombatDetails->iModifierTotal = iModifier;
+		pCombatDetails->iModifierTotal = iModifier + iIntelligenceModifier / 100;
 		pCombatDetails->iBaseCombatStr = baseCombatStr();
 	}
 
-	if (iModifier > 0)
-	{
-		iCombat = (baseCombatStr() * (iModifier + 100));
-	}
-	else
-	{
-		iCombat = ((baseCombatStr() * 10000) / (100 - iModifier));
-	}
+    const __int64 iModifierBasisPoints = (__int64)iModifier * 100 + iIntelligenceModifier;
+    if (iModifierBasisPoints > 0)
+        iCombat = (int)((__int64)baseCombatStr() * (iModifierBasisPoints + 10000) / 100);
+    else
+        iCombat = (int)((__int64)baseCombatStr() * 1000000 / (10000 - iModifierBasisPoints));
 
 	if (pCombatDetails != NULL)
 	{
@@ -8595,6 +8596,7 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 {
 	int iModifier;
 	int iCombat;
+    int iIntelligenceModifier = 0;
 
 	if (airBaseCombatStr() == 0)
 	{
@@ -8615,7 +8617,7 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 
 	if (NULL != pOther)
 	{
-        iModifier += GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pOther->getOwnerINLINE());
+        iIntelligenceModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pOther->getOwnerINLINE());
 		if (pOther->getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iModifier += unitCombatModifier(pOther->getUnitCombatType());
@@ -8629,14 +8631,11 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 		}
 	}
 
-	if (iModifier > 0)
-	{
-		iCombat = (airBaseCombatStr() * (iModifier + 100));
-	}
-	else
-	{
-		iCombat = ((airBaseCombatStr() * 10000) / (100 - iModifier));
-	}
+    const __int64 iModifierBasisPoints = (__int64)iModifier * 100 + iIntelligenceModifier;
+    if (iModifierBasisPoints > 0)
+        iCombat = (int)((__int64)airBaseCombatStr() * (iModifierBasisPoints + 10000) / 100);
+    else
+        iCombat = (int)((__int64)airBaseCombatStr() * 1000000 / (10000 - iModifierBasisPoints));
 
 	return std::max(1, iCombat);
 }
@@ -9799,6 +9798,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	{
 		pOldPlot->removeUnit(this, bUpdate && !hasCargo());
 
+		changeIntelligenceSight(pOldPlot, false, true);
 		pOldPlot->changeAdjacentSight(getTeam(), visibilityRange(), false, this, true);
 
 		pOldPlot->area()->changeUnitsPerPlayer(getOwnerINLINE(), -1);
@@ -9961,6 +9961,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		setFortifyTurns(0);
 
 		pNewPlot->changeAdjacentSight(getTeam(), visibilityRange(), true, this, true); // needs to be here so that the square is considered visible when we move into it...
+		changeIntelligenceSight(pNewPlot, true, true);
 
 		pNewPlot->addUnit(this, bUpdate && !hasCargo());
 
@@ -12037,6 +12038,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iMoves);
 	pStream->Read(&m_iExperience);
 	pStream->Read(&m_iExplorationExperienceRemainder);
+    pStream->Read(MAX_TEAMS, m_abIntelligenceTracked);
 	pStream->Read(&m_iLevel);
 	pStream->Read(&m_iCargo);
 	pStream->Read(&m_iCargoCapacity);
@@ -12151,6 +12153,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iMoves);
 	pStream->Write(m_iExperience);
 	pStream->Write(m_iExplorationExperienceRemainder);
+    pStream->Write(MAX_TEAMS, m_abIntelligenceTracked);
 	pStream->Write(m_iLevel);
 	pStream->Write(m_iCargo);
 	pStream->Write(m_iCargoCapacity);

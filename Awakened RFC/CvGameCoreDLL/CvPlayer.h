@@ -340,8 +340,10 @@ public:
     int getIntelligenceRate(PlayerTypes eTarget) const;
     int getIntelligenceTechCount(PlayerTypes eTarget) const;
     int getIntelligenceResearchRate(TechTypes eTech) const;
-    int getIntelligenceMilitaryBonus(PlayerTypes eTarget) const;
+    int getIntelligenceMilitaryBonus(PlayerTypes eTarget) const; // Basis points (100 = +1%).
+    int getIntelligenceMilitaryCoverage(PlayerTypes eTarget) const;
     int getIntelligenceSuppressionChance(PlayerTypes eTarget) const;
+    void refreshIntelligenceTracking();
     int getIntelligencePoliticalTarget() const;
     int getIntelligenceStabilityPenalty() const;
     int getIntelligenceAnarchyExtra() const;
@@ -350,6 +352,17 @@ public:
     int getIntelligenceData(int iTarget, int iField) const;
     int getIntelligenceChecksum() const;
     void doIntelligencePressure();
+    bool isDynasticIntelligence() const;
+    bool canDynasticTarget(PlayerTypes eTarget) const;
+    bool canFormDynasticUnion(PlayerTypes eTarget) const;
+    int getDynasticChance(PlayerTypes eTarget) const; // Signed basis points; negative means regression.
+    int getDynasticRelationBonus(PlayerTypes eTarget) const;
+    int getDynasticInheritanceWeight(PlayerTypes eTarget) const;
+    bool isBeingDynasticallyIncorporated() const;
+    void setIntelligenceStability(int iValue);
+    void onDynasticWar(TeamTypes eTarget);
+    void doDynasticIntelligence(PlayerTypes eTarget);
+    void incorporateDynasticCity(PlayerTypes eTarget);
 
 	int getEspionageSpending(TeamTypes eAgainstTeam) const;																								// Exposed to Python
 	DllExport bool canDoEspionageMission(EspionageMissionTypes eMission, PlayerTypes eTargetPlayer, const CvPlot* pPlot, int iExtraData, const CvUnit* pUnit) const;		// Exposed to Python
@@ -1282,6 +1295,14 @@ protected:
 
     int m_aiIntelligenceMode[MAX_TEAMS];
     int m_aiIntelligenceStrength[MAX_TEAMS];
+    int m_aiIntelligenceMilitaryStock[MAX_TEAMS]; // Hundredths of effective espionage, with calendar-scaled decay.
+    int m_aiDynasticStock[MAX_TEAMS];
+    int m_aiDynasticStage[MAX_TEAMS];
+    int m_aiDynasticLastRoll[MAX_TEAMS];
+    bool m_abDynasticUnion[MAX_TEAMS]; // Only release vassalage actually established by this network.
+    int m_iIntelligenceStability;
+    int m_iDynasticWarTurns;
+    int m_iDynasticCityTurn;
     int m_aiIntelligenceExposure[MAX_TEAMS];
     int m_aiIntelligenceReportCity[MAX_TEAMS];
     int m_aiIntelligenceReportUntil[MAX_TEAMS];

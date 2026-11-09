@@ -114,7 +114,20 @@ def window_report(title, window):
         if row['calculation'] in candidates:
             share = row['inclusive_interval_percent']
             lines.append(f'| {row["calculation"]} | {share:.2f} | {share/2:.2f} | {share*.75:.2f} | {share*.875:.2f} |')
-    return lines + [''] + tuning_report(window) + culture_report(window)
+    return lines + [''] + tuning_report(window) + colony_report(window) + culture_report(window)
+
+
+def colony_report(window):
+    counters = [row for row in window['calculations'] if row['calculation'].startswith('count.colony.')]
+    if not counters:
+        return []
+    lines = ['## Overseas settlement', '',
+             'These count AI decisions and events, not unique expeditions. Repeated transport reviews or missions can involve the same ship. '
+             'Cities founded overseas are on a different land area from the capital; they are not necessarily in the Americas.', '',
+             '| Counter | Events | Per recorded boundary |', '| --- | ---: | ---: |']
+    for row in sorted(counters, key=lambda row: row['calculation']):
+        lines.append(f"| {row['calculation'].removeprefix('count.colony.')} | {row['work_units']:.0f} | {row['work_units'] / max(1, window['boundaries']):.2f} |")
+    return lines + ['']
 
 
 def tuning_report(window):

@@ -1573,6 +1573,54 @@ void CvCityAI::AI_chooseProduction()
 	}
 	
 	
+	// Organize a real overseas expedition when a known coastal site is viable.
+	// Produce one settler and an ocean-capable transport at home; normal unit
+	// missions handle loading, sailing, danger and founding the city.
+	if (!isHuman() && !isBarbarian() && !kPlayer.isMinorCiv() && pWaterArea != NULL &&
+		!bDanger && !bLandWar && !bAssault && !bFinancialTrouble &&
+		GET_TEAM(getTeam()).isHasTech((TechTypes)OPTICS) && iWaterAreaBestFoundValue > iMinFoundValue)
+	{
+		observerPerformanceCount("count.colony.portOpportunity");
+		if (iNumSettlers == 0 && kPlayer.AI_getNumTrainAIUnits(UNITAI_SETTLE) == 0 &&
+			AI_chooseUnit(UNITAI_SETTLE))
+		{
+			observerPerformanceCount("count.colony.settlerOrdered");
+			return;
+		}
+		const TerrainTypes eOcean = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_OCEAN");
+		bool bTransport = false;
+		int iUnitLoop;
+		for (CvUnit* pShip = kPlayer.firstUnit(&iUnitLoop); pShip != NULL; pShip = kPlayer.nextUnit(&iUnitLoop))
+		{
+			if (pShip->AI_getUnitAIType() != UNITAI_SETTLER_SEA || pShip->plot()->waterArea() != pWaterArea) continue;
+			const CvUnitInfo& kShip = GC.getUnitInfo(pShip->getUnitType());
+			const TechTypes ePass = eOcean == NO_TERRAIN ? NO_TECH : (TechTypes)kShip.getTerrainPassableTech(eOcean);
+			if (eOcean != NO_TERRAIN && (!kShip.getTerrainImpassable(eOcean) ||
+				(ePass != NO_TECH && GET_TEAM(getTeam()).isHasTech(ePass)))) { bTransport = true; break; }
+		}
+		if (!bTransport && kPlayer.AI_getNumTrainAIUnits(UNITAI_SETTLER_SEA) == 0 && eOcean != NO_TERRAIN)
+		{
+			UnitTypes eBestShip = NO_UNIT;
+			int iBestShipValue = 0;
+			for (int iClass = 0; iClass < GC.getNumUnitClassInfos(); ++iClass)
+			{
+				UnitTypes eShip = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iClass);
+				if (eShip == NO_UNIT || !canTrain(eShip)) continue;
+				const CvUnitInfo& kShip = GC.getUnitInfo(eShip);
+				const TechTypes ePass = (TechTypes)kShip.getTerrainPassableTech(eOcean);
+				if (kShip.getTerrainImpassable(eOcean) && (ePass == NO_TECH || !GET_TEAM(getTeam()).isHasTech(ePass))) continue;
+				const int iValue = kPlayer.AI_unitValue(eShip, UNITAI_SETTLER_SEA, pWaterArea);
+				if (iValue > iBestShipValue) { iBestShipValue = iValue; eBestShip = eShip; }
+			}
+			if (eBestShip != NO_UNIT && AI_chooseUnit(eBestShip, UNITAI_SETTLER_SEA))
+			{
+				observerPerformanceCount("count.colony.transportOrdered");
+				return;
+			}
+			observerPerformanceCount("count.colony.noOceanTransportAvailable");
+		}
+	}
+
 	if ((iAreaBestFoundValue > iMinFoundValue) || (iWaterAreaBestFoundValue > iMinFoundValue))
 	{		
 		if (pWaterArea != NULL)

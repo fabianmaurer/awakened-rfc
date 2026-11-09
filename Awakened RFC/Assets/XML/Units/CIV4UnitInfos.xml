@@ -17913,6 +17913,10 @@
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
 				<UnitAI>
+					<UnitAIType>UNITAI_SETTLER_SEA</UnitAIType>
+					<bUnitAI>1</bUnitAI>
+				</UnitAI>
+				<UnitAI>
 					<UnitAIType>UNITAI_EXPLORE_SEA</UnitAIType>
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
@@ -18002,7 +18006,7 @@
 			<BonusProductionModifiers />
 			<iBombRate>0</iBombRate>
 			<iBombardRate>0</iBombardRate>
-			<SpecialCargo>SPECIALUNIT_PEOPLE</SpecialCargo>
+			<SpecialCargo>NONE</SpecialCargo>
 			<DomainCargo>DOMAIN_LAND</DomainCargo>
 			<iCargo>1</iCargo>
 			<iConscription>0</iConscription>

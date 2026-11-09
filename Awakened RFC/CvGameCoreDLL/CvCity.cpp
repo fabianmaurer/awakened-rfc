@@ -7670,7 +7670,7 @@ void CvCity::rollIntelligenceSuppression(PlayerTypes eAttacker, int iChance)
     int iTurn = GC.getGameINLINE().getGameTurn();
     if (iChance <= 0 || m_iIntelligenceSuppressionRollTurn == iTurn || isOccupation()) return;
     m_iIntelligenceSuppressionRollTurn = iTurn;
-    if (GC.getGameINLINE().getSorenRandNum(100, "Intelligence city infiltration") >= iChance) return;
+    if (GC.getGameINLINE().getSorenRandNum(10000, "Intelligence city infiltration") >= iChance) return;
     m_iIntelligenceSuppressionTurn = iTurn;
     setInfoDirty(true);
     gDLL->getInterfaceIFace()->addMessage(eAttacker, false, GC.getEVENT_MESSAGE_TIME(),

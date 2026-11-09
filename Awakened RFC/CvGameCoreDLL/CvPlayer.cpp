@@ -571,10 +571,18 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
     m_iIntelligenceLastResearch = 0;
     m_iIntelligencePressure = 0;
     m_iIntelligenceUnrestCooldown = 0;
+    m_iIntelligenceStability = 0;
+    m_iDynasticWarTurns = 0;
+    m_iDynasticCityTurn = -1;
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
         m_aiIntelligenceMode[iI] = 0;
         m_aiIntelligenceStrength[iI] = 0;
+        m_aiIntelligenceMilitaryStock[iI] = 0;
+        m_aiDynasticStock[iI] = 0;
+        m_aiDynasticStage[iI] = 0;
+        m_aiDynasticLastRoll[iI] = -1;
+        m_abDynasticUnion[iI] = false;
         m_aiIntelligenceExposure[iI] = 0;
         m_aiIntelligenceReportCity[iI] = -1;
         m_aiIntelligenceReportUntil[iI] = -1;
@@ -589,6 +597,11 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 					GET_PLAYER((PlayerTypes) iJ).setEspionageSpendingWeightAgainstTeam(getTeam(), 0);
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMode[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceStrength[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMilitaryStock[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStock[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStage[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiDynasticLastRoll[getTeam()] = -1;
+                    GET_PLAYER((PlayerTypes)iJ).m_abDynasticUnion[getTeam()] = false;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceExposure[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportCity[getTeam()] = -1;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportUntil[getTeam()] = -1;
@@ -5531,6 +5544,10 @@ void CvPlayer::found(int iX, int iY)
 	{
 		return;
 	}
+
+	if (!isHuman() && getCapitalCity() != NULL &&
+		GC.getMapINLINE().plotINLINE(iX, iY)->getArea() != getCapitalCity()->getArea())
+		observerPerformanceCount("count.colony.aiCityFoundedOverseas");
 
 	pCity = initCity(iX, iY, true, true);
 	FAssertMsg(pCity != NULL, "City is not assigned a valid value");
@@ -11460,6 +11477,7 @@ void CvPlayer::setAlive(bool bNewValue)
 	if (isAlive() != bNewValue)
 	{
 		m_bAlive = bNewValue;
+        if (!bNewValue) refreshIntelligenceTracking();
 		if (bNewValue) m_iLastBirthTurn = GC.getGameINLINE().getGameTurn();
 
 		GET_TEAM(getTeam()).changeAliveCount((isAlive()) ? 1 : -1);
@@ -18042,6 +18060,11 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceStrength);
+    pStream->Read(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Read(MAX_TEAMS, m_aiDynasticStock);
+    pStream->Read(MAX_TEAMS, m_aiDynasticStage);
+    pStream->Read(MAX_TEAMS, m_aiDynasticLastRoll);
+    pStream->Read(MAX_TEAMS, m_abDynasticUnion);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceExposure);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceReportCity);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceReportUntil);
@@ -18049,6 +18072,9 @@ void CvPlayer::read(FDataStreamBase* pStream)
     pStream->Read(&m_iIntelligenceLastResearch);
     pStream->Read(&m_iIntelligencePressure);
     pStream->Read(&m_iIntelligenceUnrestCooldown);
+    pStream->Read(&m_iIntelligenceStability);
+    pStream->Read(&m_iDynasticWarTurns);
+    pStream->Read(&m_iDynasticCityTurn);
 
 
 	pStream->Read(NUM_FEAT_TYPES, m_abFeatAccomplished);
@@ -18548,6 +18574,11 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceStrength);
+    pStream->Write(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Write(MAX_TEAMS, m_aiDynasticStock);
+    pStream->Write(MAX_TEAMS, m_aiDynasticStage);
+    pStream->Write(MAX_TEAMS, m_aiDynasticLastRoll);
+    pStream->Write(MAX_TEAMS, m_abDynasticUnion);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceExposure);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceReportCity);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceReportUntil);
@@ -18555,6 +18586,9 @@ void CvPlayer::write(FDataStreamBase* pStream)
     pStream->Write(m_iIntelligenceLastResearch);
     pStream->Write(m_iIntelligencePressure);
     pStream->Write(m_iIntelligenceUnrestCooldown);
+    pStream->Write(m_iIntelligenceStability);
+    pStream->Write(m_iDynasticWarTurns);
+    pStream->Write(m_iDynasticCityTurn);
 
 
 	pStream->Write(NUM_FEAT_TYPES, m_abFeatAccomplished);

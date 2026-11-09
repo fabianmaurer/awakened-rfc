@@ -78,11 +78,17 @@ class RFCUtils:
 
         def getStability( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lStability'][iCiv]
+                value = scriptDict['lStability'][iCiv]
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        return max(0, value)
+                return value
 
         def setStability( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        iNewValue = max(0, iNewValue)
                 scriptDict['lStability'][iCiv] = iNewValue
+                gc.getPlayer(iCiv).setIntelligenceStability(iNewValue)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getBaseStabilityLastTurn( self, iCiv ):
@@ -919,7 +925,13 @@ class RFCUtils:
                 iSeed = gc.getGame().getSorenRand().getSeed() + gc.getGame().getGameTurn() * 31 + iCiv * 17
                 if (iSeed % 100 >= iChance):
                         return -1
-                return heirs[(iSeed + iCiv * 29) % len(heirs)]
+                weights = [gc.getPlayer(iHeir).getIntelligenceData(iCiv, 38) for iHeir in heirs]
+                roll = (iSeed + iCiv * 29) % sum(weights)
+                for iHeir, weight in zip(heirs, weights):
+                        if roll < weight:
+                                return iHeir
+                        roll -= weight
+                return -1
 
 
         def tryMonarchyInheritance(self, iCiv):

@@ -909,8 +909,8 @@ The human heir also receives an addressed acknowledgement popup.
 When a monarchy with a state religion collapses, it has a **50%** chance to be
 inherited instead of fragmenting. An heir must be a living monarchy with the
 same state religion, at least **0 stability**, and at least one city on the
-continent of the collapsing monarchy's capital. One eligible heir is selected
-deterministically; there is no size requirement. Capitals must be within **12 map
+continent of the collapsing monarchy's capital. Eligible heirs are selected with deterministic weighted odds: established dynastic
+ties and accumulated influence increase a candidate's weight. There is no size requirement. Capitals must be within **12 map
 tiles**, and every inherited city must be within **12 tiles** of a city already
 owned by the heir (`RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE`). If even one city
 is too distant, that candidate cannot inherit the realm. The heir receives every city
@@ -969,6 +969,15 @@ AI countries cannot offer or accept voluntary vassalization for **30 turns**
 after founding or restoration (`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). This
 also covers the first 30 turns of a scenario. Wartime capitulation and voluntary
 choices by human-controlled teams retain their existing rules.
+
+AI-initiated voluntary vassal offers require Pleased or better relations and a
+prospective master's own military power of at least twice the offering team's
+power, including its vassals. The offering country must also face either a stronger
+major enemy at war, or a known hostile land neighbor with at least 1.5 times its
+power and an Annoyed-or-worse attitude toward it. Eligible offers have a 25% chance
+per opportunity at Normal speed (12.5% on XL), for both human and AI recipients.
+Requested deals, wartime capitulation and dynastic personal unions use their
+existing paths.
 
 ### Tile tooltips
 
@@ -1386,15 +1395,27 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   current project receives progress; excess does not spill into another stolen
   technology that turn. Progress is ordinary research progress and remains when
   you switch modes. A project pauses if no active technology network supplies it.
-- **Military espionage:** up to +8% combat strength against the target; larger
-  armies reduce the bonus. At +3% or above, known enemy cities and nearby units
-  become visible. During war, a land unit capable of attacking on an adjacent
-  tile permits a city-infiltration roll at your turn boundary, capped at 25%.
-  There is only one roll per defending city per game turn, shared across
-  attackers. Success suppresses the city's defense component for that game turn.
-  Terrain, unit promotions and fortification remain. Stored bombardment damage
-  is untouched; defense resumes its underlying value afterward.
-- **Political meddling:** pressure rises gradually and recovers after operations
+- **Military espionage:** each target team has a separate buildup `B`. Each Normal
+  turn retains 95% of its previous buildup and adds effective espionage output
+  after access and counterintelligence. XL retains 97.5% and adds half that output
+  per turn. Decay continues without funding and in other modes; effects require
+  military mode. Without funding, buildup halves in about 13.5 Normal turns.
+  With `U` enemy military units, the shared effect fraction is
+  `B / (B + 20 * (40 + U))`. Combat strength approaches +30%, city-infiltration
+  chance approaches 30%, and troop-tracking coverage approaches 100%. Effects retain hundredths of a percentage point internally and are
+  displayed with one decimal. Final combat strength uses the game's normal rounding.
+  Larger armies require more buildup, and additional investment has diminishing returns.
+  Tracking follows a stable selection of enemy land, sea and air combat units,
+  revealing only their occupied tiles. Ordinary invisibility rules still apply.
+  A tracked tile can also reveal other units sharing it, including garrisons, but
+  the network does not provide city-radius visibility. Sight leaves a tile when
+  the tracked unit moves or dies, unless another source still reveals it.
+  During war, an adjacent attacking land unit permits one city-infiltration roll
+  per defending city per game turn, shared across attackers. Success suppresses
+  the city's defense component for that game turn. Terrain, unit promotions and
+  fortification remain. Stored bombardment damage is untouched.
+- **Political meddling:** monarchies use dynastic politics instead (see below).
+  For other governments, pressure rises gradually and recovers after operations
   stop. Larger populations resist more effectively. Pressure from all attackers
   shares a cap of -6 stability and two additional civic-change anarchy turns
   at Normal speed (four on XL);
@@ -1419,6 +1440,91 @@ turn, or one hundredth per XL turn. Non-combat event chances scale with the
 calendar; military infiltration continues to roll every gameplay turn. The
 advisor and diplomatic attitude tooltip show the resulting penalty. The AI
 chooses modes and budgets for catch-up, warfare, political hostility and mapping.
+
+For example, against 100 military units the half-effect buildup is 2,800.
+At 100 effective espionage per Normal turn, starting from zero:
+
+| Turns funded | Buildup | Combat bonus | Infiltration chance | Troop coverage |
+| --- | ---: | ---: | ---: | ---: |
+| 10 | 803 | +6.7% | 6.7% | 22.3% |
+| 20 | 1,283 | +9.4% | 9.4% | 31.4% |
+| 40 | 1,743 | +11.5% | 11.5% | 38.4% |
+| Sustained equilibrium | about 2,000 | +12.5% | about 12.5% | about 41.7% |
+
+Against the same army, sustained outputs of 25, 400 and 1,000 settle near
++4.5%, +22.2% and +26.3% combat strength, respectively. At 10,000 effective output,
+the bonus still only reaches about +29.6%, with roughly 98.6% troop coverage. These
+figures use effective output after access and resistance, not the raw slider.
+Coverage is the fraction used to select troops; actual coverage varies with
+unit identities and stacks. Switching modes ends military effects immediately
+at the turn boundary but preserves the decaying buildup for later use.
+
+### Dynastic politics
+
+Monarchy replaces political meddling with marriage politics toward other monarchies.
+No common religion or relative empire size is required for this operation. The old
+collapse-inheritance eligibility rules still apply separately. Marriage diplomacy
+has no espionage-discovery penalty. Established kinship applies in both directions:
+distant relatives grant +1 relations; close relatives and later stages grant +2.
+
+Influence uses the military network's decaying buildup: `B_next = 0.95 * B + E`
+at Normal speed, or `0.975 * B + E / 2` on XL. `E` is effective espionage after
+access and counterintelligence, increased by 2% for each point of negative target
+stability, capped at twice the normal rate at -50. Nonnegative stability adds no
+resistance. There is no population or army-size divisor. Half strength is reached
+at 100 influence. At Normal speed the signed stage chance is
+`20% * B / (B + 100) - stage offset`:
+
+| Current stage | Offset | Possible chance per Normal turn |
+| --- | ---: | ---: |
+| Insignificant | 0% | 0% to +20% |
+| Distant relatives | 5% | -5% to +15% |
+| Close relatives | 10% | -10% to +10% |
+| Personal union | 10% | -10% to +10% |
+| Incorporation | — | No further rolls |
+
+XL halves the complete signed chance, including the offset. One synchronized
+roll per target team per game turn advances one stage for positive chances or
+regresses one stage for negative chances. War stops funding and advancement;
+influence continues decaying. Changing operations or leaving Monarchy stops
+funding. While both parties remain monarchies, unsupported kinship can regress
+even in another mode. At Close relatives or later, the initiator of a war between
+the dynasties suffers -6 stability for 20 Normal turns (40 on XL). This does not
+add civic anarchy or unrest; repeated declarations refresh rather than stack it.
+
+Personal union establishes ordinary voluntary vassalage. A vassal cannot become
+a master, another master's vassal cannot be taken, and the No Vassal States option
+blocks this step. Regression from Personal union ends vassalage created by that
+network; pre-existing vassal agreements are not cancelled. If a personal union
+breaks through ordinary vassal rules, its stage returns to Close relatives.
+
+Incorporation is terminal. While the vassal relationship remains, the nearest
+city to the heir's existing cities transfers peacefully each gameplay turn,
+including on XL. Ties use stable player/city iteration order. The limit is one
+city per target team per game turn, shared across claimants on the same team.
+City garrisons transfer with their city; the remaining army transfers with its
+owner's final city. No conquest rewards or razing choices are created. Transfers
+continue without espionage funding and after civic changes, but pause during war
+or if vassalage ends. The incorporating country has a stability floor of zero
+while that union remains; political pressure cannot cause stability loss, extra
+anarchy or local unrest during incorporation. Other unrelated city-loss mechanics
+are unchanged.
+
+Collapse inheritance keeps its existing 50% chance, religion, stability and distance
+requirements. Candidate weight is `100 + 100 * stage + 400 * B / (B + 100)`.
+Thus related and influential dynasties are favored, without excluding other
+eligible monarchies. The AI moderately favors marriage politics against monarchies
+at peace, holding its preference for ten Normal turns. Ordinary preference is 65%,
+reduced to 55% or 45% when three or seven technologies behind, and increased by
+10 points after Close relatives. Wartime military operations and financial trouble
+retain priority. AI dynastic investment targets a 20% espionage budget when affordable.
+
+At 20 effective espionage per Normal turn, buildup after 10 and 20 turns is about
+160 and 257. These give first-stage chances of 12.3% and 14.4%, or 2.3% and 4.4%
+at Close relatives. Sustained output of 20 approaches 400 buildup: about 16.0%,
+11.0%, 6.0% and 6.0% at the four rolling stages. Stopping funding eventually turns
+the later-stage chances negative. At 100 sustained output, the corresponding
+chances approach 19.0%, 14.0%, 9.0% and 9.0%.
 
 These are initial balance values. The VC7.1 DLL and static asset checks cover
 implementation; in-game presentation, balance and multiplayer behavior require

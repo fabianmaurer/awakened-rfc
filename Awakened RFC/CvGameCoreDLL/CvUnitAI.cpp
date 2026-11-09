@@ -5834,14 +5834,19 @@ void CvUnitAI::AI_settlerSeaMove()
 	int iWorkerCount = getUnitAICargo(UNITAI_WORKER);
 
 	if ((iSettlerCount > 0) && (isFull() ||
+			((GC.getGameINLINE().getGameTurn() - getGameTurnCreated()) >= 8 &&
+			 GET_PLAYER(getOwnerINLINE()).AI_unitTargetMissionAIs(this, MISSIONAI_LOAD_SETTLER) == 0) ||
 			((getUnitAICargo(UNITAI_CITY_DEFENSE) > 0) &&
 			 (getUnitAICargo(UNITAI_WORKER) > 0) &&
 			 (GET_PLAYER(getOwnerINLINE()).AI_unitTargetMissionAIs(this, MISSIONAI_LOAD_SETTLER) == 0))))
 	{
+		observerPerformanceCount("count.colony.loadedTransportReview");
 		if (AI_settlerSeaTransport())
 		{
+			observerPerformanceCount("count.colony.transportMissionIssued");
 			return;
 		}
+		observerPerformanceCount("count.colony.noTransportMission");
 	}
 	else if ((getTeam() != plot()->getTeam()) && bEmpty)
 	{

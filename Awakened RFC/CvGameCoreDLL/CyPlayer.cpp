@@ -937,6 +937,11 @@ int CyPlayer::getIntelligenceData(int iTarget, int iField)
     return m_pPlayer ? m_pPlayer->getIntelligenceData(iTarget, iField) : 0;
 }
 
+void CyPlayer::setIntelligenceStability(int iValue)
+{
+    if (m_pPlayer) m_pPlayer->setIntelligenceStability(iValue);
+}
+
 int CyPlayer::getEspionageSpending(int /*TeamTypes*/ eIndex)
 {
 	return m_pPlayer ? m_pPlayer->getEspionageSpending((TeamTypes) eIndex) : -1;

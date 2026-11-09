@@ -1,5 +1,14 @@
 # AI-only observer recordings
 
+Overseas settlement uses normally produced settlers and ships rather than free
+expedition packages. First contact no longer creates conqueror armies. In
+performance reports, `count.colony.*` tracks known overseas sites, port
+opportunities, production orders, loaded-transport reviews, issued or failed
+transport missions, and AI cities founded on a different land area from the
+capital. Reviews and missions can count the same ship repeatedly; overseas
+cities are not necessarily in the Americas. Compare outcomes across scenarios,
+including XL, because these counters do not establish successful gameplay.
+
 ## Experimental fast AI behavior
 
 `RFCMP_FAST_LATE_GAME=1` enables the retained optimizations from

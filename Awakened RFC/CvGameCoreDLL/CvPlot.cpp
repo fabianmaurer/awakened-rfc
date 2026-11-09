@@ -2093,6 +2093,7 @@ void CvPlot::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 		
 		
 		changeAdjacentSight(pLoopUnit->getTeam(), pLoopUnit->visibilityRange(), bIncrement, pLoopUnit, bUpdatePlotGroups);
+        pLoopUnit->changeIntelligenceSight(this, bIncrement, bUpdatePlotGroups);
 	}
 
 	if (getReconCount() > 0)

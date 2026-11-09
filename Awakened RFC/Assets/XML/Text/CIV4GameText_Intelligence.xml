@@ -170,11 +170,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MILITARY_HELP</Tag>
-    <English>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</English>
-    <French>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</French>
-    <German>Erhalten Sie einen Kampfbonus gegen diese Zivilisation. Starke Netze zeigen Einheiten im Umfeld ihrer bekannten St&#228;dte.</German>
-    <Italian>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</Italian>
-    <Spanish>Gain a combat bonus against this civilization. Strong networks reveal units around its known cities.</Spanish>
+    <English>Build a military network over time to strengthen your troops, infiltrate besieged cities and track enemy troop movements. Networks decay without funding.</English>
+    <French>D&#233;veloppez un r&#233;seau militaire pour renforcer vos troupes, infiltrer les villes assi&#233;g&#233;es et suivre les troupes adverses. Sans financement, le r&#233;seau d&#233;cline.</French>
+    <German>Bauen Sie ein Milit&#228;rnetz auf, das Ihre Truppen st&#228;rkt, belagerte St&#228;dte infiltriert und feindliche Truppenbewegungen aufkl&#228;rt. Ohne Finanzierung verf&#228;llt das Netz.</German>
+    <Italian>Sviluppa una rete militare per rafforzare le truppe, infiltrare le citt&#224; assediate e seguire i movimenti nemici. Senza fondi, la rete si indebolisce.</Italian>
+    <Spanish>Desarrolla una red militar para reforzar tus tropas, infiltrar ciudades sitiadas y seguir movimientos enemigos. Sin fondos, la red se debilita.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_POLITICS_HELP</Tag>
@@ -370,11 +370,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COMBAT</Tag>
-    <English>Intelligence advantage: +%d1%%</English>
-    <French>Intelligence advantage: +%d1%%</French>
-    <German>Geheimdienstvorteil: +%d1%%</German>
-    <Italian>Intelligence advantage: +%d1%%</Italian>
-    <Spanish>Intelligence advantage: +%d1%%</Spanish>
+    <English>Intelligence advantage: +%s1%%</English>
+    <French>Intelligence advantage: +%s1%%</French>
+    <German>Geheimdienstvorteil: +%s1%%</German>
+    <Italian>Intelligence advantage: +%s1%%</Italian>
+    <Spanish>Intelligence advantage: +%s1%%</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RESISTANCE</Tag>
@@ -434,11 +434,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MILITARY_SHORT</Tag>
-    <English>Combat advantage: +%d1%%</English>
-    <French>Combat advantage: +%d1%%</French>
-    <German>Kampfvorteil: +%d1%%</German>
-    <Italian>Combat advantage: +%d1%%</Italian>
-    <Spanish>Combat advantage: +%d1%%</Spanish>
+    <English>Combat advantage: +%s1%%</English>
+    <French>Combat advantage: +%s1%%</French>
+    <German>Kampfvorteil: +%s1%%</German>
+    <Italian>Combat advantage: +%s1%%</Italian>
+    <Spanish>Combat advantage: +%s1%%</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_POLITICS_SHORT</Tag>
@@ -506,19 +506,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COMBAT_CURRENT_EFFECT</Tag>
-    <English>+%d1%% combat strength against %s2 (max. +8%%)</English>
-    <French>+%d1%% de force contre %s2 (max. +8%%)</French>
-    <German>+%d1%% Kampfst&#228;rke gegen %s2 (max. +8%%)</German>
-    <Italian>+%d1%% forza di combattimento contro %s2 (max. +8%%)</Italian>
-    <Spanish>+%d1%% fuerza de combate contra %s2 (m&#225;x. +8%%)</Spanish>
+    <English>+%s1%% combat strength against %s2 (limit +30%%)</English>
+    <French>+%s1%% de force contre %s2 (limite +30%%)</French>
+    <German>+%s1%% Kampfst&#228;rke gegen %s2 (Grenze +30%%)</German>
+    <Italian>+%s1%% forza di combattimento contro %s2 (limite +30%%)</Italian>
+    <Spanish>+%s1%% fuerza de combate contra %s2 (l&#237;mite +30%%)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_INFILTRATION_CURRENT_EFFECT</Tag>
-    <English>%d1%% infiltration chance per turn while besieging (max. 25%%)</English>
-    <French>%d1%% d&#8217;infiltration par tour pendant un si&#232;ge (max. 25%%)</French>
-    <German>%d1%% Infiltrationschance pro Belagerungsrunde (max. 25%%)</German>
-    <Italian>%d1%% probabilit&#224; di infiltrazione per turno d&#8217;assedio (max. 25%%)</Italian>
-    <Spanish>%d1%% de infiltraci&#243;n por turno de asedio (m&#225;x. 25%%)</Spanish>
+    <English>%s1%% infiltration chance per siege turn (limit 30%%)</English>
+    <French>%s1%% d&#8217;infiltration par tour de si&#232;ge (limite 30%%)</French>
+    <German>%s1%% Infiltrationschance pro Belagerungsrunde (Grenze 30%%)</German>
+    <Italian>%s1%% di infiltrazione per turno d&#8217;assedio (limite 30%%)</Italian>
+    <Spanish>%s1%% de infiltraci&#243;n por turno de asedio (l&#237;mite 30%%)</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_INFILTRATION_AT_PEACE</Tag>
@@ -607,5 +607,205 @@
     <German>Gebiet je Bericht: %d1 x %d2 Felder</German>
     <Italian>Area rivelata per rapporto: %d1 x %d2 caselle</Italian>
     <Spanish>Zona revelada por informe: %d1 x %d2 casillas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TROOP_COVERAGE</Tag>
+    <English>Enemy troop tracking: %s1%% coverage</English>
+    <French>Suivi des troupes ennemies : couverture de %s1%%</French>
+    <German>Aufkl&#228;rung feindlicher Truppen: %s1%% Abdeckung</German>
+    <Italian>Tracciamento truppe nemiche: copertura %s1%%</Italian>
+    <Spanish>Seguimiento de tropas enemigas: cobertura del %s1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MILITARY_BUILDUP</Tag>
+    <English>Military network buildup: %d1</English>
+    <French>D&#233;veloppement du r&#233;seau militaire : %d1</French>
+    <German>Aufbau des Milit&#228;rnetzes: %d1</German>
+    <Italian>Sviluppo della rete militare: %d1</Italian>
+    <Spanish>Desarrollo de la red militar: %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_MODE</Tag>
+    <English>Dynastic politics</English>
+    <French>Politique dynastique</French>
+    <German>Dynastische Politik</German>
+    <Italian>Politica dinastica</Italian>
+    <Spanish>Pol&#237;tica din&#225;stica</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_STAGE_0</Tag>
+    <English>Insignificant</English>
+    <French>Insignifiant</French>
+    <German>Unbedeutend</German>
+    <Italian>Insignificante</Italian>
+    <Spanish>Insignificante</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_STAGE_1</Tag>
+    <English>Distant relatives</English>
+    <French>Parents &#233;loign&#233;s</French>
+    <German>Entfernte Verwandte</German>
+    <Italian>Parenti lontani</Italian>
+    <Spanish>Parientes lejanos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_STAGE_2</Tag>
+    <English>Close relatives</English>
+    <French>Parents proches</French>
+    <German>Nahe Verwandte</German>
+    <Italian>Parenti stretti</Italian>
+    <Spanish>Parientes cercanos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_STAGE_3</Tag>
+    <English>Personal union</English>
+    <French>Union personnelle</French>
+    <German>Personalunion</German>
+    <Italian>Unione personale</Italian>
+    <Spanish>Uni&#243;n personal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_STAGE_4</Tag>
+    <English>Incorporation</English>
+    <French>Incorporation</French>
+    <German>Eingliederung</German>
+    <Italian>Incorporazione</Italian>
+    <Spanish>Incorporaci&#243;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_REQUIRES</Tag>
+    <English>Requires two monarchies.</English>
+    <French>N&#233;cessite deux monarchies.</French>
+    <German>Erfordert zwei Monarchien.</German>
+    <Italian>Richiede due monarchie.</Italian>
+    <Spanish>Requiere dos monarqu&#237;as.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_ADVANCE</Tag>
+    <English>Advance one stage: %s1%% per turn</English>
+    <French>Progresser d&#8217;un stade : %s1%% par tour</French>
+    <German>N&#228;chste Stufe: %s1%% pro Runde</German>
+    <Italian>Avanzamento di una fase: %s1%% per turno</Italian>
+    <Spanish>Avanzar una etapa: %s1%% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_REGRESS</Tag>
+    <English>Regress one stage: %s1%% per turn</English>
+    <French>Reculer d&#8217;un stade : %s1%% par tour</French>
+    <German>Vorherige Stufe: %s1%% pro Runde</German>
+    <Italian>Regressione di una fase: %s1%% per turno</Italian>
+    <Spanish>Retroceder una etapa: %s1%% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_BUILDUP</Tag>
+    <English>Dynastic influence: %d1</English>
+    <French>Influence dynastique : %d1</French>
+    <German>Dynastischer Einfluss: %d1</German>
+    <Italian>Influenza dinastica: %d1</Italian>
+    <Spanish>Influencia din&#225;stica: %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_RELATIONS</Tag>
+    <English>Dynastic ties: +%d1 relations</English>
+    <French>Liens dynastiques : +%d1 aux relations</French>
+    <German>Dynastische Bindungen: +%d1 Beziehungen</German>
+    <Italian>Legami dinastici: +%d1 relazioni</Italian>
+    <Spanish>V&#237;nculos din&#225;sticos: +%d1 relaciones</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_INCORPORATING</Tag>
+    <English>Nearest city joins each turn. No further stage rolls.</English>
+    <French>La ville la plus proche est int&#233;gr&#233;e chaque tour. Aucun autre jet.</French>
+    <German>Jede Runde tritt die n&#228;chste Stadt bei. Keine weiteren Stufenw&#252;rfe.</German>
+    <Italian>Ogni turno si unisce la citt&#224; pi&#249; vicina. Nessun altro tiro.</Italian>
+    <Spanish>Se incorpora la ciudad m&#225;s cercana cada turno. No hay m&#225;s tiradas.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_PROTECTED</Tag>
+    <English>Protected from instability during incorporation.</English>
+    <French>Prot&#233;g&#233; de l&#8217;instabilit&#233; pendant l&#8217;incorporation.</French>
+    <German>W&#228;hrend der Eingliederung vor Instabilit&#228;t gesch&#252;tzt.</German>
+    <Italian>Protetto dall&#8217;instabilit&#224; durante l&#8217;incorporazione.</Italian>
+    <Spanish>Protegido de la inestabilidad durante la incorporaci&#243;n.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_WAR_PAUSED</Tag>
+    <English>War stops buildup, advancement and city transfers.</English>
+    <French>La guerre suspend influence, progression et transferts.</French>
+    <German>Krieg stoppt Aufbau, Aufstieg und Stadt&#252;bertragungen.</German>
+    <Italian>La guerra sospende influenza, progressi e trasferimenti.</Italian>
+    <Spanish>La guerra detiene influencia, avances y transferencias.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_UNION_BLOCKED</Tag>
+    <English>Personal union blocked by current vassal ties or game rules.</English>
+    <French>Union personnelle bloqu&#233;e par la vassalit&#233; ou les r&#232;gles.</French>
+    <German>Vasallenbindungen oder Spielregeln verhindern eine Personalunion.</German>
+    <Italian>Unione personale impedita da vassallaggi o regole di gioco.</Italian>
+    <Spanish>Uni&#243;n personal bloqueada por vasallajes o reglas de juego.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_INSTABILITY_HELP</Tag>
+    <English>An unstable court builds influence faster.</English>
+    <French>Une cour instable accro&#238;t l&#8217;influence plus vite.</French>
+    <German>Ein instabiler Hof beschleunigt den Einflussaufbau.</German>
+    <Italian>Una corte instabile accelera la crescita dell&#8217;influenza.</Italian>
+    <Spanish>Una corte inestable acelera el crecimiento de la influencia.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_DIPLOMACY</Tag>
+    <English>Open dynastic diplomacy</English>
+    <French>Diplomatie dynastique ouverte</French>
+    <German>Offene dynastische Diplomatie</German>
+    <Italian>Diplomazia dinastica aperta</Italian>
+    <Spanish>Diplomacia din&#225;stica abierta</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_ATTITUDE</Tag>
+    <English>%d1: Our dynasties are related.</English>
+    <French>%d1 : Nos dynasties sont apparent&#233;es.</French>
+    <German>%d1: Unsere Dynastien sind verwandt.</German>
+    <Italian>%d1: Le nostre dinastie sono imparentate.</Italian>
+    <Spanish>%d1: Nuestras dinast&#237;as est&#225;n emparentadas.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_CHANGED</Tag>
+    <English>Dynastic ties with %s1: %s2.</English>
+    <French>Liens dynastiques avec %s1 : %s2.</French>
+    <German>Dynastische Bindungen zu %s1: %s2.</German>
+    <Italian>Legami dinastici con %s1: %s2.</Italian>
+    <Spanish>V&#237;nculos din&#225;sticos con %s1: %s2.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_CITY</Tag>
+    <English>%s1 joins %s2 through dynastic incorporation.</English>
+    <French>%s1 rejoint %s2 par incorporation dynastique.</French>
+    <German>%s1 tritt %s2 durch dynastische Eingliederung bei.</German>
+    <Italian>%s1 si unisce a %s2 per incorporazione dinastica.</Italian>
+    <Spanish>%s1 se une a %s2 por incorporaci&#243;n din&#225;stica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_WAR</Tag>
+    <English>War against close relatives: -%d1 stability for %d2 turns.</English>
+    <French>Guerre contre des parents proches : -%d1 stabilit&#233; pendant %d2 tours.</French>
+    <German>Krieg gegen nahe Verwandte: -%d1 Stabilit&#228;t f&#252;r %d2 Runden.</German>
+    <Italian>Guerra contro parenti stretti: -%d1 stabilit&#224; per %d2 turni.</Italian>
+    <Spanish>Guerra contra parientes cercanos: -%d1 estabilidad durante %d2 turnos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_KIN_WAR_HELP</Tag>
+    <English>Declaring war on close kin: -6 stability for %d1 turns.</English>
+    <French>D&#233;clarer la guerre &#224; des proches : -6 stabilit&#233; pendant %d1 tours.</French>
+    <German>Kriegserkl&#228;rung gegen nahe Verwandte: -6 Stabilit&#228;t f&#252;r %d1 Runden.</German>
+    <Italian>Dichiarare guerra a parenti stretti: -6 stabilit&#224; per %d1 turni.</Italian>
+    <Spanish>Declarar la guerra a parientes cercanos: -6 estabilidad por %d1 turnos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_INCORPORATION_PAUSED</Tag>
+    <English>Transfers pause until the personal union is restored.</English>
+    <French>Transferts suspendus jusqu&#8217;au r&#233;tablissement de l&#8217;union personnelle.</French>
+    <German>&#220;bertragungen ruhen bis zur Wiederherstellung der Personalunion.</German>
+    <Italian>Trasferimenti sospesi fino al ripristino dell&#8217;unione personale.</Italian>
+    <Spanish>Transferencias suspendidas hasta restaurar la uni&#243;n personal.</Spanish>
   </TEXT>
 </Civ4GameText>
