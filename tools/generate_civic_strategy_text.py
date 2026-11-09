@@ -11,8 +11,8 @@ SUMMARIES = {
         '+20% unit production, -20% research, +100% distance and city-count maintenance.',
         '+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und städtezahlabhängiger Unterhalt.'),
     'MONARCHY': (
-        'Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.',
-        'Hauptstadtgeb\xe4ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm\xf6glicht Erbfolgeereignisse.'),
+        'Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.',
+        'Hauptstadtgeb\xe4ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm\xf6glicht Erbfolgeereignisse. Besondere Spionage gegen\u00fcber anderen Monarchien.'),
     'REPUBLIC': (
         'Assigned specialists except slaves consume 1 less food.',
         'Zugewiesene Spezialisten au\xdfer Sklaven verbrauchen 1 Nahrung weniger.'),
@@ -20,8 +20,8 @@ SUMMARIES = {
         '+20% production and no war weariness, but -2 happiness in every city.',
         '+20% Produktion und keine Kriegsmüdigkeit, aber -2 Zufriedenheit in jeder Stadt.'),
     'DEMOCRACY': (
-        '+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.',
-        '+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Andere Staatsformen werden durch Wahlen entschieden. Keine Stabilit\u00e4tsmali durch unvereinbare Staatsformen.'),
+        '+2 happiness in every city and +1 commerce per specialist. No stability penalties from incompatible civics.',
+        '+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Keine Stabilit\u00e4tsmali durch unvereinbare Staatsformen.'),
     'DESPOTISM': (
         '+1 happiness from palaces and monuments, including unique replacements.',
         '+1 Zufriedenheit durch Paläste und Monumente, einschließlich einzigartiger Ersatzgebäude.'),

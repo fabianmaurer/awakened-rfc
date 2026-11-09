@@ -178,11 +178,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_POLITICS_HELP</Tag>
-    <English>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</English>
-    <French>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</French>
-    <German>Bauen Sie politischen Druck auf, der Stabilit&#228;t senkt, lokale Unruhen ausl&#246;sen kann und Anarchie bei Staatsformwechseln verl&#228;ngert. Gro&#223;e Bev&#246;lkerungen leisten mehr Widerstand.</German>
-    <Italian>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</Italian>
-    <Spanish>Build political pressure that reduces stability, can provoke local unrest and prolongs civic-change anarchy. Larger populations resist more effectively.</Spanish>
+    <English>Build a friendly faction that spreads your culture, promotes your civics and destabilizes this country. Unstable countries may become client states.</English>
+    <French>D&#233;veloppez une faction favorable qui diffuse votre culture, promeut vos r&#233;gimes et d&#233;stabilise ce pays. Un pays instable peut devenir un &#201;tat client.</French>
+    <German>Bauen Sie eine freundliche Fraktion auf, die Ihre Kultur verbreitet, Ihre Staatsformen f&#246;rdert und das Land destabilisiert. Instabile L&#228;nder k&#246;nnen Klientelstaaten werden.</German>
+    <Italian>Crea una fazione amica che diffonde la tua cultura, promuove le tue forme di governo e destabilizza il paese. I paesi instabili possono diventare stati clienti.</Italian>
+    <Spanish>Crea una facci&#243;n af&#237;n que difunda tu cultura, promueva tus doctrinas y desestabilice el pa&#237;s. Los pa&#237;ses inestables pueden convertirse en estados clientes.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MAP_HELP</Tag>
@@ -807,5 +807,101 @@
     <German>&#220;bertragungen ruhen bis zur Wiederherstellung der Personalunion.</German>
     <Italian>Trasferimenti sospesi fino al ripristino dell&#8217;unione personale.</Italian>
     <Spanish>Transferencias suspendidas hasta restaurar la uni&#243;n personal.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_RELATIONS</Tag>
+    <English>Relations toward you: +%d1</English>
+    <French>Relations envers vous : +%d1</French>
+    <German>Beziehungen zu Ihnen: +%d1</German>
+    <Italian>Relazioni verso di te: +%d1</Italian>
+    <Spanish>Relaciones hacia ti: +%d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_PRESSURE_EFFECT</Tag>
+    <English>Combined penalties: %d1 stability; +%d2 civic anarchy</English>
+    <French>P&#233;nalit&#233;s totales : %d1 stabilit&#233; ; +%d2 anarchie civique</French>
+    <German>Gesamte Abz&#252;ge: %d1 Stabilit&#228;t; +%d2 Anarchie bei Staatsformwechseln</German>
+    <Italian>Penalit&#224; totali: %d1 stabilit&#224;; +%d2 anarchia civica</Italian>
+    <Spanish>Penalizaciones totales: %d1 estabilidad; +%d2 anarqu&#237;a c&#237;vica</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CIVIC_CHANCE</Tag>
+    <English>Adopt one of your civics: %s1%% per turn</English>
+    <French>Adopter un de vos r&#233;gimes : %s1%% par tour</French>
+    <German>&#220;bernahme einer Ihrer Staatsformen: %s1%% pro Runde</German>
+    <Italian>Adotta una tua forma di governo: %s1%% per turno</Italian>
+    <Spanish>Adoptar una de tus doctrinas: %s1%% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CULTURE</Tag>
+    <English>Your culture: +%s1 per turn across target cities</English>
+    <French>Votre culture : +%s1 par tour dans les villes cibl&#233;es</French>
+    <German>Ihre Kultur: +%s1 pro Runde, auf die Zielst&#228;dte verteilt</German>
+    <Italian>La tua cultura: +%s1 per turno nelle citt&#224; bersaglio</Italian>
+    <Spanish>Tu cultura: +%s1 por turno entre las ciudades objetivo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CLIENT_ACTIVE</Tag>
+    <English>Already your vassal.</English>
+    <French>D&#233;j&#224; votre vassal.</French>
+    <German>Bereits Ihr Vasall.</German>
+    <Italian>&#200; gi&#224; tuo vassallo.</Italian>
+    <Spanish>Ya es tu vasallo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CLIENT_BLOCKED</Tag>
+    <English>Client government: currently unavailable.</English>
+    <French>Gouvernement client : indisponible actuellement.</French>
+    <German>Klientelregierung: derzeit nicht m&#246;glich.</German>
+    <Italian>Governo cliente: attualmente non disponibile.</Italian>
+    <Spanish>Gobierno cliente: no disponible actualmente.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CLIENT_SMALL</Tag>
+    <English>Client government chance: below 0.1% per turn</English>
+    <French>Gouvernement client : moins de 0,1% par tour</French>
+    <German>Chance auf Klientelregierung: unter 0,1% pro Runde</German>
+    <Italian>Governo cliente: meno dello 0,1% per turno</Italian>
+    <Spanish>Gobierno cliente: menos del 0,1% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CLIENT_CHANCE</Tag>
+    <English>Client government chance: %s1%% per turn</English>
+    <French>Gouvernement client : %s1%% par tour</French>
+    <German>Chance auf Klientelregierung: %s1%% pro Runde</German>
+    <Italian>Governo cliente: %s1%% per turno</Italian>
+    <Spanish>Gobierno cliente: %s1%% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_BUILDUP</Tag>
+    <English>Faction buildup: %d1 (%s2%% influence)</English>
+    <French>R&#233;seau politique : %d1 (%s2%% d&#8217;influence)</French>
+    <German>Fraktionsaufbau: %d1 (%s2%% Einfluss)</German>
+    <Italian>Rete politica: %d1 (%s2%% influenza)</Italian>
+    <Spanish>Red pol&#237;tica: %d1 (%s2%% de influencia)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_ATTITUDE</Tag>
+    <English>%d1: Your supporters favor closer ties.</English>
+    <French>%d1 : Vos partisans souhaitent des liens plus &#233;troits.</French>
+    <German>%d1: Ihre Unterst&#252;tzer w&#252;nschen engere Beziehungen.</German>
+    <Italian>%d1: I tuoi sostenitori vogliono legami pi&#249; stretti.</Italian>
+    <Spanish>%d1: Tus partidarios desean estrechar los v&#237;nculos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_REFORM</Tag>
+    <English>%s1 adopts %s2 under foreign political influence.</English>
+    <French>%s1 adopte %s2 sous influence politique &#233;trang&#232;re.</French>
+    <German>%s1 f&#252;hrt unter ausl&#228;ndischem politischem Einfluss %s2 ein.</German>
+    <Italian>%s1 adotta %s2 sotto influenza politica straniera.</Italian>
+    <Spanish>%s1 adopta %s2 bajo influencia pol&#237;tica extranjera.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICAL_CLIENT</Tag>
+    <English>%s1 becomes a client government of %s2.</English>
+    <French>%s1 devient un gouvernement client de %s2.</French>
+    <German>%s1 wird zur Klientelregierung von %s2.</German>
+    <Italian>%s1 diventa un governo cliente di %s2.</Italian>
+    <Spanish>%s1 se convierte en un gobierno cliente de %s2.</Spanish>
   </TEXT>
 </Civ4GameText>

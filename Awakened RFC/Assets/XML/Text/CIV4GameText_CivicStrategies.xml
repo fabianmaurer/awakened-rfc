@@ -10,11 +10,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
-        <English>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</English>
-        <French>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</French>
-        <German>Hauptstadtgeb&#228;ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm&#246;glicht Erbfolgeereignisse.</German>
-        <Italian>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Italian>
-        <Spanish>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events.</Spanish>
+        <English>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.</English>
+        <French>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.</French>
+        <German>Hauptstadtgeb&#228;ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm&#246;glicht Erbfolgeereignisse. Besondere Spionage gegen&#252;ber anderen Monarchien.</German>
+        <Italian>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.</Italian>
+        <Spanish>Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_REPUBLIC_STRATEGY</Tag>
@@ -34,11 +34,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DEMOCRACY_STRATEGY</Tag>
-        <English>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</English>
-        <French>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</French>
-        <German>+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Andere Staatsformen werden durch Wahlen entschieden. Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen.</German>
-        <Italian>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</Italian>
-        <Spanish>+2 happiness in every city and +1 commerce per specialist. Other civics are decided by elections. No stability penalties from incompatible civics.</Spanish>
+        <English>+2 happiness in every city and +1 commerce per specialist. No stability penalties from incompatible civics.</English>
+        <French>+2 happiness in every city and +1 commerce per specialist. No stability penalties from incompatible civics.</French>
+        <German>+2 Zufriedenheit in jeder Stadt und +1 Handel je Spezialist. Keine Stabilit&#228;tsmali durch unvereinbare Staatsformen.</German>
+        <Italian>+2 happiness in every city and +1 commerce per specialist. No stability penalties from incompatible civics.</Italian>
+        <Spanish>+2 happiness in every city and +1 commerce per specialist. No stability penalties from incompatible civics.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_DESPOTISM_STRATEGY</Tag>

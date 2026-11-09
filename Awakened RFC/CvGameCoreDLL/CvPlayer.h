@@ -345,6 +345,12 @@ public:
     int getIntelligenceSuppressionChance(PlayerTypes eTarget) const;
     void refreshIntelligenceTracking();
     int getIntelligencePoliticalTarget() const;
+    int getPoliticalInfluence(PlayerTypes eTarget) const; // Basis points of saturation.
+    int getPoliticalRelationBonus(PlayerTypes eTarget) const;
+    int getPoliticalCivicChance(PlayerTypes eTarget) const;
+    int getPoliticalClientChance(PlayerTypes eTarget) const;
+    int getPoliticalCultureBudget(PlayerTypes eTarget) const; // Hundredths of culture per turn.
+    void doPoliticalIntelligence();
     int getIntelligenceStabilityPenalty() const;
     int getIntelligenceAnarchyExtra() const;
     int getIntelligenceRelationPenalty(TeamTypes eTarget) const;
@@ -1296,6 +1302,7 @@ protected:
     int m_aiIntelligenceMode[MAX_TEAMS];
     int m_aiIntelligenceStrength[MAX_TEAMS];
     int m_aiIntelligenceMilitaryStock[MAX_TEAMS]; // Hundredths of effective espionage, with calendar-scaled decay.
+    int m_aiPoliticalStock[MAX_TEAMS];
     int m_aiDynasticStock[MAX_TEAMS];
     int m_aiDynasticStage[MAX_TEAMS];
     int m_aiDynasticLastRoll[MAX_TEAMS];

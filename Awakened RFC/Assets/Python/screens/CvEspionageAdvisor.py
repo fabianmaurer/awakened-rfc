@@ -295,10 +295,20 @@ class CvEspionageAdvisor:
             else:
                 penalty = rival.getIntelligenceData(-1, 20)
                 anarchy = rival.getIntelligenceData(-1, 25)
-                self.label(tr("STABILITY_CURRENT_EFFECT", (-penalty, nation)), 352, y, True)
-                self.label(tr("ANARCHY_CURRENT_EFFECT", (anarchy, rival.getIntelligenceData(-1, 26))), 352, y + 32)
-                self.label(tr("UNREST_CURRENT_EFFECT", (unrest,)), 352, y + 64)
-                self.label(tr("COMBINED_MEDDLING"), 352, y + 104)
+                self.label(tr("POLITICAL_RELATIONS", (player.getIntelligenceData(i, 50),)), 352, y, True)
+                self.label(tr("POLITICAL_PRESSURE_EFFECT", (-penalty, anarchy)), 352, y + 32)
+                self.label(tr("POLITICAL_CIVIC_CHANCE", (chanceText(player.getIntelligenceData(i, 48)),)), 352, y + 64)
+                self.label(tr("POLITICAL_CULTURE", (chanceText(player.getIntelligenceData(i, 51)),)), 352, y + 96)
+                clientChance = player.getIntelligenceData(i, 49)
+                if gc.getTeam(rival.getTeam()).isVassal(player.getTeam()):
+                    self.label(tr("POLITICAL_CLIENT_ACTIVE"), 352, y + 128)
+                elif clientChance == 0:
+                    self.label(tr("POLITICAL_CLIENT_BLOCKED"), 352, y + 128)
+                elif clientChance < 5:
+                    self.label(tr("POLITICAL_CLIENT_SMALL"), 352, y + 128)
+                else:
+                    self.label(tr("POLITICAL_CLIENT_CHANCE", (chanceText(clientChance),)), 352, y + 128)
+                self.label(tr("POLITICAL_BUILDUP", (player.getIntelligenceData(i, 46), chanceText(player.getIntelligenceData(i, 47)))), 352, y + 160)
         else:
             self.label(tr("MAP_CURRENT_EFFECT", (chanceText(player.getIntelligenceData(i, 24)), chanceText(player.getIntelligenceData(-1, 29)))), 352, y, True)
             self.label(tr("VISIBLE_CITIES", (visible,)), 352, y + 32)

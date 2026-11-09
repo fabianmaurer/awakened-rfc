@@ -11228,6 +11228,14 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 			szBuffer.append(szTempBuffer);
 		}
 
+        iAttitudeChange = GET_PLAYER(eTargetPlayer).getPoliticalRelationBonus(ePlayer);
+        if (iPass == 0 && iAttitudeChange > 0)
+        {
+            szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"),
+                gDLL->getText("TXT_KEY_INTEL_POLITICAL_ATTITUDE", iAttitudeChange).GetCString());
+            szBuffer.append(NEWLINE);
+            szBuffer.append(szTempBuffer);
+        }
         iAttitudeChange = GET_PLAYER(ePlayer).getDynasticRelationBonus(eTargetPlayer);
         if (iPass == 0 && iAttitudeChange > 0)
         {

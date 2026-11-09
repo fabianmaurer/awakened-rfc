@@ -143,6 +143,7 @@ public:
 	int getNumCultureRangeCities(PlayerTypes ePlayer) const;																				// Exposed to Python
 
 	PlayerTypes calculateCulturalOwner() const;
+	bool canPapalCultureClaim(PlayerTypes ePlayer) const;
 	PlayerTypes getFortGarrisonOwner(bool bIgnorePeace = false) const;
 	void updateFortOwnership();
 	void restoreFortCultureAfterPeace(TeamTypes eFirstTeam, TeamTypes eSecondTeam);

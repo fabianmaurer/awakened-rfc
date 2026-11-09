@@ -376,11 +376,11 @@ class CvRFCEventHandler:
                 if not geo.historyBoundary(iGameTurn):
                         return
 
-                # Democracy holds an election every ten turns. The synchronized game RNG
+                # Democracy has a 10% election chance every five reference turns. The synchronized game RNG
                 # selects one non-government civic column and one available replacement.
                 pPlayer = gc.getPlayer(iPlayer)
                 iDemocracy = CvUtil.findInfoTypeNum(gc.getCivicInfo, gc.getNumCivicInfos(), 'CIVIC_DEMOCRACY')
-                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % geo.turns(10) == 0 and pPlayer.getCivics(0) == iDemocracy):
+                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % geo.turns(5) == 0 and pPlayer.getCivics(0) == iDemocracy and gc.getGame().getSorenRandNum(100, "Democracy election chance") < 10):
                         lEligibleColumns = []
                         for iOption in range(1, gc.getNumCivicOptionInfos()):
                                 lAvailableCivics = []

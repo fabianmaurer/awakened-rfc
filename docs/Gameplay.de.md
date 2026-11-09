@@ -97,8 +97,8 @@ Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. 
 - **25 Staatsformen in fünf Kategorien:** Regierung, Legitimation, Arbeit,
   Militär und Religion ersetzen die bisherigen sechs Kategorien. Der Bildschirm
   nutzt die verfügbare Breite und enthält neue Illustrationen.
-- **Demokratische Wahlen:** Alle zehn Runden wird eine andere Kategorie auf eine
-  zufällig ausgewählte verfügbare Staatsform umgestellt.
+- **Demokratische Wahlen:** Alle fünf Runden, auf XL alle zehn, besteht eine Chance
+  von 10% auf den Wechsel einer anderen Kategorie. Manuelle Wechsel bleiben möglich.
 - **Start-Staatsformen:** Jede Zivilisation erhält ein Profil passend zu ihrer
   Zeit, soweit die Starttechnologien des Szenarios oder der Gründung es erlauben.
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
@@ -455,10 +455,10 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
 | **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. |
+| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. Besondere Spionage gegenüber anderen Monarchien. |
 | **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
-| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
+| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Manuelle Staatsformwechsel bleiben möglich. Alle fünf Runden, auf XL alle zehn, besteht eine Wahlchance von 10% auf den Wechsel einer anderen Kategorie. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
 
 ### Legitimation
 
@@ -642,15 +642,15 @@ Jede reguläre Wahl öffnet eine eigene, leicht satirische Bekanntmachung zur ge
 
 Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Toleranz. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
 
-Bei Einführung wird in jeder anderen Kategorie sofort eine verfügbare Staatsform zufällig gewählt; die bisherige kann erneut gewählt werden. Solange Demokratie beibehalten wird, sind andere Kategorien nicht manuell wechselbar. Ihre Abschaffung entsperrt sie und verlängert die normale Revolutionsanarchie um **zwei Runden**. Bestehende Anarchieimmunität gilt weiterhin.
+Die anderen Staatsformen bleiben manuell wählbar. Die Einführung der Demokratie
+bewahrt die gewählten Staatsformen. Ihre Abschaffung verlängert die normale
+Revolutionsanarchie weiterhin um zwei Runden; Anarchieimmunität bleibt erhalten.
+Bei aktiver Demokratie besteht auf globalen Vielfachen von fünf Runden, auf XL
+von zehn, eine Wahlchance von 10%. Ein erfolgreicher Wurf wählt eine andere
+Kategorie mit einer verfügbaren Alternative und anschließend eine andere,
+zulässige Staatsform. Ohne Alternative erfolgt kein Wechsel. Der betroffene
+menschliche Spieler erhält eine adressierte Mitteilung.
 
-Wahlen finden bei aktiver Demokratie auf **globalen Rundenzahlen statt, die
-durch zehn teilbar sind**. Zuerst wird eine der anderen vier Kategorien mit
-verfügbarer Alternative ausgewählt, dann eine andere Staatsform, die der Spieler
-aktuell annehmen kann. Gibt es keine verfügbare Alternative, erfolgt kein
-Wechsel. Menschliche Spieler erhalten eine Benachrichtigung.
-
-Beide Auswahlen verwenden den synchronisierten Zufallsgenerator des Spiels.
 Die Regierung bleibt Demokratie; Wahlen verursachen keinen zusätzlichen
 Stabilitätsmalus für den Übergang.
 
@@ -1134,15 +1134,11 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   Langfristig sind es +12,5%, etwa 12,5% Infiltrationschance und 41,7% Truppenabdeckung.
   Bei 400 beziehungsweise 1.000 Leistung erreicht der Kampfbonus langfristig +22,2%
   beziehungsweise +26,3%.
-- **Politische Einmischung:** Monarchien nutzen stattdessen dynastische Politik
-  (siehe unten). Für andere Staatsformen gilt: Druck steigt langsam und sinkt nach Ende der
-  Operation. Große Bevölkerungen leisten mehr Widerstand. Alle Angreifer
-  zusammen verursachen höchstens -6 Stabilität und zwei zusätzliche Runden
-  Anarchie bei normalem Spieltempo, auf XL vier. Anarchieimmunität bleibt
-  erhalten. Lokale Unruhen verursachen +2 Unzufriedenheit für zwei normale
-  oder vier XL-Runden. Zwischen Vorfällen liegen mindestens acht normale
-  oder sechzehn XL-Runden. Stärke und Dauer werden getrennt berechnet. Der Stabilitätseffekt gehört zur Diplomatie
-  und verursacht keinen fortlaufend angesammelten dauerhaften Schaden.
+- **Politische Einmischung:** Nichtmonarchien bauen eine politische Fraktion auf.
+  Sie verbessert Beziehungen zum Geldgeber, fördert dessen Staatsformen, verbreitet
+  seine Stadtkultur und destabilisiert das Ziel. Seltene Klientelregierungen
+  erfordern starke Instabilität und unabhängige Länder. Monarchien nutzen weiterhin
+  dynastische Politik. Einzelheiten stehen unten.
 - **Kartenspionage:** Berichte enthüllen ein Gebiet von 7x7 Feldern (auf XL 11x11) um eine
   Zielstadt und zeigen dort bei normalem Spieltempo drei Runden das Geschehen.
   Unbekanntes Gebiet wird bevorzugt. Größere Reiche senken die Berichtschance,
@@ -1161,6 +1157,34 @@ Berater und Diplomatie-Tooltip zeigen den Abzug. Die KI wählt passende Operatio
 und Budgets. Werte sind vorläufig; Darstellung, Balance und Mehrspielerbetrieb
 benötigen eine vom Benutzer durchgeführte Prüfung im Spiel. Das neue
 Speicherformat ist für neue Partien vorgesehen.
+
+### Politische Fraktionen
+
+Aufbau `B` verfällt wie beim Militärnetz: 5% je normaler Runde, auf XL 2,5% bei
+halbiertem Zuwachs. Zugang und Gegenaufklärung senken die wirksame Finanzierung.
+Bei Zielbevölkerung `P` ist der Wirkungsanteil `F = B / (B + 20 * (20 + P))`.
+Ab 25% Einfluss verbessert sich die Haltung des Ziels zum Geldgeber um +1,
+ab 75% um +2. Krieg unterdrückt diesen Bonus; entdeckte Operationen können ihn
+überwiegen. Der Einfluss bewirkt bis zu 5% Staatsformübernahme pro normaler Runde,
+multipliziert mit `F`. Voraussetzungen und bestehende Beschränkungen gelten weiter.
+Anarchie oder ein laufender Revolutions-Timer blockieren den Wurf. Eine erfolgreiche
+Reform startet fünf normale Runden Wartezeit, ohne automatische Zusatzanarchie.
+
+Die gesamte neue Stadtkultur über alle Ziele ist auf ein Viertel der eigenen
+Spionageleistung je normaler Runde begrenzt. Jedes Ziel erhält einen gleichen
+Budgetanteil, multipliziert mit seinem `F`, und verteilt ihn nach Stadtbevölkerung.
+Es entsteht kein zusätzlicher kostenloser Feldkulturimpuls. Stabilitätsdruck beträgt
+bis zu `6 * F` je Netz; gemeinsam bleiben es höchstens -6. Bisherige Grenzen für
+Zusatzanarchie, lokale Unruhen und deren Wartezeiten gelten weiter.
+
+Klientelregierungen haben höchstens 0,1% Chance je normaler Runde, bei Republiken
+0,3%, bei Demokratien 1%, jeweils multipliziert mit `F`. Unter -20 Stabilität steigt
+die Anfälligkeit linear bis zur vollen Wirkung bei -40. Beide Länder müssen
+unabhängig sein, Städte besitzen und miteinander Frieden haben. Bestehende Vasallen
+werden nicht übernommen. Bei Teams bestimmt das am wenigsten anfällige Mitglied
+die Chance; alle müssen die Bedingungen erfüllen. Ein Erfolg schafft freiwillige
+Vasallenschaft und überträgt keine Städte. XL halbiert Übernahmechancen und Kultur
+je Spielrunde, nicht die Stärke von Beziehungen und Stabilitätsdruck.
 
 ### Dynastische Politik
 

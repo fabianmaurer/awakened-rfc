@@ -8251,6 +8251,7 @@ int CvCity::getNextExpansionPlotIndex() const
 	while (iNextPlot < (int)m_aiCulturePlots.size())
 	{
 		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[iNextPlot]);
+		if (!pPlot->canPapalCultureClaim(getOwnerINLINE())) { ++iNextPlot; continue; }
 		if (m_aiCulturePlotCosts[iNextPlot] > getCulture(getOwnerINLINE()) &&
 			pPlot->getOwnerINLINE() != getOwnerINLINE()) break;
 		++iNextPlot;
@@ -8315,9 +8316,9 @@ void CvCity::updateCoveredPlots(bool bUpdatePlotGroups)
 		int iRange = cultureDistance(dxWrap(pPlot->getX_INLINE() - getX_INLINE()), dyWrap(pPlot->getY_INLINE() - getY_INLINE()));
 		if (iNewCount > iOldCount)
 		{
-			if (m_aiCulturePlotCosts[i] > 0 && !pPlot->isWithinCultureRange(getOwnerINLINE())) bExpanded = true;
+			if (pPlot->canPapalCultureClaim(getOwnerINLINE()) && m_aiCulturePlotCosts[i] > 0 && !pPlot->isWithinCultureRange(getOwnerINLINE())) bExpanded = true;
 			// Newly covered tiles need culture immediately, including scripted grants.
-			if (pPlot->getCulture(getOwnerINLINE()) == 0) pPlot->setCulture(getOwnerINLINE(), 1, false, false);
+			if (pPlot->canPapalCultureClaim(getOwnerINLINE()) && pPlot->getCulture(getOwnerINLINE()) == 0) pPlot->setCulture(getOwnerINLINE(), 1, false, false);
 		}
 		pPlot->changeCultureRangeCities(getOwnerINLINE(), iRange, iNewCount > iOldCount ? 1 : -1, bUpdatePlotGroups);
 	}
@@ -12963,7 +12964,7 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 	for (int i = 0; i < m_iCoveredPlots; ++i)
 	{
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(m_aiCulturePlots[i]);
-		if (pLoopPlot->isPotentialCityWorkForArea(area()))
+		if (pLoopPlot->canPapalCultureClaim(ePlayer) && pLoopPlot->isPotentialCityWorkForArea(area()))
 		{
 			int iRange = cultureDistance(dxWrap(pLoopPlot->getX_INLINE() - getX_INLINE()), dyWrap(pLoopPlot->getY_INLINE() - getY_INLINE()));
 			if (ePlayer != getOwnerINLINE() && iRange > ePressureLevel) continue;

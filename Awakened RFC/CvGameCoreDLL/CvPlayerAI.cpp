@@ -6003,6 +6003,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 	iAttitude += AI_getAttitudeExtra(ePlayer);
     iAttitude -= GET_PLAYER(ePlayer).getIntelligenceRelationPenalty(getTeam());
     iAttitude += getDynasticRelationBonus(ePlayer);
+    iAttitude += GET_PLAYER(ePlayer).getPoliticalRelationBonus(getID());
 
 	return range(iAttitude, -100, 100);
 }

@@ -3135,6 +3135,16 @@ void CvPlot::restoreFortCultureAfterPeace(TeamTypes eFirstTeam, TeamTypes eSecon
 }
 
 
+bool CvPlot::canPapalCultureClaim(PlayerTypes ePlayer) const
+{
+	if (!GC.getGameINLINE().isPapalState(ePlayer)) return true;
+	if (isCity() && getPlotCity()->getOwnerINLINE() == ePlayer) return true;
+	CvCity* pRome = GC.getGameINLINE().getPapalRome();
+	return pRome != NULL && pRome->getOwnerINLINE() == ePlayer && !isCity() &&
+		abs(getX_INLINE() - pRome->getX_INLINE()) <= 1 &&
+		abs(getY_INLINE() - pRome->getY_INLINE()) <= 1;
+}
+
 PlayerTypes CvPlot::calculateCulturalOwner() const
 {
 	PROFILE("CvPlot::calculateCulturalOwner()")
@@ -3183,7 +3193,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 
 	for (iI = 0; iI < MAX_PLAYERS; ++iI)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && canPapalCultureClaim((PlayerTypes)iI))
 		{
 			iCulture = getCulture((PlayerTypes)iI);
 
@@ -3226,7 +3236,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 				{
 					pLoopCity = pLoopPlot->getPlotCity();
 
-					if (pLoopCity != NULL)
+					if (pLoopCity != NULL && canPapalCultureClaim(pLoopCity->getOwnerINLINE()))
 					{
 						if (pLoopCity->getTeam() == GET_PLAYER(eBestPlayer).getTeam() || GET_TEAM(GET_PLAYER(eBestPlayer).getTeam()).isVassal(pLoopCity->getTeam()))
 						{
@@ -3298,7 +3308,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 		}
 	}
 
-	return eBestPlayer;
+	return canPapalCultureClaim(eBestPlayer) ? eBestPlayer : NO_PLAYER;
 }
 
 

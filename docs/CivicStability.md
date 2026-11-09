@@ -35,7 +35,8 @@ Regierungsform grundsätzlich überlegen wäre.
   Reihenfolge oder numerischen ID ab.
 - Der Beitrag geht in die bestehende Neuberechnung der Basisstabilität alle
   drei Runden ein. Er wird nicht als dauerhafter Zugewinn pro Runde aufaddiert.
-- Demokratische Wahlen ändern weiterhin alle zehn Runden eine andere Civic-Spalte.
+- Demokratische Wahlen haben alle fünf Runden, auf XL alle zehn, eine Chance von
+  10%, eine andere Civic-Spalte zu ändern. Manuelle Wechsel bleiben möglich.
   Für Wahlen gibt es keine zusätzliche Stabilitätsstrafe. Die Kombinationswerte
   gelten auch, wenn die Kombination durch eine Wahl entsteht.
 - Die allgemeine Zufriedenheits- und Wirtschaftsauswertung berücksichtigt die

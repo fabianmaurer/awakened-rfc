@@ -255,9 +255,144 @@ int CvPlayer::getIntelligencePoliticalTarget() const
     {
         const CvPlayer& kOther = GET_PLAYER((PlayerTypes)i);
         if (!kOther.isDynasticIntelligence() && kOther.canIntelligenceTarget(getID()) && kOther.getIntelligenceMode(getTeam()) == INTEL_POLITICS)
-            iPressure += kOther.m_aiIntelligenceStrength[getTeam()] * 1200 / (20 + getTotalPopulation());
+            iPressure += (kOther.getPoliticalInfluence(getID()) * 600 + 5000) / 10000;
     }
     return std::min(600, iPressure);
+}
+
+int CvPlayer::getPoliticalInfluence(PlayerTypes eTarget) const
+{
+    if (isDynasticIntelligence() || !canIntelligenceTarget(eTarget) ||
+        getIntelligenceMode(GET_PLAYER(eTarget).getTeam()) != INTEL_POLITICS ||
+        GET_PLAYER(eTarget).getNumCities() == 0) return 0;
+    const int iStock = m_aiPoliticalStock[GET_PLAYER(eTarget).getTeam()];
+    const __int64 iHalf = (__int64)2000 * (20 + GET_PLAYER(eTarget).getTotalPopulation());
+    return (int)((__int64)10000 * iStock / (iStock + iHalf));
+}
+
+int CvPlayer::getPoliticalRelationBonus(PlayerTypes eTarget) const
+{
+    if (!canIntelligenceTarget(eTarget) || GET_TEAM(getTeam()).isAtWar(GET_PLAYER(eTarget).getTeam())) return 0;
+    const int iInfluence = getPoliticalInfluence(eTarget);
+    return iInfluence >= 7500 ? 2 : (iInfluence >= 2500 ? 1 : 0);
+}
+
+int CvPlayer::getPoliticalCivicChance(PlayerTypes eTarget) const
+{
+    const int iInfluence = getPoliticalInfluence(eTarget);
+    if (iInfluence == 0 || GET_PLAYER(eTarget).isAnarchy() || GET_PLAYER(eTarget).getRevolutionTimer() > 0) return 0;
+    for (int i = 0; i < GC.getNumCivicOptionInfos(); ++i)
+    {
+        const CivicTypes eCivic = getCivics((CivicOptionTypes)i);
+        if (canForceCivics(eTarget, eCivic) &&
+            (!GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)i) || GC.getGameINLINE().isForceCivic(eCivic)))
+            return 500 * iInfluence / (100 * intelligenceSpeedPercent());
+    }
+    return 0;
+}
+
+int CvPlayer::getPoliticalClientChance(PlayerTypes eTarget) const
+{
+    int iInfluence = getPoliticalInfluence(eTarget);
+    if (iInfluence == 0 || getNumCities() == 0 || GET_TEAM(getTeam()).isAVassal() ||
+        GC.getGameINLINE().isOption(GAMEOPTION_NO_VASSAL_STATES)) return 0;
+    const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    const CvTeam& kTargetTeam = GET_TEAM(eTeam);
+    if (kTargetTeam.isAVassal() || GET_TEAM(getTeam()).isAtWar(eTeam) || kTargetTeam.isArabianJihadWar(getTeam())) return 0;
+    const CivicTypes eRepublic = (CivicTypes)GC.getInfoTypeForString("CIVIC_REPUBLIC");
+    const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
+    int iBaseChance = 100, iInstability = 20;
+    // Vassalage affects the whole team: every living member must be vulnerable.
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const CvPlayer& kTarget = GET_PLAYER((PlayerTypes)i);
+        if (!kTarget.isAlive() || kTarget.getTeam() != eTeam) continue;
+        if (kTarget.m_iIntelligenceStability >= -20 || kTarget.getNumCities() == 0) return 0;
+        iInstability = std::min(iInstability, range(-kTarget.m_iIntelligenceStability - 20, 0, 20));
+        iInfluence = std::min(iInfluence, getPoliticalInfluence((PlayerTypes)i));
+        iBaseChance = std::min(iBaseChance, kTarget.isCivic(eDemocracy) ? 100 : (kTarget.isCivic(eRepublic) ? 30 : 10));
+    }
+    return (int)((__int64)iBaseChance * iInfluence * iInstability * 100 /
+        ((__int64)10000 * 20 * intelligenceSpeedPercent()));
+}
+
+int CvPlayer::getPoliticalCultureBudget(PlayerTypes eTarget) const
+{
+    const int iInfluence = getPoliticalInfluence(eTarget);
+    if (iInfluence == 0) return 0;
+    int iNetworks = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (getPoliticalInfluence((PlayerTypes)i) > 0) ++iNetworks;
+    // A single culture budget across all targets: at most one culture per four EP.
+    return (int)std::min((__int64)MAX_INT,
+        (__int64)getCommerceRate(COMMERCE_ESPIONAGE) * 25 * iInfluence * 100 /
+        ((__int64)10000 * std::max(1, iNetworks) * intelligenceSpeedPercent()));
+}
+
+void CvPlayer::doPoliticalIntelligence()
+{
+    if (isDynasticIntelligence()) return;
+    bool abClientRolled[MAX_TEAMS] = {false};
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const PlayerTypes eTarget = (PlayerTypes)i;
+        if (getPoliticalInfluence(eTarget) == 0) continue;
+        CvPlayer& kTarget = GET_PLAYER(eTarget);
+        const TeamTypes eTeam = kTarget.getTeam();
+        const int iBudget = getPoliticalCultureBudget(eTarget);
+        const int iPopulation = std::max(1, kTarget.getTotalPopulation());
+        int iCumulative = 0, iApplied = 0, iLoop;
+        for (CvCity* pCity = kTarget.firstCity(&iLoop); pCity; pCity = kTarget.nextCity(&iLoop))
+        {
+            iCumulative += pCity->getPopulation();
+            const int iShare = (int)((__int64)iBudget * iCumulative / iPopulation);
+            pCity->changeCultureTimes100(getID(), iShare - iApplied, false, true);
+            iApplied = iShare;
+        }
+        const int iCivicChance = getPoliticalCivicChance(eTarget);
+        if (iCivicChance > 0 && GC.getGameINLINE().getSorenRandNum(10000, "Political civic adoption") < iCivicChance)
+        {
+            std::vector<CivicTypes> aCivics;
+            for (int j = 0; j < GC.getNumCivicOptionInfos(); ++j)
+            {
+                const CivicTypes eCivic = getCivics((CivicOptionTypes)j);
+                if (canForceCivics(eTarget, eCivic) &&
+                    (!GC.getGameINLINE().isForceCivicOption((CivicOptionTypes)j) || GC.getGameINLINE().isForceCivic(eCivic)))
+                    aCivics.push_back(eCivic);
+            }
+            if (!aCivics.empty())
+            {
+                const CivicTypes eCivic = aCivics[GC.getGameINLINE().getSorenRandNum((int)aCivics.size(), "Political civic selection")];
+                const CivicOptionTypes eOption = (CivicOptionTypes)GC.getCivicInfo(eCivic).getCivicOptionType();
+                kTarget.setCivics(eOption, eCivic);
+                if (kTarget.getCivics(eOption) == eCivic)
+                {
+                    kTarget.setRevolutionTimer(std::max(kTarget.getRevolutionTimer(), scaledTurns(5)));
+                    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+                        gDLL->getText("TXT_KEY_INTEL_POLITICAL_REFORM", kTarget.getCivilizationShortDescriptionKey(), GC.getCivicInfo(eCivic).getTextKeyWide()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+                    gDLL->getInterfaceIFace()->addMessage(eTarget, false, GC.getEVENT_MESSAGE_TIME(),
+                        gDLL->getText("TXT_KEY_INTEL_POLITICAL_REFORM", kTarget.getCivilizationShortDescriptionKey(), GC.getCivicInfo(eCivic).getTextKeyWide()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+                }
+            }
+        }
+        if (!abClientRolled[eTeam])
+        {
+            abClientRolled[eTeam] = true;
+            const int iChance = getPoliticalClientChance(eTarget);
+            if (iChance > 0 && GC.getGameINLINE().getSorenRandNum(10000, "Political client government") < iChance)
+            {
+                GET_TEAM(getTeam()).assignVassal(eTeam, false);
+                if (GET_TEAM(eTeam).isVassal(getTeam()))
+                {
+                    const CvWString szMessage = gDLL->getText("TXT_KEY_INTEL_POLITICAL_CLIENT", kTarget.getCivilizationShortDescriptionKey(), getCivilizationShortDescriptionKey());
+                    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(), szMessage, NULL, MESSAGE_TYPE_MAJOR_EVENT);
+                    for (int j = 0; j < NUM_MAJOR_PLAYERS; ++j)
+                        if (GET_PLAYER((PlayerTypes)j).isAlive() && GET_PLAYER((PlayerTypes)j).getTeam() == eTeam)
+                            gDLL->getInterfaceIFace()->addMessage((PlayerTypes)j, false, GC.getEVENT_MESSAGE_TIME(), szMessage, NULL, MESSAGE_TYPE_MAJOR_EVENT);
+                }
+            }
+        }
+    }
 }
 
 int CvPlayer::getIntelligenceStabilityPenalty() const
@@ -518,6 +653,12 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     case 37: return getDynasticRelationBonus(eTarget);
     case 38: return getDynasticInheritanceWeight(eTarget);
     case 39: return canFormDynasticUnion(eTarget) ? 1 : 0;
+    case 46: return m_aiPoliticalStock[eTeam] / 100;
+    case 47: return getPoliticalInfluence(eTarget);
+    case 48: return getPoliticalCivicChance(eTarget);
+    case 49: return getPoliticalClientChance(eTarget);
+    case 50: return getPoliticalRelationBonus(eTarget);
+    case 51: return getPoliticalCultureBudget(eTarget);
     case 8: return getIntelligenceRelationPenalty(eTeam);
     case 9: return getIntelligenceDefense(eTarget);
     case 10: return getIntelligenceData(iTarget, 24) / 100;
@@ -537,7 +678,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
         return iAttack > 0 ? 100 - getIntelligenceRate(eTarget) * 100 / iAttack : 0;
     }
     case 12: return !isDynasticIntelligence() && canIntelligenceTarget(eTarget) && getIntelligenceMode(eTeam) == INTEL_POLITICS ?
-        std::min(600, m_aiIntelligenceStrength[eTeam] * 1200 / (20 + GET_PLAYER(eTarget).getTotalPopulation())) : 0;
+        (getPoliticalInfluence(eTarget) * 600 + 5000) / 10000 : 0;
     }
     return 0;
 }
@@ -582,6 +723,7 @@ void CvPlayer::doEspionagePoints()
         // Decay even when funding stops or a different operation is selected.
         // Normal: B_next = 0.95 * B + effective output. XL uses half-sized steps.
         m_aiIntelligenceMilitaryStock[t] = decayIntelligenceStock(m_aiIntelligenceMilitaryStock[t]);
+        m_aiPoliticalStock[t] = decayIntelligenceStock(m_aiPoliticalStock[t]);
         m_aiDynasticStock[t] = decayIntelligenceStock(m_aiDynasticStock[t]);
         if (m_aiIntelligenceExposure[t] > 0) m_aiIntelligenceExposure[t] = std::max(0, m_aiIntelligenceExposure[t] - std::max(1, 20000 / intelligenceSpeedPercent()));
     }
@@ -610,6 +752,8 @@ void CvPlayer::doEspionagePoints()
         for (int j = 0; j < i; ++j)
             if (GET_PLAYER((PlayerTypes)j).getTeam() == eTeam && canIntelligenceTarget((PlayerTypes)j)) bFirst = false;
         if (bFirst) doDynasticIntelligence(eTarget);
+        if (bFirst && !isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS)
+            m_aiPoliticalStock[eTeam] = growIntelligenceStock(m_aiPoliticalStock[eTeam], iStrength);
         if (getIntelligenceMode(eTeam) == INTEL_MILITARY)
         {
             // Count each target team once, including in team games. Leave headroom for arithmetic.
@@ -617,7 +761,8 @@ void CvPlayer::doEspionagePoints()
                 m_aiIntelligenceMilitaryStock[eTeam] = growIntelligenceStock(m_aiIntelligenceMilitaryStock[eTeam], iStrength);
         }
         if (!(isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS) &&
-            (iStrength > 0 || (getIntelligenceMode(eTeam) == INTEL_MILITARY && m_aiIntelligenceMilitaryStock[eTeam] > 0)))
+            (iStrength > 0 || (getIntelligenceMode(eTeam) == INTEL_MILITARY && m_aiIntelligenceMilitaryStock[eTeam] > 0) ||
+            (getIntelligenceMode(eTeam) == INTEL_POLITICS && m_aiPoliticalStock[eTeam] > 0)))
         {
             int iMode = getIntelligenceMode(eTeam);
             int iSeverity = iMode == INTEL_POLITICS ? 3 : (iMode == INTEL_MILITARY ? 2 : 1);
@@ -691,6 +836,7 @@ void CvPlayer::doEspionagePoints()
         for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop)) pCity->updateEspionageVisibility(true);
     }
     refreshIntelligenceTracking();
+    doPoliticalIntelligence();
     // One shared project prevents several stolen technologies completing at once.
     if (m_eIntelligenceResearch != NO_TECH &&
         (GET_TEAM(getTeam()).isHasTech(m_eIntelligenceResearch) || !canResearch(m_eIntelligenceResearch)))
@@ -729,6 +875,7 @@ int CvPlayer::getIntelligenceChecksum() const
         iValue += (i + 1) * (m_aiIntelligenceMode[i] * 113 + m_aiEspionageSpendingWeightAgainstTeam[i] * 127 +
             m_aiIntelligenceStrength[i] * 131 + m_aiIntelligenceExposure[i] * 137 +
             m_aiIntelligenceMilitaryStock[i] * 151 +
+            m_aiPoliticalStock[i] * 193 +
             m_aiDynasticStock[i] * 173 + m_aiDynasticStage[i] * 179 +
             (m_aiDynasticLastRoll[i] + 1) * 181 + m_abDynasticUnion[i] * 191 +
             (m_aiIntelligenceReportCity[i] + 1) * 139 + (m_aiIntelligenceReportUntil[i] + 1) * 149);

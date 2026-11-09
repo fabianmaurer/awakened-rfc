@@ -11,7 +11,7 @@ an in-game or multiplayer check.
 | Monarchie | +25% production for world, team and national wonders | `CvCity::getProductionModifier(BuildingTypes)` |
 | Republik | +50% great person rate | civic XML; `CvPlayer::processCivics` |
 | Diktatur | +20% production; −100% war weariness; −2 happiness in every city | civic XML; `CvPlayer::processCivics` |
-| Demokratie | +2 happiness in every city; one random other civic column changes at elections every 10 turns | civic XML; `CvRFCEventHandler.onBeginPlayerTurn` |
+| Demokratie | +2 happiness in every city; manual civic changes allowed; 10% election chance every 5 turns (10 on XL) to change one other civic column | civic XML; `CvRFCEventHandler.onBeginPlayerTurn` |
 | Despotismus | +1 happiness from palaces and monuments, including civilization replacements | civic XML building class happiness; `CvPlayer::processCivics` |
 | Theokratie | +1 happiness per state-religion building; −2 happiness per other religious building; +10% combat strength | `CvCity::getExtraHappiness`; `CvUnit::maxCombatStr` |
 | Plutokratie | +25% gold; +50% trade-route commerce | civic XML commerce and trade yield modifiers |
@@ -48,9 +48,10 @@ an in-game or multiplayer check.
   penalty applies to the village improvement, as specified in the original table.
 - Democracy uses the synchronized game RNG and only selects columns with an
   available alternative. If no other column has an available alternative, nothing
-  changes. Elections occur on global turn multiples of ten.
-- Democracy's old temporary transition instability has been removed. Its election
-  effect is displayed once through the civic's XML Help entry.
+  changes. Elections have a 10% chance on global turn multiples of five (ten on XL).
+- Democracy's old temporary transition instability has been removed. Adoption
+  preserves selected civics and manual changes are allowed. Election mechanics are
+  omitted from the short civic description.
 - Production bonuses from dictatorship and nationalism now add together through
   the standard yield modifier rather than a shared conditional bonus.
 - Religious buildings are identified by `ReligionType` or `PrereqReligion`.

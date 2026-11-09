@@ -40,8 +40,9 @@ Ancestor Worship receives casual wording, State Religion respectful wording,
 Holy State reverent wording, and Tolerance or State Atheism sceptical wording.
 Human recipients receive an informational popup and an event-log message.
 
-While Rome belongs to the Papal State, its eight adjacent non-city tiles remain
-Papal territory regardless of foreign culture or fort garrisons. Rome itself
+While Rome belongs to the Papal State, its passable adjacent non-city tiles remain
+Papal territory regardless of foreign culture or fort garrisons. Papal culture
+cannot claim tiles beyond this area, on land or at sea. Rome itself
 cannot suffer cultural revolts or cultural unhappiness. These protections also
 apply under Tolerance; Rome can still be lost through military conquest.
 
@@ -288,8 +289,8 @@ These additional requirements apply equally to human players and AI. Regions ref
 - **25 civics in five columns:** Government, Legitimacy, Labor, Military, and
   Religion replace the original six-column arrangement. The civic screen fills
   the available width and includes new civic artwork.
-- **Democratic elections:** every ten turns, one other civic column changes to
-  a randomly selected available alternative.
+- **Democratic elections:** every five turns (ten on XL), there is a 10% chance
+  to change one other civic column to an available alternative. Manual changes remain possible.
 - **Starting civics:** every civilization receives a starting profile suited to
   its period, using civics available with its scenario or spawn technologies.
 - **Civic-combination stability:** compatible institutions receive small bonuses;
@@ -634,10 +635,10 @@ ruler as embodying divine authority.
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
 | **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. |
+| **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. Special espionage towards other monarchies. |
 | **Republic** | Code of Laws | Medium | Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
-| **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Adoption randomizes all other civic columns; elections every ten turns change one column. Other columns cannot be changed manually while Democracy is retained. Leaving adds two turns to normal revolution anarchy. |
+| **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Civics remain manually selectable. Every five turns (ten on XL), a 10% election roll may change one non-government column. Leaving adds two turns to normal revolution anarchy. |
 
 ### Legitimacy
 
@@ -879,21 +880,20 @@ Existing civilizations in saved games keep their current civics. See
 
 ## Democratic elections
 
-Elections occur on **global turn multiples of ten**, while Democracy is active.
-Adoption immediately chooses an available civic at random in each other column,
-including the possibility of retaining the existing civic. Other columns cannot
-be changed manually while retaining Democracy; leaving it unlocks them and adds
-**two turns to normal revolution anarchy**. Existing immunity to anarchy applies.
-They select one of the other four columns that has an available alternative,
-then select a different civic that the player can currently adopt. If no column
-has an available alternative, there is no change. Human players receive a
-notification of the result.
+While Democracy is active, **global turn multiples of five** (ten on XL) have a
+**10% chance** of an election changing one eligible non-government civic column.
+The government remains Democracy. Manual civic changes use the normal revolution
+rules, and adoption preserves the player's selected civics. Leaving Democracy
+still adds **two turns to normal revolution anarchy**, respecting anarchy immunity.
+On a successful election roll, one other column with an available alternative is
+selected, then a different civic the player can currently adopt. If no column has
+an alternative, there is no change. Human players receive an addressed notification.
 
 Each election also opens a civic-specific announcement with a single **Adopt** button. Its tooltip says only **Adopt [civic]**. The result applies immediately; acknowledging the popup does not change synchronized game state. English and German announcements include a little satire about the winning policy.
 
 Democracy ignores all **negative civic combination stability modifiers**, including Plutocracy with Planned Economy and Theocracy with Tolerance. Positive combination bonuses remain active. Other stability losses still apply.
 
-The game uses its synchronized random generator for both selections. The
+The game uses its synchronized random generator for the election chance and both selections. The
 government remains Democracy, and elections have no additional transition
 stability penalty.
 
@@ -1414,16 +1414,12 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   per defending city per game turn, shared across attackers. Success suppresses
   the city's defense component for that game turn. Terrain, unit promotions and
   fortification remain. Stored bombardment damage is untouched.
-- **Political meddling:** monarchies use dynastic politics instead (see below).
-  For other governments, pressure rises gradually and recovers after operations
-  stop. Larger populations resist more effectively. Pressure from all attackers
-  shares a cap of -6 stability and two additional civic-change anarchy turns
-  at Normal speed (four on XL);
-  civilizations immune to anarchy retain that immunity. Local unrest causes
-  +2 unhappiness for two Normal turns or four XL turns, with a cooldown of
-  eight Normal turns or sixteen XL turns. Severity is independent of duration. The stability effect
-  enters the existing diplomacy component, rather than accumulating permanent
-  damage each turn.
+- **Political meddling:** non-monarchies build political factions using a decaying
+  network. Influence improves the target's relations toward the sponsor, promotes
+  eligible sponsor civics, spreads the sponsor's city culture, and gradually
+  destabilizes the target. Rare client-government outcomes require severe
+  instability and independent countries. See Political factions below. Monarchies
+  use dynastic politics instead.
 - **Map intelligence:** a successful report reveals a 7x7 area (11x11 on XL) around a target
   city, prioritizing unmapped areas, and gives temporary city visibility for
   three turns at Normal speed. The per-turn chance is capped at 25% at Normal speed (12.5% on XL) and declines
@@ -1458,6 +1454,53 @@ figures use effective output after access and resistance, not the raw slider.
 Coverage is the fraction used to select troops; actual coverage varies with
 unit identities and stacks. Switching modes ends military effects immediately
 at the turn boundary but preserves the decaying buildup for later use.
+
+### Political factions
+
+Each target team has political buildup `B`, retaining 95% and adding effective
+espionage output each Normal turn; XL retains 97.5% and adds half the output.
+Switching modes or adopting Monarchy ends regular meddling effects and funding;
+stored buildup continues decaying. Counterintelligence and access reduce funding.
+With target population `P`, the shared effect fraction is
+`F = B / (B + 20 * (20 + P))`.
+
+- At 25% influence, the target gains +1 relations toward the sponsor; at 75%, +2.
+  War suspends the relation bonus. Discovery resentment can outweigh these benefits.
+- Each Normal turn has up to a 5% chance, multiplied by `F`, of adopting one civic
+  currently used by the sponsor. The target must meet its prerequisites; forced
+  civic options and the existing civic setter restrictions remain respected.
+  Anarchy or an active revolution cooldown blocks this roll. A successful reform
+  starts a five-Normal-turn cooldown, with no additional automatic anarchy.
+- Total city-culture gains across all political targets cannot exceed one quarter
+  of the sponsor's raw espionage output per Normal turn. Each target receives an
+  equal share of that budget multiplied by its own `F`, then distributes the share
+  among its cities by population. Culture is added to the cities, without a free
+  pulse of surrounding tile culture. More cities do not multiply the reward.
+- Each network contributes up to `6 * F` stability pressure; combined foreign
+  pressure remains capped at -6 and approaches its target gradually. Existing
+  civic-change anarchy and occasional local unrest remain, with their previous caps
+  and cooldowns. Incorporating countries retain their instability protection.
+- Client-government chances approach 0.1% per Normal turn against ordinary
+  governments, 0.3% against Republics and 1% against Democracies, multiplied by `F`.
+  Stability must be below -20: vulnerability rises linearly from zero at -20 to
+  full effect at -40. Both countries must be independent, at peace with one another,
+  and have cities. Existing vassals cannot be reassigned. All living members of a
+  target team must qualify; the least vulnerable member determines the team's
+  chance. The No Vassal States option and existing jihad restrictions apply.
+  A successful roll establishes voluntary vassalage, without annexing cities.
+
+XL halves civic-adoption and client-government chances and culture per gameplay
+turn. Relation and stability magnitudes do not change. Chance calculations retain
+hundredths of a percent; the advisor shows one decimal and labels smaller nonzero
+client chances as below 0.1%. All rolls and effects run in synchronized gameplay;
+messages are addressed to the affected players and contain no gameplay click callback.
+
+For example, with population 80, half effect requires 2,000 buildup. Sustained
+100 effective espionage per Normal turn approaches that amount: +1 relations,
+a 2.5% civic-adoption chance and about -3 stability pressure. Against a severely
+unstable Democracy, the client-government chance approaches 0.5% per Normal turn.
+At 400 effective output, influence approaches 80%: +2 relations, 4% civic adoption,
+about -4.8 pressure and up to 0.8% client-government chance against that Democracy.
 
 ### Dynastic politics
 

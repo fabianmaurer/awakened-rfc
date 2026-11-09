@@ -10028,6 +10028,13 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	pRome = getPapalRome();
 	kPope.processCivNames();
 	pRome->setOccupationTimer(0);
+	// A civilization becoming the Papacy may already own land beyond Rome.
+	// Re-evaluate its non-city plots under the Papal culture boundary.
+	for (int iPlot = 0; iPlot < GC.getMapINLINE().numPlotsINLINE(); ++iPlot)
+	{
+		CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(iPlot);
+		if (pPlot->getOwnerINLINE() == ePope && !pPlot->isCity()) pPlot->updateCulture(true, true);
+	}
 	if (!bBecome)
 	{
 		pRome->setCultureTimes100(ePope, std::max(10000, pRome->getCultureTimes100(ePope)), false, true);

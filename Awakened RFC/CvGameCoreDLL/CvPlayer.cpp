@@ -579,6 +579,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
         m_aiIntelligenceMode[iI] = 0;
         m_aiIntelligenceStrength[iI] = 0;
         m_aiIntelligenceMilitaryStock[iI] = 0;
+        m_aiPoliticalStock[iI] = 0;
         m_aiDynasticStock[iI] = 0;
         m_aiDynasticStage[iI] = 0;
         m_aiDynasticLastRoll[iI] = -1;
@@ -598,6 +599,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMode[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceStrength[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMilitaryStock[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiPoliticalStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStage[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticLastRoll[getTeam()] = -1;
@@ -8685,14 +8687,6 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 {
 	int iI;
-	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
-	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
-	if (paeNewCivics != NULL && getCivics(eGovernment) == eDemocracy && paeNewCivics[eGovernment] == eDemocracy)
-	{
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
-			if (iI != eGovernment && paeNewCivics[iI] != getCivics((CivicOptionTypes)iI)) return false;
-	}
-
 	if (isAnarchy())
 	{
 		return false;
@@ -8708,7 +8702,6 @@ bool CvPlayer::canRevolution(CivicTypes* paeNewCivics) const
 		// XXX is this necessary?
 		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
 		{
-			if (getCivics(eGovernment) == eDemocracy && GC.getCivicInfo((CivicTypes)iI).getCivicOptionType() != eGovernment) continue;
 			if (canDoCivics((CivicTypes)iI))
 			{
 				if (getCivics((CivicOptionTypes)GC.getCivicInfo((CivicTypes) iI).getCivicOptionType()) != iI)
@@ -8745,16 +8738,6 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 {
 	int iAnarchyLength;
 	int iI;
-	const CivicOptionTypes eGovernment = (CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_GOVERNMENT");
-	const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
-	// Under Democracy only elections choose the remaining columns. On adoption,
-	// setCivics rolls them after the government changes; never overwrite that roll.
-	std::vector<CivicTypes> selected(paeNewCivics, paeNewCivics + GC.getNumCivicOptionInfos());
-	if (selected[eGovernment] == eDemocracy)
-		for (iI = 0; iI < GC.getNumCivicOptionInfos(); ++iI)
-			if (iI != eGovernment) selected[iI] = getCivics((CivicOptionTypes)iI);
-	paeNewCivics = &selected[0];
-
 	if (!bForce && !canRevolution(paeNewCivics))
 	{
 		return;
@@ -8768,7 +8751,6 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
-			if (paeNewCivics[eGovernment] == eDemocracy && iI != eGovernment) continue;
 			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
 		}
 	}
@@ -8776,7 +8758,6 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 	{
 		for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
 		{
-			if (paeNewCivics[eGovernment] == eDemocracy && iI != eGovernment) continue;
 			setCivics(((CivicOptionTypes)iI), paeNewCivics[iI]);
 		}
 	}
@@ -13844,20 +13825,6 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 
 		if (GC.getGameINLINE().isFinalInitialized())
 		{
-			const CivicTypes eDemocracy = (CivicTypes)GC.getInfoTypeForString("CIVIC_DEMOCRACY");
-			if (eNewValue == eDemocracy)
-			{
-				for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
-				{
-					if (iOption == eIndex) continue;
-					std::vector<CivicTypes> available;
-					for (int iCivic = 0; iCivic < GC.getNumCivicInfos(); ++iCivic)
-						if (GC.getCivicInfo((CivicTypes)iCivic).getCivicOptionType() == iOption && canDoCivics((CivicTypes)iCivic))
-							available.push_back((CivicTypes)iCivic);
-					if (!available.empty())
-						setCivics((CivicOptionTypes)iOption, available[GC.getGameINLINE().getSorenRandNum((int)available.size(), "Democracy founding election")]);
-				}
-			}
 			if (gDLL->isDiplomacy() && (gDLL->getDiplomacyPlayer() == getID()))
 			{
 				gDLL->updateDiplomacyAttitude(true);
@@ -18061,6 +18028,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceStrength);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Read(MAX_TEAMS, m_aiPoliticalStock);
     pStream->Read(MAX_TEAMS, m_aiDynasticStock);
     pStream->Read(MAX_TEAMS, m_aiDynasticStage);
     pStream->Read(MAX_TEAMS, m_aiDynasticLastRoll);
@@ -18575,6 +18543,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceStrength);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Write(MAX_TEAMS, m_aiPoliticalStock);
     pStream->Write(MAX_TEAMS, m_aiDynasticStock);
     pStream->Write(MAX_TEAMS, m_aiDynasticStage);
     pStream->Write(MAX_TEAMS, m_aiDynasticLastRoll);
