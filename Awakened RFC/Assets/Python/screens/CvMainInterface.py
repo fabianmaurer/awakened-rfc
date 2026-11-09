@@ -637,7 +637,13 @@ class CvMainInterface:
 			observer = GameObserver.CURRENT
 			if observer and observer.enabled and observer.started and observer.autoplay and not observer.reveal_map:
 				screen.setRenderInterfaceOnly(True)
-				progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution)
+				performanceNow = None
+				performanceTick = None
+				if observer.mode == 'performance' and observer.performance_start is not None:
+					performanceNow = time.clock()
+					performanceTick = int(performanceNow)
+				progress = (id(observer), observer.turns, observer.limit, xResolution, yResolution,
+					performanceTick)
 				if getattr(self, 'observerProgressDisplay', None) != progress:
 					if getattr(self, 'observerSimulationSize', None) != (xResolution, yResolution):
 						screen.addPanel("ObserverSimulationBackground", u"", u"", True, False, 0, 0, xResolution, yResolution, PanelStyles.PANEL_STYLE_STANDARD)
@@ -653,6 +659,22 @@ class CvMainInterface:
 					screen.setBarPercentage("ObserverProgressBar", InfoBarTypes.INFOBAR_EMPTY, 1.0)
 					progressText = u"<font=3>" + localText.getText("TXT_KEY_OBSERVER_RUN_PROGRESS", (observer.turns, observer.limit)) + u"</font>"
 					screen.setLabel("ObserverProgressText", "Background", progressText, CvUtil.FONT_CENTER_JUSTIFY, xResolution / 2, yResolution / 2 + 30, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+					if performanceNow is not None:
+						elapsed = max(0, int(performanceNow - observer.performance_start))
+						current = max(0.0, performanceNow - observer.performance_boundary)
+						elapsedText = u"%d:%02d:%02d" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
+						line = localText.getText("TXT_KEY_OBSERVER_ELAPSED", ()) + u": " + elapsedText
+						line += u"   |   " + localText.getText("TXT_KEY_OBSERVER_CURRENT_TURN", ()) + u": %.1f s" % current
+						if observer.performance_recent_turns:
+							line += u"   |   " + localText.getText("TXT_KEY_OBSERVER_LAST_TURN", ()) + u": %.1f s" % observer.performance_recent_turns[-1]
+						screen.setLabel("ObserverPerformanceTiming", "Background", u"<font=2>" + line + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, xResolution / 2, yResolution / 2 + 55, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+						if observer.performance_recent_turns:
+							average = sum(observer.performance_recent_turns) / len(observer.performance_recent_turns)
+							remaining = max(0, int(average * (observer.limit - observer.turns)))
+							remainingText = u"%d:%02d:%02d" % (remaining / 3600, (remaining / 60) % 60, remaining % 60)
+							line = localText.getText("TXT_KEY_OBSERVER_RECENT_AVERAGE", ()) + u": %.1f s" % average
+							line += u"   |   " + localText.getText("TXT_KEY_OBSERVER_ESTIMATED_REMAINING", ()) + u": " + remainingText
+							screen.setLabel("ObserverPerformanceEstimate", "Background", u"<font=2>" + line + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, xResolution / 2, yResolution / 2 + 75, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 					self.observerProgressDisplay = progress
 				screen.show("ObserverSimulationBackground")
 				screen.moveToFront("ObserverSimulationBackground")
@@ -660,6 +682,12 @@ class CvMainInterface:
 				screen.moveToFront("ObserverProgressBar")
 				screen.show("ObserverProgressText")
 				screen.moveToFront("ObserverProgressText")
+				if performanceNow is not None:
+					screen.show("ObserverPerformanceTiming")
+					screen.moveToFront("ObserverPerformanceTiming")
+					if observer.performance_recent_turns:
+						screen.show("ObserverPerformanceEstimate")
+						screen.moveToFront("ObserverPerformanceEstimate")
 				return
 			else:
 				if getattr(self, 'observerSimulationSize', None) is not None:
@@ -668,6 +696,8 @@ class CvMainInterface:
 					self.observerSimulationSize = None
 				screen.hide("ObserverProgressBar")
 				screen.hide("ObserverProgressText")
+				screen.hide("ObserverPerformanceTiming")
+				screen.hide("ObserverPerformanceEstimate")
 				self.observerProgressDisplay = None
 			screen.hide("ObserverProgressOverlay")
 		

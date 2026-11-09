@@ -171,7 +171,7 @@ bool CvSelectionGroupAI::AI_update()
 		iTempHack++;
 		if (iTempHack > 100)
 		{
-			observerPerformanceCount("count.perf.ai.legacyLoopLimit");
+            observerPerformanceCount("count.perf.ai.legacyLoopLimit");
 			observerPerformanceDecision("legacy_loop_limit", getHeadUnit(), iTempHack);
 			FAssert(false);
 			CvUnit* pHeadUnit = getHeadUnit();

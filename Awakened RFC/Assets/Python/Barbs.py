@@ -146,7 +146,7 @@ class Barbs:
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i110BC):
                         self.spawnUnits( iCeltia, geo.value('Barbs.checkTurn.location_15'), geo.value('Barbs.checkTurn.location_16'), con.iCelticGallicWarrior, 1, iGameTurn, 7, 0, utils.outerInvasion, 0)
                         if (iHandicap >= 0):
-                                self.spawnUnits( iCeltia, geo.value('Barbs.checkTurn.location_17'), geo.value('Barbs.checkTurn.location_18'), con.iAxeman, 1, iGameTurn, 9, 6, utils.outerInvasion, 0)
+                                self.spawnUnits( iCeltia, geo.value('Barbs.checkTurn.location_17'), geo.value('Barbs.checkTurn.location_18'), con.iSpearman, 1, iGameTurn, 9, 6, utils.outerInvasion, 0)
 
                 #norse
                 if (iGameTurn >= con.i650BC and iGameTurn <= con.i550AD):

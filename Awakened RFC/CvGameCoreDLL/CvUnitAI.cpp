@@ -2,6 +2,8 @@
 
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
+#include "CvEventReporter.h"
 #include "WorkerPathFinder.h"
 #include "CvUnitAI.h"
 #include "CvMap.h"
@@ -176,6 +178,15 @@ bool CvUnitAI::AI_update()
 			!GET_PLAYER(getOwnerINLINE()).AI_isPlotThreatened(plot(), 2, true, true) &&
 			AI_improveLocalPlot(3, NULL)) return false;
 	}
+
+    const UnitAITypes barbarianRole = AI_getUnitAIType();
+    if (fastLateGame() && isBarbarian() && !isCargo() && !hasCargo() &&
+        (barbarianRole == UNITAI_ATTACK || barbarianRole == UNITAI_ATTACK_CITY ||
+         barbarianRole == UNITAI_PILLAGE || barbarianRole == UNITAI_ATTACK_SEA ||
+         barbarianRole == UNITAI_PIRATE_SEA)) {
+        AI_fastBarbarianMove();
+        return false;
+    }
 
 	if (AI_afterAttack())
 	{
@@ -1779,6 +1790,83 @@ void CvUnitAI::AI_workerMove()
 	return;
 }
 
+
+// Barbarians react to adjacent visible opportunities without strategic search.
+// Mission execution still uses the normal movement/combat machinery.
+void CvUnitAI::AI_fastBarbarianMove()
+{
+    OBSERVER_PERFORMANCE("fast.barbarianLocalMove");
+    observerPerformanceCount("count.fast.barbDecisions");
+    CvSelectionGroup* group = getGroup();
+    CvPlot* current = plot();
+    if (current->isCity() && current->getOwnerINLINE() == getOwnerINLINE() &&
+        current->getNumDefenders(getOwnerINLINE()) <= group->getNumUnits()) {
+        observerPerformanceCount("count.fast.barbGarrison");
+        group->pushMission(MISSION_SKIP);
+        return;
+    }
+    if (isEnemy(current->getTeam(), current) && canPillage(current)) {
+        observerPerformanceCount("count.fast.barbPillage");
+        group->pushMission(MISSION_PILLAGE, -1, -1, 0, false, false, MISSIONAI_PILLAGE, current);
+        return;
+    }
+    bool usefulBlockade = false;
+    if (getDomainType() == DOMAIN_SEA && canPlunder(current)) {
+        const int range = GC.getDefineINT("SHIP_BLOCKADE_RANGE");
+        for (int dx = -range; dx <= range && !usefulBlockade; ++dx)
+            for (int dy = -range; dy <= range && !usefulBlockade; ++dy) {
+                CvPlot* nearby = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
+                if (nearby && nearby->isVisible(getTeam(), false) && nearby->isCity() &&
+                    nearby->getTeam() != NO_TEAM && isEnemy(nearby->getTeam(), nearby)) usefulBlockade = true;
+            }
+    }
+    CvPlot* bestAttack = NULL;
+    CvPlot* bestMove = NULL;
+    int bestOdds = -1, bestMoveScore = -1;
+    for (int direction = 0; direction < NUM_DIRECTION_TYPES; ++direction) {
+        CvPlot* candidate = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)direction);
+        if (!candidate || !candidate->isVisible(getTeam(), false) || !AI_plotValid(candidate)) continue;
+        observerPerformanceCount("count.fast.barbVisibleNeighbors");
+        const bool enemy = candidate->isVisibleEnemyUnit(this) || candidate->isEnemyCity(*this);
+        if (enemy) {
+            if ((isMadeAttack() && !canAttackAgain()) || !canMoveInto(candidate, true)) continue;
+            const int odds = group->AI_attackOdds(candidate, true);
+            if (odds >= 25 && odds > bestOdds) { bestOdds = odds; bestAttack = candidate; }
+            continue;
+        }
+        if (!canMoveInto(candidate) || candidate->isVisibleEnemyUnit(this)) continue;
+        bool groupCanMove = true;
+        for (CLLNode<IDInfo>* node = group->headUnitNode(); node; node = group->nextUnitNode(node)) {
+            CvUnit* member = ::getUnit(node->m_data);
+            if (!member || !member->canMoveInto(candidate)) { groupCanMove = false; break; }
+        }
+        if (!groupCanMove) continue;
+        // Stable integer tie-breaking avoids consuming gameplay RNG.
+        const unsigned int mix = (unsigned int)(candidate->getX_INLINE() * 73856093u) ^
+            (unsigned int)(candidate->getY_INLINE() * 19349663u) ^
+            (unsigned int)(getID() * 83492791u) ^ (unsigned int)GC.getGameINLINE().getGameTurn();
+        int score = (int)(mix % 100u);
+        if (isEnemy(candidate->getTeam(), candidate)) score += 100;
+        if (canPillage(candidate)) score += 300;
+        if (score > bestMoveScore) { bestMoveScore = score; bestMove = candidate; }
+    }
+    if (bestAttack) {
+        observerPerformanceCount("count.fast.barbAttacks");
+        group->pushMission(MISSION_MOVE_TO, bestAttack->getX_INLINE(), bestAttack->getY_INLINE(), MOVE_DIRECT_ATTACK);
+    } else if (getDamage() >= 30 && canHeal(current)) {
+        observerPerformanceCount("count.fast.barbHeals");
+        group->pushMission(MISSION_HEAL);
+    } else if (usefulBlockade) {
+        observerPerformanceCount("count.fast.barbBlockades");
+        group->pushMission(MISSION_PLUNDER, -1, -1, 0, false, false, MISSIONAI_BLOCKADE, current);
+    } else if (bestMove) {
+        observerPerformanceCount("count.fast.barbMoves");
+        group->pushMission(MISSION_MOVE_TO, bestMove->getX_INLINE(), bestMove->getY_INLINE());
+    } else {
+        observerPerformanceCount("count.fast.barbIdle");
+        group->pushMission(MISSION_SKIP);
+    }
+}
 
 void CvUnitAI::AI_barbAttackMove()
 {

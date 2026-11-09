@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvGlobals.h"
 #include "CvSelectionGroup.h"
 #include "CvGameAI.h"
@@ -186,7 +187,24 @@ void CvSelectionGroup::doTurn()
 
 		if (AI_isControlled())
 		{
-			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0)))
+            CvUnit* head = getHeadUnit();
+            bool keepBlockade = fastLateGame() && getOwnerINLINE() == BARBARIAN_PLAYER &&
+                getActivityType() == ACTIVITY_PLUNDER && head && head->isBlockading() &&
+                head->canPlunder(plot()) && !(head->getDamage() >= 30 && head->canHeal(plot()));
+            if (keepBlockade) {
+                // A single adjacent visible attack opportunity wakes the group;
+                // otherwise leave ACTIVITY_PLUNDER and its trade network intact.
+                for (int direction = 0; direction < NUM_DIRECTION_TYPES && keepBlockade; ++direction) {
+                    CvPlot* nearby = plotDirection(getX(), getY(), (DirectionTypes)direction);
+                    if (nearby && nearby->isVisible(getTeam(), false) &&
+                        (nearby->isVisibleEnemyUnit(head) || nearby->isEnemyCity(*head)) &&
+                        head->canMoveInto(nearby, true) && AI_attackOdds(nearby, true) >= 25)
+                        keepBlockade = false;
+                }
+                if (keepBlockade && !isForceUpdate()) observerPerformanceCount("count.fast.barbBlockadeHeld");
+                else if (!keepBlockade) observerPerformanceCount("count.fast.barbBlockadeReact");
+            }
+			if (!keepBlockade && ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0))))
 			{
 				setForceUpdate(true);
 			}

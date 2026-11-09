@@ -1,5 +1,41 @@
 # AI-only observer recordings
 
+## Experimental fast AI behavior
+
+`RFCMP_FAST_LATE_GAME=1` enables the retained optimizations from
+`RFCMP_FAST_LATE_YEAR` (-10000 by default, covering all scenario starts). All
+multiplayer peers must use identical mod files and settings. Set the switch to 0
+to disable these changes.
+
+Barbarian attack, pillage and pirate roles react to visible adjacent plots:
+defend a last city garrison, pillage, attack, heal, blockade or move one tile.
+They do not plan multi-turn raids or search for distant cities. Active barbarian
+blockades persist unless an adjacent attack, healing, invalid position or another
+forced update warrants a response. This deliberately makes barbarians less
+strategic. Other minor civilizations and player-owned privateers retain their
+existing AI.
+
+For AI civilizations, settlement-site scores refresh every eight turns with a
+settler and every sixteen turns otherwise; direct and starting-location updates
+remain immediate. Diplomacy and unit promotion, upgrade and associated disband
+reviews are staggered over four turns. Worker threat checks conservatively treat
+a visible attacker in range as dangerous without checking its path. These changes
+can delay decisions or cause workers to avoid unreachable threats. Human behavior
+is unchanged. An independent upgrade lookup optimization retains the normal
+upgrade-tier rules.
+
+Performance reports include `count.fast.*` events for skipped and performed
+reviews, settlement refreshes, threat checks and barbarian decisions, as well as
+`fast.barbarianLocalMove` and `fast.barbarianBlockadeUpdate` timings. These counts
+do not directly measure time saved. Compare matched scenarios and turn ranges;
+gameplay and multiplayer behavior require in-game validation.
+
+Authenticated performance recordings add `count.fast.*` event counters and
+record both settings. The report lists events alongside elapsed times. Compare
+matched scenarios and turn ranges, and inspect world state and outcomes as well
+as timings. Event counts do not measure saved time. Neither gameplay nor
+multiplayer synchronization has been validated in-game.
+
 All external test launchers, analysis tools, configuration and recordings live
 in this `testing/` directory. Launchers can be double-clicked from here;
 Python command examples below assume the repository root as the working directory.

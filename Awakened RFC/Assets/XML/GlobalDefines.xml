@@ -1756,4 +1756,7 @@
     <!-- Pass-scoped trade cache; shadow sampling is reporting-only (zero disables checks). -->
     <Define><DefineName>RFCMP_PERF_TRADE_CACHE</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_PERF_SHADOW_INTERVAL</DefineName><iDefineIntVal>64</iDefineIntVal></Define>
+    <!-- Experimental deterministic late-game approximation, all peers must match. -->
+    <Define><DefineName>RFCMP_FAST_LATE_GAME</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_FAST_LATE_YEAR</DefineName><iDefineIntVal>-10000</iDefineIntVal></Define>
 </Civ4Defines>

@@ -133,11 +133,16 @@ def tuning_report(window):
     for row in sorted(counters, key=lambda row: row['calculation']):
         if not row['calculation'].startswith('count.perf.config.'):
             lines.append(f"| {row['calculation'].removeprefix('count.perf.')} | {row['work_units']:.0f} | {row['work_units'] / max(1, window['boundaries']):.2f} |")
-    checks = [row for row in window['calculations'] if row['calculation'].startswith('check.perf.')]
+    checks = [row for row in window['calculations'] if row['calculation'].startswith(('check.perf.', 'check.fast.'))]
     if checks:
         lines += ['', '| Sampled comparison | Calls | Inclusive seconds |', '| --- | ---: | ---: |']
         for row in checks:
             lines.append(f"| {row['calculation']} | {row['calls']:.0f} | {row['inclusive_seconds']:.3f} |")
+    fast = [row for row in window['calculations'] if row['calculation'].startswith('count.fast.')]
+    if fast:
+        lines += ['', '| Experimental late-game action | Events | Per recorded boundary |', '| --- | ---: | ---: |']
+        for row in sorted(fast, key=lambda row: row['calculation']):
+            lines.append(f"| {row['calculation'].removeprefix('count.fast.')} | {row['work_units']:.0f} | {row['work_units'] / max(1, window['boundaries']):.2f} |")
     lines += ['', 'Shadow checks are included in turn timings. '
               'Trade cache mismatch counters indicate invalid cached inputs; missing counters mean no observed events. '
               '`performance-outcomes.csv` records per-player totals and planning hashes for locating divergences. '

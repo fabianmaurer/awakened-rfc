@@ -3,6 +3,7 @@
 #include "CvGameCoreDLL.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvUnit.h"
 #include "CvArea.h"
 #include "CvPlot.h"
@@ -4978,6 +4979,7 @@ void CvUnit::updatePlunder(int iChange, bool bUpdatePlotGroups)
 
 		if (bUpdatePlotGroups)
 		{
+            if (isBarbarian() && fastLateGame()) observerPerformanceCount("count.fast.barbBlockadeNetworkRebuilds");
 			GC.getGameINLINE().updatePlotGroups();
 		}
 	}
@@ -7199,27 +7201,27 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	CvUnitInfo& kUnitInfo = GC.getUnitInfo(eUnit);
 
-    // Only the newest weapon tier unlocked by this team is an armed-slave
-    // upgrade target. Keep the XML chain so obsolete slaves can skip directly
-    // to it; do not offer cheaper intermediate tiers to the player or AI.
-    const char* aszArmedSlaveTypes[] = {
-        "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN",
-        "UNIT_SLAVE_MACEMAN", "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN",
-        "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
-    };
-    UnitTypes eLatestArmedSlave = NO_UNIT;
-    bool bArmedSlaveTarget = false;
-    for (int iSlaveTier = 0; iSlaveTier < (int)(sizeof(aszArmedSlaveTypes) / sizeof(aszArmedSlaveTypes[0])); ++iSlaveTier)
-    {
-        UnitTypes eSlaveTier = (UnitTypes)GC.getInfoTypeForString(aszArmedSlaveTypes[iSlaveTier]);
-        if (eSlaveTier == NO_UNIT) continue;
-        if (eUnit == eSlaveTier) bArmedSlaveTarget = true;
-        TechTypes eWeaponTech = (TechTypes)GC.getUnitInfo(eSlaveTier).getPrereqAndTech();
-        if (eWeaponTech == NO_TECH || GET_TEAM(getTeam()).isHasTech(eWeaponTech))
-            eLatestArmedSlave = eSlaveTier;
+    // Most upgrade targets are not slave tiers. Check the target name first
+    // so ordinary units avoid seven XML lookups and technology checks per call.
+    const char* targetName = kUnitInfo.getType();
+    if (targetName && (strncmp(targetName, "UNIT_SLAVE_", 11) == 0 || strcmp(targetName, "UNIT_ARMED_SLAVE") == 0)) {
+        const char* slaveTypes[] = {
+            "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN", "UNIT_SLAVE_MACEMAN",
+            "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN", "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+        };
+        bool isTier = false;
+        for (int tier = 0; tier < 7; ++tier) if (strcmp(targetName, slaveTypes[tier]) == 0) { isTier = true; break; }
+        if (isTier) {
+            UnitTypes latest = NO_UNIT;
+            for (int tier = 0; tier < 7; ++tier) {
+                const UnitTypes type = (UnitTypes)GC.getInfoTypeForString(slaveTypes[tier]);
+                if (type == NO_UNIT) continue;
+                const TechTypes tech = (TechTypes)GC.getUnitInfo(type).getPrereqAndTech();
+                if (tech == NO_TECH || GET_TEAM(getTeam()).isHasTech(tech)) latest = type;
+            }
+            if (eUnit != latest) return NULL;
+        }
     }
-    if (bArmedSlaveTarget && eUnit != eLatestArmedSlave)
-        return NULL;
 
 	if (GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(kUnitInfo.getUnitClassType()) != eUnit)
 	{
@@ -11248,8 +11250,11 @@ void CvUnit::setBlockading(bool bNewValue)
 	if (bNewValue != isBlockading())
 	{
 		m_bBlockading = bNewValue;
-
-		updatePlunder(isBlockading() ? 1 : -1, true);
+        if (isBarbarian() && fastLateGame()) {
+            observerPerformanceCount(bNewValue ? "count.fast.barbBlockadeStarts" : "count.fast.barbBlockadeEnds");
+            ObserverPerformanceScope scope("fast.barbarianBlockadeUpdate");
+            updatePlunder(isBlockading() ? 1 : -1, true);
+        } else updatePlunder(isBlockading() ? 1 : -1, true);
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "CvGameCoreDLL.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvPlayerAI.h"
 #include "CvRandom.h"
 #include "CvGlobals.h"
@@ -370,7 +371,8 @@ void CvPlayerAI::AI_doTurnPost()
 		return;
 	}
 
-	AI_doDiplo();
+    if (!fastLateGame() || fastLateDue(getID(), 4)) AI_doDiplo();
+    else observerPerformanceCount("count.fast.diplomacySkipped");
 
 	//AI_doSplit(); //Rhye - disabled until a solution for vassalage is found
 
@@ -387,7 +389,16 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPre");
 	PROFILE_FUNC();
 
-	AI_updateFoundValues();
+    // The experimental AI keeps site scores for several turns. Direct and
+    // starting-location recalculations remain immediate. Human players are
+    // unchanged; a civilization with settlers refreshes more often.
+    const bool fastSites = !isHuman() && fastLateGame();
+    const int settleInterval = fastSites && AI_totalUnitAIs(UNITAI_SETTLE) > 0 ? 8 : 16;
+    if (!fastSites || GC.getGameINLINE().getGameTurn() <= GC.getGameINLINE().getStartTurn() + 1 ||
+        fastLateDue(getID(), settleInterval)) {
+        observerPerformanceCount(fastSites ? "count.fast.foundRefresh" : "count.fast.foundRegularRefresh");
+        AI_updateFoundValues();
+    } else observerPerformanceCount("count.fast.foundRefreshSkipped");
 
 	if (GC.getGameINLINE().getSorenRandNum(8, "AI Update Area Targets") == 0) // XXX personality???
 	{
@@ -435,6 +446,11 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 	{
 		for(pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
 		{
+            if (!isHuman() && fastLateGame() && !fastLateDue(pLoopUnit->getID() + getID(), 4)) {
+                observerPerformanceCount("count.fast.promotionReviewsDeferred");
+                continue;
+            }
+            observerPerformanceCount("count.fast.promotionReviews");
 			pLoopUnit->AI_promote();
 		}
 	}
@@ -449,6 +465,11 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 	{
 		for(pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
 		{
+            if (fastLateGame() && !fastLateDue(pLoopUnit->getID() + getID(), 4)) {
+                if (iPass == 3) observerPerformanceCount("count.fast.upgradeReviewsDeferred");
+                continue;
+            }
+            if (iPass == 3) observerPerformanceCount("count.fast.upgradeReviews");
 			bool bNoDisband = false;
 			bValid = false;
 
@@ -19074,6 +19095,12 @@ bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves,
 							if (pLoopUnit->canMoveOrAttackInto(pPlot))
 							{
 								int iPathTurns = 0;
+                                if (bTestMoves && !isHuman() && fastLateGame()) {
+                                    // Conservative regional estimate: a visible attacker in
+                                    // range is dangerous even if terrain blocks its route.
+                                    observerPerformanceCount("count.fast.threatPathsSkipped");
+                                    return true;
+                                }
 								if (bTestMoves)
 								{
 									if (!pLoopUnit->getGroup()->generatePath(pLoopPlot, pPlot, MOVE_MAX_MOVES | MOVE_IGNORE_DANGER, false, &iPathTurns))

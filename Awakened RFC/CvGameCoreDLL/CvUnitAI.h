@@ -85,6 +85,7 @@ protected:
 	FAStarNode* AI_workerPathLastNode() const;
 	CvPlot* AI_workerPathEndTurnPlot() const;
 	void AI_barbAttackMove();
+    void AI_fastBarbarianMove();
 	void AI_attackMove();
 	bool AI_slaveMove();
 	bool AI_slaveMilitaryNeeded() const;
