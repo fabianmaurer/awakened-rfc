@@ -4,7 +4,6 @@
 #include "TradePlanning.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
-#include "FastLateGame.h"
 #include "CvGlobals.h"
 #include "CvArea.h"
 #include "CvGameAI.h"
@@ -2938,8 +2937,7 @@ void CvPlayer::doTurn()
 
 	// Refresh dynamic civic yields in saves made before the Democracy bonus.
 	updateExtraSpecialistYield();
-    if (isHuman() || !fastLateGame() || fastLateDue(getID(), 4)) updateTradeRoutes();
-    else observerPerformanceCount("count.fast.tradeTurnRefreshSkipped");
+	updateTradeRoutes();
 
 	updateWarWearinessPercentAnger();
 

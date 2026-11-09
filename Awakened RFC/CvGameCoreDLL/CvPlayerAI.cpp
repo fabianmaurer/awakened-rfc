@@ -415,45 +415,6 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 		return;
 	}
 	
-    // Merge idle, same-role troops already on the same friendly tile. Existing
-    // selection groups then share one head-unit decision and one mission path.
-    // Campaign units, transport cargo and units near any human remain detailed.
-    if (fastLateGame()) {
-        int unitLoop;
-        for (CvUnit* unit = firstUnit(&unitLoop); unit; unit = nextUnit(&unitLoop)) {
-            const UnitAITypes role = unit->AI_getUnitAIType();
-            if (unit->getDomainType() != DOMAIN_LAND || unit->getGroup()->getNumUnits() != 1 ||
-                unit->getGroup()->getLengthMissionQueue() != 0 || unit->getJihadGroupCampaign() >= 0 ||
-                unit->isCargo() || unit->hasCargo() || unit->plot()->getOwnerINLINE() != getID() ||
-                (role != UNITAI_ATTACK_CITY && role != UNITAI_ATTACK && role != UNITAI_COLLATERAL)) continue;
-            CvUnit* leader = NULL;
-            for (CLLNode<IDInfo>* node = unit->plot()->headUnitNode(); node; node = unit->plot()->nextUnitNode(node)) {
-                CvUnit* other = ::getUnit(node->m_data);
-                if (!other || other->getOwnerINLINE() != getID() || other->getID() >= unit->getID() ||
-                    other->AI_getUnitAIType() != role || other->getGroup()->getHeadUnit() != other ||
-                    other->getGroup()->getLengthMissionQueue() != 0 ||
-                    other->getJihadGroupCampaign() >= 0 || !unit->canJoinGroup(unit->plot(), other->getGroup())) continue;
-                if (!leader || other->getID() < leader->getID()) leader = other;
-            }
-            if (!leader) continue;
-            bool humanNear = false;
-            for (int dx = -5; dx <= 5 && !humanNear; ++dx) for (int dy = -5; dy <= 5 && !humanNear; ++dy) {
-                CvPlot* nearby = plotXY(unit->getX_INLINE(), unit->getY_INLINE(), dx, dy);
-                if (!nearby) continue;
-                if (nearby->getOwnerINLINE() != NO_PLAYER && GET_PLAYER(nearby->getOwnerINLINE()).isHuman()) humanNear = true;
-                for (CLLNode<IDInfo>* node = nearby->headUnitNode(); node && !humanNear; node = nearby->nextUnitNode(node)) {
-                    CvUnit* other = ::getUnit(node->m_data);
-                    if (other && other->isHuman()) humanNear = true;
-                }
-            }
-            if (!leader || humanNear) continue;
-            if (leader) {
-                unit->joinGroup(leader->getGroup());
-                observerPerformanceCount("count.fast.armyUnitsMerged");
-            }
-        }
-    }
-
 	// Old captives may be grouped under a soldier; give them their own update.
 	UnitTypes eSlave = (UnitTypes)GC.getInfoTypeForString("UNIT_SLAVE");
 	int iLoop;

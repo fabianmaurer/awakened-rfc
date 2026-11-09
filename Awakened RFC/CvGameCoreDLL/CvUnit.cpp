@@ -1203,46 +1203,9 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 
 	collateralCombat(pPlot, pDefender);
 
-    bool quickBattle = fastLateGame() && !isHuman() && !pDefender->isHuman() &&
-        !pPlot->isCity() && getDomainType() == DOMAIN_LAND && pDefender->getDomainType() == DOMAIN_LAND &&
-        !isAnimal() && !pDefender->isAnimal();
-    if (quickBattle) {
-        // Check all human participants, not the local active player.
-        for (int dx = -5; dx <= 5 && quickBattle; ++dx) for (int dy = -5; dy <= 5 && quickBattle; ++dy) {
-            CvPlot* nearby = plotXY(pPlot->getX_INLINE(), pPlot->getY_INLINE(), dx, dy);
-            if (!nearby) continue;
-            if (nearby->getOwnerINLINE() != NO_PLAYER && GET_PLAYER(nearby->getOwnerINLINE()).isHuman()) quickBattle = false;
-            for (CLLNode<IDInfo>* node = nearby->headUnitNode(); node && quickBattle; node = nearby->nextUnitNode(node)) {
-                CvUnit* unit = ::getUnit(node->m_data);
-                if (unit && unit->isHuman()) quickBattle = false;
-            }
-        }
-    }
-    bool quickDone = false;
 	while (true)
 	{
-        if (quickBattle && !quickDone) {
-            quickDone = true;
-            observerPerformanceCount("count.fast.abstractBattles");
-            const int odds = getCombatOdds(this, pDefender);
-            if (GC.getGameINLINE().getSorenRandNum(1000, "Fast distant combat") < odds) {
-                // One outcome draw replaces combat rounds; normal post-combat
-                // experience, conquest, callbacks and delayed death still run.
-                if (combatLimit() < pDefender->maxHitPoints()) {
-                    pDefender->setDamage(std::max(pDefender->getDamage(), combatLimit()), getOwnerINLINE());
-                    changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
-                    break;
-                }
-                pDefender->setDamage(pDefender->maxHitPoints(), getOwnerINLINE());
-            } else if (GC.getGameINLINE().getSorenRandNum(100, "Fast combat withdrawal") < withdrawalProbability(pDefender)) {
-                changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
-                break;
-            } else {
-                bSlaveCapture = false;
-                setDamage(maxHitPoints(), pDefender->getOwnerINLINE());
-            }
-        }
-        else if (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("COMBAT_DIE_SIDES"), "Combat") < iDefenderOdds)
+		if (GC.getGameINLINE().getSorenRandNum(GC.getDefineINT("COMBAT_DIE_SIDES"), "Combat") < iDefenderOdds)
 		{
 			if (getCombatFirstStrikes() == 0)
 			{
