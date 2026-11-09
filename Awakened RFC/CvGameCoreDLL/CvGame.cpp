@@ -235,6 +235,8 @@ void observerPerformanceFlush()
     if (observerTimingPath.empty() || observerTimings.empty()) return;
     observerRuntimeSample();
     observerPerformanceCount("count.perf.config.TRADE_CACHE", GC.getDefineINT("RFCMP_PERF_TRADE_CACHE"));
+    observerPerformanceCount("count.perf.config.FAST_LATE_GAME", GC.getDefineINT("RFCMP_FAST_LATE_GAME"));
+    observerPerformanceCount("count.perf.config.FAST_LATE_YEAR", GC.getDefineINT("RFCMP_FAST_LATE_YEAR"));
     observerPerformanceCount("count.perf.config.SHADOW_INTERVAL", GC.getDefineINT("RFCMP_PERF_SHADOW_INTERVAL"));
     FILE* file = fopen(observerTimingPath.c_str(), "a");
     if (!file) return;

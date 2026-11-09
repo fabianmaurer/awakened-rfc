@@ -1,5 +1,76 @@
 # AI-only observer recordings
 
+## Experimental fast late-game branch
+
+On `experimental/fast-late-game`, `RFCMP_FAST_LATE_GAME=1` enables the
+prototype from year `RFCMP_FAST_LATE_YEAR` (-10000 by default, covering all
+scenario starts). All peers must
+use identical mod files and settings. Set the switch to 0 to disable it.
+
+The prototype groups idle same-role AI troops on friendly tiles, except near
+human units or territory. Distant land battles between AI units use one combat
+odds draw rather than individual combat rounds; city battles, animals, human
+participants and battles near human units or territory keep normal combat.
+Normal combat aftermath, city capture and callbacks remain. Workers in safe
+friendly territory contribute their work directly to their city's best valid
+improvement project without travelling to the tile. Other workers use normal AI.
+
+AI trade chooses connected partners using population and foreign-trade bonuses;
+citizen assignment retains valid workers and fills vacancies instead of rebuilding
+and juggling all assignments. Diplomacy, routine trade refreshes and city planning
+are staggered. Worker threat checks treat a visible attacker in range as dangerous
+without pathfinding. Barbarian attack, pillage and pirate roles react to visible
+adjacent plots: defend a last city garrison, pillage, attack, heal, blockade or
+move one tile. They do not plan multi-turn raids or search for distant cities;
+other minor civilizations and player-owned privateers keep their existing AI.
+`fast.barbarianLocalMove` and `count.fast.barb*` measure these decisions. Normal
+mission execution can still invoke the pathfinder. The existing AI loop guard remains; the experimental caps on
+group size, target scans and AI decisions were removed. No new city/unit caps are
+applied. AI behavior, trade and combat can differ substantially; a 90% speedup
+has not been demonstrated.
+
+Barbarian ships begin a blockade only near a visible enemy city. An active
+barbarian blockade stays in place across turns unless an adjacent attack, healing,
+invalid position or another forced update warrants a response. `barbBlockadeHeld`,
+`barbBlockadeReact`, `barbBlockadeStarts`, `barbBlockadeEnds` and
+`barbBlockadeNetworkRebuilds` count these events; `fast.barbarianBlockadeUpdate`
+times network work. Compare these alongside `plotGroup.recalculate`, trade-route
+update counts, turn time and world state. Event counts alone are not saved time.
+
+Further experimental reductions reuse settlement scores for up to eight turns
+when settlers exist and sixteen turns otherwise, refresh improvement plans every
+twelve turns, estimate worker needs from nearby workers and unimproved plots,
+and rank fallback attack targets by population, capital/wonder status and
+straight-line distance before searching until one is reachable. Explicit and
+campaign targets retain precedence; no fixed candidate limit is imposed.
+Stale scores, approximate worker demand and different targets can change play.
+Starting-location and direct settlement updates, human behavior, and normal
+upgrade-tier rules remain. The upgrade check avoids tier lookups for unrelated
+unit types.
+
+AI unit promotion, upgrade and associated disband reviews are staggered by unit
+over four turns. This reduces repeated per-unit work but can delay a promotion or
+upgrade by up to three turns and changes when the AI may disband a unit. Human
+promotion and upgrade behavior is unchanged. The `promotionReviews*` and
+`upgradeReviews*` counters record performed and deferred reviews.
+
+The report records settlement refresh/skipped counts, city-plan refresh/skipped
+counts, worker-demand estimates and target candidate/path counts. Sparse
+`check.fast.targetReference` searches compare the chosen target with exhaustive
+scoring; `targetShadowSamples` and `targetChoiceMismatch` record disagreement,
+and decision CSV entries identify both targets. These checks use the same
+game state and deterministic sampling, reset the path cache, and their time is
+included in the trace. A different target is an expected approximation, not a
+proof of an acceptable gameplay outcome. Set `RFCMP_PERF_SHADOW_INTERVAL` to 0
+for clean timings. Neither a 30% gain nor multiplayer readiness is claimed
+before user-operated validation.
+
+Authenticated performance recordings add `count.fast.*` event counters and
+record both settings. The report lists events alongside elapsed times. Compare
+matched scenarios and turn ranges, and inspect world state and outcomes as well
+as timings. Event counts do not measure saved time. Neither gameplay nor
+multiplayer synchronization has been validated in-game.
+
 All external test launchers, analysis tools, configuration and recordings live
 in this `testing/` directory. Launchers can be double-clicked from here;
 Python command examples below assume the repository root as the working directory.

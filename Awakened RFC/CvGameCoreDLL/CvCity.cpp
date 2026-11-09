@@ -4,6 +4,7 @@
 #include "TradePlanning.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvGlobals.h"
 #include "CvCity.h"
 #include "CvArea.h"
@@ -9096,6 +9097,10 @@ int CvCity::getTradeInfrastructureEfficiency(CvCity* pCity) const
 }
 int CvCity::calculateTradeProfit(CvCity* pCity) const
 {
+    if (!isHuman() && fastLateGame()) {
+        if (!pCity || !isConnectedTo(pCity)) return 0;
+        return std::max(1, std::min(getPopulation(), pCity->getPopulation()) / 4 + (getTeam() != pCity->getTeam() ? 1 : 0));
+    }
     std::vector<bool> reachable;
     std::vector<bool> roads;
     const int iTarget = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
@@ -12056,6 +12061,41 @@ void CvCity::clearTradeRoutes()
 void CvCity::updateTradeRoutes()
 {
 	OBSERVER_PERFORMANCE("CvCity::updateTradeRoutes");
+    if (!isHuman() && fastLateGame()) {
+        OBSERVER_PERFORMANCE("fast.tradeUpdate");
+        clearTradeRoutes();
+        int total = 0;
+        if (!isDisorder() && !isPlundered()) {
+            for (int route = 0; route < getTradeRoutes(); ++route) {
+                CvCity* bestCity = NULL;
+                int bestValue = 0;
+                for (int player = 0; player < MAX_PLAYERS; ++player) {
+                    if (!GET_PLAYER(getOwnerINLINE()).canHaveTradeRoutesWith((PlayerTypes)player)) continue;
+                    int loop;
+                    for (CvCity* city = GET_PLAYER((PlayerTypes)player).firstCity(&loop); city;
+                         city = GET_PLAYER((PlayerTypes)player).nextCity(&loop)) {
+                        if (city == this || city->isTradeRoute(getOwnerINLINE()) || !isConnectedTo(city)) continue;
+                        bool alreadySelected = false;
+                        for (int previous = 0; previous < route; ++previous)
+                            if (getTradeCity(previous) == city) { alreadySelected = true; break; }
+                        if (alreadySelected) continue;
+                        const int value = calculateTradeProfit(city);
+                        if (value > bestValue) { bestValue = value; bestCity = city; }
+                    }
+                }
+                if (!bestCity) break;
+                m_paTradeCities[route] = bestCity->getIDInfo();
+                bestCity->setTradeRoute(getOwnerINLINE(), true);
+                bestCity->plot()->setRevealed(getTeam(), true, false, NO_TEAM, false);
+                total += bestValue;
+                observerPerformanceCount("count.fast.tradeRoutes");
+            }
+        }
+        for (int yield = 0; yield < NUM_YIELD_TYPES; ++yield)
+            setTradeYield((YieldTypes)yield, calculateTradeYield((YieldTypes)yield, total));
+        observerPerformanceCount("count.fast.tradeUpdates");
+        return;
+    }
     TradePlanningCache planningCache;
     std::vector<bool> reachable;
     std::vector<bool> roads;

@@ -2,6 +2,8 @@
 
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
+#include "CvEventReporter.h"
 #include "WorkerPathFinder.h"
 #include "CvUnitAI.h"
 #include "CvMap.h"
@@ -177,6 +179,15 @@ bool CvUnitAI::AI_update()
 			AI_improveLocalPlot(3, NULL)) return false;
 	}
 
+    const UnitAITypes barbarianRole = AI_getUnitAIType();
+    if (fastLateGame() && isBarbarian() && !isCargo() && !hasCargo() &&
+        (barbarianRole == UNITAI_ATTACK || barbarianRole == UNITAI_ATTACK_CITY ||
+         barbarianRole == UNITAI_PILLAGE || barbarianRole == UNITAI_ATTACK_SEA ||
+         barbarianRole == UNITAI_PIRATE_SEA)) {
+        AI_fastBarbarianMove();
+        return false;
+    }
+
 	if (AI_afterAttack())
 	{
 		return false;
@@ -292,7 +303,37 @@ bool CvUnitAI::AI_update()
 			break;
 
 		case UNITAI_WORKER:
-			AI_workerMove();
+            if (fastLateGame() && !isHuman() && plot()->getOwnerINLINE() == getOwnerINLINE() &&
+                !GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2)) {
+                // A worker contributes its normal work rate to the best viable
+                // project around its assigned city without a per-tile route search.
+                CvCity* city = plot()->getWorkingCity();
+                if (!city) city = GC.getMapINLINE().findCity(getX_INLINE(), getY_INLINE(), getOwnerINLINE(), NO_TEAM, true);
+                CvPlot* target = NULL;
+                BuildTypes build = NO_BUILD;
+                int best = 0;
+                if (city && city->getOwnerINLINE() == getOwnerINLINE()) {
+                    for (int index = 0; index < NUM_CITY_PLOTS; ++index) {
+                        CvPlot* candidate = city->getCityIndexPlot(index);
+                        BuildTypes choice = city->AI_getBestBuild(index);
+                        if (!candidate || candidate->getWorkingCity() != city ||
+                            candidate->getOwnerINLINE() != getOwnerINLINE() || choice == NO_BUILD ||
+                            GC.getBuildInfo(choice).isKill() || !canBuild(candidate, choice) ||
+                            candidate->isVisibleEnemyUnit(this)) continue;
+                        const int value = city->AI_getBestBuildValue(index);
+                        if (value > best) { best = value; target = candidate; build = choice; }
+                    }
+                }
+                if (target && build != NO_BUILD) {
+                    const int work = workRate(false);
+                    const int cost = GET_PLAYER(getOwnerINLINE()).getBuildCost(target, build);
+                    GET_PLAYER(getOwnerINLINE()).changeGold(-cost);
+                    const bool finished = target->changeBuildProgress(build, work, getTeam());
+                    finishMoves();
+                    observerPerformanceCount("count.fast.workerProjects");
+                    CvEventReporter::getInstance().unitBuildImprovement(this, build, finished);
+                } else { getGroup()->pushMission(MISSION_SKIP); observerPerformanceCount("count.fast.workerIdle"); }
+            } else AI_workerMove();
 			break;
 
 		case UNITAI_ATTACK:
@@ -1779,6 +1820,83 @@ void CvUnitAI::AI_workerMove()
 	return;
 }
 
+
+// Barbarians react to adjacent visible opportunities without strategic search.
+// Mission execution still uses the normal movement/combat machinery.
+void CvUnitAI::AI_fastBarbarianMove()
+{
+    OBSERVER_PERFORMANCE("fast.barbarianLocalMove");
+    observerPerformanceCount("count.fast.barbDecisions");
+    CvSelectionGroup* group = getGroup();
+    CvPlot* current = plot();
+    if (current->isCity() && current->getOwnerINLINE() == getOwnerINLINE() &&
+        current->getNumDefenders(getOwnerINLINE()) <= group->getNumUnits()) {
+        observerPerformanceCount("count.fast.barbGarrison");
+        group->pushMission(MISSION_SKIP);
+        return;
+    }
+    if (isEnemy(current->getTeam(), current) && canPillage(current)) {
+        observerPerformanceCount("count.fast.barbPillage");
+        group->pushMission(MISSION_PILLAGE, -1, -1, 0, false, false, MISSIONAI_PILLAGE, current);
+        return;
+    }
+    bool usefulBlockade = false;
+    if (getDomainType() == DOMAIN_SEA && canPlunder(current)) {
+        const int range = GC.getDefineINT("SHIP_BLOCKADE_RANGE");
+        for (int dx = -range; dx <= range && !usefulBlockade; ++dx)
+            for (int dy = -range; dy <= range && !usefulBlockade; ++dy) {
+                CvPlot* nearby = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
+                if (nearby && nearby->isVisible(getTeam(), false) && nearby->isCity() &&
+                    nearby->getTeam() != NO_TEAM && isEnemy(nearby->getTeam(), nearby)) usefulBlockade = true;
+            }
+    }
+    CvPlot* bestAttack = NULL;
+    CvPlot* bestMove = NULL;
+    int bestOdds = -1, bestMoveScore = -1;
+    for (int direction = 0; direction < NUM_DIRECTION_TYPES; ++direction) {
+        CvPlot* candidate = plotDirection(getX_INLINE(), getY_INLINE(), (DirectionTypes)direction);
+        if (!candidate || !candidate->isVisible(getTeam(), false) || !AI_plotValid(candidate)) continue;
+        observerPerformanceCount("count.fast.barbVisibleNeighbors");
+        const bool enemy = candidate->isVisibleEnemyUnit(this) || candidate->isEnemyCity(*this);
+        if (enemy) {
+            if ((isMadeAttack() && !canAttackAgain()) || !canMoveInto(candidate, true)) continue;
+            const int odds = group->AI_attackOdds(candidate, true);
+            if (odds >= 25 && odds > bestOdds) { bestOdds = odds; bestAttack = candidate; }
+            continue;
+        }
+        if (!canMoveInto(candidate) || candidate->isVisibleEnemyUnit(this)) continue;
+        bool groupCanMove = true;
+        for (CLLNode<IDInfo>* node = group->headUnitNode(); node; node = group->nextUnitNode(node)) {
+            CvUnit* member = ::getUnit(node->m_data);
+            if (!member || !member->canMoveInto(candidate)) { groupCanMove = false; break; }
+        }
+        if (!groupCanMove) continue;
+        // Stable integer tie-breaking avoids consuming gameplay RNG.
+        const unsigned int mix = (unsigned int)(candidate->getX_INLINE() * 73856093u) ^
+            (unsigned int)(candidate->getY_INLINE() * 19349663u) ^
+            (unsigned int)(getID() * 83492791u) ^ (unsigned int)GC.getGameINLINE().getGameTurn();
+        int score = (int)(mix % 100u);
+        if (isEnemy(candidate->getTeam(), candidate)) score += 100;
+        if (canPillage(candidate)) score += 300;
+        if (score > bestMoveScore) { bestMoveScore = score; bestMove = candidate; }
+    }
+    if (bestAttack) {
+        observerPerformanceCount("count.fast.barbAttacks");
+        group->pushMission(MISSION_MOVE_TO, bestAttack->getX_INLINE(), bestAttack->getY_INLINE(), MOVE_DIRECT_ATTACK);
+    } else if (getDamage() >= 30 && canHeal(current)) {
+        observerPerformanceCount("count.fast.barbHeals");
+        group->pushMission(MISSION_HEAL);
+    } else if (usefulBlockade) {
+        observerPerformanceCount("count.fast.barbBlockades");
+        group->pushMission(MISSION_PLUNDER, -1, -1, 0, false, false, MISSIONAI_BLOCKADE, current);
+    } else if (bestMove) {
+        observerPerformanceCount("count.fast.barbMoves");
+        group->pushMission(MISSION_MOVE_TO, bestMove->getX_INLINE(), bestMove->getY_INLINE());
+    } else {
+        observerPerformanceCount("count.fast.barbIdle");
+        group->pushMission(MISSION_SKIP);
+    }
+}
 
 void CvUnitAI::AI_barbAttackMove()
 {
@@ -11461,6 +11579,17 @@ CvCity* CvUnitAI::AI_jihadCampaignTarget(bool bEgyptCoastOnly)
     return pBest;
 }
 
+namespace {
+    struct FastTargetCandidate {
+        CvCity* city;
+        int score, ordinal;
+        FastTargetCandidate(CvCity* c, int s, int o) : city(c), score(s), ordinal(o) {}
+        bool operator<(const FastTargetCandidate& other) const {
+            return score != other.score ? score > other.score : ordinal < other.ordinal;
+        }
+    };
+}
+
 bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrderedCity)
 {
 	OBSERVER_PERFORMANCE("unitTask.AI_targetCity");
@@ -11495,7 +11624,68 @@ bool CvUnitAI::AI_targetCity(int iFlags, PlayerTypes eTargetPlayer, CvCity* pOrd
 		}
 	}
 
-	if (pBestCity == NULL && pOrderedCity == NULL)
+    const bool fastTarget = !isHuman() && fastLateGame() && pBestCity == NULL && pOrderedCity == NULL;
+    if (fastTarget) {
+        OBSERVER_PERFORMANCE("fast.targetSearch");
+        std::vector<FastTargetCandidate> candidates;
+        int ordinal = 0;
+        for (int player = 0; player < MAX_CIV_PLAYERS; ++player) {
+            if (eTargetPlayer != NO_PLAYER && player != eTargetPlayer) continue;
+            CvPlayer& rival = GET_PLAYER((PlayerTypes)player);
+            if (!rival.isAlive()) continue;
+            int cityLoop;
+            for (CvCity* city = rival.firstCity(&cityLoop); city; city = rival.nextCity(&cityLoop), ++ordinal) {
+                if (atPlot(city->plot()) || !AI_plotValid(city->plot()) || !AI_potentialEnemy(rival.getTeam(), city->plot())) continue;
+                const int distance = stepDistance(getX_INLINE(), getY_INLINE(), city->getX_INLINE(), city->getY_INLINE());
+                const int turns = 1 + distance / std::max(1, baseMoves());
+                const int value = 10 + city->getPopulation() + (city->isCapital() ? 8 : 0) + 2 * city->getNumWorldWonders();
+                candidates.push_back(FastTargetCandidate(city, value * 10000 / (4 + turns * turns), ordinal));
+                observerPerformanceCount("count.fast.targetCandidates");
+            }
+        }
+#if ARFC_ENABLE_REPORTING
+        const bool shadow = observerPerformanceSample(getID() * 337u + getOwnerINLINE());
+        const std::vector<FastTargetCandidate> referenceCandidates = shadow ? candidates : std::vector<FastTargetCandidate>();
+#endif
+        std::sort(candidates.begin(), candidates.end());
+        for (std::vector<FastTargetCandidate>::const_iterator candidate = candidates.begin(); candidate != candidates.end(); ++candidate) {
+            observerPerformanceCount("count.fast.targetPathAttempts");
+            if (generatePath(candidate->city->plot(), iFlags, true, &iPathTurns)) {
+                pBestCity = candidate->city;
+                break;
+            }
+        }
+        observerPerformanceCount("count.fast.targetSearches");
+#if ARFC_ENABLE_REPORTING
+        if (shadow) {
+            ObserverPerformanceScope check("check.fast.targetReference");
+            CvCity* reference = NULL;
+            int bestValue = 0;
+            getGroup()->resetPath();
+            for (std::vector<FastTargetCandidate>::const_iterator candidate = referenceCandidates.begin(); candidate != referenceCandidates.end(); ++candidate) {
+                observerPerformanceCount("count.fast.targetReferencePaths");
+                int turns;
+                if (!generatePath(candidate->city->plot(), iFlags, true, &turns)) continue;
+                int value = GET_PLAYER(getOwnerINLINE()).AI_targetCityValue(candidate->city,
+                    AI_getUnitAIType() != UNITAI_ATTACK_CITY, AI_getUnitAIType() != UNITAI_ATTACK_CITY);
+                value *= 1000;
+                if (area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE && candidate->city->calculateCulturePercent(getOwnerINLINE()) < 75) value /= 2;
+                value /= 4 + turns * turns;
+                if (value > bestValue) { bestValue = value; reference = candidate->city; }
+            }
+            observerPerformanceCount("count.fast.targetShadowSamples");
+            if (reference != pBestCity) {
+                observerPerformanceCount("count.fast.targetChoiceMismatch");
+                observerPerformanceDecision("fast_target_mismatch", this, pBestCity ? pBestCity->getID() : -1);
+                observerPerformanceDecision("fast_target_reference", this, reference ? reference->getID() : -1);
+            }
+        }
+#endif
+        // Sampling must leave the same pathfinder state as a clean recording.
+        getGroup()->resetPath();
+    }
+
+	if (pBestCity == NULL && pOrderedCity == NULL && !fastTarget)
 	{
 		for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{

@@ -227,6 +227,8 @@ class Observer:
         self.performance = {}
         self.performance_stack = []
         self.performance_boundary = None
+        self.performance_start = None
+        self.performance_recent_turns = []
         self.output = None
         config = os.environ.get('AWAKENED_RFC_OBSERVER_CONFIG')
         token = os.environ.get('AWAKENED_RFC_OBSERVER_TOKEN')
@@ -498,6 +500,7 @@ class Observer:
                 self.started = True
                 self.camera_pending = self.reveal_map and self.autoplay
                 self.performance_boundary = time.clock()
+                self.performance_start = self.performance_boundary
                 scenario_label = self.scenario
                 if self.xl:
                     scenario_label += '-xl'
@@ -901,6 +904,9 @@ class Observer:
                 self.save_game('autosave')
             if self.mode == 'performance':
                 now = time.clock()
+                self.performance_recent_turns.append(now - self.performance_boundary)
+                if len(self.performance_recent_turns) > 10:
+                    del self.performance_recent_turns[0]
                 self.write({'kind': 'performance', 'turn': self.game.getGameTurn(),
                             'elapsed_turns': self.turns,
                             'boundary_seconds': now - self.performance_boundary,

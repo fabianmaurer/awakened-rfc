@@ -3,6 +3,7 @@
 #include "CvGameCoreDLL.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvGlobals.h"
 #include "CvGameCoreUtils.h"
 #include "CvCityAI.h"
@@ -204,9 +205,13 @@ void CvCityAI::AI_doTurn()
 
 	AI_updateWorkersNeededHere();
 
-	AI_updateBestBuild();
+    if (isHuman() || !fastLateGame() || fastLateDue(getID() + getOwnerINLINE(), 12)) {
+        observerPerformanceCount("count.fast.cityPlanRefresh");
+        AI_updateBestBuild();
+    } else observerPerformanceCount("count.fast.cityPlanSkipped");
 
-	AI_updateRouteToCity();
+    if (isHuman() || !fastLateGame() || fastLateDue(getID() + getOwnerINLINE(), 4)) AI_updateRouteToCity();
+    else observerPerformanceCount("count.fast.cityRoutePlanSkipped");
 
 	if (isHuman())
 	{
@@ -230,6 +235,20 @@ void CvCityAI::AI_doTurn()
 void CvCityAI::AI_assignWorkingPlots()
 {
     OBSERVER_PERFORMANCE("CvCityAI::AI_assignWorkingPlots");
+    if (!isHuman() && fastLateGame()) {
+        // Retain valid assignments and only repair population changes instead
+        // of rebuilding and repeatedly juggling every citizen.
+        AI_updateSpecialYieldMultiplier();
+        verifyWorkingPlots();
+        CvPlot* home = getCityIndexPlot(CITY_HOME_PLOT);
+        if (home) setWorkingPlot(CITY_HOME_PLOT, getPopulation() > 0 && canWork(home));
+        while (extraPopulation() < 0) if (!AI_removeWorstCitizen()) break;
+        while (extraPopulation() > 0) if (!AI_addBestCitizen(true, true)) break;
+        while (extraSpecialists() > 0) if (!AI_addBestCitizen(false, true)) break;
+        AI_setAssignWorkDirty(false);
+        observerPerformanceCount("count.fast.simpleAssignments");
+        return;
+    }
     CityAssignmentTradeCache tradeCache;
 	PROFILE_FUNC();
 
@@ -10350,6 +10369,27 @@ void CvCityAI::AI_changeWorkersHave(int iChange)
 void CvCityAI::AI_updateWorkersNeededHere()
 {
 	OBSERVER_PERFORMANCE("CvCityAI::AI_updateWorkersNeededHere");
+    if (!isHuman() && fastLateGame()) {
+        OBSERVER_PERFORMANCE("fast.workerDemandEstimate");
+        // City projects use the workers physically in this city's radius.
+        // Estimate demand from currently workable unimproved plots, avoiding
+        // hypothetical citizen reassignments and repeated yield simulation.
+        int have = 0, worked = 0, other = 0;
+        if (getProductionUnit() != NO_UNIT && getProductionUnitAI() == UNITAI_WORKER && getProductionTurnsLeft() <= 2) ++have;
+        for (int index = 0; index < NUM_CITY_PLOTS; ++index) {
+            CvPlot* candidate = getCityIndexPlot(index);
+            if (!candidate || candidate->getWorkingCity() != this || candidate->getArea() != getArea()) continue;
+            have += candidate->plotCount(PUF_isUnitAIType, UNITAI_WORKER, -1, getOwnerINLINE(), getTeam());
+            if (index != CITY_HOME_PLOT && candidate->getImprovementType() == NO_IMPROVEMENT && AI_getBestBuild(index) != NO_BUILD) {
+                if (candidate->isBeingWorked()) ++worked;
+                else ++other;
+            }
+        }
+        m_iWorkersHave = have;
+        m_iWorkersNeeded = (worked + 1) / 2 + (other > 0 && getPopulation() > worked ? 1 : 0);
+        observerPerformanceCount("count.fast.workerDemandEstimated");
+        return;
+    }
 	CvPlot* pLoopPlot;
 	
 	short aiYields[NUM_YIELD_TYPES];
