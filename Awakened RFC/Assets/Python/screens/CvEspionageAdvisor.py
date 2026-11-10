@@ -284,7 +284,7 @@ class CvEspionageAdvisor:
         if backgroundArt:
             background = self.name()
             screen.addDDSGFC(background, INTEL_ART + backgroundArt,
-                338, 250, 664, 354, WidgetTypes.WIDGET_GENERAL, -1, -1)
+                338, 250, 664, 370, WidgetTypes.WIDGET_GENERAL, -1, -1)
             screen.setHitTest(background, HitTestTypes.HITTEST_NOHIT)
         self.label(self.modeName(mode), 356, 256, True)
         self.label(tr("BUILDUP_PERCENT", (self.buildupText(player, mode),)), 690, 288)

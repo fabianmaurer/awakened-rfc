@@ -85,7 +85,7 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 - The DLL must be x86 and link against the VC7.1-era runtime (`MSVCR71.dll`, `msvcp71.dll`), Python 2.4 and `boost_python-vc71-mt-1_32.dll`.
 - Inspect DLL architecture and dependencies when changing the toolchain/link settings or preparing a release; do not repeat the inspection for ordinary builds using unchanged, already-verified settings. Do not ship a DLL that unexpectedly imports the modern VC runtime.
 - All multiplayer peers need the same mod files and DLL. In-game checks are user-operated: validate affected UI/loading when requested, and validate gameplay changes in multiplayer before claiming multiplayer readiness. Unrequested runtime validation is not a prerequisite for completing an implementation; state that it remains unverified where relevant.
-- For routine installed-mod synchronization, copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
+- For routine installed-mod synchronization, use a reporting-enabled DLL (`ARFC_ENABLE_REPORTING=1`) by default unless the user requests a different build. Ensure the installed DLL has this capability; build the reporting variant when needed instead of synchronizing a production DLL. Copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
 - Do not add/run tests unless the user asks. The game itself is the authoritative load/runtime check.
 
 ### Player-specific event popups
@@ -101,10 +101,11 @@ Static review on 2026-10-18: checked all added event/decision paths for recipien
 
 ## Optional AI observer
 
-Keep optional reporting out of normal builds. Native reporting is guarded by
-`ARFC_ENABLE_REPORTING`, defaulting to zero; opt in through the legacy Makefile
-with `ARFC_ENABLE_REPORTING=1`. Python hooks use `Reporting.ENABLED`, which reads the
-DLL capability. Guard reporting imports and payload construction as well as
+Use reporting-enabled builds for local development and installed-mod
+synchronization by default, unless the user requests another build. Set
+`ARFC_ENABLE_REPORTING=1` through the legacy Makefile and local settings for these
+builds. The source fallback remains zero for production builds. Python hooks use
+`Reporting.ENABLED`, which reads the DLL capability. Guard reporting imports and payload construction as well as
 callbacks. Preserve gameplay callbacks independently of these guards. Normal
 release packaging must omit reporting implementations and reject a development
 DLL; see `testing/README.md` for the explicit development workflow.
