@@ -24,6 +24,15 @@ forced update warrants a response. This deliberately makes barbarians less
 strategic. Other minor civilizations and player-owned privateers retain their
 existing AI.
 
+Normal AI civilizations still reconsider naval orders each turn, but a valid
+blockade remains active while they choose an action and renew a plunder order.
+This avoids temporary trade-network reconnections when the ship continues the
+same blockade. Other missions, movement, death and invalid blockade positions
+still remove it. This optimization uses the same fast-AI switch and leaves
+human orders unchanged. `count.fast.civBlockadePreserved` counts individual unit
+blockades retained through activity transitions, not ships or turns. Its time
+savings and multiplayer behavior remain unverified in-game.
+
 For AI civilizations, settlement-site scores refresh every eight turns with a
 settler and every sixteen turns otherwise; direct and starting-location updates
 remain immediate. Diplomacy and unit promotion, upgrade and associated disband
@@ -705,12 +714,55 @@ only at snapshot boundaries, so sparse sampling can miss short-lived changes.
 | Civilization population, cities, land, gold/rate, research/rate, era, tech count, power, army composition, civics, religion and stability | Yes | Yes |
 | Basic city population, food, imports/exports, yields, happiness, health and slaves | Yes | Yes |
 | War, city founding/conquest/razing, technologies, religion, victory and observed civic/alive/religion changes | Yes | Yes |
+| Espionage spending, forces, assignments, buildup, cooperation, target effects and actual stolen research/gold (every turn) | Yes | Yes |
 | Arabian combat units: positions, damage, movement, roles, groups, missions, targets and cached AI decisions (every turn) | Yes | Yes |
 | Exact known-tech lists, all-unit positions/damage/XP/promotions | No | Yes |
 | Buildings, specialists, production target/progress, occupation and city/tile culture | No | Yes |
 | Routes with infrastructure efficiency, profit and net food; slave revolt chance | No | Yes |
 | Initial terrain/features/resources/improvements/routes/owners and subsequent changes | No | Yes |
 | Global food conservation and city export-cap checks | No | Yes |
+
+Detailed espionage recording version 1 writes a separate `kind: espionage`
+record at every EndGameTurn in balance and diagnostics mode, independently of
+`--record-interval`. It is disabled in performance mode and ordinary games.
+Metadata identifies the version and maps the six focus IDs. Established major
+players are included, plus eliminated/cityless players with a previous-turn
+gold transfer still to report. The observer only reads state; it does not choose
+targets, run AI decisions or roll gameplay RNG.
+
+Each player records base/effective EP, slider, cooperation EP and stability,
+political stability penalty, research project/progress/cost, current research
+rate and actual research stolen on that player turn. Each force records active
+and pending focus, assigned player IDs, next-review countdown, funding in basis
+points of total EP, per-target concentration percentage, and all six stored
+focus-maturity percentages. A funding value of 4333 means 43.33% of total output;
+`buildup_bp` uses basis points too, with -1 for No operations.
+
+Every unique assigned target records war, mutual attitudes, agreement, access,
+embassy, routes and resistance; raw stocks; current research contribution;
+military combat/infiltration/tracking effects; political influence, culture
+budget, civic/client probabilities and relations; dynastic stage/eligibility/
+chance; economic shares/art probability; cooperation contribution/influence;
+and discovery probability for each focus. Effects combine all assigned forces
+of that focus: do not sum a target's effect again for each force. Stocks are in
+whole EP-equivalent points, culture budget in hundredths, and fields ending
+`_bp` are hundredths of a percent (negative dynastic chance means regression).
+Mutual attitudes are AI attitude IDs; human agreement consent still uses the
+gameplay trust rule. Probabilities and budgets describe current state, not
+proof that a roll succeeded or a transfer happened. Actual food/art theft,
+discovery incidents, civic adoption and client creation are not separately
+attributed by these records.
+
+Gold fields are actual previous-completed-game-turn transfers from the financial
+advisor ledger. `gold_transfer_turn` identifies their accounting window, which
+lags the current engine turn by one; the run's final engine turn is therefore
+not included in gold totals. The analyzer deduplicates windows and player-turns,
+never multiplies them by snapshot spans. `report.md` adds civilization totals
+and per-era force usage, target concentration, maturity and military effects.
+`summary.json` retains the counters by civilization/era and observed assignment
+changes; full per-turn details remain in the recordings. Older recordings show
+espionage as unavailable, not zero. These observations support balance analysis
+but do not establish causal impact or multiplayer correctness.
 
 `arabian_army_state` events capture every combat unit each turn after Arabia
 has a city, and for any other nation while its full jihad event is active,

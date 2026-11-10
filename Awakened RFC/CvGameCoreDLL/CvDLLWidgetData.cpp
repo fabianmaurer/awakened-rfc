@@ -41,11 +41,9 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
-    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102 &&
-        widgetDataStruct.m_iData2 >= 0 && widgetDataStruct.m_iData2 < MAX_PLAYERS)
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102)
     {
-        const PlayerTypes eTarget = (PlayerTypes)widgetDataStruct.m_iData2;
-        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_COOP_LOCKED_TARGET", GET_PLAYER(eTarget).getCivilizationShortDescriptionKey()));
+        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_COOP_LOCKED"));
         return;
     }
 

@@ -1000,9 +1000,16 @@ void CvSelectionGroup::startMission()
 		}
 	}
 
+	// A repeated plunder order is a continuation, not a blockade stop/start.
+	// Validate it before preserving the network through mission setup.
+	const bool bContinueBlockade = fastLateGame() && !isHuman() &&
+		getOwnerINLINE() != BARBARIAN_PLAYER &&
+		headMissionQueueNode()->m_data.eMissionType == MISSION_PLUNDER &&
+		canStartMission(MISSION_PLUNDER, headMissionQueueNode()->m_data.iData1,
+			headMissionQueueNode()->m_data.iData2, plot());
 	if (canAllMove())
 	{
-		setActivityType(ACTIVITY_MISSION);
+		setActivityTypeInternal(ACTIVITY_MISSION, bContinueBlockade);
 	}
 	else
 	{
@@ -1048,7 +1055,7 @@ void CvSelectionGroup::startMission()
 			break;
 
 		case MISSION_PLUNDER:
-			setActivityType(ACTIVITY_PLUNDER);
+			setActivityTypeInternal(ACTIVITY_PLUNDER, bContinueBlockade);
 			bNotify = true;
 			bDelete = true;
 			break;
@@ -3635,6 +3642,12 @@ ActivityTypes CvSelectionGroup::getActivityType() const
 
 void CvSelectionGroup::setActivityType(ActivityTypes eNewValue)
 {
+	setActivityTypeInternal(eNewValue, false);
+}
+
+
+void CvSelectionGroup::setActivityTypeInternal(ActivityTypes eNewValue, bool bPreserveBlockade)
+{
 	CLLNode<IDInfo>* pUnitNode;
 	CvUnit* pLoopUnit;
 	CvPlot* pPlot;
@@ -3652,7 +3665,19 @@ void CvSelectionGroup::setActivityType(ActivityTypes eNewValue)
 			airCircle(false);
 		}
 
-		setBlockading(false);
+		if (bPreserveBlockade)
+		{
+			for (pUnitNode = headUnitNode(); pUnitNode != NULL; pUnitNode = nextUnitNode(pUnitNode))
+			{
+				pLoopUnit = ::getUnit(pUnitNode->m_data);
+				if (pLoopUnit->isBlockading() && pLoopUnit->canPlunder(pPlot))
+				{
+					observerPerformanceCount("count.fast.civBlockadePreserved");
+				}
+				else pLoopUnit->setBlockading(false);
+			}
+		}
+		else setBlockading(false);
 
 		m_eActivityType = eNewValue;
 

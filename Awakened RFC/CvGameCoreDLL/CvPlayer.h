@@ -338,6 +338,15 @@ public:
     bool hasIntelligenceEmbassy(PlayerTypes eTarget) const;
     int getIntelligenceDefense(PlayerTypes eTarget) const;
     int getIntelligenceRate(PlayerTypes eTarget) const;
+    int getIntelligenceForceCount() const;
+    int getIntelligenceActiveForces() const;
+    int getIntelligenceTargetScore(PlayerTypes eTarget, int iMode) const;
+    int getIntelligenceAllocation(TeamTypes eTarget, int iMode) const;
+    bool hasIntelligenceMode(TeamTypes eTarget, int iMode) const;
+    int getIntelligenceModeRate(PlayerTypes eTarget, int iMode) const;
+    void setIntelligenceForceMode(int iForce, int iMode);
+    void updateIntelligenceForces();
+    void rebuildIntelligenceStocks();
     int getCooperationInfluence(PlayerTypes eTarget) const;
     int getCooperationContribution(PlayerTypes eTarget) const;
     int getCooperationBonus() const;
@@ -1316,6 +1325,12 @@ protected:
 	int* m_aiGoldPerTurnByPlayer;
 	int* m_aiEspionageSpendingWeightAgainstTeam;
 
+    // One slot per era; MAX_TEAMS leaves ample room for the XML era list.
+    int m_aiForceMode[MAX_TEAMS];
+    int m_aiForcePending[MAX_TEAMS];
+    int m_aiForceNextTurn[MAX_TEAMS];
+    int m_aiForceTargets[MAX_TEAMS][3];
+    int m_aiForceStock[MAX_TEAMS][NUM_INTELLIGENCE_MODES];
     int m_aiIntelligenceMode[MAX_TEAMS];
     int m_aiCooperationStock[MAX_TEAMS];
     int m_iCooperationStability; // Hundredths of a stability point, capped at +3.

@@ -395,6 +395,7 @@ class Observer:
             self.gc = CyGlobalContext()
             self.game = self.gc.getGame()
             self.research_commerce = CommerceTypes.COMMERCE_RESEARCH
+            self.espionage_commerce = CommerceTypes.COMMERCE_ESPIONAGE
             game = self.game
             if game.isGameMultiPlayer() or game.isPitboss():
                 raise ValueError('Observer launcher currently supports single-player only')
@@ -534,6 +535,8 @@ class Observer:
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
                         'army_recording_version': 2, 'apostolic_recording_version': 1,
+                        'espionage_recording_version': 2,
+                        'intelligence_modes': ['technology', 'military', 'politics', 'economy', 'cooperation', 'none'],
                         'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
                                                  '1': 'Amr: Egypt / North Africa',
                                                  '2': "Sa'd: Iraq / Persia"},
@@ -895,6 +898,91 @@ class Observer:
                         'native_campaign_active': active})
         self.events.append(details)
 
+    def observe_espionage(self):
+        """Read-only per-turn state, independent of the general snapshot interval."""
+        import Consts
+        gc = self.gc
+        turn = self.game.getGameTurn()
+        players = []
+        for i in range(Consts.iNumPlayers):
+            player = gc.getPlayer(i)
+            gold_received = player.getIntelligenceData(-1, 66)
+            gold_lost = player.getIntelligenceData(-1, 67)
+            if not player.isAlive() and not gold_received and not gold_lost:
+                continue
+            operating = player.isAlive() and player.getNumCities() > 0 and not player.isMinorCiv()
+            if not operating and not gold_received and not gold_lost:
+                continue
+            forces = []
+            assigned = set()
+            if operating:
+                for f in range(player.getIntelligenceData(-1, 300)):
+                    targets = [player.getIntelligenceData(f, 320 + slot) for slot in range(3)]
+                    targets = [target for target in targets if target >= 0]
+                    assigned.update(targets)
+                    forces.append({'id': f, 'mode': player.getIntelligenceData(f, 310),
+                                   'pending_mode': player.getIntelligenceData(f, 311),
+                                   'targets': targets, 'review_in': player.getIntelligenceData(f, 312),
+                                   'funding_bp': player.getIntelligenceData(f, 313),
+                                   'target_effort_percent': player.getIntelligenceData(f, 314),
+                                   'buildup_bp': [player.getIntelligenceData(f, 330 + mode) for mode in range(6)]})
+            targets = []
+            team = gc.getTeam(player.getTeam())
+            fields = [('access_percent', 2), ('trade_routes', 3), ('embassy', 4),
+                      ('full_output_effective_rate', 5), ('defense', 9), ('resistance_percent', 13),
+                      ('resentment_penalty', 8), ('research_contribution', 14),
+                      ('technology_stock', 57), ('technology_influence_bp', 58),
+                      ('combat_bonus_bp', 6), ('infiltration_chance_bp', 7),
+                      ('troop_coverage_bp', 30), ('military_stock', 31),
+                      ('dynastic_stage', 33), ('dynastic_stock', 34), ('dynastic_chance_bp', 35),
+                      ('dynastic_eligible', 36), ('dynastic_relations', 37), ('dynastic_union_eligible', 39),
+                      ('political_stock', 46), ('political_influence_bp', 47),
+                      ('civic_chance_bp', 48), ('client_chance_bp', 49),
+                      ('political_relations', 50), ('culture_budget_hundredths', 51),
+                      ('economic_stock', 52), ('economic_influence_bp', 53),
+                      ('gold_request_hundredths', 54), ('food_share_bp', 55), ('art_chance_bp', 56),
+                      ('cooperation_agreement', 62), ('cooperation_influence_bp', 63),
+                      ('cooperation_contribution', 64), ('cooperation_stock', 65)]
+            for target in sorted(assigned):
+                rival = gc.getPlayer(target)
+                data = {'player': target, 'civilization': gc.getCivilizationInfo(rival.getCivilizationType()).getType(),
+                        'team': rival.getTeam(), 'at_war': team.isAtWar(rival.getTeam()),
+                        'attitude': player.AI_getAttitude(target), 'reverse_attitude': rival.AI_getAttitude(i),
+                        'human': rival.isHuman(), 'base_output': rival.getCommerceRate(self.espionage_commerce),
+                        'research_output': rival.getCommerceRate(self.research_commerce),
+                        'population': rival.getTotalPopulation(), 'military_units': rival.getNumMilitaryUnits(),
+                        'stability_penalty': rival.getIntelligenceData(-1, 20)}
+                for name, field in fields:
+                    data[name] = player.getIntelligenceData(target, field)
+                data['discovery_chance_bp'] = [player.getIntelligenceData(target, 200 + mode) for mode in range(6)]
+                targets.append(data)
+            project = player.getIntelligenceData(-1, 21)
+            progress = 0
+            cost = 0
+            stolen = 0
+            if project >= 0:
+                progress = team.getResearchProgress(project)
+                cost = team.getResearchCost(project)
+            if operating:
+                stolen = player.getIntelligenceData(-1, 23)
+            players.append({'id': i, 'civilization': gc.getCivilizationInfo(player.getCivilizationType()).getType(),
+                            'alive': player.isAlive(), 'operating': operating, 'human': player.isHuman(), 'era': player.getCurrentEra(),
+                            'base_output': player.getCommerceRate(self.espionage_commerce),
+                            'effective_output': player.getIntelligenceData(-1, 59),
+                            'slider_percent': player.getCommercePercent(self.espionage_commerce),
+                            'cooperation_bonus': player.getIntelligenceData(-1, 60),
+                            'cooperation_stability': player.getIntelligenceData(-1, 61),
+                            'stability_penalty': player.getIntelligenceData(-1, 20),
+                            'research_project': project,
+                            'research_progress': progress,
+                            'research_cost': cost,
+                            'current_research_rate': player.getIntelligenceData(-1, 22),
+                            'research_stolen': stolen,
+                            'gold_transfer_turn': turn - 1, 'gold_received': gold_received, 'gold_lost': gold_lost,
+                            'dynastic': player.getIntelligenceData(-1, 32), 'forces': forces, 'targets': targets})
+        self.write({'kind': 'espionage', 'version': 2, 'turn': turn,
+                    'year': self.game.getGameTurnYear(), 'elapsed_turns': self.turns, 'players': players})
+
     def end_turn(self, args):
         if not self.enabled or not self.started:
             return
@@ -922,6 +1010,7 @@ class Observer:
                     self.enabled = False
                 return
             self.observe_players(True)
+            self.observe_espionage()
             self.observe_roman_campaign()
             self.observe_arabian_army()
             if self.turns % self.record_interval == 0 or self.turns >= self.limit:

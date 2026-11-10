@@ -1087,21 +1087,47 @@ Piraten bleiben aktiv.
 
 ## Geheimdienstnetze
 
-Automatische Operationen ersetzen Spionageeinheiten und deren Missionen. Im
-Geheimdienstberater wählen Sie einen Modus je Zivilisation mit diplomatischem
-Kontakt. Standard ist **Keine Operationen**. Dabei entstehen keine neuen Operationen
-oder Entdeckungsrisiken; bestehende Netze und diplomatischer Unmut nehmen ab. Beim
-Zeigen auf einen Modus erscheinen seine Regeln, ohne ihn auszuwählen. Vorgemerkte
-Modi zeigen sofort eine Vorschau. Jedes Netz zeigt
-seinen Aufbau als Prozentsatz seiner vollen Wirkung, auch bei einem anderen
-aktiven Modus. Beim Technologiediebstahl gilt die bestehende Normierung auf die
-Forschungsrate; bei Kooperation wird der Aufbau vor dem Vertrauensfaktor gezeigt.
-Keine Operationen hat kein Netz und zeigt einen Strich. Änderungen gelten ab der nächsten
-Spielerrundengrenze. Die volle Spionageleistung wirkt auf jedes Netz, ohne
-Aufteilung zwischen Rivalen. Grundlegende demografische Daten bekannter
-Zivilisationen bleiben verfügbar. Spionagegebäude, Spezialisten und angesiedelte
-Große Spione bleiben nützlich. Große Spione können Scotland Yard errichten
-oder ein Goldenes Zeitalter unterstützen; ihre Infiltrationsmission entfällt.
+Automatische Einsatzgruppen ersetzen Spionageeinheiten und deren Missionen.
+Im Geheimdienstberater wählen Sie den Fokus jeder Gruppe. Standard ist
+**Keine Operationen**. In der Antike steht eine Gruppe bereit; jede durch
+Technologie erreichte neue Epoche schaltet eine weitere frei. Änderungen gelten
+ab der nächsten Spielerrunde. Zeigen auf einen Fokus erklärt seine Wirkung.
+
+Jede aktive Gruppe erhält `gesamte Spionage / aktive Gruppen + 10% der gesamten
+Spionage`. Gruppen ohne Auftrag oder gültige zugewiesene Ziele erhalten keine
+Mittel und zählen nicht zum Teiler. Eine aktive Gruppe erhält 110%, zwei erhalten
+je 60%, drei mittelalterliche Gruppen je etwa 43,3%: zusammen 130%.
+
+Alle fünf normalen Runden (zehn auf XL) wählt jede Gruppe automatisch bis zu
+drei Zielteams. Ein Fokuswechsel beginnt zur nächsten Runde eine neue Zuweisung.
+Zugang, Abwehr und erwarteter Nutzen bestimmen die Rangfolge. Militärspionage
+berücksichtigt Krieg, schlechte Beziehungen und Landnachbarschaft gemeinsam.
+Kooperation setzt ein Abkommen voraus und bevorzugt starke Geheimdienstpartner
+mit gegenseitigem Vertrauen. Technologie bevorzugt nutzbare Forschungsquellen,
+Wirtschaft hohe Goldeinnahmen und dynastische Politik geeignete Monarchien.
+
+Die Gruppe vergleicht die Summe der besten ein, zwei oder drei Zielwerte,
+multipliziert mit 100%, 70% beziehungsweise 57%. Jedes gewählte Ziel erhält
+diesen Anteil ihres Einsatzes. Drei ähnlich gute Ziele bringen insgesamt 171%
+des konzentrierten Einsatzes; deutlich schwächere Alternativen begünstigen ein
+oder zwei Ziele. Mehrere Gruppen dürfen dasselbe Land mit verschiedenen
+Schwerpunkten bearbeiten. Ungültige Ziele werden erst beim nächsten planmäßigen
+Termin ersetzt; bis dahin entfaltet die ungültige Zuweisung keine Wirkung.
+
+Der Netzaufbau gehört zur Gruppe und ihrem Fokus. Ein Zielwechsel erhält ihn.
+Pro normaler Runde bleiben 90% erhalten; hinzu kommt die doppelte zugeteilte
+Grundleistung. XL behält 95% und addiert die einfache Zuteilung. Inaktive
+Schwerpunkte verfallen weiter. Der Berater zeigt die Reife gegenüber der
+aktuellen Finanzierung einheitlich als Prozentsatz; ohne Operationen als Strich.
+Die Wirkung im Zielland berücksichtigt Konzentration, Zugang, Abwehr und
+gegebenenfalls den Kooperationsbonus. Die Formeln unten verwenden diesen
+abgeleiteten Zielaufbau. Dynastische Stufen bleiben an das jeweilige Land gebunden.
+
+Der Berater zeigt Gruppen, Ziele, Finanzierung und den nächsten Prüfzeitpunkt.
+Ein Klick auf ein Zielland wechselt nur die Detailansicht. Grundlegende
+demografische Daten bekannter Zivilisationen bleiben verfügbar. Spionagegebäude,
+Spezialisten und angesiedelte Große Spione bleiben nützlich. Große Spione können
+Scotland Yard errichten oder ein Goldenes Zeitalter unterstützen.
 
 Entfernung zwischen Hauptstädten senkt den Zugang um höchstens 60 Prozentpunkte.
 Eine Botschaft auf einer Seite bringt 20 Punkte, bis zu vier direkte ausgehende
@@ -1128,8 +1154,8 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   oder politische Unruhe. Die genauen Formeln stehen im englischen Regelwerk.
 - **Technologiediebstahl:** Eine zufällig gewählte Technologie mit erfüllten
   Voraussetzungen bleibt bis zum Abschluss oder Wegfall das gemeinsame Ziel.
-  Mehr verfügbare Technologien erhöhen den Ertrag. Zusätzliche Quellen bringen
-  abnehmenden Nutzen; insgesamt ist der Ertrag auf die dreifache Spionageleistung
+  Mehr verfügbare Technologien erhöhen den Ertrag. Quellen addieren sich;
+  die Konzentration ist bereits eingerechnet. Der Ertrag ist auf die dreifache Spionageleistung
   begrenzt. Fortschritt bleibt bei Moduswechseln erhalten. Ohne passende Quelle
   ruht das Ziel. Überschüsse fließen in dieser Runde nicht in ein zweites Ziel.
   Technologienetzwerke benötigen Aufbau: 10,0% Verfall und doppelte wirksame
@@ -1146,21 +1172,14 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   Erworbener Forschungsfortschritt bleibt erhalten; entgangene Anfangserträge
   werden nicht nachträglich erstattet.
 
-Die KI bewertet verfügbare Technologien, das laufende Forschungsprojekt,
-Kriegspläne, nahe Bedrohungen, dynastische Stufen, Staatsformunterschiede,
-wirtschaftliche Chancen, diplomatische Kosten, Zugang und Spionageabwehr.
-Bestehender Aufbau erhöht den Wert einer Operation. Gegen Monarchien bleibt
-eine mäßige Vorliebe für Heiratspolitik erhalten. Normalerweise werden die
-Entscheidungen alle fünf normalen Runden (zehn auf XL) geprüft; ein Wechsel erfordert einen
-klaren Vorteil. Krieg, Kriegspläne und unbrauchbare Optionen erlauben frühere
-Neubewertungen. Die Ausgaben folgen den gewählten Operationen, sinken bei
-fehlenden Chancen und bleiben durch die Finanzlage begrenzt. Diese Heuristiken
-garantieren kein optimales Spiel.
+Die KI nutzt dieselben Zielwerte zur Fokuswahl, priorisiert Militärspionage im
+Krieg und verteilt zusätzliche Gruppen bevorzugt auf nützliche Alternativen.
+Bei der Wahl feindlicher Schwerpunkte berücksichtigt sie keine Verbündeten;
+die automatische Zielzuweisung selbst folgt denselben Regeln wie beim Menschen.
+Die Finanzlage begrenzt ihre Ausgaben. Diese Heuristiken garantieren kein optimales Spiel.
 
-- **Militärspionage:** Jedes Zielteam hat einen eigenen Aufbau `B`. Pro normaler
-  Runde bleiben 90% erhalten; hinzu kommt die doppelte wirksame Spionageleistung nach
-  Zugang und Abwehr. Auf XL bleiben 95% erhalten und die einfache Leistung kommt
-  hinzu. Der Abbau läuft auch ohne Finanzierung und in anderen Modi weiter;
+- **Militärspionage:** `B` ist der gemeinsame abgeleitete Aufbau der
+  zugewiesenen Gruppen gegen das Zielteam. Der Abbau läuft auch ohne Finanzierung und in anderen Modi weiter;
   Effekte gelten nur im Militärmodus. Ohne Finanzierung halbiert sich der Aufbau
   nach etwa 6,6 normalen Runden (13,5 auf XL). Bei `U` feindlichen Militäreinheiten ist der
   gemeinsame Wirkungsanteil `B / (B + 20 * (40 + U))`. Kampfbonus und
@@ -1191,17 +1210,17 @@ garantieren kein optimales Spiel.
 - **Wirtschaftliche Unterwanderung:** Netzwerke stehlen Gold, leiten
   Nahrungslieferungen um und stehlen gelegentlich Kunst. Der Aufbau verfällt
   um 10,0% pro normaler Runde, auf XL um 5,0%. Der normale Zuwachs beträgt die doppelte wirksame Spionageleistung. Der Einfluss beträgt
-  `B / (B + 20 * (20 + Zielbevölkerung))`. Bei 50,0% Einfluss gelten pro normaler
-  Runde höchstens 5,0% der Goldeinnahmen, 2,5% des positiven Wachstumsüberschusses
-  und 0,5% Kunstraubchance. Alle Angreifer teilen sich nach Einfluss Obergrenzen
-  von 10,0% der Goldeinnahmen, 5,0% des Wachstumsüberschusses und 1,0% Kunstraubchance.
-  Zusätzlich sind Goldverluste auf 1,0% der aktuellen Schatzkammer begrenzt. Der
+  `B / (B + 400)`. Bei 50,0% Einfluss gelten pro normaler Runde h?chstens
+  2,5% des positiven Wachstums?berschusses und 0,5% Kunstraubchance. Alle
+  Angreifer teilen sich nach Einfluss Obergrenzen von 5,0% des Wachstums?berschusses
+  und 1,0% Kunstraubchance. Gold wird aus der aktuellen Schatzkammer entnommen;
+  ?bersteigen die Forderungen den Vorrat, wird das Gold proportional verteilt. Der
   Finanzberater zeigt tatsächlich gestohlenes und durch Spionage verlorenes Gold
   der letzten abgeschlossenen Spielrunde in den Einnahmen und Ausgaben.
   Zeilen mit dem Wert null bleiben ausgeblendet. Diese Beträge sind bereits in
   der Schatzkammer enthalten und ändern die normale Goldrate pro Runde nicht.
-  Jeder Auftraggeber teilt ein Goldbudget von höchstens 50,0% seiner
-  Spionageleistung zwischen den aktiven Zielen, jeweils nach Einfluss.
+  Das Goldbudget jedes Ziels beträgt höchstens 50,0% der ihm zugeteilten
+  Spionageleistung, multipliziert mit dem Einfluss.
   Goldbruchteile sammeln sich an. Nahrungsbruchteile sammeln sich je Stadt
   nach Wachstumsmodifikatoren an. Nur neuer positiver Wachstumsüberschuss
   wird umgeleitet; Vorräte, Verbrauch und Nahrungsproduktion bleiben erhalten.
@@ -1223,8 +1242,8 @@ Es gilt `Obergrenze * Aufwand / (Aufwand + 50)` mit
 Aufbau `B` der gewählten Operation. Kleine Operationen sind unauffälliger.
 Nach einer Finanzierungssenkung bleibt das abklingende Netzwerk eine Zeit lang
 auffällig. Ohne Finanzierung und Aufbau ist das Risiko null. Dynastische Politik
-bleibt ausgenommen. Pro Auftraggeber und Zielteam gibt es einen Wurf je Runde,
-auch bei mehreren Spielern im Zielteam. XL halbiert die Chance.
+bleibt ausgenommen. Pro aktivem Fokus, Auftraggeber und Zielteam gibt es einen
+Wurf je Runde, auch bei mehreren Gruppen oder Spielern im Zielteam. XL halbiert die Chance.
 Entdeckungen verschlechtern die Haltung des
 Ziels um höchstens -1, -3 beziehungsweise -6. Bestehende Abzüge überdauern
 Moduswechsel und sinken pro normaler Runde um zwei Hundertstel eines
@@ -1248,9 +1267,9 @@ multipliziert mit `F`. Voraussetzungen und bestehende Beschränkungen gelten wei
 Anarchie oder ein laufender Revolutions-Timer blockieren den Wurf. Eine erfolgreiche
 Reform startet fünf normale Runden Wartezeit, ohne automatische Zusatzanarchie.
 
-Die gesamte neue Stadtkultur über alle Ziele ist auf ein Viertel der eigenen
-Spionageleistung je normaler Runde begrenzt. Jedes Ziel erhält einen gleichen
-Budgetanteil, multipliziert mit seinem `F`, und verteilt ihn nach Stadtbevölkerung.
+Jedes politische Ziel erhält je normaler Runde Stadtkultur im Wert von bis zu
+einem Viertel der ihm zugeteilten Spionageleistung, multipliziert mit seinem `F`.
+Die Verteilung erfolgt nach Stadtbevölkerung.
 Es entsteht kein zusätzlicher kostenloser Feldkulturimpuls. Stabilitätsdruck beträgt
 bis zu `6 * F` je Netz; gemeinsam bleiben es höchstens -6. Bisherige Grenzen für
 Zusatzanarchie, lokale Unruhen und deren Wartezeiten gelten weiter.

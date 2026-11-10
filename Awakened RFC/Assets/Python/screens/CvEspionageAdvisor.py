@@ -26,6 +26,7 @@ def chanceText(basisPoints):
 class CvEspionageAdvisor:
     def __init__(self):
         self.SCREEN_NAME = "EspionageAdvisor"
+        self.iForce = 0
         self.iTargetPlayer = -1
         self.widgets = []
         self.lastRate = -1
@@ -67,6 +68,7 @@ class CvEspionageAdvisor:
         if screen.isActive():
             return
         self.iActivePlayer = CyGame().getActivePlayer()
+        self.iForce = 0
         self.iTargetPlayer = -1
         self.previewMode = -1
         screen.setRenderInterfaceOnly(True)
@@ -93,15 +95,18 @@ class CvEspionageAdvisor:
             team = gc.getTeam(player.getTeam())
             rate = min(rate, max(0, team.getResearchCost(tech) - team.getResearchProgress(tech)))
         sources = []
+        counted = set()
         for i in range(con.iNumActivePlayers):
             raw = player.getIntelligenceData(i, 14)
-            if raw > 0:
+            sourceTeam = gc.getPlayer(i).getTeam()
+            if raw > 0 and sourceTeam not in counted:
                 sources.append((-raw, i))
+                counted.add(sourceTeam)
         sources.sort()
         contributions = {}
         remaining = rate
         for rank, entry in enumerate(sources):
-            amount = min(remaining, -entry[0] / (rank + 1))
+            amount = min(remaining, -entry[0])
             contributions[entry[1]] = amount
             remaining -= amount
         return tech, rate, contributions
@@ -117,80 +122,76 @@ class CvEspionageAdvisor:
         percent = player.getCommercePercent(CommerceTypes.COMMERCE_ESPIONAGE)
         self.lastRate, self.lastPercent = rate, percent
         self.lastEffective = player.getIntelligenceData(-1, 59)
+        totalText = u"%d%c" % (rate, gc.getCommerceInfo(CommerceTypes.COMMERCE_ESPIONAGE).getChar())
+        if player.getIntelligenceData(-1, 60) > 0:
+            totalText += u" <color=90,190,255,255>(%d)</color>" % self.lastEffective
+        self.label(totalText, 30, 16)
         self.researchTech, self.researchRate, self.researchContributions = self.researchEffects(player)
-        self.label(tr("NETWORKS"), 30, 77, True)
-        known = []
-        for i in range(con.iNumActivePlayers):
-            rival = gc.getPlayer(i)
-            if rival.isAlive() and not rival.isMinorCiv() and rival.getTeam() != player.getTeam() and team.isHasMet(rival.getTeam()):
-                known.append(i)
-        if self.iTargetPlayer not in known:
-            self.iTargetPlayer = -1
-            if known:
-                self.iTargetPlayer = known[0]
+        self.label(tr("FORCES"), 30, 77, True)
+        count = player.getIntelligenceData(-1, 300)
+        self.iForce = min(self.iForce, count - 1)
         scroll = self.name()
         self.panel(20, 108, 302, 608)
         screen.addScrollPanel(scroll, u"", 20, 108, 302, 608, PanelStyles.PANEL_STYLE_EMPTY)
-        for row, i in enumerate(known):
-            rival = gc.getPlayer(i)
-            y = row * 100
+        for f in range(count):
+            y = f * 112
             tile = self.name()
             screen.attachPanelAt(scroll, tile, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH,
-                4, y + 3, 274, 90, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            if i == self.iTargetPlayer:
-                screen.setPanelColor(tile, SELECTED_COLOR[0], SELECTED_COLOR[1], SELECTED_COLOR[2])
-            else:
-                screen.setPanelColor(tile, TILE_COLOR[0], TILE_COLOR[1], TILE_COLOR[2])
-            active = player.getIntelligenceData(i, 0)
-            pending = player.getIntelligenceData(i, 1)
-            color = u"<color=255,235,235,255>"
-            if i != self.iTargetPlayer:
-                color = u"<color=230,230,230,255>"
-            screen.setImageButtonAt(self.name(), scroll, gc.getLeaderHeadInfo(rival.getLeaderType()).getButton(),
-                12, y + 14, 48, 48, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            civLabel = self.name()
-            screen.setLabelAt(civLabel, scroll, u"<font=3b>%s%s</color></font>" % (color, rival.getCivilizationShortDescription(0)),
-                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 10, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            screen.setHitTest(civLabel, HitTestTypes.HITTEST_NOHIT)
-            modeText = self.modeName(active)
-            if pending != active:
+                4, y + 3, 274, 104, WidgetTypes.WIDGET_GENERAL, 7100, f)
+            color = TILE_COLOR
+            if f == self.iForce:
+                color = SELECTED_COLOR
+            screen.setPanelColor(tile, color[0], color[1], color[2])
+            active = player.getIntelligenceData(f, 310)
+            pending = player.getIntelligenceData(f, 311)
+            modeText = self.modeName(pending)
+            if active != pending:
                 modeText += u" *"
-            modeLabel = self.name()
-            screen.setLabelAt(modeLabel, scroll, u"<font=3>%s</font>" % modeText,
-                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 37, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            screen.setHitTest(modeLabel, HitTestTypes.HITTEST_NOHIT)
-            summaryKeys = ["TECH_SHORT", "MILITARY_SHORT", "POLITICS_CURRENT_SHORT", "ECONOMIC_SHORT", "COOP_SHORT", "NONE_SHORT"]
-            if active == 0:
-                amount = self.researchContributions.get(i, 0)
-            elif active == 1:
-                amount = chanceText(player.getIntelligenceData(i, 6))
-            elif active == 2:
-                amount = -rival.getIntelligenceData(-1, 20)
-            elif active == 3:
-                amount = chanceText(player.getIntelligenceData(i, 53))
-            elif active == 4:
-                amount = player.getIntelligenceData(i, 64)
-            else:
-                amount = 0
-            summary = tr(summaryKeys[active], (amount,))
-            if active == 2 and player.getIntelligenceData(-1, 32):
-                summary = tr("DYNASTIC_STAGE_%d" % player.getIntelligenceData(i, 33))
-            effectLabel = self.name()
-            screen.setLabelAt(effectLabel, scroll, u"<font=2>%s</font>" % summary,
-                CvUtil.FONT_LEFT_JUSTIFY, 70, y + 65, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, i)
-            screen.setHitTest(effectLabel, HitTestTypes.HITTEST_NOHIT)
-        if not known:
-            self.body(tr("NO_CONTACTS"), 350, 136, 620, 150)
-            return
+            targets = []
+            for slot in range(3):
+                target = player.getIntelligenceData(f, 320 + slot)
+                if target >= 0:
+                    targets.append(gc.getPlayer(target).getCivilizationShortDescription(0))
+            targetText = u", ".join(targets) or tr("NO_TARGETS")
+            if len(targetText) > 34:
+                targetText = targetText[:31] + u"..."
+            lines = [(tr("FORCE", (f + 1,)), "3b", 12), (modeText, "3", 37), (targetText, "2", 65)]
+            for value, size, offset in lines:
+                name = self.name()
+                screen.setLabelAt(name, scroll, u"<font=%s>%s</font>" % (size, value),
+                    CvUtil.FONT_LEFT_JUSTIFY, 14, y + offset, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, f)
+                screen.setHitTest(name, HitTestTypes.HITTEST_NOHIT)
+        if count < gc.getNumEraInfos():
+            name = self.name()
+            screen.setLabelAt(name, scroll, u"<font=2>%s</font>" % tr("FORCE_UNLOCK", (gc.getEraInfo(count).getDescription(),)),
+                CvUtil.FONT_LEFT_JUSTIFY, 14, count * 112 + 14, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+        self.targets = []
+        for slot in range(3):
+            target = player.getIntelligenceData(self.iForce, 320 + slot)
+            if target >= 0:
+                self.targets.append(target)
+        if self.iTargetPlayer not in self.targets:
+            self.iTargetPlayer = -1
+            if self.targets:
+                self.iTargetPlayer = self.targets[0]
         self.drawTarget(player)
 
     def drawTarget(self, player):
         screen = self.getScreen()
         i = self.iTargetPlayer
-        rival = gc.getPlayer(i)
-        active = player.getIntelligenceData(i, 0)
-        pending = player.getIntelligenceData(i, 1)
-        self.label(rival.getCivilizationShortDescription(0), 356, 77, True)
+        active = player.getIntelligenceData(self.iForce, 310)
+        pending = player.getIntelligenceData(self.iForce, 311)
+        if not self.targets:
+            self.label(tr("NO_TARGETS"), 356, 77)
+        for slot, target in enumerate(self.targets):
+            value = gc.getPlayer(target).getCivilizationShortDescription(0)
+            if len(value) > 20:
+                value = value[:17] + u"..."
+            value += u" (%d%%)" % player.getIntelligenceData(self.iForce, 314)
+            if target == i:
+                value = u"<color=255,180,150,255>%s</color>" % value
+            screen.setText(self.name(), "Background", u"<font=2>%s</font>" % value,
+                CvUtil.FONT_LEFT_JUSTIFY, 356 + slot * 218, 77, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7103, target)
         self.panel(336, 108, 668, 140)
         self.modeHint = self.name()
         hint = tr("CHOOSE_MODE")
@@ -210,7 +211,7 @@ class CvEspionageAdvisor:
             if mode == pending:
                 state = "Selected"
             x = 356 + slot * 110
-            enabled = mode != 4 or bool(player.getIntelligenceData(i, 62))
+            enabled = mode != 4 or bool(player.getIntelligenceData(-1, 303))
             widgetID = 7101
             widgetValue = mode
             if not enabled:
@@ -251,7 +252,7 @@ class CvEspionageAdvisor:
         self.drawModeDetails(player)
 
     def buildupText(self, player, mode):
-        amount = player.getIntelligenceData(self.iTargetPlayer, 100 + mode)
+        amount = player.getIntelligenceData(self.iForce, 330 + mode)
         if amount < 0:
             return u"--"
         return chanceText(amount) + u"%"
@@ -270,9 +271,8 @@ class CvEspionageAdvisor:
     def drawModeDetails(self, player):
         screen = self.getScreen()
         i = self.iTargetPlayer
-        rival = gc.getPlayer(i)
-        active = player.getIntelligenceData(i, 0)
-        pending = player.getIntelligenceData(i, 1)
+        active = player.getIntelligenceData(self.iForce, 310)
+        pending = player.getIntelligenceData(self.iForce, 311)
         mode = pending
         if self.previewMode >= 0:
             mode = self.previewMode
@@ -288,6 +288,12 @@ class CvEspionageAdvisor:
             screen.setHitTest(background, HitTestTypes.HITTEST_NOHIT)
         self.label(self.modeName(mode), 356, 256, True)
         self.label(tr("BUILDUP_PERCENT", (self.buildupText(player, mode),)), 690, 288)
+        if i < 0:
+            self.body(self.modeHelp(player, mode), 356, 328, 628, 140)
+            self.label(tr("NO_TARGETS"), 356, 480)
+            self.drawModeFooter(player, mode)
+            return
+        rival = gc.getPlayer(i)
         if mode != active:
             self.body(self.modeHelp(player, mode), 356, 328, 628, 104)
             if mode == 1:
@@ -298,7 +304,7 @@ class CvEspionageAdvisor:
                     self.label(tr("INFILTRATION_CURRENT_EFFECT", (chanceText(30 * strength / 100),)), 356, 512)
                 else:
                     self.label(tr("INFILTRATION_AT_PEACE"), 356, 512)
-            elif mode == 4 and not player.getIntelligenceData(i, 62):
+            elif mode == 4 and not player.getIntelligenceData(-1, 303):
                 self.label(tr("COOP_LOCKED"), 356, 448)
             elif mode != 5:
                 self.body(tr("PREVIEW_BUILDUP_HELP"), 356, 448, 628, 80)
@@ -378,7 +384,7 @@ class CvEspionageAdvisor:
                     self.label(tr("POLITICAL_CLIENT_CHANCE", (chanceText(clientChance),)), 356, y + 128)
         elif active == 3:
             self.label(tr("ECONOMIC_INFLUENCE", (chanceText(player.getIntelligenceData(i, 53)),)), 356, y, True)
-            self.label(tr("ECONOMIC_GOLD", (chanceText(player.getIntelligenceData(i, 54)),)), 356, y + 32)
+            self.label(tr("ECONOMIC_GOLD", ((u"%d.%02d" % (player.getIntelligenceData(i, 54) / 100, player.getIntelligenceData(i, 54) % 100)),)), 356, y + 32)
             self.label(tr("ECONOMIC_FOOD", (chanceText(player.getIntelligenceData(i, 55)),)), 356, y + 64)
             self.label(tr("ECONOMIC_ART", (chanceText(player.getIntelligenceData(i, 56)),)), 356, y + 96)
             self.label(tr("ECONOMIC_SHARED"), 356, y + 128)
@@ -393,10 +399,15 @@ class CvEspionageAdvisor:
 
     def drawModeFooter(self, player, mode):
         i = self.iTargetPlayer
-        active = player.getIntelligenceData(i, 0)
-        pending = player.getIntelligenceData(i, 1)
+        active = player.getIntelligenceData(self.iForce, 310)
+        pending = player.getIntelligenceData(self.iForce, 311)
         if active != pending:
             self.label(tr("QUEUED", (self.modeName(pending),)), 356, 544)
+        if i < 0:
+            self.panel(336, 620, 668, 96)
+            self.label(tr("FORCE_FUNDING", (chanceText(player.getIntelligenceData(self.iForce, 313)),)), 356, 628)
+            self.label(tr("RETARGET", (player.getIntelligenceData(self.iForce, 312),)), 356, 668)
+            return
         discovery = chanceText(player.getIntelligenceData(i, 200 + mode))
         risk = tr("RISK_LOW", (discovery,))
         if mode >= 4:
@@ -412,11 +423,8 @@ class CvEspionageAdvisor:
         self.panel(336, 620, 668, 96)
         self.label(tr("ACCESS", (player.getIntelligenceData(i, 2),)), 356, 628)
         self.label(tr("RESISTANCE", (player.getIntelligenceData(i, 13),)), 690, 628)
-        embassy = tr("YES")
-        if not player.getIntelligenceData(i, 4):
-            embassy = tr("NO")
-        self.label(tr("CONNECTIONS", (embassy, player.getIntelligenceData(i, 3))), 356, 668)
-        self.label(tr("RELATIONS", (player.getIntelligenceData(i, 8),)), 690, 668)
+        self.label(tr("FORCE_FUNDING", (chanceText(player.getIntelligenceData(self.iForce, 313)),)), 356, 668)
+        self.label(tr("RETARGET", (player.getIntelligenceData(self.iForce, 312),)), 690, 668)
 
     def showModeHint(self, value):
         self.getScreen().setLabel(self.modeHint, "Background", u"<font=3>%s</font>" % value,
@@ -431,11 +439,11 @@ class CvEspionageAdvisor:
                 mode = inputClass.getData2()
                 player = gc.getPlayer(self.iActivePlayer)
                 caption = self.modeName(mode)
-                if mode == 4 and not player.getIntelligenceData(self.iTargetPlayer, 62):
+                if mode == 4 and not player.getIntelligenceData(-1, 303):
                     caption = tr("COOP_LOCKED")
-                if mode == player.getIntelligenceData(self.iTargetPlayer, 0):
+                if mode == player.getIntelligenceData(self.iForce, 310):
                     caption = tr("CURRENT", (caption,))
-                elif mode == player.getIntelligenceData(self.iTargetPlayer, 1):
+                elif mode == player.getIntelligenceData(self.iForce, 311):
                     caption = tr("QUEUED", (caption,))
                 self.showModeHint(caption)
                 self.previewMode = mode
@@ -450,17 +458,22 @@ class CvEspionageAdvisor:
         if inputClass.getNotifyCode() != NotifyCode.NOTIFY_CLICKED:
             return 0
         if inputClass.getData1() == 7100:
-            self.iTargetPlayer = inputClass.getData2()
+            self.iForce = inputClass.getData2()
+            self.iTargetPlayer = -1
             self.previewMode = -1
             self.drawContents()
             return 1
-        if inputClass.getData1() == 7101 and self.iTargetPlayer >= 0:
-            if inputClass.getData2() == 4 and not gc.getPlayer(self.iActivePlayer).getIntelligenceData(self.iTargetPlayer, 62):
+        if inputClass.getData1() == 7103:
+            self.iTargetPlayer = inputClass.getData2()
+            self.drawContents()
+            return 1
+        if inputClass.getData1() == 7101:
+            if inputClass.getData2() == 4 and not gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 303):
                 return 1
             self.previewMode = inputClass.getData2()
             self.refreshModeDetails()
             # Never change game state locally. The DLL commits this player's queued mode.
-            CyMessageControl().sendEspionageSpendingWeightChange(gc.getPlayer(self.iTargetPlayer).getTeam(), 100 + inputClass.getData2())
+            CyMessageControl().sendEspionageSpendingWeightChange(gc.getPlayer(self.iActivePlayer).getTeam(), 1000 + self.iForce * 6 + inputClass.getData2())
             return 1
         return 0
 

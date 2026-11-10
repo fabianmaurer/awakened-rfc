@@ -10,6 +10,7 @@
 #include "CvGameCoreUtils.h"
 #include "FProfiler.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CVInfos.h"
 
 // Public Functions...
@@ -152,7 +153,11 @@ bool CvSelectionGroupAI::AI_update()
 	if (isForceUpdate())
 	{
 		clearMissionQueue(); // XXX ???
-		setActivityType(ACTIVITY_AWAKE);
+		// Reconsider normal naval orders without temporarily reconnecting the
+		// trade network. The chosen mission will end or renew the blockade.
+		const bool bPreserveBlockade = fastLateGame() && !isHuman() &&
+			getOwnerINLINE() != BARBARIAN_PLAYER && getActivityType() == ACTIVITY_PLUNDER;
+		setActivityTypeInternal(ACTIVITY_AWAKE, bPreserveBlockade);
 		setForceUpdate(false);
 
 		// if we are in the middle of attacking with a stack, cancel it

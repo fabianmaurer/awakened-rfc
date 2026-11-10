@@ -584,6 +584,10 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
     m_iDynasticCityTurn = -1;
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
+        m_aiForceMode[iI] = m_aiForcePending[iI] = INTEL_NONE;
+        m_aiForceNextTurn[iI] = 0;
+        for (int iSlot = 0; iSlot < 3; ++iSlot) m_aiForceTargets[iI][iSlot] = NO_PLAYER;
+        for (int iMode = 0; iMode < NUM_INTELLIGENCE_MODES; ++iMode) m_aiForceStock[iI][iMode] = 0;
         m_aiIntelligenceMode[iI] = INTEL_NONE;
         m_aiCooperationStock[iI] = 0;
         m_aiIntelligenceStrength[iI] = 0;
@@ -16042,9 +16046,10 @@ void CvPlayer::changeEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iC
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 
-    // Absolute mode requests are idempotent and use Civ4's player-scoped synchronized message.
-    if (iChange >= 100 && iChange < 100 + NUM_INTELLIGENCE_MODES && eIndex != getTeam() && GET_TEAM(getTeam()).isHasMet(eIndex))
-        setEspionageSpendingWeightAgainstTeam(eIndex, iChange - 100);
+    // Absolute force requests use the existing player-scoped synchronized message.
+    if (iChange >= 1000 && iChange < 1000 + MAX_TEAMS * NUM_INTELLIGENCE_MODES)
+        setIntelligenceForceMode((iChange - 1000) / NUM_INTELLIGENCE_MODES,
+            (iChange - 1000) % NUM_INTELLIGENCE_MODES);
 }
 
 void CvPlayer::doAdvancedStartAction(AdvancedStartActionTypes eAction, int iX, int iY, int iData, bool bAdd)
@@ -18046,6 +18051,14 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(NUM_COMMERCE_TYPES, m_aiCommerceFlexibleCount);
 	pStream->Read(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Read(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
+    pStream->Read(MAX_TEAMS, m_aiForceMode);
+    pStream->Read(MAX_TEAMS, m_aiForcePending);
+    pStream->Read(MAX_TEAMS, m_aiForceNextTurn);
+    for (int iForce = 0; iForce < MAX_TEAMS; ++iForce)
+    {
+        pStream->Read(3, m_aiForceTargets[iForce]);
+        pStream->Read(NUM_INTELLIGENCE_MODES, m_aiForceStock[iForce]);
+    }
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Read(MAX_TEAMS, m_aiCooperationStock);
     pStream->Read(&m_iCooperationStability);
@@ -18567,6 +18580,14 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(NUM_COMMERCE_TYPES, m_aiCommerceFlexibleCount);
 	pStream->Write(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Write(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
+    pStream->Write(MAX_TEAMS, m_aiForceMode);
+    pStream->Write(MAX_TEAMS, m_aiForcePending);
+    pStream->Write(MAX_TEAMS, m_aiForceNextTurn);
+    for (int iForce = 0; iForce < MAX_TEAMS; ++iForce)
+    {
+        pStream->Write(3, m_aiForceTargets[iForce]);
+        pStream->Write(NUM_INTELLIGENCE_MODES, m_aiForceStock[iForce]);
+    }
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMode);
     pStream->Write(MAX_TEAMS, m_aiCooperationStock);
     pStream->Write(m_iCooperationStability);

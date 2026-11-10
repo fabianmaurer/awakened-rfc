@@ -1370,20 +1370,50 @@ and outside city working areas.
 
 ## Intelligence networks
 
-Spy units and their missions are replaced by automatic operations. In the
-intelligence advisor, choose one mode per civilization in diplomatic contact;
-**No operations** is the default. It starts no operations and has no discovery
-risk; existing networks and resentment continue to decay. Hover over any mode to read its
-rules without selecting it. The details panel previews queued modes immediately. Every network tile and
-the details panel show buildup as a percentage of that mode's full effect,
-even while another mode is active. Technology uses its existing research-rate
-normalization; cooperation buildup is shown before the separate trust modifier.
-No operations has no network and displays a dash. Choices take effect at the next player
-turn boundary. The espionage slider funds every network with your full output,
-without dividing it between rivals. Basic demographics remain available for
-known civilizations. Existing espionage buildings, specialists
+Spy units and missions are replaced by task forces. The intelligence advisor
+lets you choose each force's focus; **No operations** is the default. One force
+is available in the Ancient era, with one more unlocked on reaching each new
+era through technology. Focus changes take effect at the next player turn.
+Hovering a focus previews its rules without changing the selection.
+
+Each active force receives `total espionage / active forces + 10% of total
+espionage`. Forces with no operations or no valid assigned targets receive no
+funding and do not enter the divisor. One active force receives 110%, two receive
+60% each, and the three Medieval forces receive about 43.3% each: 130% combined.
+Cooperation bonuses strengthen offensive operations, but cooperation itself
+uses base output and never shares bonuses recursively.
+
+Every five Normal turns (ten on XL), each force automatically chooses up to
+three target teams. Changing focus starts a new assignment at the next turn
+boundary. Targets are ranked by access, resistance and the focus's prospective
+return. Military priority adds separate bonuses for war, poor relations and
+being a land neighbor. Technology favors useful research sources; economics
+favors gold income; cooperation requires an agreement and favors strong espionage
+partners with mutual trust. Dynastic politics requires an eligible monarchy.
+
+For the best one, two or three eligible targets, the force compares the sum of
+scores multiplied by 100%, 70% or 57% respectively. Each selected country receives
+that fraction of the force's effort. Thus three comparable targets yield 171%
+of concentrated effort in total, whereas sharply weaker alternatives favor one
+or two targets. Several forces may target the same country, including with
+different focuses. Invalid assignments stop working immediately; replacement
+waits for the next scheduled review.
+
+Buildup belongs to the force and focus, so switching countries preserves it.
+Each Normal turn retains 90% and adds twice the force's allocated base output;
+XL retains 95% and adds one allocation. Inactive focuses continue to decay.
+The advisor shows this funding-relative maturity as a consistent percentage
+under every focus and in the details panel; No operations displays a dash.
+Target-specific effects apply the concentration factor, access, resistance and
+any applicable cooperation bonus to that stored buildup. The saturation curves
+below use this derived target buildup, combining forces with the same focus.
+Established dynastic stages remain attached to their countries.
+
+The advisor lists forces, current targets, funding and turns until reassessment.
+Clicking a target changes only the displayed details. Basic demographics remain
+available for known civilizations. Existing espionage buildings, specialists
 and settled Great Spies remain useful; Great Spies can establish Scotland Yard
-or contribute to a Golden Age, but no longer perform infiltration missions.
+or contribute to a Golden Age, but cannot perform infiltration missions.
 
 Distance between capitals reduces access by up to 60 percentage points. An
 embassy on either side adds 20 points; direct outgoing trade routes add 5 each,
@@ -1396,8 +1426,7 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   agreement unlocks this mode for both countries; either side may invest
   independently. The agreement requires peace. AI partners require at least
   Pleased relations and no war preparations against the other party.
-  Cooperation buildup gains twice your base espionage output after access and
-  loses 10% per Normal turn; XL halves both. Counterintelligence does not resist
+  Cooperation uses its force's allocated base output and portable buildup after access. Counterintelligence does not resist
   cooperation. Network strength is `B / (B + 40000)`, multiplied by mutual trust:
   Furious 0%, Annoyed 10%, Cautious 35%, Pleased 75%, Friendly 100%. Human teams'
   consent is represented by the agreement, so their side uses full trust.
@@ -1423,8 +1452,8 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   shared project and retained until completed or unavailable. Prerequisites must
   be fulfilled. Each rival in technology mode that knows the project contributes
   effective strength multiplied by `1 + 0.1 * min(10, eligible technologies)`.
-  Contributions are sorted from largest to smallest and divided by 1, 2, 3,
-  etc.; the total is capped at three times your espionage output. Only the
+  Contributions add together, capped at three times your espionage output;
+  concentration is already accounted for by the force allocation. Only the
   current project receives progress; excess does not spill into another stolen
   technology that turn. Progress is ordinary research progress and remains when
   you switch modes. A project pauses if no active technology network supplies it.
@@ -1438,10 +1467,8 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   At 100 effective espionage against 100 research output, the old rate is reached
   at 77.4% after 10 Normal turns, 93.0% after 20 and 99.2% after 40.
   Existing research progress remains, but missed startup research is not refunded.
-- **Military espionage:** each target team has a separate buildup `B`. Each Normal
-  turn retains 90% of its previous buildup and adds twice the effective espionage output
-  after access and counterintelligence. XL retains 95% and adds the unmultiplied output
-  per turn. Decay continues without funding and in other modes; effects require
+- **Military espionage:** `B` is the combined assigned forces' derived buildup
+  against the target team. Decay continues without funding and in other modes; effects require
   military mode. Without funding, buildup halves in about 6.6 Normal turns (13.5 on XL).
   With `U` enemy military units, the shared effect fraction is
   `B / (B + 20 * (40 + U))`. Combat strength approaches +30%, city-infiltration
@@ -1465,18 +1492,17 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   use dynastic politics instead.
 - **Economic Subversion:** covert networks steal gold, divert growth food and
   occasionally steal art. Buildup gains twice the effective output and decays by 10.0% per Normal turn (5.0% on XL).
-  Influence is `B / (B + 20 * (20 + target population))`. At 50.0% influence,
-  the limits are 5.0% of gold income, 2.5% of positive growth-food surplus and
-  a 0.5% art-theft chance per Normal turn. All attackers share ceilings of
-  10.0% of gold income, 5.0% of growth surplus and a 1.0% art-theft chance per
-  target per Normal turn, weighted by influence. Gold losses are additionally
-  capped at 1.0% of the current treasury. The financial advisor shows actual
+  Influence is `B / (B + 400)`. At 50.0% influence, the limits are 2.5% of
+  positive growth-food surplus and a 0.5% art-theft chance per Normal turn.
+  All attackers share ceilings of 5.0% of growth surplus and a 1.0% art-theft
+  chance per target per Normal turn, weighted by influence. Gold is drawn from
+  the current treasury, shared proportionally when requests exceed available gold. The financial advisor shows actual
   gold stolen and gold lost to espionage during the last completed game turn,
   including them in its income and expense totals. Each row is hidden when its
   amount is zero. These transfers are already included in the treasury; they
   do not change the ordinary gold-per-turn rate. Each sponsor shares a gold budget
-  across active targets, capped at 50.0% of espionage output and multiplied by
-  each network's influence. Fractional coins accrue. Fractional food shipments
+  based on force allocation: 50.0% of the espionage assigned to that target,
+  multiplied by its network influence. Fractional coins accrue. Fractional food shipments
   accrue per city after growth modifiers; only new positive growth surplus is
   diverted. Stored food, consumption and food used for unit production are
   untouched. Shipments go to the nearest orderly sponsor city. Food and gold
@@ -1496,8 +1522,8 @@ upper bounds: 1.0% for technology/economic operations, 3.0% for military and
 effective espionage `E` and the selected operation's buildup `B`. Small efforts
 have lower risk; reducing funding leaves risk while stored buildup decays.
 No funding and no buildup means no risk. Dynastic politics remains exempt.
-One discovery roll is made per sponsor and target team, even with multiple
-players on that team. XL halves the chance. Discovery adds diplomatic resentment,
+One discovery roll is made per active focus, sponsor and target team, even
+with multiple forces or players on that team. XL halves the chance. Discovery adds diplomatic resentment,
 with respective caps of -1, -3 and -6 attitude. Existing resentment survives
 mode changes and decays by two hundredths of an attitude point per Normal
 turn, or one hundredth per XL turn. Non-combat event chances scale with the
@@ -1507,15 +1533,12 @@ chooses modes and budgets for catch-up, warfare, political hostility, economic
 subversion and cooperation, and can leave friendly networks inactive.
 
 
-The AI scores usable technology opportunities, the current stolen-research
-project, war plans and nearby threats, dynastic stages, civic differences,
-economic opportunities, diplomatic costs, access and counterintelligence.
-Existing buildup improves an operation's score. A moderate preference for
-marriage politics remains against monarchies. Choices are normally reviewed
-every five Normal turns (ten on XL), with a switching margin to preserve investment; war,
-war plans and unusable options allow earlier reconsideration. Spending follows
-chosen operations, falls when opportunities disappear, and remains constrained
-by finances. These are heuristics, not a guarantee of optimal play.
+The AI chooses force focuses from the same target-efficacy scores, prioritizes
+wartime military intelligence, and gives additional forces a preference for
+useful alternative focuses. Allied targets are excluded from its hostile-focus
+selection; automatic assignment itself follows the same rules as human forces.
+Spending follows selected focuses and remains constrained by finances. These
+heuristics do not guarantee optimal play.
 
 For example, against 100 military units the half-effect buildup is 2,800.
 At 100 effective espionage per Normal turn, starting from zero:
@@ -1551,9 +1574,8 @@ With target population `P`, the shared effect fraction is
   civic options and the existing civic setter restrictions remain respected.
   Anarchy or an active revolution cooldown blocks this roll. A successful reform
   starts a five-Normal-turn cooldown, with no additional automatic anarchy.
-- Total city-culture gains across all political targets cannot exceed one quarter
-  of the sponsor's raw espionage output per Normal turn. Each target receives an
-  equal share of that budget multiplied by its own `F`, then distributes the share
+- Each political target receives culture worth up to one quarter of the
+  espionage allocated to it per Normal turn, multiplied by its own `F`, then distributes the share
   among its cities by population. Culture is added to the cities, without a free
   pulse of surrounding tile culture. More cities do not multiply the reward.
 - Each network contributes up to `6 * F` stability pressure; combined foreign
@@ -1590,7 +1612,7 @@ collapse-inheritance eligibility rules still apply separately. Marriage diplomac
 has no espionage-discovery penalty. Established kinship applies in both directions:
 distant relatives grant +1 relations; close relatives and later stages grant +2.
 
-Influence uses the military network's decaying buildup: `B_next = 0.90 * B + 2 * E`
+Influence uses the assigned political forces' derived buildup: `B_next = 0.90 * B + 2 * E`
 at Normal speed, or `0.95 * B + E` on XL. `E` is effective espionage after
 access and counterintelligence, increased by 2% for each point of negative target
 stability, capped at twice the normal rate at -50. Nonnegative stability adds no

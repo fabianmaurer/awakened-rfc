@@ -90,11 +90,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_CHOOSE_MODE</Tag>
-    <English>Hover to inspect a mode. Click to choose it for next turn.</English>
-    <French>Survolez un mode pour l&#8217;examiner. Cliquez pour le choisir au prochain tour.</French>
-    <German>Zum Pr&#252;fen auf einen Modus zeigen. Per Klick f&#252;r die n&#228;chste Runde w&#228;hlen.</German>
-    <Italian>Passa su un modo per esaminarlo. Clicca per sceglierlo dal prossimo turno.</Italian>
-    <Spanish>Pasa sobre un modo para verlo. Haz clic para elegirlo el pr&#243;ximo turno.</Spanish>
+    <English>Choose a focus. Targets are assigned automatically.</English>
+    <French>Choisissez une sp&#233;cialit&#233;. Les cibles sont assign&#233;es automatiquement.</French>
+    <German>Fokus w&#228;hlen. Ziele werden automatisch zugeteilt.</German>
+    <Italian>Scegli una specialit&#224;. Gli obiettivi vengono assegnati automaticamente.</Italian>
+    <Spanish>Elige una especialidad. Los objetivos se asignan autom&#225;ticamente.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_ACCESS</Tag>
@@ -162,11 +162,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_TECH_HELP</Tag>
-    <English>Build a network to steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</English>
-    <French>D&#233;veloppez un r&#233;seau pour voler la recherche d&#8217;une technologie choisie au hasard. Plus de technologies disponibles am&#233;liorent le rendement ; les sources suppl&#233;mentaires ont un rendement d&#233;croissant.</French>
-    <German>Baue ein Netzwerk auf, um Forschung f&#252;r eine zuf&#228;llige Technologie zu stehlen. Mehr verf&#252;gbare Technologien steigern den Ertrag; zus&#228;tzliche Quellen bringen abnehmenden Nutzen.</German>
-    <Italian>Sviluppa una rete per rubare ricerca per una tecnologia casuale. Pi&#249; tecnologie disponibili migliorano i risultati; le fonti aggiuntive hanno rendimenti decrescenti.</Italian>
-    <Spanish>Desarrolla una red para robar investigaci&#243;n de una tecnolog&#237;a aleatoria. M&#225;s tecnolog&#237;as disponibles mejoran el rendimiento; las fuentes adicionales tienen rendimientos decrecientes.</Spanish>
+    <English>Build a network to steal research for one randomly chosen technology. More available technologies improve returns.</English>
+    <French>D&#233;veloppez un r&#233;seau pour voler des recherches sur une technologie choisie au hasard. Davantage de technologies disponibles am&#233;liorent le rendement.</French>
+    <German>Baut ein Netz auf, das Forschung f&#252;r eine zuf&#228;llig gew&#228;hlte Technologie stiehlt. Mehr verf&#252;gbare Technologien erh&#246;hen den Ertrag.</German>
+    <Italian>Sviluppa una rete per rubare ricerca su una tecnologia scelta casualmente. Pi&#249; tecnologie disponibili migliorano i risultati.</Italian>
+    <Spanish>Desarrolla una red para robar investigaci&#243;n de una tecnolog&#237;a elegida al azar. M&#225;s tecnolog&#237;as disponibles mejoran el rendimiento.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MILITARY_HELP</Tag>
@@ -882,11 +882,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_ECONOMIC_GOLD</Tag>
-    <English>Gold siphoning: up to %s1%% of their gold income</English>
-    <French>Or d&#233;tourn&#233; : jusqu&#8217;&#224; %s1%% de leurs revenus</French>
-    <German>Goldraub: bis zu %s1%% ihrer Goldeinnahmen</German>
-    <Italian>Oro sottratto: fino al %s1%% delle loro entrate</Italian>
-    <Spanish>Oro desviado: hasta el %s1%% de sus ingresos</Spanish>
+    <English>Gold requested: %s1 per turn</English>
+    <French>Or demand&#233; : %s1 par tour</French>
+    <German>Goldraub: %s1 pro Runde angefordert</German>
+    <Italian>Oro richiesto: %s1 per turno</Italian>
+    <Spanish>Oro solicitado: %s1 por turno</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_ECONOMIC_FOOD</Tag>
@@ -1042,11 +1042,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_NONE_HELP</Tag>
-    <English>No operations are conducted against this country. Existing networks and diplomatic resentment fade. Negotiate Intelligence Cooperation to unlock peaceful cooperation.</English>
-    <French>Aucune op&#233;ration ne vise ce pays. Les r&#233;seaux existants et le ressentiment diplomatique diminuent. N&#233;gociez une coop&#233;ration du renseignement pour d&#233;bloquer la coop&#233;ration pacifique.</French>
-    <German>Gegen dieses Land laufen keine Operationen. Bestehende Netze und diplomatischer Unmut nehmen ab. Ein Abkommen zur Geheimdienstkooperation erm&#246;glicht friedliche Zusammenarbeit.</German>
-    <Italian>Non vengono condotte operazioni contro questo paese. Le reti esistenti e il risentimento diplomatico diminuiscono. Negozia la cooperazione informativa per sbloccare la collaborazione pacifica.</Italian>
-    <Spanish>No se realizan operaciones contra este pa&#237;s. Las redes existentes y el resentimiento diplom&#225;tico disminuyen. Negocia la cooperaci&#243;n de inteligencia para desbloquear la colaboraci&#243;n pac&#237;fica.</Spanish>
+    <English>This task force conducts no operations and receives no funding. Its networks slowly decay. Other task forces continue their work.</English>
+    <French>Ce service ne m&#232;ne aucune op&#233;ration et ne re&#231;oit aucun financement. Ses r&#233;seaux d&#233;clinent lentement. Les autres services poursuivent leur travail.</French>
+    <German>Diese Einsatzgruppe f&#252;hrt keine Operationen aus und erh&#228;lt keine Mittel. Ihre Netze verfallen langsam. Andere Einsatzgruppen arbeiten weiter.</German>
+    <Italian>Questa squadra non conduce operazioni e non riceve fondi. Le sue reti decadono lentamente. Le altre squadre continuano il loro lavoro.</Italian>
+    <Spanish>Este equipo no realiza operaciones ni recibe fondos. Sus redes se debilitan lentamente. Los dem&#225;s equipos siguen trabajando.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COOP_LOCKED</Tag>
@@ -1135,5 +1135,53 @@
     <German>Erfordert ein Abkommen zur Geheimdienstkooperation mit %s1.</German>
     <Italian>Richiede un accordo di cooperazione informativa con %s1.</Italian>
     <Spanish>Requiere un acuerdo de cooperaci&#243;n de inteligencia con %s1.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FORCES</Tag>
+    <English>Spy task forces</English>
+    <French>Services de renseignement</French>
+    <German>Einsatzgruppen</German>
+    <Italian>Squadre di spionaggio</Italian>
+    <Spanish>Equipos de espionaje</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FORCE</Tag>
+    <English>Task force %d1</English>
+    <French>Service %d1</French>
+    <German>Einsatzgruppe %d1</German>
+    <Italian>Squadra %d1</Italian>
+    <Spanish>Equipo %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FORCE_UNLOCK</Tag>
+    <English>Next force: %s1</English>
+    <French>Prochain service : %s1</French>
+    <German>N&#228;chste Gruppe: %s1</German>
+    <Italian>Prossima squadra: %s1</Italian>
+    <Spanish>Pr&#243;ximo equipo: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NO_TARGETS</Tag>
+    <English>No assigned targets</English>
+    <French>Aucune cible assign&#233;e</French>
+    <German>Keine zugewiesenen Ziele</German>
+    <Italian>Nessun obiettivo assegnato</Italian>
+    <Spanish>Sin objetivos asignados</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FORCE_FUNDING</Tag>
+    <English>Funding: %s1% of total</English>
+    <French>Financement : %s1% du total</French>
+    <German>Finanzierung: %s1% gesamt</German>
+    <Italian>Fondi: %s1% del totale</Italian>
+    <Spanish>Fondos: %s1% del total</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RETARGET</Tag>
+    <English>Target review in %d1 turns</English>
+    <French>R&#233;vision dans %d1 tours</French>
+    <German>Zielpr&#252;fung in %d1 Runden</German>
+    <Italian>Revisione tra %d1 turni</Italian>
+    <Spanish>Revisi&#243;n en %d1 turnos</Spanish>
   </TEXT>
 </Civ4GameText>
