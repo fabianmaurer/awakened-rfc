@@ -1089,7 +1089,14 @@ Piraten bleiben aktiv.
 
 Automatische Operationen ersetzen Spionageeinheiten und deren Missionen. Im
 Geheimdienstberater wählen Sie einen Modus je Zivilisation mit diplomatischem
-Kontakt. Standard ist **Technologiediebstahl**. Änderungen gelten ab der nächsten
+Kontakt. Standard ist **Keine Operationen**. Dabei entstehen keine neuen Operationen
+oder Entdeckungsrisiken; bestehende Netze und diplomatischer Unmut nehmen ab. Beim
+Zeigen auf einen Modus erscheinen seine Regeln, ohne ihn auszuwählen. Vorgemerkte
+Modi zeigen sofort eine Vorschau. Jedes Netz zeigt
+seinen Aufbau als Prozentsatz seiner vollen Wirkung, auch bei einem anderen
+aktiven Modus. Beim Technologiediebstahl gilt die bestehende Normierung auf die
+Forschungsrate; bei Kooperation wird der Aufbau vor dem Vertrauensfaktor gezeigt.
+Keine Operationen hat kein Netz und zeigt einen Strich. Änderungen gelten ab der nächsten
 Spielerrundengrenze. Die volle Spionageleistung wirkt auf jedes Netz, ohne
 Aufteilung zwischen Rivalen. Grundlegende demografische Daten bekannter
 Zivilisationen bleiben verfügbar. Spionagegebäude, Spezialisten und angesiedelte
@@ -1102,18 +1109,60 @@ Handelswege jeweils 5. Der Zugang liegt zwischen 40 und 140%. Fremde
 Spionageleistung schwächt alle Operationen. Sicherheitsbüros erhöhen die nationale
 Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
 
+- **Geheimdienstkooperation:** Ein gegenseitiges diplomatisches Abkommen schaltet
+  diesen Modus für beide Länder frei. Jede Seite entscheidet unabhängig über
+  ihren Einsatz. KI-Partner verlangen mindestens erfreute Beziehungen und keine
+  Kriegsvorbereitungen gegen den Partner. Gute Beziehungen und ein aufgebautes
+  Netz erhöhen den Beitrag aus der Spionage-Grundleistung des Partners.
+  Alle Partnerbeiträge zusammen sind auf 100% der eigenen Grundleistung begrenzt.
+  Kooperationsboni werden nicht weitergeteilt; Rückkopplungen sind ausgeschlossen.
+  Die erhöhte Leistung stärkt andere Operationen samt Forschungs-, Kultur- und
+  Goldbudgets, aber keine Operationen gegen Abkommenspartner und keine
+  Spionageabwehr. Oben links steht die Grundleistung, gefolgt von
+  der erhöhten Gesamtleistung in farbigen Klammern.
+  Beide Länder erhalten allmählich bis zu +3 Stabilität aus ihrer stärksten
+  eingehenden oder ausgehenden Kooperation. Mehrere Partner oder gegenseitige
+  Investitionen stapeln diesen Bonus nicht. Bei Kündigung oder Krieg endet der
+  Spionagebeitrag sofort; der Stabilitätsbonus klingt langsam ab. Kooperation
+  birgt kein Entdeckungsrisiko und beeinflusst weder Staatsformen noch Kultur
+  oder politische Unruhe. Die genauen Formeln stehen im englischen Regelwerk.
 - **Technologiediebstahl:** Eine zufällig gewählte Technologie mit erfüllten
   Voraussetzungen bleibt bis zum Abschluss oder Wegfall das gemeinsame Ziel.
   Mehr verfügbare Technologien erhöhen den Ertrag. Zusätzliche Quellen bringen
   abnehmenden Nutzen; insgesamt ist der Ertrag auf die dreifache Spionageleistung
   begrenzt. Fortschritt bleibt bei Moduswechseln erhalten. Ohne passende Quelle
   ruht das Ziel. Überschüsse fließen in dieser Runde nicht in ein zweites Ziel.
+  Technologienetzwerke benötigen Aufbau: 10,0% Verfall und doppelte wirksame
+  Spionageleistung pro normaler Runde; XL halbiert beides. Mit aktueller wirksamer
+  Spionage `E`, `H = 20 * (20 + Forschungsleistung des Ziels)` und
+  `S(B) = B / (B + H)` wird der frühere Beitrag jeder Quelle mit
+  `min(1, S(B) / S(20 * E))` multipliziert. Bei gleichbleibender Finanzierung
+  nähert sich der Ertrag dem früheren Wert, ohne ihn zu überschreiten.
+  Höhere Finanzierung erfordert weiteren Aufbau; nach einer Senkung kann das
+  Netzwerk bereits ausgereift sein. Der Aufbau verfällt auch ohne Finanzierung
+  und in anderen Modi. Bei 100 wirksamer Spionage gegen 100 Forschungsleistung
+  werden nach 10 normalen Runden 77,4%, nach 20 Runden 93,0% und nach 40 Runden
+  99,2% des früheren Ertrags erreicht.
+  Erworbener Forschungsfortschritt bleibt erhalten; entgangene Anfangserträge
+  werden nicht nachträglich erstattet.
+
+Die KI bewertet verfügbare Technologien, das laufende Forschungsprojekt,
+Kriegspläne, nahe Bedrohungen, dynastische Stufen, Staatsformunterschiede,
+wirtschaftliche Chancen, diplomatische Kosten, Zugang und Spionageabwehr.
+Bestehender Aufbau erhöht den Wert einer Operation. Gegen Monarchien bleibt
+eine mäßige Vorliebe für Heiratspolitik erhalten. Normalerweise werden die
+Entscheidungen alle fünf normalen Runden (zehn auf XL) geprüft; ein Wechsel erfordert einen
+klaren Vorteil. Krieg, Kriegspläne und unbrauchbare Optionen erlauben frühere
+Neubewertungen. Die Ausgaben folgen den gewählten Operationen, sinken bei
+fehlenden Chancen und bleiben durch die Finanzlage begrenzt. Diese Heuristiken
+garantieren kein optimales Spiel.
+
 - **Militärspionage:** Jedes Zielteam hat einen eigenen Aufbau `B`. Pro normaler
-  Runde bleiben 95% erhalten; hinzu kommt die wirksame Spionageleistung nach
-  Zugang und Abwehr. Auf XL bleiben 97,5% erhalten und die halbe Leistung kommt
+  Runde bleiben 90% erhalten; hinzu kommt die doppelte wirksame Spionageleistung nach
+  Zugang und Abwehr. Auf XL bleiben 95% erhalten und die einfache Leistung kommt
   hinzu. Der Abbau läuft auch ohne Finanzierung und in anderen Modi weiter;
   Effekte gelten nur im Militärmodus. Ohne Finanzierung halbiert sich der Aufbau
-  nach etwa 13,5 normalen Runden. Bei `U` feindlichen Militäreinheiten ist der
+  nach etwa 6,6 normalen Runden (13,5 auf XL). Bei `U` feindlichen Militäreinheiten ist der
   gemeinsame Wirkungsanteil `B / (B + 20 * (40 + U))`. Kampfbonus und
   Infiltrationschance nähern sich 30%, die Truppenaufklärung 100%. Effekte
   behalten intern Hundertstelprozent und werden mit einer Nachkommastelle angezeigt.
@@ -1130,7 +1179,7 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   für diese Spielrunde aus. Gelände-, Einheiten- und Verschanzungsboni sowie
   gespeicherter Bombardierungsschaden bleiben erhalten.
   Beispiel: Gegen 100 Militäreinheiten ergibt eine wirksame Spionageleistung von
-  100 pro normaler Runde nach 10, 20 und 40 Runden +6,7%, +9,4% und +11,5% Kampfstärke.
+  100 pro normaler Runde nach 10, 20 und 40 Runden +9,5%, +11,6% und +12,4% Kampfstärke.
   Langfristig sind es +12,5%, etwa 12,5% Infiltrationschance und 41,7% Truppenabdeckung.
   Bei 400 beziehungsweise 1.000 Leistung erreicht der Kampfbonus langfristig +22,2%
   beziehungsweise +26,3%.
@@ -1139,15 +1188,44 @@ Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
   seine Stadtkultur und destabilisiert das Ziel. Seltene Klientelregierungen
   erfordern starke Instabilität und unabhängige Länder. Monarchien nutzen weiterhin
   dynastische Politik. Einzelheiten stehen unten.
-- **Kartenspionage:** Berichte enthüllen ein Gebiet von 7x7 Feldern (auf XL 11x11) um eine
-  Zielstadt und zeigen dort bei normalem Spieltempo drei Runden das Geschehen.
-  Unbekanntes Gebiet wird bevorzugt. Größere Reiche senken die Berichtschance,
-  die bei normalem Tempo höchstens 25% und auf XL 12,5% pro Runde beträgt. Gelände bleibt bekannt; aktuelle Sicht
-  endet mit dem Bericht oder beim Moduswechsel.
+- **Wirtschaftliche Unterwanderung:** Netzwerke stehlen Gold, leiten
+  Nahrungslieferungen um und stehlen gelegentlich Kunst. Der Aufbau verfällt
+  um 10,0% pro normaler Runde, auf XL um 5,0%. Der normale Zuwachs beträgt die doppelte wirksame Spionageleistung. Der Einfluss beträgt
+  `B / (B + 20 * (20 + Zielbevölkerung))`. Bei 50,0% Einfluss gelten pro normaler
+  Runde höchstens 5,0% der Goldeinnahmen, 2,5% des positiven Wachstumsüberschusses
+  und 0,5% Kunstraubchance. Alle Angreifer teilen sich nach Einfluss Obergrenzen
+  von 10,0% der Goldeinnahmen, 5,0% des Wachstumsüberschusses und 1,0% Kunstraubchance.
+  Zusätzlich sind Goldverluste auf 1,0% der aktuellen Schatzkammer begrenzt. Der
+  Finanzberater zeigt tatsächlich gestohlenes und durch Spionage verlorenes Gold
+  der letzten abgeschlossenen Spielrunde in den Einnahmen und Ausgaben.
+  Zeilen mit dem Wert null bleiben ausgeblendet. Diese Beträge sind bereits in
+  der Schatzkammer enthalten und ändern die normale Goldrate pro Runde nicht.
+  Jeder Auftraggeber teilt ein Goldbudget von höchstens 50,0% seiner
+  Spionageleistung zwischen den aktiven Zielen, jeweils nach Einfluss.
+  Goldbruchteile sammeln sich an. Nahrungsbruchteile sammeln sich je Stadt
+  nach Wachstumsmodifikatoren an. Nur neuer positiver Wachstumsüberschuss
+  wird umgeleitet; Vorräte, Verbrauch und Nahrungsproduktion bleiben erhalten.
+  Lieferungen gehen an die nächste eigene Stadt ohne Unruhen. Gold und Nahrung
+  werden übertragen, nicht erzeugt. Kunstraub betrifft Städte mit mindestens
+  100 eigener Kultur und positivem Kulturertrag. Die nächste eigene Stadt ohne
+  Unruhen erhält fünf Runden des Kulturertrags der bestohlenen Stadt, höchstens
+  100 Kultur. Die bestohlene Stadt erleidet drei normale Runden Geheimdienstunruhen
+  (+2 Unzufriedenheit), ohne bestehende Geheimdienstunruhen zu addieren.
+  Historische Kultur und Grenzen bleiben erhalten. XL halbiert Aufbau, Verfall,
+  Transfers und Ereignischancen pro Runde; Kunstbelohnungen bleiben gleich.
+  Operationen laufen im Krieg weiter. Kartenberichte und ihre Stadtsicht entfallen.
 
-Wirksame Operationen können pro Runde entdeckt werden: Technologie/Karten mit
-1%, Militär mit 3%, Politik mit 6% bei normalem Tempo. Auf XL gelten
-0,5%, 1,5% und 3%. Entdeckungen verschlechtern die Haltung des
+Das Entdeckungsrisiko steigt mit dem Aufwand und nähert sich den bisherigen
+festen Chancen als Obergrenzen: 1,0% für Technologie/wirtschaftliche Operationen,
+3,0% für Militär und 6,0% für politische Einmischung pro normaler Runde.
+Es gilt `Obergrenze * Aufwand / (Aufwand + 50)` mit
+`Aufwand = max(E, B / 20)`, aktueller wirksamer Spionage `E` und gespeichertem
+Aufbau `B` der gewählten Operation. Kleine Operationen sind unauffälliger.
+Nach einer Finanzierungssenkung bleibt das abklingende Netzwerk eine Zeit lang
+auffällig. Ohne Finanzierung und Aufbau ist das Risiko null. Dynastische Politik
+bleibt ausgenommen. Pro Auftraggeber und Zielteam gibt es einen Wurf je Runde,
+auch bei mehreren Spielern im Zielteam. XL halbiert die Chance.
+Entdeckungen verschlechtern die Haltung des
 Ziels um höchstens -1, -3 beziehungsweise -6. Bestehende Abzüge überdauern
 Moduswechsel und sinken pro normaler Runde um zwei Hundertstel eines
 Haltungspunkts, pro XL-Runde um ein Hundertstel. Nichtmilitärische
@@ -1160,8 +1238,8 @@ Speicherformat ist für neue Partien vorgesehen.
 
 ### Politische Fraktionen
 
-Aufbau `B` verfällt wie beim Militärnetz: 5% je normaler Runde, auf XL 2,5% bei
-halbiertem Zuwachs. Zugang und Gegenaufklärung senken die wirksame Finanzierung.
+Aufbau `B` verfällt wie beim Militärnetz: 10% je normaler Runde, auf XL 5% bei
+halbiertem Zuwachs. Normaler Zuwachs ist die doppelte wirksame Spionageleistung. Zugang und Gegenaufklärung senken die wirksame Finanzierung.
 Bei Zielbevölkerung `P` ist der Wirkungsanteil `F = B / (B + 20 * (20 + P))`.
 Ab 25% Einfluss verbessert sich die Haltung des Ziels zum Geldgeber um +1,
 ab 75% um +2. Krieg unterdrückt diesen Bonus; entdeckte Operationen können ihn
@@ -1190,7 +1268,8 @@ je Spielrunde, nicht die Stärke von Beziehungen und Stabilitätsdruck.
 
 Monarchien ersetzen politische Einmischung durch Heiratspolitik gegenüber anderen
 Monarchien. Einfluss wächst wie militärischer Aufbau und verliert pro normaler
-Runde 5%, auf XL 2,5%. XL halbiert auch den Zuwachs. Jeder negative Stabilitätspunkt
+Runde 10%, auf XL 5%. Pro normaler Runde kommt die doppelte wirksame
+Spionageleistung hinzu. XL halbiert den Zuwachs. Jeder negative Stabilitätspunkt
 des Ziels erhöht den Zuwachs um 2%, bis zur Verdopplung bei -50; positive Stabilität
 wirkt nicht erschwerend. Größe und Religion sind keine Bedingungen dieser Operation.
 Der Wirkungsanteil ist `B / (B + 100)` bei Aufbau `B`.

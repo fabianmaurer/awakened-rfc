@@ -515,6 +515,7 @@ class Stability:
                         #print("iNewBaseStability contacts",iNewBaseStability, iPlayer)
                         
                         iNewBaseStability -= pPlayer.getIntelligenceData(-1, 20)
+                        iNewBaseStability += pPlayer.getIntelligenceData(-1, 61)
                         self.setParameter(iPlayer, iParDiplomacy3, False, iNewBaseStability) 
 
 

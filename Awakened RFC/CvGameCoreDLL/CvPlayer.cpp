@@ -569,25 +569,34 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 
     m_eIntelligenceResearch = NO_TECH;
     m_iIntelligenceLastResearch = 0;
+    for (int iEconomic = 0; iEconomic < MAX_PLAYERS; ++iEconomic) m_aiEconomicGoldRemainder[iEconomic] = 0;
     m_iIntelligencePressure = 0;
     m_iIntelligenceUnrestCooldown = 0;
     m_iIntelligenceStability = 0;
+    m_iCooperationStability = 0;
+    for (int iGoldBucket = 0; iGoldBucket < 2; ++iGoldBucket)
+    {
+        m_aiEconomicGoldTurn[iGoldBucket] = -1;
+        m_aiEconomicGoldReceived[iGoldBucket] = 0;
+        m_aiEconomicGoldLost[iGoldBucket] = 0;
+    }
     m_iDynasticWarTurns = 0;
     m_iDynasticCityTurn = -1;
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
-        m_aiIntelligenceMode[iI] = 0;
+        m_aiIntelligenceMode[iI] = INTEL_NONE;
+        m_aiCooperationStock[iI] = 0;
         m_aiIntelligenceStrength[iI] = 0;
         m_aiIntelligenceMilitaryStock[iI] = 0;
+        m_aiTechnologyStock[iI] = 0;
         m_aiPoliticalStock[iI] = 0;
+        m_aiEconomicStock[iI] = 0;
         m_aiDynasticStock[iI] = 0;
         m_aiDynasticStage[iI] = 0;
         m_aiDynasticLastRoll[iI] = -1;
         m_abDynasticUnion[iI] = false;
         m_aiIntelligenceExposure[iI] = 0;
-        m_aiIntelligenceReportCity[iI] = -1;
-        m_aiIntelligenceReportUntil[iI] = -1;
-		m_aiEspionageSpendingWeightAgainstTeam[iI] = 0;
+		m_aiEspionageSpendingWeightAgainstTeam[iI] = INTEL_NONE;
 
 		if (!bConstructorCall && getTeam() != NO_TEAM)
 		{
@@ -595,18 +604,19 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 			{
 				if (GET_PLAYER((PlayerTypes) iJ).getTeam() == iI)
 				{
-					GET_PLAYER((PlayerTypes) iJ).setEspionageSpendingWeightAgainstTeam(getTeam(), 0);
-                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMode[getTeam()] = 0;
+					GET_PLAYER((PlayerTypes) iJ).setEspionageSpendingWeightAgainstTeam(getTeam(), INTEL_NONE);
+                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMode[getTeam()] = INTEL_NONE;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiCooperationStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceStrength[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceMilitaryStock[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiTechnologyStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiPoliticalStock[getTeam()] = 0;
+                    GET_PLAYER((PlayerTypes)iJ).m_aiEconomicStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStock[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticStage[getTeam()] = 0;
                     GET_PLAYER((PlayerTypes)iJ).m_aiDynasticLastRoll[getTeam()] = -1;
                     GET_PLAYER((PlayerTypes)iJ).m_abDynasticUnion[getTeam()] = false;
                     GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceExposure[getTeam()] = 0;
-                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportCity[getTeam()] = -1;
-                    GET_PLAYER((PlayerTypes)iJ).m_aiIntelligenceReportUntil[getTeam()] = -1;
 				}
 			}
 		}
@@ -4426,6 +4436,10 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 		}
 		break;
 
+    case TRADE_INTELLIGENCE_COOPERATION:
+        return canIntelligenceTarget(eWhoTo) && !atWar(getTeam(), eOtherTeam) &&
+            !GET_TEAM(getTeam()).isIntelligenceCooperation(eOtherTeam);
+
 	case TRADE_OPEN_BORDERS:
 		if (getTeam() != GET_PLAYER(eWhoTo).getTeam())
 		{
@@ -4554,6 +4568,12 @@ DenialTypes CvPlayer::getTradeDenial(PlayerTypes eWhoTo, TradeData item) const
 	case TRADE_RELIGION:
 		return AI_religionTrade(((ReligionTypes)(item.m_iData)), eWhoTo);
 		break;
+
+    case TRADE_INTELLIGENCE_COOPERATION:
+        if (GET_TEAM(getTeam()).AI_getWarPlan(GET_PLAYER(eWhoTo).getTeam()) != NO_WARPLAN) return DENIAL_NO_GAIN;
+        if (!GET_TEAM(getTeam()).isHuman() && GET_TEAM(getTeam()).AI_getAttitude(GET_PLAYER(eWhoTo).getTeam()) < ATTITUDE_PLEASED)
+            return DENIAL_ATTITUDE;
+        return NO_DENIAL;
 
 	case TRADE_OPEN_BORDERS:
 		return GET_TEAM(getTeam()).AI_openBordersTrade(GET_PLAYER(eWhoTo).getTeam());
@@ -16006,7 +16026,8 @@ void CvPlayer::setEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iValu
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 	FAssert(iValue >= 0);
 
-	iValue = range(iValue, 0, 3);
+	iValue = range(iValue, 0, NUM_INTELLIGENCE_MODES - 1);
+    if (iValue == INTEL_COOPERATION && !GET_TEAM(getTeam()).isIntelligenceCooperation(eIndex)) iValue = INTEL_NONE;
 
 	if (iValue != getEspionageSpendingWeightAgainstTeam(eIndex))
 	{
@@ -16022,7 +16043,7 @@ void CvPlayer::changeEspionageSpendingWeightAgainstTeam(TeamTypes eIndex, int iC
 	FAssertMsg(eIndex < MAX_TEAMS, "eIndex is expected to be within maximum bounds (invalid Index)");
 
     // Absolute mode requests are idempotent and use Civ4's player-scoped synchronized message.
-    if (iChange >= 100 && iChange <= 103 && eIndex != getTeam() && GET_TEAM(getTeam()).isHasMet(eIndex))
+    if (iChange >= 100 && iChange < 100 + NUM_INTELLIGENCE_MODES && eIndex != getTeam() && GET_TEAM(getTeam()).isHasMet(eIndex))
         setEspionageSpendingWeightAgainstTeam(eIndex, iChange - 100);
 }
 
@@ -18026,16 +18047,22 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Read(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMode);
+    pStream->Read(MAX_TEAMS, m_aiCooperationStock);
+    pStream->Read(&m_iCooperationStability);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceStrength);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Read(MAX_TEAMS, m_aiTechnologyStock);
     pStream->Read(MAX_TEAMS, m_aiPoliticalStock);
+    pStream->Read(MAX_TEAMS, m_aiEconomicStock);
+    pStream->Read(MAX_PLAYERS, m_aiEconomicGoldRemainder);
+    pStream->Read(2, m_aiEconomicGoldTurn);
+    pStream->Read(2, m_aiEconomicGoldReceived);
+    pStream->Read(2, m_aiEconomicGoldLost);
     pStream->Read(MAX_TEAMS, m_aiDynasticStock);
     pStream->Read(MAX_TEAMS, m_aiDynasticStage);
     pStream->Read(MAX_TEAMS, m_aiDynasticLastRoll);
     pStream->Read(MAX_TEAMS, m_abDynasticUnion);
     pStream->Read(MAX_TEAMS, m_aiIntelligenceExposure);
-    pStream->Read(MAX_TEAMS, m_aiIntelligenceReportCity);
-    pStream->Read(MAX_TEAMS, m_aiIntelligenceReportUntil);
     pStream->Read((int*)&m_eIntelligenceResearch);
     pStream->Read(&m_iIntelligenceLastResearch);
     pStream->Read(&m_iIntelligencePressure);
@@ -18541,16 +18568,22 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_PLAYERS, m_aiGoldPerTurnByPlayer);
 	pStream->Write(MAX_TEAMS, m_aiEspionageSpendingWeightAgainstTeam);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMode);
+    pStream->Write(MAX_TEAMS, m_aiCooperationStock);
+    pStream->Write(m_iCooperationStability);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceStrength);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceMilitaryStock);
+    pStream->Write(MAX_TEAMS, m_aiTechnologyStock);
     pStream->Write(MAX_TEAMS, m_aiPoliticalStock);
+    pStream->Write(MAX_TEAMS, m_aiEconomicStock);
+    pStream->Write(MAX_PLAYERS, m_aiEconomicGoldRemainder);
+    pStream->Write(2, m_aiEconomicGoldTurn);
+    pStream->Write(2, m_aiEconomicGoldReceived);
+    pStream->Write(2, m_aiEconomicGoldLost);
     pStream->Write(MAX_TEAMS, m_aiDynasticStock);
     pStream->Write(MAX_TEAMS, m_aiDynasticStage);
     pStream->Write(MAX_TEAMS, m_aiDynasticLastRoll);
     pStream->Write(MAX_TEAMS, m_abDynasticUnion);
     pStream->Write(MAX_TEAMS, m_aiIntelligenceExposure);
-    pStream->Write(MAX_TEAMS, m_aiIntelligenceReportCity);
-    pStream->Write(MAX_TEAMS, m_aiIntelligenceReportUntil);
     pStream->Write(m_eIntelligenceResearch);
     pStream->Write(m_iIntelligenceLastResearch);
     pStream->Write(m_iIntelligencePressure);
@@ -23014,6 +23047,9 @@ void CvPlayer::buildTradeTable(PlayerTypes eOtherPlayer, CLinkList<TradeData>& o
 		ourList.insertAtEnd(item);
 	}
 
+    setTradeItem(&item, TRADE_INTELLIGENCE_COOPERATION);
+    if (canTradeItem(eOtherPlayer, item)) ourList.insertAtEnd(item);
+
 	//	Open Borders
 	setTradeItem(&item, TRADE_OPEN_BORDERS);
 	if (canTradeItem(eOtherPlayer, item))
@@ -23266,6 +23302,9 @@ bool CvPlayer::getItemTradeString(PlayerTypes eOtherPlayer, bool bOffer, bool bS
 	case TRADE_SURRENDER:
 		szString = gDLL->getText("TXT_KEY_TRADE_CAPITULATE_STRING");
 		break;
+    case TRADE_INTELLIGENCE_COOPERATION:
+        szString = gDLL->getText("TXT_KEY_INTEL_AGREEMENT");
+        break;
 	case TRADE_OPEN_BORDERS:
 		szString = gDLL->getText("TXT_KEY_TRADE_OPEN_BORDERS_STRING");
 		break;

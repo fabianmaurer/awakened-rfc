@@ -1,0 +1,11 @@
+Generated using the built-in image_gen tool.
+Source: dynastic-meddling-background.png
+Runtime texture: Awakened RFC/Assets/Art/Interface/Buttons/Intelligence/DynasticBackground.dds
+Runtime conversion: 1024x512 RGBA DXT3; displayed at the details tile's aspect ratio.
+
+Use case: historical-scene
+Asset type: one wide background illustration for a Civilization IV intelligence-advisor details tile, landscape approximately 2.15:1.
+Style: restrained historical strategy-game concept art, painterly engraving texture, exceptionally dark charcoal, blackened brown and muted burgundy. A discreet Renaissance setting matching an espionage archive illustration. Very dim warm highlights, soft vignette at all edges. The entire left two thirds must remain quiet, nearly black negative space: white game text will be placed there. Recognizable scene elements concentrated at the far right and lower edge. Broad soft forms, restrained detail; no bright paper or lights. Artwork must remain perceptible but never compete with text.
+Constraints: background artwork only; opaque; no UI, readable writing, labels, lettering, logos, border or watermark.
+
+Primary scene: Dynastic meddling: an old royal crown, two understated marriage rings and a royal seal beside a folded dynastic marriage contract on a dark carved table at the lower right. A barely visible throne and burgundy curtain in the far-right shadows suggest marriage alliances and succession. No legible writing, no bright jewels or glowing gold.

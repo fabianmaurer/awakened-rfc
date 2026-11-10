@@ -17,7 +17,6 @@
 namespace
 {
     // Mode IDs are also the values sent by the existing synchronized spending message.
-    enum { INTEL_TECHNOLOGY, INTEL_MILITARY, INTEL_POLITICS, INTEL_MAPS };
     int intelligenceSpeedPercent()
     {
         GameSpeedTypes eNormal = (GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL");
@@ -44,22 +43,16 @@ namespace
             std::max(1, GC.getGameSpeedInfo(eNormal).getAnarchyPercent()));
     }
 
-    int mapReportRadius()
-    {
-        // Scale the reference world's radius 3 with the supported geography widths.
-        return std::max(1, (3 * GC.getMapINLINE().getGridWidth() + 62) / 124);
-    }
-
     int decayIntelligenceStock(int iStock)
     {
-        const int iDecay = std::min(10000, std::max(1, 50000 / intelligenceSpeedPercent()));
+        const int iDecay = std::min(10000, std::max(1, 100000 / intelligenceSpeedPercent()));
         return iStock - (int)(((__int64)iStock * iDecay + 9999) / 10000);
     }
 
     int growIntelligenceStock(int iStock, int iRate)
     {
         return (int)std::min((__int64)MAX_INT / 2,
-            iStock + (__int64)iRate * 10000 / intelligenceSpeedPercent());
+            iStock + (__int64)iRate * 20000 / intelligenceSpeedPercent());
     }
 
 }
@@ -131,17 +124,100 @@ int CvPlayer::getIntelligenceDefense(PlayerTypes eTarget) const
     return iDefense * (100 + iProtection / std::max(1, iPopulation)) / 100;
 }
 
+void CvPlayer::cancelIntelligenceCooperation(TeamTypes eTarget)
+{
+    if (m_aiIntelligenceMode[eTarget] == INTEL_COOPERATION) m_aiIntelligenceMode[eTarget] = INTEL_NONE;
+    if (m_aiEspionageSpendingWeightAgainstTeam[eTarget] == INTEL_COOPERATION)
+        m_aiEspionageSpendingWeightAgainstTeam[eTarget] = INTEL_NONE;
+}
+
+int CvPlayer::getCooperationInfluence(PlayerTypes eTarget) const
+{
+    if (!canIntelligenceTarget(eTarget) || getCommerceRate(COMMERCE_ESPIONAGE) <= 0) return 0;
+    const CvPlayerAI& kPartner = GET_PLAYER(eTarget);
+    const TeamTypes eTeam = kPartner.getTeam();
+    if (!GET_TEAM(getTeam()).isIntelligenceCooperation(eTeam) || getIntelligenceMode(eTeam) != INTEL_COOPERATION) return 0;
+    // Human consent comes from the agreement, never a hidden AI attitude toward another human.
+    const AttitudeTypes eOurs = isHuman() ? ATTITUDE_FRIENDLY : GET_TEAM(getTeam()).AI_getAttitude(eTeam);
+    const AttitudeTypes eTheirs = GET_TEAM(eTeam).isHuman() ? ATTITUDE_FRIENDLY : GET_TEAM(eTeam).AI_getAttitude(getTeam());
+    const int aiTrust[] = {0, 10, 35, 75, 100};
+    const int iTrust = aiTrust[std::min(eOurs, eTheirs)];
+    const __int64 iStock = m_aiCooperationStock[eTeam];
+    return (int)(iStock * iTrust * 100 / (iStock + 40000));
+}
+
+int CvPlayer::getCooperationContribution(PlayerTypes eTarget) const
+{
+    const int iInfluence = getCooperationInfluence(eTarget);
+    if (iInfluence <= 0) return 0;
+    __int64 iBase = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getTeam() == GET_PLAYER(eTarget).getTeam())
+            iBase += GET_PLAYER((PlayerTypes)i).getCommerceRate(COMMERCE_ESPIONAGE);
+    // Only the partner's commerce output is shared, never its cooperation bonus.
+    return (int)std::min((__int64)MAX_INT / 2, iBase * iInfluence / 10000);
+}
+
+int CvPlayer::getCooperationBonus() const
+{
+    if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) return 0;
+    __int64 iBonus = 0;
+    bool abCounted[MAX_TEAMS] = {false};
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const PlayerTypes ePartner = (PlayerTypes)i;
+        if (!canIntelligenceTarget(ePartner)) continue;
+        const TeamTypes eTeam = GET_PLAYER(ePartner).getTeam();
+        if (abCounted[eTeam]) continue;
+        abCounted[eTeam] = true;
+        iBonus += getCooperationContribution(ePartner);
+    }
+    return (int)std::min((__int64)getCommerceRate(COMMERCE_ESPIONAGE), iBonus);
+}
+
+int CvPlayer::getEffectiveEspionage() const
+{
+    return (int)std::min((__int64)MAX_INT / 2, (__int64)getCommerceRate(COMMERCE_ESPIONAGE) + getCooperationBonus());
+}
+
+int CvPlayer::getCooperationStability() const
+{
+    return GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE) ? 0 : (m_iCooperationStability + 50) / 100;
+}
+
+void CvPlayer::doIntelligenceCooperation()
+{
+    int iBestInfluence = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        const PlayerTypes ePartner = (PlayerTypes)i;
+        if (!canIntelligenceTarget(ePartner)) continue;
+        iBestInfluence = std::max(iBestInfluence, getCooperationInfluence(ePartner));
+        // The strongest incoming OR outgoing partnership benefits both parties.
+        iBestInfluence = std::max(iBestInfluence, GET_PLAYER(ePartner).getCooperationInfluence(getID()));
+    }
+    const int iTarget = 300 * iBestInfluence / 10000;
+    if (m_iCooperationStability < iTarget)
+        m_iCooperationStability = std::min(iTarget, m_iCooperationStability + std::max(1, 2000 / intelligenceSpeedPercent()));
+    else
+        m_iCooperationStability = std::max(iTarget, m_iCooperationStability - std::max(1, 2000 / intelligenceSpeedPercent()));
+}
+
 int CvPlayer::getIntelligenceRate(PlayerTypes eTarget) const
 {
     if (!canIntelligenceTarget(eTarget)) return 0;
-    const __int64 iAttack = (__int64)getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(eTarget) / 100;
+    // Cooperation never enhances operations against an agreement partner.
+    const int iOutput = GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER(eTarget).getTeam()) ?
+        getCommerceRate(COMMERCE_ESPIONAGE) : getEffectiveEspionage();
+    const __int64 iAttack = (__int64)iOutput * getIntelligenceAccess(eTarget) / 100;
     return (int)std::min((__int64)MAX_INT, iAttack * (iAttack + 20) /
         std::max((__int64)1, iAttack + 20 + getIntelligenceDefense(eTarget)));
 }
 
 int CvPlayer::getIntelligenceMode(TeamTypes eTarget) const
 {
-    return (eTarget >= 0 && eTarget < MAX_TEAMS) ? m_aiIntelligenceMode[eTarget] : INTEL_TECHNOLOGY;
+    return (eTarget >= 0 && eTarget < MAX_TEAMS) ? (m_aiIntelligenceMode[eTarget] == INTEL_COOPERATION && !GET_TEAM(getTeam()).isIntelligenceCooperation(eTarget) ?
+        INTEL_NONE : m_aiIntelligenceMode[eTarget]) : INTEL_NONE;
 }
 
 int CvPlayer::getIntelligenceTechCount(PlayerTypes eTarget) const
@@ -154,6 +230,29 @@ int CvPlayer::getIntelligenceTechCount(PlayerTypes eTarget) const
     return iCount;
 }
 
+int CvPlayer::getIntelligenceTechInfluence(PlayerTypes eTarget) const
+{
+    if (!canIntelligenceTarget(eTarget)) return 0;
+    const int iRate = getIntelligenceRate(eTarget);
+    if (iRate <= 0) return 0;
+    const int iStock = m_aiTechnologyStock[GET_PLAYER(eTarget).getTeam()];
+    const __int64 iSteady = (__int64)2000 * iRate;
+    if (iStock >= iSteady) return 10000;
+    const __int64 iHalf = 2000 * (20 + (__int64)GET_PLAYER(eTarget).getCommerceRate(COMMERCE_RESEARCH));
+    // Normalize saturation to the equilibrium at current funding. A mature network
+    // approaches the original stealing rate, never exceeds it, and must rebuild after a funding increase.
+    // Divide first at millionth precision to keep all intermediate products within 64 bits.
+    const __int64 iFraction = (__int64)iStock * 1000000 / iSteady;
+    return (int)std::min((__int64)10000, iFraction * (iSteady + iHalf) / (iStock + iHalf) / 100);
+}
+
+int CvPlayer::getIntelligenceTechRate(PlayerTypes eTarget) const
+{
+    if (!canIntelligenceTarget(eTarget) || getIntelligenceMode(GET_PLAYER(eTarget).getTeam()) != INTEL_TECHNOLOGY) return 0;
+    return (int)std::min((__int64)MAX_INT / 4, (__int64)getIntelligenceRate(eTarget) *
+        (100 + 10 * std::min(10, getIntelligenceTechCount(eTarget))) * getIntelligenceTechInfluence(eTarget) / 1000000);
+}
+
 int CvPlayer::getIntelligenceResearchRate(TechTypes eTech) const
 {
     if (eTech == NO_TECH || GET_TEAM(getTeam()).isHasTech(eTech) || !canResearch(eTech)) return 0;
@@ -163,12 +262,12 @@ int CvPlayer::getIntelligenceResearchRate(TechTypes eTech) const
         PlayerTypes eTarget = (PlayerTypes)i;
         if (canIntelligenceTarget(eTarget) && getIntelligenceMode(GET_PLAYER(eTarget).getTeam()) == INTEL_TECHNOLOGY &&
             GET_TEAM(GET_PLAYER(eTarget).getTeam()).isHasTech(eTech))
-            aRates.push_back(getIntelligenceRate(eTarget) * (100 + 10 * std::min(10, getIntelligenceTechCount(eTarget))) / 100);
+            aRates.push_back(getIntelligenceTechRate(eTarget));
     }
     std::sort(aRates.begin(), aRates.end(), std::greater<int>());
     int iTotal = 0;
     for (int j = 0; j < (int)aRates.size(); ++j) iTotal += aRates[j] / (j + 1);
-    return std::min(iTotal, 3 * getCommerceRate(COMMERCE_ESPIONAGE));
+    return (int)std::min((__int64)iTotal, (__int64)3 * getEffectiveEspionage());
 }
 
 int CvPlayer::getIntelligenceMilitaryBonus(PlayerTypes eTarget) const
@@ -325,7 +424,8 @@ int CvPlayer::getPoliticalCultureBudget(PlayerTypes eTarget) const
         if (getPoliticalInfluence((PlayerTypes)i) > 0) ++iNetworks;
     // A single culture budget across all targets: at most one culture per four EP.
     return (int)std::min((__int64)MAX_INT,
-        (__int64)getCommerceRate(COMMERCE_ESPIONAGE) * 25 * iInfluence * 100 /
+        (__int64)(GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER(eTarget).getTeam()) ?
+            getCommerceRate(COMMERCE_ESPIONAGE) : getEffectiveEspionage()) * 25 * iInfluence * 100 /
         ((__int64)10000 * std::max(1, iNetworks) * intelligenceSpeedPercent()));
 }
 
@@ -601,32 +701,252 @@ void CvPlayer::incorporateDynasticCity(PlayerTypes eTarget)
         gDLL->getText("TXT_KEY_INTEL_DYNASTIC_CITY", szCityName.GetCString(), getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
 }
 
+int CvPlayer::getIntelligenceDiscoveryChance(PlayerTypes eTarget, int iMode) const
+{
+    if (!canIntelligenceTarget(eTarget)) return 0;
+    const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    if (iMode < 0) iMode = getIntelligenceMode(eTeam);
+    if (iMode < INTEL_TECHNOLOGY || iMode > INTEL_ECONOMY ||
+        (iMode == INTEL_POLITICS && isDynasticIntelligence())) return 0;
+    int iStock = 0;
+    switch (iMode)
+    {
+    case INTEL_TECHNOLOGY: iStock = m_aiTechnologyStock[eTeam]; break;
+    case INTEL_MILITARY: iStock = m_aiIntelligenceMilitaryStock[eTeam]; break;
+    case INTEL_POLITICS: iStock = m_aiPoliticalStock[eTeam]; break;
+    case INTEL_ECONOMY: iStock = m_aiEconomicStock[eTeam]; break;
+    }
+    // Stock is in hundredths and settles near 20 turns of effective output.
+    // Retained networks remain detectable as funding falls, until their stock decays.
+    const __int64 iEffort = std::max((__int64)getIntelligenceRate(eTarget) * 100, (__int64)iStock / 20);
+    const int iCap = scaledChance(iMode == INTEL_POLITICS ? 6 : (iMode == INTEL_MILITARY ? 3 : 1));
+    // Half of the old fixed risk at 50 effective EP, approaching but never exceeding it.
+    return (int)(iCap * iEffort / (iEffort + 5000));
+}
+
 int CvPlayer::getIntelligenceRelationPenalty(TeamTypes eTarget) const
 {
     return (eTarget >= 0 && eTarget < MAX_TEAMS) ? (m_aiIntelligenceExposure[eTarget] + 9999) / 10000 : 0;
 }
 
-bool CvPlayer::hasIntelligenceCityVisibility(const CvCity* pCity) const
+
+int CvPlayer::getEconomicInfluence(PlayerTypes eTarget) const
 {
-    PlayerTypes eTarget = pCity->getOwnerINLINE();
-    if (!canIntelligenceTarget(eTarget)) return false;
-    TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
-    if (m_aiIntelligenceStrength[eTeam] <= 0) return false;
-    return getIntelligenceMode(eTeam) == INTEL_MAPS && m_aiIntelligenceReportCity[eTeam] == pCity->getID() &&
-        m_aiIntelligenceReportUntil[eTeam] > GC.getGameINLINE().getGameTurn();
+    if (!canIntelligenceTarget(eTarget) || getNumCities() == 0 || GET_PLAYER(eTarget).getNumCities() == 0 ||
+        getIntelligenceMode(GET_PLAYER(eTarget).getTeam()) != INTEL_ECONOMY) return 0;
+    const int iStock = m_aiEconomicStock[GET_PLAYER(eTarget).getTeam()];
+    const __int64 iHalf = (__int64)2000 * (20 + GET_PLAYER(eTarget).getTotalPopulation());
+    return (int)((__int64)10000 * iStock / (iStock + iHalf));
+}
+
+int CvPlayer::getEconomicShare(PlayerTypes eTarget) const
+{
+    const int iInfluence = getEconomicInfluence(eTarget);
+    if (iInfluence == 0) return 0;
+    int iTotal = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        iTotal += GET_PLAYER((PlayerTypes)i).getEconomicInfluence(eTarget);
+    // Sum of all attackers' shares never exceeds full influence. XL halves throughput.
+    return (int)((__int64)iInfluence * 10000 * 100 /
+        ((__int64)std::max(10000, iTotal) * intelligenceSpeedPercent()));
+}
+
+int CvPlayer::getEconomicGoldRequest(PlayerTypes eTarget) const
+{
+    const int iInfluence = getEconomicInfluence(eTarget);
+    if (iInfluence == 0) return 0;
+    int iNetworks = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (getEconomicInfluence((PlayerTypes)i) > 0) ++iNetworks;
+    // Hundredths of gold. One sponsor can never recoup more than half its EP spending.
+    const __int64 iBudget = (__int64)(GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER(eTarget).getTeam()) ?
+            getCommerceRate(COMMERCE_ESPIONAGE) : getEffectiveEspionage()) * 50 * iInfluence * 100 /
+        ((__int64)10000 * std::max(1, iNetworks) * intelligenceSpeedPercent());
+    const __int64 iIncome = (__int64)GET_PLAYER(eTarget).getCommerceRate(COMMERCE_GOLD) * 10 * getEconomicShare(eTarget) / 10000;
+    return (int)std::min((__int64)MAX_INT / 2, std::min(iBudget, iIncome));
+}
+
+void CvPlayer::recordEconomicGoldTransfer(int iReceived, int iLost)
+{
+    if (iReceived <= 0 && iLost <= 0) return;
+    const int iTurn = GC.getGameINLINE().getGameTurn();
+    const int iBucket = iTurn % 2;
+    if (m_aiEconomicGoldTurn[iBucket] != iTurn)
+    {
+        m_aiEconomicGoldTurn[iBucket] = iTurn;
+        m_aiEconomicGoldReceived[iBucket] = 0;
+        m_aiEconomicGoldLost[iBucket] = 0;
+    }
+    m_aiEconomicGoldReceived[iBucket] = (int)std::min((__int64)MAX_INT,
+        (__int64)m_aiEconomicGoldReceived[iBucket] + iReceived);
+    m_aiEconomicGoldLost[iBucket] = (int)std::min((__int64)MAX_INT,
+        (__int64)m_aiEconomicGoldLost[iBucket] + iLost);
+}
+
+int CvPlayer::getLastEconomicGoldTransfer(bool bReceived) const
+{
+    // Read-only: opening an advisor must never change synchronized accounting.
+    const int iTurn = GC.getGameINLINE().getGameTurn() - 1;
+    if (iTurn < 0 || m_aiEconomicGoldTurn[iTurn % 2] != iTurn) return 0;
+    return bReceived ? m_aiEconomicGoldReceived[iTurn % 2] : m_aiEconomicGoldLost[iTurn % 2];
+}
+
+void CvPlayer::doEconomicSubversion()
+{
+    // Resolve incoming operations once, on the victim's turn, against one treasury snapshot.
+    int aiRequests[NUM_MAJOR_PLAYERS] = {0};
+    __int64 iTotal = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        aiRequests[i] = GET_PLAYER((PlayerTypes)i).getEconomicGoldRequest(getID());
+        iTotal += aiRequests[i];
+    }
+    // 1% of current treasury, calendar scaled, in hundredths. Carry only fractions of a coin.
+    const __int64 iCap = (__int64)std::max(0, getGold()) * 100 / intelligenceSpeedPercent();
+    const __int64 iDivisor = std::max((__int64)1, std::max(iTotal, iCap));
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        if (aiRequests[i] <= 0 || iCap == 0) continue;
+        m_aiEconomicGoldRemainder[i] += (int)((__int64)aiRequests[i] * iCap / iDivisor);
+        const int iGold = std::min(getGold(), m_aiEconomicGoldRemainder[i] / 100);
+        m_aiEconomicGoldRemainder[i] %= 100;
+        changeGold(-iGold);
+        GET_PLAYER((PlayerTypes)i).changeGold(iGold);
+        recordEconomicGoldTransfer(0, iGold);
+        GET_PLAYER((PlayerTypes)i).recordEconomicGoldTransfer(iGold, 0);
+    }
+    int iArtChance = 0, aiShares[NUM_MAJOR_PLAYERS] = {0};
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        aiShares[i] = GET_PLAYER((PlayerTypes)i).getEconomicShare(getID());
+        iArtChance += aiShares[i];
+    }
+    // A single shared roll caps art theft at 1% Normal / 0.5% XL for the victim.
+    if (iArtChance == 0 || GC.getGameINLINE().getSorenRandNum(10000, "Economic art theft") >= iArtChance / 100) return;
+    int iChoice = GC.getGameINLINE().getSorenRandNum(iArtChance, "Economic art recipient");
+    PlayerTypes eThief = NO_PLAYER;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        iChoice -= aiShares[i];
+        if (iChoice < 0) { eThief = (PlayerTypes)i; break; }
+    }
+    CvCity* pArtCity = NULL;
+    int iSeen = 0, iLoop;
+    for (CvCity* pCity = firstCity(&iLoop); pCity; pCity = nextCity(&iLoop))
+        if (pCity->getCulture(getID()) >= 100 && pCity->getCommerceRate(COMMERCE_CULTURE) > 0 &&
+            GC.getGameINLINE().getSorenRandNum(++iSeen, "Economic art city") == 0) pArtCity = pCity;
+    if (!pArtCity || eThief == NO_PLAYER) return;
+    CvCity* pDestination = GET_PLAYER(eThief).getEconomicDestination(pArtCity);
+    if (!pDestination) return;
+    const int iCulture = std::min(100, 5 * pArtCity->getCommerceRate(COMMERCE_CULTURE));
+    pDestination->changeCultureTimes100(eThief, iCulture * 100, false, true);
+    // Brief loss of happiness, without deleting historical culture or changing borders.
+    pArtCity->startIntelligenceUnrest(scaledTurns(3));
+    gDLL->getInterfaceIFace()->addMessage(eThief, false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_ECONOMIC_ART_GAIN", pArtCity->getNameKey(), pDestination->getNameKey(), iCulture), NULL, MESSAGE_TYPE_MINOR_EVENT);
+    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText("TXT_KEY_INTEL_ECONOMIC_ART_LOSS", pArtCity->getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+}
+
+CvCity* CvPlayer::getEconomicDestination(const CvCity* pOrigin) const
+{
+    CvCity* pBest = NULL;
+    int iBest = MAX_INT, iLoop;
+    for (CvCity* pCity = firstCity(&iLoop); pCity; pCity = nextCity(&iLoop))
+    {
+        if (pCity->isDisorder()) continue;
+        const int iDistance = plotDistance(pCity->getX_INLINE(), pCity->getY_INLINE(), pOrigin->getX_INLINE(), pOrigin->getY_INLINE());
+        if (iDistance < iBest) { pBest = pCity; iBest = iDistance; }
+    }
+    return pBest;
+}
+
+int CvCity::divertEconomicFood(int iSurplus)
+{
+    if (iSurplus <= 0 || isDisorder() || isFoodProduction()) return iSurplus;
+    int aiShares[NUM_MAJOR_PLAYERS] = {0}, iTotal = 0;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+    {
+        CvPlayer& kThief = GET_PLAYER((PlayerTypes)i);
+        if (kThief.getEconomicInfluence(getOwnerINLINE()) > 0 && kThief.getEconomicDestination(this))
+            aiShares[i] = kThief.getEconomicShare(getOwnerINLINE());
+        iTotal += aiShares[i];
+    }
+    if (iTotal == 0) return iSurplus;
+    // Fractions accrue per city. Only newly generated growth food can be taken.
+    const __int64 iFood = (__int64)iSurplus * iTotal + m_iEconomicFoodRemainder;
+    const int iDiverted = std::min(iSurplus, (int)(iFood / 200000));
+    m_iEconomicFoodRemainder = (int)(iFood % 200000);
+    // Assign each actual shipment proportionally, using synchronized game RNG.
+    for (int j = 0; j < iDiverted; ++j)
+    {
+        int iChoice = GC.getGameINLINE().getSorenRandNum(iTotal, "Economic food recipient");
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        {
+            iChoice -= aiShares[i];
+            if (iChoice >= 0) continue;
+            CvCity* pDestination = GET_PLAYER((PlayerTypes)i).getEconomicDestination(this);
+            if (pDestination) pDestination->changeFood(1);
+            break;
+        }
+    }
+    return iSurplus - iDiverted;
+}
+
+int CvPlayer::getIntelligenceBuildup(PlayerTypes eTarget, int iMode) const
+{
+    // Read-only strength of the stored network, independent of the selected operation.
+    // These are percentages of each mode's full effect, not research-project progress.
+    if (iMode == INTEL_NONE) return -1; // No network to build.
+    if (!canIntelligenceTarget(eTarget)) return 0;
+    const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    if (iMode == INTEL_TECHNOLOGY) return getIntelligenceTechInfluence(eTarget);
+    __int64 iStock = 0, iHalf = 1;
+    switch (iMode)
+    {
+    case INTEL_MILITARY:
+        iStock = m_aiIntelligenceMilitaryStock[eTeam];
+        iHalf = (__int64)2000 * (40 + GET_PLAYER(eTarget).getNumMilitaryUnits());
+        break;
+    case INTEL_POLITICS:
+        if (isDynasticIntelligence())
+        {
+            iStock = m_aiDynasticStock[eTeam];
+            iHalf = 10000;
+        }
+        else
+        {
+            iStock = m_aiPoliticalStock[eTeam];
+            iHalf = (__int64)2000 * (20 + GET_PLAYER(eTarget).getTotalPopulation());
+        }
+        break;
+    case INTEL_ECONOMY:
+        iStock = m_aiEconomicStock[eTeam];
+        iHalf = (__int64)2000 * (20 + GET_PLAYER(eTarget).getTotalPopulation());
+        break;
+    case INTEL_COOPERATION:
+        iStock = m_aiCooperationStock[eTeam];
+        iHalf = 40000; // Trust modifies cooperation separately from buildup.
+        break;
+    default: return 0;
+    }
+    return (int)(10000 * iStock / (iStock + iHalf));
 }
 
 int CvPlayer::getIntelligenceData(int iTarget, int iField) const
 {
     // Read-only advisor API. Foreign secrets are returned only when actually acquired.
+    if (iField == 66) return getLastEconomicGoldTransfer(true);
+    if (iField == 67) return getLastEconomicGoldTransfer(false);
+    if (iField == 59) return getEffectiveEspionage();
+    if (iField == 60) return getCooperationBonus();
+    if (iField == 61) return getCooperationStability();
     if (iField == 20) return getIntelligenceStabilityPenalty();
     if (iField == 21) return m_eIntelligenceResearch;
     if (iField == 22) return getIntelligenceResearchRate(m_eIntelligenceResearch);
     if (iField == 23) return m_iIntelligenceLastResearch;
     if (iField == 25) return getIntelligenceAnarchyExtra();
     if (iField == 26) return scaledAnarchyTurns(2);
-    if (iField == 28) return mapReportRadius();
-    if (iField == 29) return scaledChance(25);
     if (iField == 32) return isDynasticIntelligence() ? 1 : 0;
     if (iField == 41) return m_iDynasticWarTurns;
     if (iField == 42) return isBeingDynasticallyIncorporated() ? 1 : 0;
@@ -634,10 +954,19 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     if (iTarget < 0 || iTarget >= NUM_MAJOR_PLAYERS) return 0;
     PlayerTypes eTarget = (PlayerTypes)iTarget;
     TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+    if (iField >= 200 && iField < 200 + NUM_INTELLIGENCE_MODES)
+        return getIntelligenceDiscoveryChance(eTarget, iField - 200);
+    if (iField >= 100 && iField < 100 + NUM_INTELLIGENCE_MODES)
+        return getIntelligenceBuildup(eTarget, iField - 100);
     switch (iField)
     {
+    case 62: return GET_TEAM(getTeam()).isIntelligenceCooperation(eTeam) ? 1 : 0;
+    case 63: return getCooperationInfluence(eTarget);
+    case 64: return getCooperationContribution(eTarget);
+    case 65: return m_aiCooperationStock[eTeam] / 100;
     case 0: return getIntelligenceMode(eTeam);
-    case 1: return getEspionageSpendingWeightAgainstTeam(eTeam);
+    case 1: return getEspionageSpendingWeightAgainstTeam(eTeam) == INTEL_COOPERATION &&
+        !GET_TEAM(getTeam()).isIntelligenceCooperation(eTeam) ? INTEL_NONE : getEspionageSpendingWeightAgainstTeam(eTeam);
     case 2: return getIntelligenceAccess(eTarget);
     case 3: return getIntelligenceTradeRoutes(eTarget);
     case 4: return hasIntelligenceEmbassy(eTarget) ? 1 : 0;
@@ -661,20 +990,23 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     case 51: return getPoliticalCultureBudget(eTarget);
     case 8: return getIntelligenceRelationPenalty(eTeam);
     case 9: return getIntelligenceDefense(eTarget);
-    case 10: return getIntelligenceData(iTarget, 24) / 100;
-    case 24: return scaledChance(std::min(25, getIntelligenceRate(eTarget) * 25 / (30 + GET_PLAYER(eTarget).getNumCities() * 3)));
-    case 27:
-        if (isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS) return 0;
-        return scaledChance(getIntelligenceMode(eTeam) == INTEL_POLITICS ? 6 : (getIntelligenceMode(eTeam) == INTEL_MILITARY ? 3 : 1));
-    case 11: return m_aiIntelligenceReportUntil[eTeam] > GC.getGameINLINE().getGameTurn() ? m_aiIntelligenceReportUntil[eTeam] - GC.getGameINLINE().getGameTurn() : 0;
+    case 57: return m_aiTechnologyStock[eTeam] / 100;
+    case 58: return getIntelligenceTechInfluence(eTarget);
+    case 52: return m_aiEconomicStock[eTeam] / 100;
+    case 53: return getEconomicInfluence(eTarget);
+    case 54: return getEconomicShare(eTarget) / 10;
+    case 55: return getEconomicShare(eTarget) / 20;
+    case 56: return getEconomicShare(eTarget) / 100;
+    case 27: return getIntelligenceDiscoveryChance(eTarget);
     case 14:
         return m_eIntelligenceResearch != NO_TECH && !GET_TEAM(getTeam()).isHasTech(m_eIntelligenceResearch) &&
             canResearch(m_eIntelligenceResearch) && canIntelligenceTarget(eTarget) && getIntelligenceMode(eTeam) == INTEL_TECHNOLOGY &&
             GET_TEAM(eTeam).isHasTech(m_eIntelligenceResearch) ?
-            getIntelligenceRate(eTarget) * (100 + 10 * std::min(10, getIntelligenceTechCount(eTarget))) / 100 : 0;
+            getIntelligenceTechRate(eTarget) : 0;
     case 13:
     {
-        int iAttack = getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(eTarget) / 100;
+        int iAttack = (GET_TEAM(getTeam()).isIntelligenceCooperation(eTeam) ? getCommerceRate(COMMERCE_ESPIONAGE) :
+            getEffectiveEspionage()) * getIntelligenceAccess(eTarget) / 100;
         return iAttack > 0 ? 100 - getIntelligenceRate(eTarget) * 100 / iAttack : 0;
     }
     case 12: return !isDynasticIntelligence() && canIntelligenceTarget(eTarget) && getIntelligenceMode(eTeam) == INTEL_POLITICS ?
@@ -718,12 +1050,18 @@ void CvPlayer::doEspionagePoints()
     // Commit queued choices and update network buildup only at a turn boundary.
     for (int t = 0; t < MAX_TEAMS; ++t)
     {
+        if (m_aiEspionageSpendingWeightAgainstTeam[t] == INTEL_COOPERATION &&
+            !GET_TEAM(getTeam()).isIntelligenceCooperation((TeamTypes)t))
+            m_aiEspionageSpendingWeightAgainstTeam[t] = INTEL_NONE;
         m_aiIntelligenceMode[t] = m_aiEspionageSpendingWeightAgainstTeam[t];
+        m_aiCooperationStock[t] = decayIntelligenceStock(m_aiCooperationStock[t]);
         m_aiIntelligenceStrength[t] = 0;
         // Decay even when funding stops or a different operation is selected.
-        // Normal: B_next = 0.95 * B + effective output. XL uses half-sized steps.
+        // Normal: B_next = 0.90 * B + 2 * effective output. XL uses half-sized steps.
         m_aiIntelligenceMilitaryStock[t] = decayIntelligenceStock(m_aiIntelligenceMilitaryStock[t]);
+        m_aiTechnologyStock[t] = decayIntelligenceStock(m_aiTechnologyStock[t]);
         m_aiPoliticalStock[t] = decayIntelligenceStock(m_aiPoliticalStock[t]);
+        m_aiEconomicStock[t] = decayIntelligenceStock(m_aiEconomicStock[t]);
         m_aiDynasticStock[t] = decayIntelligenceStock(m_aiDynasticStock[t]);
         if (m_aiIntelligenceExposure[t] > 0) m_aiIntelligenceExposure[t] = std::max(0, m_aiIntelligenceExposure[t] - std::max(1, 20000 / intelligenceSpeedPercent()));
     }
@@ -732,7 +1070,19 @@ void CvPlayer::doEspionagePoints()
         refreshIntelligenceTracking();
         return;
     }
-    int iTurn = GC.getGameINLINE().getGameTurn();
+    bool abCooperating[MAX_TEAMS] = {false};
+    for (int iPartner = 0; iPartner < NUM_MAJOR_PLAYERS; ++iPartner)
+    {
+        PlayerTypes ePartner = (PlayerTypes)iPartner;
+        if (!canIntelligenceTarget(ePartner)) continue;
+        TeamTypes ePartnerTeam = GET_PLAYER(ePartner).getTeam();
+        if (abCooperating[ePartnerTeam] || getIntelligenceMode(ePartnerTeam) != INTEL_COOPERATION) continue;
+        abCooperating[ePartnerTeam] = true;
+        // Peaceful exchange uses access, without the partner's counterintelligence or any cooperation bonus.
+        int iInput = (int)((__int64)getCommerceRate(COMMERCE_ESPIONAGE) * getIntelligenceAccess(ePartner) / 100);
+        m_aiCooperationStock[ePartnerTeam] = growIntelligenceStock(m_aiCooperationStock[ePartnerTeam], iInput);
+    }
+    doIntelligenceCooperation();
     GET_TEAM(getTeam()).changeEspionagePointsEver(getCommerceRate(COMMERCE_ESPIONAGE));
     for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
     {
@@ -752,29 +1102,33 @@ void CvPlayer::doEspionagePoints()
         for (int j = 0; j < i; ++j)
             if (GET_PLAYER((PlayerTypes)j).getTeam() == eTeam && canIntelligenceTarget((PlayerTypes)j)) bFirst = false;
         if (bFirst) doDynasticIntelligence(eTarget);
+        if (bFirst && getIntelligenceMode(eTeam) == INTEL_TECHNOLOGY)
+            m_aiTechnologyStock[eTeam] = growIntelligenceStock(m_aiTechnologyStock[eTeam], iStrength);
         if (bFirst && !isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS)
             m_aiPoliticalStock[eTeam] = growIntelligenceStock(m_aiPoliticalStock[eTeam], iStrength);
+        if (bFirst && getIntelligenceMode(eTeam) == INTEL_ECONOMY)
+            m_aiEconomicStock[eTeam] = growIntelligenceStock(m_aiEconomicStock[eTeam], iStrength);
         if (getIntelligenceMode(eTeam) == INTEL_MILITARY)
         {
             // Count each target team once, including in team games. Leave headroom for arithmetic.
             if (bFirst)
                 m_aiIntelligenceMilitaryStock[eTeam] = growIntelligenceStock(m_aiIntelligenceMilitaryStock[eTeam], iStrength);
         }
-        if (!(isDynasticIntelligence() && getIntelligenceMode(eTeam) == INTEL_POLITICS) &&
-            (iStrength > 0 || (getIntelligenceMode(eTeam) == INTEL_MILITARY && m_aiIntelligenceMilitaryStock[eTeam] > 0) ||
-            (getIntelligenceMode(eTeam) == INTEL_POLITICS && m_aiPoliticalStock[eTeam] > 0)))
+        const int iDiscoveryChance = bFirst ? getIntelligenceDiscoveryChance(eTarget) : 0;
+        if (iDiscoveryChance > 0)
         {
             int iMode = getIntelligenceMode(eTeam);
             int iSeverity = iMode == INTEL_POLITICS ? 3 : (iMode == INTEL_MILITARY ? 2 : 1);
-            int iRisk = iMode == INTEL_POLITICS ? 6 : (iMode == INTEL_MILITARY ? 3 : 1);
-            if (GC.getGameINLINE().getSorenRandNum(10000, "Intelligence discovery") < scaledChance(iRisk))
+            if (GC.getGameINLINE().getSorenRandNum(10000, "Intelligence discovery") < iDiscoveryChance)
             {
                 m_aiIntelligenceExposure[eTeam] = std::max(m_aiIntelligenceExposure[eTeam],
                     std::min(iMode == INTEL_POLITICS ? 60000 : (iMode == INTEL_MILITARY ? 30000 : 10000), m_aiIntelligenceExposure[eTeam] + 10000 * iSeverity));
                 gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
                     gDLL->getText("TXT_KEY_INTEL_DISCOVERED", kTarget.getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
-                gDLL->getInterfaceIFace()->addMessage(eTarget, false, GC.getEVENT_MESSAGE_TIME(),
-                    gDLL->getText("TXT_KEY_INTEL_DETECTED", getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
+                for (int j = 0; j < NUM_MAJOR_PLAYERS; ++j)
+                    if (GET_PLAYER((PlayerTypes)j).isAlive() && GET_PLAYER((PlayerTypes)j).getTeam() == eTeam)
+                        gDLL->getInterfaceIFace()->addMessage((PlayerTypes)j, false, GC.getEVENT_MESSAGE_TIME(),
+                            gDLL->getText("TXT_KEY_INTEL_DETECTED", getCivilizationShortDescriptionKey()), NULL, MESSAGE_TYPE_MINOR_EVENT);
             }
         }
         // A decaying network can still infiltrate after funding is reduced to zero.
@@ -799,44 +1153,12 @@ void CvPlayer::doEspionagePoints()
                 if (bAdjacent) pCity->rollIntelligenceSuppression(getID(), getIntelligenceSuppressionChance(eTarget));
             }
         }
-        if (iStrength > 0)
-        {
-            if (getIntelligenceMode(eTeam) == INTEL_MAPS && GC.getGameINLINE().getSorenRandNum(10000, "Intelligence map report") < getIntelligenceData(i, 24))
-            {
-                CvCity* pBest = NULL;
-                const int iRadius = mapReportRadius();
-                int iBest = -1, iCityLoop;
-                for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop))
-                {
-                    int iUnknown = 0;
-                    for (int dx = -iRadius; dx <= iRadius; ++dx) for (int dy = -iRadius; dy <= iRadius; ++dy)
-                    {
-                        CvPlot* pPlot = plotXY(pCity->getX_INLINE(), pCity->getY_INLINE(), dx, dy);
-                        if (pPlot && !pPlot->isRevealed(getTeam(), false)) ++iUnknown;
-                    }
-                    int iScore = iUnknown * 100 + GC.getGameINLINE().getSorenRandNum(100, "Intelligence report city");
-                    if (iScore > iBest) { pBest = pCity; iBest = iScore; }
-                }
-                if (pBest)
-                {
-                    for (int dx = -iRadius; dx <= iRadius; ++dx) for (int dy = -iRadius; dy <= iRadius; ++dy)
-                    {
-                        CvPlot* pPlot = plotXY(pBest->getX_INLINE(), pBest->getY_INLINE(), dx, dy);
-                        if (pPlot) pPlot->setRevealed(getTeam(), true, false, NO_TEAM, true);
-                    }
-                    m_aiIntelligenceReportCity[eTeam] = pBest->getID();
-                    m_aiIntelligenceReportUntil[eTeam] = iTurn + scaledTurns(3);
-                    gDLL->getInterfaceIFace()->addMessage(getID(), false, GC.getEVENT_MESSAGE_TIME(),
-                        gDLL->getText("TXT_KEY_INTEL_REPORT", pBest->getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
-                        NULL, NO_COLOR, pBest->getX_INLINE(), pBest->getY_INLINE(), true, true);
-                }
-            }
-        }
         int iCityLoop;
         for (CvCity* pCity = kTarget.firstCity(&iCityLoop); pCity; pCity = kTarget.nextCity(&iCityLoop)) pCity->updateEspionageVisibility(true);
     }
     refreshIntelligenceTracking();
     doPoliticalIntelligence();
+    doEconomicSubversion();
     // One shared project prevents several stolen technologies completing at once.
     if (m_eIntelligenceResearch != NO_TECH &&
         (GET_TEAM(getTeam()).isHasTech(m_eIntelligenceResearch) || !canResearch(m_eIntelligenceResearch)))
@@ -864,21 +1186,27 @@ void CvPlayer::doEspionagePoints()
             GET_TEAM(getTeam()).changeResearchProgress(m_eIntelligenceResearch, m_iIntelligenceLastResearch, getID());
     }
     gDLL->getInterfaceIFace()->setDirty(Espionage_Advisor_DIRTY_BIT, true);
+    gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
 }
 
 int CvPlayer::getIntelligenceChecksum() const
 {
     int iValue = (m_eIntelligenceResearch + 1) * 101 + m_iIntelligencePressure * 103 +
         m_iIntelligenceUnrestCooldown * 107 + m_iIntelligenceLastResearch * 109 +
-        m_iIntelligenceStability * 157 + m_iDynasticWarTurns * 163 + (m_iDynasticCityTurn + 1) * 167;
+        m_iIntelligenceStability * 157 + m_iCooperationStability * 223 + m_iDynasticWarTurns * 163 + (m_iDynasticCityTurn + 1) * 167;
     for (int i = 0; i < MAX_TEAMS; ++i)
-        iValue += (i + 1) * (m_aiIntelligenceMode[i] * 113 + m_aiEspionageSpendingWeightAgainstTeam[i] * 127 +
+        iValue += (i + 1) * (GET_TEAM(getTeam()).isIntelligenceCooperation((TeamTypes)i) * 229 + m_aiIntelligenceMode[i] * 113 + m_aiEspionageSpendingWeightAgainstTeam[i] * 127 +
             m_aiIntelligenceStrength[i] * 131 + m_aiIntelligenceExposure[i] * 137 +
             m_aiIntelligenceMilitaryStock[i] * 151 +
-            m_aiPoliticalStock[i] * 193 +
+            m_aiTechnologyStock[i] * 211 + m_aiCooperationStock[i] * 227 + m_aiPoliticalStock[i] * 193 +
             m_aiDynasticStock[i] * 173 + m_aiDynasticStage[i] * 179 +
             (m_aiDynasticLastRoll[i] + 1) * 181 + m_abDynasticUnion[i] * 191 +
-            (m_aiIntelligenceReportCity[i] + 1) * 139 + (m_aiIntelligenceReportUntil[i] + 1) * 149);
+            m_aiEconomicStock[i] * 197);
+    for (int j = 0; j < MAX_PLAYERS; ++j)
+        iValue += (j + 1) * m_aiEconomicGoldRemainder[j] * 199;
+    for (int iBucket = 0; iBucket < 2; ++iBucket)
+        iValue += (iBucket + 1) * ((m_aiEconomicGoldTurn[iBucket] + 1) * 233 +
+            m_aiEconomicGoldReceived[iBucket] * 239 + m_aiEconomicGoldLost[iBucket] * 241);
     int iLoop;
     for (CvUnit* pUnit = firstUnit(&iLoop); pUnit; pUnit = nextUnit(&iLoop))
         iValue += (pUnit->getID() + 1) * pUnit->getIntelligenceTrackingChecksum();

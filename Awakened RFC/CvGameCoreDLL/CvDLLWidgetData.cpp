@@ -41,6 +41,19 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102 &&
+        widgetDataStruct.m_iData2 >= 0 && widgetDataStruct.m_iData2 < MAX_PLAYERS)
+    {
+        const PlayerTypes eTarget = (PlayerTypes)widgetDataStruct.m_iData2;
+        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_COOP_LOCKED_TARGET", GET_PLAYER(eTarget).getCivilizationShortDescriptionKey()));
+        return;
+    }
+
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData2 == 7627)
+    {
+        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_FINANCE_GOLD_HELP"));
+        return;
+    }
 	if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData2 == 7626 &&
 		widgetDataStruct.m_iData1 >= 0 && widgetDataStruct.m_iData1 < GC.getNumCivicInfos())
 	{
@@ -3597,6 +3610,9 @@ void CvDLLWidgetData::parseTradeItem(CvWidgetDataStruct &widgetDataStruct, CvWSt
 		case TRADE_VASSAL:
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_VASSAL"));
 			break;
+        case TRADE_INTELLIGENCE_COOPERATION:
+            szBuffer.append(gDLL->getText("TXT_KEY_INTEL_AGREEMENT_HELP"));
+            break;
 		case TRADE_OPEN_BORDERS:
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_OPEN_BORDERS"));
 			break;

@@ -330,7 +330,7 @@ public:
 	DllExport void changeAdvancedStartPoints(int iChange);																													// Exposed to Python
 
 
-    // Automatic intelligence: 0 technology, 1 military, 2 politics, 3 maps.
+    // Automatic intelligence choices use IntelligenceModeTypes.
     bool canIntelligenceTarget(PlayerTypes eTarget) const;
     int getIntelligenceMode(TeamTypes eTarget) const;
     int getIntelligenceAccess(PlayerTypes eTarget) const;
@@ -338,8 +338,17 @@ public:
     bool hasIntelligenceEmbassy(PlayerTypes eTarget) const;
     int getIntelligenceDefense(PlayerTypes eTarget) const;
     int getIntelligenceRate(PlayerTypes eTarget) const;
+    int getCooperationInfluence(PlayerTypes eTarget) const;
+    int getCooperationContribution(PlayerTypes eTarget) const;
+    int getCooperationBonus() const;
+    int getCooperationStability() const;
+    int getEffectiveEspionage() const;
+    void doIntelligenceCooperation();
+    void cancelIntelligenceCooperation(TeamTypes eTarget);
     int getIntelligenceTechCount(PlayerTypes eTarget) const;
     int getIntelligenceResearchRate(TechTypes eTech) const;
+    int getIntelligenceTechInfluence(PlayerTypes eTarget) const;
+    int getIntelligenceTechRate(PlayerTypes eTarget) const;
     int getIntelligenceMilitaryBonus(PlayerTypes eTarget) const; // Basis points (100 = +1%).
     int getIntelligenceMilitaryCoverage(PlayerTypes eTarget) const;
     int getIntelligenceSuppressionChance(PlayerTypes eTarget) const;
@@ -354,8 +363,16 @@ public:
     int getIntelligenceStabilityPenalty() const;
     int getIntelligenceAnarchyExtra() const;
     int getIntelligenceRelationPenalty(TeamTypes eTarget) const;
-    bool hasIntelligenceCityVisibility(const CvCity* pCity) const;
+    int getIntelligenceDiscoveryChance(PlayerTypes eTarget, int iMode = -1) const;
+    int getEconomicInfluence(PlayerTypes eTarget) const;
+    int getEconomicShare(PlayerTypes eTarget) const;
+    int getEconomicGoldRequest(PlayerTypes eTarget) const;
+    CvCity* getEconomicDestination(const CvCity* pOrigin) const;
+    void doEconomicSubversion();
+    void recordEconomicGoldTransfer(int iReceived, int iLost);
+    int getLastEconomicGoldTransfer(bool bReceived) const;
     int getIntelligenceData(int iTarget, int iField) const;
+    int getIntelligenceBuildup(PlayerTypes eTarget, int iMode) const;
     int getIntelligenceChecksum() const;
     void doIntelligencePressure();
     bool isDynasticIntelligence() const;
@@ -1300,9 +1317,18 @@ protected:
 	int* m_aiEspionageSpendingWeightAgainstTeam;
 
     int m_aiIntelligenceMode[MAX_TEAMS];
+    int m_aiCooperationStock[MAX_TEAMS];
+    int m_iCooperationStability; // Hundredths of a stability point, capped at +3.
     int m_aiIntelligenceStrength[MAX_TEAMS];
     int m_aiIntelligenceMilitaryStock[MAX_TEAMS]; // Hundredths of effective espionage, with calendar-scaled decay.
+    int m_aiTechnologyStock[MAX_TEAMS];
     int m_aiPoliticalStock[MAX_TEAMS];
+    int m_aiEconomicStock[MAX_TEAMS];
+    int m_aiEconomicGoldRemainder[MAX_PLAYERS];
+    // Two calendar-turn buckets retain the last completed turn while this turn resolves.
+    int m_aiEconomicGoldTurn[2];
+    int m_aiEconomicGoldReceived[2];
+    int m_aiEconomicGoldLost[2];
     int m_aiDynasticStock[MAX_TEAMS];
     int m_aiDynasticStage[MAX_TEAMS];
     int m_aiDynasticLastRoll[MAX_TEAMS];
@@ -1311,8 +1337,6 @@ protected:
     int m_iDynasticWarTurns;
     int m_iDynasticCityTurn;
     int m_aiIntelligenceExposure[MAX_TEAMS];
-    int m_aiIntelligenceReportCity[MAX_TEAMS];
-    int m_aiIntelligenceReportUntil[MAX_TEAMS];
     TechTypes m_eIntelligenceResearch;
     int m_iIntelligenceLastResearch;
     int m_iIntelligencePressure;

@@ -202,6 +202,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 		m_abAtWar[iI] = false;
 		m_abPermanentWarPeace[iI] = false;
 		m_abOpenBorders[iI] = false;
+        m_abIntelligenceCooperation[iI] = false;
         m_abTradeEmbargo[iI] = false;
 		m_abDefensivePact[iI] = false;
 		m_abForcePeace[iI] = false;
@@ -221,6 +222,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 			kLoopTeam.m_abAtWar[getID()] = false;
 			kLoopTeam.m_abPermanentWarPeace[getID()] = false;
 			kLoopTeam.m_abOpenBorders[getID()] = false;
+            kLoopTeam.m_abIntelligenceCooperation[getID()] = false;
             kLoopTeam.m_abTradeEmbargo[getID()] = false;
 			kLoopTeam.m_abDefensivePact[getID()] = false;
 			kLoopTeam.m_abForcePeace[getID()] = false;
@@ -403,7 +405,8 @@ void CvTeam::addTeam(TeamTypes eTeam)
 			{
 				for (pNode = pLoopDeal->getFirstTrades()->head(); pNode; pNode = pLoopDeal->getFirstTrades()->next(pNode))
 				{
-					if ((pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
+					if ((pNode->m_data.m_eItemType == TRADE_INTELLIGENCE_COOPERATION) ||
+                          (pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
 						  (pNode->m_data.m_eItemType == TRADE_DEFENSIVE_PACT) ||
 						  (pNode->m_data.m_eItemType == TRADE_PEACE_TREATY) ||
 						  (pNode->m_data.m_eItemType == TRADE_VASSAL) ||
@@ -418,7 +421,8 @@ void CvTeam::addTeam(TeamTypes eTeam)
 			{
 				for (pNode = pLoopDeal->getSecondTrades()->head(); pNode; pNode = pLoopDeal->getSecondTrades()->next(pNode))
 				{
-					if ((pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
+					if ((pNode->m_data.m_eItemType == TRADE_INTELLIGENCE_COOPERATION) ||
+                          (pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
 						  (pNode->m_data.m_eItemType == TRADE_DEFENSIVE_PACT) ||
 						  (pNode->m_data.m_eItemType == TRADE_PEACE_TREATY) ||
 						  (pNode->m_data.m_eItemType == TRADE_VASSAL) ||
@@ -3860,6 +3864,24 @@ void CvTeam::setTradeEmbargo(TeamTypes eIndex, bool bNewValue)
     gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
 }
 
+bool CvTeam::isIntelligenceCooperation(TeamTypes eIndex) const
+{
+    return eIndex >= 0 && eIndex < MAX_TEAMS && eIndex != getID() &&
+        !isAtWar(eIndex) && m_abIntelligenceCooperation[eIndex];
+}
+
+void CvTeam::setIntelligenceCooperation(TeamTypes eIndex, bool bNewValue)
+{
+    FAssert(eIndex >= 0 && eIndex < MAX_TEAMS && eIndex != getID());
+    m_abIntelligenceCooperation[eIndex] = bNewValue;
+    if (!bNewValue)
+        for (int i = 0; i < MAX_PLAYERS; ++i)
+            if (GET_PLAYER((PlayerTypes)i).getTeam() == getID())
+                GET_PLAYER((PlayerTypes)i).cancelIntelligenceCooperation(eIndex);
+    gDLL->getInterfaceIFace()->setDirty(Espionage_Advisor_DIRTY_BIT, true);
+    gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
+}
+
 bool CvTeam::isOpenBorders(TeamTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
@@ -6449,6 +6471,7 @@ void CvTeam::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_TEAMS, m_abAtWar);
 	pStream->Read(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Read(MAX_TEAMS, m_abOpenBorders);
+    pStream->Read(MAX_TEAMS, m_abIntelligenceCooperation);
     if (uiFlag & 1) pStream->Read(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Read(MAX_TEAMS, m_abDefensivePact);
 	pStream->Read(MAX_TEAMS, m_abForcePeace);
@@ -6554,6 +6577,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_TEAMS, m_abAtWar);
 	pStream->Write(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Write(MAX_TEAMS, m_abOpenBorders);
+    pStream->Write(MAX_TEAMS, m_abIntelligenceCooperation);
     pStream->Write(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Write(MAX_TEAMS, m_abDefensivePact);
 	pStream->Write(MAX_TEAMS, m_abForcePeace);

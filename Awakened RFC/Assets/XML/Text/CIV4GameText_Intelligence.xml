@@ -34,19 +34,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MODE_3</Tag>
-    <English>Map intelligence</English>
-    <French>Map intelligence</French>
-    <German>Kartenspionage</German>
-    <Italian>Map intelligence</Italian>
-    <Spanish>Map intelligence</Spanish>
+    <English>Economic Subversion</English>
+    <French>Subversion &#233;conomique</French>
+    <German>Wirtschaftliche Unterwanderung</German>
+    <Italian>Sovversione economica</Italian>
+    <Spanish>Subversi&#243;n econ&#243;mica</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_OUTPUT</Tag>
-    <English>Espionage: %d1 points per turn</English>
-    <French>Espionage: %d1 points per turn</French>
-    <German>Spionage: %d1 Punkte pro Runde</German>
-    <Italian>Espionage: %d1 points per turn</Italian>
-    <Spanish>Espionage: %d1 points per turn</Spanish>
+    <English>Espionage: %d1</English>
+    <French>Espionnage : %d1</French>
+    <German>Spionage: %d1</German>
+    <Italian>Spionaggio: %d1</Italian>
+    <Spanish>Espionaje: %d1</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_SLIDER</Tag>
@@ -90,11 +90,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_CHOOSE_MODE</Tag>
-    <English>Choose an operation for this civilization</English>
-    <French>Choose an operation for this civilization</French>
-    <German>Operation f&#252;r diese Zivilisation w&#228;hlen</German>
-    <Italian>Choose an operation for this civilization</Italian>
-    <Spanish>Choose an operation for this civilization</Spanish>
+    <English>Hover to inspect a mode. Click to choose it for next turn.</English>
+    <French>Survolez un mode pour l&#8217;examiner. Cliquez pour le choisir au prochain tour.</French>
+    <German>Zum Pr&#252;fen auf einen Modus zeigen. Per Klick f&#252;r die n&#228;chste Runde w&#228;hlen.</German>
+    <Italian>Passa su un modo per esaminarlo. Clicca per sceglierlo dal prossimo turno.</Italian>
+    <Spanish>Pasa sobre un modo para verlo. Haz clic para elegirlo el pr&#243;ximo turno.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_ACCESS</Tag>
@@ -162,19 +162,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_TECH_HELP</Tag>
-    <English>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</English>
-    <French>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</French>
-    <German>Stehlen Sie Forschung f&#252;r eine zuf&#228;llig gew&#228;hlte Technologie. Mehr verf&#252;gbare Technologien erh&#246;hen den Ertrag. Weitere Quellen bringen abnehmenden Nutzen.</German>
-    <Italian>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</Italian>
-    <Spanish>Steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</Spanish>
+    <English>Build a network to steal research for one randomly chosen technology. More available technologies improve returns; additional sources have diminishing returns.</English>
+    <French>D&#233;veloppez un r&#233;seau pour voler la recherche d&#8217;une technologie choisie au hasard. Plus de technologies disponibles am&#233;liorent le rendement ; les sources suppl&#233;mentaires ont un rendement d&#233;croissant.</French>
+    <German>Baue ein Netzwerk auf, um Forschung f&#252;r eine zuf&#228;llige Technologie zu stehlen. Mehr verf&#252;gbare Technologien steigern den Ertrag; zus&#228;tzliche Quellen bringen abnehmenden Nutzen.</German>
+    <Italian>Sviluppa una rete per rubare ricerca per una tecnologia casuale. Pi&#249; tecnologie disponibili migliorano i risultati; le fonti aggiuntive hanno rendimenti decrescenti.</Italian>
+    <Spanish>Desarrolla una red para robar investigaci&#243;n de una tecnolog&#237;a aleatoria. M&#225;s tecnolog&#237;as disponibles mejoran el rendimiento; las fuentes adicionales tienen rendimientos decrecientes.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_MILITARY_HELP</Tag>
-    <English>Build a military network over time to strengthen your troops, infiltrate besieged cities and track enemy troop movements. Networks decay without funding.</English>
-    <French>D&#233;veloppez un r&#233;seau militaire pour renforcer vos troupes, infiltrer les villes assi&#233;g&#233;es et suivre les troupes adverses. Sans financement, le r&#233;seau d&#233;cline.</French>
-    <German>Bauen Sie ein Milit&#228;rnetz auf, das Ihre Truppen st&#228;rkt, belagerte St&#228;dte infiltriert und feindliche Truppenbewegungen aufkl&#228;rt. Ohne Finanzierung verf&#228;llt das Netz.</German>
-    <Italian>Sviluppa una rete militare per rafforzare le truppe, infiltrare le citt&#224; assediate e seguire i movimenti nemici. Senza fondi, la rete si indebolisce.</Italian>
-    <Spanish>Desarrolla una red militar para reforzar tus tropas, infiltrar ciudades sitiadas y seguir movimientos enemigos. Sin fondos, la red se debilita.</Spanish>
+    <English>Strengthens troops, infiltrates besieged cities and tracks enemy units. Combat strength and infiltration approach 30%; tracking approaches full coverage.</English>
+    <French>Renforce les troupes, infiltre les villes assi&#233;g&#233;es et suit les unit&#233;s ennemies. La force et l&#8217;infiltration tendent vers 30 % ; le suivi vers une couverture compl&#232;te.</French>
+    <German>St&#228;rkt Truppen, infiltriert belagerte St&#228;dte und verfolgt feindliche Einheiten. Kampfst&#228;rke und Infiltration n&#228;hern sich 30%; die Verfolgung einer vollst&#228;ndigen Abdeckung.</German>
+    <Italian>Rafforza le truppe, infiltra le citt&#224; assediate e segue le unit&#224; nemiche. Forza e infiltrazione si avvicinano al 30%; il tracciamento alla copertura completa.</Italian>
+    <Spanish>Refuerza las tropas, infiltra ciudades asediadas y sigue unidades enemigas. La fuerza y la infiltraci&#243;n se acercan al 30%; el seguimiento a la cobertura total.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_POLITICS_HELP</Tag>
@@ -184,15 +184,7 @@
     <Italian>Crea una fazione amica che diffonde la tua cultura, promuove le tue forme di governo e destabilizza il paese. I paesi instabili possono diventare stati clienti.</Italian>
     <Spanish>Crea una facci&#243;n af&#237;n que difunda tu cultura, promueva tus doctrinas y desestabilice el pa&#237;s. Los pa&#237;ses inestables pueden convertirse en estados clientes.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_MAP_HELP</Tag>
-    <English>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</English>
-    <French>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</French>
-    <German>Gelegentliche Berichte enth&#252;llen ein Gebiet um eine fremde Stadt und zeigen dort vor&#252;bergehend das Geschehen. Gro&#223;e Reiche sind schwerer auszukundschaften.</German>
-    <Italian>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</Italian>
-    <Spanish>Occasional reports reveal an area around a foreign city and temporarily show activity there. Larger empires are harder to survey.</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_PROJECT</Tag>
     <English>Shared research project: %s1</English>
     <French>Shared research project: %s1</French>
@@ -248,15 +240,7 @@
     <Italian>La pressione totale causa al massimo -6 stabilit&#224; e +2 turni di anarchia a velocit&#224; normale, o +4 su XL. I disordini causano +2 infelicit&#224; per 2 turni normali o 4 turni XL. La pressione cala al termine delle operazioni.</Italian>
     <Spanish>La presi&#243;n total causa como m&#225;ximo -6 estabilidad y +2 turnos de anarqu&#237;a a velocidad normal, o +4 en XL. Los disturbios causan +2 infelicidad durante 2 turnos normales o 4 turnos XL. La presi&#243;n baja al terminar las operaciones.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_MAP_RESULT</Tag>
-    <English>Report chance: %d1%% per turn    Current city report: %d2 turns left</English>
-    <French>Report chance: %d1%% per turn    Current city report: %d2 turns left</French>
-    <German>Berichtschance: %d1%% pro Runde    Aktueller Stadtbericht: noch %d2 Runden</German>
-    <Italian>Report chance: %d1%% per turn    Current city report: %d2 turns left</Italian>
-    <Spanish>Report chance: %d1%% per turn    Current city report: %d2 turns left</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_MAP_LIMIT</Tag>
     <English>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</English>
     <French>Revealed geography remains known. Live city visibility expires, or ends when you change this operation.</French>
@@ -290,11 +274,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK</Tag>
-    <English>Diplomatic risk: %s1</English>
-    <French>Diplomatic risk: %s1</French>
-    <German>Diplomatisches Risiko: %s1</German>
-    <Italian>Diplomatic risk: %s1</Italian>
-    <Spanish>Diplomatic risk: %s1</Spanish>
+    <English>Discovery risk: %s1</English>
+    <French>Risque de d&#233;couverte : %s1</French>
+    <German>Entdeckungsrisiko: %s1</German>
+    <Italian>Rischio di scoperta: %s1</Italian>
+    <Spanish>Riesgo de descubrimiento: %s1</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_FOOTER</Tag>
@@ -328,15 +312,7 @@
     <Italian>We uncovered an intelligence operation by %s1. Relations have worsened.</Italian>
     <Spanish>We uncovered an intelligence operation by %s1. Relations have worsened.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_REPORT</Tag>
-    <English>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</English>
-    <French>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</French>
-    <German>Geheimdienstbericht: Das Gebiet um %s1 wurde kartiert. Das Geschehen in der Stadt ist vor&#252;bergehend sichtbar.</German>
-    <Italian>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</Italian>
-    <Spanish>Intelligence report: the area around %s1 has been mapped. City activity is temporarily visible.</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_GATES</Tag>
     <English>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</English>
     <French>Our agents have opened the gates of %s1! City defenses are suppressed for this turn.</French>
@@ -448,15 +424,7 @@
     <Italian>Pressure target: -%d1 stability</Italian>
     <Spanish>Pressure target: -%d1 stability</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_MAP_SHORT</Tag>
-    <English>Report chance: %s1%%/turn</English>
-    <French>Rapport : %s1%%/tour</French>
-    <German>Berichtschance: %s1%%/Runde</German>
-    <Italian>Rapporto: %s1%%/turno</Italian>
-    <Spanish>Informe: %s1%%/turno</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_SOURCE</Tag>
     <English>This network supplies up to %d1 research before shared limits.</English>
     <French>This network supplies up to %d1 research before shared limits.</French>
@@ -568,15 +536,7 @@
     <Italian>Effetti combinati di tutte le ingerenze politiche.</Italian>
     <Spanish>Efectos combinados de toda la injerencia pol&#237;tica.</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_MAP_CURRENT_EFFECT</Tag>
-    <English>%s1%% chance per turn to reveal an area (max. %s2%%)</English>
-    <French>%s1%% de chance par tour de r&#233;v&#233;ler une zone (max. %s2%%)</French>
-    <German>%s1%% Chance pro Runde, ein Gebiet aufzudecken (max. %s2%%)</German>
-    <Italian>%s1%% probabilit&#224; per turno di rivelare un&#8217;area (max. %s2%%)</Italian>
-    <Spanish>%s1%% de probabilidad por turno de revelar una zona (m&#225;x. %s2%%)</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_REPORT_DURATION</Tag>
     <English>Current city report: %d1 turns remaining</English>
     <French>Rapport urbain actuel : %d1 tours restants</French>
@@ -600,15 +560,7 @@
     <Italian>Ingerenza: %d1 stabilit&#224; (totale)</Italian>
     <Spanish>Injerencia: %d1 estabilidad (total)</Spanish>
   </TEXT>
-  <TEXT>
-    <Tag>TXT_KEY_INTEL_MAP_AREA</Tag>
-    <English>Area revealed per report: %d1 x %d2 tiles</English>
-    <French>Zone r&#233;v&#233;l&#233;e par rapport : %d1 x %d2 cases</French>
-    <German>Gebiet je Bericht: %d1 x %d2 Felder</German>
-    <Italian>Area rivelata per rapporto: %d1 x %d2 caselle</Italian>
-    <Spanish>Zona revelada por informe: %d1 x %d2 casillas</Spanish>
-  </TEXT>
-  <TEXT>
+<TEXT>
     <Tag>TXT_KEY_INTEL_TROOP_COVERAGE</Tag>
     <English>Enemy troop tracking: %s1%% coverage</English>
     <French>Suivi des troupes ennemies : couverture de %s1%%</French>
@@ -903,5 +855,285 @@
     <German>%s1 wird zur Klientelregierung von %s2.</German>
     <Italian>%s1 diventa un governo cliente di %s2.</Italian>
     <Spanish>%s1 se convierte en un gobierno cliente de %s2.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_HELP</Tag>
+    <English>Build covert networks to siphon gold, divert food shipments and steal cultural treasures.</English>
+    <French>D&#233;veloppez des r&#233;seaux clandestins pour d&#233;tourner de l&#8217;or, des vivres et des tr&#233;sors culturels.</French>
+    <German>Baue verdeckte Netzwerke auf, um Gold, Nahrungslieferungen und Kunstsch&#228;tze zu stehlen.</German>
+    <Italian>Crea reti clandestine per sottrarre oro, deviare viveri e rubare tesori culturali.</Italian>
+    <Spanish>Crea redes clandestinas para desviar oro, suministros y tesoros culturales.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_SHORT</Tag>
+    <English>Network influence: %s1%%</English>
+    <French>Influence du r&#233;seau : %s1%%</French>
+    <German>Netzwerkeinfluss: %s1%%</German>
+    <Italian>Influenza della rete: %s1%%</Italian>
+    <Spanish>Influencia de la red: %s1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_BUILDUP</Tag>
+    <English>Network buildup: %d1 (%s2%% influence)</English>
+    <French>R&#233;seau accumul&#233; : %d1 (influence : %s2%%)</French>
+    <German>Netzwerkaufbau: %d1 (%s2%% Einfluss)</German>
+    <Italian>Rete accumulata: %d1 (influenza: %s2%%)</Italian>
+    <Spanish>Red acumulada: %d1 (%s2%% de influencia)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_GOLD</Tag>
+    <English>Gold siphoning: up to %s1%% of their gold income</English>
+    <French>Or d&#233;tourn&#233; : jusqu&#8217;&#224; %s1%% de leurs revenus</French>
+    <German>Goldraub: bis zu %s1%% ihrer Goldeinnahmen</German>
+    <Italian>Oro sottratto: fino al %s1%% delle loro entrate</Italian>
+    <Spanish>Oro desviado: hasta el %s1%% de sus ingresos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_FOOD</Tag>
+    <English>Food diversion: %s1%% of positive growth surplus</English>
+    <French>Vivres d&#233;tourn&#233;s : %s1%% du surplus de croissance</French>
+    <German>Nahrungsraub: %s1%% des positiven Wachstums&#252;berschusses</German>
+    <Italian>Viveri deviati: %s1%% del surplus di crescita positivo</Italian>
+    <Spanish>Alimentos desviados: %s1%% del excedente de crecimiento positivo</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_ART</Tag>
+    <English>Art theft chance: %s1%% per turn</English>
+    <French>Vol d&#8217;art : %s1%% de chance par tour</French>
+    <German>Kunstraub: %s1%% Chance pro Runde</German>
+    <Italian>Probabilit&#224; di furto d&#8217;arte: %s1%% per turno</Italian>
+    <Spanish>Probabilidad de robo de arte: %s1%% por turno</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_SHARED</Tag>
+    <English>Attackers share the target&#8217;s loss limits.</English>
+    <French>Les assaillants partagent les limites de pertes de la cible.</French>
+    <German>Angreifer teilen sich die Verlustgrenzen des Ziels.</German>
+    <Italian>Gli aggressori condividono i limiti di perdita del bersaglio.</Italian>
+    <Spanish>Los atacantes comparten los l&#237;mites de p&#233;rdidas del objetivo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_BUDGET</Tag>
+    <English>Gold gains are capped by treasury and espionage spending.</English>
+    <French>L&#8217;or gagn&#233; est limit&#233; par le tr&#233;sor et les d&#233;penses d&#8217;espionnage.</French>
+    <German>Goldgewinn ist durch Schatzkammer und Spionageausgaben begrenzt.</German>
+    <Italian>L&#8217;oro ottenuto &#232; limitato da tesoro e spese di spionaggio.</Italian>
+    <Spanish>El oro obtenido est&#225; limitado por el tesoro y el gasto en espionaje.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_ART_GAIN</Tag>
+    <English>Agents stole treasures from %s1. %s2 gains %d3 culture.</English>
+    <French>Des agents ont vol&#233; des tr&#233;sors &#224; %s1. %s2 gagne %d3 points de culture.</French>
+    <German>Agenten stahlen Kunstsch&#228;tze aus %s1. %s2 erh&#228;lt %d3 Kultur.</German>
+    <Italian>Gli agenti hanno rubato tesori a %s1. %s2 ottiene %d3 cultura.</Italian>
+    <Spanish>Los agentes robaron tesoros de %s1. %s2 obtiene %d3 de cultura.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_ART_LOSS</Tag>
+    <English>Cultural treasures were stolen from %s1, causing temporary unhappiness.</English>
+    <French>Des tr&#233;sors culturels ont &#233;t&#233; vol&#233;s &#224; %s1, causant un m&#233;contentement temporaire.</French>
+    <German>Kunstsch&#228;tze wurden aus %s1 gestohlen. Die Stadt ist vor&#252;bergehend unzufriedener.</German>
+    <Italian>Tesori culturali rubati a %s1 causano temporanea infelicit&#224;.</Italian>
+    <Spanish>El robo de tesoros culturales en %s1 causa infelicidad temporal.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TECH_BUILDUP</Tag>
+    <English>Network buildup: %d1 (%s2%% efficiency)</English>
+    <French>R&#233;seau accumul&#233; : %d1 (efficacit&#233; : %s2%%)</French>
+    <German>Netzwerkaufbau: %d1 (%s2%% Effizienz)</German>
+    <Italian>Rete accumulata: %d1 (efficienza: %s2%%)</Italian>
+    <Spanish>Red acumulada: %d1 (%s2%% de eficacia)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_4</Tag>
+    <English>Intelligence cooperation</English>
+    <French>Coop&#233;ration du renseignement</French>
+    <German>Geheimdienstkooperation</German>
+    <Italian>Cooperazione informativa</Italian>
+    <Spanish>Cooperaci&#243;n de inteligencia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MODE_5</Tag>
+    <English>No operations</English>
+    <French>Aucune op&#233;ration</French>
+    <German>Keine Operationen</German>
+    <Italian>Nessuna operazione</Italian>
+    <Spanish>Sin operaciones</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_AGREEMENT</Tag>
+    <English>Intelligence Cooperation</English>
+    <French>Coop&#233;ration du renseignement</French>
+    <German>Geheimdienstkooperation</German>
+    <Italian>Cooperazione informativa</Italian>
+    <Spanish>Cooperaci&#243;n de inteligencia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_AGREEMENT_HELP</Tag>
+    <English>Allows both countries to select intelligence cooperation. Active cooperation strengthens other networks and improves stability in both countries.</English>
+    <French>Permet aux deux pays de coop&#233;rer en mati&#232;re de renseignement. La coop&#233;ration active renforce les autres r&#233;seaux et am&#233;liore la stabilit&#233; des deux pays.</French>
+    <German>Erlaubt beiden L&#228;ndern Geheimdienstkooperation. Aktive Kooperation st&#228;rkt andere Netze und verbessert die Stabilit&#228;t beider L&#228;nder.</German>
+    <Italian>Consente a entrambi i paesi di cooperare nello spionaggio. La cooperazione attiva rafforza le altre reti e migliora la stabilit&#224; di entrambi.</Italian>
+    <Spanish>Permite a ambos pa&#237;ses cooperar en inteligencia. La cooperaci&#243;n activa refuerza otras redes y mejora la estabilidad de ambos pa&#237;ses.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_TOTAL</Tag>
+    <English>Cooperation: +%d1 espionage</English>
+    <French>Coop&#233;ration : +%d1 espionnage</French>
+    <German>Kooperation: +%d1 Spionage</German>
+    <Italian>Cooperazione: +%d1 spionaggio</Italian>
+    <Spanish>Cooperaci&#243;n: +%d1 espionaje</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_STABILITY</Tag>
+    <English>Cooperation stability: +%d1</English>
+    <French>Stabilit&#233; de coop&#233;ration : +%d1</French>
+    <German>Stabilit&#228;t durch Kooperation: +%d1</German>
+    <Italian>Stabilit&#224; da cooperazione: +%d1</Italian>
+    <Spanish>Estabilidad por cooperaci&#243;n: +%d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_SHORT</Tag>
+    <English>+%d1 espionage before the shared cap</English>
+    <French>+%d1 espionnage avant plafond commun</French>
+    <German>+%d1 Spionage vor Gesamtgrenze</German>
+    <Italian>+%d1 spionaggio prima del limite comune</Italian>
+    <Spanish>+%d1 espionaje antes del l&#237;mite com&#250;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NONE_SHORT</Tag>
+    <English>No active operations</English>
+    <French>Aucune op&#233;ration active</French>
+    <German>Keine aktiven Operationen</German>
+    <Italian>Nessuna operazione attiva</Italian>
+    <Spanish>Sin operaciones activas</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_CONTRIBUTION</Tag>
+    <English>Partner contribution: +%d1 espionage</English>
+    <French>Contribution du partenaire : +%d1 espionnage</French>
+    <German>Partnerbeitrag: +%d1 Spionage</German>
+    <Italian>Contributo del partner: +%d1 spionaggio</Italian>
+    <Spanish>Aportaci&#243;n del socio: +%d1 espionaje</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_INFLUENCE</Tag>
+    <English>Cooperation strength: %s1%%</English>
+    <French>Force de coop&#233;ration : %s1%%</French>
+    <German>Kooperationsst&#228;rke: %s1%%</German>
+    <Italian>Forza della cooperazione: %s1%%</Italian>
+    <Spanish>Fuerza de cooperaci&#243;n: %s1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_BUILDUP</Tag>
+    <English>Network buildup: %d1</English>
+    <French>D&#233;veloppement du r&#233;seau : %d1</French>
+    <German>Netzaufbau: %d1</German>
+    <Italian>Sviluppo della rete: %d1</Italian>
+    <Spanish>Desarrollo de la red: %d1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_HELP</Tag>
+    <English>Better relations and stronger partner espionage improve cooperation. Combined contributions are capped at your base output. Both countries gradually gain up to +3 stability.</English>
+    <French>De bonnes relations et un partenaire fort en espionnage am&#233;liorent la coop&#233;ration. Les contributions sont plafonn&#233;es &#224; votre production de base. Les deux pays gagnent progressivement jusqu&#8217;&#224; +3 en stabilit&#233;.</French>
+    <German>Gute Beziehungen und starke Spionage des Partners verbessern die Kooperation. Beitr&#228;ge sind auf Ihre Grundleistung begrenzt. Beide L&#228;nder erhalten allm&#228;hlich bis zu +3 Stabilit&#228;t.</German>
+    <Italian>Buone relazioni e un partner forte nello spionaggio migliorano la cooperazione. I contributi sono limitati alla produzione di base. Entrambi i paesi ottengono gradualmente fino a +3 stabilit&#224;.</Italian>
+    <Spanish>Las buenas relaciones y un socio fuerte en espionaje mejoran la cooperaci&#243;n. Las aportaciones se limitan a tu producci&#243;n base. Ambos pa&#237;ses ganan gradualmente hasta +3 de estabilidad.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_NONE_HELP</Tag>
+    <English>No operations are conducted against this country. Existing networks and diplomatic resentment fade. Negotiate Intelligence Cooperation to unlock peaceful cooperation.</English>
+    <French>Aucune op&#233;ration ne vise ce pays. Les r&#233;seaux existants et le ressentiment diplomatique diminuent. N&#233;gociez une coop&#233;ration du renseignement pour d&#233;bloquer la coop&#233;ration pacifique.</French>
+    <German>Gegen dieses Land laufen keine Operationen. Bestehende Netze und diplomatischer Unmut nehmen ab. Ein Abkommen zur Geheimdienstkooperation erm&#246;glicht friedliche Zusammenarbeit.</German>
+    <Italian>Non vengono condotte operazioni contro questo paese. Le reti esistenti e il risentimento diplomatico diminuiscono. Negozia la cooperazione informativa per sbloccare la collaborazione pacifica.</Italian>
+    <Spanish>No se realizan operaciones contra este pa&#237;s. Las redes existentes y el resentimiento diplom&#225;tico disminuyen. Negocia la cooperaci&#243;n de inteligencia para desbloquear la colaboraci&#243;n pac&#237;fica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_LOCKED</Tag>
+    <English>Cooperation requires a diplomatic agreement.</English>
+    <French>La coop&#233;ration n&#233;cessite un accord diplomatique.</French>
+    <German>Kooperation erfordert ein diplomatisches Abkommen.</German>
+    <Italian>La cooperazione richiede un accordo diplomatico.</Italian>
+    <Spanish>La cooperaci&#243;n requiere un acuerdo diplom&#225;tico.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_RISK_NONE</Tag>
+    <English>No discovery risk</English>
+    <French>Aucun risque de d&#233;couverte</French>
+    <German>Kein Entdeckungsrisiko</German>
+    <Italian>Nessun rischio di scoperta</Italian>
+    <Spanish>Sin riesgo de descubrimiento</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FINANCE_GOLD_STOLEN</Tag>
+    <English>Gold stolen</English>
+    <French>Or d&#233;rob&#233;</French>
+    <German>Gestohlenes Gold</German>
+    <Italian>Oro rubato</Italian>
+    <Spanish>Oro robado</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FINANCE_GOLD_LOST</Tag>
+    <English>Gold lost to espionage</English>
+    <French>Pertes par espionnage</French>
+    <German>Spionageverluste</German>
+    <Italian>Perdite da spionaggio</Italian>
+    <Spanish>P&#233;rdidas por espionaje</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FINANCE_GOLD_HELP</Tag>
+    <English>Actual gold transferred by economic subversion last turn. Already included in your treasury.</English>
+    <French>Or r&#233;ellement transf&#233;r&#233; par la subversion &#233;conomique au tour pr&#233;c&#233;dent. D&#233;j&#224; comptabilis&#233; dans votre tr&#233;sorerie.</French>
+    <German>Tats&#228;chlich durch wirtschaftliche Unterwanderung &#252;bertragenes Gold der letzten Runde. Bereits in der Schatzkammer ber&#252;cksichtigt.</German>
+    <Italian>Oro effettivamente trasferito dalla sovversione economica nel turno precedente. Gi&#224; incluso nel tesoro.</Italian>
+    <Spanish>Oro transferido por la subversi&#243;n econ&#243;mica en el turno anterior. Ya est&#225; incluido en tu tesoro.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_BUILDUP_PERCENT</Tag>
+    <English>Network buildup: %s1</English>
+    <French>D&#233;veloppement du r&#233;seau : %s1</French>
+    <German>Netzaufbau: %s1</German>
+    <Italian>Sviluppo della rete: %s1</Italian>
+    <Spanish>Desarrollo de la red: %s1</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_PREVIEW_EFFECT</Tag>
+    <English>Preview (not active)</English>
+    <French>Aper&#231;u (inactif)</French>
+    <German>Vorschau (nicht aktiv)</German>
+    <Italian>Anteprima (non attiva)</Italian>
+    <Spanish>Vista previa (inactiva)</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_PREVIEW_BUILDUP_HELP</Tag>
+    <English>Effects grow as the network builds up. Choosing this mode takes effect next turn; existing buildup is retained.</English>
+    <French>Les effets augmentent avec le d&#233;veloppement du r&#233;seau. Ce mode prend effet au prochain tour ; le r&#233;seau d&#233;j&#224; d&#233;velopp&#233; est conserv&#233;.</French>
+    <German>Die Wirkung w&#228;chst mit dem Netzaufbau. Die Auswahl gilt ab der n&#228;chsten Runde; vorhandener Aufbau bleibt erhalten.</German>
+    <Italian>Gli effetti aumentano con lo sviluppo della rete. La scelta ha effetto dal prossimo turno; lo sviluppo esistente viene mantenuto.</Italian>
+    <Spanish>Los efectos aumentan al desarrollarse la red. La elecci&#243;n se aplica el pr&#243;ximo turno; se conserva el desarrollo existente.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_INFLUENCE</Tag>
+    <English>Economic influence: %s1%%</English>
+    <French>Influence &#233;conomique : %s1%%</French>
+    <German>Wirtschaftlicher Einfluss: %s1%%</German>
+    <Italian>Influenza economica: %s1%%</Italian>
+    <Spanish>Influencia econ&#243;mica: %s1%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_HELP</Tag>
+    <English>Builds marriage ties with another monarchy, improving relations by up to +2. Ties can develop into a personal union and eventually integrate its cities.</English>
+    <French>&#201;tablit des liens matrimoniaux avec une autre monarchie, am&#233;liorant les relations jusqu&#8217;&#224; +2. Ces liens peuvent mener &#224; une union personnelle puis &#224; l&#8217;int&#233;gration de ses villes.</French>
+    <German>Kn&#252;pft Heiratsbindungen mit einer anderen Monarchie und verbessert Beziehungen um bis zu +2. Daraus k&#246;nnen eine Personalunion und schlie&#223;lich die Eingliederung ihrer St&#228;dte entstehen.</German>
+    <Italian>Crea legami matrimoniali con un&#8217;altra monarchia, migliorando le relazioni fino a +2. I legami possono portare a un&#8217;unione personale e infine all&#8217;integrazione delle sue citt&#224;.</Italian>
+    <Spanish>Crea v&#237;nculos matrimoniales con otra monarqu&#237;a y mejora las relaciones hasta +2. Los v&#237;nculos pueden dar lugar a una uni&#243;n personal y a la integraci&#243;n de sus ciudades.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_LOCKED_TARGET</Tag>
+    <English>Requires an Intelligence Cooperation agreement with %s1.</English>
+    <French>N&#233;cessite un accord de coop&#233;ration du renseignement avec %s1.</French>
+    <German>Erfordert ein Abkommen zur Geheimdienstkooperation mit %s1.</German>
+    <Italian>Richiede un accordo di cooperazione informativa con %s1.</Italian>
+    <Spanish>Requiere un acuerdo de cooperaci&#243;n de inteligencia con %s1.</Spanish>
   </TEXT>
 </Civ4GameText>

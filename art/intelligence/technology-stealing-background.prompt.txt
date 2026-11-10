@@ -1,0 +1,11 @@
+Generated using the built-in image_gen tool.
+Source: technology-stealing-background.png
+Runtime texture: Awakened RFC/Assets/Art/Interface/Buttons/Intelligence/TechnologyBackground.dds
+Runtime conversion: 1024x512 RGBA DXT3; displayed at the details tile's aspect ratio.
+
+Use case: historical-scene
+Asset type: a single wide background illustration for the Technology Stealing details tile in a Civilization IV espionage advisor, aspect ratio approximately 2.15:1.
+Primary request: a very dark, atmospheric illustration of a discreet Renaissance intelligence archive, with stolen technical plans, closed leather folios and a shadowed drafting instrument on an old wooden table. Suggest the quiet acquisition of knowledge. Restrained historical strategy-game concept art, painterly engraving texture, sophisticated and understated.
+Composition: wide landscape. Keep the entire left two thirds quiet and nearly black, as white game text will be placed over it. Recognizable details concentrated on the far right and along the lower edge, with broad soft forms rather than visual noise. Soft vignette into charcoal at all four edges.
+Lighting and palette: exceptionally low-key charcoal, blackened brown and muted burgundy; tiny dim warm highlights only. The illustration should remain perceptible in dark regions but never compete with overlaid text. No bright white paper or bright lights.
+Constraints: background artwork only, no UI, no typography, no readable writing, no labels, no logo, no border, no watermark, opaque background.

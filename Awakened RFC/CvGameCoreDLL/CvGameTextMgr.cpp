@@ -11317,6 +11317,9 @@ void CvGameTextMgr::getTradeString(CvWStringBuffer& szBuffer, const TradeData& t
 	case TRADE_VASSAL:
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_VASSAL"));
 		break;
+    case TRADE_INTELLIGENCE_COOPERATION:
+        szBuffer.append(gDLL->getText("TXT_KEY_INTEL_AGREEMENT"));
+        break;
 	case TRADE_OPEN_BORDERS:
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_OPEN_BORDERS"));
 		break;

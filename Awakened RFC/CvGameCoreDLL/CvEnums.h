@@ -1803,6 +1803,13 @@ enum FunctionTypes
 #endif
 };
 
+// Synchronized intelligence choices; keep the existing four operation IDs stable.
+enum IntelligenceModeTypes
+{
+    INTEL_TECHNOLOGY, INTEL_MILITARY, INTEL_POLITICS, INTEL_ECONOMY,
+    INTEL_COOPERATION, INTEL_NONE, NUM_INTELLIGENCE_MODES
+};
+
 enum TradeableItems						// Exposed to Python
 {
 	TRADE_ITEM_NONE = -1,
@@ -1832,6 +1839,7 @@ enum TradeableItems						// Exposed to Python
 	TRADE_EMBARGO,
 	TRADE_CIVIC,
 	TRADE_RELIGION,
+	TRADE_INTELLIGENCE_COOPERATION,
 
 #ifdef _USRDLL
 	NUM_TRADEABLE_HEADINGS,

@@ -6911,6 +6911,9 @@ int CvPlayerAI::AI_dealVal(PlayerTypes ePlayer, const CLinkList<TradeData>* pLis
 				iValue += GET_TEAM(getTeam()).AI_vassalTradeVal(GET_PLAYER(ePlayer).getTeam());
 			}
 			break;
+        case TRADE_INTELLIGENCE_COOPERATION:
+            iValue += 20;
+            break;
 		case TRADE_OPEN_BORDERS:
 			iValue += GET_TEAM(getTeam()).AI_openBordersTradeVal(GET_PLAYER(ePlayer).getTeam());
 			break;
@@ -12818,43 +12821,106 @@ void CvPlayerAI::AI_doCommerce()
 
     if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
     {
-        int iBestCatchup = 0;
-        bool bWar = false, bContact = false, bDynasty = false;
+        int iDesired = 0;
+        const int iPlanTurns = std::max(1, 5 * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent() /
+            std::max(1, GC.getGameSpeedInfo((GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL")).getResearchPercent()));
+        bool abConsidered[MAX_TEAMS] = {false};
         for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
         {
-            PlayerTypes eTarget = (PlayerTypes)i;
+            const PlayerTypes eTarget = (PlayerTypes)i;
             if (!canIntelligenceTarget(eTarget)) continue;
-            bContact = true;
-            TeamTypes eTargetTeam = GET_PLAYER(eTarget).getTeam();
-            int iTechs = getIntelligenceTechCount(eTarget);
-            int iMode = 0;
-            if (GET_TEAM(getTeam()).isAtWar(eTargetTeam)) { iMode = 1; bWar = true; }
-            else
+            const TeamTypes eTargetTeam = GET_PLAYER(eTarget).getTeam();
+            if (abConsidered[eTargetTeam]) continue;
+            abConsidered[eTargetTeam] = true;
+            const CvPlayer& kTarget = GET_PLAYER(eTarget);
+            const int iTechs = getIntelligenceTechCount(eTarget);
+            const int iAttitude = AI_getAttitudeVal(eTarget);
+            const bool bWar = GET_TEAM(getTeam()).isAtWar(eTargetTeam);
+            const bool bPreparing = GET_TEAM(getTeam()).AI_getWarPlan(eTargetTeam) != NO_WARPLAN;
+            const bool bAlly = GET_TEAM(getTeam()).isVassal(eTargetTeam) || GET_TEAM(eTargetTeam).isVassal(getTeam()) ||
+                GET_TEAM(getTeam()).isDefensivePact(eTargetTeam);
+            const bool bFriendly = AI_getAttitude(eTarget) >= ATTITUDE_FRIENDLY;
+            const bool bBorder = GET_TEAM(getTeam()).AI_isLandTarget(eTargetTeam);
+            const int iDiplomaticCost = (bFriendly || bAlly) ? 3 : (iAttitude >= 3 ? 2 : 1);
+            int aiScores[NUM_INTELLIGENCE_MODES] = {-1, -1, -1, -1, -1, 0};
+            // Score useful future returns as well as existing investment: a new network must be viable.
+            if (iTechs > 0 && !bAlly && !bFriendly)
             {
-                if (iTechs > 0) iBestCatchup = std::max(iBestCatchup, iTechs);
-                int iPlanTurns = std::max(1, 10 * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent() /
-                    std::max(1, GC.getGameSpeedInfo((GameSpeedTypes)GC.getInfoTypeForString("GAMESPEED_NORMAL")).getResearchPercent()));
-                // Hold a preference for ten Normal turns so investment has time to build.
-                int iChoice = (getID() * 37 + (int)eTargetTeam * 17 + GC.getGameINLINE().getGameTurn() / iPlanTurns * 29) % 100;
-                int iPreference = (iTechs >= 7 ? 45 : (iTechs >= 3 ? 55 : 65));
-                if (getIntelligenceData(i, 33) > 1) iPreference += 10;
-                if (canDynasticTarget(eTarget) && getIntelligenceData(i, 33) < 4 && !GET_TEAM(getTeam()).isAVassal() &&
-                    (!GET_TEAM(eTargetTeam).isAVassal() || GET_TEAM(eTargetTeam).isVassal(getTeam())) && iChoice < iPreference)
-                { iMode = 2; bDynasty = true; }
-                else if (iTechs > 0) iMode = 0;
-                else if (!isDynasticIntelligence() && AI_getAttitudeVal(eTarget) <= -6 &&
-                    !GET_TEAM(getTeam()).isVassal(eTargetTeam) && !GET_TEAM(eTargetTeam).isVassal(getTeam())) iMode = 2;
-                else iMode = 3;
+                aiScores[0] = 35 + 8 * std::min(8, iTechs) + getIntelligenceTechInfluence(eTarget) / 400;
+                if (m_eIntelligenceResearch != NO_TECH && GET_TEAM(eTargetTeam).isHasTech(m_eIntelligenceResearch)) aiScores[0] += 12;
             }
+            if (bWar || bPreparing || (!bAlly && bBorder && iAttitude <= -6))
+            {
+                const __int64 iStock = m_aiIntelligenceMilitaryStock[eTargetTeam];
+                const int iMaturity = (int)(25 * iStock / (iStock + (__int64)2000 * (40 + kTarget.getNumMilitaryUnits())));
+                aiScores[1] = (bWar ? 180 : (bPreparing ? 115 : 45)) + (bBorder ? 15 : 0) + iMaturity;
+            }
+            const int iStage = m_aiDynasticStage[eTargetTeam];
+            if (!bWar && canDynasticTarget(eTarget) && iStage < 4 && canFormDynasticUnion(eTarget))
+            {
+                // A moderate monarchy preference, with a stable personality variation rather than periodic rerolls.
+                const __int64 iStock = m_aiDynasticStock[eTargetTeam];
+                aiScores[2] = 65 + (getID() * 37 + eTargetTeam * 17) % 21 + 18 * iStage +
+                    (int)(20 * iStock / (iStock + 10000));
+            }
+            else if (!isDynasticIntelligence() && !bAlly && !bFriendly && iAttitude < 0)
+            {
+                int iDifferences = 0;
+                for (int j = 0; j < GC.getNumCivicOptionInfos(); ++j)
+                    if (canForceCivics(eTarget, getCivics((CivicOptionTypes)j))) ++iDifferences;
+                const __int64 iStock = m_aiPoliticalStock[eTargetTeam];
+                aiScores[2] = 30 + std::min(30, -3 * iAttitude) + 3 * iDifferences +
+                    (int)(25 * iStock / (iStock + (__int64)2000 * (20 + kTarget.getTotalPopulation())));
+                if (getPoliticalClientChance(eTarget) > 0) aiScores[2] += 15;
+            }
+            if (!bAlly && !bFriendly)
+            {
+                const __int64 iStock = m_aiEconomicStock[eTargetTeam];
+                aiScores[3] = 25 + std::min(25, kTarget.getTotalPopulation() / 4) +
+                    3 * std::min(4, getIntelligenceTradeRoutes(eTarget)) + (iAttitude < 0 ? 10 : 0) +
+                    (int)(20 * iStock / (iStock + (__int64)2000 * (20 + kTarget.getTotalPopulation())));
+            }
+            if (GET_TEAM(getTeam()).isIntelligenceCooperation(eTargetTeam) && !bPreparing &&
+                kTarget.getCommerceRate(COMMERCE_ESPIONAGE) > 0)
+                aiScores[INTEL_COOPERATION] = 45 + std::min(50, kTarget.getCommerceRate(COMMERCE_ESPIONAGE) / 2);
+            // Use the same discovery model as gameplay. Normalize XL risk to the same calendar.
+            for (int j = 0; j < 4; ++j)
+                if (aiScores[j] >= 0)
+                    aiScores[j] -= (getIntelligenceDiscoveryChance(eTarget, j) * iPlanTurns *
+                        (j == 0 ? 1 : 2) * iDiplomaticCost + 250) / 500;
+            // Estimate access and resistance with a small starter budget, even at zero current EP.
+            const int iForecast = std::max(1, getCommerceRate(COMMERCE_ESPIONAGE) +
+                (getCommerceRate(COMMERCE_RESEARCH) + getCommerceRate(COMMERCE_GOLD)) / 10);
+            const int iAttack = iForecast * getIntelligenceAccess(eTarget) / 100;
+            const int iEfficiency = (iAttack + 20) * 100 / std::max(1, iAttack + 20 + getIntelligenceDefense(eTarget));
+            for (int j = 0; j < 4; ++j)
+                if (aiScores[j] >= 0) aiScores[j] = std::max(1, aiScores[j] * iEfficiency / 100);
+            int iBestMode = INTEL_NONE;
+            for (int j = 0; j < NUM_INTELLIGENCE_MODES; ++j)
+                if (aiScores[j] > aiScores[iBestMode]) iBestMode = j;
+            const int iCurrent = getIntelligenceMode(eTargetTeam);
+            int iMode = iCurrent;
+            // Reassess every five Normal turns. War preparation and obsolete choices bypass the wait.
+            if (aiScores[iCurrent] < 0 || bWar || bPreparing ||
+                GC.getGameINLINE().getGameTurn() % iPlanTurns == (getID() + eTargetTeam) % iPlanTurns)
+                if (aiScores[iCurrent] < 0 || aiScores[iBestMode] > aiScores[iCurrent] + 15) iMode = iBestMode;
+            if (bWar) iMode = INTEL_MILITARY;
             setEspionageSpendingWeightAgainstTeam(eTargetTeam, iMode);
+            if (aiScores[iMode] < 20 && !bWar && !bPreparing) continue;
+            int iNeed = 10;
+            if (iMode == 0) iNeed = iTechs >= 7 ? 30 : (iTechs >= 3 ? 20 : 10);
+            if (iMode == 1) iNeed = bWar ? 30 : 20;
+            if (iMode == 2) iNeed = 20;
+            // Spending is shared across targets; contacts do not multiply the desired slider.
+            iDesired = std::max(iDesired, iNeed);
         }
-        int iDesired = bContact ? 10 : 0;
-        if (iBestCatchup >= 3) iDesired = 30;
-        if (iBestCatchup >= 7) iDesired = 40;
-        if (bWar) iDesired = std::max(iDesired, 20);
-        if (bDynasty) iDesired = std::max(iDesired, 20);
         if (bFirstTech) iDesired = std::min(iDesired, 10);
         if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3)) iDesired = 0;
+        while (getCommercePercent(COMMERCE_ESPIONAGE) > iDesired && getCommercePercent(COMMERCE_ESPIONAGE) >= 10)
+        {
+            changeCommercePercent(COMMERCE_ESPIONAGE, -10);
+            changeCommercePercent(COMMERCE_RESEARCH, 10);
+        }
         while (getCommercePercent(COMMERCE_ESPIONAGE) < iDesired && getCommercePercent(COMMERCE_RESEARCH) >= 10)
         {
             changeCommercePercent(COMMERCE_RESEARCH, -10);
@@ -13967,6 +14033,47 @@ void CvPlayerAI::AI_doDiplo()
 
 												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
 													GET_TEAM(getTeam()).AI_hasMilitaryAccessInterest(GET_PLAYER((PlayerTypes)iI).getTeam()))
+												{
+													ourList.clear();
+													theirList.clear();
+
+													ourList.insertAtEnd(item);
+													theirList.insertAtEnd(item);
+
+													if (GET_PLAYER((PlayerTypes)iI).isHuman())
+													{
+														if (!(abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()]))
+														{
+															AI_changeContactTimer(((PlayerTypes)iI), CONTACT_OPEN_BORDERS, GC.getLeaderHeadInfo(getPersonalityType()).getContactDelay(CONTACT_OPEN_BORDERS));
+															pDiplo = new CvDiploParameters(getID());
+															FAssertMsg(pDiplo != NULL, "pDiplo must be valid");
+															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_OFFER_DEAL"));
+															pDiplo->setAIContact(true);
+															pDiplo->setOurOfferList(theirList);
+															pDiplo->setTheirOfferList(ourList);
+															gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
+															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
+														}
+													}
+													else
+													{
+														GC.getGameINLINE().implementDeal(getID(), ((PlayerTypes)iI), &ourList, &theirList);
+													}
+												}
+											}
+										}
+									}
+
+									if (GET_TEAM(getTeam()).getLeaderID() == getID())
+									{
+										if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_OPEN_BORDERS) == 0)
+										{
+											if (GC.getGameINLINE().getSorenRandNum(GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_OPEN_BORDERS), "AI Diplo Intelligence Cooperation") == 0)
+											{
+												setTradeItem(&item, TRADE_INTELLIGENCE_COOPERATION);
+
+												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
+													(getCommerceRate(COMMERCE_ESPIONAGE) > 0 || GET_PLAYER((PlayerTypes)iI).getCommerceRate(COMMERCE_ESPIONAGE) > 0))
 												{
 													ourList.clear();
 													theirList.clear();

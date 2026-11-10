@@ -529,6 +529,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iEspionageHealthCounter = 0;
 	m_iEspionageHappinessCounter = 0;
     m_iIntelligenceUnrestTurns = 0;
+    m_iEconomicFoodRemainder = 0;
 	m_iFreshWaterGoodHealth = 0;
 	m_iFreshWaterBadHealth = 0;
 	m_iFeatureGoodHealth = 0;
@@ -10232,14 +10233,7 @@ void CvCity::updateEspionageVisibility(bool bUpdatePlotGroups)
 	OBSERVER_PERFORMANCE("CvCity::updateEspionageVisibility");
     for (int iTeam = 0; iTeam < MAX_TEAMS; ++iTeam)
     {
-        bool bVisibility = false;
-        for (int iPlayer = 0; iPlayer < NUM_MAJOR_PLAYERS && !bVisibility; ++iPlayer)
-        {
-            const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-            if (kPlayer.isAlive() && kPlayer.getTeam() == iTeam)
-                bVisibility = kPlayer.hasIntelligenceCityVisibility(this);
-        }
-        setEspionageVisibility((TeamTypes)iTeam, bVisibility, bUpdatePlotGroups);
+        setEspionageVisibility((TeamTypes)iTeam, false, bUpdatePlotGroups);
     }
 }
 
@@ -12845,6 +12839,7 @@ void CvCity::doGrowth()
         setInfoDirty(true);
     }
 
+    iDiff = divertEconomicFood(iDiff);
 	changeFood(iDiff);
 	changeFoodKept(iDiff);
 
@@ -13493,6 +13488,7 @@ void CvCity::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iEspionageHealthCounter);
 	pStream->Read(&m_iEspionageHappinessCounter);
     pStream->Read(&m_iIntelligenceUnrestTurns);
+    pStream->Read(&m_iEconomicFoodRemainder);
 	pStream->Read(&m_iFreshWaterGoodHealth);
 	pStream->Read(&m_iFreshWaterBadHealth);
 	pStream->Read(&m_iFeatureGoodHealth);
@@ -13805,6 +13801,7 @@ void CvCity::write(FDataStreamBase* pStream)
 	pStream->Write(m_iEspionageHealthCounter);
 	pStream->Write(m_iEspionageHappinessCounter);
     pStream->Write(m_iIntelligenceUnrestTurns);
+    pStream->Write(m_iEconomicFoodRemainder);
 	pStream->Write(m_iFreshWaterGoodHealth);
 	pStream->Write(m_iFreshWaterBadHealth);
 	pStream->Write(m_iFeatureGoodHealth);
@@ -15585,5 +15582,5 @@ void CvCity::getBuildQueue(std::vector<std::string>& astrQueue) const
 
 int CvCity::getIntelligenceChecksum() const
 {
-    return (m_iIntelligenceSuppressionTurn + 1) * 151 + (m_iIntelligenceSuppressionRollTurn + 1) * 157 + m_iIntelligenceUnrestTurns * 163;
+    return (m_iIntelligenceSuppressionTurn + 1) * 151 + (m_iIntelligenceSuppressionRollTurn + 1) * 157 + m_iIntelligenceUnrestTurns * 163 + m_iEconomicFoodRemainder * 167;
 }

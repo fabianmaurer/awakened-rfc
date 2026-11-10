@@ -221,6 +221,8 @@ public:
 	void setPermanentWarPeace(TeamTypes eIndex, bool bNewValue);									// Exposed to Python
 
 	bool isFreeTrade(TeamTypes eIndex) const;																	// Exposed to Python
+    bool isIntelligenceCooperation(TeamTypes eIndex) const;
+    void setIntelligenceCooperation(TeamTypes eIndex, bool bNewValue);
 	bool isOpenBorders(TeamTypes eIndex) const;
     bool isTradeEmbargo(TeamTypes eIndex) const;
     void setTradeEmbargo(TeamTypes eIndex, bool bNewValue);																// Exposed to Python
@@ -413,6 +415,7 @@ protected:
 	bool* m_abHasEverMet; //Rhye
 	bool* m_abPermanentWarPeace;
 	bool* m_abOpenBorders;
+    bool m_abIntelligenceCooperation[MAX_TEAMS];
     bool* m_abTradeEmbargo;
 	bool* m_abDefensivePact;
 	bool* m_abForcePeace;

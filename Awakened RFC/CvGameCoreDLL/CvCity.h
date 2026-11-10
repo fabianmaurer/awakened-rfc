@@ -357,6 +357,7 @@ public:
 	void changeEspionageHealthCounter(int iChange);													// Exposed to Python
 
     int getIntelligenceUnrestTurns() const;
+    int divertEconomicFood(int iSurplus);
     void startIntelligenceUnrest(int iTurns);
 	int getEspionageHappinessCounter() const;														// Exposed to Python
 	void changeEspionageHappinessCounter(int iChange);													// Exposed to Python
@@ -1034,6 +1035,7 @@ protected:
 	int m_iEspionageHealthCounter;
 	int m_iEspionageHappinessCounter;
     int m_iIntelligenceUnrestTurns;
+    int m_iEconomicFoodRemainder;
 	int m_iFreshWaterGoodHealth;
 	int m_iFreshWaterBadHealth;
 	int m_iFeatureGoodHealth;

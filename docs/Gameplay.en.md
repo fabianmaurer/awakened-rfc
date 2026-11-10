@@ -1372,7 +1372,13 @@ and outside city working areas.
 
 Spy units and their missions are replaced by automatic operations. In the
 intelligence advisor, choose one mode per civilization in diplomatic contact;
-**technology stealing** is the default. Choices take effect at the next player
+**No operations** is the default. It starts no operations and has no discovery
+risk; existing networks and resentment continue to decay. Hover over any mode to read its
+rules without selecting it. The details panel previews queued modes immediately. Every network tile and
+the details panel show buildup as a percentage of that mode's full effect,
+even while another mode is active. Technology uses its existing research-rate
+normalization; cooperation buildup is shown before the separate trust modifier.
+No operations has no network and displays a dash. Choices take effect at the next player
 turn boundary. The espionage slider funds every network with your full output,
 without dividing it between rivals. Basic demographics remain available for
 known civilizations. Existing espionage buildings, specialists
@@ -1386,6 +1392,33 @@ result: effective strength is `A * (A + 20) / (A + 20 + D)`, rounded down, where
 `A` is output after access and `D` is 10 plus the target team's espionage output.
 Security Bureaus increase `D`, weighted by their cities' share of team population.
 
+- **Intelligence cooperation:** a mutual diplomatic Intelligence Cooperation
+  agreement unlocks this mode for both countries; either side may invest
+  independently. The agreement requires peace. AI partners require at least
+  Pleased relations and no war preparations against the other party.
+  Cooperation buildup gains twice your base espionage output after access and
+  loses 10% per Normal turn; XL halves both. Counterintelligence does not resist
+  cooperation. Network strength is `B / (B + 40000)`, multiplied by mutual trust:
+  Furious 0%, Annoyed 10%, Cautious 35%, Pleased 75%, Friendly 100%. Human teams'
+  consent is represented by the agreement, so their side uses full trust.
+  Each partner team contributes its base espionage output multiplied by this
+  strength. Each team counts once. Combined contributions are capped at 100%
+  of your own base output. Contributions never include cooperation bonuses,
+  preventing feedback loops. The resulting effective output strengthens other
+  operations before access and counterintelligence, including their shared
+  research, culture and gold budgets. Operations against agreement partners
+  receive only base output. Defensive counterintelligence still uses base output.
+  The top-left UI shows base output followed by the effective total
+  in colored parentheses when cooperation provides a bonus. The advisor lists each partner's contribution before
+  the combined cap.
+  Both countries gradually gain stability from their strongest incoming or
+  outgoing cooperation network, up to +3; reciprocal networks and additional
+  partners do not stack this limit. The target bonus is three times network
+  strength, approached at 0.20 stability per Normal turn (0.10 on XL), rounded
+  to the nearest point for gameplay. Cancelling the agreement or declaring war
+  immediately ends its intelligence contribution and locks the mode again;
+  stability fades at the same calendar-scaled rate. Cooperation has no discovery
+  risk and does not change attitudes, civics, culture or political pressure.
 - **Technology stealing:** one eligible technology is randomly selected as a
   shared project and retained until completed or unavailable. Prerequisites must
   be fulfilled. Each rival in technology mode that knows the project contributes
@@ -1395,11 +1428,21 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   current project receives progress; excess does not spill into another stolen
   technology that turn. Progress is ordinary research progress and remains when
   you switch modes. A project pauses if no active technology network supplies it.
+  Technology networks need buildup, with 10.0% decay and twice the effective espionage
+  input per Normal turn; XL halves both. Let `E` be current effective espionage,
+  `H = 20 * (20 + target research output)` and `S(B) = B / (B + H)`.
+  Each source's old contribution is multiplied by `min(1, S(B) / S(20 * E))`.
+  Steady funding therefore approaches the old stealing rate, without exceeding
+  it. Increasing funding requires additional buildup; reducing it can leave an
+  already mature network. Decay continues when unfunded or using another mode.
+  At 100 effective espionage against 100 research output, the old rate is reached
+  at 77.4% after 10 Normal turns, 93.0% after 20 and 99.2% after 40.
+  Existing research progress remains, but missed startup research is not refunded.
 - **Military espionage:** each target team has a separate buildup `B`. Each Normal
-  turn retains 95% of its previous buildup and adds effective espionage output
-  after access and counterintelligence. XL retains 97.5% and adds half that output
+  turn retains 90% of its previous buildup and adds twice the effective espionage output
+  after access and counterintelligence. XL retains 95% and adds the unmultiplied output
   per turn. Decay continues without funding and in other modes; effects require
-  military mode. Without funding, buildup halves in about 13.5 Normal turns.
+  military mode. Without funding, buildup halves in about 6.6 Normal turns (13.5 on XL).
   With `U` enemy military units, the shared effect fraction is
   `B / (B + 20 * (40 + U))`. Combat strength approaches +30%, city-infiltration
   chance approaches 30%, and troop-tracking coverage approaches 100%. Effects retain hundredths of a percentage point internally and are
@@ -1420,31 +1463,68 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   destabilizes the target. Rare client-government outcomes require severe
   instability and independent countries. See Political factions below. Monarchies
   use dynastic politics instead.
-- **Map intelligence:** a successful report reveals a 7x7 area (11x11 on XL) around a target
-  city, prioritizing unmapped areas, and gives temporary city visibility for
-  three turns at Normal speed. The per-turn chance is capped at 25% at Normal speed (12.5% on XL) and declines
-  with the target's city count. Geography stays revealed. Live visibility expires
-  or ends when the operation changes; reports still provide city intelligence
-  when the map is already known.
+- **Economic Subversion:** covert networks steal gold, divert growth food and
+  occasionally steal art. Buildup gains twice the effective output and decays by 10.0% per Normal turn (5.0% on XL).
+  Influence is `B / (B + 20 * (20 + target population))`. At 50.0% influence,
+  the limits are 5.0% of gold income, 2.5% of positive growth-food surplus and
+  a 0.5% art-theft chance per Normal turn. All attackers share ceilings of
+  10.0% of gold income, 5.0% of growth surplus and a 1.0% art-theft chance per
+  target per Normal turn, weighted by influence. Gold losses are additionally
+  capped at 1.0% of the current treasury. The financial advisor shows actual
+  gold stolen and gold lost to espionage during the last completed game turn,
+  including them in its income and expense totals. Each row is hidden when its
+  amount is zero. These transfers are already included in the treasury; they
+  do not change the ordinary gold-per-turn rate. Each sponsor shares a gold budget
+  across active targets, capped at 50.0% of espionage output and multiplied by
+  each network's influence. Fractional coins accrue. Fractional food shipments
+  accrue per city after growth modifiers; only new positive growth surplus is
+  diverted. Stored food, consumption and food used for unit production are
+  untouched. Shipments go to the nearest orderly sponsor city. Food and gold
+  are transferred rather than created. Art theft selects a city with at least
+  100 local culture and positive culture production. The nearest orderly sponsor
+  city gains five turns of the victim city's culture output, capped at 100 culture.
+  The victim receives intelligence unrest (+2 unhappiness, three Normal turns),
+  without stacking with existing intelligence unrest or removing historical
+  culture and borders. XL halves buildup, decay, transfers and event chances
+  per turn; art rewards remain unchanged. Operations continue during war.
+  Map reports and their city visibility have been removed.
 
-At Normal speed, effective operations risk discovery each turn: 1% for
-technology/maps, 3% for military operations, and 6% for politics. On XL these
-chances are 0.5%, 1.5% and 3%. Discovery adds diplomatic resentment,
+Discovery risk rises with effort, approaching the previous fixed chances as
+upper bounds: 1.0% for technology/economic operations, 3.0% for military and
+6.0% for political meddling per Normal turn. The formula is
+`cap * effort / (effort + 50)`, where `effort = max(E, B / 20)`, using current
+effective espionage `E` and the selected operation's buildup `B`. Small efforts
+have lower risk; reducing funding leaves risk while stored buildup decays.
+No funding and no buildup means no risk. Dynastic politics remains exempt.
+One discovery roll is made per sponsor and target team, even with multiple
+players on that team. XL halves the chance. Discovery adds diplomatic resentment,
 with respective caps of -1, -3 and -6 attitude. Existing resentment survives
 mode changes and decays by two hundredths of an attitude point per Normal
 turn, or one hundredth per XL turn. Non-combat event chances scale with the
 calendar; military infiltration continues to roll every gameplay turn. The
 advisor and diplomatic attitude tooltip show the resulting penalty. The AI
-chooses modes and budgets for catch-up, warfare, political hostility and mapping.
+chooses modes and budgets for catch-up, warfare, political hostility, economic
+subversion and cooperation, and can leave friendly networks inactive.
+
+
+The AI scores usable technology opportunities, the current stolen-research
+project, war plans and nearby threats, dynastic stages, civic differences,
+economic opportunities, diplomatic costs, access and counterintelligence.
+Existing buildup improves an operation's score. A moderate preference for
+marriage politics remains against monarchies. Choices are normally reviewed
+every five Normal turns (ten on XL), with a switching margin to preserve investment; war,
+war plans and unusable options allow earlier reconsideration. Spending follows
+chosen operations, falls when opportunities disappear, and remains constrained
+by finances. These are heuristics, not a guarantee of optimal play.
 
 For example, against 100 military units the half-effect buildup is 2,800.
 At 100 effective espionage per Normal turn, starting from zero:
 
 | Turns funded | Buildup | Combat bonus | Infiltration chance | Troop coverage |
 | --- | ---: | ---: | ---: | ---: |
-| 10 | 803 | +6.7% | 6.7% | 22.3% |
-| 20 | 1,283 | +9.4% | 9.4% | 31.4% |
-| 40 | 1,743 | +11.5% | 11.5% | 38.4% |
+| 10 | 1,303 | +9.5% | 9.5% | 31.8% |
+| 20 | 1,757 | +11.6% | 11.6% | 38.5% |
+| 40 | 1,970 | +12.4% | 12.4% | 41.3% |
 | Sustained equilibrium | about 2,000 | +12.5% | about 12.5% | about 41.7% |
 
 Against the same army, sustained outputs of 25, 400 and 1,000 settle near
@@ -1457,8 +1537,8 @@ at the turn boundary but preserves the decaying buildup for later use.
 
 ### Political factions
 
-Each target team has political buildup `B`, retaining 95% and adding effective
-espionage output each Normal turn; XL retains 97.5% and adds half the output.
+Each target team has political buildup `B`, retaining 90% and adding twice the effective
+espionage output each Normal turn; XL retains 95% and adds the unmultiplied output.
 Switching modes or adopting Monarchy ends regular meddling effects and funding;
 stored buildup continues decaying. Counterintelligence and access reduce funding.
 With target population `P`, the shared effect fraction is
@@ -1510,8 +1590,8 @@ collapse-inheritance eligibility rules still apply separately. Marriage diplomac
 has no espionage-discovery penalty. Established kinship applies in both directions:
 distant relatives grant +1 relations; close relatives and later stages grant +2.
 
-Influence uses the military network's decaying buildup: `B_next = 0.95 * B + E`
-at Normal speed, or `0.975 * B + E / 2` on XL. `E` is effective espionage after
+Influence uses the military network's decaying buildup: `B_next = 0.90 * B + 2 * E`
+at Normal speed, or `0.95 * B + E` on XL. `E` is effective espionage after
 access and counterintelligence, increased by 2% for each point of negative target
 stability, capped at twice the normal rate at -50. Nonnegative stability adds no
 resistance. There is no population or army-size divisor. Half strength is reached
@@ -1557,13 +1637,13 @@ Collapse inheritance keeps its existing 50% chance, religion, stability and dist
 requirements. Candidate weight is `100 + 100 * stage + 400 * B / (B + 100)`.
 Thus related and influential dynasties are favored, without excluding other
 eligible monarchies. The AI moderately favors marriage politics against monarchies
-at peace, holding its preference for ten Normal turns. Ordinary preference is 65%,
-reduced to 55% or 45% when three or seven technologies behind, and increased by
-10 points after Close relatives. Wartime military operations and financial trouble
-retain priority. AI dynastic investment targets a 20% espionage budget when affordable.
+at peace, with a higher score for established dynastic stages. It normally
+reviews operations every five Normal turns (ten on XL) and requires a clear
+advantage before switching. War and unusable operations permit earlier changes.
+AI dynastic investment targets a 20% espionage budget when affordable.
 
 At 20 effective espionage per Normal turn, buildup after 10 and 20 turns is about
-160 and 257. These give first-stage chances of 12.3% and 14.4%, or 2.3% and 4.4%
+261 and 351. These give first-stage chances of 14.5% and 15.6%, or 4.5% and 5.6%
 at Close relatives. Sustained output of 20 approaches 400 buildup: about 16.0%,
 11.0%, 6.0% and 6.0% at the four rolling stages. Stopping funding eventually turns
 the later-stage chances negative. At 100 sustained output, the corresponding

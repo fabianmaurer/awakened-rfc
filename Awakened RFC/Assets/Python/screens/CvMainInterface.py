@@ -1840,6 +1840,10 @@ class CvMainInterface:
 
 						if not CyInterface().isCityScreenUp():
 							szOutText = u"<font=2>" + localText.getText("TXT_KEY_MISC_POS_GOLD_PER_TURN", (gc.getPlayer(ePlayer).getCommerceRate(CommerceTypes(eCommerce)), )) + u"</font>"
+							if eCommerce == CommerceTypes.COMMERCE_ESPIONAGE:
+								iEffective = gc.getPlayer(ePlayer).getIntelligenceData(-1, 59)
+								if gc.getPlayer(ePlayer).getIntelligenceData(-1, 60) > 0:
+									szOutText = szOutText[:-7] + u" <color=100,210,230,255>(%d)</color></font>" % iEffective
 							szString = "RateText" + str(iI)
 							screen.setLabel( szString, "Background", szOutText, CvUtil.FONT_LEFT_JUSTIFY, 112, 50 + (iCount * 19), -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 							screen.show( szString )
