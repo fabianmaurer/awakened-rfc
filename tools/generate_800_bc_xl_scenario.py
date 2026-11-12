@@ -252,7 +252,7 @@ def main():
     header = re.sub(r'Description=[^\r\n]*', 'Description=' + DESCRIPTION, header, count=1)
     header = re.sub(r'GameTurn=87[ \t]*', 'GameTurn=174', header, count=1)
     header = re.sub(r'Calendar=CALENDAR_DEFAULT[ \t]*', 'Calendar=CALENDAR_DEFAULT\n\tSpeed=GAMESPEED_XL', header, count=1)
-    player_id = iter(range(39))
+    player_id = iter(range(len(re.findall(r'BeginPlayer\b', header))))
     def player(match):
         owner = next(player_id)
         block = match[0]
@@ -270,7 +270,8 @@ def main():
     for (x, y), lines in plots.items():
         output.append('BeginPlot\n\tx=%d,y=%d\n\t%s\n%sEndPlot\n' %
                       (x, y, '\n\t'.join(lines), '\n'.join(payloads.get((x, y), ())) + '\n'))
-    TARGET.write_text(''.join(output), encoding='utf-8', newline='\n')
+    from indian_scenarios import apply_indian_civs
+    TARGET.write_text(apply_indian_civs(''.join(output), True), encoding='utf-8', newline='\n')
     print('Created', TARGET.name)
     print('%d cities, %d placed units, %d improvements, %d historical resource introductions.' %
           (len(city_sites), sum(entry.startswith('BeginUnit') for entries in payloads.values() for entry in entries), improved, introduced))

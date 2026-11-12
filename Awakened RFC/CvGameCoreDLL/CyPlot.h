@@ -202,6 +202,9 @@ public:
 	CyCity* getPlotCity();
 	CyCity* getWorkingCity();
 	CyCity* getWorkingCityOverride();
+	int getRiverDrought() const;
+	int getRiverDroughtEdges() const;
+	void setRiverDrought(int iSouthEdge, int iEastEdge);
 	int getRiverID() const;
 	void setRiverID(int iNewValue);
 	int getMinOriginalStartDist();

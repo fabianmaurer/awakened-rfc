@@ -150,6 +150,8 @@ public:
 	int foodConsumption(bool bNoAngry, int iExtra);												 
 	int foodDifference(bool bBottom);
 	int growthThreshold();
+    int getFamineTurns();
+    int getFamineUnhappiness();
 	int productionLeft();
 	int hurryCost(bool bExtra);																						 
 	int hurryGold(int /*HurryTypes*/ iHurry);

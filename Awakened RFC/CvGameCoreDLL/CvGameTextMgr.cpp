@@ -2847,16 +2847,20 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 	else
 	{
 		// Read the birth areas and exception tiles from the same data as RiseAndFall.
-		long lBirthFlipMask = 0;
-		CyArgsList argsList;
-		argsList.add(pPlot->getX_INLINE());
-		argsList.add(pPlot->getY_INLINE());
-		argsList.add(GC.getGameINLINE().getGameTurn());
-		gDLL->getPythonIFace()->callFunction(PYScreensModule, "getBirthFlipMask", argsList.makeFunctionArgs(), &lBirthFlipMask);
+        long lBirthFlipMasks[(NUM_MAJOR_PLAYERS + 31) / 32] = {0};
+        for (int iChunk = 0; iChunk < (NUM_MAJOR_PLAYERS + 31) / 32; ++iChunk)
+        {
+            CyArgsList argsList;
+            argsList.add(pPlot->getX_INLINE());
+            argsList.add(pPlot->getY_INLINE());
+            argsList.add(GC.getGameINLINE().getGameTurn());
+            argsList.add(iChunk * 32);
+            gDLL->getPythonIFace()->callFunction(PYScreensModule, "getBirthFlipMask", argsList.makeFunctionArgs(), &lBirthFlipMasks[iChunk]);
+        }
 		for (int iCiv = 0; iCiv < NUM_MAJOR_PLAYERS; ++iCiv)
 		{
 			if (iCiv != GC.getGameINLINE().getActivePlayer() && !GET_PLAYER((PlayerTypes)iCiv).isAlive() &&
-				(static_cast<unsigned long>(lBirthFlipMask) & (1UL << iCiv)) != 0)
+				(static_cast<unsigned long>(lBirthFlipMasks[iCiv / 32]) & (1UL << (iCiv % 32))) != 0)
 			{
 				szString.append(CvWString::format(SETCOLR L"%s\n" ENDCOLR, GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorR(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorG(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorB(), GET_PLAYER((PlayerTypes)iCiv).getPlayerTextColorA(), GC.getCivilizationInfo(GET_PLAYER((PlayerTypes)iCiv).getCivilizationType()).getShortDescription()));
 			}
@@ -2934,6 +2938,13 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 					szString.append(ENDCOLR);
 				}
 			}
+		}
+
+		if (pPlot->getRiverDrought() > 0)
+		{
+			szString.append(NEWLINE);
+			szString.append(gDLL->getText(pPlot->getRiverDrought() == 2 ?
+				"TXT_KEY_DROUGHT_SEVERE_HELP" : "TXT_KEY_DROUGHT_HELP"));
 		}
 
 		if (pPlot->hasYield())
@@ -3251,6 +3262,11 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 			szString.append(gDLL->getText("TXT_KEY_CITY_BAR_PRODUCTION", pCity->getProductionName(), pCity->getProduction(), pCity->getProductionNeeded()));
 		}
 	}
+
+    if (pCity->getFamineTurns() > 0)
+        szString.append(gDLL->getText("TXT_KEY_FAMINE_HELP", pCity->getFamineUnhappiness()));
+    if (pCity->getPopulation() == 1 && iFoodDifference < 0)
+        szString.append(gDLL->getText("TXT_KEY_FAMINE_ABANDON_WARNING"));
 
 	bFirst = true;
 
@@ -5945,6 +5961,11 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	{
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_FOUND_CITY"));
+		if (eUnit == GC.getInfoTypeForString("UNIT_HARAPPAN_BUILDER"))
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_HAR_BUILDER_STRATEGY"));
+		}
 	}
 
 	iCount = 0;
@@ -9073,6 +9094,12 @@ void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		}
 		iOldAnger = iNewAnger;
 
+        if (city.getFamineUnhappiness() > 0)
+        {
+            iOldAnger += city.getFamineUnhappiness();
+            szBuffer.append(gDLL->getText("TXT_KEY_FAMINE_ANGER", city.getFamineUnhappiness()));
+            szBuffer.append(NEWLINE);
+        }
 		szBuffer.append(L"-----------------------\n");
 
 		szBuffer.append(gDLL->getText("TXT_KEY_ANGER_TOTAL_UNHAPPY", iOldAnger));
@@ -12436,7 +12463,13 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
 
     int iFoodNet = eYieldType == YIELD_FOOD ? city.getFoodTradeImports() - city.getFoodTradeExports() : 0;
     if (eYieldType == YIELD_FOOD)
+    {
         szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_TOTAL", city.getFoodTradeImports(), city.getFoodTradeExports()));
+        if (city.getFamineTurns() > 0)
+            szBuffer.append(gDLL->getText("TXT_KEY_FAMINE_HELP", city.getFamineUnhappiness()));
+        if (city.getPopulation() == 1 && city.foodDifference() < 0)
+            szBuffer.append(gDLL->getText("TXT_KEY_FAMINE_ABANDON_WARNING"));
+    }
 	FAssertMsg((iBaseModifier * iBaseProduction) / 100 + iFoodNet == city.getYieldRate(eYieldType), "Yield Modifier in setProductionHelp does not agree with actual value");
 }
 

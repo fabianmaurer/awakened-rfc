@@ -911,6 +911,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_papalDecisions.clear();
 	m_bPapalPalaceEffects = false;
 	m_bPapalCivicOverride = false;
+	m_bBirthFlipInProgress = false;
 	m_iCrusadeRegion = -1;
 	m_bCrusadePeaceOverride = false;
 	for (int i = 0; i < MAX_TEAMS; ++i) { m_abCrusadeParticipants[i] = false; m_abCrusadeTargets[i] = false; }
@@ -5346,6 +5347,90 @@ void CvGame::setActivePlayer(PlayerTypes eNewValue, bool bForceHotSeat)
 	}
 }
 
+void CvGame::beginBirthFlip()
+{
+	FAssert(!m_bBirthFlipInProgress);
+	m_bBirthFlipInProgress = true;
+}
+
+void CvGame::refreshDroughtIrrigation()
+{
+    // A river can cease to be a source without deleting farms. Rebuild the
+    // irrigation network after ALL regional conditions have been applied.
+    for (int i = 0; i < GC.getMapINLINE().numPlotsINLINE(); ++i)
+        GC.getMapINLINE().plotByIndexINLINE(i)->setIrrigated(false);
+    for (int j = 0; j < GC.getMapINLINE().numPlotsINLINE(); ++j)
+    {
+        CvPlot* pPlot = GC.getMapINLINE().plotByIndexINLINE(j);
+        if (pPlot->isPotentialIrrigation()) pPlot->updateIrrigated();
+        pPlot->updateYield();
+    }
+}
+
+void CvGame::endBirthFlip()
+{
+	m_bBirthFlipInProgress = false;
+	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+	{
+		CvPlayer& player = GET_PLAYER((PlayerTypes)i);
+		if (player.isAlive()) player.verifyAlive();
+	}
+}
+
+bool CvGame::transferBirthControl(PlayerTypes eOldPlayer, PlayerTypes eNewPlayer)
+{
+	if (eOldPlayer < 0 || eOldPlayer >= MAX_CIV_PLAYERS ||
+		eNewPlayer < 0 || eNewPlayer >= MAX_CIV_PLAYERS || eOldPlayer == eNewPlayer)
+		return false;
+	CvPlayer& oldPlayer = GET_PLAYER(eOldPlayer);
+	CvPlayer& newPlayer = GET_PLAYER(eNewPlayer);
+	if (!oldPlayer.isAlive() || !oldPlayer.isHuman() || !newPlayer.isAlive() ||
+		newPlayer.isHuman() || newPlayer.isMinorCiv()) return false;
+
+	CvInitCore& init = GC.getInitCore();
+	const int iNetID = oldPlayer.getNetID();
+	// Move the controller's credentials and preferences, preserving both states'
+	// leaders, teams, diplomacy, score, technologies and victory progress.
+	init.setCivPassword(eNewPlayer, init.getCivPassword(eOldPlayer), false);
+	init.setEmail(eNewPlayer, init.getEmail(eOldPlayer));
+	init.setSmtpHost(eNewPlayer, init.getSmtpHost(eOldPlayer));
+	init.setReady(eNewPlayer, init.getReady(eOldPlayer));
+	init.setPythonCheck(eNewPlayer, init.getPythonCheck(eOldPlayer));
+	init.setXMLCheck(eNewPlayer, init.getXMLCheck(eOldPlayer));
+	init.setCivPassword(eOldPlayer, L"", false);
+	init.setEmail(eOldPlayer, "");
+	init.setSmtpHost(eOldPlayer, "");
+	for (int i = 0; i < NUM_PLAYEROPTION_TYPES; ++i)
+		newPlayer.setOption((PlayerOptionTypes)i, oldPlayer.isOption((PlayerOptionTypes)i));
+	init.setSlotStatus(eOldPlayer, SS_COMPUTER);
+	init.setSlotClaim(eOldPlayer, SLOTCLAIM_UNASSIGNED);
+	init.setSlotStatus(eNewPlayer, SS_TAKEN);
+	init.setSlotClaim(eNewPlayer, SLOTCLAIM_ASSIGNED);
+	init.setPlayableCiv(eNewPlayer, true);
+	oldPlayer.updateHuman();
+	newPlayer.updateHuman();
+	if (newPlayer.isTurnActive())
+	{
+		newPlayer.setEndTurn(false);
+		newPlayer.setAutoMoves(false);
+	}
+
+	// Active-player identity and graphics are local; the slot/connection change
+	// above and below runs on every peer through the synchronized decision.
+	if (getActivePlayer() == eOldPlayer)
+		setActivePlayer(eNewPlayer, false);
+	// setActivePlayer swaps net IDs in hotseat/PBEM; finish with one assignment
+	// in every mode, including network play and on non-owning peers.
+	oldPlayer.setNetID(-1);
+	newPlayer.setNetID(iNetID);
+	setScoreDirty(true);
+	if (getActivePlayer() == eNewPlayer && GC.IsGraphicsInitialized())
+	{
+		gDLL->getInterfaceIFace()->setDirty(Score_DIRTY_BIT, true);
+	}
+	return true;
+}
+
 //Rhye - start (RFCMP)
 //void CvGame::switchActivePlayer(int eOldPlayerNetID, PlayerTypes eNewValue, bool bForceHotSeat)
 void CvGame::switchActivePlayer(PlayerTypes eOldActivePlayer, PlayerTypes eNewValue, bool bForceHotSeat)
@@ -8197,6 +8282,8 @@ int CvGame::calculateSyncChecksum()
 	iValue = 0;
 
 	iValue += getMapRand().getSeed();
+	for (int iDrought = 0; iDrought < GC.getMapINLINE().numPlotsINLINE(); ++iDrought)
+		iValue += GC.getMapINLINE().plotByIndexINLINE(iDrought)->getRiverDroughtEdges() * (iDrought + 1) * 109;
 	iValue += getSorenRand().getSeed();
     for (int iEmbargoTeam = 0; iEmbargoTeam < MAX_TEAMS; iEmbargoTeam++)
         for (int iEmbargoTarget = 0; iEmbargoTarget < MAX_TEAMS; iEmbargoTarget++)
@@ -8208,7 +8295,7 @@ int CvGame::calculateSyncChecksum()
         int iFoodLoop;
         for (CvCity* pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).firstCity(&iFoodLoop); pFoodCity != NULL;
             pFoodCity = GET_PLAYER((PlayerTypes)iFoodPlayer).nextCity(&iFoodLoop))
-            iValue += (pFoodCity->getIntelligenceChecksum() * 163 + pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101) *
+            iValue += (pFoodCity->getIntelligenceChecksum() * 163 + pFoodCity->getFoodTradeChecksum() + pFoodCity->getGrowthFoodRemainder() * 101 + pFoodCity->getFamineTurns() * 103 + pFoodCity->getFood() * 107) *
                 (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
     for (int iIntel = 0; iIntel < MAX_PLAYERS; ++iIntel)

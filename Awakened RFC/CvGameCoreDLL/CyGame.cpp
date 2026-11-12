@@ -678,6 +678,26 @@ void CyGame::setActivePlayer(int /*PlayerTypes*/ eNewValue, bool bForceHotSeat)
 }
 
 //Rhye - start (RFCMP)
+void CyGame::beginBirthFlip()
+{
+	if (m_pGame) m_pGame->beginBirthFlip();
+}
+
+void CyGame::refreshDroughtIrrigation()
+{
+	if (m_pGame) m_pGame->refreshDroughtIrrigation();
+}
+
+void CyGame::endBirthFlip()
+{
+	if (m_pGame) m_pGame->endBirthFlip();
+}
+
+bool CyGame::transferBirthControl(int oldPlayer, int newPlayer)
+{
+	return m_pGame && m_pGame->transferBirthControl((PlayerTypes)oldPlayer, (PlayerTypes)newPlayer);
+}
+
 //void CyGame::switchActivePlayer(int eOldPlayerNetID, int /*PlayerTypes*/ eNewValue, bool bForceHotSeat)
 //{
 //	if (m_pGame)

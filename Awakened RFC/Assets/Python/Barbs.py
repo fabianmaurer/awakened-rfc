@@ -343,7 +343,7 @@ class Barbs:
                 self.foundCity(iBarbarian, lKazan, "Kazan", iGameTurn, 2, con.iHorseArcher, 1)
                 self.foundCity(iNative, lKongo, "Mbanza Kongo", iGameTurn, 1, con.iZuluImpi, 1)
 
-                if (geo.profile_name() == 'Earth200x110' and gc.getGame().getStartTurn() in (0, geo.turns(87))):
+                if (geo.base_profile_name() == 'Earth200x110' and gc.getGame().getStartTurn() in (0, geo.turns(87))):
                         # Optional regional centres for both ancient XL starts.
                         # Use the shared ownership, nearby-city and retry checks.
                         self.foundCity(iIndependent, geo.value('Barbs.lMerv'), "Merv", iGameTurn, 1, con.iArcher, 1)
@@ -425,11 +425,14 @@ class Barbs:
                 # One finite late-Gupta invasion, separate from China's Xiongnu.
                 if (iGameTurn != con.i450AD and iGameTurn != con.i500AD):
                         return
-                pIndia = gc.getPlayer(con.iIndia)
-                if (not pIndia.isAlive() or pIndia.getNumCities() == 0):
+                iTarget = con.iIndia
+                if geo.base_profile_name() == "Earth200x110": iTarget = con.iGanges
+                pIndia = gc.getPlayer(iTarget)
+                if (not pIndia.isAlive() or pIndia.getNumCities() == 0 or
+                    pIndia.getCivilizationType() == gc.getInfoTypeForString("CIVILIZATION_HARAPPA")):
                         return
                 if (iGameTurn == con.i450AD):
-                        CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                        CyInterface().addMessage(iTarget, True, con.iDuration,
                                 CyTranslator().getText("TXT_KEY_HUNA_INVASION_WARNING", ()),
                                 "", 0, "", ColorTypes(con.iOrange), geo.value('Barbs.hunaWarning')[0], geo.value('Barbs.hunaWarning')[1], True, True)
                         return
@@ -453,9 +456,9 @@ class Barbs:
                                         continue
                                 if (not plot.isOwned() or plot.getOwner() == iBarbarian):
                                         lOpen.append((x, y))
-                                elif (plot.getOwner() == con.iIndia):
+                                elif (plot.getOwner() == iTarget):
                                         lIndian.append((x, y))
-                                elif (plot.getOwner() != con.iIndia):
+                                elif (plot.getOwner() != iTarget):
                                         lForeign.append((x, y))
                 lPlots = lOpen or lIndian or lForeign
                 if (not lPlots):
@@ -483,7 +486,7 @@ class Barbs:
                                     {'unit': iUnit, 'count': iCount,
                                      'x': tSpawn[0], 'y': tSpawn[1],
                                      'region': geo.value('Barbs.checkHunaInvasion.location_1'), 'period': 0})
-                CyInterface().addMessage(con.iIndia, True, con.iDuration,
+                CyInterface().addMessage(iTarget, True, con.iDuration,
                         CyTranslator().getText("TXT_KEY_HUNA_INVASION_ARRIVAL", ()),
                         "", 0, "", ColorTypes(con.iOrange), tSpawn[0], tSpawn[1], True, True)
 

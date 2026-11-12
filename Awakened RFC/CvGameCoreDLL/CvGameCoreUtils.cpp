@@ -1196,7 +1196,7 @@ int checkFreshWater(FAStarNode* parent, FAStarNode* node, int data, const void* 
 {
 	if (data == ASNL_ADDCLOSED)
 	{
-		if (GC.getMapINLINE().plotSorenINLINE(node->m_iX, node->m_iY)->isFreshWater())
+		if (GC.getMapINLINE().plotSorenINLINE(node->m_iX, node->m_iY)->isFreshWater(true))
 		{
 			*((bool *)pointer) = true;
 		}

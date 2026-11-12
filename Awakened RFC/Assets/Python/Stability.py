@@ -9,6 +9,7 @@ import Popup
 import cPickle as pickle
 import Consts as con
 import RFCUtils
+import Famine
 utils = RFCUtils.RFCUtils()
 
 # globals
@@ -575,7 +576,7 @@ class Stability:
                                 pCurrent = gc.getMap().plot(city.getX(), city.getY())
                                 iTempCityStability = 0
 
-                                if (city.angryPopulation(0) > 0):
+                                if (city.unhappyLevel(0) - city.getFamineUnhappiness() > city.happyLevel()):
                                         iTempCityStability -= 2
                                 #if (city.healthRate(False, 0) < 0):
                                 #        iTempCityStability -= 2
@@ -654,7 +655,7 @@ class Stability:
                                 iAgriculture *= 75 #3
                                 iAgriculture /= 100 #5
                         
-                        iNewBaseStability += min(8,max(-8,(iAgriculture*100000/iPopulation - 8 + (iEraModifier - 3)*2)))
+                        # Hunger is measured directly in the capital, not by empire-wide food/population.
                         #print("iNewBaseStability Agriculture/Population check", iNewBaseStability, iPlayer)
                         iMaxEconomyGain = 3
                         iMaxEconomyLoss = -3
@@ -665,10 +666,14 @@ class Stability:
 
 
 
+                        # Provincial famine anger stays local. Economic and territorial
+                        # consequences still follow the ordinary stability rules.
+                        iFamineAnger = sum([pCity.GetCy().getFamineUnhappiness() for pCity in apCityList])
+                        iNationalUnhappiness = max(0, pPlayer.calculateTotalCityUnhappiness() - iFamineAnger)
                         iHappiness = -10
                         if (pPlayer.calculateTotalCityHappiness() > 0):
                                 iHappiness = int((1.0 * pPlayer.calculateTotalCityHappiness()) / (pPlayer.calculateTotalCityHappiness() + \
-                                                pPlayer.calculateTotalCityUnhappiness()) * 100) - 60			
+                                                iNationalUnhappiness) * 100) - 60
                         iNewBaseStability += iHappiness/10
                         self.setParameter(iPlayer, iParCities3, True, iHappiness/10)                        
                         #print("iNewBaseStability happiness check", iNewBaseStability, iPlayer)
@@ -728,7 +733,9 @@ class Stability:
 
                 # Legacy depression and post-planned-economy timers are ignored.
                 # Keep their stored fields so older save dictionaries remain readable.
-                self.setParameter(iPlayer, iParEconomy1, False, 0)
+                iCapitalFamine = Famine.capitalPenalty(iPlayer)
+                iNewBaseStability += iCapitalFamine
+                self.setParameter(iPlayer, iParEconomy1, False, iCapitalFamine)
 
                 iTempCivicThreshold = iNewBaseStability
                 # Democracy has no transition penalty. Legacy countdown data remains
@@ -816,6 +823,9 @@ class Stability:
 
 
         def onCityAcquired(self, owner, playerType, city, bConquest, bTrade):
+                # A provincial famine secession has no separate national shock.
+                if Famine.seceding:
+                        return
 
                 # Canonical partition is neither a defeat nor a conquest gain.
                 if bTrade and not bConquest and gc.getPlayer(owner).isCaliphatePartitionInProgress():

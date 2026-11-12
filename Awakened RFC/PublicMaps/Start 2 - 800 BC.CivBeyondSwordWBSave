@@ -110,6 +110,16 @@ BeginTeam
 	Tech=TECH_HUNTING
 EndTeam
 BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 	Tech=TECH_AGRICULTURE
 	Tech=TECH_ANIMAL_HUSBANDRY
 	Tech=TECH_ARCHERY
@@ -402,11 +412,51 @@ BeginPlayer
 	StartingY=61
 	StartingGold=80
 EndPlayer
+BeginPlayer
+	Team=33
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	Team=34
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	Team=35
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=33
+	Team=38
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -415,7 +465,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=34
+	Team=39
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -424,7 +474,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=35
+	Team=40
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -432,20 +482,20 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=36
+	Team=41
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
-	Team=37
+	Team=42
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
 	MinorNationStatus=1
 EndPlayer
 BeginPlayer
-	Team=38
+	Team=43
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
@@ -22389,11 +22439,11 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=36
+		UnitType=UNIT_ARCHER, UnitOwner=41
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=36
+		CityOwner=41
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -27926,17 +27976,17 @@ BeginPlot
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=34
+		UnitType=UNIT_ARCHER, UnitOwner=39
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=34
+		CityOwner=39
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
 		BuildingType=BUILDING_JEWISH_SHRINE
-		Player34Culture=10
+		Player39Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -32538,11 +32588,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=38
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginCity
-		CityOwner=33
+		CityOwner=38
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity

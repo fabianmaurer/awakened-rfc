@@ -181,7 +181,11 @@ public:
 	int /*PlayerTypes*/ getActivePlayer();
 	void setActivePlayer(int /*PlayerTypes*/ eNewValue, bool bForceHotSeat);
 	//void switchActivePlayer(int eOldPlayerNetID, int /*PlayerTypes*/ eNewValue, bool bForceHotSeat); //Rhye (RFCMP)
-	void switchActivePlayer(int /*PlayerTypes*/ eOldActivePlayer, int /*PlayerTypes*/ eNewValue, bool bForceHotSeat); //Rhye (RFCMP)
+	void switchActivePlayer(int /*PlayerTypes*/ eOldActivePlayer, int /*PlayerTypes*/ eNewValue, bool bForceHotSeat);
+	void beginBirthFlip();
+	void endBirthFlip();
+	void refreshDroughtIrrigation();
+	bool transferBirthControl(int oldPlayer, int newPlayer); //Rhye (RFCMP)
 	int getPausePlayer();
 	bool isPaused();
 	int /*UnitTypes*/ getBestLandUnit();

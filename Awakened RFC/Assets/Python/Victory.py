@@ -8,6 +8,7 @@ import PyHelpers
 import Popup
 import cPickle as pickle
 import Consts as con
+import Harappa
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 
@@ -518,6 +519,15 @@ class Victory:
                                                 self.setGoal(iEgypt, 1, 0)                      
 
                                                 
+                elif iPlayer in (con.iGanges, con.iChola, con.iDelhi, con.iBengal, con.iVijayanagara):
+                        import IndianCivs
+                        if IndianCivs.isIndian(iPlayer) and gc.getPlayer(iPlayer).isAlive():
+                                IndianCivs.checkGoals(self, iPlayer)
+
+                elif Harappa.isHarappan(iPlayer):
+                        if gc.getPlayer(iPlayer).isAlive():
+                                Harappa.checkGoals(self, iPlayer)
+
                 elif (iPlayer == iIndia):
                         if (pIndia.isAlive()):                                                            
                                 if self.getGoal(iIndia, 1) == -1:
@@ -1502,10 +1512,10 @@ class Victory:
 
                 iPlayer = iFounder
 
-                if (iFounder == iIndia):
+                if (iFounder == iIndia and not Harappa.isHarappan(iIndia)):
                         self.setReligionFounded(iReligion, 1)
 
-                if (self.getGoal(iIndia, 0) == -1):
+                if (not Harappa.isHarappan(iIndia) and self.getGoal(iIndia, 0) == -1):
                         if (iReligion == con.iHinduism):
                                 if (iFounder != iIndia):
                                         self.setGoal(iIndia, 0, 0) 

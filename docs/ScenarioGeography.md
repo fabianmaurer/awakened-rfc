@@ -3,11 +3,26 @@
 WorldBuilder scenarios select a geography profile through `SCENARIOS` in
 `Assets/Python/ScenarioGeography.py`. The five original start dates explicitly
 select `Earth124x68`; the alternative large 3000 BC start selects `Earth160x88`
-and both XL starts (3000 BC and 800 BC) select `Earth200x110`. Uruk's two
+and the XL 800 BC start selects `Earth200x110`. The XL 3000 BC start selects
+`Earth200x110Harappa`, which inherits that world and supplies the Harappan homeland,
+settlement/naming maps and Ganges religious belt. Its upper alluvial block
+has floodplains at `(139, 62)`, grassland at `(140, 61)`, `(140, 62)` and
+`(141, 62)`, and plains at `(141, 61)`. Two lower wetlands remain at
+`(139, 60)` and `(139, 61)`. These five reclaimed fields lose their mud and
+swamp bonuses; `harappan_floodplains` preserves this in the generator. Uruk's two
 3000 BC XL farms lie inside its initial border. The large start is currently
 archived in `tools/scenario_templates/disabled`, outside the playable mod
 ([map details](LargeWorld.md)). Selection is by scenario filename, not map dimensions or
 start turn. A copied or renamed scenario needs its own registry entry.
+
+`IndianCivsData.extend` adds slots 33–37 to every loaded profile, bringing the
+DLL's major-player capacity to 38. Only XL profiles get Indian capitals, birth
+areas, settlement preferences, war targets and regional names; other profiles
+receive neutral planes and their scenarios keep these slots empty. Harappa stays
+in the original India slot in the 3000 BC XL start. Ganges occupies its own slot
+in both XL starts and inherits northern India's cities in 800 BC. The older
+33-capital audit below predates these five additions. New capital sites have
+received static land/region checks, not in-game validation.
 
 Profiles live in `Assets/Python/ScenarioGeographyData`. They supply:
 

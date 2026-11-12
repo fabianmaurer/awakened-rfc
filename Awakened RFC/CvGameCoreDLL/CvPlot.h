@@ -93,7 +93,7 @@ public:
 	bool isWithinTeamCityRadius(TeamTypes eTeam, PlayerTypes eIgnorePlayer = NO_PLAYER) const;	// Exposed to Python
 
 	DllExport bool isLake() const;																															// Exposed to Python
-	bool isFreshWater() const;																												// Exposed to Python
+	bool isFreshWater(bool bForIrrigation = false) const;																												// Exposed to Python
 	bool isPotentialIrrigation() const;																													// Exposed to Python
 	bool canHavePotentialIrrigation() const;																										// Exposed to Python
 	DllExport bool isIrrigationAvailable(bool bIgnoreSelf = false) const;												// Exposed to Python
@@ -327,6 +327,9 @@ public:
 	CvCity* getWorkingCityOverride() const;																															// Exposed to Python
 	void setWorkingCityOverride( const CvCity* pNewValue);
 
+	int getRiverDrought() const;
+	int getRiverDroughtEdges() const;
+	void setRiverDrought(int iSouthEdge, int iEastEdge);
 	int getRiverID() const;																																							// Exposed to Python
 	void setRiverID(int iNewValue);																																			// Exposed to Python
 
@@ -505,6 +508,7 @@ protected:
 	short m_iForceUnownedTimer;
 	short m_iCityRadiusCount;
 	int m_iRiverID;
+	int m_iRiverDroughtEdges;
 	short m_iMinOriginalStartDist;
 	short m_iReconCount;
 	short m_iRiverCrossingCount;

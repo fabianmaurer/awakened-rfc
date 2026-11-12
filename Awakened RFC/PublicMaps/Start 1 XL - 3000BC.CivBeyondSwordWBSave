@@ -11,18 +11,18 @@ BeginGame
 EndGame
 BeginTeam                 
 	Tech=TECH_THE_WHEEL                 
-	Tech=TECH_AGRICULTURE                 
+	Tech=TECH_AGRICULTURE
 EndTeam
 BeginTeam                 
-	Tech=TECH_MYSTICISM                 
+	Tech=TECH_AGRICULTURE
 	Tech=TECH_MINING                 
 EndTeam
 BeginTeam                 
-	Tech=TECH_AGRICULTURE                 
+	Tech=TECH_AGRICULTURE
 	Tech=TECH_MINING                 
 EndTeam
 BeginTeam                 
-	Tech=TECH_AGRICULTURE                 
+	Tech=TECH_AGRICULTURE
 	Tech=TECH_THE_WHEEL                 
 EndTeam
 BeginTeam                 
@@ -85,6 +85,18 @@ BeginTeam
 	Tech=TECH_FISHING
 	Tech=TECH_HUNTING
 EndTeam
+BeginTeam
+	Tech=TECH_AGRICULTURE
+	Tech=TECH_MYSTICISM
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
 BeginTeam                 
 EndTeam
 BeginTeam                 
@@ -107,13 +119,13 @@ BeginPlayer
 	StartingY=54
 EndPlayer
 BeginPlayer
-	LeaderType=LEADER_ASOKA
-	CivType=CIVILIZATION_INDIA                 
+	LeaderType=LEADER_HARAPPAN_COUNCIL
+	CivType=CIVILIZATION_HARAPPA
 	Team=1                 
 	PlayableCiv=1                 
 	Handicap=HANDICAP_PRINCE                 
-	StartingX=145
-	StartingY=65
+	StartingX=141
+	StartingY=64
 EndPlayer
 BeginPlayer
 	LeaderType=LEADER_QIN_SHI_HUANG
@@ -355,11 +367,71 @@ BeginPlayer
 	StartingY=99
 	StartingGold=80
 EndPlayer
+BeginPlayer
+	Team=33
+	CivType=CIVILIZATION_GANGES
+	LeaderType=LEADER_GANGES
+	LeaderName=TXT_KEY_LEADER_GAN
+	Color=PLAYERCOLOR_YELLOW
+	PlayableCiv=1
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=150
+	StartingY=65
+EndPlayer
+BeginPlayer
+	Team=34
+	CivType=CIVILIZATION_CHOLA
+	LeaderType=LEADER_CHOLA
+	LeaderName=TXT_KEY_LEADER_CHO
+	Color=PLAYERCOLOR_DARK_RED
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=147
+	StartingY=52
+EndPlayer
+BeginPlayer
+	Team=35
+	CivType=CIVILIZATION_DELHI
+	LeaderType=LEADER_DELHI
+	LeaderName=TXT_KEY_LEADER_DEL
+	Color=PLAYERCOLOR_DARK_GREEN
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=145
+	StartingY=65
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=CIVILIZATION_BENGAL
+	LeaderType=LEADER_BENGAL
+	LeaderName=TXT_KEY_LEADER_BEN
+	Color=PLAYERCOLOR_LIGHT_BLUE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=154
+	StartingY=65
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=CIVILIZATION_VIJAYANAGARA
+	LeaderType=LEADER_VIJAYANAGARA
+	LeaderName=TXT_KEY_LEADER_VIJ
+	Color=PLAYERCOLOR_PURPLE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=145
+	StartingY=56
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=33
+	Team=38
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -368,7 +440,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_INDEPENDENT
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=34
+	Team=39
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -377,7 +449,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=35
+	Team=40
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -385,20 +457,20 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=36
+	Team=41
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
-	Team=37
+	Team=42
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
 	MinorNationStatus=1
 EndPlayer
 BeginPlayer
-	Team=38
+	Team=43
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
@@ -74739,7 +74811,7 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 	BeginCity
-		CityOwner=33
+		CityOwner=38
 		CityName=Uruk
 		CityPopulation=4
 		BuildingType=BUILDING_GRANARY
@@ -74748,11 +74820,11 @@ BeginPlot
 		BuildingType=BUILDING_OBELISK
 	EndCity
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=38
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 	BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=38
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 EndPlot
@@ -83044,10 +83116,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=139,y=62
-	FeatureType=FEATURE_MUD, FeatureVariety=0
-	TerrainType=TERRAIN_MARSH
 	PlotType=2
-	BonusType=BONUS_SWAMP
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=139,y=63
@@ -83055,15 +83126,17 @@ BeginPlot
 	RiverNSDirection=2
 	isNOfRiver
 	RiverWEDirection=3
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=139,y=64
 	isWOfRiver
 	RiverNSDirection=2
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=139,y=65
@@ -83644,17 +83717,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=140,y=61
-	FeatureType=FEATURE_MUD, FeatureVariety=0
-	TerrainType=TERRAIN_MARSH
 	PlotType=2
-	BonusType=BONUS_SWAMP
+	TerrainType=TERRAIN_GRASS
 EndPlot
 BeginPlot
 	x=140,y=62
-	FeatureType=FEATURE_MUD, FeatureVariety=0
-	TerrainType=TERRAIN_MARSH
 	PlotType=2
-	BonusType=BONUS_SWAMP
+	TerrainType=TERRAIN_GRASS
 EndPlot
 BeginPlot
 	x=140,y=63
@@ -83671,8 +83740,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=140,y=65
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=140,y=66
@@ -84240,17 +84310,13 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=141,y=61
-	FeatureType=FEATURE_MUD, FeatureVariety=0
-	TerrainType=TERRAIN_MARSH
 	PlotType=2
-	BonusType=BONUS_SWAMP
+	TerrainType=TERRAIN_PLAINS
 EndPlot
 BeginPlot
 	x=141,y=62
-	FeatureType=FEATURE_MUD, FeatureVariety=0
-	TerrainType=TERRAIN_MARSH
 	PlotType=2
-	BonusType=BONUS_SWAMP
+	TerrainType=TERRAIN_GRASS
 EndPlot
 BeginPlot
 	x=141,y=63
@@ -84262,11 +84328,19 @@ BeginPlot
 	x=141,y=64
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
+	BeginCity
+		CityOwner=1
+		CityName=Harappa
+		CityPopulation=2
+		BuildingType=BUILDING_PALACE
+	EndCity
 EndPlot
 BeginPlot
 	x=141,y=65
-	TerrainType=TERRAIN_PLAINS
+	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=141,y=66
@@ -86696,8 +86770,9 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=145,y=65
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_DESERT
 	PlotType=2
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=145,y=66
@@ -89698,6 +89773,16 @@ BeginPlot
 	RiverWEDirection=1
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
+
+	BeginUnit
+		UnitType=UNIT_SETTLER, UnitOwner=33
+		UnitAIType=UNITAI_SETTLE
+	EndUnit
+
+	BeginUnit
+		UnitType=UNIT_WARRIOR, UnitOwner=33
+		UnitAIType=UNITAI_CITY_DEFENSE
+	EndUnit
 EndPlot
 BeginPlot
 	x=150,y=66

@@ -17,13 +17,14 @@ class StoredData:
         def setupScriptData( self ):
                 """Initialise the global script data dictionary for usage."""
                 scriptDict = {      #------------RiseAndFall
-                                    'iNewCiv': -1,
-                                    'iNewCivFlip': -1,
-                                    'iOldCivFlip': -1,
-                                    'tTempTopLeft': -1,
-                                    'tTempBottomRight': -1,
-                                    'iSpawnWar': 0, #if 1, add units and declare war. If >=2, do nothing
-                                    'bAlreadySwitched': False,
+                                    'iBirthDecisionSerial': 0,
+                                    'birthDecisions': {},
+                                    'lCapitalFaminePenalty': [0] * con.iNumMajorPlayers,
+                                    'lCapitalFamineTurn': [-1] * con.iNumMajorPlayers,
+                                    'droughtRegions': [],
+                                    'droughtScriptLevel': 0,
+                                    'droughtScriptWarned': False,
+                                    'droughtLastTick': -1,
                                     'bMongoliaReplaced': False,
                                     'lColonistsAlreadyGiven': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
                                     'lAstronomyTurn': [geo.turns(500)] * 31, #active players
@@ -31,12 +32,10 @@ class StoredData:
                                     'lLastTurnAlive': [0] * con.iNumTotalPlayers, #total players to contain Byzantium too
                                     'lSpawnDelay': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
                                     'lFlipsDelay': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    'iBetrayalTurns': 0,
                                     'lLatestRebellionTurn': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'iRebelCiv': 0,
                                     'lExileData': [-1, -1, -1, -1, -1],
                                     'tTempFlippingCity': -1,
-                                    'lCheatersCheck': [0, -1],
                                     'lBirthTurnModifier': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'lDeleteMode': [-1, -1, -1], #first is a bool, the other values are capital coordinates
                                     'lFirstContactConquerors': [0, 0, 0], #maya, inca, aztecs

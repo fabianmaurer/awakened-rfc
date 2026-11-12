@@ -607,6 +607,16 @@ int CyCity::foodDifference(bool bBottom)
 	return m_pCity ? m_pCity->foodDifference(bBottom) : -1;
 }
 
+int CyCity::getFamineTurns()
+{
+    return m_pCity ? m_pCity->getFamineTurns() : 0;
+}
+
+int CyCity::getFamineUnhappiness()
+{
+    return m_pCity ? m_pCity->getFamineUnhappiness() : 0;
+}
+
 int CyCity::growthThreshold()
 {
 	return m_pCity ? m_pCity->growthThreshold() : -1;

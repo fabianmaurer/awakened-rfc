@@ -89,6 +89,9 @@ public:
     int getGrowthFoodTimes100() const;
     int getGrowthFoodStoredTimes100() const;
     int getGrowthFoodRemainder() const;
+    int getFamineTurns() const { return m_iFamineTurns; }
+    int getFamineUnhappiness() const;
+    void setFamineTurns(int iTurns);
 	int getFoodTurnsLeft() const;																				// Exposed to Python
 	bool isProduction() const;																					// Exposed to Python
 	bool isProductionLimited() const;																							// Exposed to Python
@@ -1070,6 +1073,7 @@ protected:
 	int m_iBuildingOnlyHealthyCount;
 	int m_iFood;
     int m_iGrowthFoodRemainder; // 1/10000 food, saved and synchronized
+    int m_iFamineTurns; // Consecutive empty-store shortages, with gradual recovery.
 	std::vector<int> m_aiSlaveSpecialistExpiryTurns;
 	std::vector<int> m_aiSlaveRefugeeUnhappinessExpiryTurns;
 	int m_iFoodKept;
@@ -1210,7 +1214,9 @@ protected:
 	int*	m_aiCommerceRank;
 	bool*	m_abCommerceRankValid;
 
-	void doGrowth();
+	bool doGrowth(); // False when starvation has removed this city.
+    void relocateFaminePopulation();
+    void abandonToFamine();
 	void doCulture();
 	void doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate);
 	void doProduction(bool bAllowNoProduction);

@@ -5516,7 +5516,8 @@ bool CvUnit::found()
 		gDLL->getInterfaceIFace()->lookAt(plot()->getPoint(), CAMERALOOKAT_NORMAL);
 	}
 
-	GET_PLAYER(getOwnerINLINE()).found(getX_INLINE(), getY_INLINE());
+	const int iPopulation = getUnitType() == GC.getInfoTypeForString("UNIT_HARAPPAN_BUILDER") ? 2 : 1;
+	GET_PLAYER(getOwnerINLINE()).found(getX_INLINE(), getY_INLINE(), iPopulation);
 
 	if (plot()->isActiveVisible(false))
 	{
@@ -9125,6 +9126,8 @@ int CvUnit::collateralDamageMaxUnits() const
 int CvUnit::cityAttackModifier() const
 {
 	int iModifier = m_pUnitInfo->getCityAttackModifier() + getExtraCityAttackPercent() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CITY_ATTACK);
+	if (GET_PLAYER(getOwnerINLINE()).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_DELHI") &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED")) iModifier += 25;
 	return iModifier;
 }
 

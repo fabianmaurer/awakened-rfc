@@ -7,12 +7,12 @@
 // rhyes.cpp
 int historicalTurns(int iReferenceTurns)
 {
-    return iReferenceTurns * (GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110" ? 2 : 1);
+    return iReferenceTurns * ((GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110" || GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110Harappa") ? 2 : 1);
 }
 
 
 
-int startingTurn[33] = {
+int startingTurn[38] = {
 0,
 0,
 0,
@@ -32,7 +32,7 @@ int startingTurn[33] = {
 203,
 205,
 207,
-297, // Netherlands: 1580 AD, nearest turn to the 1581 Act of Abjuration
+297,
 220,
 234,
 236,
@@ -43,14 +43,18 @@ int startingTurn[33] = {
 -10000,
 -10000,
 127,
-87
-,
+87,
 211,
-87
+87,
+0,
+206,
+241,
+256,
+256
 }; //332 for 1733
 
 //Alphabetical order:		  	  AME		ARA		AZT		BAB		XXX		CAR		XXX		CHI		EGY		 ENG	 ETH	 FRA	  GER	  GRE	   XXX	    INC		IND		JAP		KHM	    XXX	    MAL		MAY	     MON	 XXX     HOL      TUR	  PER	  POR     ROM	 RUS	 SPA	 XXX    VIK		XXX
-char loadingTime[45][4] =     {
+char loadingTime[51][4] =     {
 "60",
 "20",
 "35",
@@ -95,9 +99,15 @@ char loadingTime[45][4] =     {
 "20",
 "5",
 "0",
-"0"
+"0",
+"0",
+"0",
+"15",
+"20",
+"20",
+"20"
 };
-char loadingTime600AD[45][4] = {
+char loadingTime600AD[51][4] = {
 "30",
 "0",
 "15",
@@ -142,9 +152,15 @@ char loadingTime600AD[45][4] = {
 "0",
 "X",
 "0",
-"0"
+"0",
+"0",
+"0",
+"15",
+"20",
+"20",
+"20"
 };
-char startingYear[45][6] =      {
+char startingYear[51][6] =      {
 "1775 ",
 "620 ",
 "1200 ",
@@ -189,9 +205,15 @@ char startingYear[45][6] =      {
 "620 ",
 "210 ",
 "3000",
-"800 "
+"800 ",
+"3000",
+"3000",
+"850",
+"1200",
+"1350",
+"1350"
 };
-bool startingEra[45] =		    {
+bool startingEra[51] =		    {
 true,
 true,
 true,
@@ -236,9 +258,15 @@ true,
 true,
 false,
 false,
+true,
+false,
+false,
+true,
+true,
+true,
 true
 };   //AD or BC
-char startingYear600AD[45][6] = {
+char startingYear600AD[51][6] = {
 "1775 ",
 "600 ",
 "1200 ",
@@ -283,9 +311,15 @@ char startingYear600AD[45][6] = {
 "600 ",
 "210 ",
 "3000",
-"800 "
+"800 ",
+"600",
+"3000",
+"850",
+"1200",
+"1350",
+"1350"
 };
-bool startingEra600AD[45] =		{
+bool startingEra600AD[51] =		{
 true,
 true,
 true,
@@ -330,11 +364,17 @@ true,
 true,
 false,
 false,
+true,
+true,
+false,
+true,
+true,
+true,
 true
 };   //AD or BC
 
 
-char uniquePower[45][2][16]  = {
+char uniquePower[51][2][16]  = {
 {"TXT_KEY_UP_AME", "TXT_KEY_UP_AME2"},
 {"TXT_KEY_UP_ARA", "TXT_KEY_UP_ARA2"},
 {"TXT_KEY_UP_AZT", "TXT_KEY_UP_AZT2"},
@@ -379,11 +419,17 @@ char uniquePower[45][2][16]  = {
 {"TXT_KEY_UP_UMA", "TXT_KEY_UP_UMA2"},
 {"TXT_KEY_UP_HUN", "TXT_KEY_UP_HUN2"},
 {"TXT_KEY_UP_ESK0", "TXT_KEY_UP_ESK1"},
-{"TXT_KEY_UP_ADN", "TXT_KEY_UP_ADN2"}
+{"TXT_KEY_UP_ADN", "TXT_KEY_UP_ADN2"},
+{"TXT_KEY_UP_HAR", "TXT_KEY_UP_HAR2"},
+{"TXT_KEY_UP_GAN", "TXT_KEY_UP_GAN2"},
+{"TXT_KEY_UP_CHO", "TXT_KEY_UP_CHO2"},
+{"TXT_KEY_UP_DEL", "TXT_KEY_UP_DEL2"},
+{"TXT_KEY_UP_BEN", "TXT_KEY_UP_BEN2"},
+{"TXT_KEY_UP_VIJ", "TXT_KEY_UP_VIJ2"}
 };
 
 
-char uniqueGoals[45][3][18]  = {
+char uniqueGoals[51][3][18]  = {
 {"TXT_KEY_UHV_AME1", "TXT_KEY_UHV_AME2", "TXT_KEY_UHV_AME3"},
 {"TXT_KEY_UHV_ARA1", "TXT_KEY_UHV_ARA2", "TXT_KEY_UHV_ARA3"},
 {"TXT_KEY_UHV_AZT1", "TXT_KEY_UHV_AZT2", "TXT_KEY_UHV_AZT3"},
@@ -428,81 +474,52 @@ char uniqueGoals[45][3][18]  = {
 { "TXT_KEY_UHV_CAL1", "TXT_KEY_UHV_CAL2", "TXT_KEY_UHV_CAL3" },
 {"XXX", "XXX", "XXX"},
 {"TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL", "TXT_KEY_ESK_GOAL"},
-{"XXX", "XXX", "XXX"}
+{"XXX", "XXX", "XXX"},
+{"TXT_KEY_UHV_HAR1", "TXT_KEY_UHV_HAR2", "TXT_KEY_UHV_HAR3"},
+{"TXT_KEY_UHV_GAN1", "TXT_KEY_UHV_GAN2", "TXT_KEY_UHV_GAN3"},
+{"TXT_KEY_UHV_CHO1", "TXT_KEY_UHV_CHO2", "TXT_KEY_UHV_CHO3"},
+{"TXT_KEY_UHV_DEL1", "TXT_KEY_UHV_DEL2", "TXT_KEY_UHV_DEL3"},
+{"TXT_KEY_UHV_BEN1", "TXT_KEY_UHV_BEN2", "TXT_KEY_UHV_BEN3"},
+{"TXT_KEY_UHV_VIJ1", "TXT_KEY_UHV_VIJ2", "TXT_KEY_UHV_VIJ3"}
 };
 
 
 
-char rating[45][6][15]  = {
-//		    TRA				 PRO				CUL					GRO				S.S.
-//America
-	{"TXT_KEY_4STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_1STAR" },
-//Arabia
-	{"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
-//Aztec
-	{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR" },
-//Babylonia
-	{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//Carthage
-	{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//China
-	{"TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS" },
-//Egypt
-	{"TXT_KEY_3STARS", "TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS" },
-//England
-	{"TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS" },
-//Ethiopia
-	{"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS"},
-//France
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS", "TXT_KEY_2STARS" },
-//Germany
-	{"TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_3STARS" },
-//Greece
-	{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//Inca
-	{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR" },
-//India
-	{"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_4STARS" },
-//Japan
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS" },
-//Khmer
-	{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS"},
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//Mali
-	{"TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS" },
-//Maya
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_1STAR"},
-//Mongolia
-	{"TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//Netherlands
-	{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR"},
-//Turkey
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_5STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS" },
-//Persia
-	{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
-//Portugal
-	{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR"},
-//Rome
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS" },
-//Russia
-	{"TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_5STARS" },
-//Spain
-	{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
-//Vikings
-	{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS" },
-//
-	{"XXX", "XXX", "XXX", "XXX", "XXX"},
+char rating[51][6][15]  = {
+{"TXT_KEY_4STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_1STAR" },
+{"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
+{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR" },
+{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS" },
+{"TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS" },
+{"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS", "TXT_KEY_2STARS" },
+{"TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_3STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR" },
+{"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_4STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS"},
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_5STARS", "TXT_KEY_1STAR", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_1STAR"},
+{"TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_4STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_5STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS" },
+{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
+{"TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_5STARS", "TXT_KEY_1STAR"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS" },
+{"TXT_KEY_1STAR", "TXT_KEY_4STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_5STARS" },
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS", "TXT_KEY_3STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
+{"TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_3STARS", "TXT_KEY_4STARS" },
+{"XXX", "XXX", "XXX", "XXX", "XXX"},
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
@@ -513,7 +530,13 @@ char rating[45][6][15]  = {
 {"TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_5STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS" },
 {"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_1STAR", "TXT_KEY_2STARS"},
 {"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
-{"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS"}
+{"TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS", "TXT_KEY_2STARS"},
+{"TXT_KEY_4STARS", "TXT_KEY_3STARS", "TXT_KEY_2STARS", "TXT_KEY_4STARS", "TXT_KEY_2STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"},
+{"TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS", "TXT_KEY_3STARS"}
 };
 
 
@@ -590,51 +613,61 @@ int civSpreadFactor[MAX_PLAYERS][7]  = {
 {20, 120, 80, 20, 300, 100, 80},
 {20, 40, 20, 20, 300, 200, 150},
 {80, 200, 80, 80, 80, 80, 80},
-{80, 200, 80, 80, 80, 80, 80}, // Eskimos
+{80, 200, 80, 80, 80, 80, 80},
+{20, 80, 80, 400, 350, 20, 40},
+{20, 80, 80, 400, 120, 20, 40},
+{20, 80, 400, 80, 40, 20, 40},
+{20, 80, 300, 160, 80, 20, 40},
+{20, 80, 80, 400, 100, 20, 40},
 {	 80, 250, 250,  50, 100,  50,  40 },
 {	 80, 200, 200,  80, 150,  80,  80 },
 {	120, 200, 200,  80,  80,  80,  80 },
 {	 80, 300,  80,  20,  40,  20,  20 },
-{ 80, 200, 350, 80, 80, 80, 80 }, // Crusader state
-{ 40, 300, 40, 80, 80, 80, 80 }, // Papal State
+{ 80, 200, 350, 80, 80, 80, 80 },
+{ 40, 300, 40, 80, 80, 80, 80 },
 {	100, 100, 100, 100, 100, 100, 100 }
 };
 
 
-int borders[33][33]  = {
-{0, 5, 5, 4, 1, 4, 3, 4, 5, 1, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5},
-{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5},
-{5, 4, 0, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 5, 5},
-{4, 4, 5, 0, 4, 1, 5, 5, 5, 4, 5, 5, 1, 5, 5, 5, 5, 5, 1, 5, 4, 5, 5, 5, 5, 1, 5, 1, 1, 5, 5, 5, 5},
-{1, 5, 5, 4, 0, 4, 4, 1, 5, 4, 5, 5, 4, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 1, 5, 4, 4, 5, 5, 5, 5},
-{4, 1, 5, 1, 4, 0, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5},
-{3, 5, 5, 5, 4, 5, 0, 3, 5, 4, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{4, 5, 5, 5, 1, 5, 3, 0, 5, 4, 5, 5, 5, 5, 4, 1, 5, 1, 5, 4, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 1, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 1, 5, 5},
-{1, 5, 5, 4, 4, 5, 4, 4, 5, 0, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 3, 1, 3, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5},
-{5, 3, 3, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 1, 1, 5, 5, 5, 5, 5, 5, 0, 1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 0, 1, 1, 5, 1, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 1, 0, 4, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 4, 0, 1, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 1, 3, 4, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 1, 0, 5, 5, 5, 5, 4, 5, 3, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 1, 5, 5, 5, 1, 1, 1, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 4, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 3, 4, 5, 5, 5, 5, 5, 5, 1, 4, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5},
-{5, 4, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 4, 5, 5, 5, 5, 1, 5},
-{4, 5, 5, 1, 1, 4, 5, 5, 5, 4, 5, 5, 4, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 0, 5, 4, 4, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 5, 5, 5, 5, 1, 5},
-{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5},
-{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5},
-{5, 5, 1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 1, 5, 1, 5, 5, 5, 5, 0, 5},
-{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0}
+int borders[38][38]  = {
+{0, 5, 5, 4, 1, 4, 3, 4, 5, 1, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 0, 0, 0, 0, 0},
+{5, 4, 0, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 5, 5, 4, 4, 4, 4, 4},
+{4, 4, 5, 0, 4, 1, 5, 5, 5, 4, 5, 5, 1, 5, 5, 5, 5, 5, 1, 5, 4, 5, 5, 5, 5, 1, 5, 1, 1, 5, 5, 5, 5, 4, 4, 4, 4, 4},
+{1, 5, 5, 4, 0, 4, 4, 1, 5, 4, 5, 5, 4, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 1, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{4, 1, 5, 1, 4, 0, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5, 1, 1, 1, 1, 1},
+{3, 5, 5, 5, 4, 5, 0, 3, 5, 4, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{4, 5, 5, 5, 1, 5, 3, 0, 5, 4, 5, 5, 5, 5, 4, 1, 5, 1, 5, 4, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 1, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5},
+{1, 5, 5, 4, 4, 5, 4, 4, 5, 0, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 4, 5, 1, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 3, 1, 3, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 4},
+{5, 3, 3, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 3},
+{5, 5, 5, 5, 5, 5, 1, 1, 5, 5, 5, 5, 5, 5, 0, 1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 1, 0, 1, 1, 5, 1, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 1, 0, 4, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 1, 5, 5, 5, 1, 4, 0, 1, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 1, 3, 4, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5, 1, 0, 5, 5, 5, 5, 4, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 1, 5, 5, 5, 1, 1, 1, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 4, 5, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 3, 4, 5, 5, 5, 5, 5, 5, 1, 4, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5},
+{5, 4, 1, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 4, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5},
+{4, 5, 5, 1, 1, 4, 5, 5, 5, 4, 5, 5, 4, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 0, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5},
+{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 4},
+{1, 4, 5, 1, 4, 1, 5, 5, 5, 1, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 5, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 4},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 1, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 5, 1, 5, 1, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5, 5},
+{5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 0, 2, 2, 2, 2},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 2, 0, 2, 2, 2},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 2, 2, 0, 2, 2},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 2, 2, 2, 0, 2},
+{5, 0, 4, 4, 5, 1, 5, 5, 5, 5, 5, 5, 4, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 2, 2, 2, 2, 0}
 };
 //		EGY	IND CHI BAB GRE PER CAR ROM JAP ETH MAY VIK ARA KHM SPA FRA ENG GER RUS HOL MAL POR INC MON AZT TUR AME
 
@@ -644,7 +677,7 @@ int borders[33][33]  = {
 
 
 // (dynamic civ names - not jdog's)
-wchar civDynamicNames[33][22][19]  = {
+wchar civDynamicNames[38][22][19]  = {
 {	 L"TXT_KEY_DN_EGY00", L"TXT_KEY_DN_EGY01", L"TXT_KEY_DN_EGY02", L"TXT_KEY_DN_EGY03",  L"TXT_KEY_DN_EGY04",  L"TXT_KEY_DN_EGY05",  L"TXT_KEY_DN_EGY06",  L"TXT_KEY_DN_EGY07",  L"TXT_KEY_DN_EGY08",  L"TXT_KEY_DN_EGY09",  L"TXT_KEY_DN_EGY10",  L"TXT_KEY_DN_EGY11",  L"TXT_KEY_DN_EGY12",  L"TXT_KEY_DN_EGY13",  L"TXT_KEY_DN_EGY14",  L"TXT_KEY_DN_EGY15",  L"TXT_KEY_DN_EGY16",  L"TXT_KEY_DN_EGY17",  L"TXT_KEY_DN_EGY18",  L"TXT_KEY_DN_EGY19",  L"TXT_KEY_DN_EGY20",  L"TXT_KEY_DN_EGY21" },
 {	 L"TXT_KEY_DN_IND00", L"TXT_KEY_DN_IND01", L"TXT_KEY_DN_IND02", L"TXT_KEY_DN_IND03",  L"TXT_KEY_DN_IND04",  L"TXT_KEY_DN_IND05",  L"TXT_KEY_DN_IND06",  L"TXT_KEY_DN_IND07",  L"TXT_KEY_DN_IND08",  L"TXT_KEY_DN_IND09",  L"TXT_KEY_DN_IND10",  L"TXT_KEY_DN_IND11",  L"TXT_KEY_DN_IND12",  L"TXT_KEY_DN_IND13",  L"TXT_KEY_DN_IND14",  L"TXT_KEY_DN_IND15",  L"TXT_KEY_DN_IND16",  L"TXT_KEY_DN_IND17",  L"TXT_KEY_DN_IND18",  L"TXT_KEY_DN_IND19",  L"TXT_KEY_DN_IND20",  L"TXT_KEY_DN_IND21" },
 {	 L"TXT_KEY_DN_CHI00", L"TXT_KEY_DN_CHI01", L"TXT_KEY_DN_CHI02", L"TXT_KEY_DN_CHI03",  L"TXT_KEY_DN_CHI04",  L"TXT_KEY_DN_CHI05",  L"TXT_KEY_DN_CHI06",  L"TXT_KEY_DN_CHI07",  L"TXT_KEY_DN_CHI08",  L"TXT_KEY_DN_CHI09",  L"TXT_KEY_DN_CHI10",  L"TXT_KEY_DN_CHI11",  L"TXT_KEY_DN_CHI12",  L"TXT_KEY_DN_CHI13",  L"TXT_KEY_DN_CHI14",  L"TXT_KEY_DN_CHI15",  L"TXT_KEY_DN_CHI16",  L"TXT_KEY_DN_CHI17",  L"TXT_KEY_DN_CHI18",  L"TXT_KEY_DN_CHI19",  L"TXT_KEY_DN_CHI20",  L"TXT_KEY_DN_CHI21" },
@@ -675,14 +708,18 @@ wchar civDynamicNames[33][22][19]  = {
 {	 L"TXT_KEY_DN_ARA00", L"TXT_KEY_DN_ARA01", L"TXT_KEY_DN_ARA02", L"TXT_KEY_DN_ARA03",  L"TXT_KEY_DN_ARA04",  L"TXT_KEY_DN_ARA05",  L"TXT_KEY_DN_ARA06",  L"TXT_KEY_DN_ARA07",  L"TXT_KEY_DN_ARA08",  L"TXT_KEY_DN_ARA09",  L"TXT_KEY_DN_ARA10",  L"TXT_KEY_DN_ARA11",  L"TXT_KEY_DN_ARA12",  L"TXT_KEY_DN_ARA13",  L"TXT_KEY_DN_ARA14",  L"TXT_KEY_DN_ARA15",  L"TXT_KEY_DN_ARA16",  L"TXT_KEY_DN_ARA17",  L"TXT_KEY_DN_ARA18",  L"TXT_KEY_DN_ARA19",  L"TXT_KEY_DN_ARA20",  L"TXT_KEY_DN_ARA21" },
 {	 L"TXT_KEY_DN_ARA00", L"TXT_KEY_DN_ARA01", L"TXT_KEY_DN_ARA02", L"TXT_KEY_DN_ARA03",  L"TXT_KEY_DN_ARA04",  L"TXT_KEY_DN_ARA05",  L"TXT_KEY_DN_ARA06",  L"TXT_KEY_DN_ARA07",  L"TXT_KEY_DN_ARA08",  L"TXT_KEY_DN_ARA09",  L"TXT_KEY_DN_ARA10",  L"TXT_KEY_DN_ARA11",  L"TXT_KEY_DN_ARA12",  L"TXT_KEY_DN_ARA13",  L"TXT_KEY_DN_ARA14",  L"TXT_KEY_DN_ARA15",  L"TXT_KEY_DN_ARA16",  L"TXT_KEY_DN_ARA17",  L"TXT_KEY_DN_ARA18",  L"TXT_KEY_DN_ARA19",  L"TXT_KEY_DN_ARA20",  L"TXT_KEY_DN_ARA21" },
 {L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO", L"TXT_KEY_DN_XIO"},
-{L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00"}
-,
+{L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00", L"TXT_KEY_DN_KOR00"},
 {L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS", L"TXT_KEY_MISS"},
-{L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC"}
+{L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC", L"TXT_KEY_ESK_DESC"},
+{L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC", L"TXT_KEY_GAN_DESC"},
+{L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC", L"TXT_KEY_CHO_DESC"},
+{L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC", L"TXT_KEY_DEL_DESC"},
+{L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC", L"TXT_KEY_BEN_DESC"},
+{L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC", L"TXT_KEY_VIJ_DESC"}
 };
 
 
-int civDynamicNamesFlag[33] = 	{
+int civDynamicNamesFlag[38] = 	{
 1,
 1,
 0,
@@ -713,15 +750,19 @@ int civDynamicNamesFlag[33] = 	{
 0,
 0,
 0,
-0
-,
+0,
+0,
+0,
+0,
+0,
+0,
 0,
 0
 };
 //									EGY	IND CHI BAB GRE PER CAR ROM JAP ETH MAY VIK ARA KHM SPA FRA ENG GER RUS HOL MAL POR INC MON AZT TUR AME
 // 1 = REL, 0 = GOV
 
-int civDynamicNamesEraThreshold[33] = {
+int civDynamicNamesEraThreshold[38] = {
 2,
 3,
 4,
@@ -752,10 +793,14 @@ int civDynamicNamesEraThreshold[33] = {
 4,
 4,
 0,
-4
-,
+4,
 0,
-0
+0,
+3,
+3,
+3,
+3,
+3
 };
 
 

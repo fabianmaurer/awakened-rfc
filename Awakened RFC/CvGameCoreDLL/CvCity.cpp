@@ -449,6 +449,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 		GC.getGameINLINE().updatePlotGroups();
 	}
 
+	setFood(growthThreshold() / 2);
 	AI_init();
 }
 
@@ -564,6 +565,7 @@ void CvCity::reset(int iID, PlayerTypes eOwner, int iX, int iY, bool bConstructo
 	m_iBuildingOnlyHealthyCount = 0;
 	m_iFood = 0;
     m_iGrowthFoodRemainder = 0;
+    m_iFamineTurns = 0;
 	m_aiSlaveSpecialistExpiryTurns.clear();
 	m_aiSlaveRefugeeUnhappinessExpiryTurns.clear();
 	m_iFoodKept = 0;
@@ -1066,7 +1068,7 @@ void CvCity::doTurn()
 
 	bool bAllowNoProduction = !doCheckProduction();
 
-	doGrowth();
+	if (!doGrowth()) return;
 
 	doCulture();
 
@@ -4337,7 +4339,10 @@ void CvCity::processSpecialist(SpecialistTypes eSpecialist, int iChange)
 
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
-		changeSpecialistCommerce(((CommerceTypes)iI), (GC.getSpecialistInfo(eSpecialist).getCommerceChange(iI) * iChange));
+		int iCommerce = GC.getSpecialistInfo(eSpecialist).getCommerceChange(iI);
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_GANGES") &&
+			eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && iI == COMMERCE_RESEARCH) iCommerce += 2;
+		changeSpecialistCommerce(((CommerceTypes)iI), iCommerce * iChange);
 	}
 
 	updateExtraSpecialistYield();
@@ -4775,6 +4780,7 @@ int CvCity::unhappyLevel(int iExtra) const
 		iUnhappiness += std::max(0, getEspionageHappinessCounter());
         iUnhappiness += getIntelligenceUnrestTurns() > 0 ? 2 : 0;
 		iUnhappiness += (int)m_aiSlaveRefugeeUnhappinessExpiryTurns.size();
+        iUnhappiness += getFamineUnhappiness();
 	}
 
 	return std::max(0, iUnhappiness);
@@ -5063,13 +5069,6 @@ int CvCity::foodDifference(bool bBottom) const
 		iDifference = (getLocalFoodYield() + getFoodTradeImports() - getFoodTradeExports() - foodConsumption());
 	}
 
-	if (bBottom)
-	{
-		if ((getPopulation() == 1) && (getFood() == 0))
-		{
-			iDifference = std::max(0, iDifference);
-		}
-	}
 
 	return iDifference;
 }
@@ -7771,7 +7770,8 @@ int CvCity::getDefenseModifier(bool bIgnoreBuilding) const
 		return 0;
 	}
 
-	return ((getTotalDefense(bIgnoreBuilding) * (GC.getMAX_CITY_DEFENSE_DAMAGE() - getDefenseDamage())) / GC.getMAX_CITY_DEFENSE_DAMAGE());
+	int iPower = getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_VIJAYANAGARA") ? 25 : 0;
+	return (((getTotalDefense(bIgnoreBuilding) + iPower) * (GC.getMAX_CITY_DEFENSE_DAMAGE() - getDefenseDamage())) / GC.getMAX_CITY_DEFENSE_DAMAGE());
 }
 
 
@@ -8932,7 +8932,7 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 // 200 x 110 geography has approximately the same enlargement on both axes.
 static int tradeDistanceThreshold(int iReferenceDistance)
 {
-    if (GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110")
+    if ((GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110" || GC.getMapINLINE().getScenarioGeographyName() == "Earth200x110Harappa"))
         return (iReferenceDistance * 200 + 62) / 124;
     return iReferenceDistance;
 }
@@ -12021,6 +12021,7 @@ int CvCity::getTradeRoutes() const
 	if (isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))
 	{
 		iTradeRoutes += GET_PLAYER(getOwnerINLINE()).getCoastalTradeRoutes();
+		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_CHOLA")) ++iTradeRoutes;
 	}
 	iTradeRoutes += getExtraTradeRoutes();
 
@@ -12808,7 +12809,94 @@ const std::vector< std::pair<float, float> >& CvCity::getWallOverridePoints() co
 
 // Protected Functions...
 
-void CvCity::doGrowth()
+int CvCity::getFamineUnhappiness() const
+{
+    if (isNoUnhappiness() || m_iFamineTurns < 3) return 0;
+    return std::min(3, 1 + (m_iFamineTurns - 3) / 2);
+}
+
+void CvCity::setFamineTurns(int iTurns)
+{
+    iTurns = range(iTurns, 0, 12);
+    if (m_iFamineTurns == iTurns) return;
+    m_iFamineTurns = iTurns;
+    AI_setAssignWorkDirty(true);
+    setInfoDirty(true);
+}
+
+void CvCity::relocateFaminePopulation()
+{
+    // A population point already lost to starvation can resettle where there
+    // is enough food for one more citizen. Never add people to another famine.
+    CvCity* pBest = NULL;
+    int iBestRank = MAX_INT;
+    for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; ++iPlayer)
+    {
+        CvPlayer& player = GET_PLAYER((PlayerTypes)iPlayer);
+        if (!player.isAlive() || (player.isMinorCiv() && iPlayer != getOwnerINLINE())) continue;
+        if (player.getTeam() != getTeam() &&
+            (GET_TEAM(getTeam()).isAtWar(player.getTeam()) || !GET_TEAM(getTeam()).isOpenBorders(player.getTeam()))) continue;
+        int iLoop;
+        for (CvCity* pCity = player.firstCity(&iLoop); pCity != NULL; pCity = player.nextCity(&iLoop))
+        {
+            if (pCity == this || pCity->area() != area() || pCity->isDisorder()) continue;
+            int iDistance = plotDistance(getX_INLINE(), getY_INLINE(), pCity->getX_INLINE(), pCity->getY_INLINE());
+            if (iDistance > 12) continue;
+            const int iExtraFood = pCity->foodConsumption(false, 1) - pCity->foodConsumption(false, 0);
+            const int iSurplus = pCity->getLocalFoodYield() + pCity->getFoodTradeImports() -
+                pCity->getFoodTradeExports() - pCity->foodConsumption();
+            if (iSurplus < std::max(1, iExtraFood)) continue;
+            // Foreign arrivals also require an established connection. Own
+            // settlements may be reached overland before roads are available.
+            if (pCity->getOwnerINLINE() != getOwnerINLINE() && !isConnectedTo(pCity)) continue;
+            if (GC.getMapINLINE().calculatePathDistance(plot(), pCity->plot()) < 0) continue;
+            int iRank = iDistance + (pCity->getOwnerINLINE() == getOwnerINLINE() ? 0 : 100);
+            if (iRank < iBestRank)
+            {
+                iBestRank = iRank;
+                pBest = pCity;
+            }
+        }
+    }
+    if (pBest == NULL) return; // People disperse when no viable destination exists.
+    pBest->changePopulation(1);
+    if (pBest->getOwnerINLINE() != getOwnerINLINE()) pBest->changeCulture(getOwnerINLINE(), 20, false, false);
+    const CvWString szMessage = gDLL->getText("TXT_KEY_FAMINE_REFUGEES", getNameKey(), pBest->getNameKey());
+    gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szMessage,
+        NULL, MESSAGE_TYPE_MINOR_EVENT, NULL, NO_COLOR, getX_INLINE(), getY_INLINE());
+    if (pBest->getOwnerINLINE() != getOwnerINLINE())
+        gDLL->getInterfaceIFace()->addMessage(pBest->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szMessage,
+            NULL, MESSAGE_TYPE_MINOR_EVENT, NULL, NO_COLOR, pBest->getX_INLINE(), pBest->getY_INLINE());
+}
+
+void CvCity::abandonToFamine()
+{
+    CvPlayer& owner = GET_PLAYER(getOwnerINLINE());
+    bool bNomads = false;
+    if (owner.getNumCities() == 1 && !owner.isBarbarian() && !owner.isMinorCiv())
+    {
+        // Create the survivors before destroying the final city. disband()
+        // clears FoundedFirstCity, allowing these nomads to remain alive.
+        UnitTypes eSettler = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(
+            GC.getInfoTypeForString("UNITCLASS_SETTLER"));
+        if (eSettler != NO_UNIT)
+        {
+            owner.initUnit(eSettler, getX_INLINE(), getY_INLINE(), UNITAI_SETTLE);
+            bNomads = true;
+        }
+    }
+    else
+    {
+        relocateFaminePopulation();
+    }
+    gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
+        gDLL->getText(bNomads ? "TXT_KEY_FAMINE_SURVIVORS" : "TXT_KEY_FAMINE_ABANDONED", getNameKey()), NULL, MESSAGE_TYPE_MAJOR_EVENT,
+        NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+    owner.disband(this);
+    // This city has been deleted. The caller must return without accessing it.
+}
+
+bool CvCity::doGrowth()
 {
 	OBSERVER_PERFORMANCE("CvCity::doGrowth");
     lockFoodTrade();
@@ -12829,6 +12917,15 @@ void CvCity::doGrowth()
 	//Rhye - end
 
 	iDiff = foodDifference();
+    const bool bFamine = iDiff < 0 && getFood() + iDiff <= 0;
+    const int iOldFamineTurns = m_iFamineTurns;
+    setFamineTurns(bFamine ? m_iFamineTurns + 1 : m_iFamineTurns - 2);
+    if (bFamine && iOldFamineTurns == 0)
+    {
+        gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
+            gDLL->getText("TXT_KEY_FAMINE_BEGINS", getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
+            NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
+    }
     // Only positive growth surplus is reduced. Consumption, trade amounts,
     // starvation and food used to produce units keep their original values.
     if (iDiff > 0)
@@ -12868,8 +12965,15 @@ void CvCity::doGrowth()
 		if (getPopulation() > 1)
 		{
 			changePopulation(-1);
+            relocateFaminePopulation();
 		}
+        else
+        {
+            abandonToFamine();
+            return false;
+        }
 	}
+    return true;
 }
 
 
@@ -13763,13 +13867,15 @@ void CvCity::read(FDataStreamBase* pStream)
 		}
 	}
 
+    if (uiFlag & 32) pStream->Read(&m_iFamineTurns);
+
 }
 
 void CvCity::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=31;
+	uint uiFlag=63;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -14023,6 +14129,8 @@ void CvCity::write(FDataStreamBase* pStream)
 		pStream->Write(m_aiCulturePlots[i]);
 		pStream->Write(m_aiCulturePlotCosts[i]);
 	}
+
+    pStream->Write(m_iFamineTurns);
 
 }
 

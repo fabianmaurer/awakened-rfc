@@ -41,7 +41,8 @@ def fingerprint(mod):
     for folder in ('Assets', 'PublicMaps'):
         files += [p for p in (mod / folder).rglob('*') if p.is_file()
                   and '__pycache__' not in p.parts and not any(s.startswith('.') for s in p.relative_to(mod).parts)
-                  and p.suffix.lower() not in ('.pyc', '.pyo', '.log', '.tmp', '.bak')]
+                  # Machine-local backups (such as CvGameCoreDLL.dll.previous.local) are not runtime assets.
+                  and p.suffix.lower() not in ('.pyc', '.pyo', '.log', '.tmp', '.bak', '.local')]
     if not (mod / 'Assets/CvGameCoreDLL.dll').is_file() or not (mod / 'PublicMaps' / SCENARIO).is_file():
         raise ValueError('Missing mod DLL or 3000 BC scenario in ' + str(mod))
     for path in sorted(files):

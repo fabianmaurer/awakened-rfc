@@ -39,7 +39,7 @@ class Resources:
                 if (iGameTurn == geo.turns(5)): #otherwise it's picked by Portugal at the beginning
                         gc.getMap().plot(*geo.value('Resources.plot_1')).setImprovementType(con.iHut)
 
-                if geo.profile_name() in ('Earth160x88', 'Earth200x110'):
+                if geo.base_profile_name() in ('Earth160x88', 'Earth200x110'):
                         self.checkLargeWorldTurn(iGameTurn)
                         return
 
@@ -139,7 +139,7 @@ class Resources:
         def checkLargeWorldTurn(self, iGameTurn):
                 # Every peer applies the same calendar crossing; no local-player
                 # routing, random placement, or transient pending state.
-                additions = __import__(geo.profile_name() + 'Resources').ADDITIONS
+                additions = __import__(geo.base_profile_name() + 'Resources').ADDITIONS
                 game = gc.getGame()
                 year = game.getTurnYear(iGameTurn)
                 previousYear = -3001

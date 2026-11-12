@@ -77,7 +77,15 @@ class CityNameManager:
         def renameCities(self, city, iNewOwner):
                 """Renames a city depending on its owner"""
 
-                if geo.profile_name() == 'Earth200x110':
+                import IndianCivs
+                if IndianCivs.isIndian(iNewOwner):
+                        self.assignName(city)
+                        return
+                import Harappa
+                if Harappa.isHarappan(iNewOwner):
+                        self.assignName(city)
+                        return
+                if geo.base_profile_name() == 'Earth200x110':
                         names = geo.value('CityNameManager.XLNames').get((city.getX(), city.getY()), {})
                         # Translate authored names only at this precise site.
                         # Custom names continue through the existing rules.

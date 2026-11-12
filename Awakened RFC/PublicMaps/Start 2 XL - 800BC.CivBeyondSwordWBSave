@@ -9,29 +9,29 @@ BeginGame
 	Description=TXT_KEY_ARFC_800_BC_XL_DESC
 	ModPath=Mods\Awakened RFC
 EndGame
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
 BeginTeam
 	ContactWithTeam=5                 
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
 BeginTeam 
 	ContactWithTeam=3
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 
 	Tech=TECH_AGRICULTURE
 
@@ -43,37 +43,37 @@ BeginTeam
 
 	Tech=TECH_MYSTICISM
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
 BeginTeam
 EndTeam
@@ -111,6 +111,16 @@ BeginTeam
 	Tech=TECH_HUNTING
 EndTeam
 BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
+EndTeam
+BeginTeam
 	Tech=TECH_AGRICULTURE
 	Tech=TECH_ANIMAL_HUSBANDRY
 	Tech=TECH_ARCHERY
@@ -136,9 +146,9 @@ BeginTeam
 	Tech=TECH_POTTERY
 	Tech=TECH_THE_WHEEL
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
-BeginTeam                 
+BeginTeam
 EndTeam
 BeginTeam
 EndTeam
@@ -155,14 +165,12 @@ BeginPlayer
 	StartingY=54
 EndPlayer
 BeginPlayer
-	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_1
-	LeaderType=LEADER_ASOKA
-	CivType=CIVILIZATION_INDIA                 
-	Team=1                 
-	PlayableCiv=1                 
-	Handicap=HANDICAP_PRINCE                 
-	StartingX=145
-	StartingY=65
+	Team=1
+	CivType=NONE
+	LeaderType=NONE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
 EndPlayer
 BeginPlayer
 	LeaderName=TXT_KEY_RFCMP_800BC_LEADER_2
@@ -423,11 +431,72 @@ BeginPlayer
 	StartingX=197
 	StartingY=99
 EndPlayer
+BeginPlayer
+	Team=33
+	CivType=CIVILIZATION_GANGES
+	LeaderType=LEADER_GANGES
+	LeaderName=TXT_KEY_LEADER_GAN
+	Color=PLAYERCOLOR_YELLOW
+	PlayableCiv=1
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=150
+	StartingY=65
+
+EndPlayer
+BeginPlayer
+	Team=34
+	CivType=CIVILIZATION_CHOLA
+	LeaderType=LEADER_CHOLA
+	LeaderName=TXT_KEY_LEADER_CHO
+	Color=PLAYERCOLOR_DARK_RED
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=147
+	StartingY=52
+EndPlayer
+BeginPlayer
+	Team=35
+	CivType=CIVILIZATION_DELHI
+	LeaderType=LEADER_DELHI
+	LeaderName=TXT_KEY_LEADER_DEL
+	Color=PLAYERCOLOR_DARK_GREEN
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=145
+	StartingY=65
+EndPlayer
+BeginPlayer
+	Team=36
+	CivType=CIVILIZATION_BENGAL
+	LeaderType=LEADER_BENGAL
+	LeaderName=TXT_KEY_LEADER_BEN
+	Color=PLAYERCOLOR_LIGHT_BLUE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=154
+	StartingY=65
+EndPlayer
+BeginPlayer
+	Team=37
+	CivType=CIVILIZATION_VIJAYANAGARA
+	LeaderType=LEADER_VIJAYANAGARA
+	LeaderName=TXT_KEY_LEADER_VIJ
+	Color=PLAYERCOLOR_PURPLE
+	PlayableCiv=0
+	MinorNationStatus=0
+	Handicap=HANDICAP_PRINCE
+	StartingX=145
+	StartingY=56
+EndPlayer
 BeginPlayer                 
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT                 
-	Team=33
+	Team=38
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -436,7 +505,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_INDEPENDENT
 	LeaderType=LEADER_BOUDICA
 	CivType=CIVILIZATION_INDEPENDENT2                 
-	Team=34
+	Team=39
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -445,7 +514,7 @@ BeginPlayer
 	LeaderName=TXT_KEY_LEADER_NATIVE
 	LeaderType=LEADER_SHAKA
 	CivType=CIVILIZATION_NATIVE                 
-	Team=35
+	Team=40
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
@@ -453,20 +522,20 @@ EndPlayer
 BeginPlayer
 	LeaderType=LEADER_BRENNUS
 	CivType=CIVILIZATION_CELT                 
-	Team=36
+	Team=41
 	PlayableCiv=0                 
 	MinorNationStatus=1                 
 	Handicap=HANDICAP_PRINCE                 
 EndPlayer
 BeginPlayer
-	Team=37
+	Team=42
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
 	MinorNationStatus=1
 EndPlayer
 BeginPlayer
-	Team=38
+	Team=43
 	CivType=NONE
 	LeaderType=NONE
 	PlayableCiv=0
@@ -67170,11 +67239,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=36
+		UnitType=UNIT_ARCHER, UnitOwner=41
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 BeginCity
-		CityOwner=36
+		CityOwner=41
 		CityName=Melpum
 		CityPopulation=1
 	EndCity
@@ -83852,17 +83921,17 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=34
+		UnitType=UNIT_ARCHER, UnitOwner=39
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 BeginCity
-		CityOwner=34
+		CityOwner=39
 		CityName=Yerushalayim
 		CityPopulation=3
 		ReligionType=RELIGION_JUDAISM
 		HolyCityReligionType=RELIGION_JUDAISM
 		BuildingType=BUILDING_JEWISH_SHRINE
-		Player34Culture=10
+		Player39Culture=10
 	EndCity
 EndPlot
 BeginPlot
@@ -97406,11 +97475,11 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_ARCHER, UnitOwner=33
+		UnitType=UNIT_ARCHER, UnitOwner=38
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 BeginCity
-		CityOwner=33
+		CityOwner=38
 		CityName=Afrosiab
 		CityPopulation=3
 	EndCity
@@ -100884,19 +100953,19 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_WARRIOR, UnitOwner=1
+		UnitType=UNIT_WARRIOR, UnitOwner=33
 		Damage=0
 		Level=1, Experience=0
 		FacingDirection=5
 		UnitAIType=UNITAI_ATTACK_CITY
 	EndUnit
 BeginCity
-		CityOwner=1
+		CityOwner=33
 		CityName=Jaipur
 		CityPopulation=1
 		BuildingType=BUILDING_OBELISK
 		ReligionType=RELIGION_HINDUISM
-		Player1Culture=5
+		Player33Culture=5
 	EndCity
 EndPlot
 BeginPlot
@@ -103069,22 +103138,21 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=1
+		UnitType=UNIT_INDIAN_FAST_WORKER, UnitOwner=33
 		UnitAIType=UNITAI_WORKER
 	EndUnit
 BeginUnit
-		UnitType=UNIT_WARRIOR, UnitOwner=1
+		UnitType=UNIT_WARRIOR, UnitOwner=33
 		UnitAIType=UNITAI_CITY_DEFENSE
 	EndUnit
 BeginCity
-		CityOwner=1
+		CityOwner=33
 		CityName=Delhi
 		CityPopulation=6
-		BuildingType=BUILDING_PALACE
 		BuildingType=BUILDING_HINDU_MONASTERY
 		ReligionType=RELIGION_HINDUISM
 		ReligionType=RELIGION_BUDDHISM
-		Player1Culture=391
+		Player33Culture=391
 	EndCity
 EndPlot
 BeginPlot
@@ -105918,7 +105986,7 @@ BeginPlot
 	PlotType=2
 	BonusType=BONUS_COTTON
 BeginUnit
-		UnitType=UNIT_WARRIOR, UnitOwner=1
+		UnitType=UNIT_WARRIOR, UnitOwner=33
 		UnitAIType=UNITAI_ATTACK
 	EndUnit
 EndPlot
@@ -106642,18 +106710,19 @@ BeginPlot
 	PlotType=2
 	RouteType=ROUTE_ROAD
 BeginUnit
-		UnitType=UNIT_WARRIOR, UnitOwner=1
+		UnitType=UNIT_WARRIOR, UnitOwner=33
 		UnitAIType=UNITAI_RESERVE
 	EndUnit
 BeginCity
-		CityOwner=1
+		CityOwner=33
 		CityName=Patliputra
 		CityPopulation=2
 		ReligionType=RELIGION_HINDUISM
 		HolyCityReligionType=RELIGION_HINDUISM
 		ReligionType=RELIGION_BUDDHISM
 		HolyCityReligionType=RELIGION_BUDDHISM
-		Player1Culture=14
+		Player33Culture=14
+			BuildingType=BUILDING_PALACE, BuildDate=-800
 	EndCity
 EndPlot
 BeginPlot

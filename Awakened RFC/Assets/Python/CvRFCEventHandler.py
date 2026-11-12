@@ -141,6 +141,8 @@ class CvRFCEventHandler:
                 'Called at the start of the game'
                 self.data.setupScriptData()
                 self.rnf.setup()
+                import IndianCivs
+                IndianCivs.setup(self.vic)
                 import Korea
                 Korea.setup(self.vic)
                 import NativeAmerica
@@ -152,6 +154,8 @@ class CvRFCEventHandler:
                 self.sta.setup()
                 self.aiw.setup()
                 self.rnf.warOnSpawn()
+                import Drought
+                Drought.setup()
 
                 
                 return 0
@@ -160,6 +164,8 @@ class CvRFCEventHandler:
         def onCityAcquired(self, argsList):
                 #'City Acquired'
                 owner,playerType,city,bConquest,bTrade = argsList
+                import BirthSuccession
+                BirthSuccession.record(owner, playerType, city)
                 #CvUtil.pyPrint('City Acquired Event: %s' %(city.getName()))
                 self.slave.onCityAcquired(owner, playerType, city, bConquest, bTrade)
                 self.cnm.renameCities(city, playerType)
@@ -355,6 +361,8 @@ class CvRFCEventHandler:
                 #utils.makeUnit(con.iAxeman, con.iAmerica, (0,0), 1)
 
                 
+                import Drought
+                Drought.checkTurn(iGameTurn)
                 self.rnf.checkTurn(iGameTurn)
                 self.barb.checkTurn(iGameTurn)
                 self.rel.checkTurn(iGameTurn)
@@ -438,6 +446,8 @@ class CvRFCEventHandler:
                 iGameTurn, iPlayer = argsList
                 # CvPlayer.doTurn fires this after city updates, before input
                 # resumes. Expired slaves must not create a stale decision.
+                import Famine
+                Famine.checkPlayerTurn(iPlayer)
                 self.slave.checkPlayerTurn(iPlayer)
 
 

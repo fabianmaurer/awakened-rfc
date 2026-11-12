@@ -1117,6 +1117,51 @@ See [CountryNames.csv](CountryNames.csv) for the catalogue and
 names are provided; French, Italian, and Spanish use English fallbacks for the
 new country-name entries.
 
+Harappa and the five XL Indian civilizations retain ten civic-dependent forms
+as fallbacks, with full translations in all five languages. Historical names
+now take precedence for monarchies with a matching date and capital region,
+except under Planned Economy. Coordinates below refer to the XL 200 x 110 map;
+other dimensions are normalized to that grid. Renaming has no gameplay effects.
+
+| Civilization | Historical identities and selection conditions |
+| --- | --- |
+| Ganges | Eastern capital `(150..152, 63..66)`: Magadha from 800 BC; Nanda 362-322 BC (2+ cities), Maurya 321-186 BC (3+), Shunga 185-74 BC (2+), Kanva 73-29 BC, Gupta AD 320-549 (3+), and Buddhist Pala 750-1161 (3+). These names require a non-Islamic monarchy. |
+| Ganges, western capitals | Kosala at Ayodhya `(149, 66)` in 600-301 BC; Harsha with a capital near Kannauj `(147..149, 64..67)` in AD 606-647 and 3+ cities. |
+| Delhi | Islamic monarchy with capital in `(144..147, 63..67)`: Delhi Sultanate from 1200; with 3+ cities, Mughal Empire from 1526, interrupted by Sur in 1540-1554. |
+| Bengal | Islamic monarchy with capital in `(153..157, 62..67)`: Bengal Sultanate from 1350; Nawabate of Bengal from 1717. No Mughal annexation or provincial status is implied. |
+| Chola | Non-Islamic monarchy with capital in the Tamil core `(147..149, 51..54)` from 850 retains Chola; a Hindu capital at Madurai `(147, 51)` selects Pandya in 1279-1334, or an Islamic monarchy there selects Madurai Sultanate in 1335-1377. |
+| Vijayanagara | Non-Islamic monarchy with capital in its original core `(144..146, 55..58)` from 1336 retains Vijayanagara; a relocated capital near Mysore `(145, 53..54)` selects Mysore from 1610. |
+| Southern territorial successors | Chola or Vijayanagara with no more than two cities and a Hindu capital at Madurai from 1565 selects its Nayaka kingdom; at Thanjavur `(147, 52)`, Nayaka from 1565 and Maratha from 1676. |
+
+These are historical and territorial naming associations, not claims that every
+state was the direct political continuation of its predecessor. Early dates
+are approximate; thresholds and region boxes are gameplay choices. Existing
+empires can survive their historical defeat dates. Republican, democratic and
+dictatorial alternatives keep civic-specific names rather than adopting a
+royal dynasty. Harappa keeps descriptive names: its script and political
+institutions do not justify assigning a known later dynasty as its successor.
+
+The selection preview passes the scenario's palace location, city count and
+year to the same DLL rule as live naming. Future Indian births use their
+authored birth year, capital and intended starting faith; their eventual live
+name still reflects the cities, available civics and religion at that time.
+Regenerate both catalogues with
+`python tools/build_indian_civs.py --country-names-only`.
+
+Historical references: [Harvard's pre-Mauryan chronology](https://timelinesouthasianhistory.hsites.harvard.edu/pre-mauryan-age),
+[the Mauryan Empire](https://education.nationalgeographic.org/resource/mauryan-empire/),
+[Shunga and Kanva](https://ebooks.inflibnet.ac.in/icp01/chapter/sunga-kanva-and-satavahana-dynasties/),
+[Gupta and Harsha](https://www.metmuseum.org/ko/toah/ht/06/ssn.html),
+[Pala](https://en.banglapedia.org/index.php?title=Pala_Rule),
+[Mughal and Sur succession](https://www.metmuseum.org/de/toah/ht/08/ssa.html),
+[Bengal's nawabi regime](https://en.banglapedia.org/index.php?title=Murshid_Quli_Khan),
+[Chola and Pandya](https://education.nationalgeographic.org/resource/three-crowned-kings-tamilakam/),
+[Madurai Sultanate](https://dindigul.nic.in/history/),
+[Thanjavur Nayakas](https://thanjavur.nic.in/nayaks-history/),
+[Thanjavur Marathas](https://thanjavur.nic.in/marattas-history/),
+[Mysore's Vijayanagara connection](https://whc.unesco.org/en/tentativelists/5895/),
+and [Harappa's archaeological context](https://www.harappa.com/content/brief-introduction-ancient-indus-civilization).
+
 ## Korea
 
 Korea is playable from the 800 BC scenario onward, starting as Korean
@@ -1674,3 +1719,237 @@ chances approach 19.0%, 14.0%, 9.0% and 9.0%.
 These are initial balance values. The VC7.1 DLL and static asset checks cover
 implementation; in-game presentation, balance and multiplayer behavior require
 user-operated validation. The new save layout targets new games.
+
+
+## Birth succession
+
+A civilization's historical birth can offer control to one affected human player.
+Eligibility requires an actual city transfer during that birth; ordinary conquests,
+resurrections, gifts and scenario setup transfers do not qualify. A birth into a
+human-controlled civilization never offers a takeover.
+
+A player whose entire city network transfers has first priority and switches
+without a prompt. Otherwise the player losing the most cities receives the only
+offer. Equal counts use the lower player-slot number. If several players lose all
+their cities, the largest such civilization wins priority; the others can still be
+eliminated. Declining leaves the new civilization under AI control, without a second
+offer. A surviving former civilization becomes AI-controlled when its human switches.
+Both civilizations retain their own leaders, technologies, diplomacy and victory progress.
+Birth flips can include capitals and last cities, within the existing conversion limit.
+
+Decisions are saved and resolved once through synchronized player-owned callbacks.
+Last-city elimination waits until automatic succession is resolved. Network handover,
+loading, hotseat and multiplayer behavior still require user-operated game validation.
+
+## Harappa in the 3000 BC XL start
+
+The original India slot represents a distinct Harappan civilization in this start.
+Its capital site is Harappa at `(141, 64)`. The Indus/Punjab and Gujarat form its
+preferred settlement area; the Ganges and southern peninsula are outside its core.
+The separate geography profile retains XL's calendar, resource history and trade distances.
+The XL 800 BC start instead gives the surviving northern Indian polity to Ganges;
+Harappa is absent there. Standard maps retain their existing civilizations.
+
+- **Indus Networks:** river farms gain +1 commerce.
+- **City Founder:** replaces the Settler and founds cities with population 2.
+  It has the ordinary Settler cost and movement, and cannot build improvements.
+- **Reservoir:** replaces the Granary, retains its food storage and adds +2 health.
+- The opening has Harappa already founded with population 2 and a Palace, plus
+  one City Founder and a Warrior, with Agriculture and Mining. There is no free Worker.
+- Historical goals: three cities of population 5 in the Indus region by 2000 BC;
+  live trade routes with two foreign civilizations by 1500 BC; 500 gold by 1000 BC.
+  The urban goal counts cities inside `(135, 55)` to `(146, 68)`, inclusive. Trade
+  partners must belong to different teams from Harappa. Each goal can be achieved
+  before its deadline; the trade partners must exist simultaneously.
+
+The Harappan Council is an abstraction for unknown leadership. Archaeological site
+names label the cities. The first implementation reuses existing leader, flag and
+unit art. Harappa has its own power and goals rather than India's no-anarchy power,
+religious victory or Huna event. There is no forced historical collapse.
+Hinduism and Buddhism can found in the Ganges belt `(146, 60)` to `(155, 69)`, with
+the existing Varanasi/Bodh Gaya preferences and technology/fallback dates. Ownership
+is unrestricted, so an independent or Harappan city in that belt can host a religion.
+
+## Other Indian civilizations on XL
+
+Both XL scenarios include these five major civilizations. Their births use the
+ordinary two-stage birth and city-flip system, including the human succession
+choice. Only Ganges is selectable at either scenario's opening; the other four
+arrive at their scheduled births. Dates use the nearest existing calendar turn. The 3000 BC opening gives
+Ganges a Settler and Warrior, Agriculture and Mysticism, without Harappa's prebuilt
+city, City Founder or exceptional Indus farmland. Its capital is nine tiles east of Harappa.
+The early Gangetic Council represents farming communities rather than an already
+unified Vedic kingdom. In 800 BC, Ganges inherits the old northern Indian cities,
+troops, technology and diplomacy, with its palace at Pataliputra.
+
+| Civilization | Birth | Capital site | Unique power |
+|---|---|---|---|
+| Ganges | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +2 research. |
+| Chola | 850 AD | Thanjavur `(147, 52)` | Oceanic Networks: coastal cities gain one trade route. |
+| Delhi | 1200 AD | Delhi `(145, 65)` | Mounted Conquest: mounted units gain +25% city attack. |
+| Bengal | 1350 AD | Gaur `(154, 65)` | Delta Commerce: river tiles gain +1 commerce. |
+| Vijayanagara | 1350 AD | Vijayanagara `(145, 56)` | Fortified Heartland: cities gain +25% defense. |
+
+- Ganges' **Mahout Elephant** replaces the War Elephant with strength 9. Its
+  **Gurukula** adds two Priest slots to the Library's two Scientist slots.
+- Chola's **Kappal** replaces the Galley with three movement and three cargo
+  slots. Its **Merchant Guild** replaces the Harbor, raising its trade-route
+  modifier from 50% to 75%.
+- Delhi's **Ghulam** replaces the Knight with strength 11. Its **Diwan** replaces
+  the Courthouse, reducing maintenance by 60% instead of 50%.
+- Bengal's **Paik** replaces the Crossbowman and adds 25% city defense. Its
+  **Muslin Bazaar** replaces the Market, raising the gold modifier to 35%.
+- Vijayanagara's **Nayaka** replaces the Pikeman with strength 7. Its **Royal
+  Temple** replaces the Hindu Temple and adds two production per turn.
+
+Later births receive era-appropriate technologies, two Settlers, workers and
+regional armies. Chola also receives coastal ships; Delhi emphasizes mounted
+assault, Bengal crossbow defense and Vijayanagara pikes. They adopt Hinduism
+(Chola/Vijayanagara) or Islam (Delhi/Bengal) when already founded, with a
+missionary to establish it. These are opening forces, not ongoing cost modifiers.
+The Huna event now targets Ganges on XL; Harappa retains its separate identity.
+
+Each civilization has three historical goals, completed at any time before its
+deadline: Ganges controls both Indian holy cities by 200 BC, reaches 2,500 culture
+by 200 AD and controls six Gangetic cities by 600 AD. Chola controls four southern
+cities by 1100, holds a Sri Lankan city while trading with three foreign teams by
+1250 and stores 3,000 gold by 1300. Delhi controls six northern cities by 1350,
+has Islam in eight cities by 1450 and controls Delhi plus three Deccan cities by
+1500. Bengal holds six river cities by 1500, trades with four foreign teams by
+1600 and stores 5,000 gold by 1700. Vijayanagara controls four southern cities by
+1500, has eight Hindu temples by 1600 and reaches 50,000 culture by 1650. City and
+trade goals require simultaneous control. Goal regions are explicit XL bounds in
+`IndianCivs.py`. Expired goals are failed when starting a later scenario.
+
+The five slots are 33–37; minor players shift to 38–43 and barbarians to 44. Older
+maps receive empty reserved slots and the corresponding owner/team renumbering,
+without gaining these civilizations. All player tables and geography planes use
+the expanded DLL capacity. The authoring tools preserve the XL additions.
+Existing art is reused for leaders, units, buildings and flags. All new text keys
+have five languages; the unique-power effects are translated, with English
+fallbacks for other unfinished translations. Loading, balance and multiplayer
+gameplay remain user-operated validation.
+
+
+## Famine, migration and abandonment
+
+New cities begin with half of their growth food threshold in storage, rounded down.
+Ownership changes preserve existing food and famine pressure instead of supplying a
+fresh reserve; captured stores are capped below the new growth threshold. Explicitly
+authored scenario food values still apply.
+
+A food deficit first consumes stored food. If the deficit exceeds the remaining
+reserve, the city loses one population, as before. A city already at size one is
+instead abandoned and leaves ruins. There is no size-one starvation floor or extra
+grace period. The food tooltip warns size-one cities with a deficit.
+
+Famine pressure increases on each food turn whose deficit exhausts the reserve,
+up to 12. It falls by two per food turn when supplies recover. After three such
+turns it causes one unhappiness, rising to two at five turns and three at seven.
+These counters follow actual food-consumption turns on every map, including XL.
+Cities that prohibit unhappiness still ignore famine unhappiness.
+
+Each population point lost can resettle in a city within 12 tiles on the same
+landmass, with a land path and enough current food surplus for the additional
+citizen. Own cities have priority, then distance and player/city order. Foreign
+cities require peace, open borders (or a shared team) and a trade connection.
+There is no population award when no suitable destination exists. If a major
+civilization loses its final city, the last inhabitants instead become a Settler
+before the city disappears, allowing relocation. Existing units remain available.
+
+After three famine turns, a non-capital city above size one can become independent
+if it still has empty stores and a deficit, and also has political unhappiness
+beyond famine anger or a majority of foreign plot culture. Occupied cities do not
+secede. The city and its local garrison use the existing independent-city transfer
+rules. Its food and famine state persist. This is not a civilization birth and
+never grants a takeover offer.
+
+The direct national penalty applies only to sustained famine in the current
+capital: -5 at three famine turns, increasing to -20 at six. It enters the current
+stability base, without a permanent deduction every turn. Recovery or relocation
+to a healthy capital reduces the outstanding penalty by two per normal stability
+update; XL retains its existing stability-update interval. Provincial famine anger
+is excluded from national happiness stability, and famine secessions do not add a
+separate national city-loss shock. Ordinary economic and territorial consequences
+still apply. The old aggregate agriculture/population stability score is removed.
+
+Food and unrest warnings are localized in all five languages. Famine counters are
+saved and included in the native multiplayer checksum. Gameplay and multiplayer
+balance remain unverified. Existing plague effects can still interact with food
+shortages; plague mechanics have not been redesigned.
+
+## River droughts on XL maps
+
+Flood plains no longer reduce city health. On XL maps, connected river systems
+with flood plains can experience drought, regardless of their inhabitants. Rivers
+remain present for fresh-water health, commerce, crossings and trade. Their flood
+plains normally add 3 food; drought reduces this to 1. Severe drought also stops
+that river supplying irrigation. Ordinary desert flood plains consequently yield
+3/4 food without/with a farm normally, 1/2 during drought, and 1/1 during severe
+drought if no other irrigation source exists. Resources, technologies and unique
+powers still apply, including Egypt's Nile food power. Farms remain in place and
+recover; unaffected lakes or irrigation networks can sustain them during drought.
+Conditions are stored on individual river edges. A tile bordering several rivers
+uses its healthiest bordering river for both flood-plain food and its appearance:
+one normal river preserves the normal yield; ordinary plus severe drought gives
+ordinary drought yields. River irrigation stops only when every bordering river
+is in severe drought. Both banks of a changed edge update together.
+
+Each random event follows one continuous river path for a randomly chosen six to
+twelve segments, anchored beside flood plains. Severe events add two to four
+segments of ordinary drought at each end. Segment counts follow bends, not a
+radius across land. Upstream forks select one branch with synchronized seeded
+randomness. Downstream traversal follows the flow and never turns upstream into
+a tributary joining later. Distributaries likewise select one continuation.
+River ends, missing flow directions and previously visited segments shorten the
+reach. No event spreads through every tributary of a connected system.
+
+After 20 reference-calendar turns of initial protection, each eligible connected
+river system gets exactly one initiation roll per reference turn, including while
+other events are ongoing. One sixth of new events are severe. There is no long
+protected period after an event. Events can coexist; overlapping conditions take
+the worse stage on each edge, and consecutive events can prolong a local dry spell.
+Notifications of recovery use actual tile conditions so an ending event does not
+announce recovery where another drought is still active.
+
+Individual durations are unchanged: two reference turns of advance warning;
+four to seven turns of ordinary drought; or, for a severe event, two initial
+ordinary turns, two to three severe turns and two ordinary recovery turns. The
+outer margins remain at ordinary drought strength throughout a severe event.
+XL doubles these durations in engine turns; food consumption continues each
+engine turn. Notifications go to human owners of affected riverbanks, and tile
+help explains current conditions.
+
+At game start, seeded branch and size choices produce a saved catalogue of local
+reaches. The shared initiation probability is calibrated analytically against that
+catalogue and the map's flood-plain tiles to target **3.5 food per farmed desert
+flood-plain tile per turn**, averaged over random events in the long run. This
+includes overlapping events and healthy second rivers. A sample catalogue for the
+current 3000 BC XL map gives about a 7% initiation chance per river system every
+two game turns; exact chances depend on the seeded catalogue. The initial grace
+period and Harappa's historical drought are excluded from this stationary estimate.
+Resources, technology, unique powers and irrigation from other sources can raise
+actual food output; local tiles can differ from the map average. This is an
+analytical balance target, not an observed gameplay result.
+
+The 3000 BC XL start adds five flood-plain tiles on existing bare riverbanks in
+the eastern Harappan region. A historical drying sequence affects river edges in
+`(139, 60)`–`(145, 66)`: warning from 2400 BC, drought from 2200 BC, severe drought
+from 1900 BC, partial recovery from 1500 BC and normal conditions from 1000 BC.
+These dates and boundaries are gameplay approximations. The western/lower Indus
+remains outside this scripted reach, though it can suffer random drought. This
+sequence depends on geography, not the survival or ownership of Harappa. The 800 BC
+XL start has random droughts without this ancient sequence. Other maps retain
+ordinary flood-plain yields. No other historical droughts are scripted yet.
+
+Green, faded and dry ochre flood-plain textures distinguish the stages without
+changing river geometry. The dry source is
+`art/drought/FloodPlain_SevereDrought.png`, edited with the built-in imagegen tool
+from Civ4's flood-plain texture using the prompt: "Severe drought version; flat,
+homogeneous, fine-grained, tileable ochre/tan soil and dead vegetation; preserve
+scale and omit objects, rivers, large cracks, borders and lighting gradients."
+`tools/build_drought_art.py` prepares the two DDS variants, retaining the original
+alpha and blending the intermediate stage with the original green texture.
+Climate state is saved and included in the multiplayer checksum. In-game balance,
+multiplayer behavior and the engine's display of the texture varieties remain
+user-operated validation.

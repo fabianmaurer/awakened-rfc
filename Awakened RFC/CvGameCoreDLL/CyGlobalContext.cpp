@@ -636,7 +636,7 @@ CvTurnTimerInfo* CyGlobalContext::getTurnTimerInfo(int i) const
 	return &(GC.getTurnTimerInfo((TurnTimerTypes) i));
 }
 
-std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear, int iLandPlots)
+std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::list& civics, int iReligion, int iNumCities, int iYear, int iLandPlots, int iCivilization, int iCapitalX, int iCapitalY)
 {
 	int* pCivics = NULL;
 	const int iCount = gDLL->getPythonIFace()->putSeqInArray(civics.ptr(), &pCivics);
@@ -646,7 +646,8 @@ std::wstring CyGlobalContext::getCountryNamePreview(int iPlayer, boost::python::
 	delete [] pCivics;
 	// Authored Eskimo starts have neither Astronomy nor Electricity; previews
 	// use that initial naming stage without requiring a live player/team.
-	const CvWString szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear, iLandPlots, false);
+	CvWString szKey = getAuthoredCountryNameKey(iCivilization, choices, iReligion, iYear, iCapitalX, iCapitalY, iNumCities);
+	if (szKey.empty()) szKey = getIndependentCountryNameKey(iPlayer, choices, iReligion, iNumCities, iYear, iLandPlots, false);
 	if (szKey.empty())
 		return L"";
 	const CvWString szName = gDLL->getText(szKey);

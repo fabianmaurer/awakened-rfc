@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_FEDERATION</Tag>
+    <English>Federation of Bengal</English>
+    <French>F&#233;d&#233;ration du Bengale</French>
+    <German>F&#246;deration von Bengalen</German>
+    <Italian>Federazione del Bengala</Italian>
+    <Spanish>Federaci&#243;n de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_HOLY</Tag>
+    <English>Sacred Kingdom of Bengal</English>
+    <French>Royaume sacr&#233; du Bengale</French>
+    <German>Heiliges Reich von Bengalen</German>
+    <Italian>Regno sacro del Bengala</Italian>
+    <Spanish>Reino sagrado de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_KINGDOM</Tag>
+    <English>Kingdom of Bengal</English>
+    <French>Royaume du Bengale</French>
+    <German>K&#246;nigreich von Bengalen</German>
+    <Italian>Regno del Bengala</Italian>
+    <Spanish>Reino de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_LEAGUE</Tag>
+    <English>Merchant League of Bengal</English>
+    <French>Ligue marchande du Bengale</French>
+    <German>Handelsbund von Bengalen</German>
+    <Italian>Lega mercantile del Bengala</Italian>
+    <Spanish>Liga mercantil de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_PEOPLE</Tag>
+    <English>People's Republic of Bengal</English>
+    <French>R&#233;publique populaire du Bengale</French>
+    <German>Volksrepublik von Bengalen</German>
+    <Italian>Repubblica popolare del Bengala</Italian>
+    <Spanish>Rep&#250;blica Popular de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_REPUBLIC</Tag>
+    <English>Republic of Bengal</English>
+    <French>R&#233;publique du Bengale</French>
+    <German>Republik von Bengalen</German>
+    <Italian>Repubblica del Bengala</Italian>
+    <Spanish>Rep&#250;blica de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_STATE</Tag>
+    <English>State of Bengal</English>
+    <French>&#201;tat du Bengale</French>
+    <German>Staat von Bengalen</German>
+    <Italian>Stato del Bengala</Italian>
+    <Spanish>Estado de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_SULTANATE</Tag>
+    <English>Sultanate of Bengal</English>
+    <French>Sultanat du Bengale</French>
+    <German>Sultanat von Bengalen</German>
+    <Italian>Sultanato del Bengala</Italian>
+    <Spanish>Sultanato de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_THEOCRACY</Tag>
+    <English>Theocracy of Bengal</English>
+    <French>Th&#233;ocratie du Bengale</French>
+    <German>Gottesstaat von Bengalen</German>
+    <Italian>Teocrazia del Bengala</Italian>
+    <Spanish>Teocracia de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_BEN_TRIBES</Tag>
+    <English>Clans of Bengal</English>
+    <French>Clans du Bengale</French>
+    <German>St&#228;mme von Bengalen</German>
+    <Italian>Clan del Bengala</Italian>
+    <Spanish>Clanes de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_FEDERATION</Tag>
+    <English>Federation of the Chola</English>
+    <French>F&#233;d&#233;ration des Chola</French>
+    <German>F&#246;deration der Chola</German>
+    <Italian>Federazione dei Chola</Italian>
+    <Spanish>Federaci&#243;n de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_HOLY</Tag>
+    <English>Sacred Kingdom of the Chola</English>
+    <French>Royaume sacr&#233; des Chola</French>
+    <German>Heiliges Reich der Chola</German>
+    <Italian>Regno sacro dei Chola</Italian>
+    <Spanish>Reino sagrado de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_KINGDOM</Tag>
+    <English>Chola Empire</English>
+    <French>Empire chola</French>
+    <German>Chola-Reich</German>
+    <Italian>Impero Chola</Italian>
+    <Spanish>Imperio chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_LEAGUE</Tag>
+    <English>Merchant League of the Chola</English>
+    <French>Ligue marchande des Chola</French>
+    <German>Handelsbund der Chola</German>
+    <Italian>Lega mercantile dei Chola</Italian>
+    <Spanish>Liga mercantil de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_PEOPLE</Tag>
+    <English>People's Republic of the Chola</English>
+    <French>R&#233;publique populaire des Chola</French>
+    <German>Volksrepublik der Chola</German>
+    <Italian>Repubblica popolare dei Chola</Italian>
+    <Spanish>Rep&#250;blica Popular de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_REPUBLIC</Tag>
+    <English>Republic of the Chola</English>
+    <French>R&#233;publique des Chola</French>
+    <German>Republik der Chola</German>
+    <Italian>Repubblica dei Chola</Italian>
+    <Spanish>Rep&#250;blica de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_STATE</Tag>
+    <English>State of the Chola</English>
+    <French>&#201;tat des Chola</French>
+    <German>Staat der Chola</German>
+    <Italian>Stato dei Chola</Italian>
+    <Spanish>Estado de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_SULTANATE</Tag>
+    <English>Sultanate of the Chola</English>
+    <French>Sultanat des Chola</French>
+    <German>Sultanat der Chola</German>
+    <Italian>Sultanato dei Chola</Italian>
+    <Spanish>Sultanato de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_THEOCRACY</Tag>
+    <English>Theocracy of the Chola</English>
+    <French>Th&#233;ocratie des Chola</French>
+    <German>Gottesstaat der Chola</German>
+    <Italian>Teocrazia dei Chola</Italian>
+    <Spanish>Teocracia de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_CHO_TRIBES</Tag>
+    <English>Clans of the Chola</English>
+    <French>Clans des Chola</French>
+    <German>St&#228;mme der Chola</German>
+    <Italian>Clan dei Chola</Italian>
+    <Spanish>Clanes de los Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_FEDERATION</Tag>
+    <English>Federation of Delhi</English>
+    <French>F&#233;d&#233;ration de Delhi</French>
+    <German>F&#246;deration von Delhi</German>
+    <Italian>Federazione di Delhi</Italian>
+    <Spanish>Federaci&#243;n de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_HOLY</Tag>
+    <English>Sacred Kingdom of Delhi</English>
+    <French>Royaume sacr&#233; de Delhi</French>
+    <German>Heiliges Reich von Delhi</German>
+    <Italian>Regno sacro di Delhi</Italian>
+    <Spanish>Reino sagrado de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_KINGDOM</Tag>
+    <English>Kingdom of Delhi</English>
+    <French>Royaume de Delhi</French>
+    <German>K&#246;nigreich von Delhi</German>
+    <Italian>Regno di Delhi</Italian>
+    <Spanish>Reino de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_LEAGUE</Tag>
+    <English>Merchant League of Delhi</English>
+    <French>Ligue marchande de Delhi</French>
+    <German>Handelsbund von Delhi</German>
+    <Italian>Lega mercantile di Delhi</Italian>
+    <Spanish>Liga mercantil de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_PEOPLE</Tag>
+    <English>People's Republic of Delhi</English>
+    <French>R&#233;publique populaire de Delhi</French>
+    <German>Volksrepublik von Delhi</German>
+    <Italian>Repubblica popolare di Delhi</Italian>
+    <Spanish>Rep&#250;blica Popular de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_REPUBLIC</Tag>
+    <English>Republic of Delhi</English>
+    <French>R&#233;publique de Delhi</French>
+    <German>Republik von Delhi</German>
+    <Italian>Repubblica di Delhi</Italian>
+    <Spanish>Rep&#250;blica de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_STATE</Tag>
+    <English>State of Delhi</English>
+    <French>&#201;tat de Delhi</French>
+    <German>Staat von Delhi</German>
+    <Italian>Stato di Delhi</Italian>
+    <Spanish>Estado de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_SULTANATE</Tag>
+    <English>Sultanate of Delhi</English>
+    <French>Sultanat de Delhi</French>
+    <German>Sultanat von Delhi</German>
+    <Italian>Sultanato di Delhi</Italian>
+    <Spanish>Sultanato de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_THEOCRACY</Tag>
+    <English>Theocracy of Delhi</English>
+    <French>Th&#233;ocratie de Delhi</French>
+    <German>Gottesstaat von Delhi</German>
+    <Italian>Teocrazia di Delhi</Italian>
+    <Spanish>Teocracia de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_DEL_TRIBES</Tag>
+    <English>Clans of Delhi</English>
+    <French>Clans de Delhi</French>
+    <German>St&#228;mme von Delhi</German>
+    <Italian>Clan di Delhi</Italian>
+    <Spanish>Clanes de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_FEDERATION</Tag>
+    <English>Federation of the Ganges</English>
+    <French>F&#233;d&#233;ration du Gange</French>
+    <German>F&#246;deration am Ganges</German>
+    <Italian>Federazione del Gange</Italian>
+    <Spanish>Federaci&#243;n del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_HOLY</Tag>
+    <English>Sacred Kingdom of the Ganges</English>
+    <French>Royaume sacr&#233; du Gange</French>
+    <German>Heiliges Reich am Ganges</German>
+    <Italian>Regno sacro del Gange</Italian>
+    <Spanish>Reino sagrado del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_KINGDOM</Tag>
+    <English>Kingdom of the Ganges</English>
+    <French>Royaume du Gange</French>
+    <German>K&#246;nigreich am Ganges</German>
+    <Italian>Regno del Gange</Italian>
+    <Spanish>Reino del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_LEAGUE</Tag>
+    <English>Merchant League of the Ganges</English>
+    <French>Ligue marchande du Gange</French>
+    <German>Handelsbund am Ganges</German>
+    <Italian>Lega mercantile del Gange</Italian>
+    <Spanish>Liga mercantil del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_PEOPLE</Tag>
+    <English>People's Republic of the Ganges</English>
+    <French>R&#233;publique populaire du Gange</French>
+    <German>Volksrepublik am Ganges</German>
+    <Italian>Repubblica popolare del Gange</Italian>
+    <Spanish>Rep&#250;blica Popular del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_REPUBLIC</Tag>
+    <English>Republic of the Ganges</English>
+    <French>R&#233;publique du Gange</French>
+    <German>Republik am Ganges</German>
+    <Italian>Repubblica del Gange</Italian>
+    <Spanish>Rep&#250;blica del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_STATE</Tag>
+    <English>State of the Ganges</English>
+    <French>&#201;tat du Gange</French>
+    <German>Staat am Ganges</German>
+    <Italian>Stato del Gange</Italian>
+    <Spanish>Estado del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_SULTANATE</Tag>
+    <English>Sultanate of the Ganges</English>
+    <French>Sultanat du Gange</French>
+    <German>Sultanat am Ganges</German>
+    <Italian>Sultanato del Gange</Italian>
+    <Spanish>Sultanato del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_THEOCRACY</Tag>
+    <English>Theocracy of the Ganges</English>
+    <French>Th&#233;ocratie du Gange</French>
+    <German>Gottesstaat am Ganges</German>
+    <Italian>Teocrazia del Gange</Italian>
+    <Spanish>Teocracia del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_GAN_TRIBES</Tag>
+    <English>Tribes of the Ganges</English>
+    <French>Tribus du Gange</French>
+    <German>St&#228;mme des Ganges</German>
+    <Italian>Trib&#249; del Gange</Italian>
+    <Spanish>Tribus del Ganges</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_FEDERATION</Tag>
+    <English>Federation of Harappa</English>
+    <French>F&#233;d&#233;ration de Harappa</French>
+    <German>F&#246;deration von Harappa</German>
+    <Italian>Federazione di Harappa</Italian>
+    <Spanish>Federaci&#243;n de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_HOLY</Tag>
+    <English>Sacred Kingdom of Harappa</English>
+    <French>Royaume sacr&#233; de Harappa</French>
+    <German>Heiliges Reich von Harappa</German>
+    <Italian>Regno sacro di Harappa</Italian>
+    <Spanish>Reino sagrado de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_KINGDOM</Tag>
+    <English>Kingdom of Harappa</English>
+    <French>Royaume de Harappa</French>
+    <German>K&#246;nigreich von Harappa</German>
+    <Italian>Regno di Harappa</Italian>
+    <Spanish>Reino de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_LEAGUE</Tag>
+    <English>Merchant League of Harappa</English>
+    <French>Ligue marchande de Harappa</French>
+    <German>Handelsbund von Harappa</German>
+    <Italian>Lega mercantile di Harappa</Italian>
+    <Spanish>Liga mercantil de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_PEOPLE</Tag>
+    <English>People's Republic of Harappa</English>
+    <French>R&#233;publique populaire de Harappa</French>
+    <German>Volksrepublik von Harappa</German>
+    <Italian>Repubblica popolare di Harappa</Italian>
+    <Spanish>Rep&#250;blica Popular de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_REPUBLIC</Tag>
+    <English>Republic of Harappa</English>
+    <French>R&#233;publique de Harappa</French>
+    <German>Republik von Harappa</German>
+    <Italian>Repubblica di Harappa</Italian>
+    <Spanish>Rep&#250;blica de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_STATE</Tag>
+    <English>State of Harappa</English>
+    <French>&#201;tat de Harappa</French>
+    <German>Staat von Harappa</German>
+    <Italian>Stato di Harappa</Italian>
+    <Spanish>Estado de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_SULTANATE</Tag>
+    <English>Sultanate of Harappa</English>
+    <French>Sultanat de Harappa</French>
+    <German>Sultanat von Harappa</German>
+    <Italian>Sultanato di Harappa</Italian>
+    <Spanish>Sultanato de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_THEOCRACY</Tag>
+    <English>Theocracy of Harappa</English>
+    <French>Th&#233;ocratie de Harappa</French>
+    <German>Gottesstaat von Harappa</German>
+    <Italian>Teocrazia di Harappa</Italian>
+    <Spanish>Teocracia de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_HAR_TRIBES</Tag>
+    <English>City-States of Harappa</English>
+    <French>Cit&#233;s-&#201;tats de Harappa</French>
+    <German>Stadtstaaten von Harappa</German>
+    <Italian>Citt&#224;-stato di Harappa</Italian>
+    <Spanish>Ciudades-Estado de Harappa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_FEDERATION</Tag>
+    <English>Federation of Vijayanagara</English>
+    <French>F&#233;d&#233;ration de Vijayanagara</French>
+    <German>F&#246;deration von Vijayanagara</German>
+    <Italian>Federazione di Vijayanagara</Italian>
+    <Spanish>Federaci&#243;n de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_HOLY</Tag>
+    <English>Temple Realm of Vijayanagara</English>
+    <French>Royaume des temples de Vijayanagara</French>
+    <German>Tempelreich von Vijayanagara</German>
+    <Italian>Regno dei templi di Vijayanagara</Italian>
+    <Spanish>Reino de los templos de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_KINGDOM</Tag>
+    <English>Vijayanagara Empire</English>
+    <French>Empire de Vijayanagara</French>
+    <German>Vijayanagara-Reich</German>
+    <Italian>Impero di Vijayanagara</Italian>
+    <Spanish>Imperio de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_LEAGUE</Tag>
+    <English>Merchant League of Vijayanagara</English>
+    <French>Ligue marchande de Vijayanagara</French>
+    <German>Handelsbund von Vijayanagara</German>
+    <Italian>Lega mercantile di Vijayanagara</Italian>
+    <Spanish>Liga mercantil de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_PEOPLE</Tag>
+    <English>People's Republic of Vijayanagara</English>
+    <French>R&#233;publique populaire de Vijayanagara</French>
+    <German>Volksrepublik von Vijayanagara</German>
+    <Italian>Repubblica popolare di Vijayanagara</Italian>
+    <Spanish>Rep&#250;blica Popular de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_REPUBLIC</Tag>
+    <English>Republic of Vijayanagara</English>
+    <French>R&#233;publique de Vijayanagara</French>
+    <German>Republik von Vijayanagara</German>
+    <Italian>Repubblica di Vijayanagara</Italian>
+    <Spanish>Rep&#250;blica de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_STATE</Tag>
+    <English>State of Vijayanagara</English>
+    <French>&#201;tat de Vijayanagara</French>
+    <German>Staat von Vijayanagara</German>
+    <Italian>Stato di Vijayanagara</Italian>
+    <Spanish>Estado de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_SULTANATE</Tag>
+    <English>Sultanate of Vijayanagara</English>
+    <French>Sultanat de Vijayanagara</French>
+    <German>Sultanat von Vijayanagara</German>
+    <Italian>Sultanato di Vijayanagara</Italian>
+    <Spanish>Sultanato de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_THEOCRACY</Tag>
+    <English>Theocracy of Vijayanagara</English>
+    <French>Th&#233;ocratie de Vijayanagara</French>
+    <German>Gottesstaat von Vijayanagara</German>
+    <Italian>Teocrazia di Vijayanagara</Italian>
+    <Spanish>Teocracia de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CIVIC_VIJ_TRIBES</Tag>
+    <English>Clans of Vijayanagara</English>
+    <French>Clans de Vijayanagara</French>
+    <German>St&#228;mme von Vijayanagara</German>
+    <Italian>Clan di Vijayanagara</Italian>
+    <Spanish>Clanes de Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_BENGAL</Tag>
+    <English>Bengal Sultanate</English>
+    <French>Sultanat du Bengale</French>
+    <German>Sultanat von Bengalen</German>
+    <Italian>Sultanato del Bengala</Italian>
+    <Spanish>Sultanato de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_BENGAL_NAWAB</Tag>
+    <English>Nawabate of Bengal</English>
+    <French>Nawabat du Bengale</French>
+    <German>Nawabstaat Bengalen</German>
+    <Italian>Nawabato del Bengala</Italian>
+    <Spanish>Nawabato de Bengala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_CHOLA</Tag>
+    <English>Chola Empire</English>
+    <French>Empire chola</French>
+    <German>Chola-Reich</German>
+    <Italian>Impero Chola</Italian>
+    <Spanish>Imperio chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_DELHI</Tag>
+    <English>Delhi Sultanate</English>
+    <French>Sultanat de Delhi</French>
+    <German>Sultanat von Delhi</German>
+    <Italian>Sultanato di Delhi</Italian>
+    <Spanish>Sultanato de Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_GUPTA</Tag>
+    <English>Gupta Empire</English>
+    <French>Empire gupta</French>
+    <German>Gupta-Reich</German>
+    <Italian>Impero Gupta</Italian>
+    <Spanish>Imperio gupta</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_HARSHA</Tag>
+    <English>Harsha's Empire</English>
+    <French>Empire de Harsha</French>
+    <German>Reich des Harsha</German>
+    <Italian>Impero di Harsha</Italian>
+    <Spanish>Imperio de Harsha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_KANVA</Tag>
+    <English>Kanva Kingdom</English>
+    <French>Royaume kanva</French>
+    <German>Kanva-Reich</German>
+    <Italian>Regno Kanva</Italian>
+    <Spanish>Reino kanva</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_KOSALA</Tag>
+    <English>Kingdom of Kosala</English>
+    <French>Royaume du Kosala</French>
+    <German>K&#246;nigreich Kosala</German>
+    <Italian>Regno di Kosala</Italian>
+    <Spanish>Reino de Kosala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MADURAI_NAYAK</Tag>
+    <English>Madurai Nayak Kingdom</English>
+    <French>Royaume nayak de Madurai</French>
+    <German>Nayaka-Reich von Madurai</German>
+    <Italian>Regno nayak di Madurai</Italian>
+    <Spanish>Reino nayaka de Madurai</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MADURAI_SULTANATE</Tag>
+    <English>Madurai Sultanate</English>
+    <French>Sultanat de Madurai</French>
+    <German>Sultanat von Madurai</German>
+    <Italian>Sultanato di Madurai</Italian>
+    <Spanish>Sultanato de Madurai</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MAGADHA</Tag>
+    <English>Kingdom of Magadha</English>
+    <French>Royaume du Magadha</French>
+    <German>K&#246;nigreich Magadha</German>
+    <Italian>Regno di Magadha</Italian>
+    <Spanish>Reino de Magadha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MAURYA</Tag>
+    <English>Mauryan Empire</English>
+    <French>Empire maurya</French>
+    <German>Maurya-Reich</German>
+    <Italian>Impero Maurya</Italian>
+    <Spanish>Imperio maurya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MUGHAL</Tag>
+    <English>Mughal Empire</English>
+    <French>Empire moghol</French>
+    <German>Mogulreich</German>
+    <Italian>Impero moghul</Italian>
+    <Spanish>Imperio mogol</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_MYSORE</Tag>
+    <English>Kingdom of Mysore</English>
+    <French>Royaume de Mysore</French>
+    <German>K&#246;nigreich Mysore</German>
+    <Italian>Regno di Mysore</Italian>
+    <Spanish>Reino de Mysore</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_NANDA</Tag>
+    <English>Nanda Empire</English>
+    <French>Empire nanda</French>
+    <German>Nanda-Reich</German>
+    <Italian>Impero Nanda</Italian>
+    <Spanish>Imperio nanda</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_PALA</Tag>
+    <English>Pala Empire</English>
+    <French>Empire pala</French>
+    <German>Pala-Reich</German>
+    <Italian>Impero Pala</Italian>
+    <Spanish>Imperio pala</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_PANDYA</Tag>
+    <English>Pandya Kingdom</English>
+    <French>Royaume pandya</French>
+    <German>Pandya-Reich</German>
+    <Italian>Regno Pandya</Italian>
+    <Spanish>Reino pandya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_SHUNGA</Tag>
+    <English>Shunga Empire</English>
+    <French>Empire shunga</French>
+    <German>Shunga-Reich</German>
+    <Italian>Impero Shunga</Italian>
+    <Spanish>Imperio shunga</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_SUR</Tag>
+    <English>Sur Empire</English>
+    <French>Empire sur</French>
+    <German>Sur-Reich</German>
+    <Italian>Impero Sur</Italian>
+    <Spanish>Imperio sur</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_THANJAVUR_MARATHA</Tag>
+    <English>Thanjavur Maratha Kingdom</English>
+    <French>Royaume marathe de Thanjavur</French>
+    <German>Marathenreich von Thanjavur</German>
+    <Italian>Regno maratha di Thanjavur</Italian>
+    <Spanish>Reino maratha de Thanjavur</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_THANJAVUR_NAYAK</Tag>
+    <English>Thanjavur Nayak Kingdom</English>
+    <French>Royaume nayak de Thanjavur</French>
+    <German>Nayaka-Reich von Thanjavur</German>
+    <Italian>Regno nayak di Thanjavur</Italian>
+    <Spanish>Reino nayaka de Thanjavur</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_HIST_VIJAYANAGARA</Tag>
+    <English>Vijayanagara Empire</English>
+    <French>Empire de Vijayanagara</French>
+    <German>Vijayanagara-Reich</German>
+    <Italian>Impero di Vijayanagara</Italian>
+    <Spanish>Imperio de Vijayanagara</Spanish>
+  </TEXT>
+</Civ4GameText>

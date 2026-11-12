@@ -58,7 +58,6 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
         self.CustomEvents = {
             7614 : ('RiseAndFallPopupEvent', self.rnfEventApply7614, self.rnfEventBegin7614),
-            7615 : ('FlipPopupEvent', self.rnfEventApply7615, self.rnfEventBegin7615),
             7616 : ('VotePopupEvent', self.congEventApply7616, self.congEventBegin7616),
             7617 : ('AskCityPopupEvent', self.congEventApply7617, self.congEventBegin7617),
             7618 : ('DecisionPopupEvent', self.congEventApply7618, self.congEventBegin7618),
@@ -92,6 +91,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         self.addEventHandler("GameStart", Caliphate.onLoadGame)
         import Korea
         self.addEventHandler("OnLoad", Korea.configureRegions)
+        import BirthSuccession
+        self.addEventHandler("OnLoad", BirthSuccession.loaded)
+        self.addEventHandler("GameStart", BirthSuccession.loaded)
+        self.addEventHandler("BeginPlayerTurn", BirthSuccession.showPending)
         self.addEventHandler("GameStart", Korea.configureRegions)
         if REPORTING_ENABLED:
             self.observer.install_after(self)
@@ -228,13 +231,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             pass
        
     def rnfEventApply7614(self, playerID, netUserData, popupReturn):
-            self.rnf.eventApply7614(popupReturn)
-
-    def rnfEventBegin7615(self):
-            pass
-       
-    def rnfEventApply7615(self, playerID, netUserData, popupReturn):
-            self.rnf.eventApply7615(popupReturn)
+            import BirthSuccession
+            BirthSuccession.apply(playerID, netUserData, popupReturn)
 
     def congEventBegin7616(self):
             pass

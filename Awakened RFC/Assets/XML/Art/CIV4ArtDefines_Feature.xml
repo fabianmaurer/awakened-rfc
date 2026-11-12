@@ -236,6 +236,28 @@
 				<bGenerateRotations>0</bGenerateRotations>
 				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
 			</FeatureVariety>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_Drought.dds</ModelFile>
+						<Connections/>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
+			</FeatureVariety>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_SevereDrought.dds</ModelFile>
+						<Connections/>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
+			</FeatureVariety>
 		</FeatureArtInfo>
 		<FeatureArtInfo>
 			<Type>ART_DEF_FEATURE_FOREST</Type>

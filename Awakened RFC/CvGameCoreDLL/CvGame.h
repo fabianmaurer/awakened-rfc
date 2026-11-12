@@ -304,7 +304,12 @@ public:
 	DllExport PlayerTypes getActivePlayer() const;																				// Exposed to Python
 	DllExport void setActivePlayer(PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python
 	//DllExport void switchActivePlayer(int eOldPlayerNetID, PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python //Rhye (RFCMP)
-	DllExport void switchActivePlayer(PlayerTypes eOldActivePlayer, PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python //Rhye (RFCMP)
+	DllExport void switchActivePlayer(PlayerTypes eOldActivePlayer, PlayerTypes eNewValue, bool bForceHotSeat = false);
+	void beginBirthFlip();
+	void endBirthFlip();
+	void refreshDroughtIrrigation();
+	bool isBirthFlipInProgress() const { return m_bBirthFlipInProgress; }
+	bool transferBirthControl(PlayerTypes eOldPlayer, PlayerTypes eNewPlayer);		// Exposed to Python //Rhye (RFCMP)
 	DllExport void updateUnitEnemyGlow();
 
 	DllExport HandicapTypes getHandicapType() const;
@@ -733,6 +738,7 @@ protected:
 	std::map<int, PlayerTypes> m_papalDecisions;
 	bool m_bPapalPalaceEffects;
 	bool m_bPapalCivicOverride;
+	bool m_bBirthFlipInProgress; // Synchronous birth transaction; never saved.
 	FFreeListTrashArray<VoteTriggeredData> m_votesTriggered;
 
 	CvRandom m_mapRand;

@@ -27,7 +27,7 @@ l0ArrayActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 
 0, # Eskimos
 ]
-l0ArrayTotal = [0] * 39
+l0ArrayTotal = [0] * 44
 
 lm1Array =      [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 -1, -1
@@ -75,18 +75,19 @@ iXiongnu = 29
 iKorea = 30
 iMississippians = 31
 iEskimos = 32
-iNumPlayers = 33
-iNumMajorPlayers = 33
-iNumActivePlayers = 33
-iIndependent = 33
-iIndependent2 = 34
-iNative = 35
-iCeltia = 36
-iCrusaderState = 37
-iPapalState = 38
-iNumTotalPlayers = 39
-iBarbarian = 39
-iNumTotalPlayersB = 40
+iGanges, iChola, iDelhi, iBengal, iVijayanagara = range(33, 38)
+iNumPlayers = 38
+iNumMajorPlayers = 38
+iNumActivePlayers = 38
+iIndependent = 38
+iIndependent2 = 39
+iNative = 40
+iCeltia = 41
+iCrusaderState = 42
+iPapalState = 43
+iNumTotalPlayers = 44
+iBarbarian = 44
+iNumTotalPlayersB = 45
 
 #for Congresses and Victory
 lCivGroups = [[iGreece, iRome, iVikings, iSpain, iFrance, iEngland, iGermany, iRussia, iNetherlands, iPortugal],  #Euros
@@ -460,9 +461,12 @@ def isMongolianBirthReplaced():
 
 def getBirthFlipMask(argsList):
         # DLL tooltip callback: use the same rectangles and added tiles as RiseAndFall.
-        iX, iY, iGameTurn = argsList
+        iX, iY, iGameTurn = argsList[:3]
+        iFirst = 0
+        if len(argsList) > 3: iFirst = argsList[3]
         iMask = 0
-        for iCiv in range(iNumMajorPlayers):
+        for iCiv in range(iFirst, min(iFirst + 32, iNumMajorPlayers)):
+                if gc.getPlayer(iCiv).getCivilizationType() < 0: continue
                 if iCiv == iMongolia and isMongolianBirthReplaced():
                         continue
                 if tBirth[iCiv] <= 0 or iGameTurn > tBirth[iCiv] + 5:
@@ -470,7 +474,7 @@ def getBirthFlipMask(argsList):
                 tTL, tBR = getBirthFlipArea(iCiv)
                 if ((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
                     (iX, iY) in getBirthFlipExceptions(iCiv)):
-                        iMask |= 1 << iCiv
+                        iMask |= 1 << (iCiv - iFirst)
         # The DLL callback extracts a signed 32-bit long. Slot 31 sets its sign
         # bit; return the same bit pattern without overflowing that conversion.
         if iMask >= 0x80000000:
@@ -1537,6 +1541,31 @@ def getCrusadeFlipRecipient(argsList):
                 candidates.sort()
                 return candidates[0][1]
         return -1
+
+# The five new slots exist globally; only XL scenarios assign civilizations.
+from IndianCivsData import CIVS as _indianCivs
+_indianLeaders = [gc.getInfoTypeForString('LEADER_' + c[0]) for c in _indianCivs]
+l0Array += [0] * 5
+l0ArrayActive += [0] * 5
+lm1Array += [-1] * 5
+lNeighbours += [[iIndia, iPersia, iKhmer, iGanges, iChola, iDelhi, iBengal, iVijayanagara] for c in _indianCivs]
+lOlderNeighbours += [[iIndia, iGanges] for c in _indianCivs]
+lEnemyCivsOnSpawn += [[] for c in _indianCivs]
+tBirth = tBirth[:33] + tuple([c[2] for c in _indianCivs]) + tBirth[33:]
+tYear += tuple([(str(abs(c[3])) + ' ', 'TXT_KEY_AD') for c in _indianCivs])
+tYear = tYear[:33] + (('3000 ', 'TXT_KEY_BC'),) + tYear[34:]
+tGoals += [tuple(['TXT_KEY_UHV_' + c[1] + str(i) for i in (1,2,3)]) for c in _indianCivs]
+tLeaders += tuple([(leader,) for leader in _indianLeaders])
+tEarlyLeaders += tuple(_indianLeaders)
+tLateLeaders += ((),) * 5
+for _table, _new in (('tAggressionLevel', (1,2,4,2,2)),
+        ('tAIStopBirthThreshold', (80,80,80,80,80)),
+        ('tResurrectionProb', (10,15,15,20,20)), ('tMaxColonists', (1,3,1,2,1)),
+        ('tIsActiveOnLateStart', (1,0,0,0,0))):
+    _old = globals()[_table]
+    globals()[_table] = _old[:33] + _new + _old[33:]
+for _group in (lCivGroups[1], lCivStabilityGroups[1], lCivBioOldWorld):
+    _group.extend(range(33, 38))
 
 # Mississippian chiefdoms have their own American major slot.
 # Keep reference dates for module aliases and scenario changes in one process.

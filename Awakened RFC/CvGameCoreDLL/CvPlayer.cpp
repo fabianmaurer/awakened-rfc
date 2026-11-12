@@ -1553,6 +1553,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 	eHighestCulturePlayer = pOldCity->findHighestCulture();
 	iGameTurnFounded = pOldCity->getGameTurnFounded();
 	iPopulation = pOldCity->getPopulation();
+    const int iOldFood = pOldCity->getFood();
+    const int iOldFoodKept = pOldCity->getFoodKept();
+    const int iOldFamineTurns = pOldCity->getFamineTurns();
 	iHighestPopulation = pOldCity->getHighestPopulation();
 	iHurryAngerTimer = pOldCity->getHurryAngerTimer();
 	iConscriptAngerTimer = pOldCity->getConscriptAngerTimer();
@@ -1668,6 +1671,9 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 		getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_LABOR")) ==
 		(CivicTypes)GC.getInfoTypeForString("CIVIC_SLAVERY");
 	pNewCity->setPopulation((bConquest && !bRecapture) ? std::max(1, iPopulation - (bEnslaveConquest ? 2 : 1)) : iPopulation);
+    pNewCity->setFood(std::min(iOldFood, std::max(0, pNewCity->growthThreshold() - 1)));
+    pNewCity->setFoodKept(std::min(iOldFoodKept, pNewCity->getFood()));
+    pNewCity->setFamineTurns(iOldFamineTurns);
 	// Population lost in a conquest becomes slave units for a conqueror who
 	// practices Slavery.  This occurs before cityAcquired so all Python event
 	// handlers observe the complete result.
@@ -5559,7 +5565,7 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 }
 
 
-void CvPlayer::found(int iX, int iY)
+void CvPlayer::found(int iX, int iY, int iMinimumPopulation)
 {
 	CvCity* pCity;
 	BuildingTypes eLoopBuilding;
@@ -5577,6 +5583,9 @@ void CvPlayer::found(int iX, int iY)
 
 	pCity = initCity(iX, iY, true, true);
 	FAssertMsg(pCity != NULL, "City is not assigned a valid value");
+	// Set founding population before city-built callbacks and notifications.
+	if (pCity->getPopulation() < iMinimumPopulation)
+		pCity->setPopulation(iMinimumPopulation);
 
 	if (isBarbarian())
 	{
@@ -9454,7 +9463,9 @@ int CvPlayer::specialistYield(SpecialistTypes eSpecialist, YieldTypes eYield) co
 
 int CvPlayer::specialistCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const
 {
-	return (GC.getSpecialistInfo(eSpecialist).getCommerceChange(eCommerce) + getSpecialistExtraCommerce(eCommerce));
+	int iPower = (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_GANGES") &&
+		eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && eCommerce == COMMERCE_RESEARCH) ? 2 : 0;
+	return (GC.getSpecialistInfo(eSpecialist).getCommerceChange(eCommerce) + getSpecialistExtraCommerce(eCommerce) + iPower);
 }
 
 
@@ -9852,7 +9863,7 @@ void CvPlayer::updateMaxAnarchyTurns()
 	}
 
 	//Rhye - start UP
-	if (getID() == INDIA)
+	if (getID() == INDIA && getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_HARAPPA"))
 	{
 		iBestValue = 0;
 	}
@@ -11592,7 +11603,7 @@ void CvPlayer::verifyAlive()
 			}
 		}
 
-		if (bKill)
+		if (bKill && !GC.getGameINLINE().isBirthFlipInProgress())
 		{
 			setAlive(false);
 		}
@@ -24053,6 +24064,97 @@ static bool hasCountryCivic(const std::vector<int>& civics, const char* szType)
 	return iCivic >= 0 && std::find(civics.begin(), civics.end(), iCivic) != civics.end();
 }
 
+// Explicit civilization identity keeps menu previews independent of live players.
+CvWString getAuthoredCountryNameKey(int iCivilization, const std::vector<int>& civics, int iReligion, int iYear, int iCapitalX, int iCapitalY, int iNumCities)
+{
+    const wchar* szRoot = NULL;
+    if (iCivilization < 0) return L"";
+    if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_HARAPPA")) szRoot = L"HAR";
+    else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_GANGES")) szRoot = L"GAN";
+    else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_CHOLA")) szRoot = L"CHO";
+    else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_DELHI")) szRoot = L"DEL";
+    else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_BENGAL")) szRoot = L"BEN";
+    else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_VIJAYANAGARA")) szRoot = L"VIJ";
+    if (szRoot == NULL) return L"";
+    const bool bMonarchy = hasCountryCivic(civics, "CIVIC_MONARCHY");
+    const bool bPopular = hasCountryCivic(civics, "CIVIC_REPUBLIC") || hasCountryCivic(civics, "CIVIC_DEMOCRACY");
+    const bool bFaith = iReligion != NO_RELIGION && !hasCountryCivic(civics, "CIVIC_STATE_ATHEISM");
+    const bool bSacred = bFaith && (hasCountryCivic(civics, "CIVIC_THEOCRATIC_LEGITIMACY") || hasCountryCivic(civics, "CIVIC_GOD_STATE"));
+    // Regional identities are naming rules, not forced conquests or migrations.
+    // Coordinates use the authored 200 x 110 geography, normalized by callers.
+    const wchar* szHistorical = NULL;
+    const bool bIslam = bFaith && iReligion == GC.getInfoTypeForString("RELIGION_ISLAM");
+    const bool bHindu = bFaith && iReligion == GC.getInfoTypeForString("RELIGION_HINDUISM");
+    const bool bBuddhist = bFaith && iReligion == GC.getInfoTypeForString("RELIGION_BUDDHISM");
+    if (bMonarchy && !hasCountryCivic(civics, "CIVIC_PLANNED_ECONOMY"))
+    {
+        if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_GANGES") && !bIslam)
+        {
+            if (iCapitalX >= 150 && iCapitalX <= 152 && iCapitalY >= 63 && iCapitalY <= 66 && iYear >= -800)
+            {
+                szHistorical = L"MAGADHA";
+                if (iYear >= -362 && iYear < -321 && iNumCities >= 2) szHistorical = L"NANDA";
+                else if (iYear >= -321 && iYear < -185 && iNumCities >= 3) szHistorical = L"MAURYA";
+                else if (iYear >= -185 && iYear < -73 && iNumCities >= 2) szHistorical = L"SHUNGA";
+                else if (iYear >= -73 && iYear < -28) szHistorical = L"KANVA";
+                else if (iYear >= 320 && iYear < 550 && iNumCities >= 3) szHistorical = L"GUPTA";
+                else if (iYear >= 750 && iYear < 1162 && bBuddhist && iNumCities >= 3) szHistorical = L"PALA";
+            }
+            else if (iCapitalX == 149 && iCapitalY == 66 && iYear >= -600 && iYear < -300) szHistorical = L"KOSALA";
+            else if (iCapitalX >= 147 && iCapitalX <= 149 && iCapitalY >= 64 && iCapitalY <= 67 &&
+                iYear >= 606 && iYear < 648 && iNumCities >= 3) szHistorical = L"HARSHA";
+        }
+        else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_DELHI") && bIslam &&
+            iCapitalX >= 144 && iCapitalX <= 147 && iCapitalY >= 63 && iCapitalY <= 67 && iYear >= 1200)
+        {
+            szHistorical = L"DELHI";
+            if (iYear >= 1526 && iNumCities >= 3)
+                szHistorical = (iYear >= 1540 && iYear < 1555) ? L"SUR" : L"MUGHAL";
+        }
+        else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_BENGAL") && bIslam &&
+            iCapitalX >= 153 && iCapitalX <= 157 && iCapitalY >= 62 && iCapitalY <= 67 && iYear >= 1350)
+            szHistorical = (iYear >= 1717) ? L"BENGAL_NAWAB" : L"BENGAL";
+        else if (iCivilization == GC.getInfoTypeForString("CIVILIZATION_CHOLA") ||
+                 iCivilization == GC.getInfoTypeForString("CIVILIZATION_VIJAYANAGARA"))
+        {
+            const bool bChola = iCivilization == GC.getInfoTypeForString("CIVILIZATION_CHOLA");
+            if (bHindu && iYear >= 1565 && iNumCities <= 2 && iCapitalX == 147 && iCapitalY == 52)
+                szHistorical = (iYear >= 1676) ? L"THANJAVUR_MARATHA" : L"THANJAVUR_NAYAK";
+            else if (bHindu && iYear >= 1565 && iNumCities <= 2 && iCapitalX == 147 && iCapitalY == 51) szHistorical = L"MADURAI_NAYAK";
+            else if (!bChola && iYear >= 1610 && iCapitalX == 145 && (iCapitalY == 53 || iCapitalY == 54))
+                szHistorical = L"MYSORE";
+            else if (bChola && bIslam && iYear >= 1335 && iYear < 1378 && iCapitalX == 147 && iCapitalY == 51)
+                szHistorical = L"MADURAI_SULTANATE";
+            else if (bChola && bHindu && iYear >= 1279 && iYear < 1335 && iCapitalX == 147 && iCapitalY == 51)
+                szHistorical = L"PANDYA";
+            else if (bChola && !bIslam && iYear >= 850 && iCapitalX >= 147 && iCapitalX <= 149 && iCapitalY >= 51 && iCapitalY <= 54)
+                szHistorical = L"CHOLA";
+            else if (!bChola && !bIslam && iYear >= 1336 && iCapitalX >= 144 && iCapitalX <= 146 && iCapitalY >= 55 && iCapitalY <= 58)
+                szHistorical = L"VIJAYANAGARA";
+        }
+    }
+    if (szHistorical != NULL)
+    {
+        CvWString szKey;
+        szKey.Format(L"TXT_KEY_HIST_%s", szHistorical);
+        return szKey;
+    }
+    const wchar* szForm = L"TRIBES";
+    // Specific combinations precede ordinary government forms.
+    if (bPopular && hasCountryCivic(civics, "CIVIC_PLANNED_ECONOMY")) szForm = L"PEOPLE";
+    else if (bPopular && hasCountryCivic(civics, "CIVIC_PLUTOCRACY") && hasCountryCivic(civics, "CIVIC_NAVAL_WARFARE")) szForm = L"LEAGUE";
+    else if (hasCountryCivic(civics, "CIVIC_DEMOCRACY") && hasCountryCivic(civics, "CIVIC_RULE_OF_LAW")) szForm = L"FEDERATION";
+    else if (bPopular) szForm = L"REPUBLIC";
+    else if (hasCountryCivic(civics, "CIVIC_DICTATORSHIP")) szForm = L"STATE";
+    else if (bMonarchy && bFaith && iReligion == GC.getInfoTypeForString("RELIGION_ISLAM")) szForm = L"SULTANATE";
+    else if (bMonarchy && bSacred) szForm = L"HOLY";
+    else if (bMonarchy) szForm = L"KINGDOM";
+    else if (bSacred) szForm = L"THEOCRACY";
+    CvWString szKey;
+    szKey.Format(L"TXT_KEY_CIVIC_%s_%s", szRoot, szForm);
+    return szKey;
+}
+
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots, bool bUseLiveTechnology)
 {
 	if (iPlayer == ESKIMOS)
@@ -24374,6 +24476,22 @@ CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civi
 //Rhye - start switch (dynamic civ names - not jdog's)
 void CvPlayer::processCivNames()
 {
+    if (!isMinorCiv() && isAlive())
+    {
+        std::vector<int> civics;
+        for (int iOption = 0; iOption < GC.getNumCivicOptionInfos(); ++iOption)
+            civics.push_back(getCivics((CivicOptionTypes)iOption));
+        const CvCity* pCapital = getCapitalCity();
+        const int iCapitalX = pCapital == NULL ? -1 : pCapital->getX_INLINE() * 200 / GC.getMapINLINE().getGridWidthINLINE();
+        const int iCapitalY = pCapital == NULL ? -1 : pCapital->getY_INLINE() * 110 / GC.getMapINLINE().getGridHeightINLINE();
+        const CvWString szKey = getAuthoredCountryNameKey(getCivilizationType(), civics, getStateReligion(),
+            GC.getGameINLINE().getGameTurnYear(), iCapitalX, iCapitalY, getNumCities());
+        if (!szKey.empty())
+        {
+            setCivDescription(szKey);
+            return;
+        }
+    }
 	if (getID() == MISSISSIPPIANS)
 		startingTurn[MISSISSIPPIANS] = (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ADENA")) ? 87 : 211;
 	if (GC.getGameINLINE().isPapalState(getID())) { setCivDescription(L"TXT_KEY_AP_PAPAL_STATE"); return; }

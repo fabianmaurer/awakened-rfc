@@ -825,6 +825,21 @@ CyCity* CyPlot::getWorkingCityOverride()
 	return m_pPlot ? new CyCity(m_pPlot->getWorkingCityOverride()) : NULL;
 }
 
+int CyPlot::getRiverDrought() const
+{
+	return m_pPlot ? m_pPlot->getRiverDrought() : 0;
+}
+
+int CyPlot::getRiverDroughtEdges() const
+{
+	return m_pPlot ? m_pPlot->getRiverDroughtEdges() : 0;
+}
+
+void CyPlot::setRiverDrought(int iSouthEdge, int iEastEdge)
+{
+	if (m_pPlot) m_pPlot->setRiverDrought(iSouthEdge, iEastEdge);
+}
+
 int CyPlot::getRiverID() const
 {
 	return m_pPlot ? m_pPlot->getRiverID() : -1;

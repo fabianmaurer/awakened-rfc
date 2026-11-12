@@ -172,6 +172,7 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	m_iForceUnownedTimer = 0;
 	m_iCityRadiusCount = 0;
 	m_iRiverID = -1;
+	m_iRiverDroughtEdges = 0;
 	m_iMinOriginalStartDist = -1;
 	m_iReconCount = 0;
 	m_iRiverCrossingCount = 0;
@@ -1417,7 +1418,7 @@ bool CvPlot::isLake() const
 
 // XXX if this changes need to call updateIrrigated() and pCity->updateFreshWaterHealth()
 // XXX precalculate this???
-bool CvPlot::isFreshWater() const
+bool CvPlot::isFreshWater(bool bForIrrigation) const
 {
 	CvPlot* pLoopPlot;
 	int iDX, iDY;
@@ -1432,7 +1433,7 @@ bool CvPlot::isFreshWater() const
 		return false;
 	}
 
-	if (isRiver())
+	if (isRiver() && (!bForIrrigation || getRiverDrought() < 2))
 	{
 		return true;
 	}
@@ -1513,7 +1514,7 @@ bool CvPlot::isIrrigationAvailable(bool bIgnoreSelf) const
 		return true;
 	}
 
-	if (isFreshWater())
+	if (isFreshWater(true))
 	{
 		return true;
 	}
@@ -5555,6 +5556,8 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 	int iI;
 
 	eOldFeature = getFeatureType();
+	if (eNewValue == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS"))
+		iVariety = getRiverDrought();
 
 	if (eNewValue != NO_FEATURE)
 	{
@@ -6186,6 +6189,62 @@ void CvPlot::setWorkingCityOverride( const CvCity* pNewValue)
 }
 
 
+int CvPlot::getRiverDrought() const
+{
+    // A usable second river protects the tile. Civ4 stores its south and east
+    // edges here, and its north/west edges on the neighbouring plots.
+    int iBest = 2;
+    bool bFound = false;
+    if (isNOfRiver())
+    {
+        iBest = std::min(iBest, m_iRiverDroughtEdges % 3);
+        bFound = true;
+    }
+    if (isWOfRiver())
+    {
+        iBest = std::min(iBest, m_iRiverDroughtEdges / 3);
+        bFound = true;
+    }
+    const CvPlot* pNorth = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_NORTH);
+    if (pNorth != NULL && pNorth->isNOfRiver())
+    {
+        iBest = std::min(iBest, pNorth->m_iRiverDroughtEdges % 3);
+        bFound = true;
+    }
+    const CvPlot* pWest = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_WEST);
+    if (pWest != NULL && pWest->isWOfRiver())
+    {
+        iBest = std::min(iBest, pWest->m_iRiverDroughtEdges / 3);
+        bFound = true;
+    }
+    return bFound ? iBest : 0;
+}
+
+int CvPlot::getRiverDroughtEdges() const
+{
+    return m_iRiverDroughtEdges;
+}
+
+void CvPlot::setRiverDrought(int iSouthEdge, int iEastEdge)
+{
+    // Independent base-three digits: 0 normal, 1 drought, 2 severe drought.
+    int iNew = range(iSouthEdge, 0, 2) + 3 * range(iEastEdge, 0, 2);
+    if (m_iRiverDroughtEdges == iNew) return;
+    m_iRiverDroughtEdges = iNew;
+    for (int iDX = -1; iDX <= 1; ++iDX)
+    {
+        for (int iDY = -1; iDY <= 1; ++iDY)
+        {
+            CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+            if (pPlot == NULL) continue;
+            if (pPlot->getFeatureType() == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS"))
+                pPlot->setFeatureType(pPlot->getFeatureType(), pPlot->getRiverDrought());
+            pPlot->updateYield();
+            pPlot->setLayoutDirty(true);
+        }
+    }
+}
+
 int CvPlot::getRiverID() const
 {
 	return m_iRiverID;
@@ -6328,6 +6387,9 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 		if (getFeatureType() != NO_FEATURE)
 		{
 			iYield += GC.getFeatureInfo(getFeatureType()).getYieldChange(eYield);
+			if (eYield == YIELD_FOOD && getRiverDrought() > 0 &&
+				getFeatureType() == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS"))
+				iYield -= 2;
 		}
 	}
 
@@ -6659,8 +6721,12 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_CELT") &&
 			eYield == YIELD_FOOD && getFeatureType() == GC.getInfoTypeForString("FEATURE_FOREST"))
 			++iYield; // Sacred Groves: reward preserving forests.
+		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_BENGAL") && eYield == YIELD_COMMERCE && isRiver()) ++iYield;
 		if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_FARM"))
 		{
+			if (eCiv == GC.getInfoTypeForString("CIVILIZATION_HARAPPA") &&
+				eYield == YIELD_COMMERCE && isRiver())
+				++iYield; // Indus Networks.
 			if ((eCiv == GC.getInfoTypeForString("CIVILIZATION_NATIVE_AMERICA") ||
 				eCiv == GC.getInfoTypeForString("CIVILIZATION_ADENA")) &&
 				eYield == YIELD_PRODUCTION && isRiver())
@@ -9330,6 +9396,7 @@ void CvPlot::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iForceUnownedTimer);
 	pStream->Read(&m_iCityRadiusCount);
 	pStream->Read(&m_iRiverID);
+	pStream->Read(&m_iRiverDroughtEdges);
 	pStream->Read(&m_iMinOriginalStartDist);
 	pStream->Read(&m_iReconCount);
 	pStream->Read(&m_iRiverCrossingCount);
@@ -9558,6 +9625,7 @@ void CvPlot::write(FDataStreamBase* pStream)
 	pStream->Write(m_iForceUnownedTimer);
 	pStream->Write(m_iCityRadiusCount);
 	pStream->Write(m_iRiverID);
+	pStream->Write(m_iRiverDroughtEdges);
 	pStream->Write(m_iMinOriginalStartDist);
 	pStream->Write(m_iReconCount);
 	pStream->Write(m_iRiverCrossingCount);

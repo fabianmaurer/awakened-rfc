@@ -9,7 +9,7 @@ from CvPythonExtensions import CyMap
 SCENARIOS = {
     'start 1 - 3000 bc.civbeyondswordwbsave': 'Earth124x68',
     'start 1b - 3000 bc - large world.civbeyondswordwbsave': 'Earth160x88',
-    'start 1 xl - 3000bc.civbeyondswordwbsave': 'Earth200x110',
+    'start 1 xl - 3000bc.civbeyondswordwbsave': 'Earth200x110Harappa',
     'start 2 - 800 bc.civbeyondswordwbsave': 'Earth124x68',
     'start 2 xl - 800bc.civbeyondswordwbsave': 'Earth200x110',
     'start 3 - 600 ad.civbeyondswordwbsave': 'Earth124x68',
@@ -39,6 +39,8 @@ def _profile(name=None):
         # Civ4 discovers Python files recursively but imports them by their flat
         # module names. Its custom importer does not support ordinary packages.
         _profiles[name] = __import__(name)
+        import IndianCivsData
+        IndianCivsData.extend(_profiles[name], name)
     return _profiles[name]
 
 
@@ -50,13 +52,19 @@ def profile_name():
     return _name
 
 
+def base_profile_name():
+    if _name == 'Earth200x110Harappa':
+        return 'Earth200x110'
+    return _name
+
+
 def height():
     return _profile().HEIGHT
 
 
 def turns(number):
     """Reference-calendar turns to engine turns; movement is never scaled."""
-    if _name == 'Earth200x110':
+    if base_profile_name() == 'Earth200x110':
         return number * 2
     return number
 
@@ -76,7 +84,7 @@ def nextHistoryTurn(number):
 
 def scenarioSpeed(filename):
     basename = os.path.basename((filename or '').replace('\\', '/')).lower()
-    if SCENARIOS.get(basename) == 'Earth200x110':
+    if SCENARIOS.get(basename) in ('Earth200x110', 'Earth200x110Harappa'):
         return 'GAMESPEED_XL'
     return 'GAMESPEED_NORMAL'
 
@@ -173,7 +181,7 @@ def _validate(profile):
             raise ValueError('Missing or malformed native geography value: ' + key)
     for grids in (profile.SETTLERS, profile.VALUES['CityNameManager.tCityMap'],
                   profile.VALUES['AIWars.tWarsMap']):
-        if len(grids) != 33:
+        if len(grids) != 38:
             raise ValueError('Scenario geography needs one map per major civilization')
         for plane in grids:
             if len(plane) != h:

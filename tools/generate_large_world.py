@@ -40,6 +40,9 @@ def resource_free_settlements(profile_values):
                    (118, 62), (118, 65), (123, 65), (124, 69), (128, 65),
                    (137, 77), (142, 62), (145, 65), (150, 65), (165, 76),
                    (166, 70), (172, 71)))
+    if NAME == 'Earth200x110':
+        from indian_scenarios import CIVS
+        result.update(entry[4] for entry in CIVS)
     return result
 
 
@@ -545,6 +548,37 @@ FLOODPLAIN_FRINGES = {
 }
 
 
+def harappan_floodplains(plots):
+    """Author the fertile opening along existing eastern Indus riverbanks."""
+    # Reclaim the upper alluvial block for early farming. The lower riverbank
+    # at (139, 60) and (139, 61) retains its two local wetlands.
+    reclaimed = {(139, 62): 'TERRAIN_DESERT',
+                 (140, 62): 'TERRAIN_GRASS', (141, 62): 'TERRAIN_GRASS',
+                 (140, 61): 'TERRAIN_GRASS', (141, 61): 'TERRAIN_PLAINS'}
+    for site, terrain in reclaimed.items():
+        fields = plots.get(site, [])
+        if 'TerrainType=TERRAIN_MARSH' not in fields:
+            continue
+        fields[:] = [f for f in fields if not f.startswith(
+            ('TerrainType=', 'FeatureType=FEATURE_MUD', 'BonusType=BONUS_SWAMP'))]
+        fields.append('TerrainType=' + terrain)
+        if terrain == 'TERRAIN_DESERT':
+            fields.append('FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0')
+    for (x, y), fields in plots.items():
+        if not (139 <= x <= 145 and 60 <= y <= 66) or 'PlotType=2' not in fields:
+            continue
+        if any(f.startswith(('FeatureType=', 'ImprovementType=', 'BonusType=')) for f in fields):
+            continue
+        river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
+                 'isNOfRiver' in plots.get((x, y + 1), ()) or
+                 'isWOfRiver' in plots.get((x - 1, y), ()))
+        if not river:
+            continue
+        fields[:] = ['TerrainType=TERRAIN_DESERT' if f.startswith('TerrainType=')
+                     else f for f in fields]
+        fields.append('FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0')
+
+
 def correct_floodplains(plots, origins):
     """Remove invalid features; preserve base terrain except reviewed fringes."""
     valleys, corrected = set(), Counter()
@@ -847,6 +881,8 @@ def make_map(profile_values):
         write_review(plots, coast_original, ROOT / 'docs/XLCoastlineReview.tsv')
 
     anchors = list(profile_values['Consts.tCapitals'])
+    if NAME == 'Earth200x110':
+        anchors.append((141, 64)) # Harappa's separate 3000 BC profile.
     mali_valley = set()
     if NAME == 'Earth200x110':
         # The Sahara mask must not cut the inhabited Niger bend or the Sahel
@@ -1103,13 +1139,26 @@ def make_map(profile_values):
         if i < 4 or (NAME == 'Earth200x110' and i in XL_CAPITAL_OVERRIDES):
             x, y = profile_values['Consts.tCapitals'][i]
             changed = changed.replace('EndPlayer', '\tStartingX=%d\n\tStartingY=%d\nEndPlayer' % (x, y))
+        if NAME == 'Earth200x110' and i == 1:
+            changed = changed.replace('CIVILIZATION_INDIA', 'CIVILIZATION_HARAPPA')
+            changed = changed.replace('LEADER_ASOKA', 'LEADER_HARAPPAN_COUNCIL')
+            changed = changed.replace('PLAYERCOLOR_PURPLE', 'PLAYERCOLOR_ORANGE')
+            changed = re.sub(r'StartingX=\d+', 'StartingX=141', changed)
+            changed = re.sub(r'StartingY=\d+', 'StartingY=64', changed)
         header = header.replace(player, changed, 1)
+    if NAME == 'Earth200x110':
+        teams = list(re.finditer(r'BeginTeam\b.*?EndTeam', header, re.S))
+        team = teams[1]
+        header = header[:team.start()] + team[0].replace('TECH_MYSTICISM', 'TECH_AGRICULTURE') + header[team.end():]
+    if NAME == 'Earth200x110':
+        harappan_floodplains(plots)
     output = [header.rstrip() + '\n']
     for (x, y), fields in plots.items():
         output.append('BeginPlot\n\tx=%d,y=%d\n\t%s\nEndPlot\n' %
                       (x, y, '\n\t'.join(fields + placements.get((x, y), []))))
     output.append('BeginSign\nEndSign\n' if 'BeginSign' in source else '')
-    TARGET.write_text(''.join(output), encoding='utf-8', newline='\n')
+    from indian_scenarios import apply_indian_civs
+    TARGET.write_text(apply_indian_civs(''.join(output), NAME == 'Earth200x110'), encoding='utf-8', newline='\n')
     print('Reference passable land: %d; enlarged before barriers: %d; final: %d (%+.2f%%)' %
           (baseline, before, before - len(candidates), 100 * ((before - len(candidates)) / baseline - 1)))
     print('Impassable additions:', dict(barriers))

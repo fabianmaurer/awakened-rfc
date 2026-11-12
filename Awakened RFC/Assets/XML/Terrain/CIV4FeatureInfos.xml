@@ -345,7 +345,7 @@
 		<FeatureInfo>
 			<Type>FEATURE_FLOOD_PLAINS</Type>
 			<Description>TXT_KEY_FEATURE_FLOOD_PLAINS</Description>
-			<Civilopedia>TXT_KEY_FEATURE_FLOOD_PLAINS_PEDIA</Civilopedia>
+			<Civilopedia>TXT_KEY_FEATURE_FLOOD_PLAINS_DROUGHT_PEDIA</Civilopedia>
 			<ArtDefineTag>ART_DEF_FEATURE_FLOOD_PLAINS</ArtDefineTag>
 			<YieldChanges>
 				<iYieldChange>3</iYieldChange>
@@ -360,7 +360,7 @@
 			<HillsYieldChange/>
 			<iMovement>1</iMovement>
 			<iSeeThrough>0</iSeeThrough>
-			<iHealthPercent>-40</iHealthPercent>
+			<iHealthPercent>0</iHealthPercent>
 			<iDefense>0</iDefense>
 			<iAppearance>10000</iAppearance>
 			<iDisappearance>0</iDisappearance>
