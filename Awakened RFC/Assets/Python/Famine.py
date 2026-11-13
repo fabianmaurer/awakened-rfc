@@ -14,6 +14,69 @@ def populationLossPenalty(iPlayer):
     return pickle.loads(gc.getGame().getScriptData())['lPopulationLossPenalty'][iPlayer]
 
 
+def cityIsStarving(cityKey, data, turn):
+    episode = data['cityFamineEpisodes'].get(cityKey)
+    if episode and episode['lastStarvationTurn'] == turn:
+        return True
+    city = gc.getMap().plot(cityKey[0], cityKey[1]).getPlotCity()
+    if city.isNone() or city.getGameTurnFounded() != cityKey[2]:
+        return False
+    # Export-only deficits are peaceful emigration, not ongoing famine.
+    return city.foodDifference(False) + city.getFoodTradeExports() < 0
+
+
+def lossTurnsUntilAbandonment(population, turn, previousTurns):
+    """Project consecutive losses through the unchanged abandonment rule."""
+    turns = list(previousTurns)
+    for losses in range(1, population):
+        projectedTurn = turn + losses - 1
+        turns.append(projectedTurn)
+        remaining = population - losses
+        window = max(5, remaining + 2)
+        required = max(3, (7 * remaining + 9) // 10)
+        if sum([1 for lostTurn in turns if projectedTurn - lostTurn < window]) >= required:
+            return losses
+    # Size-one starvation abandons the city without another ordinary loss.
+    return max(1, population - 1)
+
+
+def famineCollapseBudget(iPlayer, cityKey, beforeLoss, losses, capital, data):
+    """Price famine against national size before the crisis, in hundredths."""
+    if iPlayer >= con.iNumMajorPlayers:
+        return 0
+    reference = data['lFamineCrisisReference'][iPlayer]
+    if reference is None:
+        player = gc.getPlayer(iPlayer)
+        # The native callback runs after the current population loss.
+        reference = {'population': max(1, player.getTotalPopulation() + losses),
+                     'cities': {}}
+        city, iterator = player.firstCity(False)
+        while city and not city.isNone():
+            key = (city.getX(), city.getY(), city.getGameTurnFounded())
+            population = city.getPopulation()
+            if key == cityKey:
+                population += losses
+            reference['cities'][key] = population
+            city, iterator = player.nextCity(iterator, False)
+        data['lFamineCrisisReference'][iPlayer] = reference
+    # Cities founded or acquired during a crisis use their first affected size.
+    population = reference['cities'].setdefault(cityKey, beforeLoss)
+    total = (6000 * population + reference['population'] // 2) // reference['population']
+    if capital:
+        total += 3000
+    return total
+
+
+def recordCityAbandonment(iPlayer, iCity):
+    """Keep famine penalties frozen on the final starvation turn, without a charge."""
+    game = gc.getGame()
+    data = pickle.loads(game.getScriptData())
+    episode = data['cityFamineEpisodes'].setdefault(tuple(iCity),
+        {'required': 1, 'lossTurns': 0, 'owner': iPlayer})
+    episode['lastStarvationTurn'] = game.getGameTurn()
+    game.setScriptData(pickle.dumps(data))
+
+
 def recordPopulationLoss(iPlayer, iCity, losses, capital, starvation, population):
     """Record losses on every peer; return whether persistent starvation ends the city."""
     if iPlayer < 0 or losses <= 0:
@@ -29,52 +92,92 @@ def recordPopulationLoss(iPlayer, iCity, losses, capital, starvation, population
     # Retain dates: a city's lookback can grow if immigration restores population.
     recent = data['cityStarvationLossTurns']
     abandon = False
+    starvationPoints = 0
     if starvation:
         # Clear a ruined predecessor when a new city is founded at the same site.
         for city in recent.keys():
             if city[:2] == cityKey[:2] and city != cityKey:
                 del recent[city]
+                data['cityFamineEpisodes'].pop(city, None)
         turns = recent.setdefault(cityKey, [])
         if not turns or turns[-1] != turn:
+            episodes = data['cityFamineEpisodes']
+            episode = episodes.get(cityKey)
+            if episode is None:
+                beforeLoss = population + losses
+                required = lossTurnsUntilAbandonment(beforeLoss, turn, turns)
+                episode = {'required': required, 'lossTurns': 0,
+                           'lastStarvationTurn': turn, 'owner': iPlayer}
+                episodes[cityKey] = episode
+            previous = episode['lossTurns']
+            episode['lossTurns'] += 1
+            episode['lastStarvationTurn'] = turn
+            episode['owner'] = iPlayer
+            total = famineCollapseBudget(iPlayer, cityKey, population + losses,
+                                         losses, capital, data)
+            # Spread the population-share budget and capital shock across the
+            # expected loss turns; later losses are not capped.
+            starvationPoints = (total * episode['lossTurns'] // episode['required'] -
+                                total * previous // episode['required'])
             turns.append(turn)
         window = max(5, population + 2)
         required = max(3, (7 * population + 9) // 10)
         abandon = sum([1 for lostTurn in turns if turn - lostTurn < window]) >= required
     data['cityStarvationLossTurns'] = recent
     if iPlayer < con.iNumMajorPlayers:
-        window = max(1, geo.turns(10))
-        history = [entry for entry in data['lPopulationLossHistory'][iPlayer]
-                   if turn - entry[0] < window]
-        active = sum([1 for lostTurn, points, city, hunger in history
-                      if city == cityKey and hunger])
+        # Expiration is handled after paused decay clocks advance in updatePenalty.
+        history = data['lPopulationLossHistory'][iPlayer]
         base = 1
         if capital:
             base = 4
         for loss in range(losses):
             points = base
             if starvation:
-                points *= 1 + 2 * active
-                active += 1
-            history.append((turn, points, cityKey, bool(starvation)))
+                hundredths = (starvationPoints * (loss + 1) // losses -
+                              starvationPoints * loss // losses)
+                points = hundredths / 100.0
+            if points:
+                history.append((turn, points, cityKey, bool(starvation)))
         data['lPopulationLossHistory'][iPlayer] = history
     game.setScriptData(pickle.dumps(data))
     return int(abandon)
 
 
 def updatePenalty(iPlayer):
-    """Sum independent linear decay curves; round only the combined penalty."""
+    """Pause famine decay while its city starves; round only the total penalty."""
     game = gc.getGame()
     turn = game.getGameTurn()
     data = pickle.loads(game.getScriptData())
+    lastUpdate = data['lPopulationLossLastUpdate'][iPlayer]
+    if lastUpdate == turn:
+        return 0
     old = data['lPopulationLossPenalty'][iPlayer]
     window = max(1, geo.turns(10))
-    history = [entry for entry in data['lPopulationLossHistory'][iPlayer]
-               if turn - entry[0] < window]
-    weighted = sum([points * (window - (turn - lostTurn))
+    elapsed = max(0, turn - lastUpdate)
+    starving = {}
+    history = []
+    for lostTurn, points, city, starvation in data['lPopulationLossHistory'][iPlayer]:
+        if starvation:
+            if city not in starving:
+                starving[city] = cityIsStarving(city, data, turn)
+            if starving[city]:
+                # Move the effective loss date forward to freeze its age.
+                lostTurn = min(turn, lostTurn + elapsed)
+        if turn - lostTurn < window:
+            history.append((lostTurn, points, city, starvation))
+    # Store fractional points, but sum and round decay in integer hundredths.
+    weighted = sum([int(round(points * 100)) * (window - (turn - lostTurn))
                     for lostTurn, points, city, starvation in history])
-    value = -((weighted + window - 1) // window)
+    divisor = window * 100
+    value = -((weighted + divisor - 1) // divisor)
     data['lPopulationLossPenalty'][iPlayer] = value
     data['lPopulationLossHistory'][iPlayer] = history
+    data['lPopulationLossLastUpdate'][iPlayer] = turn
+    if not [entry for entry in history if entry[3]]:
+        data['lFamineCrisisReference'][iPlayer] = None
+    for city, episode in data['cityFamineEpisodes'].items():
+        if episode['owner'] == iPlayer and not cityIsStarving(city, data, turn):
+            del data['cityFamineEpisodes'][city]
     game.setScriptData(pickle.dumps(data))
     return value - old
 

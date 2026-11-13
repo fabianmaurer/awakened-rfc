@@ -16,8 +16,8 @@ sys.path.insert(0, str(ASSETS / 'Python'))
 from IndianCivsData import CIVS, NAMES
 
 SPECS = (
-    ('Tribes of the Ganges', 'Ganges', 'Gangetic', 'Gangetic Council', 'ASOKA', 'YELLOW',
-     'Sacred Learning', 'Priests gain +2 research.', 'WAR_ELEPHANT', 'Mahout Elephant',
+    ('Tribes of Magadha', 'Magadha', 'Magadhan', 'Magadhan Council', 'ASOKA', 'YELLOW',
+     'Sacred Learning', 'Priests gain +1 research.', 'WAR_ELEPHANT', 'Mahout Elephant',
      'LIBRARY', 'Gurukula', 'Develop the Ganges plain and build a civilization of sacred learning.'),
     ('Chola Empire', 'Chola', 'Chola', 'Vijayalaya', 'SURYAVARMAN', 'DARK_RED',
      'Oceanic Networks', 'Coastal cities gain +1 trade route.', 'GALLEY', 'Kappal',
@@ -40,7 +40,7 @@ GOALS = (
     ('Control four cities in southern India by 1500 AD.', 'Have eight Hindu temples by 1600 AD.', 'Accumulate 50,000 culture by 1650 AD.'),
 )
 POWER_TRANSLATIONS = (
-    ('Les pr\u00eatres gagnent +2 recherches.', 'Priester erhalten +2 Forschung.', 'I sacerdoti ottengono +2 ricerca.', 'Los sacerdotes obtienen +2 de investigaci\u00f3n.'),
+    ('Les pr\u00eatres gagnent +1 recherche.', 'Priester erhalten +1 Forschung.', 'I sacerdoti ottengono +1 ricerca.', 'Los sacerdotes obtienen +1 de investigaci\u00f3n.'),
     ('Les villes c\u00f4ti\u00e8res gagnent une route commerciale.', 'K\u00fcstenst\u00e4dte erhalten einen zus\u00e4tzlichen Handelsweg.', 'Le citt\u00e0 costiere ottengono una rotta commerciale aggiuntiva.', 'Las ciudades costeras obtienen una ruta comercial adicional.'),
     ('Les unit\u00e9s mont\u00e9es gagnent +25 % en attaque urbaine.', 'Berittene Einheiten erhalten +25 % Stadtangriff.', 'Le unit\u00e0 montate ottengono +25% all\u2019attacco delle citt\u00e0.', 'Las unidades montadas obtienen +25% al atacar ciudades.'),
     ('Les cases riveraines gagnent +1 commerce.', 'Flussfelder erhalten +1 Handel.', 'Le caselle fluviali ottengono +1 commercio.', 'Las casillas de r\u00edo obtienen +1 de comercio.'),
@@ -50,7 +50,7 @@ POWER_TRANSLATIONS = (
 # Names, descriptions and goals need translations as well as the power effects.
 # Proper names without a conventional German form retain their spelling.
 GERMAN_SPECS = (
-    ('St\u00e4mme des Ganges', 'Ganges', 'gangetisch', 'Rat des Ganges',
+    ('St\u00e4mme von Magadha', 'Magadha', 'Magadhisch', 'Rat von Magadha',
      'Heilige Gelehrsamkeit', 'Mahut-Elefant', 'Gurukula',
      'Erschlie\u00dft die Gangesebene und gr\u00fcndet eine Zivilisation der heiligen Gelehrsamkeit.'),
     ('Chola-Reich', 'Chola', 'cholisch', 'Vijayalaya',
@@ -119,7 +119,7 @@ def text_key(entries, key, english, translations=None):
 # Country names use complete localized place phrases to preserve grammar.
 COUNTRY_PLACES = {
     'HAR': ('of Harappa', 'de Harappa', 'von Harappa', 'di Harappa', 'de Harappa'),
-    'GAN': ('of the Ganges', 'du Gange', 'am Ganges', 'del Gange', 'del Ganges'),
+    'GAN': ('of Magadha', 'de Magadha', 'von Magadha', 'di Magadha', 'de Magadha'),
     'CHO': ('of the Chola', 'des Chola', 'der Chola', 'dei Chola', 'de los Chola'),
     'DEL': ('of Delhi', 'de Delhi', 'von Delhi', 'di Delhi', 'de Delhi'),
     'BEN': ('of Bengal', 'du Bengale', 'von Bengalen', 'del Bengala', 'de Bengala'),
@@ -139,7 +139,7 @@ COUNTRY_FORMS = {
 }
 COUNTRY_OVERRIDES = {
     ('HAR', 'TRIBES'): ('City-States of Harappa', 'Cit\xe9s-\xc9tats de Harappa', 'Stadtstaaten von Harappa', 'Citt\xe0-stato di Harappa', 'Ciudades-Estado de Harappa'),
-    ('GAN', 'TRIBES'): ('Tribes of the Ganges', 'Tribus du Gange', 'St\xe4mme des Ganges', 'Trib\xf9 del Gange', 'Tribus del Ganges'),
+    ('GAN', 'TRIBES'): ('Tribes of Magadha', 'Tribus de Magadha', 'St\xe4mme von Magadha', 'Trib\xf9 di Magadha', 'Tribus de Magadha'),
     ('CHO', 'KINGDOM'): ('Chola Empire', 'Empire chola', 'Chola-Reich', 'Impero Chola', 'Imperio chola'),
     ('VIJ', 'KINGDOM'): ('Vijayanagara Empire', 'Empire de Vijayanagara', 'Vijayanagara-Reich', 'Impero di Vijayanagara', 'Imperio de Vijayanagara'),
     ('VIJ', 'HOLY'): ('Temple Realm of Vijayanagara', 'Royaume des temples de Vijayanagara', 'Tempelreich von Vijayanagara', 'Regno dei templi di Vijayanagara', 'Reino de los templos de Vijayanagara'),
@@ -204,11 +204,11 @@ def main():
         prefix = 'TXT_KEY_' + short
         nameTranslations = None
         if civ == 'GANGES':
-            nameTranslations = ('Tribus du Gange', 'St\u00e4mme des Ganges', 'Trib\u00f9 del Gange', 'Tribus del Ganges')
+            nameTranslations = ('Tribus de Magadha', 'St\u00e4mme von Magadha', 'Trib\u00f9 di Magadha', 'Tribus de Magadha')
         text_key(entries, prefix + '_DESC', desc, nameTranslations)
         text_key(entries, prefix + '_SHORT', name)
-        text_key(entries, prefix + '_ADJ', adjective)
-        text_key(entries, 'TXT_KEY_LEADER_' + short, leaderName)
+        text_key(entries, prefix + '_ADJ', adjective, ('Magadhien', 'Magadhisch', 'Magadhano', 'Magadh\u00ed') if civ == 'GANGES' else None)
+        text_key(entries, 'TXT_KEY_LEADER_' + short, leaderName, ('Conseil de Magadha', 'Rat von Magadha', 'Consiglio di Magadha', 'Consejo de Magadha') if civ == 'GANGES' else None)
         text_key(entries, 'TXT_KEY_UP_' + short, power)
         text_key(entries, 'TXT_KEY_UP_' + short + '2', effect, POWER_TRANSLATIONS[offset])
         text_key(entries, prefix + '_STRATEGY', strategy)
@@ -247,7 +247,7 @@ def main():
         building=ET.fromstring(block(texts[3],'BuildingInfo','BUILDING_'+buildingBase))
         for tag,value in [('Type','BUILDING_'+short+'_UNIQUE'),('Description',text_key(entries,prefix+'_BUILDING',buildingName)),('Civilopedia',prefix+'_PEDIA'),('Strategy',prefix+'_STRATEGY')]: set_value(building,tag,value)
         if offset==0:
-            parent=building.find('SpecialistCounts');item=ET.SubElement(parent,'SpecialistCount');ET.SubElement(item,'SpecialistType').text='SPECIALIST_PRIEST';ET.SubElement(item,'iSpecialistCount').text='2'
+            parent=building.find('SpecialistCounts');parent.clear();item=ET.SubElement(parent,'SpecialistCount');ET.SubElement(item,'SpecialistType').text='SPECIALIST_PRIEST';ET.SubElement(item,'iSpecialistCount').text='2'
         elif offset==1: set_value(building,'iTradeRouteModifier',75)
         elif offset==2: set_value(building,'iMaintenanceModifier',-60)
         elif offset==3:

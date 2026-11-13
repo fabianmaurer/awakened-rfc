@@ -4346,7 +4346,7 @@ void CvCity::processSpecialist(SpecialistTypes eSpecialist, int iChange)
 	{
 		int iCommerce = GC.getSpecialistInfo(eSpecialist).getCommerceChange(iI);
 		if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_GANGES") &&
-			eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && iI == COMMERCE_RESEARCH) iCommerce += 2;
+			eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && iI == COMMERCE_RESEARCH) iCommerce += 1;
 		changeSpecialistCommerce(((CommerceTypes)iI), iCommerce * iChange);
 	}
 
@@ -5717,21 +5717,24 @@ void CvCity::restoreRuinsBuildings(const std::vector<BuildingTypes>& buildings)
 }
 
 
-bool CvCity::applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation)
+bool CvCity::applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation, bool bRecordStability)
 {
-    CyArgsList argsList;
-    // Keep a city's starvation history through ownership changes, but not refounding.
-    int cityKey[] = {getX_INLINE(), getY_INLINE(), getGameTurnFounded()};
-    argsList.add((int)getOwnerINLINE());
-    argsList.add(cityKey, 3);
-    argsList.add(iLoss);
-    argsList.add((int)isCapital());
-    argsList.add((int)bStarvation);
-    argsList.add(getPopulation());
     long abandon = 0;
-    if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true) ||
-        !gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordPopulationLoss", argsList.makeFunctionArgs(), &abandon))
-        gDLL->logMsg("PythonErr.log", "Awakened RFC: population-loss stability callback could not be loaded or called.", false, false);
+    if (bRecordStability)
+    {
+        CyArgsList argsList;
+        // Keep a city's starvation history through ownership changes, but not refounding.
+        int cityKey[] = {getX_INLINE(), getY_INLINE(), getGameTurnFounded()};
+        argsList.add((int)getOwnerINLINE());
+        argsList.add(cityKey, 3);
+        argsList.add(iLoss);
+        argsList.add((int)isCapital());
+        argsList.add((int)bStarvation);
+        argsList.add(getPopulation());
+        if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true) ||
+            !gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordPopulationLoss", argsList.makeFunctionArgs(), &abandon))
+            gDLL->logMsg("PythonErr.log", "Awakened RFC: population-loss stability callback could not be loaded or called.", false, false);
+    }
     // IDs survive stack mutation, transport deaths and delayed unit removal.
     std::vector<IDInfo> units;
     CLLNode<IDInfo>* node = plot()->headUnitNode();
@@ -12962,7 +12965,16 @@ void CvCity::abandonToFamine()
     CvPlayer& owner = GET_PLAYER(getOwnerINLINE());
     for (int i = 0; i < remainingPopulation; ++i)
         owner.recordStarvationLoss();
-    applyInvoluntaryPopulationLoss(remainingPopulation, true);
+    // Abandonment adds no stability charge for the remaining population.
+    applyInvoluntaryPopulationLoss(remainingPopulation, true, false);
+    // Keep existing famine penalties frozen until the following recovery turn.
+    CyArgsList argsList;
+    int cityKey[] = {getX_INLINE(), getY_INLINE(), getGameTurnFounded()};
+    argsList.add((int)getOwnerINLINE());
+    argsList.add(cityKey, 3);
+    if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true) ||
+        !gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordCityAbandonment", argsList.makeFunctionArgs()))
+        gDLL->logMsg("PythonErr.log", "Awakened RFC: famine abandonment callback could not be loaded or called.", false, false);
     bool bNomads = false;
     if (owner.getNumCities() == 1 && !owner.isBarbarian() && !owner.isMinorCiv())
     {

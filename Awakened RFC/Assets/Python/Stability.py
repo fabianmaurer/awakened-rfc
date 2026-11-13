@@ -1114,9 +1114,10 @@ class Stability:
                         history = histories[iPlayer]
                         if lastTurn != iGameTurn - 1:
                                 history = []
-                        history = (history + [self.getStability(iPlayer) < -40])[-5:]
+                        stability = self.getStability(iPlayer)
+                        history = (history + [stability < -40])[-5:]
                         histories[iPlayer] = history
-                        if len(history) == 5 and sum(history) >= 4:
+                        if stability <= -80 or (len(history) == 5 and sum(history) >= 4):
                                 candidates.append(iPlayer)
                                 histories[iPlayer] = []
                 # Save every country's sample before fragmentation mutates script data.

@@ -1170,8 +1170,8 @@ other dimensions are normalized to that grid. Renaming has no gameplay effects.
 
 | Civilization | Historical identities and selection conditions |
 | --- | --- |
-| Ganges | Eastern capital `(150..152, 63..66)`: Magadha from 800 BC; Nanda 362-322 BC (2+ cities), Maurya 321-186 BC (3+), Shunga 185-74 BC (2+), Kanva 73-29 BC, Gupta AD 320-549 (3+), and Buddhist Pala 750-1161 (3+). These names require a non-Islamic monarchy. |
-| Ganges, western capitals | Kosala at Ayodhya `(149, 66)` in 600-301 BC; Harsha with a capital near Kannauj `(147..149, 64..67)` in AD 606-647 and 3+ cities. |
+| Magadha | Eastern capital `(150..152, 63..66)`: Magadha from 800 BC; Nanda 362-322 BC (2+ cities), Maurya 321-186 BC (3+), Shunga 185-74 BC (2+), Kanva 73-29 BC, Gupta AD 320-549 (3+), and Buddhist Pala 750-1161 (3+). These names require a non-Islamic monarchy. |
+| Magadha, western capitals | Kosala at Ayodhya `(149, 66)` in 600-301 BC; Harsha with a capital near Kannauj `(147..149, 64..67)` in AD 606-647 and 3+ cities. |
 | Delhi | Islamic monarchy with capital in `(144..147, 63..67)`: Delhi Sultanate from 1200; with 3+ cities, Mughal Empire from 1526, interrupted by Sur in 1540-1554. |
 | Bengal | Islamic monarchy with capital in `(153..157, 62..67)`: Bengal Sultanate from 1350; Nawabate of Bengal from 1717. No Mughal annexation or provincial status is implied. |
 | Chola | Non-Islamic monarchy with capital in the Tamil core `(147..149, 51..54)` from 850 retains Chola; a Hindu capital at Madurai `(147, 51)` selects Pandya in 1279-1334, or an Islamic monarchy there selects Madurai Sultanate in 1335-1377. |
@@ -1813,7 +1813,7 @@ The original India slot represents a distinct Harappan civilization in this star
 Its capital site is Harappa at `(141, 64)`. The Indus/Punjab and Gujarat form its
 preferred settlement area; the Ganges and southern peninsula are outside its core.
 The separate geography profile retains XL's calendar, resource history and trade distances.
-The XL 800 BC start instead gives the surviving northern Indian polity to Ganges;
+The XL 800 BC start instead gives the surviving northern Indian polity to Magadha;
 Harappa is absent there. Standard maps retain their existing civilizations.
 
 - **Urban Cycles:** cities grow and shrink 30% faster. Food surpluses and
@@ -1849,24 +1849,24 @@ is unrestricted, so an independent or Harappan city in that belt can host a reli
 
 Both XL scenarios include these five major civilizations. Their births use the
 ordinary two-stage birth and city-flip system, including the human succession
-choice. Only Ganges is selectable at either scenario's opening; the other four
+choice. Only Magadha is selectable at either scenario's opening; the other four
 arrive at their scheduled births. Dates use the nearest existing calendar turn. The 3000 BC opening gives
-Ganges a Settler and Warrior, Agriculture and Mysticism, without Harappa's prebuilt
+Magadha a Settler and Warrior, Agriculture and Mysticism, without Harappa's prebuilt
 city, City Founder or exceptional Indus farmland. Its capital is nine tiles east of Harappa.
-The early Gangetic Council represents farming communities rather than an already
-unified Vedic kingdom. In 800 BC, Ganges inherits the old northern Indian cities,
+The early Magadhan Council represents farming communities rather than an already
+unified Vedic kingdom. In 800 BC, Magadha inherits the old northern Indian cities,
 troops, technology and diplomacy, with its palace at Pataliputra.
 
 | Civilization | Birth | Capital site | Unique power |
 |---|---|---|---|
-| Ganges | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +2 research. |
+| Magadha | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +1 research. |
 | Chola | 850 AD | Thanjavur `(147, 52)` | Oceanic Networks: coastal cities gain one trade route. |
 | Delhi | 1200 AD | Delhi `(145, 65)` | Mounted Conquest: mounted units gain +25% city attack. |
 | Bengal | 1350 AD | Gaur `(154, 65)` | Delta Commerce: river tiles gain +1 commerce. |
 | Vijayanagara | 1350 AD | Vijayanagara `(145, 56)` | Fortified Heartland: cities gain +25% defense. |
 
-- Ganges' **Mahout Elephant** replaces the War Elephant with strength 9. Its
-  **Gurukula** adds two Priest slots to the Library's two Scientist slots.
+- Magadha's **Mahout Elephant** replaces the War Elephant with strength 9. Its
+  **Gurukula** replaces the Library's two Scientist slots with two Priest slots.
 - Chola's **Kappal** replaces the Galley with three movement and three cargo
   slots. Its **Merchant Guild** replaces the Harbor, raising its trade-route
   modifier from 50% to 75%.
@@ -1882,10 +1882,10 @@ regional armies. Chola also receives coastal ships; Delhi emphasizes mounted
 assault, Bengal crossbow defense and Vijayanagara pikes. They adopt Hinduism
 (Chola/Vijayanagara) or Islam (Delhi/Bengal) when already founded, with a
 missionary to establish it. These are opening forces, not ongoing cost modifiers.
-The Huna event now targets Ganges on XL; Harappa retains its separate identity.
+The Huna event now targets Magadha on XL; Harappa retains its separate identity.
 
 Each civilization has three historical goals, completed at any time before its
-deadline: Ganges controls both Indian holy cities by 200 BC, reaches 2,500 culture
+deadline: Magadha controls both Indian holy cities by 200 BC, reaches 2,500 culture
 by 200 AD and controls six Gangetic cities by 600 AD. Chola controls four southern
 cities by 1100, holds a Sri Lankan city while trading with three foreign teams by
 1250 and stores 3,000 gold by 1300. Delhi controls six northern cities by 1350,
@@ -1929,8 +1929,8 @@ abandonment. A single turn losing several people counts only once toward this
 trigger. The window uses actual turns on every speed and follows the city through
 ownership changes; refounding starts a new history. Capitals and
 independent/barbarian cities follow this rule too. The remaining population
-disperses and counts as starvation loss for
-stability, garrison damage and refugee resettlement. A major civilization's final
+disperses, causing garrison damage and possible refugee resettlement but no
+additional stability penalty. A major civilization's final
 city instead supplies one Settler, as described below.
 
 Population loss is peaceful emigration when retaining that turn's food exports
@@ -1962,22 +1962,45 @@ secede. The city and its local garrison use the existing independent-city transf
 rules. Its food and famine state persist. This is not a civilization birth and
 never grants a takeover offer.
 
-Each population point lost involuntarily costs 4 national stability in the
-capital or 1 in any other city. Starvation multiplies a new loss by
-`1 + 2 * active starvation losses` from that same city under its current owner.
-For example, successive capital losses cost 4, 12, 20 and 28 stability if no
-earlier penalties have expired; other cities lose 1, 3, 5 and 7. Only starvation
-losses build this multiplier. Each population point counts separately, and
-expired penalties no longer increase new losses. Capital status is evaluated when the loss occurs;
-a later capital move does not reprice earlier losses. Each loss fades linearly
-over ten normal-map turns or twenty XL turns, independently of later losses.
+At the first starvation loss of an episode, calculate how many consecutive
+ordinary loss turns would cause abandonment under the existing rule. Hold this
+denominator fixed until the city recovers. A complete decline to abandonment
+costs national stability equal to `60 * city population / national population`,
+plus 30 points for the capital. Divide that budget across the projected loss
+turns. For a fresh episode starting at size 7, the denominator is 3; at size 20,
+it is 9.
+
+Freeze national and city reference populations immediately before the first
+starvation loss of the national crisis. Keep them until all its starvation
+penalties have cleared, so shrinking cities do not increase later penalties.
+Cities founded or acquired during the crisis use their population before their
+first loss. For equally sized cities, five ordinary cities collapsing in a
+40-city empire cost 7.5 points in total; its capital costs 31.5. A capital in a
+four-city empire costs 45, and in a two-city empire 60. Budgets round to the
+nearest hundredth; hundredths are distributed across losses so the budget is
+preserved. Existing recent loss turns are included when projecting abandonment.
+Immigration, other causes of population loss or a change of capital can alter
+the episode's total; there is no cap. A city already at size one has no ordinary
+loss before abandonment.
+The population removed by abandonment adds no stability penalty. Other
+involuntary losses still cost 4 points per person in the capital or 1 elsewhere.
+Capital status is evaluated when the loss occurs; a later capital move does not
+reprice earlier losses.
+
+Starvation penalties do not decay while their source city has a food deficit
+excluding exports, or lost population to starvation that turn. Once supplies
+recover, they fade over ten recovery turns on normal maps or twenty on XL;
+renewed starvation pauses recovery again. Abandoned cities start recovery on
+the following turn. A recovered city's next famine starts a new episode.
+Other involuntary-loss penalties fade over ten normal-map or twenty XL turns
+regardless of hunger.
 All outstanding losses stack without a limit. Fractional contributions are
 summed before rounding the total penalty away from zero for integer stability.
 The penalty updates after every player turn; it is a temporary part of the
 stability base, not a repeated permanent deduction.
 
-Starvation, disasters and revolt losses count, including final famine
-abandonment and losses whose survivors successfully resettle. Whipping,
+Starvation, disasters and revolt losses count, including ordinary starvation
+losses whose survivors successfully resettle. Final famine abandonment, whipping,
 drafting, Advanced Start sales and peaceful emigration do not count. The previous
 population-weighted famine-pressure score, its -30 cap and its separate recovery
 rate are removed. Hunger without population loss causes no direct national
@@ -1985,9 +2008,11 @@ stability penalty. Famine anger remains excluded from national happiness
 stability; famine secessions add no separate national city-loss shock. Ordinary
 economic and territorial consequences still apply.
 
-Civil-war collapse checks run at the end of every game turn. Stability must be
-below -40 on at least four of the latest five consecutive game turns, on every
-game speed. A full five-turn window is required. Each civilization retains its
+Civil-war collapse checks run at the end of every game turn. Stability at -80
+or lower triggers civil war immediately at that check, without a history window.
+Otherwise, stability must be below -40 on at least four of the latest five
+consecutive game turns, on every game speed. This sustained-instability trigger
+requires a full five-turn window. Each civilization retains its
 initial protection of twenty-five reference turns (fifty XL turns) and Golden
 Age protection. Protected turns clear the history, as does a civil war.
 

@@ -290,11 +290,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_ADJ</Tag>
-    <English>Gangetic</English>
-    <French>Gangetic</French>
-    <German>gangetisch</German>
-    <Italian>Gangetic</Italian>
-    <Spanish>Gangetic</Spanish>
+    <English>Magadhan</English>
+    <French>Magadhien</French>
+    <German>Magadhisch</German>
+    <Italian>Magadhano</Italian>
+    <Spanish>Magadh&#237;</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_BUILDING</Tag>
@@ -346,27 +346,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_DESC</Tag>
-    <English>Tribes of the Ganges</English>
-    <French>Tribus du Gange</French>
-    <German>St&#228;mme des Ganges</German>
-    <Italian>Trib&#249; del Gange</Italian>
-    <Spanish>Tribus del Ganges</Spanish>
+    <English>Tribes of Magadha</English>
+    <French>Tribus de Magadha</French>
+    <German>St&#228;mme von Magadha</German>
+    <Italian>Trib&#249; di Magadha</Italian>
+    <Spanish>Tribus de Magadha</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_PEDIA</Tag>
-    <English>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +2 research.</English>
-    <French>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +2 research.</French>
-    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit. Einzigartige F&#228;higkeit: Heilige Gelehrsamkeit. Priester erhalten +2 Forschung.</German>
-    <Italian>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +2 research.</Italian>
-    <Spanish>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +2 research.</Spanish>
+    <English>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</English>
+    <French>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</French>
+    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit. Einzigartige F&#228;higkeit: Heilige Gelehrsamkeit. Priester erhalten +1 Forschung.</German>
+    <Italian>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Italian>
+    <Spanish>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_SHORT</Tag>
-    <English>Ganges</English>
-    <French>Ganges</French>
-    <German>Ganges</German>
-    <Italian>Ganges</Italian>
-    <Spanish>Ganges</Spanish>
+    <English>Magadha</English>
+    <French>Magadha</French>
+    <German>Magadha</German>
+    <Italian>Magadha</Italian>
+    <Spanish>Magadha</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_STRATEGY</Tag>
@@ -410,11 +410,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_LEADER_GAN</Tag>
-    <English>Gangetic Council</English>
-    <French>Gangetic Council</French>
-    <German>Rat des Ganges</German>
-    <Italian>Gangetic Council</Italian>
-    <Spanish>Gangetic Council</Spanish>
+    <English>Magadhan Council</English>
+    <French>Conseil de Magadha</French>
+    <German>Rat von Magadha</German>
+    <Italian>Consiglio di Magadha</Italian>
+    <Spanish>Consejo de Magadha</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_LEADER_VIJ</Tag>
@@ -602,11 +602,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_UP_GAN2</Tag>
-    <English>Priests gain +2 research.</English>
-    <French>Les pr&#234;tres gagnent +2 recherches.</French>
-    <German>Priester erhalten +2 Forschung.</German>
-    <Italian>I sacerdoti ottengono +2 ricerca.</Italian>
-    <Spanish>Los sacerdotes obtienen +2 de investigaci&#243;n.</Spanish>
+    <English>Priests gain +1 research.</English>
+    <French>Les pr&#234;tres gagnent +1 recherche.</French>
+    <German>Priester erhalten +1 Forschung.</German>
+    <Italian>I sacerdoti ottengono +1 ricerca.</Italian>
+    <Spanish>Los sacerdotes obtienen +1 de investigaci&#243;n.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_UP_VIJ</Tag>

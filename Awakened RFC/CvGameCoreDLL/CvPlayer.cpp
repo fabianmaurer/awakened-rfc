@@ -9474,7 +9474,7 @@ int CvPlayer::specialistYield(SpecialistTypes eSpecialist, YieldTypes eYield) co
 int CvPlayer::specialistCommerce(SpecialistTypes eSpecialist, CommerceTypes eCommerce) const
 {
 	int iPower = (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_GANGES") &&
-		eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && eCommerce == COMMERCE_RESEARCH) ? 2 : 0;
+		eSpecialist == GC.getInfoTypeForString("SPECIALIST_PRIEST") && eCommerce == COMMERCE_RESEARCH) ? 1 : 0;
 	return (GC.getSpecialistInfo(eSpecialist).getCommerceChange(eCommerce) + getSpecialistExtraCommerce(eCommerce) + iPower);
 }
 

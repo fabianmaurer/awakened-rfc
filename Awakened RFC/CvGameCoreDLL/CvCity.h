@@ -285,7 +285,7 @@ public:
 	void setPopulation(int iNewValue, bool bInvoluntary = true);										// Exposed to Python
 	void changePopulation(int iChange, bool bInvoluntary = true);
 	void restoreRuinsBuildings(const std::vector<BuildingTypes>& buildings);
-	bool applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation = false);
+	bool applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation = false, bool bRecordStability = true);
 
 	long getRealPopulation() const;																	// Exposed to Python
 

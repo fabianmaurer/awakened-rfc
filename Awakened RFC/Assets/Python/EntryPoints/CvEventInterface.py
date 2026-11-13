@@ -39,6 +39,12 @@ def recordPopulationLoss(argsList):
     return Famine.recordPopulationLoss(iPlayer, iCity, losses, capital, starvation, population)
 
 
+def recordCityAbandonment(argsList):
+    iPlayer, iCity = argsList
+    import Famine
+    Famine.recordCityAbandonment(iPlayer, iCity)
+
+
 def canRomanCampaign(argsList):
     iPlayer = argsList[0]
     import RomanEmpire
