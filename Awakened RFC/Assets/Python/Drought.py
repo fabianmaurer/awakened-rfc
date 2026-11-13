@@ -80,7 +80,7 @@ def setup():
             if e in groupEdges[root]]))
         catalogue = model.templates(groupEnds[root], anchors, gc.getGame().getSorenRandNum)
         regions.append({'sites': sites, 'flood': floodSites, 'edges': sorted(groupEdges[root]),
-            'templates': catalogue, 'events': []})
+            'floodEdges': anchors, 'templates': catalogue, 'events': []})
     chance, expected = model.calibrate([sorted(floodBanks[i]) for i in sorted(floodBanks.keys())], regions)
     data = pickle.loads(gc.getGame().getScriptData())
     data['droughtRegions'] = regions
@@ -151,8 +151,14 @@ def notify(sites, key):
     world = gc.getMap()
     width = world.getGridWidth()
     owners = {}
+    floodTypes = tuple([gc.getInfoTypeForString(name) for name in
+        ('FEATURE_FLOOD_PLAINS', 'FEATURE_FLOOD_PLAINS_DROUGHT', 'FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT')])
     for index in sites:
         plot = world.plot(index % width, index // width)
+        # Place drought warnings and markers only on affected flood plains.
+        # Historical drying removes the feature before announcing its loss.
+        if key != 'TXT_KEY_DROUGHT_FLOODPLAINS_LOST' and plot.getFeatureType() not in floodTypes:
+            continue
         owner = plot.getOwner()
         if owner >= 0 and gc.getPlayer(owner).isHuman() and owner not in owners:
             owners[owner] = index
@@ -186,9 +192,21 @@ def checkTurn(turn):
     data['droughtLastTick'] = tick
     regions = data['droughtRegions']
     scriptEdges = historicalEdges(regions)
-    scriptSites = bankSites(scriptEdges)
     year = game.getGameTurnYear()
     historicalDrying(year)
+    width = world.getGridWidth()
+    floodTypes = tuple([gc.getInfoTypeForString(name) for name in
+        ('FEATURE_FLOOD_PLAINS', 'FEATURE_FLOOD_PLAINS_DROUGHT', 'FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT')])
+    # Retain river paths, but only dry edges beside currently existing flood plains.
+    floodEdges = set()
+    for region in regions:
+        for riverEdge in region['edges']:
+            for index in bankSites([riverEdge]):
+                if world.plot(index % width, index // width).getFeatureType() in floodTypes:
+                    floodEdges.add(riverEdge)
+                    break
+    scriptEdges = [edge for edge in scriptEdges if edge in floodEdges]
+    scriptSites = bankSites(scriptEdges)
     scriptLevel = 0
     if scriptSites:
         # A sudden food shock leaves little time to shrink cities beforehand.
@@ -202,9 +220,16 @@ def checkTurn(turn):
     for region in regions:
         region['events'] = [event for event in region['events'] if advance(event, tick)]
         if tick >= data['droughtFirstTick']:
-            # Exactly one initiation roll per system, even with ongoing events.
-            if game.getSorenRandNum(10000, 'River drought') < data['droughtChance']:
-                shape = game.getSorenRandNum(len(region['templates']), 'Drought reach')
+            # Count each segment once, even with flood plains on both banks.
+            length = len(floodEdges.intersection(region['edges']))
+            weight = model.initiationWeight(length)
+            chance = min(10000, int(data['droughtChance'] * weight + .5))
+            if game.getSorenRandNum(10000, 'River drought') < chance:
+                eligible = [i for i in range(len(region['templates']))
+                    if floodEdges.intersection(region['templates'][i]['core'])]
+                if not eligible:
+                    continue
+                shape = eligible[game.getSorenRandNum(len(eligible), 'Drought reach')]
                 event = {'shape': shape, 'phase': 'warning',
                     'level': 0, 'due': tick + WARNING}
                 region['events'].append(event)
@@ -220,6 +245,7 @@ def checkTurn(turn):
             if event['level'] == 0: continue
             shape = region['templates'][event['shape']]
             for riverEdge in shape['core']:
+                if riverEdge not in floodEdges: continue
                 levels[riverEdge] = max(levels[riverEdge], event['level'])
     for riverEdge in scriptEdges:
         levels[riverEdge] = max(levels.get(riverEdge, 0), scriptLevel)
@@ -227,7 +253,6 @@ def checkTurn(turn):
     for (index, side), level in levels.items():
         byPlot.setdefault(index, [0, 0])[side] = level
     banks = bankSites(levels.keys())
-    width = world.getGridWidth()
     oldStages = dict([(i, world.plot(i % width, i // width).getRiverDrought()) for i in banks])
     irrigationChanged = False
     for index in sorted(byPlot.keys()):

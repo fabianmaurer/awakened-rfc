@@ -357,6 +357,14 @@ costs through the Medieval era**; Persia gains **+2 stability per conquered city
 
 Workers, including automated workers and work boats, interrupt orders, retreat or reject dangerous routes when threatened by nearby Barbarians or major civilizations. They ignore Independent borders and units in these danger checks. Independent civilizations are recognized in any player slot, including the 900 AD Andalusian minors. Border-entry restrictions and enemy occupation still apply, and workers can still be captured.
 
+The option to leave existing improvements allows workers to clear harmful jungle
+from plantations and other improved tiles, and to add routes, while preserving
+the existing improvement.
+
+Mines and quarries can be built in jungle with Mining and Masonry, respectively,
+without clearing the jungle, just as plantations preserve it. Jungle penalties
+remain until workers clear it with Iron Working.
+
 The 3000 BC start includes Independent Uruk at `(77, 38)`, population 4, with a Granary, Barracks, Walls, Monument and two defending Archers. Babylon keeps its start at `(76, 40)`; the mod's one-tile minimum city exclusion allows both cities to coexist. Uruk's Independent faction starts at peace with Babylon, overriding random initial wars; later wars remain possible, and Uruk must be acquired through normal gameplay. Shushan to the east is founded as a Barbarian city.
 
 In that start, early Egyptian frontier pressure consists of Nubian Warriors every 18 turns (first on turn 12) along the southern Nile approach: one Warrior in each of the first two scheduled waves, then two Warriors per wave, and one Libyan Warrior every 28 turns (first on turn 22) west of Egypt, ending after 850 BC. These named Barbarian raiders use pillage AI, approaching Egyptian cities when no nearby pillage or combat target is available instead of camping on defensive resource tiles or patrolling outside the borders. They spawn only on empty, uncultured land; expansion can close their entry areas. Heroic Gesture and Great Mediator cannot make peace with Natives, Celts, Independents or Barbarians, including through their apply/click callbacks. In-game balance and multiplayer behavior remain unverified.
@@ -2024,7 +2032,9 @@ is in severe drought. Both banks of a changed edge update together.
 
 Each random event follows one continuous river path for a randomly chosen six to
 twelve segments, anchored beside flood plains. Random events remain at ordinary
-severity; only Harappa's scripted event can cause severe drought. Segment counts follow bends, not a
+severity. Only segments beside existing flood plains dry out, and notifications
+point to flood plains. Reaches without remaining flood plains cannot start events.
+Only Harappa's scripted event can cause severe drought. Segment counts follow bends, not a
 radius across land. Upstream forks select one branch with synchronized seeded
 randomness. Downstream traversal follows the flow and never turns upstream into
 a tributary joining later. Distributaries likewise select one continuation.
@@ -2033,8 +2043,11 @@ reach. No event spreads through every tributary of a connected system.
 
 After 20 reference-calendar turns of initial protection, each eligible connected
 river system gets exactly one initiation roll per reference turn, including while
-other events are ongoing. There is no long
-protected period after an event. Events can coexist; overlapping conditions take
+other events are ongoing. Its chance is proportional to the current length of
+river bordering flood plains, with a minimum weight of three tile-edge segments.
+Each segment counts once, even with flood plains on both banks. Systems without
+remaining flood plains have zero chance. There is no long protected period after
+an event. Events can coexist; overlapping conditions take
 the worse stage on each edge, and consecutive events can prolong a local dry spell.
 Notifications of recovery use actual tile conditions so an ending event does not
 announce recovery where another drought is still active.
@@ -2042,11 +2055,11 @@ announce recovery where another drought is still active.
 Random events have two reference turns of advance warning, followed by
 four to seven turns of ordinary drought and then recovery to normal conditions.
 XL doubles these durations in engine turns; food consumption continues each
-engine turn. Notifications go to human owners of affected riverbanks, and tile
+engine turn. Notifications go to human owners of affected flood plains, and tile
 help explains current conditions.
 
 At game start, seeded branch and size choices produce a saved catalogue of local
-reaches. The shared initiation probability is calibrated analytically against that
+reaches. The shared initiation rate per weighted river segment is calibrated against that
 catalogue and the map's flood-plain tiles to target **3.5 food per farmed desert
 flood-plain tile per turn**, averaged over random events in the long run. This
 includes overlapping events and healthy second rivers. The initiation chance

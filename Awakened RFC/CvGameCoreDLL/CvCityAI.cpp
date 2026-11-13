@@ -5846,7 +5846,12 @@ int CvCityAI::AI_totalBestBuildValue(CvArea* pArea)
 			{
 				if (pLoopPlot->area() == pArea)
 				{
-					if ((pLoopPlot->getImprovementType() == NO_IMPROVEMENT) || !(GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_SAFE_AUTOMATION) && !(pLoopPlot->getImprovementType() == (GC.getDefineINT("RUINS_IMPROVEMENT")))))
+					// Safe automation permits clearing and routes that preserve improvements.
+					if ((pLoopPlot->getImprovementType() == NO_IMPROVEMENT) ||
+						!GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_SAFE_AUTOMATION) ||
+						pLoopPlot->getImprovementType() == GC.getDefineINT("RUINS_IMPROVEMENT") ||
+						(AI_getBestBuild(iI) != NO_BUILD && GC.getBuildInfo(AI_getBestBuild(iI)).getImprovement() == NO_IMPROVEMENT &&
+						!GC.getImprovementInfo(pLoopPlot->getImprovementType()).isRequiresFeature()))
 					{
 						iTotalValue += AI_getBestBuildValue(iI);
 					}

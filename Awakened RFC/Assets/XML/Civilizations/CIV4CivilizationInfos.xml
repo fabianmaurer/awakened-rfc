@@ -378,7 +378,7 @@
 			<ShortDescription>TXT_KEY_CIV_BYZANTIUM_SHORT_DESC</ShortDescription>
 			<Adjective>TXT_KEY_CIV_BYZANTIUM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_CIV_BYZANTIUM_PEDIA</Civilopedia>
-			<DefaultPlayerColor>PLAYERCOLOR_DARK_GRAY</DefaultPlayerColor>
+			<DefaultPlayerColor>PLAYERCOLOR_DARK_PURPLE</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_BYZANTIUM</ArtDefineTag>
 			<ArtStyleType>ARTSTYLE_GRECO_ROMAN</ArtStyleType>
 			<UnitArtStyleType>UNIT_ARTSTYLE_GRECO_ROMAN</UnitArtStyleType>
@@ -495,7 +495,7 @@
 			<Adjective>TXT_KEY_CIV_CARTHAGE_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_CIV_CARTHAGE_PEDIA</Civilopedia>
 			<!-- Rhye -->
-			<DefaultPlayerColor>PLAYERCOLOR_DARK_PURPLE</DefaultPlayerColor>
+			<DefaultPlayerColor>PLAYERCOLOR_LIGHT_PURPLE</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_CARTHAGE</ArtDefineTag>
 			<ArtStyleType>ARTSTYLE_GRECO_ROMAN</ArtStyleType>
 			<UnitArtStyleType>UNIT_ARTSTYLE_GRECO_ROMAN</UnitArtStyleType>
@@ -4757,7 +4757,7 @@
 			<ShortDescription>TXT_KEY_ESK</ShortDescription>
 			<Adjective>TXT_KEY_ESK_ADJ</Adjective>
 			<Civilopedia>TXT_KEY_ESK_PEDIA</Civilopedia>
-			<DefaultPlayerColor>PLAYERCOLOR_LIGHT_BLUE</DefaultPlayerColor>
+			<DefaultPlayerColor>PLAYERCOLOR_ESKIMO</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_ESKIMO</ArtDefineTag>
 			<ArtStyleType>ARTSTYLE_ARCTIC</ArtStyleType>
 			<UnitArtStyleType>UNIT_ARTSTYLE_ASIAN</UnitArtStyleType>
@@ -4895,7 +4895,7 @@
 	<ShortDescription>TXT_KEY_GAN_SHORT</ShortDescription>
 	<Adjective>TXT_KEY_GAN_ADJ</Adjective>
 	<Civilopedia>TXT_KEY_GAN_PEDIA</Civilopedia>
-	<DefaultPlayerColor>PLAYERCOLOR_YELLOW</DefaultPlayerColor>
+	<DefaultPlayerColor>PLAYERCOLOR_PURPLE</DefaultPlayerColor>
 	<ArtDefineTag>ART_DEF_CIVILIZATION_INDIA</ArtDefineTag>
 	<ArtStyleType>ARTSTYLE_MIDDLE_EAST</ArtStyleType>
 	<UnitArtStyleType>UNIT_ARTSTYLE_MIDDLE_EAST</UnitArtStyleType>
@@ -5179,7 +5179,7 @@
 	<ShortDescription>TXT_KEY_VIJ_SHORT</ShortDescription>
 	<Adjective>TXT_KEY_VIJ_ADJ</Adjective>
 	<Civilopedia>TXT_KEY_VIJ_PEDIA</Civilopedia>
-	<DefaultPlayerColor>PLAYERCOLOR_PURPLE</DefaultPlayerColor>
+	<DefaultPlayerColor>PLAYERCOLOR_YELLOW</DefaultPlayerColor>
 	<ArtDefineTag>ART_DEF_CIVILIZATION_INDIA</ArtDefineTag>
 	<ArtStyleType>ARTSTYLE_MIDDLE_EAST</ArtStyleType>
 	<UnitArtStyleType>UNIT_ARTSTYLE_MIDDLE_EAST</UnitArtStyleType>

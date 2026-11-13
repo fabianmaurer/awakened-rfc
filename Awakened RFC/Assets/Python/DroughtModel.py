@@ -56,13 +56,18 @@ def templates(ends, anchors, rand):
     return result
 
 
+def initiationWeight(length):
+    if length == 0: return 0
+    return max(3, length)
+
+
 def calibrationRows(floodBanks, regions):
     """Inclusion-exclusion keeps healthy second rivers in the food estimate."""
     catalogues = []
     for region in regions:
         catalogue = [set(shape['core']) for shape in region['templates']]
         catalogueEdges = set(region['edges'])
-        catalogues.append((catalogueEdges, catalogue))
+        catalogues.append((catalogueEdges, catalogue, initiationWeight(len(region['floodEdges']))))
     rows = []
     for banks in floodBanks:
         tileRows = []
@@ -71,11 +76,11 @@ def calibrationRows(floodBanks, regions):
             sign = 1
             if len(selected) % 2: sign = -1
             dry = []
-            for catalogueEdges, catalogue in catalogues:
+            for catalogueEdges, catalogue, weight in catalogues:
                 if not selected.intersection(catalogueEdges): continue
                 core = sum([1 for c in catalogue if selected.intersection(c)]) / float(len(catalogue))
                 for age in range(7):
-                    dry.append(core * ORDINARY_DRY[age])
+                    dry.append((core * ORDINARY_DRY[age], weight))
             tileRows.append((sign, dry))
         rows.append(tileRows)
     return rows
@@ -88,7 +93,10 @@ def expectedFood(rows, probability):
         allDry = 1.
         for sign, dry in tileRows:
             noDry = 1.
-            for chance in dry: noDry *= 1. - probability * chance
+            for coverage, weight in dry:
+                # Match the runtime's integer roll and minimum river length.
+                chance = min(10000, int(probability * weight * 10000. + .5)) / 10000.
+                noDry *= 1. - chance * coverage
             allDry += sign * noDry
         # A floodplain without bordering edges cannot suffer river drought.
         if not tileRows: allDry = 0.
@@ -99,10 +107,11 @@ def expectedFood(rows, probability):
 def calibrate(floodBanks, regions):
     rows = calibrationRows(floodBanks, regions)
     if not rows: return 0, 4.
-    low, high = 0., 1.
+    # One shared rate per weighted river segment; no river exceeds 100%.
+    low, high = 0., 1. / max([initiationWeight(len(region['floodEdges'])) for region in regions])
     for step in range(24):
         middle = (low + high) / 2.
         if expectedFood(rows, middle) > TARGET_FOOD: low = middle
         else: high = middle
-    chance = min(10000, max(0, int(high * 10000 + .5)))
+    chance = high * 10000.
     return chance, expectedFood(rows, chance / 10000.)

@@ -44,7 +44,7 @@ def apply_indian_civs(text, xl=False):
         if 'CivType=CIVILIZATION_INDIA' in oldPlayers[1]: inheritedSlot = 1
         inheritedTeam, inheritedPlayer = oldTeams[inheritedSlot], oldPlayers[inheritedSlot]
         inheritedTeam = '\n'.join(line.rstrip() for line in inheritedTeam.splitlines())
-    colors = ('YELLOW', 'DARK_RED', 'DARK_GREEN', 'LIGHT_BLUE', 'PURPLE')
+    colors = ('PURPLE', 'DARK_RED', 'DARK_GREEN', 'LIGHT_BLUE', 'YELLOW')
     for offset, entry in enumerate(CIVS):
         civ, short, birth, year, capital, _, _, _, _ = entry
         slot = 33 + offset
