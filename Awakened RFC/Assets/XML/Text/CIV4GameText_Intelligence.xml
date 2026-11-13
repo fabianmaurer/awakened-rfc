@@ -1050,11 +1050,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COOP_LOCKED</Tag>
-    <English>Cooperation requires a diplomatic agreement.</English>
-    <French>La coop&#233;ration n&#233;cessite un accord diplomatique.</French>
-    <German>Kooperation erfordert ein diplomatisches Abkommen.</German>
-    <Italian>La cooperazione richiede un accordo diplomatico.</Italian>
-    <Spanish>La cooperaci&#243;n requiere un acuerdo diplom&#225;tico.</Spanish>
+    <English>Requires Civil Service in both countries, an embassy, peace and a mutual agreement.</English>
+    <French>N&#233;cessite Fonction publique dans les deux pays, une ambassade, la paix et un accord mutuel.</French>
+    <German>Erfordert &#214;ffentliche Verwaltung in beiden L&#228;ndern, eine Botschaft, Frieden und ein gegenseitiges Abkommen.</German>
+    <Italian>Richiede Pubblica amministrazione in entrambi i paesi, un&#8217;ambasciata, la pace e un accordo reciproco.</Italian>
+    <Spanish>Requiere Administraci&#243;n p&#250;blica en ambos pa&#237;ses, una embajada, paz y un acuerdo mutuo.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_RISK_NONE</Tag>
@@ -1130,11 +1130,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COOP_LOCKED_TARGET</Tag>
-    <English>Requires an Intelligence Cooperation agreement with %s1.</English>
-    <French>N&#233;cessite un accord de coop&#233;ration du renseignement avec %s1.</French>
-    <German>Erfordert ein Abkommen zur Geheimdienstkooperation mit %s1.</German>
-    <Italian>Richiede un accordo di cooperazione informativa con %s1.</Italian>
-    <Spanish>Requiere un acuerdo de cooperaci&#243;n de inteligencia con %s1.</Spanish>
+    <English>Requires Civil Service in both countries, an embassy, peace and a mutual agreement.</English>
+    <French>N&#233;cessite Fonction publique dans les deux pays, une ambassade, la paix et un accord mutuel.</French>
+    <German>Erfordert &#214;ffentliche Verwaltung in beiden L&#228;ndern, eine Botschaft, Frieden und ein gegenseitiges Abkommen.</German>
+    <Italian>Richiede Pubblica amministrazione in entrambi i paesi, un&#8217;ambasciata, la pace e un accordo reciproco.</Italian>
+    <Spanish>Requiere Administraci&#243;n p&#250;blica en ambos pa&#237;ses, una embajada, paz y un acuerdo mutuo.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_FORCES</Tag>
@@ -1183,5 +1183,101 @@
     <German>Zielpr&#252;fung in %d1 Runden</German>
     <Italian>Revisione tra %d1 turni</Italian>
     <Spanish>Revisi&#243;n en %d1 turnos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_TECH_REQUIRE</Tag>
+    <English>Requires Alphabet.</English>
+    <French>N&#233;cessite Alphabet.</French>
+    <German>Erfordert Alphabet.</German>
+    <Italian>Richiede Alfabeto.</Italian>
+    <Spanish>Requiere Alfabeto.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_MILITARY_REQUIRE</Tag>
+    <English>Requires Writing.</English>
+    <French>N&#233;cessite &#201;criture.</French>
+    <German>Erfordert Schrift.</German>
+    <Italian>Richiede Scrittura.</Italian>
+    <Spanish>Requiere Escritura.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_POLITICS_REQUIRE</Tag>
+    <English>Requires Code of Laws and a non-Monarchy government.</English>
+    <French>N&#233;cessite Code des lois et un gouvernement non monarchique.</French>
+    <German>Erfordert Gesetzgebung und eine nichtmonarchische Regierung.</German>
+    <Italian>Richiede Codice di leggi e un governo non monarchico.</Italian>
+    <Spanish>Requiere C&#243;digo de leyes y un gobierno no mon&#225;rquico.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_ECONOMIC_REQUIRE</Tag>
+    <English>Requires Currency and a direct trade route in either direction.</English>
+    <French>N&#233;cessite Monnaie et une route commerciale directe dans un sens ou dans l&#8217;autre.</French>
+    <German>Erfordert W&#228;hrung und einen direkten Handelsweg in beliebiger Richtung.</German>
+    <Italian>Richiede Valuta e una rotta commerciale diretta in una delle due direzioni.</Italian>
+    <Spanish>Requiere Moneda y una ruta comercial directa en cualquiera de las dos direcciones.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_DYNASTIC_REQUIRE</Tag>
+    <English>Requires Monarchy. Both countries must use Monarchy and be at peace.</English>
+    <French>N&#233;cessite Monarchie. Les deux pays doivent &#234;tre des monarchies et en paix.</French>
+    <German>Erfordert Monarchie. Beide L&#228;nder m&#252;ssen Monarchien sein und Frieden halten.</German>
+    <Italian>Richiede Monarchia. Entrambi i paesi devono essere monarchie e in pace.</Italian>
+    <Spanish>Requiere Monarqu&#237;a. Ambos pa&#237;ses deben ser monarqu&#237;as y estar en paz.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_COOP_REQUIRE</Tag>
+    <English>Requires Civil Service in both countries, an embassy, peace and a mutual agreement.</English>
+    <French>N&#233;cessite Fonction publique dans les deux pays, une ambassade, la paix et un accord mutuel.</French>
+    <German>Erfordert &#214;ffentliche Verwaltung in beiden L&#228;ndern, eine Botschaft, Frieden und ein gegenseitiges Abkommen.</German>
+    <Italian>Richiede Pubblica amministrazione in entrambi i paesi, un&#8217;ambasciata, la pace e un accordo reciproco.</Italian>
+    <Spanish>Requiere Administraci&#243;n p&#250;blica en ambos pa&#237;ses, una embajada, paz y un acuerdo mutuo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_TECH</Tag>
+    <English>Unlocks technology stealing.</English>
+    <French>D&#233;bloque le vol de technologies.</French>
+    <German>Erm&#246;glicht Technologiediebstahl.</German>
+    <Italian>Sblocca il furto di tecnologie.</Italian>
+    <Spanish>Desbloquea el robo de tecnolog&#237;as.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_MILITARY</Tag>
+    <English>Unlocks military espionage.</English>
+    <French>D&#233;bloque l&#8217;espionnage militaire.</French>
+    <German>Erm&#246;glicht Milit&#228;rspionage.</German>
+    <Italian>Sblocca lo spionaggio militare.</Italian>
+    <Spanish>Desbloquea el espionaje militar.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_POLITICS</Tag>
+    <English>Unlocks political meddling.</English>
+    <French>D&#233;bloque l&#8217;ing&#233;rence politique.</French>
+    <German>Erm&#246;glicht politische Einmischung.</German>
+    <Italian>Sblocca l&#8217;ingerenza politica.</Italian>
+    <Spanish>Desbloquea la injerencia pol&#237;tica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_ECONOMIC</Tag>
+    <English>Unlocks economic subversion.</English>
+    <French>D&#233;bloque la subversion &#233;conomique.</French>
+    <German>Erm&#246;glicht wirtschaftliche Unterwanderung.</German>
+    <Italian>Sblocca la sovversione economica.</Italian>
+    <Spanish>Desbloquea la subversi&#243;n econ&#243;mica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_DYNASTIC</Tag>
+    <English>Unlocks dynastic politics.</English>
+    <French>D&#233;bloque la politique dynastique.</French>
+    <German>Erm&#246;glicht dynastische Politik.</German>
+    <Italian>Sblocca la politica dinastica.</Italian>
+    <Spanish>Desbloquea la pol&#237;tica din&#225;stica.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_UNLOCK_COOP</Tag>
+    <English>Unlocks intelligence cooperation.</English>
+    <French>D&#233;bloque la coop&#233;ration du renseignement.</French>
+    <German>Erm&#246;glicht Geheimdienstkooperation.</German>
+    <Italian>Sblocca la cooperazione informativa.</Italian>
+    <Spanish>Desbloquea la cooperaci&#243;n de inteligencia.</Spanish>
   </TEXT>
 </Civ4GameText>

@@ -43,7 +43,27 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 {
     if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102)
     {
-        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_COOP_LOCKED"));
+        const char* aszRequirements[] = {"TXT_KEY_INTEL_TECH_REQUIRE", "TXT_KEY_INTEL_MILITARY_REQUIRE",
+            "TXT_KEY_INTEL_POLITICS_REQUIRE", "TXT_KEY_INTEL_ECONOMIC_REQUIRE", "TXT_KEY_INTEL_COOP_REQUIRE"};
+        const int iMode = widgetDataStruct.m_iData2;
+        if (iMode >= 0 && iMode < INTEL_NONE)
+        {
+            const bool bDynastic = iMode == INTEL_POLITICS && GC.getGameINLINE().getActivePlayer() != NO_PLAYER &&
+                GET_PLAYER(GC.getGameINLINE().getActivePlayer()).isDynasticIntelligence();
+            szBuffer.assign(gDLL->getText(bDynastic ? "TXT_KEY_INTEL_DYNASTIC_REQUIRE" : aszRequirements[iMode]));
+        }
+        return;
+    }
+
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7104)
+    {
+        const char* aszUnlocks[] = {"TECH", "MILITARY", "POLITICS", "ECONOMIC", "COOP", "DYNASTIC"};
+        const int iUnlock = widgetDataStruct.m_iData2;
+        if (iUnlock >= 0 && iUnlock < 6)
+        {
+            CvString szKey = CvString::format("TXT_KEY_INTEL_UNLOCK_%s", aszUnlocks[iUnlock]);
+            szBuffer.assign(gDLL->getText(szKey));
+        }
         return;
     }
 

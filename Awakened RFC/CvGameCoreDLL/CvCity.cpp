@@ -2443,9 +2443,9 @@ bool CvCity::canJoin() const
 }
 
 
-static int populationFoodMultiplier(const CvCity& kCity)
+static int populationFoodPercent(const CvCity& kCity)
 {
-    return kCity.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HARAPPA") ? 2 : 1;
+    return kCity.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HARAPPA") ? 130 : 100;
 }
 
 int CvCity::getGrowthRateTimes100() const
@@ -2456,14 +2456,14 @@ int CvCity::getGrowthRateTimes100() const
         if (kTeam.isHasTech((TechTypes)i) || kTeam.getTechCount((TechTypes)i) > 0) ++iKnown;
     int iPenalty = std::max(0, GC.getDefineINT("RFCMP_GROWTH_BASE_PENALTY_TIMES100") -
         iKnown * GC.getDefineINT("RFCMP_GROWTH_TECH_REDUCTION_TIMES100"));
-    return (10000 - std::min(10000, iPenalty)) * populationFoodMultiplier(*this);
+    return (10000 - std::min(10000, iPenalty)) * populationFoodPercent(*this) / 100;
 }
 
 int CvCity::getGrowthFoodTimes100() const
 {
     int iSurplus = foodDifference();
     return iSurplus > 0 ? (int)((__int64)iSurplus * getGrowthRateTimes100() / 100)
-        : iSurplus * 100 * populationFoodMultiplier(*this);
+        : iSurplus * populationFoodPercent(*this);
 }
 
 int CvCity::getGrowthFoodStoredTimes100() const
@@ -8250,7 +8250,7 @@ void CvCity::setCultureLevel(CultureLevelTypes eNewValue, bool bUpdatePlotGroups
 void CvCity::initCulturePlots()
 {
 	std::vector<std::pair<int, int> > aPlots;
-	const int iRadius = GC.getNumCultureLevelInfos() - 1;
+	const int iRadius = 4;
 	for (int iDX = -iRadius; iDX <= iRadius; ++iDX)
 	{
 		for (int iDY = -iRadius; iDY <= iRadius; ++iDY)
@@ -13009,19 +13009,24 @@ bool CvCity::doGrowth()
 	//Rhye - end
 
 	iDiff = foodDifference();
-    // Urban Cycles accelerates both growth and the exhaustion of food stores.
-    if (iDiff < 0) iDiff *= populationFoodMultiplier(*this);
-    const bool bFamine = iDiff < 0 && getFood() + iDiff <= 0;
-    setFamineTurns(bFamine ? m_iFamineTurns + 1 : m_iFamineTurns - 2);
-    // Technology adjusts positive growth only. Urban Cycles also scales the
-    // deficit above; tile yields, consumption, shipments and production stay raw.
-    if (iDiff > 0)
+    // If retaining exports would prevent this loss, it is peaceful emigration.
+    // Use the same growth scaling and fractional carry as the actual food turn.
+    const int iWithoutExports = iDiff + getFoodTradeExports();
+    const int iWithoutExportsRate = iWithoutExports > 0 ? getGrowthRateTimes100() : 100 * populationFoodPercent(*this);
+    const int iWithoutExportsChange = (int)(((__int64)iWithoutExports * iWithoutExportsRate + m_iGrowthFoodRemainder) / 10000);
+    const bool bExportEmigration = getFoodTradeExports() > 0 && getFood() + iWithoutExportsChange >= 0;
+    // Technology adjusts positive growth only. Urban Cycles scales both signs.
+    // Keep fractional food so small shortages also receive the full modifier.
+    if (iDiff != 0)
     {
-        __int64 iAdjusted = (__int64)iDiff * getGrowthRateTimes100() + m_iGrowthFoodRemainder;
+        const int iRate = iDiff > 0 ? getGrowthRateTimes100() : 100 * populationFoodPercent(*this);
+        __int64 iAdjusted = (__int64)iDiff * iRate + m_iGrowthFoodRemainder;
         iDiff = (int)(iAdjusted / 10000);
         m_iGrowthFoodRemainder = (int)(iAdjusted % 10000);
         setInfoDirty(true);
     }
+    const bool bFamine = !bExportEmigration && iDiff < 0 && getFood() + iDiff <= 0;
+    setFamineTurns(bFamine ? m_iFamineTurns + 1 : m_iFamineTurns - 2);
 
     iDiff = divertEconomicFood(iDiff);
 	changeFood(iDiff);
@@ -13051,18 +13056,21 @@ bool CvCity::doGrowth()
 
 		if (getPopulation() > 1)
 		{
-            GET_PLAYER(getOwnerINLINE()).recordStarvationLoss();
-            // Apply the involuntary effects once, with an explicit starvation cause.
             changePopulation(-1, false);
-            const bool abandon = applyInvoluntaryPopulationLoss(1, true);
-            relocateFaminePopulation();
-            if (abandon)
+            if (!bExportEmigration)
             {
-                abandonToFamine();
-                return false;
+                GET_PLAYER(getOwnerINLINE()).recordStarvationLoss();
+                // Only genuine starvation causes penalties, refugees or abandonment.
+                const bool abandon = applyInvoluntaryPopulationLoss(1, true);
+                relocateFaminePopulation();
+                if (abandon)
+                {
+                    abandonToFamine();
+                    return false;
+                }
             }
 		}
-        else
+        else if (!bExportEmigration)
         {
             abandonToFamine();
             return false;

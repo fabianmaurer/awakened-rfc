@@ -3873,6 +3873,16 @@ bool CvTeam::isIntelligenceCooperation(TeamTypes eIndex) const
 void CvTeam::setIntelligenceCooperation(TeamTypes eIndex, bool bNewValue)
 {
     FAssert(eIndex >= 0 && eIndex < MAX_TEAMS && eIndex != getID());
+    if (bNewValue)
+    {
+        bool bEligible = false;
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+            if (GET_PLAYER((PlayerTypes)i).getTeam() == getID())
+                for (int j = 0; j < NUM_MAJOR_PLAYERS; ++j)
+                    if (GET_PLAYER((PlayerTypes)j).getTeam() == eIndex &&
+                        GET_PLAYER((PlayerTypes)i).canCooperateIntelligence((PlayerTypes)j)) bEligible = true;
+        if (!bEligible) return;
+    }
     m_abIntelligenceCooperation[eIndex] = bNewValue;
     if (!bNewValue)
         for (int i = 0; i < MAX_PLAYERS; ++i)

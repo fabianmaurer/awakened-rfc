@@ -5309,6 +5309,17 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 		buildTechTreeString(szBuffer, eTech, bPlayerContext, eFromTech);
 	}
 
+    const char* aszIntelTechs[] = {"TECH_ALPHABET", "TECH_WRITING", "TECH_CODE_OF_LAWS",
+        "TECH_CURRENCY", "TECH_CIVIL_SERVICE", "TECH_MONARCHY"};
+    const char* aszIntelUnlocks[] = {"TECH", "MILITARY", "POLITICS", "ECONOMIC", "COOP", "DYNASTIC"};
+    for (int iIntel = 0; iIntel < 6; ++iIntel)
+        if (eTech == GC.getInfoTypeForString(aszIntelTechs[iIntel]) && !GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
+        {
+            CvString szKey = CvString::format("TXT_KEY_INTEL_UNLOCK_%s", aszIntelUnlocks[iIntel]);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText(szKey));
+        }
+
 	//	Obsolete Buildings
 	for (iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
 	{

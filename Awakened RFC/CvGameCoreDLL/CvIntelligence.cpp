@@ -55,23 +55,68 @@ int CvPlayer::getIntelligenceForceCount() const
     return std::min(MAX_TEAMS, std::max(1, (int)getCurrentEra() + 1));
 }
 
+TechTypes CvPlayer::getIntelligenceRequiredTech(int iMode) const
+{
+    const char* szTech = NULL;
+    switch (iMode)
+    {
+    case INTEL_TECHNOLOGY: szTech = "TECH_ALPHABET"; break;
+    case INTEL_MILITARY: szTech = "TECH_WRITING"; break;
+    case INTEL_POLITICS: szTech = isDynasticIntelligence() ? "TECH_MONARCHY" : "TECH_CODE_OF_LAWS"; break;
+    case INTEL_ECONOMY: szTech = "TECH_CURRENCY"; break;
+    case INTEL_COOPERATION: szTech = "TECH_CIVIL_SERVICE"; break;
+    }
+    return szTech ? (TechTypes)GC.getInfoTypeForString(szTech) : NO_TECH;
+}
+
+bool CvPlayer::isIntelligenceModeUnlocked(int iMode) const
+{
+    if (iMode < 0 || iMode >= NUM_INTELLIGENCE_MODES) return false;
+    if (iMode == INTEL_NONE) return true;
+    const TechTypes eTech = getIntelligenceRequiredTech(iMode);
+    return eTech != NO_TECH && GET_TEAM(getTeam()).isHasTech(eTech);
+}
+
+bool CvPlayer::canCooperateIntelligence(PlayerTypes eTarget) const
+{
+    const TechTypes eTech = (TechTypes)GC.getInfoTypeForString("TECH_CIVIL_SERVICE");
+    return canIntelligenceTarget(eTarget) && eTech != NO_TECH &&
+        GET_TEAM(getTeam()).isHasTech(eTech) && GET_TEAM(GET_PLAYER(eTarget).getTeam()).isHasTech(eTech) &&
+        !GET_TEAM(getTeam()).isAtWar(GET_PLAYER(eTarget).getTeam()) && hasIntelligenceEmbassy(eTarget);
+}
+
+bool CvPlayer::canUseIntelligenceMode(PlayerTypes eTarget, int iMode) const
+{
+    if (iMode == INTEL_NONE || !isIntelligenceModeUnlocked(iMode) || !canIntelligenceTarget(eTarget)) return false;
+    if (iMode == INTEL_COOPERATION)
+        return canCooperateIntelligence(eTarget) && GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER(eTarget).getTeam());
+    if (iMode == INTEL_ECONOMY)
+        return getIntelligenceTradeRoutes(eTarget) > 0 || GET_PLAYER(eTarget).getIntelligenceTradeRoutes(getID()) > 0;
+    if (iMode == INTEL_POLITICS && isDynasticIntelligence())
+        return canDynasticTarget(eTarget) && !GET_TEAM(getTeam()).isAtWar(GET_PLAYER(eTarget).getTeam());
+    return true;
+}
+
+bool CvPlayer::canSelectIntelligenceMode(int iMode) const
+{
+    if (!isIntelligenceModeUnlocked(iMode)) return false;
+    if (iMode != INTEL_COOPERATION) return true;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        if (canUseIntelligenceMode((PlayerTypes)i, iMode)) return true;
+    return false;
+}
+
 void CvPlayer::setIntelligenceForceMode(int iForce, int iMode)
 {
     if (iForce < 0 || iForce >= getIntelligenceForceCount() || iMode < 0 || iMode >= NUM_INTELLIGENCE_MODES) return;
-    if (iMode == INTEL_COOPERATION)
-    {
-        bool bEligible = false;
-        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
-            if (canIntelligenceTarget((PlayerTypes)i) && GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)i).getTeam())) bEligible = true;
-        if (!bEligible) return;
-    }
+    if (!canSelectIntelligenceMode(iMode)) return;
     m_aiForcePending[iForce] = iMode;
     gDLL->getInterfaceIFace()->setDirty(Espionage_Advisor_DIRTY_BIT, true);
 }
 
 int CvPlayer::getIntelligenceTargetScore(PlayerTypes eTarget, int iMode) const
 {
-    if (!canIntelligenceTarget(eTarget) || iMode == INTEL_NONE) return 0;
+    if (!canUseIntelligenceMode(eTarget, iMode)) return 0;
     const CvPlayerAI& kTarget = GET_PLAYER(eTarget);
     const TeamTypes eTeam = kTarget.getTeam();
     if (kTarget.getNumCities() == 0) return 0;
@@ -172,8 +217,7 @@ void CvPlayer::updateIntelligenceForces()
         const int iMode = m_aiForceMode[f];
         bool bActive = false;
         for (int j = 0; j < 3; ++j)
-            if (m_aiForceTargets[f][j] >= 0 && canIntelligenceTarget((PlayerTypes)m_aiForceTargets[f][j]) &&
-                (iMode != INTEL_COOPERATION || GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)m_aiForceTargets[f][j]).getTeam()))) bActive = true;
+            if (m_aiForceTargets[f][j] >= 0 && canUseIntelligenceMode((PlayerTypes)m_aiForceTargets[f][j], iMode)) bActive = true;
         if (iMode == INTEL_NONE || !bActive) continue;
         // Preserve fractions at low EP: output / active forces + 10% of total output.
         m_aiForceStock[f][iMode] = (int)std::min((__int64)MAX_INT / 2,
@@ -188,8 +232,7 @@ int CvPlayer::getIntelligenceActiveForces() const
     for (int f = 0; f < getIntelligenceForceCount(); ++f)
         if (m_aiForceMode[f] != INTEL_NONE)
             for (int j = 0; j < 3; ++j)
-                if (m_aiForceTargets[f][j] >= 0 && canIntelligenceTarget((PlayerTypes)m_aiForceTargets[f][j]) &&
-                    (m_aiForceMode[f] != INTEL_COOPERATION || GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)m_aiForceTargets[f][j]).getTeam())))
+                if (m_aiForceTargets[f][j] >= 0 && canUseIntelligenceMode((PlayerTypes)m_aiForceTargets[f][j], m_aiForceMode[f]))
                 { ++iCount; break; }
     return iCount;
 }
@@ -207,8 +250,7 @@ int CvPlayer::getIntelligenceAllocation(TeamTypes eTarget, int iMode) const
         for (int j = 0; j < iCount; ++j)
         {
             const PlayerTypes ePlayer = (PlayerTypes)m_aiForceTargets[f][j];
-            if (canIntelligenceTarget(ePlayer) && GET_PLAYER(ePlayer).getTeam() == eTarget &&
-                (iMode != INTEL_COOPERATION || GET_TEAM(getTeam()).isIntelligenceCooperation(eTarget)))
+            if (canUseIntelligenceMode(ePlayer, iMode) && GET_PLAYER(ePlayer).getTeam() == eTarget)
                 iTotal += (10000 / iActive + 1000) * aiShare[iCount] / 100;
         }
     }
@@ -244,7 +286,7 @@ void CvPlayer::rebuildIntelligenceStocks()
         for (int j = 0; j < iCount; ++j)
         {
             const PlayerTypes eTarget = (PlayerTypes)m_aiForceTargets[f][j];
-            if (!canIntelligenceTarget(eTarget) || iMode == INTEL_NONE) continue;
+            if (!canUseIntelligenceMode(eTarget, iMode)) continue;
             const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
             if (iMode == INTEL_COOPERATION && !GET_TEAM(getTeam()).isIntelligenceCooperation(eTeam)) continue;
             const int iBase = std::max(1, getCommerceRate(COMMERCE_ESPIONAGE));
@@ -1142,10 +1184,11 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
     if (iField == 300) return getIntelligenceForceCount();
     if (iField == 301) return getIntelligenceActiveForces();
     if (iField == 302) return scaledTurns(5);
+    if (iField >= 340 && iField < 340 + NUM_INTELLIGENCE_MODES) return canSelectIntelligenceMode(iField - 340) ? 1 : 0;
     if (iField == 303)
     {
         for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
-            if (canIntelligenceTarget((PlayerTypes)i) && GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)i).getTeam())) return 1;
+            if (canUseIntelligenceMode((PlayerTypes)i, INTEL_COOPERATION)) return 1;
         return 0;
     }
     if (iField >= 310 && iField < 340)
@@ -1160,8 +1203,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
             if (m_aiForceMode[f] == INTEL_NONE) return 0;
             bool bActive = false;
             for (int j = 0; j < 3; ++j)
-                if (m_aiForceTargets[f][j] >= 0 && canIntelligenceTarget((PlayerTypes)m_aiForceTargets[f][j]) &&
-                    (m_aiForceMode[f] != INTEL_COOPERATION || GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)m_aiForceTargets[f][j]).getTeam()))) bActive = true;
+                if (m_aiForceTargets[f][j] >= 0 && canUseIntelligenceMode((PlayerTypes)m_aiForceTargets[f][j], m_aiForceMode[f])) bActive = true;
             return bActive ? 10000 / std::max(1, getIntelligenceActiveForces()) + 1000 : 0;
         }
         if (iField == 314)
@@ -1174,8 +1216,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
         if (iField >= 320 && iField < 323)
         {
             const int iPlayer = m_aiForceTargets[f][iField-320];
-            return iPlayer >= 0 && canIntelligenceTarget((PlayerTypes)iPlayer) &&
-                (m_aiForceMode[f] != INTEL_COOPERATION || GET_TEAM(getTeam()).isIntelligenceCooperation(GET_PLAYER((PlayerTypes)iPlayer).getTeam())) ? iPlayer : -1;
+            return iPlayer >= 0 && canUseIntelligenceMode((PlayerTypes)iPlayer, m_aiForceMode[f]) ? iPlayer : -1;
         }
         if (iField >= 330 && iField < 330 + NUM_INTELLIGENCE_MODES)
         {

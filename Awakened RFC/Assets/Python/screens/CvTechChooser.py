@@ -297,6 +297,19 @@ class CvTechChooser:
 			j = 0
 			k = 0
 
+			# Intelligence unlocks share a navy/gold frame and eye emblem.
+			if not gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE):
+				intelUnlocks = (("TECH_ALPHABET", "Technology"), ("TECH_WRITING", "Military"),
+					("TECH_CODE_OF_LAWS", "Political"), ("TECH_CURRENCY", "Economic"),
+					("TECH_CIVIL_SERVICE", "Cooperation"), ("TECH_MONARCHY", "Dynastic"))
+				for unlock, (tech, icon) in enumerate(intelUnlocks):
+					if i == gc.getInfoTypeForString(tech):
+						screen.addDDSGFCAt("IntelUnlock" + str(i), szTechRecord,
+							"Art/Interface/Buttons/Intelligence/Unlock" + icon + ".dds",
+							iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE,
+							WidgetTypes.WIDGET_GENERAL, 7104, unlock, False)
+						fX += X_INCREMENT
+
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
 				eLoopUnit = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationUnits(j)

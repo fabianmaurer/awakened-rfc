@@ -4451,7 +4451,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 		break;
 
     case TRADE_INTELLIGENCE_COOPERATION:
-        return canIntelligenceTarget(eWhoTo) && !atWar(getTeam(), eOtherTeam) &&
+        return canCooperateIntelligence(eWhoTo) &&
             !GET_TEAM(getTeam()).isIntelligenceCooperation(eOtherTeam);
 
 	case TRADE_OPEN_BORDERS:

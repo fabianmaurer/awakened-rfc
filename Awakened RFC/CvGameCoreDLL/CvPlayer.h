@@ -332,6 +332,11 @@ public:
 
     // Automatic intelligence choices use IntelligenceModeTypes.
     bool canIntelligenceTarget(PlayerTypes eTarget) const;
+    TechTypes getIntelligenceRequiredTech(int iMode) const;
+    bool isIntelligenceModeUnlocked(int iMode) const;
+    bool canUseIntelligenceMode(PlayerTypes eTarget, int iMode) const;
+    bool canSelectIntelligenceMode(int iMode) const;
+    bool canCooperateIntelligence(PlayerTypes eTarget) const;
     int getIntelligenceMode(TeamTypes eTarget) const;
     int getIntelligenceAccess(PlayerTypes eTarget) const;
     int getIntelligenceTradeRoutes(PlayerTypes eTarget) const;

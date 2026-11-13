@@ -99,7 +99,7 @@ def checkPlayerTurn(iPlayer):
             continue
         if city.getPopulation() <= 1 or city.getFamineTurns() < 3:
             continue
-        if city.getFood() > 0 or city.foodDifference(False) >= 0:
+        if city.getFood() > 0 or city.foodDifference(False) + city.getFoodTradeExports() >= 0:
             continue
         # Famine anger alone cannot cause secession. Political discontent or a
         # foreign cultural majority must already exist independently of hunger.

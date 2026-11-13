@@ -120,11 +120,11 @@
     <Spanish>El poder de los ciclos urbanos</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UP_HAR2</Tag>
-    <English>Cities grow twice as fast. Food shortages drain reserves twice as fast.</English>
-    <French>Les villes croissent deux fois plus vite. Les p&#233;nuries &#233;puisent les r&#233;serves deux fois plus vite.</French>
-    <German>St&#228;dte wachsen doppelt so schnell. Nahrungsmangel leert die Vorr&#228;te doppelt so schnell.</German>
-    <Italian>Le citt&#224; crescono due volte pi&#249; velocemente. Le carenze alimentari consumano le scorte due volte pi&#249; velocemente.</Italian>
-    <Spanish>Las ciudades crecen el doble de r&#225;pido. La escasez de alimentos agota las reservas el doble de r&#225;pido.</Spanish>
+    <English>Cities grow and shrink 30% faster.</English>
+    <French>Les villes croissent et d&#233;clinent 30 % plus vite.</French>
+    <German>St&#228;dte wachsen und schrumpfen 30% schneller.</German>
+    <Italian>Le citt&#224; crescono e si riducono il 30% pi&#249; velocemente.</Italian>
+    <Spanish>Las ciudades crecen y decrecen un 30% m&#225;s r&#225;pido.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UHV_HAR1</Tag>
     <English>Have three cities of population 5 in the Indus region by 2000 BC.</English>

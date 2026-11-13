@@ -239,7 +239,9 @@ Jerusalem is preferred for Judaism and Christianity, and Mecca for Islam. Before
 
 ## Cultural border expansion
 
-Cities begin with their center and eight neighboring tiles. Further culture
+Cultural reach is capped at radius 4 (Civ4 plot distance): up to 61 tiles
+including the city, extending four tiles along the cardinal directions and
+three diagonally. Cities begin with their center and eight neighboring tiles. Further culture
 expands coverage **one tile per individual culture threshold**, rather than a
 whole ring at each culture level. Nearby tiles come first; water, hills, peaks
 and features cost more, while rivers and resources revealed when the city is
@@ -618,7 +620,7 @@ Food flows along actual trade routes toward the city with the stronger combined 
 - Wealth inequality contributes up to **100 pressure points**. Wellbeing inequality remains capped at **50 pressure points**: happiness differences can supply the full 50, while health differences supply at most 25. The signed pressures are added before the food-flow direction and amount are chosen. A healthy, happy new city can therefore attract food despite a modest wealth disadvantage; wellbeing cannot overcome a large wealth gap by itself.
 - Base food demand is `ceil(absolute combined pressure / 10) + max(0, route commerce - 1)`, multiplied by infrastructure efficiency. Routes at 0% efficiency cannot be established or transfer food. For reciprocal routes, use the stronger request once rather than counting the city pair twice.
 - Route selection values the expected food import or export as one commerce per food, alongside the route's ordinary commerce. The estimate does not reserve a supplier's food: the shared export cap is still applied after all routes have been selected.
-- A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or starve. Size-one cities may export only their local surplus after consumption and health costs.
+- A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or lose population through peaceful emigration. Size-one cities may export only their local surplus after consumption and health costs.
 - When requests exceed capacity, destinations receive proportional shares. Total food is rounded down to whole points, with the remaining whole points assigned to the largest fractional shares; ties use deterministic city/route order. Small requests may yield no food.
 - All allocations are computed together once per game turn before player turns, then saved. Before either endpoint processes growth, the shipment is checked against current routes, disruption and export capacity. Its final amount is then locked identically at both ends: a later population/cap change or disruption cannot erase only the debit or only the credit. Already booked shipments finish their matching accounting, even if a city enters disorder; later allocations reflect the disruption. Freed capacity is redistributed at the next allocation, not mid-turn.
 - Food is deducted from the supplier and added to the recipient **after yield modifiers**. Imports are not multiplied by food bonuses and cannot be exported again. They affect ordinary growth, starvation, and food-based unit production. Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
@@ -1464,6 +1466,25 @@ is available in the Ancient era, with one more unlocked on reaching each new
 era through technology. Focus changes take effect at the next player turn.
 Hovering a focus previews its rules without changing the selection.
 
+Focuses unlock through technology. The advisor keeps locked focuses visible
+with their requirements; matching navy-and-gold eye badges mark the unlocks
+in the technology tree and their effects appear in technology help.
+
+| Focus | Technology | Target conditions |
+| --- | --- | --- |
+| Military espionage | Writing | Contact; available in peace and war, including city-defense infiltration. |
+| Technology stealing | Alphabet | Contact; stolen technologies retain their normal prerequisites. |
+| Economic subversion | Currency | A direct trade route in either direction. |
+| Political meddling | Code of Laws | Sponsor uses a non-Monarchy government. |
+| Dynastic politics | Monarchy | Both countries use Monarchy and are at peace. |
+| Intelligence cooperation | Civil Service in both countries | An embassy in either direction, peace and a mutual agreement. |
+
+Hostile focuses require only the sponsor's technology. Invalid assignments
+immediately stop receiving funding or applying effects and do not count toward
+the funding divisor. Their force buildup continues to decay; replacement targets
+wait for the normal reassessment. Economic operations pause when their last
+direct trade route disappears, including when war ends trade.
+
 Each active force receives `total espionage / active forces + 10% of total
 espionage`. Forces with no operations or no valid assigned targets receive no
 funding and do not enter the divisor. One active force receives 110%, two receive
@@ -1512,7 +1533,8 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
 
 - **Intelligence cooperation:** a mutual diplomatic Intelligence Cooperation
   agreement unlocks this mode for both countries; either side may invest
-  independently. The agreement requires peace. AI partners require at least
+  independently. Both teams must know Civil Service, have an embassy in either
+  direction, and remain at peace. AI partners require at least
   Pleased relations and no war preparations against the other party.
   Cooperation uses its force's allocated base output and portable buildup after access. Counterintelligence does not resist
   cooperation. Network strength is `B / (B + 40000)`, multiplied by mutual trust:
@@ -1600,7 +1622,8 @@ Security Bureaus increase `D`, weighted by their cities' share of team populatio
   The victim receives intelligence unrest (+2 unhappiness, three Normal turns),
   without stacking with existing intelligence unrest or removing historical
   culture and borders. XL halves buildup, decay, transfers and event chances
-  per turn; art rewards remain unchanged. Operations continue during war.
+  per turn; art rewards remain unchanged. Operations require an active direct
+  trade route in either direction and pause when that connection is lost.
   Map reports and their city visibility have been removed.
 
 Discovery risk rises with effort, approaching the previous fixed chances as
@@ -1793,8 +1816,8 @@ The separate geography profile retains XL's calendar, resource history and trade
 The XL 800 BC start instead gives the surviving northern Indian polity to Ganges;
 Harappa is absent there. Standard maps retain their existing civilizations.
 
-- **Urban Cycles:** cities grow twice as fast, and food shortages drain stored
-  food twice as fast. The normal technology-based growth modifier still applies
+- **Urban Cycles:** cities grow and shrink 30% faster. Food surpluses and
+  shortages change stored food at 1.3 times the normal rate. The normal technology-based growth modifier still applies
   to surpluses. Tile yields, food trade, consumption and food-based production
   are unchanged; starvation still removes at most one population per food turn.
 - **City Founder:** replaces the Settler and founds cities with population 2.
@@ -1909,6 +1932,14 @@ independent/barbarian cities follow this rule too. The remaining population
 disperses and counts as starvation loss for
 stability, garrison damage and refugee resettlement. A major civilization's final
 city instead supplies one Settler, as described below.
+
+Population loss is peaceful emigration when retaining that turn's food exports
+would have prevented the loss, including growth scaling and fractional food.
+The city still loses one population, but this does not count toward famine
+abandonment or population-loss stability penalties, damage its garrison, create
+famine refugees, or increase famine pressure. Exports cannot remove the final
+population point. A shortage that would cause population loss even without
+exports remains starvation.
 
 Famine pressure increases on each food turn whose deficit exhausts the reserve,
 up to 12. It falls by two per food turn when supplies recover. After three such

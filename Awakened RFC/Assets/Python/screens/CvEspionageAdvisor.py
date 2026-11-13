@@ -196,27 +196,19 @@ class CvEspionageAdvisor:
         self.modeHint = self.name()
         hint = tr("CHOOSE_MODE")
         self.showModeHint(hint)
-        # Reuse the exact top-bar glyphs and their native transparent rendering.
-        iconStyles = (
-            "Button_HUDAdvisorTechnology_Style",
-            "Button_HUDAdvisorMilitary_Style",
-            "Button_HUDAdvisorVictory_Style",
-            "Button_HUDAdvisorFinance_Style",
-            "Button_HUDAdvisorCorporation_Style",
-            "Button_HUDAdvisorDomestic_Style",
-        )
+        focusIcons = ("Technology", "Military", "Political", "Economic", "Cooperation")
         for slot, mode in enumerate((5, 0, 1, 2, 3, 4)):
             # Highlight only the player's selection; queued timing is shown below.
             state = "Neutral"
             if mode == pending:
                 state = "Selected"
             x = 356 + slot * 110
-            enabled = mode != 4 or bool(player.getIntelligenceData(-1, 303))
+            enabled = bool(player.getIntelligenceData(-1, 340 + mode))
             widgetID = 7101
             widgetValue = mode
             if not enabled:
                 widgetID = 7102
-                widgetValue = i
+                widgetValue = mode
             frameButton = self.name()
             if enabled:
                 screen.setImageButton(frameButton, INTEL_ART + state + ".dds",
@@ -227,21 +219,21 @@ class CvEspionageAdvisor:
                     x, 144, 80, 84, WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
             iconButton = self.name()
             # Leave a footer inside each tile for its network buildup percentage.
-            if mode == 4:
-                # Exact brown briefcase from the Corporations Advisor HUD atlas.
-                if enabled:
-                    screen.setImageButton(iconButton, INTEL_ART + "Cooperation.dds", x + 12, 150, 56, 56,
-                        WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
-                else:
-                    screen.addDDSGFC(iconButton, INTEL_ART + "CooperationDisabled.dds", x + 12, 150, 56, 56,
-                        WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
-            else:
+            if mode == 5:
                 screen.setImageButton(iconButton, "", x + 12, 150, 56, 56,
                     WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
-                iconStyle = iconStyles[mode]
+                screen.setStyle(iconButton, "Button_HUDAdvisorDomestic_Style")
+            else:
+                icon = focusIcons[mode]
                 if mode == 2 and player.getIntelligenceData(-1, 32):
-                    iconStyle = "Button_HUDAdvisorCivics_Style"
-                screen.setStyle(iconButton, iconStyle)
+                    icon = "Dynastic"
+                path = INTEL_ART + "Unlock" + icon
+                if enabled:
+                    screen.setImageButton(iconButton, path + ".dds", x + 12, 150, 56, 56,
+                        WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
+                else:
+                    screen.addDDSGFC(iconButton, path + "Disabled.dds", x + 12, 150, 56, 56,
+                        WidgetTypes.WIDGET_GENERAL, widgetID, widgetValue)
             buildup = self.buildupText(player, mode)
             if not enabled:
                 buildup = u"<color=140,140,145,255>%s</color>" % buildup
@@ -258,9 +250,12 @@ class CvEspionageAdvisor:
         return chanceText(amount) + u"%"
 
     def modeHelp(self, player, mode):
+        requirement = ("TECH_REQUIRE", "MILITARY_REQUIRE", "POLITICS_REQUIRE", "ECONOMIC_REQUIRE", "COOP_REQUIRE", "NONE_HELP")[mode]
         if mode == 2 and player.getIntelligenceData(-1, 32):
-            return tr("DYNASTIC_HELP")
-        return tr(("TECH_HELP", "MILITARY_HELP", "POLITICS_HELP", "ECONOMIC_HELP", "COOP_HELP", "NONE_HELP")[mode])
+            return tr("DYNASTIC_REQUIRE") + u"\n" + tr("DYNASTIC_HELP")
+        if mode == 5:
+            return tr("NONE_HELP")
+        return tr(requirement) + u"\n" + tr(("TECH_HELP", "MILITARY_HELP", "POLITICS_HELP", "ECONOMIC_HELP", "COOP_HELP")[mode])
 
     def refreshModeDetails(self):
         for name in reversed(self.widgets[self.detailWidgetStart:]):
@@ -432,7 +427,7 @@ class CvEspionageAdvisor:
 
     def handleInput(self, inputClass):
         if inputClass.getData1() == 7102:
-            # Locked cooperation has hover help only: no preview selection and no network message.
+            # Locked focuses have hover help only: no preview selection and no network message.
             return 1
         if inputClass.getData1() == 7101:
             if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
@@ -468,7 +463,7 @@ class CvEspionageAdvisor:
             self.drawContents()
             return 1
         if inputClass.getData1() == 7101:
-            if inputClass.getData2() == 4 and not gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 303):
+            if not gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 340 + inputClass.getData2()):
                 return 1
             self.previewMode = inputClass.getData2()
             self.refreshModeDetails()
