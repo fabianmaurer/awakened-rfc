@@ -33,6 +33,12 @@ def beginEvent(context, argsList=-1):
 
 # Native mod callbacks must enter through an engine-visible EntryPoints module.
 # Resolve ordinary helper modules with Python imports, not native module lookup.
+def recordPopulationLoss(argsList):
+    iPlayer, iCity, losses, capital, starvation, population = argsList
+    import Famine
+    return Famine.recordPopulationLoss(iPlayer, iCity, losses, capital, starvation, population)
+
+
 def canRomanCampaign(argsList):
     iPlayer = argsList[0]
     import RomanEmpire

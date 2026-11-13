@@ -447,15 +447,13 @@ class CvRFCEventHandler:
                 # CvPlayer.doTurn fires this after city updates, before input
                 # resumes. Expired slaves must not create a stale decision.
                 import Famine
-                Famine.checkPlayerTurn(iPlayer)
+                self.sta.applyPopulationLossChange(iPlayer, Famine.checkPlayerTurn(iPlayer))
                 self.slave.checkPlayerTurn(iPlayer)
 
 
         def onEndGameTurn(self, argsList):
             
                 iGameTurn = argsList[0]
-                if not geo.historyBoundary(iGameTurn):
-                        return
                 self.sta.checkImplosion(iGameTurn)
 
 

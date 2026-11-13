@@ -16,19 +16,24 @@ victory goals, and other inherited systems form the underlying game.
 The Apostolic Palace **cannot be constructed**. Once Christianity is present in
 the city of Rome at (60,44), the Papal State founding event becomes eligible:
 
-- A Christian owner may cede Rome to a new Papal State, or refuse for a stacking
-  **-2 relations penalty from every other Christian nation**. Refusal repeats after
-  10 turns at Normal speed (`AP_PAPAL_RETRY_TURNS`), scaled to game speed. All
-  accumulated refusal penalties disappear when the owner cedes Rome or loses Rome (including gifting or razing it).
-- Independent Rome flips to the Papal State automatically. Barbarian ownership,
-  non-Christian ownership, Tolerance and State Atheism prevent the event.
+- A Christian owner may cede Rome to a new Papal State or refuse. Refusal gives
+  **-2 relations with other Christian nations for 20 XL turns** (10 at Normal
+  speed). Repeated refusals refresh this duration rather than stacking the penalty.
+- Independent Rome accepts automatically. Barbarian ownership, non-Christian
+  ownership, Tolerance and State Atheism prevent the initial Rome event.
+- Accepting makes the surviving major owner **Protector of the Holy See**:
+  **+2 relations with Christian nations and one extra council vote** while the
+  ceded city remains the Papal seat. A non-Christian protector receives its one
+  protector vote without ordinary Christian voting weight. Independent hosts
+  receive no protector reward. The bonus applies to new ballots; existing ballots
+  retain their recorded weights.
 
 The Papal State is a minor state, excluded from normal major-power diplomacy and
 victory competition. It cannot train settlers or receive neighboring Crusade
 settlements, but retains its seat and chairmanship in the Apostolic council.
 A major civilization cannot turn its whole empire into the Papal State.
 
-A newly established Papal State receives Rome, its own player slot, a capital and
+A newly established Papal State receives the offered city, its own player slot, a capital and
 two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
 Papal identity is separate from the Independent Crusader States. The leader is
 named Pope. Like other minor states, it has no scoreboard entry or ordinary
@@ -40,24 +45,44 @@ Ancestor Worship receives casual wording, State Religion respectful wording,
 Holy State reverent wording, and Tolerance or State Atheism sceptical wording.
 Human recipients receive an informational popup and an event-log message.
 
-While Rome belongs to the Papal State, its passable adjacent non-city tiles remain
+While the Papal seat belongs to the Papal State, its passable adjacent non-city tiles remain
 Papal territory regardless of foreign culture or fort garrisons. Papal culture
-cannot claim tiles beyond this area, on land or at sea. Rome itself
+cannot claim tiles beyond this area, on land or at sea. The seat itself
 cannot suffer cultural revolts or cultural unhappiness. These protections also
-apply under Tolerance; Rome can still be lost through military conquest.
+apply under Tolerance; the seat can still be lost through military conquest.
 
 The Papal State cannot change its state religion or legitimation civic while it
 is not using **Tolerance**. **State Atheism is always unavailable**. Adopting
 Tolerance disables the Palace, council voting and all Palace effects, including
 cached religious-building yields and the Palace's own commerce/Great Person effects.
 Returning to Christian religious rule reactivates them; secularization is reversible.
-The Palace is also inactive when the Papal State no longer controls Rome.
-After losing Rome, the Papal State has **10 turns** to recover it. Recovery resets
-this deadline; a later loss starts a new ten-turn period. If it fails, its remaining
-cities become Independent and its army disbands. A cityless Papal State with
-surviving units keeps its recovery opportunity. A new founding event cannot fire
-while any existing Papal State survives, including during the recovery period.
-After elimination or dissolution, an eligible Rome event may restore the Papacy.
+If the Papal seat is conquered, the Papal State ends immediately and its active
+Crusade stops, applying the ordinary Crusade-end peace rules. There is no
+recapture grace period. Remaining Papal cities become Independent and its army
+is disbanded. The Protector bonus ends and the Pope enters exile.
+
+After **10 XL turns** (5 at Normal speed), a synchronized random Christian city
+in Europe is selected for refuge. Europe uses the five European Crusade fronts.
+The conqueror's cities and cities already approached in that exile are excluded.
+Non-capitals are preferred; capitals are considered only when no eligible
+non-capital remains. Any non-barbarian owner of a Christian city can receive an
+offer. The owner is asked to cede that specific city; a last-city warning applies.
+Independent owners accept automatically. AI major owners accept when Christian
+and retaining another city; other AI owners refuse.
+
+Acceptance establishes the new Papal State and Palace in the offered city, with
+the same seat protections, Holy See power and Protector reward. Refusal gives the
+20-XL-turn diplomatic penalty, and another city is approached after **10 XL turns**.
+Several nations' penalties can overlap; accepting clears the accepting owner's
+penalty without clearing other nations' penalties. Lost ownership or Christianity
+invalidates an unanswered offer without a penalty, followed by the same wait.
+If no eligible city remains, the Pope stays in exile and checks again after the
+wait; previously approached sites stay excluded until a new exile begins.
+Initial founding remains confined to Rome, and refuge never resumes an ended
+Crusade. A new campaign requires a new council vote.
+
+The delays scale with game speed through `AP_PAPAL_EXILE_WAIT_TURNS`,
+`AP_PAPAL_RETRY_TURNS` and `AP_PAPAL_REFUSAL_TURNS` in `GlobalDefines.xml`.
 
 Every founding or restoration starts the Papal AI with a strong preference for
 **Theocracy and Holy State**, and against Tolerance and Ancestor Worship. Once the
@@ -67,15 +92,16 @@ preference and restarts the fade. This AI preference adds no civic restrictions
 to human players beyond the existing Papal rules.
 
 The Papal unique power, **The Power of the Holy See**, is active while the Papal
-State controls an active Apostolic Palace. Rome gains **+2 base gold per foreign
+State controls an active Apostolic Palace. The seat gains **+2 base gold per foreign
 city containing Christianity**, regardless of that city's owner's state religion;
-Rome's gold modifiers amplify this income. Papal cities containing Christianity
+the seat's gold modifiers amplify this income. Papal cities containing Christianity
 receive **+50% city defense**, reduced normally by bombardment. These bonuses
-stop when the Palace is inactive, including under Tolerance or after losing Rome,
+stop when the Palace is inactive, including under Tolerance or after losing the seat,
 and return when it reactivates. They apply to the Papal State,
-including countries that choose to become the Papacy.
+at its current seat, including refuge cities.
 
-Only nations with Christianity as their state religion participate in council votes.
+Nations with Christianity as their state religion participate in council votes.
+A non-Christian Protector also receives its single protector vote.
 The Papal State chairs the council. The UN retains its existing rules.
 
 The first council session opens at the later of three turns after founding or
@@ -162,8 +188,10 @@ scenario-slot maintenance use this layout. New games are required.
 A persistent main-interface reminder shows the region, remaining turns, the
 player's plunder and total coalition plunder. Plunder counts regional pillage gold,
 city-capture gold and Crusade victory rewards. Coalition membership remains binding
-for the campaign even if a participant changes religion. Only Yes, No and Abstain
-are available, and every member adheres to a passed result.
+for the campaign even if a participant changes religion.
+Restored crusader kingdoms resume required wars without receiving a fresh
+combat-reward allowance. Papal refuge ends the previous Crusade instead.
+Only Yes, No and Abstain are available, and every member adheres to a passed result.
 
 Treaties passed by the council bypass their ordinary technology requirement.
 There is no defiance veto: No and Abstain voters are bound by passed resolutions.
@@ -602,7 +630,7 @@ The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` 
 
 Stationed military units provide **+1 happiness per two units**, rounded down, up to **+3 happiness at six units**. This applies under every civic and appears in the city's military presence happiness breakdown.
 
-City tiles retain their natural terrain, hill, river, feature and revealed resource yields, then gain **+1 production and +1 commerce**. There is no minimum food yield: a bare desert city tile produces no food. Founding a city preserves flood plains and their natural yields. This applies to all city tiles; previously removed flood plains are not restored in existing saves.
+City tiles retain their natural terrain, hill, river, feature and revealed resource yields, then gain **+1 food, +1 production and +1 commerce**. A bare desert city tile produces one food; working an ordinary coast tile supplies the second food needed by one citizen before unhealthiness or other penalties. Founding a city preserves flood plains and their natural yields. This applies to all city tiles; previously removed flood plains are not restored in existing saves.
 
 Each column allows one active civic. Bonuses from different columns combine;
 for example, Dictatorship and Nationalism together provide +40% production.
@@ -1004,6 +1032,13 @@ name, for example **“The [people] are rising up!”** This warning accompanies
 system; it does not introduce a separate unit-flipping rule.
 
 ### Returning civilizations
+
+Harappa, Babylonia, Carthage, Xiongnu and the Mississippians cannot respawn after
+elimination. These slots do not represent later successor states. This restriction
+uses civilization identity, so India remains eligible on starts where its slot
+is India rather than Harappa. Maya, Inca, Aztec and Inuit returns remain enabled,
+as does Rome's return as Italy. Surviving civilizations may continue or relocate
+normally; a surviving Xiongnu state can still receive the Mongol replacement army.
 
 A respawn can claim a major civilization's cities only when that owner's
 stability is **below -20**. The hidden ten-point stability deduction and the
@@ -1750,12 +1785,21 @@ The separate geography profile retains XL's calendar, resource history and trade
 The XL 800 BC start instead gives the surviving northern Indian polity to Ganges;
 Harappa is absent there. Standard maps retain their existing civilizations.
 
-- **Indus Networks:** river farms gain +1 commerce.
+- **Urban Cycles:** cities grow twice as fast, and food shortages drain stored
+  food twice as fast. The normal technology-based growth modifier still applies
+  to surpluses. Tile yields, food trade, consumption and food-based production
+  are unchanged; starvation still removes at most one population per food turn.
 - **City Founder:** replaces the Settler and founds cities with population 2.
   It has the ordinary Settler cost and movement, and cannot build improvements.
 - **Reservoir:** replaces the Granary, retains its food storage and adds +2 health.
-- The opening has Harappa already founded with population 2 and a Palace, plus
-  one City Founder and a Warrior, with Agriculture and Mining. There is no free Worker.
+- The opening has Harappa at `(141, 64)` with population 6 and a Palace,
+  Mohenjo-daro at `(140, 62)` with population 4, and Rakhigarhi at `(141, 66)`
+  with population 5. All three centres stand on floodplains along a compact
+  river corridor, with overlapping farmland and fewer grassland alternatives.
+  An authored eastern distributary supplies the early alluvium. These cities
+  retain ordinary population unhappiness and unhealthiness. Each
+  has a Warrior. Agriculture is the only starting technology; there is no free
+  Settler, City Founder or Worker, and no free improvements or Reservoirs.
 - Historical goals: three cities of population 5 in the Indus region by 2000 BC;
   live trade routes with two foreign civilizations by 1500 BC; 500 gold by 1000 BC.
   The urban goal counts cities inside `(135, 55)` to `(146, 68)`, inclusive. Trade
@@ -1843,15 +1887,30 @@ reserve, the city loses one population, as before. A city already at size one is
 instead abandoned and leaves ruins. There is no size-one starvation floor or extra
 grace period. The food tooltip warns size-one cities with a deficit.
 
+A city of any size is also abandoned after repeated starvation losses relative
+to its current population, measured after the latest loss. The required number
+of distinct starvation-loss turns is `max(3, ceil(0.7 * population))`, within the
+latest `max(5, population + 2)` game turns, including the current turn. For example,
+a city shrinking from size 10 to 6 after four losses survives: it needs five
+starvation-loss turns within eight turns. At size 5, four such turns within seven
+turns are enough, so shrinking from 10 to 5 over five to seven turns triggers
+abandonment. A single turn losing several people counts only once toward this
+trigger. The window uses actual turns on every speed and follows the city through
+ownership changes; refounding starts a new history. Capitals and
+independent/barbarian cities follow this rule too. The remaining population
+disperses and counts as starvation loss for
+stability, garrison damage and refugee resettlement. A major civilization's final
+city instead supplies one Settler, as described below.
+
 Famine pressure increases on each food turn whose deficit exhausts the reserve,
 up to 12. It falls by two per food turn when supplies recover. After three such
 turns it causes one unhappiness, rising to two at five turns and three at seven.
 These counters follow actual food-consumption turns on every map, including XL.
 Cities that prohibit unhappiness still ignore famine unhappiness.
 
-Each population point lost can resettle in a city within 12 tiles on the same
-landmass, with a land path and enough current food surplus for the additional
-citizen. Own cities have priority, then distance and player/city order. Foreign
+Each population point lost to starvation has a 25% chance to resettle in a city
+within 12 tiles on the same landmass, with a land path and enough current food
+surplus for the additional citizen. Otherwise the population is lost. Own cities have priority, then distance and player/city order. Foreign
 cities require peace, open borders (or a shared team) and a trade connection.
 There is no population award when no suitable destination exists. If a major
 civilization loses its final city, the last inhabitants instead become a Settler
@@ -1864,31 +1923,99 @@ secede. The city and its local garrison use the existing independent-city transf
 rules. Its food and famine state persist. This is not a civilization birth and
 never grants a takeover offer.
 
-The direct national penalty applies only to sustained famine in the current
-capital: -5 at three famine turns, increasing to -20 at six. It enters the current
-stability base, without a permanent deduction every turn. Recovery or relocation
-to a healthy capital reduces the outstanding penalty by two per normal stability
-update; XL retains its existing stability-update interval. Provincial famine anger
-is excluded from national happiness stability, and famine secessions do not add a
-separate national city-loss shock. Ordinary economic and territorial consequences
-still apply. The old aggregate agriculture/population stability score is removed.
+Each population point lost involuntarily costs 4 national stability in the
+capital or 1 in any other city. Starvation multiplies a new loss by
+`1 + 2 * active starvation losses` from that same city under its current owner.
+For example, successive capital losses cost 4, 12, 20 and 28 stability if no
+earlier penalties have expired; other cities lose 1, 3, 5 and 7. Only starvation
+losses build this multiplier. Each population point counts separately, and
+expired penalties no longer increase new losses. Capital status is evaluated when the loss occurs;
+a later capital move does not reprice earlier losses. Each loss fades linearly
+over ten normal-map turns or twenty XL turns, independently of later losses.
+All outstanding losses stack without a limit. Fractional contributions are
+summed before rounding the total penalty away from zero for integer stability.
+The penalty updates after every player turn; it is a temporary part of the
+stability base, not a repeated permanent deduction.
 
-Food and unrest warnings are localized in all five languages. Famine counters are
-saved and included in the native multiplayer checksum. Gameplay and multiplayer
-balance remain unverified. Existing plague effects can still interact with food
-shortages; plague mechanics have not been redesigned.
+Starvation, disasters and revolt losses count, including final famine
+abandonment and losses whose survivors successfully resettle. Whipping,
+drafting, Advanced Start sales and peaceful emigration do not count. The previous
+population-weighted famine-pressure score, its -30 cap and its separate recovery
+rate are removed. Hunger without population loss causes no direct national
+stability penalty. Famine anger remains excluded from national happiness
+stability; famine secessions add no separate national city-loss shock. Ordinary
+economic and territorial consequences still apply.
+
+Civil-war collapse checks run at the end of every game turn. Stability must be
+below -40 on at least four of the latest five consecutive game turns, on every
+game speed. A full five-turn window is required. Each civilization retains its
+initial protection of twenty-five reference turns (fifty XL turns) and Golden
+Age protection. Protected turns clear the history, as does a civil war.
+
+Units in a city cannot heal while its food stores are empty and its food
+balance is zero or negative. Outside cities, healing requires positive tile
+food output or fresh water, regardless of ownership. These restrictions apply
+to ordinary healing, medics, promotions and experience-event recovery. The Huns'
+named recovery through raiding remains active.
+
+Each population point lost involuntarily inflicts an independently rolled
+10–30 HP of damage on every military unit stationed in the city, including
+ships and aircraft. Damage can kill; civilians are exempt. Starvation, plague,
+disasters and revolt losses use this rule, including the final population lost
+when a city is abandoned to famine. Whipping, drafting, Advanced Start sales
+and peaceful emigration do not cause garrison damage. Plague is temporarily
+disabled through `Plague.ENABLED`: scheduled outbreaks, first-contact outbreaks,
+infection, spread and plague population losses are inactive. If re-enabled,
+its population losses use the same stability and garrison rules; it has no
+separate direct unit-damage mechanic.
+
+Wounded AI groups seek nearby safe tiles where healing is possible and avoid
+unsupplied recovery cities. A city is not stripped of its last defending group
+solely to find healing. Unit and city tooltips explain blocked healing.
+Food and unrest warnings are localized in all five languages. Famine counters
+and synchronized damage rolls use the normal multiplayer state and RNG.
+Gameplay and multiplayer balance remain unverified.
+
+## Refounding ruined cities
+
+Founding a city on ruins recovers a random selection of the destroyed city's
+ordinary buildings: **50%, rounded down**. Technologies, religions, resources,
+coastal location and other construction prerequisites do not restrict recovery.
+Original building variants are retained, including another civilization's
+unique buildings. Palaces, world/team/national wonders, plague markers and
+display proxies are excluded from the recoverable pool.
+
+Buildings already supplied to the new city are not duplicated. Recovery draws
+from the remaining building classes, up to half the original recoverable count;
+if too few remain, it restores all remaining candidates. For example, seven
+eligible buildings yield up to three recovered buildings, while one yields none.
+The restored buildings have their normal effects, including obsolescence.
+
+Ruins remember the most recently destroyed city, including cities abandoned to
+famine. Founding consumes that record; clearing or replacing the ruins also
+removes it. Ordinary captures and ownership transfers do not grant this recovery.
+Scenario-authored ruins without a recorded city have no buildings to recover.
+The record is saved and included in the multiplayer checksum, and selection
+uses synchronized gameplay randomness. Ruins tooltips show the recoverable
+count, and AI settlement evaluation gives known recoverable ruins a modest bonus.
+Gameplay and multiplayer behavior remain unverified.
 
 ## River droughts on XL maps
 
 Flood plains no longer reduce city health. On XL maps, connected river systems
 with flood plains can experience drought, regardless of their inhabitants. Rivers
 remain present for fresh-water health, commerce, crossings and trade. Their flood
-plains normally add 3 food; drought reduces this to 1. Severe drought also stops
-that river supplying irrigation. Ordinary desert flood plains consequently yield
-3/4 food without/with a farm normally, 1/2 during drought, and 1/1 during severe
-drought if no other irrigation source exists. Resources, technologies and unique
-powers still apply, including Egypt's Nile food power. Farms remain in place and
-recover; unaffected lakes or irrigation networks can sustain them during drought.
+plains normally add 3 food; ordinary drought reduces this to 1. Severe drought
+forces an affected floodplain tile's total food to zero, including farms,
+resources, city-centre food, technologies and unique-power food bonuses. It also
+stops that river supplying irrigation. Ordinary desert flood plains consequently
+yield 3/4 food without/with a farm normally, 1/2 during ordinary drought and 0/0
+during severe drought. Ordinary drought also removes up to two food from the
+resource's combined natural and improvement bonuses. A wheat floodplain with a
+farm consequently falls from five to three food during ordinary drought, before
+other technology or unique-power bonuses. Egypt's Nile power still applies
+outside severe drought. Farms remain in place and recover. Other water sources
+can preserve irrigation, but cannot override zero food on a severely dry floodplain.
 Conditions are stored on individual river edges. A tile bordering several rivers
 uses its healthiest bordering river for both flood-plain food and its appearance:
 one normal river preserves the normal yield; ordinary plus severe drought gives
@@ -1896,8 +2023,8 @@ ordinary drought yields. River irrigation stops only when every bordering river
 is in severe drought. Both banks of a changed edge update together.
 
 Each random event follows one continuous river path for a randomly chosen six to
-twelve segments, anchored beside flood plains. Severe events add two to four
-segments of ordinary drought at each end. Segment counts follow bends, not a
+twelve segments, anchored beside flood plains. Random events remain at ordinary
+severity; only Harappa's scripted event can cause severe drought. Segment counts follow bends, not a
 radius across land. Upstream forks select one branch with synchronized seeded
 randomness. Downstream traversal follows the flow and never turns upstream into
 a tributary joining later. Distributaries likewise select one continuation.
@@ -1906,16 +2033,14 @@ reach. No event spreads through every tributary of a connected system.
 
 After 20 reference-calendar turns of initial protection, each eligible connected
 river system gets exactly one initiation roll per reference turn, including while
-other events are ongoing. One sixth of new events are severe. There is no long
+other events are ongoing. There is no long
 protected period after an event. Events can coexist; overlapping conditions take
 the worse stage on each edge, and consecutive events can prolong a local dry spell.
 Notifications of recovery use actual tile conditions so an ending event does not
 announce recovery where another drought is still active.
 
-Individual durations are unchanged: two reference turns of advance warning;
-four to seven turns of ordinary drought; or, for a severe event, two initial
-ordinary turns, two to three severe turns and two ordinary recovery turns. The
-outer margins remain at ordinary drought strength throughout a severe event.
+Random events have two reference turns of advance warning, followed by
+four to seven turns of ordinary drought and then recovery to normal conditions.
 XL doubles these durations in engine turns; food consumption continues each
 engine turn. Notifications go to human owners of affected riverbanks, and tile
 help explains current conditions.
@@ -1924,22 +2049,34 @@ At game start, seeded branch and size choices produce a saved catalogue of local
 reaches. The shared initiation probability is calibrated analytically against that
 catalogue and the map's flood-plain tiles to target **3.5 food per farmed desert
 flood-plain tile per turn**, averaged over random events in the long run. This
-includes overlapping events and healthy second rivers. A sample catalogue for the
-current 3000 BC XL map gives about a 7% initiation chance per river system every
-two game turns; exact chances depend on the seeded catalogue. The initial grace
+includes overlapping events and healthy second rivers. The initiation chance
+depends on the seeded catalogue and models ordinary random droughts only. The initial grace
 period and Harappa's historical drought are excluded from this stationary estimate.
 Resources, technology, unique powers and irrigation from other sources can raise
 actual food output; local tiles can differ from the map average. This is an
 analytical balance target, not an observed gameplay result.
 
-The 3000 BC XL start adds five flood-plain tiles on existing bare riverbanks in
-the eastern Harappan region. A historical drying sequence affects river edges in
-`(139, 60)`–`(145, 66)`: warning from 2400 BC, drought from 2200 BC, severe drought
-from 1900 BC, partial recovery from 1500 BC and normal conditions from 1000 BC.
+The 3000 BC XL start adds early alluvial farmland and a narrow eastern
+distributary around the three Harappan cities. Their centres and shared
+floodplains are exposed together. Nearby grassland becomes plains, reducing
+food sources that would otherwise escape the drying. A historical sequence
+affects river edges in
+`(139, 60)`–`(145, 66)`, plus the joining river edge at `(138, 62)`:
+warning from 2100 BC, an abrupt onset of severe drought from 2000 BC,
+partial recovery from 1800 BC and an end to the scripted drought from 1700 BC.
+All 15 starting floodplain tiles in the Harappan homeland border this reach;
+random droughts can still delay their recovery.
+Five added floodplains at `(141, 63)`, `(141, 66)`, `(142, 66)`,
+`(140, 62)` and `(141, 62)` disappear permanently from 1900 BC.
+This includes Rakhigarhi's and Mohenjo-daro's centres. These tiles retain their
+desert substrate, rivers, farms and cities, but lose the floodplain food bonus.
+Recovery does not restore them. Harappa retains its added city-centre
+floodplain, and the original Indus floodplains remain.
 These dates and boundaries are gameplay approximations. The western/lower Indus
-remains outside this scripted reach, though it can suffer random drought. This
-sequence depends on geography, not the survival or ownership of Harappa. The 800 BC
-XL start has random droughts without this ancient sequence. Other maps retain
+farther south remains outside this scripted reach, though it can suffer random
+drought. This sequence depends on geography, not the survival or ownership of
+Harappa. The 800 BC XL start uses the reduced floodplain footprint and random
+droughts without replaying this ancient sequence. Other maps retain
 ordinary flood-plain yields. No other historical droughts are scripted yet.
 
 Green, faded and dry ochre flood-plain textures distinguish the stages without
@@ -1951,5 +2088,6 @@ scale and omit objects, rivers, large cracks, borders and lighting gradients."
 `tools/build_drought_art.py` prepares the two DDS variants, retaining the original
 alpha and blending the intermediate stage with the original green texture.
 Climate state is saved and included in the multiplayer checksum. In-game balance,
-multiplayer behavior and the engine's display of the texture varieties remain
+multiplayer behavior and the engine's display of the separate drought feature
+types remain
 user-operated validation.

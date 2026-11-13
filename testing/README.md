@@ -275,8 +275,11 @@ the launcher closes its child game when the requested recording ends.
 
 Use `--startup-timeout` and `--stall-timeout` to accommodate slow loading,
 long late-game turns or manual play. On completion, failure or timeout the
-launcher terminates **only the game process it created** and stops a failed
-batch rather than silently counting missing games. Turns are flushed and
+launcher terminates **only the game process it created**. Balance and diagnostics
+batches retain failed/stalled outcomes and continue the other active and queued
+games, then return a nonzero exit status if any game did not complete. Performance
+batches still stop on failure. Launcher/safety errors and emergency stop requests
+stop the whole batch. Turns are flushed and
 checkpoint saves are written before completion. It never terminates a game
 that was already running.
 
@@ -291,8 +294,9 @@ job. If debugger cleanup cannot finish, it also stops that exact launcher after
 five seconds. Closing the launcher also terminates its job's games. The launcher
 refuses to start games if the job or emergency hotkey cannot be initialized.
 An external stop request can also be made by creating an empty `STOP` file in
-the batch directory. After a stall timeout, diagnostics and shutdown have a
-15-second independent deadline so a blocked dump writer cannot trap the desktop.
+the batch directory. After a stall timeout, the helper enforces a 30-second
+cleanup deadline for that child only, allowing both bounded dump attempts before
+terminating it. Other games continue; the emergency hotkey still stops the batch.
 The default no-progress timeout is 60 seconds, reset by each heartbeat; use
 `--stall-timeout` to override it. The separate startup timeout remains five minutes.
 Emergency hotkey/`STOP` requests attempt `hang-emergency.dmp` for the game with

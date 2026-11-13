@@ -7,8 +7,6 @@ MIN_REACH, MAX_REACH = 6, 12
 MIN_MARGIN, MAX_MARGIN = 2, 4
 TARGET_FOOD = 3.5
 ORDINARY_DRY = (1., 1., 1., 1., .75, .5, .25)
-SEVERE_DRY = (1., 1., 1., 1., 1., 1., .5)
-SEVERE_CORE = (0., 0., 1., 1., .5, 0., 0.)
 
 
 def templates(ends, anchors, rand):
@@ -62,8 +60,7 @@ def calibrationRows(floodBanks, regions):
     """Inclusion-exclusion keeps healthy second rivers in the food estimate."""
     catalogues = []
     for region in regions:
-        catalogue = [(set(shape['core']), set(shape['core'] + shape['margin']))
-            for shape in region['templates']]
+        catalogue = [set(shape['core']) for shape in region['templates']]
         catalogueEdges = set(region['edges'])
         catalogues.append((catalogueEdges, catalogue))
     rows = []
@@ -73,15 +70,13 @@ def calibrationRows(floodBanks, regions):
             selected = set([banks[i] for i in range(len(banks)) if mask & (1 << i)])
             sign = 1
             if len(selected) % 2: sign = -1
-            dry, severe = [], []
+            dry = []
             for catalogueEdges, catalogue in catalogues:
                 if not selected.intersection(catalogueEdges): continue
-                core = sum([1 for c, m in catalogue if selected.intersection(c)]) / float(len(catalogue))
-                full = sum([1 for c, m in catalogue if selected.intersection(m)]) / float(len(catalogue))
+                core = sum([1 for c in catalogue if selected.intersection(c)]) / float(len(catalogue))
                 for age in range(7):
-                    dry.append((5. * core * ORDINARY_DRY[age] + full * SEVERE_DRY[age]) / 6.)
-                    severe.append(core * SEVERE_CORE[age] / 6.)
-            tileRows.append((sign, dry, severe))
+                    dry.append(core * ORDINARY_DRY[age])
+            tileRows.append((sign, dry))
         rows.append(tileRows)
     return rows
 
@@ -90,16 +85,14 @@ def expectedFood(rows, probability):
     if not rows: return 4.
     total = 0.
     for tileRows in rows:
-        allDry, allSevere = 1., 1.
-        for sign, dry, severe in tileRows:
-            noDry, noSevere = 1., 1.
+        allDry = 1.
+        for sign, dry in tileRows:
+            noDry = 1.
             for chance in dry: noDry *= 1. - probability * chance
-            for chance in severe: noSevere *= 1. - probability * chance
             allDry += sign * noDry
-            allSevere += sign * noSevere
         # A floodplain without bordering edges cannot suffer river drought.
-        if not tileRows: allDry, allSevere = 0., 0.
-        total += 4. - 2. * allDry - allSevere
+        if not tileRows: allDry = 0.
+        total += 4. - 2. * allDry
     return total / len(rows)
 
 

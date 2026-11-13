@@ -11,6 +11,9 @@ import Consts as con
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 
+# Temporarily disabled while population-loss stability is balanced.
+ENABLED = False
+
 # globals
 gc = CyGlobalContext()
 PyPlayer = PyHelpers.PyPlayer
@@ -76,6 +79,8 @@ class Plague:
 
 
         def setup(self):
+                if not ENABLED:
+                        return
 
                 for i in range(iNumMajorPlayers):
                         self.setPlagueCountdown(i, -iImmunity) 
@@ -98,6 +103,8 @@ class Plague:
 
             
         def checkTurn(self, iGameTurn):
+                if not ENABLED:
+                        return
 
                 for i in range(iNumTotalPlayersB):
                         if (gc.getPlayer(i).isAlive()):
@@ -136,6 +143,8 @@ class Plague:
                                                 self.startPlague(i)
 
         def checkPlayerTurn(self, iGameTurn, iPlayer):
+                if not ENABLED:
+                        return
 
                 if (iPlayer < iNumTotalPlayersB):
                         if (self.getPlagueCountdown(iPlayer) > 0):
@@ -145,6 +154,8 @@ class Plague:
                             
 
         def startPlague(self, iPlagueCounter):
+                if not ENABLED:
+                        return
     
                 iWorstCiv = -1
                 iWorstHealth = 200
@@ -207,6 +218,8 @@ class Plague:
 
 
         def processPlague(self, iPlayer):
+                if not ENABLED:
+                        return
 
                 pPlayer = gc.getPlayer(iPlayer)
                 #first spread to close locations
@@ -254,49 +267,6 @@ class Plague:
                                                                         if (self.getPlagueCountdown(iPlayer) > 2): #don't spread the last turns
                                                                                 self.infectCity(cityNear)
                                                                                 #print ("infect near", city.getName(), "to", cityNear.getName())
-                                                        else:
-                                                                if (x == city.getX() and y == city.getY()):
-                                                                        #RFCMP
-                                                                        self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                                                else:
-                                                                        if (pCurrent.isRoute()):
-                                                                                #RFCMP
-                                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                                                        elif (pCurrent.isWater()):
-                                                                                #RFCMP
-                                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                                                        else:
-                                                                                #RFCMP
-                                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                for x in range(city.getX()-3, city.getX()+4):
-                                        pCurrent = gc.getMap().plot( x, city.getY()-3 )
-                                        if (pCurrent.getOwner() == iPlayer or not pCurrent.isOwned()):
-                                                if (not pCurrent.isCity()):
-                                                        if (pCurrent.isRoute() or pCurrent.isWater()):
-                                                                #RFCMP
-                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                        pCurrent = gc.getMap().plot( x, city.getY()+3 )
-                                        if (pCurrent.getOwner() == iPlayer or not pCurrent.isOwned()):
-                                                if (not pCurrent.isCity()):
-                                                        if (pCurrent.isRoute() or pCurrent.isWater()):
-                                                                #RFCMP
-                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)                                        
-                                for y in range(city.getY()-2, city.getY()+3):
-                                        pCurrent = gc.getMap().plot( city.getX()-3, y )
-                                        if (pCurrent.getOwner() == iPlayer or not pCurrent.isOwned()):
-                                                if (not pCurrent.isCity()):
-                                                        if (pCurrent.isRoute() or pCurrent.isWater()):
-                                                                #RFCMP
-                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-                                        pCurrent = gc.getMap().plot( city.getX()+3, y )
-                                        if (pCurrent.getOwner() == iPlayer or not pCurrent.isOwned()):
-                                                if (not pCurrent.isCity()):
-                                                        if (pCurrent.isRoute() or pCurrent.isWater()):
-                                                                #RFCMP
-                                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)
-
-
-                                            
                                 if (self.getFirstContactPlague(iPlayer) == False): #don't infect if first contact plague  
                                         #spread to trade route cities
                                         if (self.getPlagueCountdown(iPlayer) > 2): #don't spread the last turns
@@ -339,93 +309,9 @@ class Plague:
                                                                                         return
 
        
-        def killUnitsByPlague(self, city, pCurrent, baseValue, iDamage, iPreserveDefenders):
-
-                iOwner = city.getOwner()
-                pOwner = gc.getPlayer(iOwner)
-                teamOwner = gc.getTeam(gc.getPlayer(city.getOwner()).getTeam())
-
-                #RFCMP
-##                #deadly plague when human player isn't born yet, will speed up the loading
-##                if (gc.getGame().getGameTurn() < con.tBirth[utils.getHumanID()] + 20):
-##                        iDamage += 10
-##                        baseValue -= 5
-     
-
-                #print (city.getX(), city.getY())
-                iNumUnitsInAPlot = pCurrent.getNumUnits()
-                #RFCMP
-                iPreserveDefenders = 1
-                #iPreserveHumanDefenders = iPreserveDefenders -1 #human handicap
-                iPreserveHumanDefenders = iPreserveDefenders
-                iHuman = utils.getHumanID()
-                #RFCMP
-##                if (iPreserveDefenders > 0): #cities only
-##                        #handicap for civs distant from human player too
-##                        if (not pOwner.isHuman()): #if not human and close or at war
-##                                #iPreserveDefenders -= 1
-##                                if (utils.isAtWarWithHuman(iOwner)): #RFCMP
-##                                        iPreserveDefenders += 2
-                                #RFCMP
-##                                else:
-##                                        for j in range(len(con.lCivGroups)):                       
-##                                                if ((iOwner in con.lCivGroups[j]) and (utils.getHumanID() in con.lCivGroups[j])):
-##                                                       iPreserveDefenders += 1
-##                                                       break
-                if (iNumUnitsInAPlot):                        
-                        for j in range(iNumUnitsInAPlot):
-                                i = iNumUnitsInAPlot - j - 1
-                                unit = pCurrent.getUnit(i)
-##                                if (gc.getPlayer(unit.getOwner()).isHuman()):
-##                                        print ("iPreserveHumanDefenders", iPreserveHumanDefenders)
-##                                        if (iPreserveHumanDefenders > 0):                                                
-##                                                if (utils.isDefenderUnit(unit)):
-##                                                        iPreserveHumanDefenders -= 1
-##                                                        if (pCurrent.getNumUnits() > iPreserveDefenders):
-##                                                                pass
-##                                                        else:
-##                                                                unit.setDamage(unit.getDamage() + iDamage - 20, con.iBarbarian)
-##                                                        print ("preserve")
-##                                                        continue
-##                                else:
-##                                        if (iPreserveDefenders > 0):
-##                                                if (utils.isDefenderUnit(unit)):
-##                                                        iPreserveDefenders -= 1
-##                                                        if (pCurrent.getNumUnits() > iPreserveDefenders or utils.isAtWarWithHuman(unit.getOwner())):   #RFCMP                                                
-##                                                                pass
-##                                                        else:
-##                                                                unit.setDamage(unit.getDamage() + iDamage - 20, con.iBarbarian)
-##                                                        print ("preserve")
-##                                                        continue   
-                                if (utils.isMortalUnit(unit)):  #another human handicap inside
-                                        iThreshold = baseValue + 5*city.healthRate(False, 0)
-                                        #print ("iThreshold", iThreshold)
-
-##                                        if (utils.isAtWarWithHuman(iOwner) and iOwner < iNumMajorPlayers and not pOwner.isHuman()): #RFCMP
-##                                                if (unit.getOwner() == iOwner):
-##                                                        iDamage *= 3
-##                                                        iDamage /= 4                       
-                                        
-                                        if (self.getFirstContactPlague(city.getOwner()) == True):
-                                                if (unit.getOwner() in con.lCivBioOldWorld):
-                                                        iDamage /= 2                                                        
-                                        
-                                        if (utils.getFakeRandNum(100, 'roll') > iThreshold):
-                                                if (iDamage == 100):
-                                                        if (unit.getOwner() != city.getOwner() and gc.getPlayer(unit.getOwner()).isHuman()):
-                                                                CyInterface().addMessage(unit.getOwner(), False, con.iDuration/2, CyTranslator().getText("TXT_KEY_PLAGUE_PROCESS_UNIT", ()) + " " + city.getName(), "AS2D_PLAGUE", 0, "", ColorTypes(con.iLime), -1, -1, True, True)
-                                                        unit.kill(False, iBarbarian)                                                        
-                                                else:
-                                                        if (iDamage - unit.getExperience()/10 - unit.baseCombatStr()*3/7 >= 100 - unit.getDamage()):
-                                                                if (unit.getOwner() != iOwner and gc.getPlayer(unit.getOwner()).isHuman()):
-                                                                        CyInterface().addMessage(unit.getOwner(), False, con.iDuration/2, CyTranslator().getText("TXT_KEY_PLAGUE_PROCESS_UNIT", ()) + " " + city.getName(), "AS2D_PLAGUE", 0, "", ColorTypes(con.iLime), -1, -1, True, True)
-                                                        unit.setDamage(unit.getDamage() + iDamage - unit.getExperience()/10 - unit.baseCombatStr()/2, con.iBarbarian)
-                                                        #print ("process")
-                                                break
-            
-            
-
         def infectCity(self, city):
+                if not ENABLED:
+                        return
                 #return
                 #print ("infected", city.getName())
                 city.setHasRealBuilding(iPlague, True)
@@ -444,13 +330,9 @@ class Plague:
                                         pCurrent.setImprovementType(con.iHamlet)
                                 if (iImprovement == con.iTown):
                                         pCurrent.setImprovementType(con.iVillage)
-                                if (pCurrent.isCity()):
-                                        if (x == city.getX() and y == city.getY()):
-                                                #RFCMP
-                                                self.killUnitsByPlague(city, pCurrent, 25, 30, 0)     
-
-
         def isVulnerable(self, iPlayer):
+                if not ENABLED:
+                        return False
                 if (iPlayer >= iNumMajorPlayers):
                         if (self.getPlagueCountdown(iPlayer) <= 0 and self.getPlagueCountdown(iPlayer) > -10 ): #more vulnerable
                                 return True
@@ -472,6 +354,8 @@ class Plague:
 
 
         def spreadPlague(self, iPlayer):
+                if not ENABLED:
+                        return
                 pPlayer = gc.getPlayer(iPlayer)  
                 iHealth = -30
                 if (pPlayer.calculateTotalCityHealthiness() > 0):
@@ -484,6 +368,8 @@ class Plague:
 
                                                
         def infectCitiesNear(self, iPlayer, startingX, startingY):                
+                if not ENABLED:
+                        return
                 apCityList = PyPlayer(iPlayer).getCityList()
                 for pCity in apCityList:
                         city = pCity.GetCy()
@@ -497,6 +383,8 @@ class Plague:
 
 
         def onCityAcquired(self, iOldOwner, iNewOwner, city):
+                if not ENABLED:
+                        return
                 if (city.hasBuilding(iPlague)):
                         if (self.getFirstContactPlague(iOldOwner) == False): #don't infect if first contact plague
                                 if (self.getPlagueCountdown(iNewOwner) <= 0 and gc.getGame().getGameTurn() > con.tBirth[iNewOwner] + geo.turns(iImmunity) ): #skip immunity in this case, but not for the new born civs
@@ -512,6 +400,8 @@ class Plague:
                         city.setHasRealBuilding(iPlague, False)
 
         def onCityRazed(self, city, iNewOwner):
+                if not ENABLED:
+                        return
                 if (city.hasBuilding(iPlague)):
                         if (self.getPlagueCountdown(iNewOwner) > 0):
                                 apCityList = PyPlayer(iNewOwner).getCityList()
@@ -528,6 +418,8 @@ class Plague:
 
 
         def onFirstContact(self, iTeamX, iHasMetTeamY):
+                if not ENABLED:
+                        return
                 if (gc.getGame().getGameTurn() > con.tBirth[con.iAztecs] + geo.turns(2) and gc.getGame().getGameTurn() < con.i1800AD):
                         iOldWorldCiv = -1
                         iNewWorldCiv = -1
@@ -562,6 +454,8 @@ class Plague:
 
 
         def onTechAcquired(self, iTech, iPlayer):
+                if not ENABLED:
+                        return
                 if (self.getPlagueCountdown(iPlayer) > 1):                                        
                         self.setPlagueCountdown(iPlayer, 1)
 

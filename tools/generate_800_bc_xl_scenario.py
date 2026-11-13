@@ -83,6 +83,12 @@ def main():
     xl_header, xl = read_map(MAPS / 'Start 1 XL - 3000BC.CivBeyondSwordWBSave')
     source = {pos: fields(block) for pos, block in original.items()}
     plots = {pos: fields(block) for pos, block in xl.items()}
+    from indian_scenarios import HARAPPAN_DRYING
+    for year, sites in HARAPPAN_DRYING:
+        if year <= -800:
+            for site in sites:
+                if (value(plots[site], 'FeatureType') or '').startswith('FEATURE_FLOOD_PLAINS'):
+                    put(plots[site], 'FeatureType', None)
     for lines in plots.values():
         # Starting development comes from 800 BC, resources/relief from XL.
         lines[:] = [s for s in lines if not s.startswith(('ImprovementType=', 'RouteType=', 'TeamReveal='))

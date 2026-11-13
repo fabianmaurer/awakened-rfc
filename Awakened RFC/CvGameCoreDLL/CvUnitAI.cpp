@@ -2614,7 +2614,7 @@ void CvUnitAI::AI_attackCityMove()
 	// force heal if we in our own city and damaged
 	// can we remove this or call AI_heal here?
 	if ((getGroup()->getNumUnits() == 1) && (getDamage() > 0) &&
-        plot()->getOwnerINLINE() == getOwnerINLINE() && plot()->isCity())
+        plot()->getOwnerINLINE() == getOwnerINLINE() && plot()->isCity() && canHeal(plot()))
     {
         getGroup()->pushMission(MISSION_HEAL);
 		AI_recordObserverDecision("AI_attackCityMove:MISSION_HEAL");
@@ -3878,7 +3878,8 @@ void CvUnitAI::AI_exploreMove()
 
 	if (getDamage() > 0)
 	{
-		if ((plot()->getFeatureType() == NO_FEATURE) || (GC.getFeatureInfo(plot()->getFeatureType()).getTurnDamage() == 0))
+        if (!hasHealingSupply(plot()) && AI_moveToHealingPlot(2)) return;
+		if (canHeal(plot()) && ((plot()->getFeatureType() == NO_FEATURE) || (GC.getFeatureInfo(plot()->getFeatureType()).getTurnDamage() == 0)))
 		{
 			getGroup()->pushMission(MISSION_HEAL);
 			return;
@@ -5418,7 +5419,8 @@ void CvUnitAI::AI_exploreSeaMove()
 
 	if (getDamage() > 0)
 	{
-		if ((plot()->getFeatureType() == NO_FEATURE) || (GC.getFeatureInfo(plot()->getFeatureType()).getTurnDamage() == 0))
+        if (!hasHealingSupply(plot()) && AI_moveToHealingPlot(2)) return;
+		if (canHeal(plot()) && ((plot()->getFeatureType() == NO_FEATURE) || (GC.getFeatureInfo(plot()->getFeatureType()).getTurnDamage() == 0)))
 		{
 			getGroup()->pushMission(MISSION_HEAL);
 			return;
@@ -9114,6 +9116,44 @@ bool CvUnitAI::AI_chokeDefend()
 
 
 // Returns true if a mission was pushed...
+bool CvUnitAI::AI_moveToHealingPlot(int iMaxPath)
+{
+    if (!canMove() || isCargo()) return false;
+    // Do not strip a city of its last defending group just to recover HP.
+    if (plot()->isCity() && plot()->getTeam() == getTeam() && canDefend(plot()) &&
+        plot()->getNumDefenders(getOwnerINLINE()) <= getGroup()->getNumUnits()) return false;
+    CvPlot* bestPlot = NULL;
+    int bestValue = 0;
+    const int maxPath = std::max(1, std::min(2, iMaxPath));
+    const int range = AI_searchRange(maxPath);
+    for (int dx = -range; dx <= range; ++dx)
+    {
+        for (int dy = -range; dy <= range; ++dy)
+        {
+            CvPlot* candidate = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
+            if (candidate == NULL || atPlot(candidate) || !AI_plotValid(candidate)) continue;
+            if (candidate->isVisibleEnemyUnit(this) || isEnemy(candidate->getTeam(), candidate)) continue;
+            if (candidate->getFeatureType() != NO_FEATURE &&
+                GC.getFeatureInfo(candidate->getFeatureType()).getTurnDamage() > 0) continue;
+            const int healing = healRate(candidate);
+            if (healing <= 0 || !canMoveInto(candidate)) continue;
+            if (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(candidate, 1) > 0) continue;
+            int pathTurns;
+            if (!generatePath(candidate, 0, true, &pathTurns) || pathTurns > maxPath) continue;
+            const int value = healing * 100 / (1 + pathTurns) + candidate->defenseModifier(getTeam(), false);
+            if (value > bestValue)
+            {
+                bestValue = value;
+                bestPlot = getPathEndTurnPlot();
+            }
+        }
+    }
+    if (bestPlot == NULL || atPlot(bestPlot)) return false;
+    getGroup()->pushMission(MISSION_MOVE_TO, bestPlot->getX_INLINE(), bestPlot->getY_INLINE());
+    return true;
+}
+
+
 bool CvUnitAI::AI_heal(int iDamagePercent, int iMaxPath)
 {
 	PROFILE_FUNC();
@@ -9146,12 +9186,23 @@ bool CvUnitAI::AI_heal(int iDamagePercent, int iMaxPath)
 
 	bRetreat = false;
 	
+    if (!hasHealingSupply(plot()))
+    {
+        CLLNode<IDInfo>* node = pGroup->headUnitNode();
+        while (node != NULL)
+        {
+            CvUnit* member = ::getUnit(node->m_data);
+            node = pGroup->nextUnitNode(node);
+            if (member != NULL && member->isHurt()) return AI_moveToHealingPlot(iMaxPath);
+        }
+        return false;
+    }
     if (getGroup()->getNumUnits() == 1)
 	{
 	    if (getDamage() > 0)
         {
         	
-            if (plot()->isCity() || (healTurns(plot()) == 1))
+            if (canHeal(plot()) && (plot()->isCity() || (healTurns(plot()) == 1)))
             {
                 if (!(isAlwaysHeal()))
                 {
@@ -10974,6 +11025,7 @@ bool CvUnitAI::AI_safety()
 									iValue = (iCount * 100);
 
 									iValue += pLoopPlot->defenseModifier(getTeam(), false);
+                                    if (isHurt()) iValue += 4 * std::min(30, healRate(pLoopPlot));
 
 									if (atPlot(pLoopPlot))
 									{
@@ -15819,6 +15871,7 @@ bool CvUnitAI::AI_retreatToCity(bool bPrimary, bool bAirlift, int iMaxPath)
 		std::vector<CvPlot*> workerCities;
 		for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
 		{
+            if (isHurt() && !hasHealingSupply(pLoopCity->plot())) continue;
 			if (AI_plotValid(pLoopCity->plot()))
 			{
 				if (!bPrimary || GET_PLAYER(getOwnerINLINE()).AI_isPrimaryArea(pLoopCity->area()))
@@ -17993,7 +18046,7 @@ bool CvUnitAI::AI_moveIntoCity(int iRange)
 				{
 					if (pLoopPlot->isCity() || (pLoopPlot->isCity(true)))
 					{
-                        if (canMoveInto(pLoopPlot, false) && (generatePath(pLoopPlot, 0, true, &iPathTurns) && (iPathTurns <= 1)))
+                        if ((!isHurt() || hasHealingSupply(pLoopPlot)) && canMoveInto(pLoopPlot, false) && (generatePath(pLoopPlot, 0, true, &iPathTurns) && (iPathTurns <= 1)))
                         {
                             iValue = 1;
                             if (pLoopPlot->getPlotCity() != NULL)

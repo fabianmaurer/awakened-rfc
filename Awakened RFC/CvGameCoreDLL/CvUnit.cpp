@@ -3700,9 +3700,21 @@ bool CvUnit::canSentry(const CvPlot* pPlot) const
 }
 
 
+bool CvUnit::hasHealingSupply(const CvPlot* pPlot) const
+{
+    if (pPlot == NULL) return false;
+    const CvCity* city = pPlot->getPlotCity();
+    if (city != NULL)
+        return city->getFood() > 0 || city->foodDifference() > 0;
+    return pPlot->getYield(YIELD_FOOD) > 0 || pPlot->isFreshWater();
+}
+
+
 int CvUnit::healRate(const CvPlot* pPlot) const
 {
 	PROFILE_FUNC();
+    // Supply gates all healing, including medics, promotions and mastery.
+    if (!hasHealingSupply(pPlot)) return 0;
 
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pCity;
@@ -6800,7 +6812,7 @@ void CvUnit::promote(PromotionTypes ePromotion, int iLeaderUnitId)
 	if (!GC.getPromotionInfo(ePromotion).isLeader())
 	{
 		changeLevel(1);
-		changeDamage(-(getDamage() / 2));
+		if (hasHealingSupply(plot())) changeDamage(-(getDamage() / 2));
 	}
 
 	setHasPromotion(ePromotion, true);
@@ -13206,7 +13218,7 @@ void CvUnit::applyEvent(EventTypes eEvent)
 
 	if (0 != kEvent.getUnitExperience())
 	{
-		setDamage(0);
+		if (hasHealingSupply(plot())) setDamage(0);
 		changeExperience(kEvent.getUnitExperience());
 	}
 

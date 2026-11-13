@@ -334,7 +334,7 @@ def main():
                 timeout = args.stall_timeout if started else args.startup_timeout
                 if time.monotonic() - last_progress > timeout:
                     outcome.update(status='stalled' if started else 'startup_timeout', last_heartbeat=heartbeat)
-                    safety.arm_cleanup_timeout()
+                    safety.arm_cleanup_timeout(process)
                     # A hung game raises no exception. Save two live thread-stack
                     # samples before termination so loops and waits can be located.
                     if started:
@@ -363,7 +363,7 @@ def main():
                     print('%s: Civ4 exited before completion (code %s / 0x%08X).' %
                           (run.name, process.returncode, process.returncode & 0xffffffff), flush=True)
         finally:
-            if outcome['status'] != 'complete':
+            if mode == 'performance' and outcome['status'] != 'complete':
                 stopping.set()
             # Only terminate the child created for this run, never other games.
             # Recorded turns/checkpoints have already been flushed to disk.
@@ -377,6 +377,7 @@ def main():
                         time.sleep(0.05)
                 if process.poll() is None:
                     raise RuntimeError('Launcher-owned Civ4 did not exit after termination: %d' % process.pid)
+            safety.disarm_cleanup_timeout(process)
             if capture:
                 (run / 'crash-capture.json').write_text(json.dumps({
                     'attached': True, 'pid': process.pid, 'debug_events': capture.event_counts,
@@ -408,7 +409,7 @@ def main():
                 except (OSError, ValueError, KeyError) as error:
                     print('Could not summarize performance; raw timings retained: ' + str(error), flush=True)
         print(run.name + ': ' + outcome['status'], flush=True)
-        if outcome['status'] != 'complete':
+        if mode == 'performance' and outcome['status'] != 'complete':
             raise RuntimeError('Batch stopped; inspect ' + str(run))
         if args.capture_worker_paths and not (run / 'worker-path-summary.json').exists():
             raise RuntimeError('Game completed, but worker path capture/reporting failed. '
@@ -452,6 +453,9 @@ def main():
         executor.shutdown(wait=True, cancel_futures=True)
     analyzer = 'analyze_performance.py' if mode == 'performance' else 'analyze_observer.py'
     print('Finished. Analyse with: python testing/' + analyzer + ' "' + str(batch) + '"')
+    incomplete = sum(item['status'] != 'complete' for item in results)
+    if incomplete:
+        raise RuntimeError('%d game(s) did not complete; outcomes and recordings retained in %s' % (incomplete, batch))
 
 
 if __name__ == '__main__':

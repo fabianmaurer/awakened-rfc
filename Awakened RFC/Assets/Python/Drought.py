@@ -4,6 +4,7 @@ import cPickle as pickle
 import ScenarioGeography as geo
 import Consts as con
 import DroughtModel as model
+from IndianCivsData import HARAPPAN_DRYING
 
 gc = CyGlobalContext()
 WARNING = 2
@@ -20,6 +21,8 @@ def setup():
     world = gc.getMap()
     width, height = world.getGridWidth(), world.getGridHeight()
     flood = gc.getInfoTypeForString('FEATURE_FLOOD_PLAINS')
+    floodTypes = tuple([gc.getInfoTypeForString(name) for name in
+        ('FEATURE_FLOOD_PLAINS', 'FEATURE_FLOOD_PLAINS_DROUGHT', 'FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT')])
     parents, edges = {}, []
 
     def corner(x, y):
@@ -65,12 +68,12 @@ def setup():
         groupEnds.setdefault(root, {})
         if direction: groupEnds[root][riverEdge] = direction
         for index in sites:
-            if world.plot(index % width, index // width).getFeatureType() == flood:
+            if world.plot(index % width, index // width).getFeatureType() in floodTypes:
                 floodBanks.setdefault(index, []).append(riverEdge)
     regions = []
     for root in sorted(groups.keys()):
         sites = sorted(groups[root])
-        floodSites = [i for i in sites if world.plot(i % width, i // width).getFeatureType() == flood]
+        floodSites = [i for i in sites if world.plot(i % width, i // width).getFeatureType() in floodTypes]
         if not floodSites:
             continue
         anchors = sorted(set([e for index in floodSites for e in floodBanks[index]
@@ -88,7 +91,7 @@ def setup():
     data['droughtExpectedFood'] = expected
     data['droughtFirstTick'] = geo.historyTurn(gc.getGame().getGameTurn()) + INITIAL_PROTECTION
     gc.getGame().setScriptData(pickle.dumps(data))
-    # Initialization also forces ordinary floodplain art, independent of latitude.
+    # Refresh each stage through its own river-art feature, independent of latitude.
     for region in regions:
         for index in region['flood']:
             world.plot(index % width, index // width).setFeatureType(flood, 0)
@@ -99,9 +102,34 @@ def historicalEdges(regions):
     if geo.profile_name() != 'Earth200x110Harappa':
         return []
     width = gc.getMap().getGridWidth()
-    # Eastern Harappan reaches; the western/lower Indus remains a refuge.
+    # Include the lower junction's west bank so a healthy second edge cannot
+    # shield the opening farmland. The river farther south remains a refuge.
     return sorted(set([(i, side) for region in regions for i, side in region['edges']
-        if 139 <= i % width <= 145 and 60 <= i // width <= 66]))
+        if (139 <= i % width <= 145 and 60 <= i // width <= 66) or
+        (i % width, i // width, side) == (138, 62, 1)]))
+
+
+def historicalDrying(year):
+    """Permanent retreat of selected early alluvium, independent of city owners."""
+    if geo.profile_name() != 'Earth200x110Harappa':
+        return
+    flood = gc.getInfoTypeForString('FEATURE_FLOOD_PLAINS')
+    floodTypes = tuple([gc.getInfoTypeForString(name) for name in
+        ('FEATURE_FLOOD_PLAINS', 'FEATURE_FLOOD_PLAINS_DROUGHT', 'FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT')])
+    world = gc.getMap()
+    dried = []
+    for deadline, sites in HARAPPAN_DRYING:
+        if year < deadline:
+            continue
+        for x, y in sites:
+            plot = world.plot(x, y)
+            if plot.getFeatureType() in floodTypes:
+                # Preserve cities, farms, rivers and their existing ownership.
+                # The desert substrate remains; recovery never recreates features.
+                plot.setFeatureType(-1, 0)
+                dried.append(y * world.getGridWidth() + x)
+    if dried:
+        notify(dried, 'TXT_KEY_DROUGHT_FLOODPLAINS_LOST')
 
 
 def bankSites(edges):
@@ -141,15 +169,7 @@ def advance(event, tick):
     phase = event['phase']
     if phase == 'warning':
         event['phase'], event['level'] = 'drought', 1
-        duration = 2
-        if event['target'] != 2: duration = 4 + game.getSorenRandNum(4, 'Drought duration')
-        event['due'] = tick + duration
-    elif phase == 'drought' and event['target'] == 2:
-        event['phase'], event['level'] = 'severe', 2
-        event['due'] = tick + 2 + game.getSorenRandNum(2, 'Severe drought duration')
-    elif phase == 'severe':
-        event['phase'], event['level'] = 'recovery', 1
-        event['due'] = tick + 2
+        event['due'] = tick + 4 + game.getSorenRandNum(4, 'Drought duration')
     else:
         return False
     return True
@@ -168,12 +188,14 @@ def checkTurn(turn):
     scriptEdges = historicalEdges(regions)
     scriptSites = bankSites(scriptEdges)
     year = game.getGameTurnYear()
+    historicalDrying(year)
     scriptLevel = 0
     if scriptSites:
-        if -2200 <= year < -1900: scriptLevel = 1
-        elif -1900 <= year < -1500: scriptLevel = 2
-        elif -1500 <= year < -1000: scriptLevel = 1
-        if year >= -2400 and year < -2200 and not data['droughtScriptWarned']:
+        # A sudden food shock leaves little time to shrink cities beforehand.
+        # Recovery is quick, but the historical alluvial losses remain.
+        if -2000 <= year < -1800: scriptLevel = 2
+        elif -1800 <= year < -1700: scriptLevel = 1
+        if year >= -2100 and year < -2000 and not data['droughtScriptWarned']:
             notify(scriptSites, 'TXT_KEY_DROUGHT_HARAPPA_WARNING')
             data['droughtScriptWarned'] = True
     data['droughtScriptLevel'] = scriptLevel
@@ -183,13 +205,10 @@ def checkTurn(turn):
             # Exactly one initiation roll per system, even with ongoing events.
             if game.getSorenRandNum(10000, 'River drought') < data['droughtChance']:
                 shape = game.getSorenRandNum(len(region['templates']), 'Drought reach')
-                target = 1
-                if game.getSorenRandNum(6, 'Drought severity') == 0: target = 2
-                event = {'shape': shape, 'target': target, 'phase': 'warning',
+                event = {'shape': shape, 'phase': 'warning',
                     'level': 0, 'due': tick + WARNING}
                 region['events'].append(event)
                 footprint = region['templates'][shape]['core'][:]
-                if target == 2: footprint += region['templates'][shape]['margin']
                 notify(bankSites(footprint), 'TXT_KEY_DROUGHT_WARNING')
     # Combine overlapping events on each river EDGE, never on a bank tile.
     # The native tile getter then selects its healthiest bordering river.
@@ -202,9 +221,6 @@ def checkTurn(turn):
             shape = region['templates'][event['shape']]
             for riverEdge in shape['core']:
                 levels[riverEdge] = max(levels[riverEdge], event['level'])
-            if event['target'] == 2:
-                for riverEdge in shape['margin']:
-                    levels[riverEdge] = max(levels[riverEdge], 1)
     for riverEdge in scriptEdges:
         levels[riverEdge] = max(levels.get(riverEdge, 0), scriptLevel)
     byPlot = {}

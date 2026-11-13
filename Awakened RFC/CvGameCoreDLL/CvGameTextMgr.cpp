@@ -582,6 +582,14 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 		szString.append(szTempBuffer);
 	}
 
+    if (!bOneLine && pUnit->getTeam() == GC.getGameINLINE().getActiveTeam() &&
+        !pUnit->hasHealingSupply(pUnit->plot()))
+    {
+        szString.append(NEWLINE);
+        szString.append(gDLL->getText(pUnit->plot()->isCity() ?
+            "TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED" : "TXT_KEY_SUPPLY_TILE_HEAL_BLOCKED"));
+    }
+
 	if (pUnit->getImmobileTimer() > 0)
 	{
 		szString.append(L", ");
@@ -2969,6 +2977,13 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 				szString.append(gDLL->getText(bEskimo ? "TXT_KEY_ARCHIVE_INLINE_OUTPUT" : "TXT_KEY_ARCHIVE_INLINE_RESEARCH", bEskimo ? 3 : 5));
 			}
 
+        if (pPlot->getRevealedImprovementType(GC.getGameINLINE().getActiveTeam(), true) ==
+            (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT") && pPlot->getRuinsRecoveryCount() > 0)
+        {
+            szString.append(NEWLINE);
+            szString.append(gDLL->getText("TXT_KEY_RUINS_RECOVERY_HELP", pPlot->getRuinsRecoveryCount()));
+        }
+
 		const int iPlotGold = pPlot->calculateGold(true);
 		if (iPlotGold > 0)
 			szString.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_INLINE_GOLD", iPlotGold));
@@ -3265,6 +3280,11 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
     if (pCity->getFamineTurns() > 0)
         szString.append(gDLL->getText("TXT_KEY_FAMINE_HELP", pCity->getFamineUnhappiness()));
+    if (pCity->getFood() == 0 && pCity->foodDifference() <= 0)
+    {
+        szString.append(NEWLINE);
+        szString.append(gDLL->getText("TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED"));
+    }
     if (pCity->getPopulation() == 1 && iFoodDifference < 0)
         szString.append(gDLL->getText("TXT_KEY_FAMINE_ABANDON_WARNING"));
 
@@ -11255,6 +11275,13 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 			szBuffer.append(szTempBuffer);
 		}
 
+        iAttitudeChange = GC.getGameINLINE().getPapalDiplomaticModifier(ePlayer, eTargetPlayer);
+        if ((iPass == 0 && iAttitudeChange > 0) || (iPass == 1 && iAttitudeChange < 0))
+        {
+            szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR(iAttitudeChange > 0 ? "COLOR_POSITIVE_TEXT" : "COLOR_NEGATIVE_TEXT"),
+                gDLL->getText(iAttitudeChange > 0 ? "TXT_KEY_AP_PROTECTOR_ATTITUDE" : "TXT_KEY_AP_REFUSAL_ATTITUDE", iAttitudeChange).GetCString());
+            szBuffer.append(NEWLINE); szBuffer.append(szTempBuffer);
+        }
         iAttitudeChange = GET_PLAYER(eTargetPlayer).getPoliticalRelationBonus(ePlayer);
         if (iPass == 0 && iAttitudeChange > 0)
         {
@@ -12467,6 +12494,11 @@ void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldT
         szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_TOTAL", city.getFoodTradeImports(), city.getFoodTradeExports()));
         if (city.getFamineTurns() > 0)
             szBuffer.append(gDLL->getText("TXT_KEY_FAMINE_HELP", city.getFamineUnhappiness()));
+        if (city.getFood() == 0 && city.foodDifference() <= 0)
+        {
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED"));
+        }
         if (city.getPopulation() == 1 && city.foodDifference() < 0)
             szBuffer.append(gDLL->getText("TXT_KEY_FAMINE_ABANDON_WARNING"));
     }

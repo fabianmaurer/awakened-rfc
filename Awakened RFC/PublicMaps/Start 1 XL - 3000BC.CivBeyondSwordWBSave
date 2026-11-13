@@ -13,9 +13,8 @@ BeginTeam
 	Tech=TECH_THE_WHEEL                 
 	Tech=TECH_AGRICULTURE
 EndTeam
-BeginTeam                 
+BeginTeam
 	Tech=TECH_AGRICULTURE
-	Tech=TECH_MINING                 
 EndTeam
 BeginTeam                 
 	Tech=TECH_AGRICULTURE
@@ -83119,6 +83118,9 @@ BeginPlot
 	PlotType=2
 	TerrainType=TERRAIN_DESERT
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+	isNOfRiver
+	RiverWEDirection=3
+
 EndPlot
 BeginPlot
 	x=139,y=63
@@ -83718,12 +83720,23 @@ EndPlot
 BeginPlot
 	x=140,y=61
 	PlotType=2
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=140,y=62
+	isNOfRiver
+	RiverWEDirection=3
 	PlotType=2
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+
+
+	BeginCity
+		CityOwner=1
+		CityName=Mohenjo-daro
+		CityPopulation=4
+	EndCity
 EndPlot
 BeginPlot
 	x=140,y=63
@@ -83746,22 +83759,23 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=140,y=66
-	isNOfRiver
 	RiverWEDirection=3
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
+	isNOfRiver
 EndPlot
 BeginPlot
 	x=140,y=67
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
 EndPlot
 BeginPlot
 	x=140,y=68
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=0
+
 EndPlot
 BeginPlot
 	x=140,y=69
@@ -84315,24 +84329,38 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=141,y=62
+	isWOfRiver
+	RiverNSDirection=2
+	isNOfRiver
+	RiverWEDirection=3
 	PlotType=2
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+
 EndPlot
 BeginPlot
 	x=141,y=63
-	TerrainType=TERRAIN_PLAINS
-	PlotType=2
 	BonusType=BONUS_COTTON
+	isWOfRiver
+	RiverNSDirection=2
+	PlotType=2
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+
 EndPlot
 BeginPlot
 	x=141,y=64
-	TerrainType=TERRAIN_PLAINS
+	isWOfRiver
+	RiverNSDirection=2
 	PlotType=2
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+
 
 	BeginCity
 		CityOwner=1
 		CityName=Harappa
-		CityPopulation=2
+		CityPopulation=6
 		BuildingType=BUILDING_PALACE
 	EndCity
 EndPlot
@@ -84341,31 +84369,43 @@ BeginPlot
 	TerrainType=TERRAIN_DESERT
 	PlotType=2
 	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+	isWOfRiver
+	RiverNSDirection=2
+
 EndPlot
 BeginPlot
 	x=141,y=66
-	isWOfRiver
 	RiverNSDirection=2
-	isNOfRiver
 	RiverWEDirection=3
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_GRASS
 	PlotType=2
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
+
+	isWOfRiver
+	isNOfRiver
+
+	BeginCity
+		CityOwner=1
+		CityName=Rakhigarhi
+		CityPopulation=5
+	EndCity
 EndPlot
 BeginPlot
 	x=141,y=67
-	isWOfRiver
 	RiverNSDirection=2
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BonusType=BONUS_WHEAT
+
+	isWOfRiver
 EndPlot
 BeginPlot
 	x=141,y=68
-	isWOfRiver
 	RiverNSDirection=2
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=0
+
+	isWOfRiver
 EndPlot
 BeginPlot
 	x=141,y=69
@@ -84960,22 +85000,23 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=142,y=66
-	TerrainType=TERRAIN_GRASS
 	PlotType=2
-	BonusType=BONUS_HORSE
+	TerrainType=TERRAIN_DESERT
+	FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0
 EndPlot
 BeginPlot
 	x=142,y=67
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BonusType=BONUS_COW
+
 EndPlot
 BeginPlot
 	x=142,y=68
-	FeatureType=FEATURE_FOREST, FeatureVariety=1
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
 	BonusType=BONUS_OIL
+
 EndPlot
 BeginPlot
 	x=142,y=69
@@ -85557,19 +85598,21 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=143,y=66
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
 EndPlot
 BeginPlot
 	x=143,y=67
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
 EndPlot
 BeginPlot
 	x=143,y=68
-	FeatureType=FEATURE_FOREST, FeatureVariety=1
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
 EndPlot
 BeginPlot
 	x=143,y=69
@@ -86169,21 +86212,21 @@ BeginPlot
 EndPlot
 BeginPlot
 	x=144,y=66
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 EndPlot
 BeginPlot
 	x=144,y=67
-	FeatureType=FEATURE_FOREST, FeatureVariety=0
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=1
 	BonusType=BONUS_GEMS
+
 EndPlot
 BeginPlot
 	x=144,y=68
-	TerrainType=TERRAIN_GRASS
+	TerrainType=TERRAIN_PLAINS
 	PlotType=2
+
 EndPlot
 BeginPlot
 	x=144,y=69

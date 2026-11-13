@@ -19,6 +19,8 @@ tracks; civilizations cannot research another civilization's replacement.
 Completing a tier ends that research selection. Any queued next technology
 continues normally; otherwise humans choose their next research and AI evaluates
 its choices again. Continuing the same mastery requires a new research choice.
+AI treats mastery and capped Military Research as finite research, preserving
+normal science spending, gold reserves and victory planning while selecting them.
 
 Each direct combat grants both participants' teams 1% of their exact unit type's
 next mastery level's total research cost, whether attacking, defending, losing

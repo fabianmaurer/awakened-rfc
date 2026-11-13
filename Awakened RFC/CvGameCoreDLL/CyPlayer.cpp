@@ -1207,6 +1207,11 @@ int CyPlayer::getHappyPerMilitaryUnit()
 	return m_pPlayer ? m_pPlayer->getHappyPerMilitaryUnit() : -1;
 }
 
+int CyPlayer::getStarvationLosses()
+{
+    return m_pPlayer ? m_pPlayer->getStarvationLosses() : 0;
+}
+
 bool CyPlayer::isMilitaryFoodProduction()
 {
 	return m_pPlayer ? m_pPlayer->isMilitaryFoodProduction() : false;

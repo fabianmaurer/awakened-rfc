@@ -41,8 +41,9 @@ def resource_free_settlements(profile_values):
                    (137, 77), (142, 62), (145, 65), (150, 65), (165, 76),
                    (166, 70), (172, 71)))
     if NAME == 'Earth200x110':
-        from indian_scenarios import CIVS
+        from indian_scenarios import CIVS, HARAPPAN_CITIES
         result.update(entry[4] for entry in CIVS)
+        result.update(site for _, site, _ in HARAPPAN_CITIES)
     return result
 
 
@@ -549,7 +550,9 @@ FLOODPLAIN_FRINGES = {
 
 
 def harappan_floodplains(plots):
-    """Author the fertile opening along existing eastern Indus riverbanks."""
+    """Concentrate the opening cities on a shared, drought-exposed corridor."""
+    from indian_scenarios import HARAPPAN_CITIES
+    from IndianCivsData import HARAPPAN_CHANNEL, HARAPPAN_FLOODPLAINS
     # Reclaim the upper alluvial block for early farming. The lower riverbank
     # at (139, 60) and (139, 61) retains its two local wetlands.
     reclaimed = {(139, 62): 'TERRAIN_DESERT',
@@ -564,19 +567,33 @@ def harappan_floodplains(plots):
         fields.append('TerrainType=' + terrain)
         if terrain == 'TERRAIN_DESERT':
             fields.append('FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0')
+    for x, y, side, flow in HARAPPAN_CHANNEL:
+        fields = plots[x, y]
+        river, direction = (('isNOfRiver', 'RiverWEDirection') if side == 0
+                            else ('isWOfRiver', 'RiverNSDirection'))
+        fields[:] = [f for f in fields if f != river and
+                     not f.startswith((river + '=', direction + '='))]
+        fields.extend((river, direction + '=' + str(flow)))
+    original = ((139, 62), (139, 63), (139, 64), (140, 63),
+                (140, 64), (140, 65), (141, 65), (145, 65))
+    for site in original + HARAPPAN_FLOODPLAINS:
+        fields = plots[site]
+        fields[:] = [f for f in fields if not f.startswith(
+            ('TerrainType=', 'FeatureType=', 'PlotType='))]
+        fields.extend(('PlotType=2', 'TerrainType=TERRAIN_DESERT',
+                       'FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0'))
+    # Keep nearby pasture/crop bonuses, but remove the broad grassland fallback.
+    # These cities must share the floodplain food rather than each having an
+    # independent fertile hinterland. Clear woodland here without adding hammers.
     for (x, y), fields in plots.items():
-        if not (139 <= x <= 145 and 60 <= y <= 66) or 'PlotType=2' not in fields:
+        if not (140 <= x <= 144 and 61 <= y <= 68):
             continue
-        if any(f.startswith(('FeatureType=', 'ImprovementType=', 'BonusType=')) for f in fields):
-            continue
-        river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
-                 'isNOfRiver' in plots.get((x, y + 1), ()) or
-                 'isWOfRiver' in plots.get((x - 1, y), ()))
-        if not river:
-            continue
-        fields[:] = ['TerrainType=TERRAIN_DESERT' if f.startswith('TerrainType=')
-                     else f for f in fields]
-        fields.append('FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0')
+        if 'TerrainType=TERRAIN_GRASS' in fields:
+            fields[:] = ['TerrainType=TERRAIN_PLAINS' if f == 'TerrainType=TERRAIN_GRASS'
+                         else f for f in fields if not f.startswith('FeatureType=FEATURE_FOREST')]
+    for _, site, _ in HARAPPAN_CITIES:
+        fields = plots[site]
+        fields[:] = [f for f in fields if not f.startswith('BonusType=')]
 
 
 def correct_floodplains(plots, origins):

@@ -626,6 +626,13 @@ tAIStopBirthThreshold = (
 
 
 #RiseAndFall
+# These ancient states have no later state represented by their respawn slot.
+# Match civilization types: the India slot is Harappa only in its XL scenario.
+tNoRespawnCivilizations = (
+    'CIVILIZATION_HARAPPA', 'CIVILIZATION_BABYLONIA', 'CIVILIZATION_CARTHAGE',
+    'CIVILIZATION_XIONGNU', 'CIVILIZATION_NATIVE_AMERICA', # Mississippians
+)
+
 tResurrectionProb = (
 80, #Egypt
 100, #India

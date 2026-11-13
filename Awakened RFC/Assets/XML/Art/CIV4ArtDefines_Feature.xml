@@ -225,7 +225,7 @@
 			<fScale>1.0</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
-			<FeatureVariety>
+		<FeatureVariety>
 				<FeatureArtPieces>
 					<FeatureArtPiece>
 						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_baseALL.dds</ModelFile>
@@ -236,7 +236,17 @@
 				<bGenerateRotations>0</bGenerateRotations>
 				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
 			</FeatureVariety>
-			<FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_FLOOD_PLAINS_DROUGHT</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>1</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
+		<FeatureVariety>
 				<FeatureArtPieces>
 					<FeatureArtPiece>
 						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_Drought.dds</ModelFile>
@@ -247,7 +257,17 @@
 				<bGenerateRotations>0</bGenerateRotations>
 				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
 			</FeatureVariety>
-			<FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>1</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
+		<FeatureVariety>
 				<FeatureArtPieces>
 					<FeatureArtPiece>
 						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_SevereDrought.dds</ModelFile>

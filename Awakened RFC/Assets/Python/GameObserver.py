@@ -28,7 +28,7 @@ def record_mechanic(event, player, details):
 
 # Semantic payload version 1. Fields mirror the guarded native call sites.
 APOSTOLIC_FIELDS = {
-    'papal_request': ('decision', 'can_become', 'cities'),
+    'papal_request': ('decision', 'can_become', 'cities', 'x', 'y', 'refuge'),
     'papal_decision': ('decision', 'choice'),
     'papal_penalty_applied': ('observer', 'amount', 'accumulated', 'attitude_extra_after'),
     'papal_penalty_cleared': ('observer', 'amount', 'attitude_extra_before', 'attitude_extra_after'),
@@ -105,17 +105,26 @@ def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ba
         header_keys = ('version', 'papal_player', 'refuser', 'retry_turn', 'palace_active',
                        'rome_owner', 'rome_christian', 'founding_eligible', 'palace_buildings',
                        'crusade_region', 'crusade_end_turn', 'base_duration', 'inactivity_duration')
-        if len(header) != len(header_keys) or header[0] != 1:
+        if header[0] == 2:
+            header_keys += ('seat_x', 'seat_y', 'protector', 'exile', 'conqueror')
+        if len(header) != len(header_keys) or header[0] not in (1, 2):
             raise ValueError('Unexpected apostolic state payload')
         details = dict(zip(header_keys, header))
+        if header[0] == 2:
+            details['seat_owner'] = details['rome_owner']
+            details['seat_christian'] = details['rome_christian']
         def rows(values, keys):
             width = len(keys)
             if len(values) % width:
                 raise ValueError('Incomplete apostolic state rows')
             return [dict(zip(keys, values[i:i+width])) for i in range(0, len(values), width)]
-        details['players'] = rows(flat_players, ('id', 'alive', 'team', 'state_religion', 'legitimation',
-                                  'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state',
-                                  'refusal_penalty', 'attitude_extra_to_refuser', 'cities'))
+        player_keys = ('id', 'alive', 'team', 'state_religion', 'legitimation',
+                       'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state')
+        if header[0] == 1:
+            player_keys += ('refusal_penalty', 'attitude_extra_to_refuser', 'cities')
+        else:
+            player_keys += ('refusal_turns', 'papal_relation_to_refuser', 'cities')
+        details['players'] = rows(flat_players, player_keys)
         details['teams'] = rows(flat_teams, ('id', 'alive', 'participant', 'target'))
         details['pairs'] = rows(flat_pairs, ('team', 'other', 'at_war', 'can_declare_war', 'can_change_war_peace', 'military_access'))
         details['ballots'] = rows(flat_ballots, ('ballot', 'proposal', 'deadline', 'player', 'weight', 'delivery_turn', 'choice'))
@@ -135,9 +144,9 @@ def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ba
         pope = players.get(details['papal_player'])
         if pope and pope['alive'] and pope['religion_civic'] == atheism:
             issues.append('papacy_adopted_state_atheism')
-        if details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
+        if header[0] == 1 and details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
             issues.append('refusal_penalty_survived_loss_of_rome')
-        if details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
+        if header[0] == 1 and details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
             issues.append('refusal_penalty_without_refuser')
         if details['crusade_region'] >= 0:
             for pair in details['pairs']:
@@ -534,7 +543,7 @@ class Observer:
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
-                        'army_recording_version': 2, 'apostolic_recording_version': 1,
+                        'army_recording_version': 2, 'apostolic_recording_version': 2,
                         'espionage_recording_version': 2,
                         'intelligence_modes': ['technology', 'military', 'politics', 'economy', 'cooperation', 'none'],
                         'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
@@ -686,6 +695,7 @@ class Observer:
     def city_data(self, city, diagnostic):
         data = {'id': city.getID(), 'name': city.getName(), 'x': city.getX(), 'y': city.getY(),
                 'population': city.getPopulation(), 'food': city.getFood(),
+                'famine_turns': city.getFamineTurns(), 'famine_unhappiness': city.getFamineUnhappiness(),
                 'food_consumption': city.foodConsumption(False, 0), 'growth_threshold': city.growthThreshold(),
                 'disorder': city.isDisorder(), 'anarchy': self.gc.getPlayer(city.getOwner()).isAnarchy(),
                 'occupation': city.getOccupationTimer(), 'food_production': city.isFoodProduction(),
@@ -770,6 +780,8 @@ class Observer:
                     'civics': civics, 'state_religion': player.getStateReligion(),
                     'power': player.getPower(), 'military_units': military, 'army': army,
                     'stability': player_stability,
+                    'starvation_losses': player.getStarvationLosses(),
+                    'population_loss_stability': (script['lPopulationLossPenalty'] + [0] * gc.getMAX_PLAYERS())[i],
                     'food_imports': sum([c['food_imports'] for c in cities]),
                     'food_exports': sum([c['food_exports'] for c in cities]),
                     'slaves': sum([c.get('slaves', 0) for c in cities])}

@@ -19,8 +19,9 @@ class StoredData:
                 scriptDict = {      #------------RiseAndFall
                                     'iBirthDecisionSerial': 0,
                                     'birthDecisions': {},
-                                    'lCapitalFaminePenalty': [0] * con.iNumMajorPlayers,
-                                    'lCapitalFamineTurn': [-1] * con.iNumMajorPlayers,
+                                    'lPopulationLossPenalty': [0] * con.iNumMajorPlayers,
+                                    'lPopulationLossHistory': [[] for i in range(con.iNumMajorPlayers)],
+                                    'cityStarvationLossTurns': {},
                                     'droughtRegions': [],
                                     'droughtScriptLevel': 0,
                                     'droughtScriptWarned': False,
@@ -87,6 +88,8 @@ class StoredData:
                                     'lWondersBuilt': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'l2OutOf3': [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False],
                                     #------------Stability
+                                    'iCivilWarLastCheckTurn': -1,
+                                    'lCivilWarHistory': [[] for i in range(con.iNumMajorPlayers)],
                                     'lBaseStabilityLastTurn': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'lPartialBaseStability': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                     'lStability': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

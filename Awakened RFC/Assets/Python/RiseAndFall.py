@@ -1224,6 +1224,9 @@ class RiseAndFall:
                 bDeadCivFound = False
                 for iDeadCiv in candidates:
                         if gc.getPlayer(iDeadCiv).getCivilizationType() < 0: continue
+                        civType = gc.getCivilizationInfo(gc.getPlayer(iDeadCiv).getCivilizationType()).getType()
+                        if civType in con.tNoRespawnCivilizations:
+                                continue
                         if iDeadCiv == con.iEskimos and gc.getGame().getStartTurn() > geo.turns(87):
                                 continue
                         if iDeadCiv == iMongolia and con.isMongolianBirthReplaced():
@@ -2906,9 +2909,17 @@ class RiseAndFall:
                 utils.makeUnit(iSettler, iEgypt, tCapitals[iEgypt], 1)
                 utils.makeUnit(iWarrior, iEgypt, tCapitals[iEgypt], 1)
 
-                iIndianSettler = gc.getCivilizationInfo(pIndia.getCivilizationType()).getCivilizationUnits(gc.getInfoTypeForString('UNITCLASS_SETTLER'))
-                utils.makeUnit(iIndianSettler, iIndia, tCapitals[iIndia], 1)
-                utils.makeUnit(iWarrior, iIndia, tCapitals[iIndia], 1)
+                import Harappa
+                if Harappa.isHarappan(iIndia):
+                        # The XL opening already has its urban network; no Settler.
+                        city, iterator = pIndia.firstCity(False)
+                        while city and not city.isNone():
+                                utils.makeUnit(iWarrior, iIndia, (city.getX(), city.getY()), 1)
+                                city, iterator = pIndia.nextCity(iterator, False)
+                else:
+                        iIndianSettler = gc.getCivilizationInfo(pIndia.getCivilizationType()).getCivilizationUnits(gc.getInfoTypeForString('UNITCLASS_SETTLER'))
+                        utils.makeUnit(iIndianSettler, iIndia, tCapitals[iIndia], 1)
+                        utils.makeUnit(iWarrior, iIndia, tCapitals[iIndia], 1)
 
                 utils.makeUnit(iSettler, iChina, tCapitals[iChina], 1)
                 utils.makeUnit(iWarrior, iChina, tCapitals[iChina], 1)

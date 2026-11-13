@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT><Tag>TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED</Tag>
+    <English>Units cannot heal: food stores are empty and the city is not growing.</English>
+    <French>Les unit&#233;s ne peuvent pas gu&#233;rir : les r&#233;serves sont vides et la ville ne cro&#238;t pas.</French>
+    <German>Einheiten k&#246;nnen nicht heilen: Die Nahrungsvorr&#228;te sind leer und die Stadt w&#228;chst nicht.</German>
+    <Italian>Le unit&#224; non possono guarire: le scorte sono vuote e la citt&#224; non cresce.</Italian>
+    <Spanish>Las unidades no pueden sanar: las reservas est&#225;n vac&#237;as y la ciudad no crece.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_SUPPLY_TILE_HEAL_BLOCKED</Tag>
+    <English>Units cannot heal here without food or fresh water.</English>
+    <French>Les unit&#233;s ne peuvent pas gu&#233;rir ici sans nourriture ni eau douce.</French>
+    <German>Einheiten k&#246;nnen hier ohne Nahrung oder S&#252;&#223;wasser nicht heilen.</German>
+    <Italian>Le unit&#224; non possono guarire qui senza cibo o acqua dolce.</Italian>
+    <Spanish>Las unidades no pueden sanar aqu&#237; sin alimentos ni agua dulce.</Spanish>
+  </TEXT>
   <TEXT><Tag>TXT_KEY_FAMINE_BEGINS</Tag>
     <English>Food stores are exhausted in %s1. Restore food supplies to prevent further losses.</English>
     <French>Les r&#233;serves de %s1 sont &#233;puis&#233;es. R&#233;tablissez le ravitaillement pour limiter les pertes.</French>
@@ -43,11 +57,11 @@
     <Spanish>%d1 descontento por hambruna.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_FAMINE_HELP</Tag>
-    <English>[NEWLINE]Famine unrest: %d1 unhappiness. Restore food supplies to recover.</English>
-    <French>[NEWLINE]Famine : %d1 m&#233;contentement. R&#233;tablissez le ravitaillement pour retrouver le calme.</French>
-    <German>[NEWLINE]Hungersnot: %d1 Unzufriedenheit. Stellt zur Erholung die Nahrungsversorgung wieder her.</German>
-    <Italian>[NEWLINE]Carestia: %d1 infelicit&#224;. Ripristina i rifornimenti per favorire la ripresa.</Italian>
-    <Spanish>[NEWLINE]Hambruna: %d1 descontento. Restablece el suministro para recuperarte.</Spanish>
+    <English>[NEWLINE]Famine: %d1 unhappiness. Population losses damage military units. Repeated starvation can force abandonment, depending on population.</English>
+    <French>[NEWLINE]Famine : %d1 m&#233;contentement. Les pertes de population blessent les unit&#233;s militaires. Une famine r&#233;p&#233;t&#233;e peut forcer l&#8217;abandon selon la population.</French>
+    <German>[NEWLINE]Hungersnot: %d1 Unzufriedenheit. Bev&#246;lkerungsverluste sch&#228;digen Milit&#228;reinheiten. Wiederholte Hungerverluste k&#246;nnen je nach Einwohnerzahl die Stadtaufgabe erzwingen.</German>
+    <Italian>[NEWLINE]Carestia: %d1 infelicit&#224;. Le perdite di popolazione danneggiano le unit&#224; militari. La fame ripetuta pu&#242; costringere ad abbandonare la citt&#224;, in base alla popolazione.</Italian>
+    <Spanish>[NEWLINE]Hambruna: %d1 descontento. Las p&#233;rdidas de poblaci&#243;n da&#241;an a las unidades militares. El hambre repetida puede obligar a abandonar la ciudad, seg&#250;n su poblaci&#243;n.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_FAMINE_ABANDON_WARNING</Tag>
     <English>[NEWLINE]This city will be abandoned if it cannot feed its last citizen after its food runs out.</English>

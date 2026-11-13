@@ -43,9 +43,9 @@ SETTLERS = tuple(settlers)
 # Archaeological site names are used as labels; their ancient names are unknown.
 names = list(VALUES['CityNameManager.tCityMap'])
 plane = [list(row) for row in names[1]]
-for x, y, name in ((141, 64, 'Harappa'), (138, 60, 'Mohenjo-daro'),
+for x, y, name in ((141, 64, 'Harappa'), (140, 62, 'Mohenjo-daro'),
                    (140, 57, 'Dholavira'), (142, 56, 'Lothal'),
-                   (144, 64, 'Rakhigarhi'), (143, 62, 'Kalibangan')):
+                   (141, 66, 'Rakhigarhi'), (143, 62, 'Kalibangan')):
     plane[HEIGHT - 1 - y][x] = name
 names[1] = tuple(tuple(row) for row in plane)
 VALUES['CityNameManager.tCityMap'] = tuple(names)

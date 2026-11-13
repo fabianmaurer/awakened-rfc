@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_AP_REFUGE_BODY</Tag>
+    <English>The Pope seeks a seat in %s1_City. Ceding the city grants +2 relations with Christian nations and one extra council vote while it remains the Papal seat. Refusal brings -2 relations for %d2 turns.</English>
+    <French>Le pape souhaite si&#233;ger &#224; %s1_City. C&#233;der la ville donne +2 aux relations avec les nations chr&#233;tiennes et une voix suppl&#233;mentaire au conseil tant que le pape y si&#232;ge. Refuser donne -2 aux relations pendant %d2 tours.</French>
+    <German>Der Papst bittet um einen Sitz in %s1_City. Die Abtretung gew&#228;hrt +2 Beziehungen zu christlichen Nationen und eine zus&#228;tzliche Ratsstimme, solange die Stadt Papstsitz bleibt. Eine Ablehnung gibt -2 Beziehungen f&#252;r %d2 Runden.</German>
+    <Italian>Il papa chiede una sede a %s1_City. Cedere la citt&#224; concede +2 alle relazioni con le nazioni cristiane e un voto aggiuntivo nel consiglio finch&#233; resta la sede papale. Rifiutare comporta -2 alle relazioni per %d2 turni.</Italian>
+    <Spanish>El papa solicita una sede en %s1_City. Ceder la ciudad otorga +2 a las relaciones con las naciones cristianas y un voto adicional en el consejo mientras siga siendo la sede papal. Rechazar supone -2 a las relaciones durante %d2 turnos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_REFUGE_LAST_CITY</Tag>
+    <English>The Pope seeks a seat in %s1_City. Ceding your last city will end your nation. Refusal brings -2 relations with Christian nations for %d2 turns.</English>
+    <French>Le pape souhaite si&#233;ger &#224; %s1_City. C&#233;der votre derni&#232;re ville mettra fin &#224; votre nation. Refuser donne -2 aux relations avec les nations chr&#233;tiennes pendant %d2 tours.</French>
+    <German>Der Papst bittet um einen Sitz in %s1_City. Die Abtretung Eurer letzten Stadt beendet Eure Nation. Eine Ablehnung gibt -2 Beziehungen zu christlichen Nationen f&#252;r %d2 Runden.</German>
+    <Italian>Il papa chiede una sede a %s1_City. Cedere la tua ultima citt&#224; porr&#224; fine alla tua nazione. Rifiutare comporta -2 alle relazioni con le nazioni cristiane per %d2 turni.</Italian>
+    <Spanish>El papa solicita una sede en %s1_City. Ceder tu &#250;ltima ciudad pondr&#225; fin a tu naci&#243;n. Rechazar supone -2 a las relaciones con las naciones cristianas durante %d2 turnos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_REFUGE_ACCEPT</Tag>
+    <English>Cede %s1_City.</English>
+    <French>C&#233;der %s1_City.</French>
+    <German>%s1_City abtreten.</German>
+    <Italian>Cedi %s1_City.</Italian>
+    <Spanish>Ceder %s1_City.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_REFUGE_REFUSED</Tag>
+    <English>Refusing the Pope gives -2 relations with Christian nations for %d1 turns.</English>
+    <French>Refuser le pape donne -2 aux relations avec les nations chr&#233;tiennes pendant %d1 tours.</French>
+    <German>Die Ablehnung des Papstes gibt -2 Beziehungen zu christlichen Nationen f&#252;r %d1 Runden.</German>
+    <Italian>Rifiutare il papa comporta -2 alle relazioni con le nazioni cristiane per %d1 turni.</Italian>
+    <Spanish>Rechazar al papa supone -2 a las relaciones con las naciones cristianas durante %d1 turnos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_PROTECTOR_GRANTED</Tag>
+    <English>You are Protector of the Holy See while %s1_City remains the Papal seat: +2 relations with Christian nations and one extra council vote.</English>
+    <French>Vous prot&#233;gez le Saint-Si&#232;ge tant que le pape si&#232;ge &#224; %s1_City : +2 aux relations avec les nations chr&#233;tiennes et une voix suppl&#233;mentaire au conseil.</French>
+    <German>Ihr seid Besch&#252;tzer des Heiligen Stuhls, solange %s1_City Papstsitz bleibt: +2 Beziehungen zu christlichen Nationen und eine zus&#228;tzliche Ratsstimme.</German>
+    <Italian>Sei Protettore della Santa Sede finch&#233; %s1_City resta la sede papale: +2 alle relazioni con le nazioni cristiane e un voto aggiuntivo nel consiglio.</Italian>
+    <Spanish>Eres Protector de la Santa Sede mientras %s1_City siga siendo la sede papal: +2 a las relaciones con las naciones cristianas y un voto adicional en el consejo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_PROTECTOR_ATTITUDE</Tag>
+    <English>%D1: You protect the Holy See.</English>
+    <French>%D1 : Vous prot&#233;gez le Saint-Si&#232;ge.</French>
+    <German>%D1: Ihr besch&#252;tzt den Heiligen Stuhl.</German>
+    <Italian>%D1: Proteggi la Santa Sede.</Italian>
+    <Spanish>%D1: Proteges la Santa Sede.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_REFUSAL_ATTITUDE</Tag>
+    <English>%D1: You refused the Pope.</English>
+    <French>%D1 : Vous avez refus&#233; le pape.</French>
+    <German>%D1: Ihr habt den Papst abgewiesen.</German>
+    <Italian>%D1: Hai rifiutato il papa.</Italian>
+    <Spanish>%D1: Rechazaste al papa.</Spanish>
+  </TEXT>
+</Civ4GameText>

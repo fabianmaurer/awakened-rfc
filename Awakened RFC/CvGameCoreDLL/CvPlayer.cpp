@@ -438,6 +438,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_iNumMilitaryUnits = 0;
 	m_iHappyPerMilitaryUnit = 0;
 	m_iMilitaryFoodProductionCount = 0;
+    m_iStarvationLosses = 0;
 	m_iConscriptCount = 0;
 	m_iMaxConscript = 0;
 	m_iHighestUnitLevel = 1;
@@ -1346,6 +1347,8 @@ CvCity* CvPlayer::initCity(int iX, int iY, bool bBumpUnits, bool bUpdatePlotGrou
 
 void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool bUpdatePlotGroups, bool bArabianBirth)
 {
+    const PlayerTypes eFormerPope = GC.getGameINLINE().isPapalState(pOldCity->getOwnerINLINE()) && GC.getGameINLINE().getPapalSeat() == pOldCity ? pOldCity->getOwnerINLINE() : NO_PLAYER;
+    if (eFormerPope != NO_PLAYER) GC.getGameINLINE().disablePapalPalaceEffects();
 	const PlayerTypes eCrusadeRecipient = bConquest && !bTrade ? GC.getGameINLINE().getCrusadeCityRecipient(getID(), *pOldCity) : NO_PLAYER;
 
 	CLLNode<IDInfo>* pUnitNode;
@@ -1893,6 +1896,7 @@ void CvPlayer::acquireCity(CvCity* pOldCity, bool bConquest, bool bTrade, bool b
 			}
 		}
 	}
+    if (eFormerPope != NO_PLAYER) GC.getGameINLINE().onPapalSeatConquered(eFormerPope, getID());
 	CvEventReporter::getInstance().cityAcquired(eOldOwner, getID(), pNewCity, bConquest, bTrade);
 
 	SAFE_DELETE_ARRAY(pabHasReligion);
@@ -5581,6 +5585,10 @@ void CvPlayer::found(int iX, int iY, int iMinimumPopulation)
 		GC.getMapINLINE().plotINLINE(iX, iY)->getArea() != getCapitalCity()->getArea())
 		observerPerformanceCount("count.colony.aiCityFoundedOverseas");
 
+    CvPlot* foundingPlot = GC.getMapINLINE().plotINLINE(iX, iY);
+    std::vector<BuildingTypes> ruinsBuildings;
+    if (foundingPlot->getImprovementType() == (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT"))
+        ruinsBuildings = foundingPlot->getRuinsBuildings();
 	pCity = initCity(iX, iY, true, true);
 	FAssertMsg(pCity != NULL, "City is not assigned a valid value");
 	// Set founding population before city-built callbacks and notifications.
@@ -5729,6 +5737,8 @@ void CvPlayer::found(int iX, int iY, int iMinimumPopulation)
 			}
 		}
 	}
+
+    pCity->restoreRuinsBuildings(ruinsBuildings);
 
 	if (getAdvancedStartPoints() >= 0)
 	{
@@ -10341,6 +10351,16 @@ void CvPlayer::changeHappyPerMilitaryUnit(int iChange)
 }
 
 
+int CvPlayer::getStarvationLosses() const
+{
+    return m_iStarvationLosses;
+}
+
+void CvPlayer::recordStarvationLoss()
+{
+    ++m_iStarvationLosses;
+}
+
 int CvPlayer::getMilitaryFoodProductionCount() const														
 {
 	return m_iMilitaryFoodProductionCount;
@@ -13446,11 +13466,14 @@ void CvPlayer::changeHasReligionCount(ReligionTypes eIndex, int iChange)
 		m_paiHasReligionCount[eIndex] = (m_paiHasReligionCount[eIndex] + iChange);
 		FAssert(getHasReligionCount(eIndex) >= 0);
 
-		GC.getGameINLINE().updateBuildingCommerce();
+		// Religion changes already refresh the affected city's buildings in
+		// setHasReligion. Only population-based shrine income changes globally;
+		// rescanning every building in every city is especially costly on transfers.
+		GC.getGameINLINE().updateShrineCommerce();
 		// Foreign conversions, expulsions and city transfers change Papal tribute.
 		if (eIndex == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
 		{
-			CvCity* pRome = GC.getGameINLINE().getPapalRome();
+			CvCity* pRome = GC.getGameINLINE().getPapalSeat();
 			if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()))
 				pRome->updateCommerce(COMMERCE_GOLD);
 		}
@@ -16312,7 +16335,7 @@ void CvPlayer::doAdvancedStartAction(AdvancedStartActionTypes eAction, int iX, i
 				}
 				else
 				{
-					pCity->changePopulation(-1);
+					pCity->changePopulation(-1, false);
 					changeAdvancedStartPoints(iCost);
 					bPopChanged = true;
 				}
@@ -17973,6 +17996,7 @@ void CvPlayer::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iNumMilitaryUnits);
 	pStream->Read(&m_iHappyPerMilitaryUnit);
 	pStream->Read(&m_iMilitaryFoodProductionCount);
+    pStream->Read(&m_iStarvationLosses);
 	pStream->Read(&m_iConscriptCount);
 	pStream->Read(&m_iMaxConscript);
 	pStream->Read(&m_iHighestUnitLevel);
@@ -18502,6 +18526,7 @@ void CvPlayer::write(FDataStreamBase* pStream)
 	pStream->Write(m_iNumMilitaryUnits);
 	pStream->Write(m_iHappyPerMilitaryUnit);
 	pStream->Write(m_iMilitaryFoodProductionCount);
+    pStream->Write(m_iStarvationLosses);
 	pStream->Write(m_iConscriptCount);
 	pStream->Write(m_iMaxConscript);
 	pStream->Write(m_iHighestUnitLevel);
@@ -22355,7 +22380,12 @@ void CvPlayer::processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive)
 
 int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
-	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && (!isAlive() || (isMinorCiv() && !GC.getGameINLINE().isPapalState(getID())) || isBarbarian() || getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return 0;
+    if (GC.getGameINLINE().isApostolicCouncil(eVoteSource))
+    {
+        if (!isAlive() || (isMinorCiv() && !GC.getGameINLINE().isPapalState(getID())) || isBarbarian()) return 0;
+        if (getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
+            return GC.getGameINLINE().isPapalProtector(getID()) ? 1 : 0;
+    }
 	int iVotes = 0;
 
 	ReligionTypes eReligion = GC.getGameINLINE().getVoteSourceReligion(eVoteSource);
@@ -22415,6 +22445,7 @@ int CvPlayer::getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 		}
 	}
 
+	if (GC.getGameINLINE().isApostolicCouncil(eVoteSource) && GC.getGameINLINE().isPapalProtector(getID())) ++iVotes;
 	return iVotes;
 }
 

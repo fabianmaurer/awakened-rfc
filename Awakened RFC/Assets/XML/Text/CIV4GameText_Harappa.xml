@@ -113,18 +113,18 @@
     <Spanish>Almacena alimentos y proporciona +2 salud.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UP_HAR</Tag>
-    <English>The Power of Indus Networks</English>
-    <French>The Power of Indus Networks</French>
-    <German>Die Macht der Indusnetzwerke</German>
-    <Italian>The Power of Indus Networks</Italian>
-    <Spanish>The Power of Indus Networks</Spanish>
+    <English>The Power of Urban Cycles</English>
+    <French>Le pouvoir des cycles urbains</French>
+    <German>Die Macht der Stadtzyklen</German>
+    <Italian>Il potere dei cicli urbani</Italian>
+    <Spanish>El poder de los ciclos urbanos</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UP_HAR2</Tag>
-    <English>River farms gain +1 commerce.</English>
-    <French>Les fermes riveraines gagnent +1 commerce.</French>
-    <German>Bauernh&#246;fe an Fl&#252;ssen erhalten +1 Handel.</German>
-    <Italian>Le fattorie sui fiumi ottengono +1 commercio.</Italian>
-    <Spanish>Las granjas junto a r&#237;os obtienen +1 comercio.</Spanish>
+    <English>Cities grow twice as fast. Food shortages drain reserves twice as fast.</English>
+    <French>Les villes croissent deux fois plus vite. Les p&#233;nuries &#233;puisent les r&#233;serves deux fois plus vite.</French>
+    <German>St&#228;dte wachsen doppelt so schnell. Nahrungsmangel leert die Vorr&#228;te doppelt so schnell.</German>
+    <Italian>Le citt&#224; crescono due volte pi&#249; velocemente. Le carenze alimentari consumano le scorte due volte pi&#249; velocemente.</Italian>
+    <Spanish>Las ciudades crecen el doble de r&#225;pido. La escasez de alimentos agota las reservas el doble de r&#225;pido.</Spanish>
   </TEXT>
   <TEXT><Tag>TXT_KEY_UHV_HAR1</Tag>
     <English>Have three cities of population 5 in the Indus region by 2000 BC.</English>
@@ -195,5 +195,12 @@
     <German>Kalibangan</German>
     <Italian>Kalibangan</Italian>
     <Spanish>Kalibangan</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_FOOD_CHANGE</Tag>
+    <English>Food storage change: %s1_Change[ICON_FOOD] per turn.</English>
+    <French>Variation des r&#233;serves : %s1_Change[ICON_FOOD] par tour.</French>
+    <German>&#196;nderung der Nahrungsvorr&#228;te: %s1_Change[ICON_FOOD] pro Runde.</German>
+    <Italian>Variazione delle scorte: %s1_Change[ICON_FOOD] per turno.</Italian>
+    <Spanish>Cambio en las reservas: %s1_Change[ICON_FOOD] por turno.</Spanish>
   </TEXT>
 </Civ4GameText>

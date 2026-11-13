@@ -4867,19 +4867,14 @@
 			<Cities><City>TXT_KEY_HAR_CITY_0</City><City>TXT_KEY_HAR_CITY_1</City><City>TXT_KEY_HAR_CITY_2</City><City>TXT_KEY_HAR_CITY_3</City><City>TXT_KEY_HAR_CITY_4</City><City>TXT_KEY_HAR_CITY_5</City></Cities>
 			<Buildings><Building><BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType><BuildingType>BUILDING_HARAPPAN_RESERVOIR</BuildingType></Building></Buildings>
 			<Units><Unit><UnitClassType>UNITCLASS_SETTLER</UnitClassType><UnitType>UNIT_HARAPPAN_BUILDER</UnitType></Unit></Units>
-			<FreeUnitClasses>
-				<FreeUnitClass>
-					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
-					<iFreeUnits>1</iFreeUnits>
-				</FreeUnitClass>
-			</FreeUnitClasses>
+			<FreeUnitClasses/>
 			<FreeBuildingClasses>
 				<FreeBuildingClass>
 					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
 			</FreeBuildingClasses>
-			<FreeTechs><FreeTech><TechType>TECH_AGRICULTURE</TechType><bFreeTech>1</bFreeTech></FreeTech><FreeTech><TechType>TECH_MINING</TechType><bFreeTech>1</bFreeTech></FreeTech></FreeTechs>
+			<FreeTechs><FreeTech><TechType>TECH_AGRICULTURE</TechType><bFreeTech>1</bFreeTech></FreeTech></FreeTechs>
 			<DisableTechs/>
 			<InitialCivics>
 				<CivicType>CIVIC_TRIBAL_SYSTEM</CivicType>

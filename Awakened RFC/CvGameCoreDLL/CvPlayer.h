@@ -542,6 +542,8 @@ public:
 	int getHappyPerMilitaryUnit() const;																																			// Exposed to Python
 	void changeHappyPerMilitaryUnit(int iChange);												
 
+	int getStarvationLosses() const;
+    void recordStarvationLoss();
 	int getMilitaryFoodProductionCount() const;														
 	bool isMilitaryFoodProduction() const;																																		// Exposed to Python
 	void changeMilitaryFoodProductionCount(int iChange);
@@ -1213,6 +1215,7 @@ protected:
 	int m_iNumMilitaryUnits;
 	int m_iHappyPerMilitaryUnit;
 	int m_iMilitaryFoodProductionCount;
+    int m_iStarvationLosses;
 	int m_iConscriptCount;
 	int m_iMaxConscript;
 	int m_iHighestUnitLevel;

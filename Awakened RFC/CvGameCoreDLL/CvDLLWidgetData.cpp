@@ -1992,7 +1992,11 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				}
 
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_TURN_OR_TURNS", iTurns));
+                if (iTurns == MAX_INT)
+                    szBuffer.append(gDLL->getText(pMissionPlot->isCity() ?
+                        "TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED" : "TXT_KEY_SUPPLY_TILE_HEAL_BLOCKED"));
+                else
+                    szBuffer.append(gDLL->getText("TXT_KEY_MISC_TURN_OR_TURNS", iTurns));
 			}
 			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_PILLAGE)
 			{
@@ -3830,12 +3834,24 @@ void CvDLLWidgetData::parsePopulationHelp(CvWidgetDataStruct &widgetDataStruct, 
 		szBuffer.assign(gDLL->getText("TXT_KEY_MISC_FOOD_THRESHOLD", pHeadSelectedCity->getFood(), pHeadSelectedCity->growthThreshold()));
         szBuffer.append(NEWLINE);
         szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_TOTAL", pHeadSelectedCity->getFoodTradeImports(), pHeadSelectedCity->getFoodTradeExports()));
-        int iPenalty = 10000 - pHeadSelectedCity->getGrowthRateTimes100();
         int iGrowth = pHeadSelectedCity->getGrowthFoodTimes100();
-        CvWString szPenalty = CvWString::format(L"%d.%d", iPenalty / 100, (iPenalty % 100) / 10);
-        CvWString szGrowth = CvWString::format(L"%d.%02d", std::max(0, iGrowth) / 100, std::max(0, iGrowth) % 100);
-        szBuffer.append(NEWLINE);
-        szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TECH_GROWTH", szPenalty.GetCString(), szGrowth.GetCString()));
+        if (pHeadSelectedCity->getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HARAPPA"))
+        {
+            CvWString szChange = CvWString::format(L"%s%d.%02d", iGrowth < 0 ? L"-" : L"+",
+                abs(iGrowth) / 100, abs(iGrowth) % 100);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_UP_HAR2"));
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_HAR_FOOD_CHANGE", szChange.GetCString()));
+        }
+        else
+        {
+            int iPenalty = 10000 - pHeadSelectedCity->getGrowthRateTimes100();
+            CvWString szPenalty = CvWString::format(L"%d.%d", iPenalty / 100, (iPenalty % 100) / 10);
+            CvWString szGrowth = CvWString::format(L"%d.%02d", std::max(0, iGrowth) / 100, std::max(0, iGrowth) % 100);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TECH_GROWTH", szPenalty.GetCString(), szGrowth.GetCString()));
+        }
 	}
 }
 

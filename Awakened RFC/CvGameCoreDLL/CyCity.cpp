@@ -793,6 +793,12 @@ void CyCity::changePopulation(int iChange)
 		m_pCity->changePopulation(iChange);
 }
 
+void CyCity::changePopulationPeacefully(int iChange)
+{
+    if (m_pCity)
+        m_pCity->changePopulation(iChange, false);
+}
+
 long CyCity::getRealPopulation()
 {
 	return m_pCity ? m_pCity->getRealPopulation() : -1;

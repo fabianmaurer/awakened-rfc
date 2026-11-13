@@ -2118,13 +2118,13 @@ class CvMainInterface:
 					screen.show( "HealthText" )
 
 				if (iFoodDifference < 0):
-
-					if ( (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iFoodDifference > 0 ):
-						iDeltaFood = (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iFoodDifference
+					iStorageDifference = pHeadSelectedCity.getGrowthFoodTimes100() / 100.0
+					if ( (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iStorageDifference > 0 ):
+						iDeltaFood = (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) + iStorageDifference
 					else:
 						iDeltaFood = 0
-					if ( -iFoodDifference < (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) ):
-						iExtraFood = -iFoodDifference
+					if ( -iStorageDifference < (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0) ):
+						iExtraFood = -iStorageDifference
 					else:
 						iExtraFood = (pHeadSelectedCity.getGrowthFoodStoredTimes100() / 100.0)
 					iFirst = float(iDeltaFood) / float(pHeadSelectedCity.growthThreshold())
@@ -3093,8 +3093,8 @@ class CvMainInterface:
                                                                                                                         #        szTempBuffer = szTempBuffer + " (" + localText.getText("TXT_KEY_STABILITY_VERYSOLID", ()) + ")"
                                                                                                                 szBuffer = szBuffer + " - " + szTempBuffer
                                                                                                         elif gc.getGame().isPapalState(ePlayer):
-                                                                                                                # Papal survival depends on retaining or recovering Rome.
-                                                                                                                pRome = CyMap().plot(*geo.value("CvMainInterface.rome")).getPlotCity()
+                                                                                                                # Papal survival follows its current seat, including refuge cities.
+                                                                                                                pRome = gc.getPlayer(ePlayer).getCapitalCity()
                                                                                                                 bHoldsRome = not pRome.isNone() and pRome.getOwner() == ePlayer
                                                                                                                 iSymbol = CyGame().getSymbolID(FontSymbols.POWER_CHAR) + 3
                                                                                                                 if bHoldsRome:

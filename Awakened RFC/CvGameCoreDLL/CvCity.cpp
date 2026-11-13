@@ -243,7 +243,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 	if (lResult == 1)
 	{
 		if (pPlot->getFeatureType() != NO_FEATURE &&
-			pPlot->getFeatureType() != GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS"))
+			!pPlot->isFloodPlains())
 		{
 			pPlot->setFeatureType(NO_FEATURE);
 		}
@@ -847,6 +847,8 @@ void CvCity::setupGraphical()
 
 void CvCity::kill(bool bUpdatePlotGroups)
 {
+    if (GC.getGameINLINE().isPapalState(getOwnerINLINE()) && GC.getGameINLINE().getPapalSeat() == this)
+        GC.getGameINLINE().disablePapalPalaceEffects();
 	CvPlot* pPlot;
 	CvPlot* pAdjacentPlot;
 	CvPlot* pLoopPlot;
@@ -860,6 +862,7 @@ void CvCity::kill(bool bUpdatePlotGroups)
 	}
 
 	pPlot = plot();
+    pPlot->recordRuinsBuildings(*this);
 
 	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
 	{
@@ -913,7 +916,7 @@ void CvCity::kill(bool bUpdatePlotGroups)
 		}
 	}
 
-	setPopulation(0);
+	setPopulation(0, false);
 
 	AI_assignWorkingPlots();
 
@@ -926,13 +929,9 @@ void CvCity::kill(bool bUpdatePlotGroups)
 		abEspionageVisibility.push_back(getEspionageVisibility((TeamTypes)iI));
 	}
 
-	pPlot->setPlotCity(NULL);
-	// Capturing, gifting or razing Rome ends the former owner's refusal penalty.
-	if (pPlot->getX_INLINE() == scenarioGeographyValue("CvCity.bound_1") && pPlot->getY_INLINE() == scenarioGeographyValue("CvCity.bound_2"))
-	{
-		GC.getGameINLINE().clearPapalRefusalPenalties();
-		GC.getGameINLINE().notifyPapalRomeLost(getOwnerINLINE());
-	}
+    const bool bPapalSeatLost = GC.getGameINLINE().isPapalState(getOwnerINLINE()) && GC.getGameINLINE().getPapalSeat() == this;
+    pPlot->setPlotCity(NULL);
+    if (bPapalSeatLost) GC.getGameINLINE().notifyPapalRomeLost(getOwnerINLINE());
 
 	area()->changeCitiesPerPlayer(getOwnerINLINE(), -1);
 
@@ -2444,6 +2443,11 @@ bool CvCity::canJoin() const
 }
 
 
+static int populationFoodMultiplier(const CvCity& kCity)
+{
+    return kCity.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HARAPPA") ? 2 : 1;
+}
+
 int CvCity::getGrowthRateTimes100() const
 {
     int iKnown = 0;
@@ -2452,13 +2456,14 @@ int CvCity::getGrowthRateTimes100() const
         if (kTeam.isHasTech((TechTypes)i) || kTeam.getTechCount((TechTypes)i) > 0) ++iKnown;
     int iPenalty = std::max(0, GC.getDefineINT("RFCMP_GROWTH_BASE_PENALTY_TIMES100") -
         iKnown * GC.getDefineINT("RFCMP_GROWTH_TECH_REDUCTION_TIMES100"));
-    return 10000 - std::min(10000, iPenalty);
+    return (10000 - std::min(10000, iPenalty)) * populationFoodMultiplier(*this);
 }
 
 int CvCity::getGrowthFoodTimes100() const
 {
     int iSurplus = foodDifference();
-    return iSurplus > 0 ? (int)((__int64)iSurplus * getGrowthRateTimes100() / 100) : iSurplus * 100;
+    return iSurplus > 0 ? (int)((__int64)iSurplus * getGrowthRateTimes100() / 100)
+        : iSurplus * 100 * populationFoodMultiplier(*this);
 }
 
 int CvCity::getGrowthFoodStoredTimes100() const
@@ -3700,7 +3705,7 @@ void CvCity::hurry(HurryTypes eHurry)
 	}
 
 	GET_PLAYER(getOwnerINLINE()).changeGold(-(iHurryGold));
-	changePopulation(-(iHurryPopulation));
+	changePopulation(-(iHurryPopulation), false);
 
 	changeHurryAngerTimer(iHurryAngerLength);
 
@@ -3898,7 +3903,7 @@ void CvCity::conscript()
 		return;
 	}
 
-	changePopulation(-(getConscriptPopulation()));
+	changePopulation(-(getConscriptPopulation()), false);
 	changeConscriptAngerTimer(flatConscriptAngerLength());
 
 	setDrafted(true);
@@ -4545,7 +4550,7 @@ int CvCity::getNoMilitaryPercentAnger() const
 int CvCity::getCulturePercentAnger() const
 {
 	if (GC.getGameINLINE().isPapalState(getOwnerINLINE()) &&
-		GC.getGameINLINE().getPapalRome() == this) return 0;
+		GC.getGameINLINE().getPapalSeat() == this) return 0;
 
 	int iTotalCulture;
 	int iAngryCulture;
@@ -5601,7 +5606,7 @@ int CvCity::getPopulation() const
 }
 
 
-void CvCity::setPopulation(int iNewValue)
+void CvCity::setPopulation(int iNewValue, bool bInvoluntary)
 {
 	int iOldPopulation;
 
@@ -5664,13 +5669,89 @@ void CvCity::setPopulation(int iNewValue)
 
 		//updateGenericBuildings();
         GC.getGameINLINE().updateShrineCommerce();
+        if (bInvoluntary && iNewValue < iOldPopulation)
+            applyInvoluntaryPopulationLoss(iOldPopulation - iNewValue);
 	}
 }
 
 
-void CvCity::changePopulation(int iChange)
+void CvCity::changePopulation(int iChange, bool bInvoluntary)
 {
-	setPopulation(getPopulation() + iChange);
+	setPopulation(getPopulation() + iChange, bInvoluntary);
+}
+
+
+void CvCity::restoreRuinsBuildings(const std::vector<BuildingTypes>& buildings)
+{
+    const int target = (int)buildings.size() / 2;
+    std::vector<bool> present(GC.getNumBuildingClassInfos(), false);
+    for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+        if (getNumBuilding((BuildingTypes)i) > 0)
+            present[GC.getBuildingInfo((BuildingTypes)i).getBuildingClassType()] = true;
+    std::vector<BuildingTypes> candidates;
+    for (size_t i = 0; i < buildings.size(); ++i)
+        if (!present[GC.getBuildingInfo(buildings[i]).getBuildingClassType()])
+            candidates.push_back(buildings[i]);
+    int recovered = 0;
+    while (recovered < target && !candidates.empty())
+    {
+        const int pick = GC.getGameINLINE().getSorenRandNum((int)candidates.size(), "Ruins building recovery");
+        const BuildingTypes building = candidates[pick];
+        const int buildingClass = GC.getBuildingInfo(building).getBuildingClassType();
+        // Direct restoration deliberately bypasses construction prerequisites.
+        setNumRealBuilding(building, 1);
+        ++recovered;
+        for (int i = (int)candidates.size() - 1; i >= 0; --i)
+        {
+            if (GC.getBuildingInfo(candidates[i]).getBuildingClassType() == buildingClass)
+            {
+                candidates[i] = candidates.back();
+                candidates.pop_back();
+            }
+        }
+    }
+    if (recovered > 0)
+        gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
+            gDLL->getText("TXT_KEY_RUINS_BUILDINGS_RECOVERED", recovered, getNameKey()),
+            NULL, MESSAGE_TYPE_MINOR_EVENT, NULL, NO_COLOR, getX_INLINE(), getY_INLINE());
+}
+
+
+bool CvCity::applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation)
+{
+    CyArgsList argsList;
+    // Keep a city's starvation history through ownership changes, but not refounding.
+    int cityKey[] = {getX_INLINE(), getY_INLINE(), getGameTurnFounded()};
+    argsList.add((int)getOwnerINLINE());
+    argsList.add(cityKey, 3);
+    argsList.add(iLoss);
+    argsList.add((int)isCapital());
+    argsList.add((int)bStarvation);
+    argsList.add(getPopulation());
+    long abandon = 0;
+    if (!gDLL->getPythonIFace()->moduleExists("CvEventInterface", true) ||
+        !gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordPopulationLoss", argsList.makeFunctionArgs(), &abandon))
+        gDLL->logMsg("PythonErr.log", "Awakened RFC: population-loss stability callback could not be loaded or called.", false, false);
+    // IDs survive stack mutation, transport deaths and delayed unit removal.
+    std::vector<IDInfo> units;
+    CLLNode<IDInfo>* node = plot()->headUnitNode();
+    while (node != NULL)
+    {
+        units.push_back(node->m_data);
+        node = plot()->nextUnitNode(node);
+    }
+    for (int loss = 0; loss < iLoss; ++loss)
+    {
+        for (size_t i = 0; i < units.size(); ++i)
+        {
+            CvUnit* unit = ::getUnit(units[i]);
+            if (unit == NULL || unit->isDead() || unit->isDelayedDeath() || !unit->atPlot(plot())) continue;
+            if (unit->baseCombatStr() <= 0 && unit->airBaseCombatStr() <= 0) continue;
+            const int damage = 10 + GC.getGameINLINE().getSorenRandNum(21, "Population loss garrison damage");
+            unit->changeDamage(damage, NO_PLAYER);
+        }
+    }
+    return bStarvation && abandon == 1;
 }
 
 
@@ -9255,7 +9336,7 @@ int CvCity::getBaseCommerceRate(CommerceTypes eIndex) const
 int CvCity::getPapalTributeGold() const
 {
 	CvGame& kGame = GC.getGameINLINE();
-	if (getX_INLINE() != scenarioGeographyValue("CvCity.bound_3") || getY_INLINE() != scenarioGeographyValue("CvCity.bound_4") ||
+	if (kGame.getPapalSeat() != this ||
 		!kGame.isPapalState(getOwnerINLINE()) || !kGame.isCouncilActive()) return 0;
 	const ReligionTypes eChristianity = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
 	const int iForeignCities = kGame.countReligionLevels(eChristianity) - GET_PLAYER(getOwnerINLINE()).getHasReligionCount(eChristianity);
@@ -9384,13 +9465,17 @@ int CvCity::getBuildingCommerce(CommerceTypes eIndex) const
 
 int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
 {
-	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE") && !GC.getGameINLINE().isCouncilActive()) return 0;
 	int iCommerce;
 
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "GC.getNumBuildingInfos expected to be >= 0");
+
+	// Most entries in a full building-commerce scan are absent. Avoid XML-name
+	// lookups and religious-effect checks for these zero-contribution entries.
+	if (getNumBuilding(eBuilding) == 0) return 0;
+	if (eBuilding == GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE") && !GC.getGameINLINE().isCouncilActive()) return 0;
 
 	iCommerce = 0;
 
@@ -12859,6 +12944,7 @@ void CvCity::relocateFaminePopulation()
         }
     }
     if (pBest == NULL) return; // People disperse when no viable destination exists.
+    if (GC.getGameINLINE().getSorenRandNum(100, "Famine refugee survival") >= 25) return;
     pBest->changePopulation(1);
     if (pBest->getOwnerINLINE() != getOwnerINLINE()) pBest->changeCulture(getOwnerINLINE(), 20, false, false);
     const CvWString szMessage = gDLL->getText("TXT_KEY_FAMINE_REFUGEES", getNameKey(), pBest->getNameKey());
@@ -12871,7 +12957,11 @@ void CvCity::relocateFaminePopulation()
 
 void CvCity::abandonToFamine()
 {
+    const int remainingPopulation = getPopulation();
     CvPlayer& owner = GET_PLAYER(getOwnerINLINE());
+    for (int i = 0; i < remainingPopulation; ++i)
+        owner.recordStarvationLoss();
+    applyInvoluntaryPopulationLoss(remainingPopulation, true);
     bool bNomads = false;
     if (owner.getNumCities() == 1 && !owner.isBarbarian() && !owner.isMinorCiv())
     {
@@ -12887,7 +12977,8 @@ void CvCity::abandonToFamine()
     }
     else
     {
-        relocateFaminePopulation();
+        for (int i = 0; i < remainingPopulation; ++i)
+            relocateFaminePopulation();
     }
     gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
         gDLL->getText(bNomads ? "TXT_KEY_FAMINE_SURVIVORS" : "TXT_KEY_FAMINE_ABANDONED", getNameKey()), NULL, MESSAGE_TYPE_MAJOR_EVENT,
@@ -12917,17 +13008,12 @@ bool CvCity::doGrowth()
 	//Rhye - end
 
 	iDiff = foodDifference();
+    // Urban Cycles accelerates both growth and the exhaustion of food stores.
+    if (iDiff < 0) iDiff *= populationFoodMultiplier(*this);
     const bool bFamine = iDiff < 0 && getFood() + iDiff <= 0;
-    const int iOldFamineTurns = m_iFamineTurns;
     setFamineTurns(bFamine ? m_iFamineTurns + 1 : m_iFamineTurns - 2);
-    if (bFamine && iOldFamineTurns == 0)
-    {
-        gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(),
-            gDLL->getText("TXT_KEY_FAMINE_BEGINS", getNameKey()), NULL, MESSAGE_TYPE_MINOR_EVENT,
-            NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), getX_INLINE(), getY_INLINE(), true, true);
-    }
-    // Only positive growth surplus is reduced. Consumption, trade amounts,
-    // starvation and food used to produce units keep their original values.
+    // Technology adjusts positive growth only. Urban Cycles also scales the
+    // deficit above; tile yields, consumption, shipments and production stay raw.
     if (iDiff > 0)
     {
         __int64 iAdjusted = (__int64)iDiff * getGrowthRateTimes100() + m_iGrowthFoodRemainder;
@@ -12964,8 +13050,16 @@ bool CvCity::doGrowth()
 
 		if (getPopulation() > 1)
 		{
-			changePopulation(-1);
+            GET_PLAYER(getOwnerINLINE()).recordStarvationLoss();
+            // Apply the involuntary effects once, with an explicit starvation cause.
+            changePopulation(-1, false);
+            const bool abandon = applyInvoluntaryPopulationLoss(1, true);
             relocateFaminePopulation();
+            if (abandon)
+            {
+                abandonToFamine();
+                return false;
+            }
 		}
         else
         {

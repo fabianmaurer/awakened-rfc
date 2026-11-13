@@ -148,6 +148,7 @@ public:
 	bool canHeal(const CvPlot* pPlot) const;																											// Exposed to Python
 	bool canSentry(const CvPlot* pPlot) const;																										// Exposed to Python
 
+	bool hasHealingSupply(const CvPlot* pPlot) const;
 	int healRate(const CvPlot* pPlot) const;
 	int healTurns(const CvPlot* pPlot) const;
 	void doHeal();

@@ -327,7 +327,13 @@ public:
 	CvCity* getWorkingCityOverride() const;																															// Exposed to Python
 	void setWorkingCityOverride( const CvCity* pNewValue);
 
+	const std::vector<BuildingTypes>& getRuinsBuildings() const;
+    void recordRuinsBuildings(const CvCity& city);
+    int getRuinsBuildingChecksum() const;
+    int getRuinsRecoveryCount() const;
 	int getRiverDrought() const;
+	bool isDroughtFoodSuppressed() const;
+    bool isFloodPlains() const;
 	int getRiverDroughtEdges() const;
 	void setRiverDrought(int iSouthEdge, int iEastEdge);
 	int getRiverID() const;																																							// Exposed to Python
@@ -509,6 +515,7 @@ protected:
 	short m_iCityRadiusCount;
 	int m_iRiverID;
 	int m_iRiverDroughtEdges;
+    std::vector<BuildingTypes> m_aeRuinsBuildings;
 	short m_iMinOriginalStartDist;
 	short m_iReconCount;
 	short m_iRiverCrossingCount;

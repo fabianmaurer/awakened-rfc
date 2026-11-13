@@ -213,6 +213,9 @@ class Stability:
 
                 #moved here with its own stored value to save loading time (scrolls the map only once instead of every player)
                 if (geo.historyTurn(iGameTurn) % 6 == 0): #3 is too short to detect any change; must be a multiple of 3 anyway
+                        # This read-only scan needs one history snapshot, not a full
+                        # script-data unpickle for every city/civilization pair.
+                        lLatestRebellionTurn = pickle.loads(gc.getGame().getScriptData())['lLatestRebellionTurn']
                         iRomanConnectedPlots = 0
                         pRome = gc.getPlayer(con.iRome)
                         bRomanRepublic = pRome.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))
@@ -233,7 +236,7 @@ class Stability:
                                                 if (pCurrent.isCity()):
                                                         cityOwner = pCurrent.getPlotCity().getOwner()
                                                         for iLoop in range(con.iNumPlayers):
-                                                                if (iLoop != cityOwner and gc.getPlayer(iLoop).isAlive() and iGameTurn >= con.tBirth[iLoop]+geo.turns(30) and iGameTurn >= self.getLatestRebellionTurn(iLoop) + geo.turns(15)):
+                                                                if (iLoop != cityOwner and gc.getPlayer(iLoop).isAlive() and iGameTurn >= con.tBirth[iLoop]+geo.turns(30) and iGameTurn >= lLatestRebellionTurn[iLoop] + geo.turns(15)):
                                                                         if (gc.getPlayer(iLoop).getSettlersMaps( (geo.height() - 1) - y, x ) >= 400):
                                                                                 if (x >= con.tNormalAreasTL[iLoop][0] and x <= con.tNormalAreasBR[iLoop][0] and \
                                                                                     y >= con.tNormalAreasTL[iLoop][1] and y <= con.tNormalAreasBR[iLoop][1]):
@@ -453,6 +456,18 @@ class Stability:
                 return max(-5, min(5, iScore))
 
 
+        def applyPopulationLossChange(self, iPlayer, delta):
+                if not delta:
+                        return
+                self.setStability(iPlayer, self.getStability(iPlayer) + delta)
+                # Keep the next base replacement from applying the same change twice.
+                self.setBaseStabilityLastTurn(iPlayer, self.getBaseStabilityLastTurn(iPlayer) + delta)
+                display = Famine.populationLossPenalty(iPlayer)
+                if gc.getPlayer(iPlayer).isGoldenAge():
+                        display += 20
+                self.setParameter(iPlayer, iParEconomy1, False, display)
+
+
         def updateBaseStability(self, iGameTurn, iPlayer):
 
                 pPlayer = gc.getPlayer(iPlayer)
@@ -655,7 +670,7 @@ class Stability:
                                 iAgriculture *= 75 #3
                                 iAgriculture /= 100 #5
                         
-                        # Hunger is measured directly in the capital, not by empire-wide food/population.
+                        # Population losses are handled separately from food/population ratios.
                         #print("iNewBaseStability Agriculture/Population check", iNewBaseStability, iPlayer)
                         iMaxEconomyGain = 3
                         iMaxEconomyLoss = -3
@@ -733,9 +748,9 @@ class Stability:
 
                 # Legacy depression and post-planned-economy timers are ignored.
                 # Keep their stored fields so older save dictionaries remain readable.
-                iCapitalFamine = Famine.capitalPenalty(iPlayer)
-                iNewBaseStability += iCapitalFamine
-                self.setParameter(iPlayer, iParEconomy1, False, iCapitalFamine)
+                iPopulationLoss = Famine.populationLossPenalty(iPlayer)
+                iNewBaseStability += iPopulationLoss
+                self.setParameter(iPlayer, iParEconomy1, False, iPopulationLoss)
 
                 iTempCivicThreshold = iNewBaseStability
                 # Democracy has no transition penalty. Legacy countdown data remains
@@ -796,10 +811,9 @@ class Stability:
 
                                 
                 self.setStability(iPlayer, self.getStability(iPlayer) - self.getBaseStabilityLastTurn(iPlayer) + iNewBaseStability)
-                if (self.getStability(iPlayer) < -80):
-                        self.setStability(iPlayer, -80)
-                if (self.getStability(iPlayer) > 80):
-                        self.setStability(iPlayer, 80)
+                # Cap ordinary stability without limiting stacked population-loss penalties.
+                ordinary = self.getStability(iPlayer) - iPopulationLoss
+                self.setStability(iPlayer, max(-80, min(80, ordinary)) + iPopulationLoss)
                         
                 self.setBaseStabilityLastTurn(iPlayer, iNewBaseStability)
                                  
@@ -1082,41 +1096,58 @@ class Stability:
 
        	
         def checkImplosion(self, iGameTurn):
-    
-                if (iGameTurn > con.i350BC and geo.historyTurn(iGameTurn) % 10 == 5):
-                        for iPlayer in range(iNumPlayers):
-                                if utils.isIndependentMinor(iPlayer):
-                                        continue
-                                if (gc.getPlayer(iPlayer).isAlive() and iGameTurn >= con.tBirth[iPlayer] + geo.turns(25) and not gc.getPlayer(iPlayer).isGoldenAge()):
-                                        if (self.getStability(iPlayer) < -40): #civil war
-                                                print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))
-                                                if (iPlayer != utils.getHumanID()): #not me
-                                                        #RFCMP
-                                                        if (not gc.getPlayer(iPlayer).isHuman()):
-                                                                if (gc.getPlayer(utils.getHumanID()).canContact(iPlayer)):
-                                                                        CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
-                                                                                                            CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                                                if (iGameTurn < con.i1400AD):
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
-                                                                else:
-                                                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
-                                                        else: #another human
-                                                                CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
-                                                                                        CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                                                utils.killAndFragmentCiv(iPlayer, iIndependent, iIndependent2, -1, True)
-                                                                self.setStability(iPlayer, -15)
-                                                else:
-                                                        if (gc.getPlayer(iPlayer).getNumCities() > 1):
-                                                                CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True, reason='stability_civil_war')
-                                                                utils.setStartingStabilityParameters(iPlayer)
-                                                                self.setGNPold(iPlayer, 0)
-                                                                self.setGNPnew(iPlayer, 0)
-                                                                
-                                                return
-
-
-
-
+                game = gc.getGame()
+                data = pickle.loads(game.getScriptData())
+                lastTurn = data['iCivilWarLastCheckTurn']
+                if lastTurn == iGameTurn:
+                        return
+                histories = data['lCivilWarHistory']
+                candidates = []
+                for iPlayer in range(iNumPlayers):
+                        player = gc.getPlayer(iPlayer)
+                        # Birth and Golden Age protection cannot bank crisis turns.
+                        if (utils.isIndependentMinor(iPlayer) or not player.isAlive() or
+                            player.getNumCities() == 0 or player.isGoldenAge() or
+                            iGameTurn < con.tBirth[iPlayer] + geo.turns(25)):
+                                histories[iPlayer] = []
+                                continue
+                        history = histories[iPlayer]
+                        if lastTurn != iGameTurn - 1:
+                                history = []
+                        history = (history + [self.getStability(iPlayer) < -40])[-5:]
+                        histories[iPlayer] = history
+                        if len(history) == 5 and sum(history) >= 4:
+                                candidates.append(iPlayer)
+                                histories[iPlayer] = []
+                # Save every country's sample before fragmentation mutates script data.
+                data['iCivilWarLastCheckTurn'] = iGameTurn
+                game.setScriptData(pickle.dumps(data))
+                for iPlayer in candidates:
+                        # An earlier civil war may have changed another candidate.
+                        if not gc.getPlayer(iPlayer).isAlive() or gc.getPlayer(iPlayer).getNumCities() == 0:
+                                continue
+                        print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))
+                        if (iPlayer != utils.getHumanID()): #not me
+                                #RFCMP
+                                if (not gc.getPlayer(iPlayer).isHuman()):
+                                        if (gc.getPlayer(utils.getHumanID()).canContact(iPlayer)):
+                                                CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
+                                                                                    CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                                        if (iGameTurn < con.i1400AD):
+                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
+                                        else:
+                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
+                                else: #another human
+                                        CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
+                                                                CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                                        utils.killAndFragmentCiv(iPlayer, iIndependent, iIndependent2, -1, True)
+                                        self.setStability(iPlayer, -15)
+                        else:
+                                if (gc.getPlayer(iPlayer).getNumCities() > 1):
+                                        CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True, reason='stability_civil_war')
+                                        utils.setStartingStabilityParameters(iPlayer)
+                                        self.setGNPold(iPlayer, 0)
+                                        self.setGNPnew(iPlayer, 0)
 
 

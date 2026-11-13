@@ -10,7 +10,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
 sys.path.insert(0, str(MOD / 'Assets/Python'))
-from IndianCivsData import CIVS
+from IndianCivsData import CIVS, HARAPPAN_CITIES, HARAPPAN_DRYING
 
 
 def apply_indian_civs(text, xl=False):
@@ -75,7 +75,8 @@ def apply_indian_civs(text, xl=False):
             str(33 if int(n) == 1 else int(n)) for n in m[1].split(',') if n.strip()) + ',', text)
         text = re.sub(r'BeginCity\b.*?EndCity', gangetic_palace, text, flags=re.S)
     else:
-        text = add_harappa_city(text)
+        text = replace_block(text, 'Team', 1, 'BeginTeam\n\tTech=TECH_AGRICULTURE\nEndTeam')
+        text = add_harappa_cities(text)
         text = add_ganges_units(text)
     return text
 
@@ -99,14 +100,26 @@ def gangetic_palace(match):
     return block
 
 
-def add_harappa_city(text):
-    """Author Harappa's size-two opening without adding a second city on reruns."""
+def add_harappa_cities(text):
+    """Author established Indus cities without duplicating them on reruns."""
+    cities = {site: (name, population) for name, site, population in HARAPPAN_CITIES}
     def plot(match):
         block = match[1]
-        if not re.search(r'\bx=141,y=64\b', block): return match[0]
-        if 'BeginCity' in block: return match[0]
-        block += ('\n\tBeginCity\n\t\tCityOwner=1\n\t\tCityName=Harappa\n'
-                  '\t\tCityPopulation=2\n\t\tBuildingType=BUILDING_PALACE\n\tEndCity\n')
+        coordinates = re.search(r'\bx=(\d+),y=(\d+)\b', block)
+        site = tuple(map(int, coordinates.groups()))
+        # Remove retired opening sites before authoring the new city positions.
+        if site not in cities:
+            for name, position, population in HARAPPAN_CITIES:
+                block = re.sub(r'\s*BeginCity\b(?:(?!EndCity).)*\bCityName=' +
+                               re.escape(name) + r'\b(?:(?!EndCity).)*EndCity', '', block, flags=re.S)
+            return 'BeginPlot' + block + 'EndPlot'
+        name, population = cities[site]
+        if 'BeginCity' in block:
+            block = re.sub(r'\bCityPopulation=\d+', 'CityPopulation=%d' % population, block)
+        else:
+            palace = '\t\tBuildingType=BUILDING_PALACE\n' if name == 'Harappa' else ''
+            block += ('\n\tBeginCity\n\t\tCityOwner=1\n\t\tCityName=%s\n'
+                      '\t\tCityPopulation=%d\n%s\tEndCity\n') % (name, population, palace)
         return 'BeginPlot' + block + 'EndPlot'
     return re.sub(r'BeginPlot\b(.*?)EndPlot', plot, text, flags=re.S)
 

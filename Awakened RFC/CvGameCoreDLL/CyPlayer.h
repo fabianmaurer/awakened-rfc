@@ -285,6 +285,7 @@ public:
 	int getExtraUnitCost();
 	int getNumMilitaryUnits();
 	int getHappyPerMilitaryUnit();
+	int getStarvationLosses();
 	bool isMilitaryFoodProduction();
 	int getHighestUnitLevel();
 

@@ -907,8 +907,12 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iPapalDevotionFadeStart = -1;
 	m_iPapalDecisionSerial = 0;
 	m_iPapalRefuser = NO_PLAYER;
-	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) m_aiPapalRefusalPenalties[iRefusal] = 0;
+	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) m_aiPapalRefusalExpiry[iRefusal] = 0;
 	m_papalDecisions.clear();
+	m_papalRefugeVisited.clear();
+	m_iPapalSeatX = m_iPapalSeatY = -1;
+	m_iPapalConqueror = m_iPapalProtector = NO_PLAYER;
+	m_bPapalExile = false;
 	m_bPapalPalaceEffects = false;
 	m_bPapalCivicOverride = false;
 	m_bBirthFlipInProgress = false;
@@ -8283,7 +8287,10 @@ int CvGame::calculateSyncChecksum()
 
 	iValue += getMapRand().getSeed();
 	for (int iDrought = 0; iDrought < GC.getMapINLINE().numPlotsINLINE(); ++iDrought)
-		iValue += GC.getMapINLINE().plotByIndexINLINE(iDrought)->getRiverDroughtEdges() * (iDrought + 1) * 109;
+    {
+        CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(iDrought);
+        iValue += (plot->getRiverDroughtEdges() * 109 + plot->getRuinsBuildingChecksum() * 127) * (iDrought + 1);
+    }
 	iValue += getSorenRand().getSeed();
     for (int iEmbargoTeam = 0; iEmbargoTeam < MAX_TEAMS; iEmbargoTeam++)
         for (int iEmbargoTarget = 0; iEmbargoTarget < MAX_TEAMS; iEmbargoTarget++)
@@ -8299,15 +8306,18 @@ int CvGame::calculateSyncChecksum()
                 (iFoodPlayer + 1) * (pFoodCity->getID() + 1);
     }
     for (int iIntel = 0; iIntel < MAX_PLAYERS; ++iIntel)
-        iValue += GET_PLAYER((PlayerTypes)iIntel).getIntelligenceChecksum() * (iIntel + 1);
+        iValue += (GET_PLAYER((PlayerTypes)iIntel).getIntelligenceChecksum() +
+            GET_PLAYER((PlayerTypes)iIntel).getStarvationLosses() * 173) * (iIntel + 1);
 	iValue += (m_iPapalPlayer + 1) * 269 + m_iPapalRetryTurn * 271 + m_iPapalDecisionSerial * 277 + m_bPapalPalaceEffects * 281;
 	for (int iBirth = 0; iBirth < MAX_CIV_PLAYERS; ++iBirth)
 		iValue += (GET_PLAYER((PlayerTypes)iBirth).getLastBirthTurn() + 1) * (iBirth + 1) * 317;
 	iValue += (m_iPapalRefuser + 1) * 283;
 	iValue += (m_iPapalFirstCouncilTurn + 1) * 313;
 	iValue += (m_iPapalRomeDeadline + 1) * 307 + (m_iPapalDevotionFadeStart + 1) * 311;
-	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) iValue += m_aiPapalRefusalPenalties[iRefusal] * (iRefusal + 1) * 293;
-	for (std::map<int, PlayerTypes>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p) iValue += (p->first + 1) * (p->second + 1) * 283;
+	for (int iRefusal = 0; iRefusal < MAX_CIV_PLAYERS; ++iRefusal) iValue += m_aiPapalRefusalExpiry[iRefusal] * (iRefusal + 1) * 293;
+	for (std::map<int, PapalDecisionData>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p) iValue += (p->first + 1) * ((p->second.owner + 1) * 283 + p->second.x * 31 + p->second.y * 37 + p->second.refuge * 41);
+    iValue += m_iPapalSeatX * 331 + m_iPapalSeatY * 337 + (m_iPapalConqueror + 1) * 347 + (m_iPapalProtector + 1) * 349 + m_bPapalExile * 353;
+    for (unsigned int v = 0; v < m_papalRefugeVisited.size(); ++v) iValue += (v + 1) * m_papalRefugeVisited[v] * 359;
 	iValue += (m_iCrusadeRegion + 1) * 7919 + m_iCrusadeEndTurn * 101;
 	for (int t = 0; t < MAX_TEAMS; ++t) iValue += (t + 1) * (m_abCrusadeParticipants[t] * 241 + m_abCrusadeTargets[t] * 251);
 	for (int i = 0; i < MAX_PLAYERS; ++i) iValue += (i + 1) * (m_aiCrusadePlunder[i] * 257 + m_abCrusadeHolyStates[i] * 263);
@@ -8943,15 +8953,22 @@ void CvGame::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iPapalDevotionFadeStart);
 	pStream->Read(&m_iPapalDecisionSerial);
 	pStream->Read(&m_iPapalRefuser);
-	pStream->Read(MAX_CIV_PLAYERS, m_aiPapalRefusalPenalties);
+	pStream->Read(MAX_CIV_PLAYERS, m_aiPapalRefusalExpiry);
+    pStream->Read(&m_iPapalSeatX); pStream->Read(&m_iPapalSeatY);
+    pStream->Read(&m_iPapalConqueror); pStream->Read(&m_iPapalProtector);
+    pStream->Read(&m_bPapalExile);
+    int iVisited; pStream->Read(&iVisited); m_papalRefugeVisited.clear();
+    for (int v = 0; v < iVisited; ++v) { int iPlot; pStream->Read(&iPlot); m_papalRefugeVisited.push_back(iPlot); }
 	pStream->Read(&m_bPapalPalaceEffects);
 	int iPapalPending;
 	pStream->Read(&iPapalPending);
 	m_papalDecisions.clear();
 	for (int p = 0; p < iPapalPending; ++p)
 	{
-		int iId, iOwner; pStream->Read(&iId); pStream->Read(&iOwner);
-		m_papalDecisions[iId] = (PlayerTypes)iOwner;
+		int iId, iOwner; PapalDecisionData offer;
+        pStream->Read(&iId); pStream->Read(&iOwner); offer.owner = (PlayerTypes)iOwner;
+        pStream->Read(&offer.x); pStream->Read(&offer.y); pStream->Read(&offer.refuge);
+        m_papalDecisions[iId] = offer;
 	}
 	pStream->Read(&m_iCrusadeEndTurn);
 	pStream->Read(MAX_CIV_PLAYERS, m_aiCrusadeRewards);
@@ -9186,11 +9203,16 @@ void CvGame::write(FDataStreamBase* pStream)
 	pStream->Write(m_iPapalDevotionFadeStart);
 	pStream->Write(m_iPapalDecisionSerial);
 	pStream->Write(m_iPapalRefuser);
-	pStream->Write(MAX_CIV_PLAYERS, m_aiPapalRefusalPenalties);
+	pStream->Write(MAX_CIV_PLAYERS, m_aiPapalRefusalExpiry);
+    pStream->Write(m_iPapalSeatX); pStream->Write(m_iPapalSeatY);
+    pStream->Write(m_iPapalConqueror); pStream->Write(m_iPapalProtector);
+    pStream->Write(m_bPapalExile);
+    pStream->Write((int)m_papalRefugeVisited.size());
+    for (unsigned int v = 0; v < m_papalRefugeVisited.size(); ++v) pStream->Write(m_papalRefugeVisited[v]);
 	pStream->Write(m_bPapalPalaceEffects);
 	pStream->Write((int)m_papalDecisions.size());
-	for (std::map<int, PlayerTypes>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p)
-	{ pStream->Write(p->first); pStream->Write((int)p->second); }
+	for (std::map<int, PapalDecisionData>::const_iterator p = m_papalDecisions.begin(); p != m_papalDecisions.end(); ++p)
+	{ pStream->Write(p->first); pStream->Write((int)p->second.owner); pStream->Write(p->second.x); pStream->Write(p->second.y); pStream->Write(p->second.refuge); }
 	pStream->Write(m_iCrusadeEndTurn);
 	pStream->Write(MAX_CIV_PLAYERS, m_aiCrusadeRewards);
 
@@ -9797,14 +9819,63 @@ bool CvGame::isCouncilActive() const
 
 CvCity* CvGame::getPapalRome() const
 {
-	CvPlot* pPlot = GC.getMapINLINE().plot(scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1));
-	return pPlot ? pPlot->getPlotCity() : NULL;
+    CvPlot* pPlot = GC.getMapINLINE().plot(scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1));
+    return pPlot ? pPlot->getPlotCity() : NULL;
+}
+
+CvCity* CvGame::getPapalSeat() const
+{
+    if (m_iPapalSeatX < 0 || m_iPapalSeatY < 0) return getPapalRome();
+    CvPlot* pPlot = GC.getMapINLINE().plot(m_iPapalSeatX, m_iPapalSeatY);
+    return pPlot ? pPlot->getPlotCity() : NULL;
+}
+
+CvCity* CvGame::getPapalDecisionCity(int iDecision) const
+{
+    std::map<int, PapalDecisionData>::const_iterator it = m_papalDecisions.find(iDecision);
+    if (it == m_papalDecisions.end()) return NULL;
+    CvPlot* pPlot = GC.getMapINLINE().plot(it->second.x, it->second.y);
+    return pPlot ? pPlot->getPlotCity() : NULL;
+}
+
+bool CvGame::isPapalRefugeCity(const CvCity* pCity, bool bCheckVisited) const
+{
+    if (!pCity || !m_bPapalExile || m_iPapalPlayer != NO_PLAYER || GET_PLAYER((PlayerTypes)PAPAL_STATE).isAlive()) return false;
+    CvPlayer& kOwner = GET_PLAYER(pCity->getOwnerINLINE());
+    if (!kOwner.isAlive() || kOwner.isBarbarian() || kOwner.getID() == m_iPapalConqueror || kOwner.getID() == PAPAL_STATE) return false;
+    if (!pCity->isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return false;
+    const int iRegion = getCrusadeRegionAt(pCity->plot());
+    if (iRegion < 0 || iRegion > 4) return false;
+    const int iPlot = GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE());
+    return !bCheckVisited || std::find(m_papalRefugeVisited.begin(), m_papalRefugeVisited.end(), iPlot) == m_papalRefugeVisited.end();
+}
+
+bool CvGame::isPapalProtector(PlayerTypes ePlayer) const
+{
+    CvCity* pSeat = getPapalSeat();
+    return ePlayer >= 0 && ePlayer == m_iPapalProtector && GET_PLAYER(ePlayer).isAlive() && !GET_PLAYER(ePlayer).isMinorCiv() &&
+        m_iPapalPlayer != NO_PLAYER && GET_PLAYER((PlayerTypes)m_iPapalPlayer).isAlive() && pSeat && isPapalState(pSeat->getOwnerINLINE());
+}
+
+int CvGame::getPapalRefusalTurns(PlayerTypes ePlayer) const
+{
+    return ePlayer < 0 || ePlayer >= MAX_CIV_PLAYERS ? 0 : std::max(0, m_aiPapalRefusalExpiry[ePlayer] - GC.getInitCore().getGameTurn());
+}
+
+int CvGame::getPapalDiplomaticModifier(PlayerTypes eObserver, PlayerTypes eTarget) const
+{
+    if (eObserver == eTarget || eObserver < 0 || eTarget < 0 || eObserver >= MAX_CIV_PLAYERS || eTarget >= MAX_CIV_PLAYERS ||
+        GET_PLAYER(eObserver).getStateReligion() != GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) return 0;
+    return (isPapalProtector(eTarget) ? 2 : 0) - (getPapalRefusalTurns(eTarget) > 0 ? 2 : 0);
 }
 
 bool CvGame::isPapalState(PlayerTypes ePlayer) const { return ePlayer != NO_PLAYER && ePlayer == m_iPapalPlayer; }
 
 bool CvGame::canFoundPapacy(PlayerTypes ePlayer) const
 {
+	// All founding paths, including Independent Rome, respect the interval
+	// after refusal or dissolution rather than recreating the state at once.
+	if (m_bPapalExile || GC.getInitCore().getGameTurn() < m_iPapalRetryTurn) return false;
 	CvCity* pRome = getPapalRome();
 	if (m_iPapalPlayer != NO_PLAYER || GET_PLAYER((PlayerTypes)PAPAL_STATE).isAlive() || !pRome || pRome->getOwnerINLINE() != ePlayer || !pRome->isHasReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))) return false;
 	CvPlayer& kOwner = GET_PLAYER(ePlayer);
@@ -9821,8 +9892,11 @@ bool CvGame::canBecomePapacy(PlayerTypes ePlayer) const
 
 bool CvGame::isPapalDecisionValid(PlayerTypes ePlayer, int iDecision) const
 {
-	std::map<int, PlayerTypes>::const_iterator it = m_papalDecisions.find(iDecision);
-	return it != m_papalDecisions.end() && it->second == ePlayer && canFoundPapacy(ePlayer);
+    std::map<int, PapalDecisionData>::const_iterator it = m_papalDecisions.find(iDecision);
+    if (it == m_papalDecisions.end() || it->second.owner != ePlayer) return false;
+    CvCity* pCity = getPapalDecisionCity(iDecision);
+    if (!pCity || pCity->getOwnerINLINE() != ePlayer) return false;
+    return it->second.refuge ? isPapalRefugeCity(pCity, false) : canFoundPapacy(ePlayer);
 }
 
 void CvGame::disablePapalPalaceEffects()
@@ -9859,30 +9933,9 @@ void CvGame::reportApostolicMechanic(const char* event, int player, int a, int b
 
 #endif
 
-void CvGame::clearPapalRefusalPenalties()
-{
-	if (m_iPapalRefuser == NO_PLAYER) return;
-
-	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
-	{
-		if (m_aiPapalRefusalPenalties[i] != 0)
-		{
-#if ARFC_ENABLE_REPORTING
-			int iPreviousAttitude = GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser);
-#endif
-			GET_PLAYER((PlayerTypes)i).AI_changeAttitudeExtra((PlayerTypes)m_iPapalRefuser, m_aiPapalRefusalPenalties[i]);
-#if ARFC_ENABLE_REPORTING
-			reportApostolicMechanic("papal_penalty_cleared", m_iPapalRefuser, i, m_aiPapalRefusalPenalties[i], iPreviousAttitude, GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser));
-#endif
-		}
-		m_aiPapalRefusalPenalties[i] = 0;
-	}
-	m_iPapalRefuser = NO_PLAYER;
-}
-
 void CvGame::refreshPapalPalaceEffects()
 {
-	CvCity* pRome = getPapalRome();
+	CvCity* pRome = getPapalSeat();
 	if (pRome != NULL && isPapalState(pRome->getOwnerINLINE()))
 	{
 		m_iPapalRomeDeadline = -1;
@@ -9894,7 +9947,6 @@ void CvGame::refreshPapalPalaceEffects()
 			if (pPlot != NULL) pPlot->updateCulture(true, true);
 		}
 	}
-	if (m_iPapalRefuser != NO_PLAYER && (!pRome || pRome->getOwnerINLINE() != m_iPapalRefuser)) clearPapalRefusalPenalties();
 	BuildingTypes ePalace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE");
 	bool bEnable = pRome && isPapalState(pRome->getOwnerINLINE()) && pRome->getNumRealBuilding(ePalace) > 0 &&
 		GET_PLAYER(pRome->getOwnerINLINE()).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY") &&
@@ -9932,7 +9984,7 @@ void CvGame::announcePapalCouncil(const char* szEvent)
         const CvWString szText = gDLL->getText(szKey.c_str(), std::max(0, m_iPapalFirstCouncilTurn - getGameTurn()));
         gDLL->getInterfaceIFace()->addMessage((PlayerTypes)i, false, GC.getEVENT_MESSAGE_TIME(),
             szText, NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
-            (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), 60, 44);
+            (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), m_iPapalSeatX, m_iPapalSeatY);
         if (kPlayer.isHuman())
         {
             // Informational only: addressed delivery, with no gameplay callback.
@@ -9944,19 +9996,21 @@ void CvGame::announcePapalCouncil(const char* szEvent)
 
 void CvGame::notifyPapalRomeLost(PlayerTypes eOwner)
 {
-	if (!isPapalState(eOwner) || !GET_PLAYER(eOwner).isAlive() || m_iPapalRomeDeadline >= 0) return;
-	m_iPapalRomeDeadline = getGameTurn() + historicalTurns(10);
-	gDLL->getInterfaceIFace()->addMessage(eOwner, false, GC.getEVENT_MESSAGE_TIME(),
-		gDLL->getText("TXT_KEY_AP_ROME_RECOVERY", historicalTurns(10)), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
-		(ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"), scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1));
-#if ARFC_ENABLE_REPORTING
-	reportApostolicMechanic("papal_rome_lost", eOwner, m_iPapalRomeDeadline);
-#endif
+    // Called while a city object is being removed. Defer elimination until
+    // acquisition has finished; a pure destruction is handled next game turn.
+    if (isPapalState(eOwner)) m_iPapalRomeDeadline = GC.getInitCore().getGameTurn();
+}
+
+void CvGame::onPapalSeatConquered(PlayerTypes eOwner, PlayerTypes eConqueror)
+{
+    if (!isPapalState(eOwner)) return;
+    m_iPapalConqueror = eConqueror;
+    doPapalLifecycle();
 }
 
 bool CvGame::canPapalSurviveWithoutCities(PlayerTypes ePlayer) const
 {
-	return isPapalState(ePlayer) && m_iPapalRomeDeadline >= 0 && GC.getInitCore().getGameTurn() <= m_iPapalRomeDeadline;
+    return false;
 }
 
 int CvGame::getPapalDevotionPercent(PlayerTypes ePlayer) const
@@ -9969,114 +10023,139 @@ int CvGame::getPapalDevotionPercent(PlayerTypes ePlayer) const
 
 void CvGame::doPapalLifecycle()
 {
-	if (m_iPapalPlayer == NO_PLAYER) return;
-	const PlayerTypes ePope = (PlayerTypes)m_iPapalPlayer;
-	CvPlayer& kPope = GET_PLAYER(ePope);
-	if (kPope.isAlive())
-	{
-		if (m_iPapalDevotionFadeStart < 0 && getCurrentEra() >= GC.getInfoTypeForString("ERA_MODERN"))
-			m_iPapalDevotionFadeStart = getGameTurn();
-		CvCity* pRome = getPapalRome();
-		if (pRome != NULL && pRome->getOwnerINLINE() == ePope)
-		{
-			m_iPapalRomeDeadline = -1;
-			return;
-		}
-		notifyPapalRomeLost(ePope);
-		if (getGameTurn() < m_iPapalRomeDeadline) return;
-		disablePapalPalaceEffects();
-		// Release cities peacefully rather than razing them or giving the
-		// conqueror a second empire. No conquest rewards or fresh recruitment.
-		while (kPope.getNumCities() > 0)
-		{
-			int iLoop;
-			CvCity* pCity = kPope.firstCity(&iLoop);
-			CvPlot* pPlot = pCity->plot();
-			const int iCulture = pCity->getCultureTimes100(ePope);
-			const PlayerTypes eRecipient = GET_PLAYER((PlayerTypes)INDEPENDENT).getNumCities() <=
-				GET_PLAYER((PlayerTypes)INDEPENDENT2).getNumCities() ? (PlayerTypes)INDEPENDENT : (PlayerTypes)INDEPENDENT2;
-			GET_PLAYER(eRecipient).acquireCity(pCity, false, true, false);
-			pCity = pPlot->getPlotCity();
-			pCity->setCultureTimes100(eRecipient, pCity->getCultureTimes100(eRecipient) + iCulture, false, false);
-			pCity->setCultureTimes100(ePope, 0, false, false);
-			const int iPlotCulture = pPlot->getCulture(ePope);
-			pPlot->changeCulture(eRecipient, iPlotCulture, false);
-			pPlot->setCulture(ePope, 0, true, false);
-		}
-		kPope.setAlive(false); // Disband remaining units as in ordinary elimination.
+    if (m_iPapalPlayer == NO_PLAYER) return;
+    const PlayerTypes ePope = (PlayerTypes)m_iPapalPlayer;
+    CvPlayer& kPope = GET_PLAYER(ePope);
+    CvCity* pSeat = getPapalSeat();
+    if (kPope.isAlive() && pSeat && pSeat->getOwnerINLINE() == ePope)
+    {
+        if (m_iPapalDevotionFadeStart < 0 && getCurrentEra() >= GC.getInfoTypeForString("ERA_MODERN"))
+            m_iPapalDevotionFadeStart = getGameTurn();
+        return;
+    }
+    // The seat has fallen. End the campaign immediately, before any refuge.
+    if (m_iCrusadeRegion >= 0) { m_iCrusadeEndTurn = getGameTurn(); doCrusade(); }
+    disablePapalPalaceEffects();
+    // The Palace belongs to the institution; its effects move to the next seat.
+    if (pSeat) pSeat->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), 0);
+    announcePapalCouncil("DISSOLVED");
+    m_iPapalPlayer = NO_PLAYER; // Transfers below must not start another exile.
+    m_iPapalProtector = NO_PLAYER;
+    m_bPapalExile = true;
+    m_papalRefugeVisited.clear();
+    m_iPapalFirstCouncilTurn = -1;
+    m_iPapalRomeDeadline = -1;
+    m_iPapalDevotionFadeStart = -1;
+    m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_EXILE_WAIT_TURNS") *
+        GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+    m_papalDecisions.clear();
+    while (kPope.getNumCities() > 0)
+    {
+        int iLoop;
+        CvCity* pCity = kPope.firstCity(&iLoop);
+        const PlayerTypes eRecipient = GET_PLAYER((PlayerTypes)INDEPENDENT).getNumCities() <= GET_PLAYER((PlayerTypes)INDEPENDENT2).getNumCities() ? (PlayerTypes)INDEPENDENT : (PlayerTypes)INDEPENDENT2;
+        GET_PLAYER(eRecipient).acquireCity(pCity, false, true, false);
+    }
+    kPope.setAlive(false);
+    gDLL->getInterfaceIFace()->setDirty(Flag_DIRTY_BIT, true);
 #if ARFC_ENABLE_REPORTING
-		reportApostolicMechanic("papal_dissolved", ePope, m_iPapalRomeDeadline);
+    reportApostolicMechanic("papal_dissolved", ePope, m_iPapalRetryTurn);
 #endif
-	}
-	announcePapalCouncil("DISSOLVED");
-	m_iPapalFirstCouncilTurn = -1;
-	// Death clears the identity, so a later eligible Rome event can restore it.
-	disablePapalPalaceEffects();
-	clearPapalRefusalPenalties();
-	m_iPapalPlayer = NO_PLAYER;
-	m_iPapalRomeDeadline = -1;
-	m_iPapalDevotionFadeStart = -1;
-	m_iPapalRetryTurn = getGameTurn();
-	gDLL->getInterfaceIFace()->setDirty(Flag_DIRTY_BIT, true);
-	m_papalDecisions.clear();
 }
 
 void CvGame::doPapalFounding()
 {
-	doPapalLifecycle();
-	refreshPapalPalaceEffects();
-	for (std::map<int, PlayerTypes>::iterator it = m_papalDecisions.begin(); it != m_papalDecisions.end(); )
-		if (!canFoundPapacy(it->second)) m_papalDecisions.erase(it++); else ++it;
-	if (m_iPapalPlayer != NO_PLAYER || !m_papalDecisions.empty()) return;
-	CvCity* pRome = getPapalRome();
-	if (!pRome || !canFoundPapacy(pRome->getOwnerINLINE())) return;
-	PlayerTypes eOwner = pRome->getOwnerINLINE();
-	CvPlayer& kOwner = GET_PLAYER(eOwner);
-	if (kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") || kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2"))
-	{ establishPapacy(eOwner, false); return; }
-	if (getGameTurn() < m_iPapalRetryTurn) return;
-	int iDecision = m_iPapalDecisionSerial++;
-	m_papalDecisions[iDecision] = eOwner;
+    doPapalLifecycle();
+    if (m_iPapalRefuser != NO_PLAYER && getPapalRefusalTurns((PlayerTypes)m_iPapalRefuser) == 0) m_iPapalRefuser = NO_PLAYER;
+    refreshPapalPalaceEffects();
+    for (std::map<int, PapalDecisionData>::iterator it = m_papalDecisions.begin(); it != m_papalDecisions.end(); )
+    {
+        if (!isPapalDecisionValid(it->second.owner, it->first))
+        {
+            m_papalDecisions.erase(it++);
+            m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+        }
+        else ++it;
+    }
+    if (m_iPapalPlayer != NO_PLAYER || !m_papalDecisions.empty() || getGameTurn() < m_iPapalRetryTurn) return;
+    CvCity* pCity = NULL;
+    if (m_bPapalExile)
+    {
+        std::vector<CvCity*> preferred, capitals;
+        for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
+        {
+            CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)i);
+            if (!kPlayer.isAlive()) continue;
+            int iLoop;
+            for (CvCity* pLoop = kPlayer.firstCity(&iLoop); pLoop; pLoop = kPlayer.nextCity(&iLoop))
+                if (isPapalRefugeCity(pLoop))
+                {
+                    if (!pLoop->isCapital()) preferred.push_back(pLoop);
+                    else capitals.push_back(pLoop);
+                }
+        }
+        if (preferred.empty()) preferred.swap(capitals);
+        if (preferred.empty())
+        {
+            m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+            return;
+        }
+        pCity = preferred[getSorenRandNum((int)preferred.size(), "Papal refuge city")];
+        m_papalRefugeVisited.push_back(GC.getMapINLINE().plotNum(pCity->getX_INLINE(), pCity->getY_INLINE()));
+    }
+    else
+    {
+        pCity = getPapalRome();
+        if (!pCity || !canFoundPapacy(pCity->getOwnerINLINE())) return;
+    }
+    const PlayerTypes eOwner = pCity->getOwnerINLINE();
+    CvPlayer& kOwner = GET_PLAYER(eOwner);
+    const int iDecision = m_iPapalDecisionSerial++;
+    PapalDecisionData offer; offer.owner = eOwner; offer.x = pCity->getX_INLINE(); offer.y = pCity->getY_INLINE(); offer.refuge = m_bPapalExile;
+    m_papalDecisions[iDecision] = offer;
 #if ARFC_ENABLE_REPORTING
-	reportApostolicMechanic("papal_request", eOwner, iDecision, canBecomePapacy(eOwner), kOwner.getNumCities());
+    reportApostolicMechanic("papal_request", eOwner, iDecision, 0, kOwner.getNumCities(), offer.x, offer.y, offer.refuge);
 #endif
-	if (!kOwner.isHuman())
-	{ resolvePapalDecision(eOwner, iDecision, canBecomePapacy(eOwner) ? 2 : (kOwner.getNumCities() > 1 ? 0 : 1)); return; }
-	CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_PAPAL_FOUNDING);
-	if (pInfo) { pInfo->setData1(iDecision); pInfo->setData2(eOwner); gDLL->getInterfaceIFace()->addPopup(pInfo, eOwner); }
+    if (!kOwner.isHuman())
+    {
+        const bool bIndependent = kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT") || kOwner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_INDEPENDENT2");
+        resolvePapalDecision(eOwner, iDecision, bIndependent || (kOwner.getNumCities() > 1 && kOwner.getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY")) ? 0 : 1);
+        return;
+    }
+    CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_PAPAL_FOUNDING);
+    if (pInfo) { pInfo->setData1(iDecision); pInfo->setData2(eOwner); gDLL->getInterfaceIFace()->addPopup(pInfo, eOwner); }
 }
 
 void CvGame::resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoice)
 {
-	if (!isPapalDecisionValid(ePlayer, iDecision) || iChoice < 0 || iChoice > 2 || (iChoice == 2 && !canBecomePapacy(ePlayer))) return;
-	m_papalDecisions.erase(iDecision); // Consume before transfers and Python events.
+    if (!isPapalDecisionValid(ePlayer, iDecision) || iChoice < 0 || iChoice > 1) return;
+    CvCity* pCity = getPapalDecisionCity(iDecision);
+    m_papalDecisions.erase(iDecision); // Consume before transfers and callbacks.
 #if ARFC_ENABLE_REPORTING
-	reportApostolicMechanic("papal_decision", ePlayer, iDecision, iChoice);
+    reportApostolicMechanic("papal_decision", ePlayer, iDecision, iChoice);
 #endif
-	if (iChoice == 0 || iChoice == 2) establishPapacy(ePlayer, iChoice == 2);
-	else
-	{
-		if (m_iPapalRefuser != ePlayer) clearPapalRefusalPenalties();
-		m_iPapalRefuser = ePlayer;
-		for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
-			if (i != ePlayer && GET_PLAYER((PlayerTypes)i).isAlive() && GET_PLAYER((PlayerTypes)i).getStateReligion() == GC.getInfoTypeForString("RELIGION_CHRISTIANITY"))
-			{
-				GET_PLAYER((PlayerTypes)i).AI_changeAttitudeExtra(ePlayer, -2);
-				m_aiPapalRefusalPenalties[i] += 2;
-#if ARFC_ENABLE_REPORTING
-				reportApostolicMechanic("papal_penalty_applied", ePlayer, i, 2, m_aiPapalRefusalPenalties[i], GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra(ePlayer));
-#endif
-			}
-		announcePapalCouncil("REFUSED");
-		m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
-	}
+    if (iChoice == 0) establishPapacy(ePlayer, false, pCity);
+    else
+    {
+        m_iPapalRefuser = ePlayer;
+        m_aiPapalRefusalExpiry[ePlayer] = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_REFUSAL_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+        m_iPapalRetryTurn = getGameTurn() + std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(getGameSpeedType()).getVictoryDelayPercent() / 100);
+        // Refusal of one refuge does not erase another nation's timed penalty.
+        gDLL->getInterfaceIFace()->addMessage(ePlayer, false, GC.getEVENT_MESSAGE_TIME(),
+            gDLL->getText("TXT_KEY_AP_REFUGE_REFUSED", getPapalRefusalTurns(ePlayer)), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+            (ColorTypes)GC.getInfoTypeForString("COLOR_WARNING_TEXT"));
+    }
 }
 
-void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
+void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome, CvCity* pSeat)
 {
-	if (!canFoundPapacy(eOwner) || (bBecome && !canBecomePapacy(eOwner))) return;
-	clearPapalRefusalPenalties();
-	CvCity* pRome = getPapalRome();
+    CvCity* pRome = pSeat ? pSeat : getPapalRome();
+    if (!pRome || pRome->getOwnerINLINE() != eOwner || (m_bPapalExile ? !isPapalRefugeCity(pRome, false) : !canFoundPapacy(eOwner)) || bBecome) return;
+    m_iPapalSeatX = pRome->getX_INLINE(); m_iPapalSeatY = pRome->getY_INLINE();
+    m_bPapalExile = false;
+    m_iPapalProtector = eOwner;
+    m_aiPapalRefusalExpiry[eOwner] = 0;
+    m_iPapalConqueror = NO_PLAYER;
 	PlayerTypes ePope = bBecome ? eOwner : (PlayerTypes)PAPAL_STATE;
 	if (!bBecome)
 	{
@@ -10112,7 +10191,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	}
 	kPope.setLastStateReligion((ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
 	if (!bBecome) kPope.acquireCity(pRome, false, true, true);
-	pRome = getPapalRome();
+	pRome = getPapalSeat();
 	kPope.processCivNames();
 	pRome->setOccupationTimer(0);
 	// A civilization becoming the Papacy may already own land beyond Rome.
@@ -10129,8 +10208,7 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 		kPope.setCapitalCity(pRome);
 		UnitTypes eGuard = pRome->AI_bestUnitAI(UNITAI_CITY_DEFENSE);
 		if (eGuard == NO_UNIT) eGuard = (UnitTypes)GC.getInfoTypeForString("UNIT_ARCHER");
-		for (int i = 0; i < 2; ++i) { CvUnit* pGuard = kPope.initUnit(eGuard, scenarioGeographyValue("World.rome", 0), scenarioGeographyValue("World.rome", 1), UNITAI_CITY_DEFENSE); if (pGuard) pGuard->finishMoves(); }
-		if (isCrusadeParticipant(eOwner)) joinCrusadeCoalition(ePope);
+		for (int i = 0; i < 2; ++i) { CvUnit* pGuard = kPope.initUnit(eGuard, pRome->getX_INLINE(), pRome->getY_INLINE(), UNITAI_CITY_DEFENSE); if (pGuard) pGuard->finishMoves(); }
 	}
 	setVoteSourceReligion((VoteSourceTypes)GC.getInfoTypeForString("DIPLOVOTE_POPE"), (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY"));
 	pRome->setNumRealBuilding((BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE"), 1);
@@ -10142,6 +10220,10 @@ void CvGame::establishPapacy(PlayerTypes eOwner, bool bBecome)
 	reportApostolicMechanic("papacy_founded", ePope, eOwner, bBecome, pRome->getOwnerINLINE(), isCouncilActive());
 #endif
 	m_papalDecisions.clear();
+    if (isPapalProtector(eOwner))
+        gDLL->getInterfaceIFace()->addMessage(eOwner, false, GC.getEVENT_MESSAGE_TIME(),
+            gDLL->getText("TXT_KEY_AP_PROTECTOR_GRANTED", pRome->getNameKey()), NULL, MESSAGE_TYPE_MAJOR_EVENT, NULL,
+            (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), pRome->getX_INLINE(), pRome->getY_INLINE());
 	announcePapalCouncil("ESTABLISHED");
 }
 
@@ -10314,13 +10396,13 @@ int CvGame::getCrusadePlunder(int iPlayer) const
 void CvGame::reportApostolicState()
 {
 	if (!isObserverAutoPlay() || isGameMultiPlayer() || g_observerPerformance) return;
-	CvCity* pRome = getPapalRome();
+	CvCity* pRome = getPapalSeat();
 	ReligionTypes eChristian = (ReligionTypes)GC.getInfoTypeForString("RELIGION_CHRISTIANITY");
 	BuildingTypes ePalace = (BuildingTypes)GC.getInfoTypeForString("BUILDING_APOSTOLIC_PALACE");
-	int header[] = {1, m_iPapalPlayer, m_iPapalRefuser, m_iPapalRetryTurn, m_bPapalPalaceEffects,
+	int header[] = {2, m_iPapalPlayer, m_iPapalRefuser, m_iPapalRetryTurn, m_bPapalPalaceEffects,
 		pRome ? pRome->getOwnerINLINE() : -1, pRome ? pRome->isHasReligion(eChristian) : 0,
 		pRome ? canFoundPapacy(pRome->getOwnerINLINE()) : 0, pRome ? pRome->getNumRealBuilding(ePalace) : 0,
-		m_iCrusadeRegion, m_iCrusadeEndTurn, crusadeDuration("AP_CRUSADE_BASE_TURNS"), crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS")};
+		m_iCrusadeRegion, m_iCrusadeEndTurn, crusadeDuration("AP_CRUSADE_BASE_TURNS"), crusadeDuration("AP_CRUSADE_INACTIVITY_TURNS"), m_iPapalSeatX, m_iPapalSeatY, m_iPapalProtector, m_bPapalExile, m_iPapalConqueror};
 	std::vector<int> players, teams, pairs, ballots;
 	for (int i = 0; i < MAX_CIV_PLAYERS; ++i)
 	{
@@ -10331,8 +10413,8 @@ void CvGame::reportApostolicState()
 		players.push_back(kPlayer.getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION")));
 		players.push_back(kPlayer.getGold()); players.push_back(m_aiCrusadePlunder[i]);
 		players.push_back(m_aiCrusadeRewards[i]); players.push_back(m_abCrusadeHolyStates[i]);
-		players.push_back(m_aiPapalRefusalPenalties[i]);
-		players.push_back(m_iPapalRefuser == NO_PLAYER ? 0 : GET_PLAYER((PlayerTypes)i).AI_getAttitudeExtra((PlayerTypes)m_iPapalRefuser));
+		players.push_back(getPapalRefusalTurns((PlayerTypes)i));
+		players.push_back(m_iPapalRefuser == NO_PLAYER ? 0 : getPapalDiplomaticModifier((PlayerTypes)i, (PlayerTypes)m_iPapalRefuser));
 		players.push_back(kPlayer.getNumCities());
 	}
 	for (int t = 0; t < MAX_TEAMS; ++t)
@@ -10363,7 +10445,7 @@ void CvGame::reportApostolicState()
 		}
 	}
 	CyArgsList args;
-	args.add(header, 13); args.add(&players[0], (int)players.size()); args.add(&teams[0], (int)teams.size());
+	args.add(header, 18); args.add(&players[0], (int)players.size()); args.add(&teams[0], (int)teams.size());
 	args.add(pairs.empty() ? (const int*)NULL : &pairs[0], (int)pairs.size());
 	args.add(ballots.empty() ? (const int*)NULL : &ballots[0], (int)ballots.size());
 	if (!gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordApostolicState", args.makeFunctionArgs()))
@@ -10447,18 +10529,24 @@ void CvGame::prepareCrusadeState(PlayerTypes ePlayer, PlayerTypes eSponsor)
 void CvGame::joinCrusadeCoalition(PlayerTypes ePlayer)
 {
 	TeamTypes eTeam = GET_PLAYER(ePlayer).getTeam();
-	if (m_iCrusadeRegion < 0 || m_abCrusadeParticipants[eTeam]) return;
-	// A restored target joins the other side as a new Christian kingdom.
-	m_abCrusadeTargets[eTeam] = false;
-	for (int t = 0; t < MAX_TEAMS; ++t)
-		if (GET_TEAM(eTeam).isVassal((TeamTypes)t)) GET_TEAM(eTeam).setVassal((TeamTypes)t, false, false);
-	m_bCrusadePeaceOverride = true;
-	for (int t = 0; t < MAX_TEAMS; ++t)
-		if ((m_abCrusadeParticipants[t] || (isCrusadeHolyState(ePlayer) && GET_PLAYER(ePlayer).getNumCities() == 0)) && GET_TEAM(eTeam).isAtWar((TeamTypes)t)) GET_TEAM(eTeam).makePeace((TeamTypes)t);
-	m_bCrusadePeaceOverride = false;
-	m_abCrusadeParticipants[eTeam] = true;
-	for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
-		if (GET_PLAYER((PlayerTypes)p).getTeam() == eTeam && m_aiCrusadeRewards[p] < 0) m_aiCrusadeRewards[p] = 0;
+	if (m_iCrusadeRegion < 0) return;
+	const bool bAlreadyParticipant = m_abCrusadeParticipants[eTeam];
+	if (!bAlreadyParticipant)
+	{
+		// A restored target joins the other side as a new Christian kingdom.
+		m_abCrusadeTargets[eTeam] = false;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if (GET_TEAM(eTeam).isVassal((TeamTypes)t)) GET_TEAM(eTeam).setVassal((TeamTypes)t, false, false);
+		m_bCrusadePeaceOverride = true;
+		for (int t = 0; t < MAX_TEAMS; ++t)
+			if ((m_abCrusadeParticipants[t] || (isCrusadeHolyState(ePlayer) && GET_PLAYER(ePlayer).getNumCities() == 0)) && GET_TEAM(eTeam).isAtWar((TeamTypes)t)) GET_TEAM(eTeam).makePeace((TeamTypes)t);
+		m_bCrusadePeaceOverride = false;
+		m_abCrusadeParticipants[eTeam] = true;
+		for (int p = 0; p < MAX_CIV_PLAYERS; ++p)
+			if (GET_PLAYER((PlayerTypes)p).getTeam() == eTeam && m_aiCrusadeRewards[p] < 0) m_aiCrusadeRewards[p] = 0;
+	}
+	// Restoring a participant may have reset its native team diplomacy. Reapply
+	// missing obligations without resetting its coalition status or rewards.
 	for (int t = 0; t < MAX_TEAMS; ++t)
 		if (m_abCrusadeTargets[t] && GET_TEAM((TeamTypes)t).isAlive() && !GET_TEAM(eTeam).isAtWar((TeamTypes)t))
 		{
@@ -10469,7 +10557,7 @@ void CvGame::joinCrusadeCoalition(PlayerTypes ePlayer)
 			GET_TEAM(eTeam).declareWar((TeamTypes)t, false, WARPLAN_DOGPILE);
 		}
 #if ARFC_ENABLE_REPORTING
-	reportApostolicMechanic("crusade_joined", ePlayer, eTeam, m_iCrusadeRegion);
+	if (!bAlreadyParticipant) reportApostolicMechanic("crusade_joined", ePlayer, eTeam, m_iCrusadeRegion);
 #endif
 }
 

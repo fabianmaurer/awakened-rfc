@@ -1,6 +1,25 @@
 """XL Indian civilizations and portable geography extensions. Python 2.4."""
 import copy
 
+# Shared by scenario authoring and the historical drying sequence.
+HARAPPAN_CITIES = (
+    ('Harappa', (141, 64), 6),
+    ('Mohenjo-daro', (140, 62), 4),
+    ('Rakhigarhi', (141, 66), 5),
+)
+# A narrow eastern distributary joins the existing upper and lower Indus.
+# (x, y, edge, flow): edge 0 is south, 1 is east; flow uses Civ4 directions.
+HARAPPAN_CHANNEL = tuple([(141, y, 1, 2) for y in range(62, 66)] +
+    [(x, 62, 0, 3) for x in range(139, 142)])
+HARAPPAN_FLOODPLAINS = (
+    (140, 61), (140, 62), (141, 62), (141, 63),
+    (141, 64), (141, 66), (142, 66),
+)
+# Only authored extra farmland retreats; the original Indus floodplains stay.
+HARAPPAN_DRYING = (
+    (-1900, ((141, 63), (141, 66), (142, 66), (140, 62), (141, 62))),
+)
+
 FIRST_SLOT = 33
 CIVS = (
     ('GANGES', 'GAN', 0, -3000, (150, 65), (148, 62), (152, 67), (146, 60), (154, 68)),

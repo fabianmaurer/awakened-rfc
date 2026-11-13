@@ -35,6 +35,16 @@
 #define CIVIC_CHANGE_DELAY			(25)
 #define RELIGION_CHANGE_DELAY		(15)
 
+static bool isResearchingEndlessTech(const CvPlayer& kPlayer)
+{
+    const TechTypes eTech = kPlayer.getCurrentResearch();
+    // Finite military tracks use repeatable XML techs, but are not the end
+    // of the tech tree. Keep normal science, savings and strategy decisions.
+    return eTech != NO_TECH && GC.getTechInfo(eTech).isRepeat()
+        && UnitMastery::unitForTech(eTech) == NO_UNIT
+        && eTech != GC.getInfoTypeForString("TECH_MILITARY_RESEARCH");
+}
+
 // statics
 
 CvPlayerAI* CvPlayerAI::m_aPlayers = NULL;
@@ -3085,6 +3095,10 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 
 
+    // Salvage is a modest tie-breaker, not a reason to settle an unsuitable site.
+    if (!bStartingLoc && pPlot->getRevealedImprovementType(getTeam(), false) ==
+        (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT"))
+        iValue += std::min(std::max(0, iValue) / 5, pPlot->getRuinsRecoveryCount() * 40);
 	return std::max(1, iValue);
 }
 
@@ -3724,7 +3738,7 @@ bool CvPlayerAI::AI_avoidScience() const
     {
         return true;
     }
-	if (isCurrentResearchRepeat())
+	if (isResearchingEndlessTech(*this))
 	{
 		return true;
 	}
@@ -3767,7 +3781,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 			iSafePercent -= 12;
 		}
 		
-		if (isCurrentResearchRepeat())
+		if (isResearchingEndlessTech(*this))
 		{
 			iSafePercent -= 10;
 		}
@@ -6001,6 +6015,7 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
+    iAttitude += GC.getGameINLINE().getPapalDiplomaticModifier(getID(), ePlayer);
     iAttitude -= GET_PLAYER(ePlayer).getIntelligenceRelationPenalty(getTeam());
     iAttitude += getDynasticRelationBonus(ePlayer);
     iAttitude += GET_PLAYER(ePlayer).getPoliticalRelationBonus(getID());
@@ -16365,7 +16380,7 @@ int CvPlayerAI::AI_getStrategyHash() const
 		
 		if (iOurVictoryCountdown < 0)
 		{
-			if (isCurrentResearchRepeat())
+			if (isResearchingEndlessTech(*this))
 			{
 				int iStronger = 0;
 				int iAlive = 1;
@@ -16394,7 +16409,7 @@ int CvPlayerAI::AI_getStrategyHash() const
 		
 	}
 
-	if (isCurrentResearchRepeat())
+	if (isResearchingEndlessTech(*this))
 	{
 		int iTotalVictories = 0;
 		int iAchieveVictories = 0;

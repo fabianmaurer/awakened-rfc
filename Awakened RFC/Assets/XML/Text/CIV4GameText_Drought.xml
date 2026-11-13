@@ -9,12 +9,20 @@
     <Spanish>El bajo nivel del r&#237;o anuncia una sequ&#237;a. Preparad reservas de alimentos.</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_DROUGHT_FLOODPLAINS_LOST</Tag>
+    <English>Some floodplains have dried permanently. Their food will not recover when the drought ends.</English>
+    <French>Certaines plaines inondables se sont ass&#233;ch&#233;es d&#233;finitivement. Leur nourriture ne reviendra pas apr&#232;s la s&#233;cheresse.</French>
+    <German>Einige Schwemmlandfelder sind dauerhaft ausgetrocknet. Ihr Nahrungsertrag erholt sich nach der D&#252;rre nicht.</German>
+    <Italian>Alcune pianure alluvionali si sono prosciugate per sempre. Il loro cibo non torner&#224; al termine della siccit&#224;.</Italian>
+    <Spanish>Algunas llanuras aluviales se han secado para siempre. Sus alimentos no se recuperar&#225;n cuando termine la sequ&#237;a.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_DROUGHT_HARAPPA_WARNING</Tag>
-    <English>Flooding in the eastern Indus region is becoming less reliable. Prepare for prolonged drought.</English>
-    <French>Les crues de la r&#233;gion orientale de l&#8217;Indus deviennent moins r&#233;guli&#232;res. Pr&#233;parez-vous &#224; une longue s&#233;cheresse.</French>
-    <German>Die &#220;berschwemmungen im &#246;stlichen Indusgebiet werden unzuverl&#228;ssiger. Bereitet euch auf eine lange D&#252;rre vor.</German>
-    <Italian>Le piene nella regione orientale dell&#8217;Indo diventano meno regolari. Preparatevi a una lunga siccit&#224;.</Italian>
-    <Spanish>Las crecidas del Indo oriental son cada vez menos regulares. Preparaos para una sequ&#237;a prolongada.</Spanish>
+    <English>The eastern Indus is drying. Prolonged drought will permanently destroy some floodplains.</English>
+    <French>L&#8217;Indus oriental s&#8217;ass&#232;che. Une longue s&#233;cheresse d&#233;truira d&#233;finitivement certaines plaines inondables.</French>
+    <German>Das &#246;stliche Indusgebiet trocknet aus. Eine lange D&#252;rre wird einige Schwemmlandfelder dauerhaft zerst&#246;ren.</German>
+    <Italian>L&#8217;Indo orientale si sta prosciugando. Una lunga siccit&#224; distrugger&#224; per sempre alcune pianure alluvionali.</Italian>
+    <Spanish>El Indo oriental se est&#225; secando. Una sequ&#237;a prolongada destruir&#225; para siempre algunas llanuras aluviales.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_START</Tag>
@@ -42,19 +50,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_HELP</Tag>
-    <English>Drought: flood plains produce 2 less food.</English>
-    <French>S&#233;cheresse : les plaines inondables produisent 2 nourritures de moins.</French>
-    <German>D&#252;rre: Schwemmland erzeugt 2 Nahrung weniger.</German>
-    <Italian>Siccit&#224;: le pianure alluvionali producono 2 cibi in meno.</Italian>
-    <Spanish>Sequ&#237;a: las llanuras aluviales producen 2 alimentos menos.</Spanish>
+    <English>[COLOR_PLAYER_ORANGE_TEXT]Drought[COLOR_REVERT]</English>
+    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse[COLOR_REVERT]</French>
+    <German>[COLOR_PLAYER_ORANGE_TEXT]D&#252;rre[COLOR_REVERT]</German>
+    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Siccit&#224;[COLOR_REVERT]</Italian>
+    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a[COLOR_REVERT]</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_SEVERE_HELP</Tag>
-    <English>Severe drought: flood plains produce 2 less food. This river cannot supply irrigation.</English>
-    <French>S&#233;cheresse intense : les plaines inondables produisent 2 nourritures de moins. Ce fleuve ne fournit plus d&#8217;eau d&#8217;irrigation.</French>
-    <German>Schwere D&#252;rre: Schwemmland erzeugt 2 Nahrung weniger. Dieser Fluss liefert kein Bew&#228;sserungswasser.</German>
-    <Italian>Grave siccit&#224;: le pianure alluvionali producono 2 cibi in meno. Questo fiume non fornisce acqua per l&#8217;irrigazione.</Italian>
-    <Spanish>Sequ&#237;a grave: las llanuras aluviales producen 2 alimentos menos. Este r&#237;o no suministra agua de riego.</Spanish>
+    <English>[COLOR_PLAYER_ORANGE_TEXT]Severe drought[COLOR_REVERT]</English>
+    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse intense[COLOR_REVERT]</French>
+    <German>[COLOR_PLAYER_ORANGE_TEXT]Schwere D&#252;rre[COLOR_REVERT]</German>
+    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Grave siccit&#224;[COLOR_REVERT]</Italian>
+    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a grave[COLOR_REVERT]</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FEATURE_FLOOD_PLAINS_DROUGHT_PEDIA</Tag>
