@@ -61,6 +61,8 @@ class RFCUtils:
                 return scriptDict['lGoals'][i][j]
 
         def setGoal( self, i, j, iNewValue ):
+                if not con.HISTORICAL_GOALS_ENABLED:
+                        return
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 scriptDict['lGoals'][i][j] = iNewValue
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )

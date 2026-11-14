@@ -261,6 +261,8 @@ class Victory:
                 return scriptDict['lGoals'][i][j]
 
         def setGoal( self, i, j, iNewValue ):
+                if not con.HISTORICAL_GOALS_ENABLED:
+                        return
                 import Caliphate
                 if Caliphate.realmOf(i) >= 0: return
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
@@ -496,7 +498,7 @@ class Victory:
         def checkPlayerTurn(self, iGameTurn, iPlayer):
 
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
                 
                 if (iPlayer == iEgypt):
@@ -1400,7 +1402,7 @@ class Victory:
 
         def onCityBuilt(self, city, iPlayer): #see onCityBuilt in CvRFCEventHandler
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
                     
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1507,7 +1509,7 @@ class Victory:
                         
         def onReligionFounded(self, iReligion, iFounder):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iPlayer = iFounder
@@ -1536,11 +1538,11 @@ class Victory:
 
 
         def onCityAcquired(self, owner, playerType, bConquest):
-                if (gc.getGame().isVictoryValid(7) and owner == con.iKorea and bConquest and
+                if ((con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7)) and owner == con.iKorea and bConquest and
                     gc.getGame().getGameTurnYear() < 1900 and self.getGoal(con.iKorea, 2) == -1):
                         self.setGoal(con.iKorea, 2, 0)
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iPlayer = owner
@@ -1587,7 +1589,7 @@ class Victory:
 
         def onCityRazed(self, iPlayer):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 if (iPlayer == iMongolia):
@@ -1602,7 +1604,7 @@ class Victory:
 
         def onTechAcquired(self, iTech, iPlayer):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1774,7 +1776,7 @@ class Victory:
 
         def onBuildingBuilt(self, iPlayer, iBuilding):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1869,7 +1871,7 @@ class Victory:
                             
         def onProjectBuilt(self, iPlayer, iProject):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1886,7 +1888,7 @@ class Victory:
 
         def onCombatResult(self, argsList):
             
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 pWinningUnit,pLosingUnit = argsList

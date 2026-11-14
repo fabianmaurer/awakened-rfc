@@ -3045,18 +3045,6 @@ class CvMainInterface:
                                                                                                 szTempBuffer = " [" + localText.getText("TXT_KEY_MAIN_MENU_PLAYER", ()) + "]"
                                                                                                 szBuffer = szBuffer + szTempBuffer
                                                                                         else:
-                                                                                                #Rhye - start victory
-                                                                                                #szTempBuffer = u"%d" %(utils.countAchievedGoals(ePlayer)) #white
-                                                                                                #szBuffer = szBuffer + " (" + szTempBuffer + "/3)" #white
-                                                                                                if (gc.getPlayer(ePlayer).isAlive()):
-                                                                                                        if (ePlayer < con.iNumMajorPlayers): #in case byzantium is major
-                                                                                                                szTempBuffer = u"<color=%s>%d/3</color>" %(utils.getGoalsColor(ePlayer), utils.countAchievedGoals(ePlayer))
-                                                                                                                szBuffer = szBuffer + " - " + szTempBuffer
-                                                                                                        elif gc.getGame().isPapalState(ePlayer):
-                                                                                                                # The dedicated Papal slot has no historical goals.
-                                                                                                                szBuffer += " - " + localText.getText("TXT_KEY_AP_NO_UHV_SCORE", ())
-                                                                                                #Rhye - end victory
-
                                                                                                 #Rhye - start stability
                                                                                                 if (gc.getPlayer(ePlayer).isAlive()):
                                                                                                         if (ePlayer < con.iNumMajorPlayers): #in case byzantium is major

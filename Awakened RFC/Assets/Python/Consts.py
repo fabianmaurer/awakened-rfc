@@ -3,6 +3,9 @@
 
 # globals
 
+# Temporarily disable historical objectives, their rewards and victory.
+HISTORICAL_GOALS_ENABLED = False
+
 from CvPythonExtensions import *
 import ScenarioGeography as geo
 gc = CyGlobalContext()

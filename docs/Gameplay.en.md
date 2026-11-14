@@ -11,6 +11,10 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+Historical goals are currently disabled for all civilizations. They grant no
+rewards or historical victory, and the scoreboard no longer shows goal progress.
+Historical objectives described below are inactive.
+
 ## Apostolic council
 
 The Apostolic Palace **cannot be constructed**. Once Christianity is present in

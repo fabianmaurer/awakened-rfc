@@ -11,6 +11,10 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+Historische Ziele sind derzeit für alle Zivilisationen deaktiviert. Sie gewähren
+keine Belohnungen und keinen historischen Sieg. Die Länderliste zeigt keinen
+Zielfortschritt mehr an. Die unten beschriebenen historischen Ziele ruhen.
+
 ## Kulturelle Grenzerweiterung
 
 Städte beginnen mit ihrem Stadtfeld und den acht Nachbarfeldern. Weitere Kultur

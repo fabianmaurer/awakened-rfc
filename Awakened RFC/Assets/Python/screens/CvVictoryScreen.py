@@ -509,7 +509,7 @@ class CvVictoryScreen:
 		
 		for iLoopVC in range(gc.getNumVictoryInfos()):
 			victory = gc.getVictoryInfo(iLoopVC)
-			if gc.getGame().isVictoryValid(iLoopVC):
+			if gc.getGame().isVictoryValid(iLoopVC) and (iLoopVC != 7 or con.HISTORICAL_GOALS_ENABLED):
 				
 				iNumRows = screen.getTableNumRows(szTable)
 				szVictoryType = u"<font=4b>" + victory.getDescription().upper() + u"</font>"
