@@ -106,11 +106,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ADMIN_LOST</Tag>
-    <English>%s1_City has become independent because it could not be administered.</English>
-    <French>%s1_City devient ind&#233;pendante faute d&#8217;administration.</French>
-    <German>%s1_City ist wegen fehlender Erreichbarkeit unabh&#228;ngig geworden.</German>
-    <Italian>%s1_City &#232; diventata indipendente perch&#233; non poteva essere amministrata.</Italian>
-    <Spanish>%s1_City se ha independizado por falta de acceso administrativo.</Spanish>
+    <English>%s1_City has become independent after losing its connection to the capital.</English>
+    <French>%s1_City est devenue ind&#233;pendante apr&#232;s avoir perdu sa liaison avec la capitale.</French>
+    <German>%s1_City ist nach dem Verlust der Verbindung zur Hauptstadt unabh&#228;ngig geworden.</German>
+    <Italian>%s1_City &#232; diventata indipendente dopo aver perso il collegamento con la capitale.</Italian>
+    <Spanish>%s1_City se ha independizado tras perder su conexi&#243;n con la capital.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ADMIN_LOCAL_MOD</Tag>
@@ -122,7 +122,7 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ADMIN_CAP_MOD</Tag>
-    <English>%D1_Value%% administration capacity %F2_Symbol</English>
+    <English>%D1_Value%% administrative capacity %F2_Symbol</English>
     <French>%D1_Value%% de capacit&#233; administrative %F2_Symbol</French>
     <German>%D1_Value%% Verwaltungskapazit&#228;t %F2_Symbol</German>
     <Italian>%D1_Value%% di capacit&#224; amministrativa %F2_Symbol</Italian>
@@ -202,19 +202,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_BUILDING_GOVERNOR_RESIDENCE_STRATEGY</Tag>
-    <English>Reduces regional administrative effort at a running gold cost.</English>
-    <French>R&#233;duit la charge administrative r&#233;gionale moyennant un co&#251;t en or.</French>
-    <German>Senkt den regionalen Verwaltungsaufwand und kostet laufend Gold.</German>
-    <Italian>Riduce il carico amministrativo regionale con un costo continuo in oro.</Italian>
-    <Spanish>Reduce la carga administrativa regional a cambio de un coste continuo en oro.</Spanish>
+    <English>Reduces regional administrative effort. Costs 3 gold per turn.</English>
+    <French>R&#233;duit la charge administrative r&#233;gionale. Co&#251;te 3 or par tour.</French>
+    <German>Senkt den regionalen Verwaltungsaufwand. Kostet 3 Gold pro Runde.</German>
+    <Italian>Riduce il carico amministrativo regionale. Costa 3 oro per turno.</Italian>
+    <Spanish>Reduce la carga administrativa regional. Cuesta 3 de oro por turno.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_BUILDING_GOVERNOR_RESIDENCE_PEDIA</Tag>
-    <English>Cities use the cheaper of direct capital travel or travel to one residence plus half its direct capital travel. A residence city always uses its own residence. Discounts never chain. Requires a courthouse and four population. Costs three gold per turn and can be abandoned without a refund. Residences do not replace harbor connections.</English>
-    <French>Les villes choisissent le trajet direct vers la capitale ou le trajet vers une r&#233;sidence plus la moiti&#233; de son trajet direct vers la capitale. Une ville dot&#233;e de sa r&#233;sidence utilise toujours celle-ci. Les r&#233;ductions ne se cumulent pas. N&#233;cessite un tribunal et quatre habitants. Co&#251;te trois pi&#232;ces par tour et peut &#234;tre abandonn&#233;e sans remboursement. Ne remplace pas les liaisons portuaires.</French>
-    <German>St&#228;dte nutzen den g&#252;nstigeren Weg: direkt zur Hauptstadt oder zu einer Residenz plus die H&#228;lfte ihrer direkten Hauptstadt-Reisezeit. Eine Residenzstadt nutzt immer ihre eigene Residenz. Rabatte lassen sich nicht verketten. Ben&#246;tigt ein Gerichtsgeb&#228;ude und vier Einwohner. Kostet drei Gold pro Runde und kann ohne Erstattung aufgegeben werden. Residenzen ersetzen keine Hafenverbindungen.</German>
-    <Italian>Le citt&#224; scelgono il viaggio diretto alla capitale oppure quello verso una residenza pi&#249; met&#224; del suo viaggio diretto alla capitale. Una citt&#224; con residenza usa sempre la propria. Gli sconti non si concatenano. Richiede un tribunale e quattro abitanti. Costa tre oro per turno e pu&#242; essere abbandonata senza rimborso. Non sostituisce i collegamenti portuali.</Italian>
-    <Spanish>Las ciudades eligen el trayecto directo a la capital o el trayecto a una residencia m&#225;s la mitad de su trayecto directo a la capital. Una ciudad con residencia siempre usa la suya. Los descuentos no se encadenan. Requiere un tribunal y cuatro habitantes. Cuesta tres de oro por turno y puede abandonarse sin reembolso. No sustituye los enlaces portuarios.</Spanish>
+    <English>Reduces administrative effort by shortening regional travel times. Cities use the shorter of direct travel to the capital or travel to a residence plus half its direct travel time to the capital. A residence city always uses its own residence. Residence discounts cannot chain. Requires a courthouse and four population. Costs three gold per turn and can be abandoned without a refund. Does not extend connections to the capital.</English>
+    <French>R&#233;duit la charge administrative en raccourcissant les trajets r&#233;gionaux. Les villes utilisent le trajet le plus court : directement vers la capitale ou vers une r&#233;sidence, plus la moiti&#233; de son trajet direct vers la capitale. Une ville dot&#233;e d&#8217;une r&#233;sidence utilise toujours la sienne. Les r&#233;ductions de trajet ne peuvent pas passer par plusieurs r&#233;sidences. N&#233;cessite un tribunal et quatre habitants. Co&#251;te trois or par tour et peut &#234;tre abandonn&#233;e sans remboursement. Ne prolonge pas les liaisons avec la capitale.</French>
+    <German>Senkt den Verwaltungsaufwand durch k&#252;rzere regionale Reisezeiten. St&#228;dte nutzen den k&#252;rzeren Weg: direkt zur Hauptstadt oder zu einer Residenz plus die H&#228;lfte ihrer direkten Reisezeit zur Hauptstadt. Eine Residenzstadt nutzt immer ihre eigene Residenz. Residenzrabatte lassen sich nicht verketten. Ben&#246;tigt ein Gerichtsgeb&#228;ude und vier Einwohner. Kostet drei Gold pro Runde und kann ohne Erstattung aufgegeben werden. Erweitert keine Verbindungen zur Hauptstadt.</German>
+    <Italian>Riduce il carico amministrativo accorciando i tempi di viaggio regionali. Le citt&#224; usano il percorso pi&#249; breve: direttamente alla capitale oppure verso una residenza, pi&#249; met&#224; del suo tempo di viaggio diretto alla capitale. Una citt&#224; con residenza usa sempre la propria. Gli sconti delle residenze non si concatenano. Richiede un tribunale e quattro abitanti. Costa tre oro per turno e pu&#242; essere abbandonata senza rimborso. Non estende i collegamenti con la capitale.</Italian>
+    <Spanish>Reduce la carga administrativa al acortar los viajes regionales. Las ciudades usan el trayecto m&#225;s corto: directamente a la capital o a una residencia, m&#225;s la mitad de su tiempo de viaje directo a la capital. Una ciudad con residencia siempre usa la suya. Los descuentos de las residencias no se encadenan. Requiere un tribunal y cuatro habitantes. Cuesta tres de oro por turno y puede abandonarse sin reembolso. No ampl&#237;a las conexiones con la capital.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GOVERNOR_BUILD_HELP</Tag>

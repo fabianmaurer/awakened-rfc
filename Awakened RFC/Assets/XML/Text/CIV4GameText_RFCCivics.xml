@@ -577,19 +577,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE</Tag>
-        <English>[ICON_BULLET]Religion affects administrative effort twice as strongly.[NEWLINE][ICON_BULLET]Foreign religions spread much less easily.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
-        <French>[ICON_BULLET]La religion influence deux fois plus la charge administrative.[NEWLINE][ICON_BULLET]Les religions &#233;trang&#232;res se propagent beaucoup moins facilement.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
-        <German>[ICON_BULLET]Religion beeinflusst den Verwaltungsaufwand doppelt so stark.[NEWLINE][ICON_BULLET]Fremde Religionen verbreiten sich deutlich schwerer.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
-        <Italian>[ICON_BULLET]La religione influisce il doppio sul carico amministrativo.[NEWLINE][ICON_BULLET]Le religioni straniere si diffondono molto meno facilmente.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
-        <Spanish>[ICON_BULLET]La religi&#243;n influye el doble en la carga administrativa.[NEWLINE][ICON_BULLET]Las religiones extranjeras se propagan con mucha m&#225;s dificultad.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
+        <English>[ICON_BULLET]Doubles religious effects on administrative effort.[NEWLINE][ICON_BULLET]Foreign religion spread and missionary success chances are reduced by 75%.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
+        <French>[ICON_BULLET]Double les effets religieux sur la charge administrative.[NEWLINE][ICON_BULLET]Les chances de propagation des religions &#233;trang&#232;res et de r&#233;ussite de leurs missionnaires sont r&#233;duites de 75%.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
+        <German>[ICON_BULLET]Verdoppelt religi&#246;se Effekte auf den Verwaltungsaufwand.[NEWLINE][ICON_BULLET]Verbreitungschancen fremder Religionen und Erfolgschancen ihrer Missionare sinken um 75%.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
+        <Italian>[ICON_BULLET]Raddoppia gli effetti religiosi sul carico amministrativo.[NEWLINE][ICON_BULLET]Le probabilit&#224; di diffusione delle religioni straniere e di successo dei loro missionari sono ridotte del 75%.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>[ICON_BULLET]Duplica los efectos religiosos sobre la carga administrativa.[NEWLINE][ICON_BULLET]Las probabilidades de propagaci&#243;n de religiones extranjeras y de &#233;xito de sus misioneros se reducen un 75%.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE_WITH_RELIGION</Tag>
-        <English>[ICON_BULLET]Religion affects administrative effort twice as strongly.[NEWLINE][ICON_BULLET]Foreign religions spread much less easily.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
-        <French>[ICON_BULLET]La religion influence deux fois plus la charge administrative.[NEWLINE][ICON_BULLET]Les religions &#233;trang&#232;res se propagent beaucoup moins facilement.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
-        <German>[ICON_BULLET]Religion beeinflusst den Verwaltungsaufwand doppelt so stark.[NEWLINE][ICON_BULLET]Fremde Religionen verbreiten sich deutlich schwerer.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
-        <Italian>[ICON_BULLET]La religione influisce il doppio sul carico amministrativo.[NEWLINE][ICON_BULLET]Le religioni straniere si diffondono molto meno facilmente.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
-        <Spanish>[ICON_BULLET]La religi&#243;n influye el doble en la carga administrativa.[NEWLINE][ICON_BULLET]Las religiones extranjeras se propagan con mucha m&#225;s dificultad.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
+        <English>[ICON_BULLET]Doubles religious effects on administrative effort.[NEWLINE][ICON_BULLET]Foreign religion spread and missionary success chances are reduced by 75%.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
+        <French>[ICON_BULLET]Double les effets religieux sur la charge administrative.[NEWLINE][ICON_BULLET]Les chances de propagation des religions &#233;trang&#232;res et de r&#233;ussite de leurs missionnaires sont r&#233;duites de 75%.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
+        <German>[ICON_BULLET]Verdoppelt religi&#246;se Effekte auf den Verwaltungsaufwand.[NEWLINE][ICON_BULLET]Verbreitungschancen fremder Religionen und Erfolgschancen ihrer Missionare sinken um 75%.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
+        <Italian>[ICON_BULLET]Raddoppia gli effetti religiosi sul carico amministrativo.[NEWLINE][ICON_BULLET]Le probabilit&#224; di diffusione delle religioni straniere e di successo dei loro missionari sono ridotte del 75%.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>[ICON_BULLET]Duplica los efectos religiosos sobre la carga administrativa.[NEWLINE][ICON_BULLET]Las probabilidades de propagaci&#243;n de religiones extranjeras y de &#233;xito de sus misioneros se reducen un 75%.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_ATHEISM</Tag>

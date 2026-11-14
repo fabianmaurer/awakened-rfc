@@ -34,11 +34,11 @@ ENTRIES = {
         '+50% alla produzione e +2 esperienza per le nuove navi militari, inclusi i trasporti. Le barche da lavoro non ricevono questi bonus. Disponibile per tutte le civiltà con la Vela.',
         '+50% a la producción y +2 de experiencia para los nuevos barcos militares, incluidos los transportes. Los barcos de trabajo no reciben estas bonificaciones. Disponible para todas las civilizaciones con Navegación a vela.'),
     'TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY': translations(
-        '+4% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +24%.',
-        '+4% à la production d’unités militaires terrestres par ferme effectivement exploitée par la ville productrice. Inclut les unités de siège ; exclut les unités civiles et les navires. Six fermes exploitées donnent +24%.',
-        '+4% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet.',
-        '+4% alla produzione di unità militari terrestri per fattoria effettivamente lavorata dalla città produttrice. Include le unità d’assedio; esclude le unità civili e le navi. Sei fattorie lavorate danno +24%.',
-        '+4% a la producción de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +24%.'),
+        '+4% land military unit production per worked Farm, including siege units.',
+        '+4% \xe0 la production d\u2019unit\xe9s militaires terrestres par ferme exploit\xe9e, y compris les unit\xe9s de si\xe8ge.',
+        '+4% Produktion milit\xe4rischer Landeinheiten je bewirtschaftetem Bauernhof, einschlie\xdflich Belagerungseinheiten.',
+        '+4% alla produzione di unit\xe0 militari terrestri per fattoria lavorata, incluse le unit\xe0 d\u2019assedio.',
+        '+4% a la producci\xf3n de unidades militares terrestres por granja trabajada, incluidas las unidades de asedio.'),
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_PEDIA': translations(
         'Naval Warfare organizes shipyards, crews and transport fleets for war at sea and overseas expeditions. A maritime power can devote more resources to replacing ships and training crews, while another military institution may better serve a continental army.',
         'La guerre navale organise les chantiers, les équipages et les flottes de transport pour le combat en mer et les expéditions outre-mer. Une puissance maritime peut renforcer sa flotte et former ses équipages, tandis qu’une autre institution militaire peut mieux servir une armée continentale.',

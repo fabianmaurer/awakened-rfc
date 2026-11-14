@@ -77,6 +77,11 @@ CUSTOM_LDFLAGS =
 !ENDIF
 !include Makefile.settings
 
+# Release packaging overrides local development settings for this process only.
+!IF "$(ARFC_RELEASE_BUILD)" == "1"
+ARFC_ENABLE_REPORTING = 0
+!ENDIF
+
 !IFNDEF ARFC_ENABLE_REPORTING
 ARFC_ENABLE_REPORTING = 0
 !ENDIF

@@ -378,11 +378,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_COURTHOUSE_STRATEGY</Tag>
-    <English>Reduces city maintenance and supports intelligence networks.</English>
-    <French>Reduces city maintenance and supports intelligence networks.</French>
-    <German>Senkt den Stadtunterhalt und unterst&#252;tzt Spionagenetze.</German>
-    <Italian>Reduces city maintenance and supports intelligence networks.</Italian>
-    <Spanish>Reduces city maintenance and supports intelligence networks.</Spanish>
+    <English>Reduces administrative effort and supports intelligence networks.</English>
+    <French>R&#233;duit la charge administrative et soutient les r&#233;seaux de renseignement.</French>
+    <German>Senkt den Verwaltungsaufwand und unterst&#252;tzt Spionagenetze.</German>
+    <Italian>Riduce il carico amministrativo e sostiene le reti di intelligence.</Italian>
+    <Spanish>Reduce la carga administrativa y apoya las redes de inteligencia.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_INTEL_SECURITY_STRATEGY</Tag>

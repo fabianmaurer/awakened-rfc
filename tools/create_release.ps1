@@ -4,7 +4,7 @@ $root = Split-Path -Parent $PSScriptRoot
 $dllDir = Join-Path $root 'Awakened RFC\CvGameCoreDLL'
 $settings = Join-Path $dllDir 'Makefile.settings'
 if (-not (Test-Path $settings)) { throw 'Create CvGameCoreDLL\Makefile.settings from Makefile.settings.example first.' }
-if (Select-String -Path $settings -Pattern '^\s*ARFC_ENABLE_REPORTING\s*=\s*1\s*$') { throw 'Set ARFC_ENABLE_REPORTING=0 in Makefile.settings before building a release.' }
+if (Get-Process Civ4BeyondSword -ErrorAction SilentlyContinue) { throw 'Close Civ4 before creating a release.' }
 $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
 if (-not (Test-Path $vswhere)) { throw 'Visual Studio Installer (vswhere.exe) was not found.' }
 $vs = & $vswhere -latest -products '*' -requires Microsoft.Component.MSBuild Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
@@ -28,9 +28,11 @@ while (Test-Path -LiteralPath $destination) {
 }
 $stage = Join-Path ([IO.Path]::GetTempPath()) ('arfc-release-' + [guid]::NewGuid().ToString('N'))
 $oldPath = $env:Path
+$oldReleaseBuild = $env:ARFC_RELEASE_BUILD
 try {
     New-Item -ItemType Directory -Path $stage | Out-Null
     $env:Path = "$nmakeDir;$env:Path"
+    $env:ARFC_RELEASE_BUILD = '1'
     Push-Location $dllDir
     try {
         & $msbuild 'CvGameCoreDLL.vcxproj' /p:Configuration=Release /p:Platform=Win32 /verbosity:minimal /m:1
@@ -46,5 +48,12 @@ try {
     Write-Host "Release created: $destination"
 } finally {
     $env:Path = $oldPath
-    if (Test-Path $stage) { Remove-Item -LiteralPath $stage -Recurse -Force }
+    $env:ARFC_RELEASE_BUILD = $oldReleaseBuild
+    if (Test-Path -LiteralPath $stage) {
+        $resolvedStage = (Resolve-Path -LiteralPath $stage).Path
+        $tempRoot = [IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd('\')
+        if ((Split-Path -Parent $resolvedStage) -ne $tempRoot -or
+            (Split-Path -Leaf $resolvedStage) -notlike 'arfc-release-*') { throw 'Unsafe release staging cleanup path.' }
+        Remove-Item -LiteralPath $resolvedStage -Recurse -Force
+    }
 }

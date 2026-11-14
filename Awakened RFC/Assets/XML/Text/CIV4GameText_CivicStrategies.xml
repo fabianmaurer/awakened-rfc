@@ -138,11 +138,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY</Tag>
-        <English>+4% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +24%.</English>
-        <French>+4% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme effectivement exploit&#233;e par la ville productrice. Inclut les unit&#233;s de si&#232;ge ; exclut les unit&#233;s civiles et les navires. Six fermes exploit&#233;es donnent +24%.</French>
-        <German>+4% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet.</German>
-        <Italian>+4% alla produzione di unit&#224; militari terrestri per fattoria effettivamente lavorata dalla citt&#224; produttrice. Include le unit&#224; d&#8217;assedio; esclude le unit&#224; civili e le navi. Sei fattorie lavorate danno +24%.</Italian>
-        <Spanish>+4% a la producci&#243;n de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +24%.</Spanish>
+        <English>+4% land military unit production per worked Farm, including siege units.</English>
+        <French>+4% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e, y compris les unit&#233;s de si&#232;ge.</French>
+        <German>+4% Produktion milit&#228;rischer Landeinheiten je bewirtschaftetem Bauernhof, einschlie&#223;lich Belagerungseinheiten.</German>
+        <Italian>+4% alla produzione di unit&#224; militari terrestri per fattoria lavorata, incluse le unit&#224; d&#8217;assedio.</Italian>
+        <Spanish>+4% a la producci&#243;n de unidades militares terrestres por granja trabajada, incluidas las unidades de asedio.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>
@@ -178,11 +178,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_GOD_STATE_STRATEGY</Tag>
-        <English>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</English>
-        <French>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</French>
-        <German>Verdoppelt den Religionseinfluss auf den Verwaltungsaufwand und erschwert fremde Religionsverbreitung deutlich. -1 Zufriedenheit je fremder Religion. Eroberte St&#228;dte werden durch Konvertierung befriedet.</German>
-        <Italian>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</Italian>
-        <Spanish>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</Spanish>
+        <English>Doubles religious effects on administrative effort. Foreign religion spread and missionary success chances are reduced by 75%. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</English>
+        <French>Double les effets religieux sur la charge administrative. Les chances de propagation des religions &#233;trang&#232;res et de r&#233;ussite de leurs missionnaires sont r&#233;duites de 75%. -1 bonheur par religion non &#233;tatique. La conversion pacifie les villes conquises.</French>
+        <German>Verdoppelt religi&#246;se Effekte auf den Verwaltungsaufwand. Verbreitungschancen fremder Religionen und Erfolgschancen ihrer Missionare sinken um 75%. -1 Zufriedenheit je fremder Religion. Bekehrung befriedet eroberte St&#228;dte.</German>
+        <Italian>Raddoppia gli effetti religiosi sul carico amministrativo. Le probabilit&#224; di diffusione delle religioni straniere e di successo dei loro missionari sono ridotte del 75%. -1 felicit&#224; per religione non di Stato. La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>Duplica los efectos religiosos sobre la carga administrativa. Las probabilidades de propagaci&#243;n de religiones extranjeras y de &#233;xito de sus misioneros se reducen un 75%. -1 felicidad por religi&#243;n no estatal. La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>

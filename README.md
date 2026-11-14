@@ -189,6 +189,7 @@ For a dated release folder containing both the production ZIP and Windows
 installer, install Inno Setup 6, Python 3.9 or newer, and the legacy DLL build
 prerequisites, then double-click `Create Release.bat` at the repository root.
 The script builds the DLL and writes both files to `dist/YYYY-MM-DD-HHMMSS`.
+It forces reporting off for the release build without changing `Makefile.settings`.
 Close Beyond the Sword before building.
 The installer asks for the Beyond the Sword game folder, backs up an existing
 Awakened RFC folder, and offers the optional online GraphicsUpgrade installation.
