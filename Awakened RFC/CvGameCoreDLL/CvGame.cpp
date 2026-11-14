@@ -1,6 +1,7 @@
 // game.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "CvGameCoreUtils.h"
 #include "CvGame.h"
@@ -717,6 +718,7 @@ void CvGame::uninit()
 // Initializes data members that are serialized.
 void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 {
+    Administration::invalidateNetwork();
 	int iI;
 
 	//--------------------------------
@@ -8810,6 +8812,7 @@ uint CvGame::getNumReplayMessages() const
 
 void CvGame::read(FDataStreamBase* pStream)
 {
+    Administration::invalidateNetwork();
 	int iI;
 
 	reset(NO_HANDICAP);

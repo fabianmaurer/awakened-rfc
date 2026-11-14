@@ -152,6 +152,7 @@ protected:
 	bool AI_moveToHealingPlot(int iMaxPath);
 	bool AI_afterAttack();
 	bool AI_goldenAge();
+	bool AI_purgeReligion();
 	bool AI_spreadReligion();
 	bool AI_spreadCorporation();
 	bool AI_spreadReligionAirlift();

@@ -108,7 +108,7 @@ def main():
                         help='Save every X simulated turns, including performance mode (default: 0, disabled); files go in each run\'s saves folder')
     parser.add_argument('--record-interval', type=int, default=1, help='Turns between state snapshots (events are collected every turn)')
     parser.add_argument('--startup-timeout', type=int, default=300)
-    parser.add_argument('--stall-timeout', type=int, default=60,
+    parser.add_argument('--stall-timeout', type=int, default=90,
                         help='Seconds without recorded progress before capturing stacks and stopping (default: 60)')
     args = parser.parse_args()
     args.scenario = args.scenario or tuple(SCENARIOS)[args.start if args.start is not None else 0]

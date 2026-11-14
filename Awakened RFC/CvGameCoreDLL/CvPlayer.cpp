@@ -1,6 +1,7 @@
 // player.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "TradePlanning.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
@@ -2917,6 +2918,7 @@ void CvPlayer::doTurn()
 	FAssertMsg(isAlive(), "isAlive is expected to be true");
 	FAssertMsg(!hasBusyUnit() || GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)  || GC.getGameINLINE().isSimultaneousTeamTurns(), "End of turn with busy units in a sequential-turn game");
 
+    updateMaintenance();
     doIntelligencePressure();
 	CvEventReporter::getInstance().beginPlayerTurn( GC.getGameINLINE().getGameTurn(),  getID());
 
@@ -3146,6 +3148,7 @@ void CvPlayer::updateMaintenance()
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
 		pLoopCity->updateMaintenance();
+        pLoopCity->updateCommerce();
 	}
 }
 
@@ -5423,6 +5426,9 @@ void CvPlayer::doGoody(CvPlot* pPlot, CvUnit* pUnit)
 
 bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 {
+    CvPlot* adminPlot = GC.getMapINLINE().plotINLINE(iX, iY);
+    if (getNumCities() > 0 && getID() < NUM_MAJOR_PLAYERS && adminPlot && !Administration::isReachable(*this, *adminPlot, true)) return false;
+
 	CvPlot* pPlot;
 	CvPlot* pLoopPlot;
 	bool bValid;
@@ -10569,7 +10575,9 @@ void CvPlayer::changeCorporationMaintenanceModifier(int iChange)
 
 int CvPlayer::getTotalMaintenance() const
 {
-	return m_iTotalMaintenance / 100;
+	int total = 0, iterator;
+    for (CvCity* city = firstCity(&iterator); city; city = nextCity(&iterator)) total += city->getMaintenanceTimes100();
+    return total / 100;
 }
 
 
@@ -11154,6 +11162,9 @@ void CvPlayer::setCapitalCity(CvCity* pNewCapitalCity)
 		{
 			m_iCapitalCityID = FFreeList::INVALID_INDEX;
 		}
+
+		// Travel costs must use the new capital before maintenance is recalculated.
+		Administration::invalidateNetwork();
 
 		if (bUpdatePlotGroups)
 		{
@@ -12186,6 +12197,7 @@ void CvPlayer::setCurrentEra(EraTypes eNewValue)
 			}
 		}
 	}
+    updateMaintenance();
 }
 
 
@@ -12278,6 +12290,7 @@ void CvPlayer::setLastStateReligion(ReligionTypes eNewValue)
 		}
 	}
 	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
+    updateMaintenance();
 }
 
 PlayerTypes CvPlayer::getParent() const
@@ -13922,6 +13935,7 @@ void CvPlayer::setCivics(CivicOptionTypes eIndex, CivicTypes eNewValue)
 		}
 	}
 	if (GC.getGameINLINE().isPapalState(getID())) GC.getGameINLINE().refreshPapalPalaceEffects();
+    updateMaintenance();
 }
 
 

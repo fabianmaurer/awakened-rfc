@@ -381,6 +381,8 @@ class CvRFCEventHandler:
 
         def onBeginPlayerTurn(self, argsList):        
                 iGameTurn, iPlayer = argsList
+                import Administration
+                Administration.beginTurn(iGameTurn, iPlayer)
                 if not geo.historyBoundary(iGameTurn):
                         return
 

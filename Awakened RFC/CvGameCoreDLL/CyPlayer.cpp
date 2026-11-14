@@ -2377,3 +2377,10 @@ int CyPlayer::getNetID()
 }
 
 //Rhye - end
+
+int CyPlayer::getAdministrationValue(int kind, int cityID) { return m_pPlayer ? m_pPlayer->getAdministrationValue(kind, cityID) : 0; }
+int CyPlayer::getAdministrationReleaseTarget(int cityID) { return m_pPlayer ? m_pPlayer->getAdministrationReleaseTarget(cityID) : -1; }
+bool CyPlayer::releaseAdministrationCity(int cityID, bool independent) { return m_pPlayer && m_pPlayer->releaseAdministrationCity(cityID, independent); }
+
+
+bool CyPlayer::removeAdministrationResidence(int cityID) { return m_pPlayer && m_pPlayer->removeAdministrationResidence(cityID); }

@@ -1,6 +1,7 @@
 // playerAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "FastLateGame.h"
@@ -3095,6 +3096,12 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 
 
+    if (!bStartingLoc && !bAdvancedStart && getID() < NUM_MAJOR_PLAYERS && getNumCities() > 0)
+    {
+        int weight = Administration::expansionWeight(*this, *pPlot, 3);
+        if (weight < 50) return 0;
+        iValue = iValue * weight / 100;
+    }
     // Salvage is a modest tie-breaker, not a reason to settle an unsuitable site.
     if (!bStartingLoc && pPlot->getRevealedImprovementType(getTeam(), false) ==
         (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT"))
@@ -3399,6 +3406,15 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 	if (!isHuman() && GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
 		iValue = std::max(1, iValue) * 3;
 
+    if (getID() < NUM_MAJOR_PLAYERS && pCity->getOwnerINLINE() != getID()
+        && !GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
+    {
+        int local = pCity->getMaintenanceModifier() + Administration::religionModifier(*pCity,
+            getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION")), getStateReligion());
+        int weight = Administration::expansionWeight(*this, *pCity->plot(), pCity->getPopulation(), local);
+        if (pCity->isEverOwned(getID())) weight = std::max(50, weight);
+        iValue = std::max(1, iValue * std::max(10, weight) / 100);
+    }
 	if (bRandomize)
 	{
 		//iValue += GC.getGameINLINE().getSorenRandNum(((pCity->getPopulation() / 2) + 1), "AI Target City Value");
@@ -9792,6 +9808,13 @@ int CvPlayerAI::AI_neededMissionaries(CvArea* pArea, ReligionTypes eReligion) co
 
 	iCount = 0;
 
+    if (bState && !isHuman())
+    {
+        int iterator, targets = 0;
+        for (CvCity* city = firstCity(&iterator); city; city = nextCity(&iterator))
+            if (city->area() == pArea && Administration::purgeValue(*city, eReligion) > 0) ++targets;
+        iCount += std::min(2, targets);
+    }
     //internal spread.
     if (bCultureVictory || bState || bHoly)
     {
@@ -9987,6 +10010,26 @@ int CvPlayerAI::AI_missionaryValue(CvArea* pArea, ReligionTypes eReligion, Playe
 		iSpreadInternalValue = 0;
 	}
 	
+    if (!isHuman())
+    {
+        int iterator, purge = 0, targets = 0, missionaries = 0;
+        for (CvCity* city = firstCity(&iterator); city; city = nextCity(&iterator))
+            if (pArea == NULL || city->area() == pArea)
+            {
+                int benefit = Administration::purgeValue(*city, eReligion);
+                if (benefit > 0) { purge = std::max(purge, benefit); ++targets; }
+            }
+        for (CvUnit* unit = firstUnit(&iterator); unit; unit = nextUnit(&iterator))
+            if (unit->AI_getUnitAIType() == UNITAI_MISSIONARY && unit->getUnitInfo().getReligionSpreads(eReligion) > 0
+                && (pArea == NULL || unit->area() == pArea)) ++missionaries;
+        for (int u = 0; u < GC.getNumUnitClassInfos(); ++u)
+        {
+            UnitTypes unit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(u);
+            if (unit != NO_UNIT && GC.getUnitInfo(unit).getReligionSpreads(eReligion) > 0)
+                missionaries += getUnitClassMaking((UnitClassTypes)u);
+        }
+        if (targets > missionaries) iSpreadInternalValue += std::min(4000, 1000 + purge * 20) / (1 + missionaries);
+    }
 	if (iSpreadExternalValue > 0)
 	{
 		int iBestPlayer = NO_PLAYER;
@@ -10592,8 +10635,6 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 		{
-			if (isRomanProvince(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE()) && pLoopCity->isConnectedToCapital())
-				iValue += 12;
 			if (pLoopCity->getOccupationTimer() > 0) iValue += 8;
 		}
 		if (getCurrentEra() <= GC.getInfoTypeForString("ERA_CLASSICAL")) iValue += getNumCities() * 8;
@@ -10662,7 +10703,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		// capacity. Do not count every farm in the empire or forecast new ones.
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 		{
-			const int iModifier = 5 * pLoopCity->countWorkedFarms();
+			const int iModifier = 4 * pLoopCity->countWorkedFarms();
 			iValue += (iModifier * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent) /
 				(bWarPlan ? 1500 : 2500);
 		}
@@ -10731,7 +10772,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 			if (getStateReligion() != NO_RELIGION && pLoopCity->isHasReligion(getStateReligion()))
-				iValue += pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) / 2;
+				iValue += pLoopCity->getPopulation() * (10 - 20 * std::max(0, pLoopCity->getReligionCount() - 1)) / 5;
 		if (getStateReligion() != NO_RELIGION && bWarPlan)
 			iValue += getNumCities() * 3;
 	}
@@ -10832,7 +10873,9 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);
-	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 ); 
+	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 );
+	if (eCivic == GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))
+		iValue += (35 * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500);
 	iValue += (kCivic.getBaseFreeUnits() / 2);
 	iValue += (kCivic.getBaseFreeMilitaryUnits() / 3);
 	iValue += ((kCivic.getFreeUnitsPopulationPercent() * getTotalPopulation()) / 200);
@@ -11223,6 +11266,18 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 			eCivic == GC.getInfoTypeForString("CIVIC_ANCESTOR_CULT")) iValue -= iReligiousWeight;
 	}
 
+    int adminCapacity = Administration::capacity100(*this);
+    int adminEffort = Administration::totalEffort100(*this);
+    int adminOption = kCivic.getCivicOptionType();
+    int adminChange = Administration::civicModifier(*this, eCivic) - Administration::civicModifier(*this, getCivics((CivicOptionTypes)adminOption));
+    int adminBase = (historicalTurns(1) == 2 ? 50 : 33) * (100 + 25 * std::max(0, (int)getCurrentEra()));
+    int candidateCapacity = std::max(1, adminCapacity + adminBase * adminChange / 100);
+    int candidateEffort = adminEffort;
+    if (adminOption == GC.getInfoTypeForString("CIVICOPTION_RELIGION"))
+        candidateEffort = Administration::religionEffort100(*this, eCivic, kCivic.isStateReligion() ? (eBestReligion != NO_RELIGION ? eBestReligion : getStateReligion()) : NO_RELIGION);
+    iValue += Administration::civicModifier(*this, eCivic);
+    iValue += Administration::burdenValue(*this, adminEffort, adminCapacity) - Administration::burdenValue(*this, candidateEffort, candidateCapacity);
+
 	return iValue;
 }
 
@@ -11244,6 +11299,12 @@ ReligionTypes CvPlayerAI::AI_bestReligion() const
 		if (canDoReligion((ReligionTypes)iI))
 		{
 			iValue = AI_religionValue((ReligionTypes)iI);
+            int religionCivic = getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION"));
+            int candidate = Administration::religionEffort100(*this, religionCivic, iI);
+            int current = Administration::religionEffort100(*this, religionCivic, getStateReligion());
+            iValue += (current - candidate) / 100;
+            iValue += Administration::burdenValue(*this, current, Administration::capacity100(*this)) -
+                Administration::burdenValue(*this, candidate, Administration::capacity100(*this));
 
 			if (getStateReligion() == ((ReligionTypes)iI))
 			{

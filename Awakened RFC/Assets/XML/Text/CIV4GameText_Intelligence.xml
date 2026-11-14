@@ -1041,6 +1041,22 @@
     <Spanish>Las buenas relaciones y un socio fuerte en espionaje mejoran la cooperaci&#243;n. Las aportaciones se limitan a tu producci&#243;n base. Ambos pa&#237;ses ganan gradualmente hasta +3 de estabilidad.</Spanish>
   </TEXT>
   <TEXT>
+    <Tag>TXT_KEY_INTEL_SUPPORT_MODE</Tag>
+    <English>Supporting operations</English>
+    <French>Soutien aux op&#233;rations</French>
+    <German>Unterst&#252;tzt Operationen</German>
+    <Italian>Supporto alle operazioni</Italian>
+    <Spanish>Apoyo a las operaciones</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_SUPPORT_HELP</Tag>
+    <English>Espionage is shared between teams with active assignments. This team leaves all funding to them. Its networks slowly decay.</English>
+    <French>L'espionnage est partag&#233; entre les &#233;quipes en mission active. Cette &#233;quipe leur laisse tout le financement. Ses r&#233;seaux d&#233;clinent lentement.</French>
+    <German>Spionage wird unter Teams mit aktiven Auftr&#228;gen aufgeteilt. Dieses Team &#252;berl&#228;sst ihnen alle Mittel. Seine Netze verfallen langsam.</German>
+    <Italian>Lo spionaggio viene diviso tra le squadre con incarichi attivi. Questa squadra lascia loro tutti i fondi. Le sue reti decadono lentamente.</Italian>
+    <Spanish>El espionaje se reparte entre los equipos con misiones activas. Este equipo les deja todos los fondos. Sus redes se debilitan lentamente.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_INTEL_NONE_HELP</Tag>
     <English>This task force conducts no operations and receives no funding. Its networks slowly decay. Other task forces continue their work.</English>
     <French>Ce service ne m&#232;ne aucune op&#233;ration et ne re&#231;oit aucun financement. Ses r&#233;seaux d&#233;clinent lentement. Les autres services poursuivent leur travail.</French>
@@ -1279,5 +1295,13 @@
     <German>Erm&#246;glicht Geheimdienstkooperation.</German>
     <Italian>Sblocca la cooperazione informativa.</Italian>
     <Spanish>Desbloquea la cooperaci&#243;n de inteligencia.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_INTEL_FUNDING_HELP</Tag>
+    <English>Each unlocked spy team adds +10% espionage. Espionage is shared equally among teams conducting operations.</English>
+    <French>Chaque &#233;quipe d&#8217;espions d&#233;bloqu&#233;e ajoute +10% d&#8217;espionnage. L&#8217;espionnage est partag&#233; &#233;quitablement entre les &#233;quipes en op&#233;ration.</French>
+    <German>Jedes freigeschaltete Spionageteam bringt +10% Spionage. Die Spionage wird gleichm&#228;&#223;ig auf Teams mit laufenden Operationen verteilt.</German>
+    <Italian>Ogni squadra di spie sbloccata aggiunge +10% spionaggio. Lo spionaggio viene diviso equamente tra le squadre impegnate in operazioni.</Italian>
+    <Spanish>Cada equipo de esp&#237;as desbloqueado a&#241;ade +10% de espionaje. El espionaje se reparte por igual entre los equipos que realizan operaciones.</Spanish>
   </TEXT>
 </Civ4GameText>

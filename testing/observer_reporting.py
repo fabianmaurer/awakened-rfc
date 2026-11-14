@@ -71,6 +71,36 @@ def observe_espionage(record, totals, by_era, previous, gold_windows, seen, chan
         by_era[(civ, player['era'])].update(counters)
 
 
+def observe_administration(record, totals, by_era, seen):
+    """Aggregate explicit end-of-turn samples, never sparse general snapshots."""
+    if record.get('phase') != 'turn':
+        return
+    for player in record.get('players', []):
+        key = (player['id'], record['turn'])
+        if key in seen:
+            continue
+        seen.add(key)
+        counts = Counter(observed_turns=1, city_turns=player['cities'])
+        for name in ('capacity100', 'effort100', 'raw_overload100', 'overload100', 'stability_penalty'):
+            counts[name + '_sum'] = player[name]
+        # Reconstruct the baseline for older recordings that used population.
+        cities = player.get('city_details')
+        base_upkeep = (sum(city['effort100'] // 2 for city in cities)
+                       if cities is not None else player['upkeep_base100'])
+        residence_upkeep = player.get('residence_upkeep100', 0)
+        counts.update(raw_overloaded_turns=player['raw_overload100'] > 0,
+                      penalized_turns=player['overload100'] > 0, suspended_turns=player['suspended'],
+                      upkeep_extra100=player['upkeep100'] - base_upkeep - residence_upkeep,
+                      residence_upkeep100=residence_upkeep,
+                      production_yield_lost=player['production_yield_lost'],
+                      isolated_city_turns=player['isolated_cities'],
+                      growth_limited_city_turns=player['growth_limited_cities'])
+        for bucket in (totals[player['civilization']], by_era[(player['civilization'], player['era'])]):
+            bucket.update(counts)
+            bucket['overload100_max'] = max(bucket['overload100_max'], player['overload100'])
+            bucket['raw_overload100_max'] = max(bucket['raw_overload100_max'], player['raw_overload100'])
+
+
 def enrich(run, records):
     """Stream extra observations; never turn sparse snapshots into city-turns."""
     names = {p['id']: p['civilization'] for p in run['final']}
@@ -89,6 +119,8 @@ def enrich(run, records):
     espionage_totals, espionage_eras = defaultdict(Counter), defaultdict(Counter)
     espionage_previous, espionage_gold_windows, espionage_seen = {}, set(), set()
     espionage_changes = []
+    administration_totals, administration_eras = defaultdict(Counter), defaultdict(Counter)
+    administration_seen, administration_events = set(), []
 
     def close(pid, turn, cause):
         for key in [k for k in active if k[0] == pid]:
@@ -110,6 +142,9 @@ def enrich(run, records):
                                civic=civic, start=turn, origin=origin)
 
     for record in records:
+        if record.get('kind') == 'administration':
+            observe_administration(record, administration_totals, administration_eras, administration_seen)
+            continue
         if record.get('kind') == 'espionage':
             observe_espionage(record, espionage_totals, espionage_eras, espionage_previous,
                              espionage_gold_windows, espionage_seen, espionage_changes)
@@ -129,6 +164,8 @@ def enrich(run, records):
         for event in event_list:
             pid, et = event.get('player'), event.get('turn', turn)
             kind = event['event']
+            if kind.startswith('administration_'):
+                administration_events.append(event)
             if kind == 'apostolic_state':
                 apostolic_last = event
                 apostolic_counts['observed_turns'] += 1
@@ -221,6 +258,11 @@ def enrich(run, records):
                             by_era=[dict(civilization=c, era=e, counts=dict(v))
                                     for (c, e), v in sorted(espionage_eras.items())],
                             assignment_changes=espionage_changes)
+    run['administration'] = dict(version=run['metadata'].get('administration_recording_version'),
+                                by_civilization={c: dict(v) for c, v in administration_totals.items()},
+                                by_era=[dict(civilization=c, era=e, counts=dict(v))
+                                        for (c, e), v in sorted(administration_eras.items())],
+                                events=administration_events)
     run['apostolic'] = dict(version=run['metadata'].get('apostolic_recording_version'),
                              counts=dict(apostolic_counts), events=apostolic_events, last_state=apostolic_last)
     run.update(civic_spells=spells, food_by_size=dict(food), slavery_usage=dict(slaves),
@@ -390,6 +432,48 @@ def render_espionage(group):
     return lines
 
 
+def render_administration(group):
+    lines = ['', '### Administration', '',
+             'Explicit end-of-turn samples. Missing older observations are unavailable, not zero. '
+             'Production loss is the city production yield removed after ordinary yield modifiers; '
+             'it is not a reconstruction of completed units or buildings. Effects are descriptive, not proof of causation.', '',
+             '| Civilization | Player-turns | Mean capacity / effort | Raw overload / penalized / suspended turns | Mean / max effective overload | Overload upkeep / residences (gold) | Production yield lost | Mean stability penalty | Growth-limited / isolated city-turns |',
+             '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
+    totals = defaultdict(Counter)
+    events = Counter()
+    for run in group:
+        observations = run.get('administration', {})
+        for civ, counts in observations.get('by_civilization', {}).items():
+            previous_max = totals[civ]['overload100_max']
+            totals[civ].update(counts)
+            totals[civ]['overload100_max'] = max(previous_max, counts.get('overload100_max', 0))
+        for event in observations.get('events', []):
+            if event['event'] == 'administration_city_released':
+                events['release_' + event['reason']] += 1
+            elif event['event'] == 'administration_religion_purged':
+                events['purges'] += 1
+                events['purge_happiness_change'] += event['happiness_after'] - event['happiness_before']
+                events['purge_effort_saved100'] += event['effort100_before'] - event['effort100_after']
+                events['purge_happiness_prediction_mismatches'] += event['happiness_after'] - event['happiness_before'] != event['happiness_change_expected']
+    for civ, c in sorted(totals.items()):
+        turns = c['observed_turns']
+        lines.append(f'| {label(civ)} | {turns} | {c["capacity100_sum"] / turns / 100:.2f} / {c["effort100_sum"] / turns / 100:.2f} | '
+                     f'{c["raw_overloaded_turns"]} / {c["penalized_turns"]} / {c["suspended_turns"]} | '
+                     f'{c["overload100_sum"] / turns / 100:.2f}% / {c["overload100_max"] / 100:.2f}% | '
+                     f'{c["upkeep_extra100"] / 100:.2f} / {c["residence_upkeep100"] / 100:.2f} | {c["production_yield_lost"]} | {c["stability_penalty_sum"] / turns:.2f} | '
+                     f'{c["growth_limited_city_turns"]} / {c["isolated_city_turns"]} |')
+    if not totals:
+        lines.append('| unavailable (older recording or no observed major-player turns) | - | - | - | - | - | - | - | - |')
+    lines += ['', f'Releases: {events["release_ai_overload"]} AI overload, {events["release_distance"]} distance, {events["release_manual"]} manual. '
+              f'Religious purges: {events["purges"]}; actual net happiness change {events["purge_happiness_change"]:+d}; '
+              f'effort saved {events["purge_effort_saved100"] / 100:.2f}; happiness prediction mismatches {events["purge_happiness_prediction_mismatches"]}.', '',
+              'summary.json retains per-era totals and semantic events. Per-turn records retain each city\'s travel time, '
+              'local modifiers, isolation counter, upkeep and production, including Jihad suspension. '
+              'Growth limits describe administrative pressure on AI citizens, not confirmed population prevented. '
+              'Happiness predictions are local estimates; actual purge outcomes are recorded separately.']
+    return lines
+
+
 def render_report(runs):
     lines = ['# Awakened RFC balance report', '',
              f'{len(runs)} recordings; {sum(r["completed"] for r in runs)} completed.', '',
@@ -418,6 +502,7 @@ def render_report(runs):
                 lines += ['', '**Affected games: descriptive results only; subsequent state may be altered by exceptions.**']
             lines += render_tables(usable)
             lines += render_espionage(usable)
+            lines += render_administration(usable)
     lines += ['', '## Apostolic Palace and Crusades', '',
               'Native events retain decisions, courier delivery, weighted ballots, resolution effects, '
               'Crusade activity, rewards, settlement claims and refusal refunds in summary.json. '

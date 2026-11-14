@@ -9,6 +9,24 @@ capital. Reviews and missions can count the same ship repeatedly; overseas
 cities are not necessarily in the Americas. Compare outcomes across scenarios,
 including XL, because these counters do not establish successful gameplay.
 
+## Administration observations
+
+Balance and diagnostics recordings include explicit per-turn administration records
+(version 2): capacity, effort, overload, Jihad suspension, actual extra upkeep,
+production yield lost, stability contribution and city travel/isolation values.
+Version 2 separates connection status, full capital travel, effective travel,
+chosen residence and fixed residence costs; residence removals are semantic events.
+The existing report adds a compact Administration table; summary.json retains
+per-era totals and release/purge events. Older recordings remain readable and
+show missing observations as unavailable. Formula mismatches enter the existing
+recording checks. Upkeep checks use half the administrative effort, with the
+overload multiplier applied before rounding. Reports separate overload upkeep
+from residence costs and reconstruct the baseline from city effort in older
+recordings. Existing recorded findings remain unchanged.
+Purges retain predicted and actual happiness changes; predictions
+are local estimates. These observations describe outcomes, not causal proof.
+Performance mode does not collect these state records.
+
 ## Experimental fast AI behavior
 
 `RFCMP_FAST_LATE_GAME=1` enables the retained optimizations from
@@ -297,7 +315,7 @@ An external stop request can also be made by creating an empty `STOP` file in
 the batch directory. After a stall timeout, the helper enforces a 30-second
 cleanup deadline for that child only, allowing both bounded dump attempts before
 terminating it. Other games continue; the emergency hotkey still stops the batch.
-The default no-progress timeout is 60 seconds, reset by each heartbeat; use
+The default no-progress timeout is 90 seconds, reset by each heartbeat; use
 `--stall-timeout` to override it. The separate startup timeout remains five minutes.
 Emergency hotkey/`STOP` requests attempt `hang-emergency.dmp` for the game with
 the oldest heartbeat before minimizing the windows, so minimization does not

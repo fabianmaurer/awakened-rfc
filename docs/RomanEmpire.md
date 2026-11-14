@@ -10,29 +10,28 @@ ordinary Republic and Warrior Society.
 - **Roman Legions** replaces Warrior Society: +50% melee/siege production,
   +2 experience for trained melee units, half foreign unit supply cost,
   and melee road construction (base work rate 100). It has no siege combat
-  penalty. Galleys and triremes also receive +50% production; galleys gain
+  penalty or Warrior Society administration penalty (capacity: 0%).
+  Galleys and triremes also receive +50% production; galleys gain
   one cargo slot while the civic is active. Existing passengers remain aboard
   after leaving the civic, but excess capacity cannot be refilled.
   Existing Roman road movement remains active. Mounted/gunpowder
   production and experience receive no bonus.
 - **Roman Republic** replaces Republic: half initial conquest resistance,
-  rounded up; half the connected historical provinces' proportional share
-  of foreign-territory and empire-size stability penalties. It replaces the
+  rounded up; +40% administration capacity. It replaces the
   ordinary specialist food discount. Other stability components are unchanged.
   Rome can adopt it without Code of Laws, so its usual birth profile works.
 - **Provincial Administration** replaces the Courthouse: 60 base production,
   Writing and Roman Republic required to construct; ordinary Courthouse
-  effects, including -50% city maintenance, remain after government changes.
+  effects, including -25% administrative effort, remain after government changes.
   Rome retains its Forum as its Market replacement.
 
 `CvPlayer::getRomanProvinceStage` defines the fixed-map areas once, shared
 with Python through `CyPlayer.isRomanProvince`: Italy and nearby islands,
 Iberia, western North Africa, Greece/Balkans/Anatolia, Gaul/Rhine frontier,
-southern Britain, Egypt/Cyrenaica and the Levant. Roads, rivers and maritime
-connections use the normal capital trade network. Foreign-plot relief follows
-the existing six-turn territory refresh; city-count relief checks current
-connections. Discount shares are proportional to eligible plots/cities and
-round down; unrelated territory contributes its normal share of the penalty.
+southern Britain, Egypt/Cyrenaica and the Levant. These areas still guide Roman
+campaign AI. Administration capacity is national and does not require connected
+historical provinces; the former foreign-territory and city-count stability
+penalties have been removed for every civilization.
 
 ## Starting advantage and intended trajectory
 
@@ -43,7 +42,7 @@ continues normally. No recurring technology grants are added.
 
 The objective is a substantial territorial peak around AD 100-200, followed by
 frequent organic collapse. Endpoint survival is not a success criterion. The
-existing stability and collapse rules remain unchanged.
+shared administration and collapse rules apply.
 
 ## Campaign AI
 

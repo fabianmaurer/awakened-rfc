@@ -18,6 +18,10 @@ class CySelectionGroup;
 class CyPlayer
 {
 public:
+    int getAdministrationValue(int kind, int cityID);
+    int getAdministrationReleaseTarget(int cityID);
+    bool releaseAdministrationCity(int cityID, bool independent);
+    bool removeAdministrationResidence(int cityID);
 	CyPlayer();
 	CyPlayer(CvPlayer* pPlayer);		// Call from C++
 	CvPlayer* getPlayer() { return m_pPlayer;	}	// Call from C++

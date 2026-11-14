@@ -219,10 +219,10 @@ void CvPlayer::updateIntelligenceForces()
         for (int j = 0; j < 3; ++j)
             if (m_aiForceTargets[f][j] >= 0 && canUseIntelligenceMode((PlayerTypes)m_aiForceTargets[f][j], iMode)) bActive = true;
         if (iMode == INTEL_NONE || !bActive) continue;
-        // Preserve fractions at low EP: output / active forces + 10% of total output.
+        // Every unlocked force adds 10% output; only active forces share funding.
         m_aiForceStock[f][iMode] = (int)std::min((__int64)MAX_INT / 2,
             (__int64)m_aiForceStock[f][iMode] + (__int64)getCommerceRate(COMMERCE_ESPIONAGE) *
-            (10000 + 1000 * iActive) * 2 / (iActive * intelligenceSpeedPercent()));
+            (10000 + 1000 * getIntelligenceForceCount()) * 2 / (iActive * intelligenceSpeedPercent()));
     }
 }
 
@@ -251,7 +251,7 @@ int CvPlayer::getIntelligenceAllocation(TeamTypes eTarget, int iMode) const
         {
             const PlayerTypes ePlayer = (PlayerTypes)m_aiForceTargets[f][j];
             if (canUseIntelligenceMode(ePlayer, iMode) && GET_PLAYER(ePlayer).getTeam() == eTarget)
-                iTotal += (10000 / iActive + 1000) * aiShare[iCount] / 100;
+                iTotal += ((10000 + 1000 * getIntelligenceForceCount()) / iActive) * aiShare[iCount] / 100;
         }
     }
     return iTotal;
@@ -1204,7 +1204,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
             bool bActive = false;
             for (int j = 0; j < 3; ++j)
                 if (m_aiForceTargets[f][j] >= 0 && canUseIntelligenceMode((PlayerTypes)m_aiForceTargets[f][j], m_aiForceMode[f])) bActive = true;
-            return bActive ? 10000 / std::max(1, getIntelligenceActiveForces()) + 1000 : 0;
+            return bActive ? (10000 + 1000 * getIntelligenceForceCount()) / std::max(1, getIntelligenceActiveForces()) : 0;
         }
         if (iField == 314)
         {
@@ -1223,7 +1223,7 @@ int CvPlayer::getIntelligenceData(int iTarget, int iField) const
             if (iField == 330 + INTEL_NONE) return -1;
             const __int64 iStock = m_aiForceStock[f][iField-330];
             const __int64 iSteady = (__int64)2000 * getCommerceRate(COMMERCE_ESPIONAGE) *
-                (10000 / std::max(1, getIntelligenceActiveForces()) + 1000) / 10000;
+                ((10000 + 1000 * getIntelligenceForceCount()) / std::max(1, getIntelligenceActiveForces())) / 10000;
             return (int)std::min((__int64)10000, iStock * 10000 / std::max((__int64)1, iSteady));
         }
         return 0;

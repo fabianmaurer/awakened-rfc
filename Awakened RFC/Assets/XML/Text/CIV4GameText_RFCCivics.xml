@@ -545,11 +545,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES</Tag>
-        <English>[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units</English>
-        <French>[ICON_BULLET]+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e par cette ville, unit&#233;s de si&#232;ge comprises</French>
-        <German>[ICON_BULLET]+5% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet</German>
-        <Italian>[ICON_BULLET]+5% alla produzione di unit&#224; militari terrestri per fattoria lavorata da questa citt&#224;, incluse le unit&#224; d&#8217;assedio</Italian>
-        <Spanish>[ICON_BULLET]+5% a la producci&#243;n de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio</Spanish>
+        <English>[ICON_BULLET]+4% land military unit production per Farm worked by this city, including siege units</English>
+        <French>[ICON_BULLET]+4% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme exploit&#233;e par cette ville, unit&#233;s de si&#232;ge comprises</French>
+        <German>[ICON_BULLET]+4% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet</German>
+        <Italian>[ICON_BULLET]+4% alla produzione di unit&#224; militari terrestri per fattoria lavorata da questa citt&#224;, incluse le unit&#224; d&#8217;assedio</Italian>
+        <Spanish>[ICON_BULLET]+4% a la producci&#243;n de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_ANCESTOR_CULT</Tag>
@@ -577,19 +577,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE</Tag>
-        <English>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion</English>
-        <French>[ICON_BULLET]+10% [ICON_PRODUCTION] dans les villes de la religion d&#8217;&#201;tat[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises</French>
-        <German>[ICON_BULLET]+10% [ICON_PRODUCTION] in St&#228;dten mit Staatsreligion[NEWLINE][ICON_BULLET]Eroberte St&#228;dte werden durch Konvertierung befriedet</German>
-        <Italian>[ICON_BULLET]+10% [ICON_PRODUCTION] nelle citt&#224; con la religione di Stato[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate</Italian>
-        <Spanish>[ICON_BULLET]+10% [ICON_PRODUCTION] en ciudades con la religi&#243;n estatal[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas</Spanish>
+        <English>[ICON_BULLET]Religion affects administrative effort twice as strongly.[NEWLINE][ICON_BULLET]Foreign religions spread much less easily.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
+        <French>[ICON_BULLET]La religion influence deux fois plus la charge administrative.[NEWLINE][ICON_BULLET]Les religions &#233;trang&#232;res se propagent beaucoup moins facilement.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
+        <German>[ICON_BULLET]Religion beeinflusst den Verwaltungsaufwand doppelt so stark.[NEWLINE][ICON_BULLET]Fremde Religionen verbreiten sich deutlich schwerer.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
+        <Italian>[ICON_BULLET]La religione influisce il doppio sul carico amministrativo.[NEWLINE][ICON_BULLET]Le religioni straniere si diffondono molto meno facilmente.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>[ICON_BULLET]La religi&#243;n influye el doble en la carga administrativa.[NEWLINE][ICON_BULLET]Las religiones extranjeras se propagan con mucha m&#225;s dificultad.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_GOD_STATE_WITH_RELIGION</Tag>
-        <English>[ICON_BULLET]+10% [ICON_PRODUCTION] in cities with the state religion %F1_StateReligion[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion</English>
-        <French>[ICON_BULLET]+10% [ICON_PRODUCTION] dans les villes de la religion d&#8217;&#201;tat %F1_StateReligion[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises</French>
-        <German>[ICON_BULLET]+10% [ICON_PRODUCTION] in St&#228;dten mit Staatsreligion %F1_StateReligion[NEWLINE][ICON_BULLET]Eroberte St&#228;dte werden durch Konvertierung befriedet</German>
-        <Italian>[ICON_BULLET]+10% [ICON_PRODUCTION] nelle citt&#224; con la religione di Stato %F1_StateReligion[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate</Italian>
-        <Spanish>[ICON_BULLET]+10% [ICON_PRODUCTION] en ciudades con la religi&#243;n estatal %F1_StateReligion[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas</Spanish>
+        <English>[ICON_BULLET]Religion affects administrative effort twice as strongly.[NEWLINE][ICON_BULLET]Foreign religions spread much less easily.[NEWLINE][ICON_BULLET]Conquered cities are pacified by conversion.</English>
+        <French>[ICON_BULLET]La religion influence deux fois plus la charge administrative.[NEWLINE][ICON_BULLET]Les religions &#233;trang&#232;res se propagent beaucoup moins facilement.[NEWLINE][ICON_BULLET]La conversion pacifie les villes conquises.</French>
+        <German>[ICON_BULLET]Religion beeinflusst den Verwaltungsaufwand doppelt so stark.[NEWLINE][ICON_BULLET]Fremde Religionen verbreiten sich deutlich schwerer.[NEWLINE][ICON_BULLET]Bekehrung befriedet eroberte St&#228;dte.</German>
+        <Italian>[ICON_BULLET]La religione influisce il doppio sul carico amministrativo.[NEWLINE][ICON_BULLET]Le religioni straniere si diffondono molto meno facilmente.[NEWLINE][ICON_BULLET]La conversione pacifica le citt&#224; conquistate.</Italian>
+        <Spanish>[ICON_BULLET]La religi&#243;n influye el doble en la carga administrativa.[NEWLINE][ICON_BULLET]Las religiones extranjeras se propagan con mucha m&#225;s dificultad.[NEWLINE][ICON_BULLET]La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_STATE_ATHEISM</Tag>
@@ -625,11 +625,11 @@
     </TEXT>
         <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_CONSCRIPTION</Tag>
-        <English>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</English>
-        <French>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</French>
-        <German>[ICON_BULLET]+25% [ICON_PRODUCTION] f&#252;r Einheiten[NEWLINE][ICON_BULLET]Nahrungs&#252;berschuss produziert milit&#228;rische Landeinheiten</German>
-        <Italian>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Italian>
-        <Spanish>[ICON_BULLET]+25% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Spanish>
+        <English>[ICON_BULLET]+35% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</English>
+        <French>[ICON_BULLET]+35% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</French>
+        <German>[ICON_BULLET]+35% [ICON_PRODUCTION] f&#252;r Einheiten[NEWLINE][ICON_BULLET]Nahrungs&#252;berschuss produziert milit&#228;rische Landeinheiten</German>
+        <Italian>[ICON_BULLET]+35% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Italian>
+        <Spanish>[ICON_BULLET]+35% [ICON_PRODUCTION] for units[NEWLINE][ICON_BULLET]Surplus [ICON_FOOD] produces land military units</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_EFFECT_DEMOCRACY</Tag>

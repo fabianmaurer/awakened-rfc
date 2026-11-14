@@ -239,11 +239,11 @@
 <Spanish>Digital Administration Centre</Spanish>
 </TEXT>
 <TEXT><Tag>TXT_KEY_BUILDING_DIGITAL_ADMINISTRATION_PEDIA</Tag>
-<English>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</English>
-<French>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</French>
-<German>Vernetzte Register und automatisierte Abl&#228;ufe verringern den Verwaltungsaufwand. Wirkung in dieser Stadt: -20 % st&#228;dtische Unterhaltskosten.</German>
-<Italian>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</Italian>
-<Spanish>Connected public records and automated procedures reduce administrative overhead. Effects in this city: -20% city maintenance.</Spanish>
+<English>Connected public records and automated procedures reduce administrative overhead. This city requires 15% less administrative effort.</English>
+<French>Les registres publics connect&#233;s et les proc&#233;dures automatis&#233;es r&#233;duisent de 15% la charge administrative de cette ville.</French>
+<German>Vernetzte Register und automatisierte Verfahren verringern den Verwaltungsaufwand dieser Stadt um 15%.</German>
+<Italian>I registri pubblici collegati e le procedure automatiche riducono del 15% il carico amministrativo di questa citt&#224;.</Italian>
+<Spanish>Los registros p&#250;blicos conectados y los procedimientos automatizados reducen un 15% la carga administrativa de esta ciudad.</Spanish>
 </TEXT>
 <TEXT><Tag>TXT_KEY_BUILDING_MACHINE_LEARNING</Tag>
 <English>Machine Learning Laboratory</English>

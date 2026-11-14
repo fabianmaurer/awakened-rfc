@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / 'Awakened RFC/Assets'
 SUMMARIES = {
     'TRIBAL_SYSTEM': (
-        '+20% unit production, -20% research, +100% distance and city-count maintenance.',
-        '+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und städtezahlabhängiger Unterhalt.'),
+        '+20% unit production and -20% research.',
+        '+20% Einheitenproduktion und -20% Forschung.'),
     'MONARCHY': (
         'Capital buildings give +1 culture and +1 commerce each; capital world wonders give +1 happiness empire-wide, capped at +3. Enables inheritance events. Special espionage towards other monarchies.',
         'Hauptstadtgeb\xe4ude geben je +1 Kultur und +1 Handel; Weltwunder der Hauptstadt geben reichsweit +1 Zufriedenheit, maximal +3. Erm\xf6glicht Erbfolgeereignisse. Besondere Spionage gegen\u00fcber anderen Monarchien.'),
@@ -35,8 +35,8 @@ SUMMARIES = {
         '+5 culture per city and +20% production. -5 happiness in cities with a foreign culture plurality.',
         '+5 Kultur je Stadt und +20% Produktion. -5 Zufriedenheit in Städten mit vorherrschender fremder Kultur.'),
     'RULE_OF_LAW': (
-        '+2 happiness in every city and +10% commerce.',
-        '+2 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.'),
+        '+1 happiness in every city and +10% commerce.',
+        '+1 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.'),
     'SELF_SUFFICIENCY': (
         '+2 health in every city. Cottage improvements do not grow. Cannot assign specialists.',
         '+2 Gesundheit in jeder Stadt. Hüttenverbesserungen wachsen nicht. Kann keine Spezialisten zuweisen.'),
@@ -44,11 +44,11 @@ SUMMARIES = {
         'Enables slave specialists. Enslave conquered peoples.',
         'Schaltet Sklavenspezialisten frei. Versklavt eroberte V\u00f6lker.'),
     'SERFDOM': (
-        '+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.',
-        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev\u00f6lkerung opfern, um Einheiten zu beschleunigen.'),
+        '+1 food from farms; workers build improvements 25% faster. Can sacrifice population to rush units.',
+        '+1 Nahrung durch Bauernh\u00f6fe; Bautrupps errichten Verbesserungen 25% schneller. Kann Bev\u00f6lkerung opfern, um Einheiten zu beschleunigen.'),
     'PLANNED_ECONOMY': (
-        '+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.',
-        '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.'),
+        '+1 production from workshops, watermills and windmills; +1 food from farms. No trade routes with Capitalists.',
+        '+1 Produktion durch Werkstätten, Wasser- und Windmühlen; +1 Nahrung durch Bauernhöfe. Keine Handelswege mit Kapitalisten.'),
     'CORPORATE_ECONOMY': (
         '+1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists.',
         '+1 freier Spezialist in jeder Stadt; Hüttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten.'),
@@ -63,8 +63,8 @@ SUMMARIES = {
         'Units start with +5 experience.',
         'Einheiten starten mit +5 Erfahrung.'),
     'CONSCRIPTION': (
-        '+25% unit production. Food surplus contributes to land military unit production.',
-        '+25% Einheitenproduktion. Nahrungs\xfcberschuss tr\xe4gt zur Produktion milit\xe4rischer Landeinheiten bei.'),
+        '+35% unit production. Food surplus contributes to land military unit production.',
+        '+35% Einheitenproduktion. Nahrungs\xfcberschuss tr\xe4gt zur Produktion milit\xe4rischer Landeinheiten bei.'),
     'ANCESTOR_CULT': (
         '+1 culture from monuments, including unique replacements.[NEWLINE]+1 unhappiness from state religion.',
         '+1 Kultur durch Monumente, einschlie\u00dflich einzigartiger Ersatzgeb\u00e4ude.[NEWLINE]+1 Unzufriedenheit durch die Staatsreligion.'),
@@ -72,8 +72,8 @@ SUMMARIES = {
         '+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.',
         '+1 Zufriedenheit in St\xe4dten mit Staatsreligion; +100% Produktion f\xfcr Missionare und +25% Produktion f\xfcr Geb\xe4ude der Staatsreligion.'),
     'GOD_STATE': (
-        '+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.',
-        '+10% Produktion in St\xe4dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
+        "Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.",
+        'Verdoppelt den Religionseinfluss auf den Verwaltungsaufwand und erschwert fremde Religionsverbreitung deutlich. -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
     'TOLERANCE': (
         'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of any religion.',
         'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte. Erlaubt die Ausbildung von Missionaren aller Religionen.'),

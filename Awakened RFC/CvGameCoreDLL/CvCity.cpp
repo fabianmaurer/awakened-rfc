@@ -1,6 +1,7 @@
 // city.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "TradePlanning.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
@@ -2119,6 +2120,8 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 		return false;
 	}
 
+	if (Administration::isResidenceBuilding(eBuilding) && (Administration::hasResidence(*this) || getPopulation() < GC.getDefineINT("ARFC_ADMIN_RESIDENCE_MIN_POPULATION"))) return false;
+
 	if (GC.getBuildingInfo(eBuilding).isGovernmentCenter())
 	{
 		if (isGovernmentCenter())
@@ -3392,7 +3395,7 @@ int CvCity::getMilitaryCivicProductionModifier(UnitTypes eUnit, CivicTypes eCivi
 	if (eCivic == GC.getInfoTypeForString("CIVIC_NAVAL_WARFARE") && kUnit.getDomainType() == DOMAIN_SEA)
 		return 50;
 	if (eCivic == GC.getInfoTypeForString("CIVIC_FEUDAL_RETINUES") && kUnit.getDomainType() == DOMAIN_LAND)
-		return 5 * countWorkedFarms();
+		return 4 * countWorkedFarms();
 	return 0;
 }
 
@@ -3415,7 +3418,7 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 	// Unit production bonuses also apply to workers, settlers and missionaries.
 	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TRIBAL_SYSTEM")) &&
 		GET_PLAYER(getOwnerINLINE()).getCivilizationType() != GC.getInfoTypeForString("CIVILIZATION_EGYPT")) iMultiplier += 20;
-	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))) iMultiplier += 25;
+	if (GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))) iMultiplier += 35;
 
 
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
@@ -3501,7 +3504,10 @@ int CvCity::getProductionDifference(int iProductionNeeded, int iProduction, int 
 
 	int iOverflow = ((bOverflow) ? (getOverflowProduction() + getFeatureProduction()) : 0);
 
-	return (((getBaseYieldRate(YIELD_PRODUCTION) + iOverflow) * getBaseYieldRateModifier(YIELD_PRODUCTION, iProductionModifier)) / 100 + iFoodProduction);
+	int factor = Administration::productionPercent(GET_PLAYER(getOwnerINLINE()));
+    if (factor == 0) return 0;
+    int current = (getBaseYieldRate(YIELD_PRODUCTION) * getBaseYieldRateModifier(YIELD_PRODUCTION, iProductionModifier)) / 100 + iFoodProduction;
+    return (int)((__int64)current * factor / 10000) + iOverflow * getBaseYieldRateModifier(YIELD_PRODUCTION, iProductionModifier) / 100;
 
 }
 
@@ -3534,7 +3540,7 @@ int CvCity::getExtraProductionDifference(int iExtra, ProjectTypes eProject) cons
 
 int CvCity::getExtraProductionDifference(int iExtra, int iModifier) const
 {
-	return ((iExtra * getBaseYieldRateModifier(YIELD_PRODUCTION, iModifier)) / 100);
+	return (int)((__int64)iExtra * getBaseYieldRateModifier(YIELD_PRODUCTION, iModifier) * Administration::productionPercent(GET_PLAYER(getOwnerINLINE())) / 1000000);
 }
 
 
@@ -4058,6 +4064,7 @@ void CvCity::processBonus(BonusTypes eBonus, int iChange)
 
 void CvCity::processBuilding(BuildingTypes eBuilding, int iChange, bool bObsolete, bool bCivicTransition)
 {
+    if (Administration::isResidenceBuilding(eBuilding) || GC.getBuildingInfo(eBuilding).isGovernmentCenter() || GC.getBuildingInfo(eBuilding).getBuildingClassType() == GC.getInfoTypeForString("BUILDINGCLASS_HARBOR")) Administration::invalidateNetwork();
 	UnitTypes eGreatPeopleUnit;
 	int iI, iJ;
 
@@ -5642,7 +5649,7 @@ void CvCity::setPopulation(int iNewValue, bool bInvoluntary)
 
 		plot()->updateYield();
 
-		updateMaintenance();
+		GET_PLAYER(getOwnerINLINE()).updateMaintenance();
 
 		if (((iOldPopulation == 1) && (getPopulation() > 1)) ||
 			  ((getPopulation() == 1) && (iOldPopulation > 1))
@@ -6050,6 +6057,7 @@ void CvCity::changeGovernmentCenterCount(int iChange)
 	if (iChange != 0)
 	{
 		m_iGovernmentCenterCount = (m_iGovernmentCenterCount + iChange);
+        Administration::invalidateNetwork();
 		FAssert(getGovernmentCenterCount() >= 0);
 
 		GET_PLAYER(getOwnerINLINE()).updateMaintenance();
@@ -6059,12 +6067,12 @@ void CvCity::changeGovernmentCenterCount(int iChange)
 
 int CvCity::getMaintenance() const
 {
-	return m_iMaintenance / 100;
+	return getMaintenanceTimes100() / 100;
 }
 
 int CvCity::getMaintenanceTimes100() const
 {
-	return m_iMaintenance;
+	return (int)((__int64)Administration::effort100(*this) * (10000 + 2 * Administration::overload100(GET_PLAYER(getOwnerINLINE()))) / 20000) + Administration::residenceCost100(*this);
 }
 
 
@@ -6073,13 +6081,13 @@ void CvCity::updateMaintenance()
 	int iOldMaintenance;
 	int iNewMaintenance;
 
-	iOldMaintenance = getMaintenanceTimes100();
+	iOldMaintenance = m_iMaintenance;
 
 	iNewMaintenance = 0;
 
-	if (!isDisorder() && !isWeLoveTheKingDay() && (getPopulation() > 0))
+	if (getPopulation() > 0)
 	{
-		iNewMaintenance = (calculateBaseMaintenanceTimes100() * std::max(0, (getMaintenanceModifier() + 100))) / 100;
+		iNewMaintenance = getMaintenanceTimes100();
 	}
 
 	if (iOldMaintenance != iNewMaintenance)
@@ -6101,46 +6109,7 @@ int CvCity::calculateDistanceMaintenance() const
 
 int CvCity::calculateDistanceMaintenanceTimes100() const
 {
-	CvCity* pLoopCity;
-	int iWorstCityMaintenance;
-	int iBestCapitalMaintenance;
-	int iTempMaintenance;
-	int iLoop;
-
-	iWorstCityMaintenance = 0;
-	iBestCapitalMaintenance = MAX_INT;
-
-	for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
-	{
-		iTempMaintenance = 100 * (GC.getDefineINT("MAX_DISTANCE_CITY_MAINTENANCE") * plotDistance(getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE()));
-
-		iTempMaintenance *= (getPopulation() + 7);
-		iTempMaintenance /= 10;
-
-		iTempMaintenance *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getDistanceMaintenanceModifier() + 100));
-		iTempMaintenance /= 100;
-
-		iTempMaintenance *= GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getDistanceMaintenancePercent();
-		iTempMaintenance /= 100;
-
-		//iTempMaintenance *= GC.getHandicapInfo(getHandicapType()).getDistanceMaintenancePercent(); //Rhye
-		iTempMaintenance *= GC.getHandicapInfo(getHandicapType()).getDistanceMaintenancePercentByID(getOwnerINLINE()); //Rhye
-		iTempMaintenance /= 100;
-
-		iTempMaintenance /= GC.getMapINLINE().maxPlotDistance();
-
-		iWorstCityMaintenance = std::max(iWorstCityMaintenance, iTempMaintenance);
-
-		if (pLoopCity->isGovernmentCenter())
-		{
-			iBestCapitalMaintenance = std::min(iBestCapitalMaintenance, iTempMaintenance);
-		}
-	}
-
-	iTempMaintenance = std::min(iWorstCityMaintenance, iBestCapitalMaintenance);
-	FAssert(iTempMaintenance >= 0);
-
-	return iTempMaintenance;
+    return 0;
 }
 
 int CvCity::calculateNumCitiesMaintenance() const
@@ -6150,45 +6119,7 @@ int CvCity::calculateNumCitiesMaintenance() const
 
 int CvCity::calculateNumCitiesMaintenanceTimes100() const
 {
-	int iNumCitiesPercent = 100;
-
-	//Rhye - start
-	/*iNumCitiesPercent *= (getPopulation() + 17);
-	iNumCitiesPercent /= 18;*/
-	iNumCitiesPercent *= (getPopulation() + 9);
-	iNumCitiesPercent /= 10;
-	//Rhye - end
-
-	iNumCitiesPercent *= GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getNumCitiesMaintenancePercent();
-	iNumCitiesPercent /= 100;
-
-	//iNumCitiesPercent *= GC.getHandicapInfo(getHandicapType()).getNumCitiesMaintenancePercent(); //Rhye
-	iNumCitiesPercent *= GC.getHandicapInfo(getHandicapType()).getNumCitiesMaintenancePercentByID(getOwnerINLINE()); //Rhye
-	iNumCitiesPercent /= 100;
-
-	int iNumVassalCities = 0;
-	for (int iPlayer = 0; iPlayer < MAX_CIV_PLAYERS; iPlayer++)
-	{
-		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.getTeam() != getTeam() && GET_TEAM(kLoopPlayer.getTeam()).isVassal(getTeam()))
-		{
-			iNumVassalCities += kLoopPlayer.getNumCities();
-		}
-	}
-	iNumVassalCities /= std::max(1, GET_TEAM(getTeam()).getNumMembers());
-
-	int iNumCitiesMaintenance = (GET_PLAYER(getOwnerINLINE()).getNumCities() + iNumVassalCities) * iNumCitiesPercent;
-
-	iNumCitiesMaintenance = std::min(iNumCitiesMaintenance, GC.getHandicapInfo(getHandicapType()).getMaxNumCitiesMaintenance() * 100);
-	// Reduce only the city-count component, including its cap, by one third.
-	if (historicalTurns(1) == 2) iNumCitiesMaintenance = iNumCitiesMaintenance * 2 / 3;
-
-	iNumCitiesMaintenance *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getNumCitiesMaintenanceModifier() + 100));
-	iNumCitiesMaintenance /= 100;
-
-	FAssert(iNumCitiesMaintenance >= 0);
-
-	return iNumCitiesMaintenance;
+    return Administration::effort100(*this) / 2; // Half a gold per point of administrative effort.
 }
 
 
@@ -6199,48 +6130,7 @@ int CvCity::calculateColonyMaintenance() const
 
 int CvCity::calculateColonyMaintenanceTimes100() const
 {
-	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_VASSAL_STATES))
-	{
-		return 0;
-	}
-
-	CvCity* pCapital = GET_PLAYER(getOwnerINLINE()).getCapitalCity();
-	if (pCapital && pCapital->area() == area())
-	{
-		return 0;
-	}
-
-	//Rhye - start switch
-	switch (getOwnerINLINE())
-	{
-		case INDEPENDENT:
-		case INDEPENDENT2:
-		case NATIVE:
-		case CELTIA: //late start too, as Byzantium stands in the junction point of 3 continents
-			return 0;		
-	}
-	//Rhye - end
-
-	int iNumCitiesPercent = 100;
-
-	iNumCitiesPercent *= (getPopulation() + 17);
-	iNumCitiesPercent /= 18;
-
-	iNumCitiesPercent *= GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getColonyMaintenancePercent();
-	iNumCitiesPercent /= 100;
-
-	iNumCitiesPercent *= GC.getHandicapInfo(getHandicapType()).getColonyMaintenancePercent();
-	iNumCitiesPercent /= 100;
-
-	int iNumCities = (area()->getCitiesPerPlayer(getOwnerINLINE()) - 1) * iNumCitiesPercent;
-	
-	int iMaintenance = (iNumCities * iNumCities) / 100;
-
-	iMaintenance = std::min(iMaintenance, (GC.getHandicapInfo(getHandicapType()).getMaxColonyMaintenance() * calculateDistanceMaintenanceTimes100()) / 100);
-
-	FAssert(iMaintenance >= 0);
-
-	return iMaintenance;
+    return 0;
 }
 
 
@@ -6251,64 +6141,12 @@ int CvCity::calculateCorporationMaintenance() const
 
 int CvCity::calculateCorporationMaintenanceTimes100() const
 {
-	int iMaintenance = 0;
-
-	for (int iCorporation = 0; iCorporation < GC.getNumCorporationInfos(); ++iCorporation)
-	{
-		if (isActiveCorporation((CorporationTypes)iCorporation))
-		{
-			iMaintenance += calculateCorporationMaintenanceTimes100((CorporationTypes)iCorporation);
-		}
-	}
-
-	FAssert(iMaintenance >= 0);
-
-	return iMaintenance;
+    return 0;
 }
 
 int CvCity::calculateCorporationMaintenanceTimes100(CorporationTypes eCorporation) const
 {
-	int iMaintenance = 0;
-
-	for (int iCommerce = 0; iCommerce < NUM_COMMERCE_TYPES; ++iCommerce)
-	{
-		iMaintenance += 100 * GC.getCorporationInfo(eCorporation).getHeadquarterCommerce(iCommerce);
-	}
-
-	int iNumBonuses = 0;
-	for (int i = 0; i < GC.getNUM_CORPORATION_PREREQ_BONUSES(); ++i)
-	{
-		BonusTypes eBonus = (BonusTypes)GC.getCorporationInfo(eCorporation).getPrereqBonus(i);
-		if (NO_BONUS != eBonus)
-		{
-			iNumBonuses += getNumBonuses(eBonus);
-		}
-	}
-
-	int iBonusMaintenance = GC.getCorporationInfo(eCorporation).getMaintenance() * iNumBonuses;
-	iBonusMaintenance *= GC.getWorldInfo(GC.getMapINLINE().getWorldSize()).getCorporationMaintenancePercent();
-	iBonusMaintenance /= 100;
-	iMaintenance += iBonusMaintenance;
-
-	iMaintenance *= (getPopulation() + 17);
-	iMaintenance /= 18;
-
-	iMaintenance *= GC.getHandicapInfo(getHandicapType()).getCorporationMaintenancePercent();
-	iMaintenance /= 100;
-
-	iMaintenance *= std::max(0, (GET_PLAYER(getOwnerINLINE()).getCorporationMaintenanceModifier() + 100));
-	iMaintenance /= 100;
-
-	int iInflation = GET_PLAYER(getOwnerINLINE()).calculateInflationRate() + 100;
-	if (iInflation > 0)
-	{
-		iMaintenance *= 100;
-		iMaintenance /= iInflation;
-	}
-
-	FAssert(iMaintenance >= 0);
-
-	return iMaintenance;
+    return 0;
 }
 
 
@@ -8519,12 +8357,6 @@ int CvCity::getBaseYieldRateModifier(YieldTypes eIndex, int iExtra) const
 
 	iModifier += GET_PLAYER(getOwnerINLINE()).getYieldRateModifier(eIndex);
 
-	// This bonus affects all production, including conversion to commerce.
-	if (eIndex == YIELD_PRODUCTION && GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(getOwnerINLINE()).getStateReligion() != NO_RELIGION && isHasReligion(GET_PLAYER(getOwnerINLINE()).getStateReligion()))
-	{
-		iModifier += 10;
-	}
-
 
 	if (isCapital())
 	{
@@ -8785,6 +8617,7 @@ int CvCity::getYieldRate(YieldTypes eIndex) const
     // by buildings/civics and cannot become exportable local production.
     if (eIndex == YIELD_FOOD)
         iYield += getFoodTradeImports() - getFoodTradeExports();
+    if (eIndex == YIELD_PRODUCTION) iYield = (int)((__int64)iYield * Administration::productionPercent(GET_PLAYER(getOwnerINLINE())) / 10000);
     return std::max(0, iYield);
 }
 
@@ -11801,6 +11634,7 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
                 aiOldShrineActivity[i] = getNumActiveBuilding((BuildingTypes)i);
 
 		m_pabHasReligion[eIndex] = bNewValue;
+        GET_PLAYER(getOwnerINLINE()).updateMaintenance();
         GC.getGameINLINE().invalidateShrinePopulation();
 
         for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
@@ -13517,6 +13351,7 @@ static void applyTradeInfluence(CvCity* pSource, CvCity* pTarget, int iValue, in
             (__int64)iReligionChance * iReligionMultiplier + (__int64)100 * iReligionBonus);
         iReligionChance = (int)(iChanceTimes100 *
             pTarget->getReligionRivalryPercent(eReligion, false) * iEfficiency / 1000000);
+        if (GET_PLAYER(pTarget->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(pTarget->getOwnerINLINE()).getStateReligion() != eReligion) iReligionChance /= 4;
         if (iReligionChance > 0 && GC.getGameINLINE().getSorenRandNum(100, "Trade religion spread") < iReligionChance)
             pTarget->spreadReligion(eReligion, true);
     }

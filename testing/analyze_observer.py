@@ -40,6 +40,8 @@ def analyze(path):
             metadata = record
         elif kind == 'python_exception':
             findings.append(record)
+        elif kind == 'administration':
+            findings.extend(dict(check, turn=record['turn'], year=record['year']) for check in record.get('checks', []))
         elif kind in ('turn', 'initial'):
             if kind == 'turn':
                 turns = record.get('elapsed_turns', turns + 1)

@@ -13,6 +13,7 @@
 //---------------------------------------------------------------------------------------
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "CvGameTextMgr.h"
 #include "CvGameCoreUtils.h"
@@ -7341,10 +7342,22 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_FREE_SPECIALISTS_ALL_CITIES", kBuilding.getGlobalFreeSpecialist()));
 	}
 
+    if (Administration::isResidenceBuilding(eBuilding))
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_GOVERNOR_BUILD_HELP", GC.getDefineINT("ARFC_ADMIN_RESIDENCE_GOLD"), GC.getDefineINT("ARFC_ADMIN_RESIDENCE_MIN_POPULATION")));
+    }
+    int capacity = Administration::wonderModifier(eBuilding);
+    if (capacity != 0)
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_CAP_MOD", capacity, gDLL->getSymbolID(MAP_CHAR)));
+    }
+
 	if (kBuilding.getMaintenanceModifier() != 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_MAINT_MOD", kBuilding.getMaintenanceModifier()));
+		szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_LOCAL_MOD", kBuilding.getMaintenanceModifier(), gDLL->getSymbolID(MAP_CHAR)));
 	}
 
 	if (kBuilding.getHurryAngerModifier() != 0)
@@ -11668,30 +11681,10 @@ void CvGameTextMgr::buildFinanceAwaySupplyString(CvWStringBuffer& szBuffer, Play
 
 void CvGameTextMgr::buildFinanceCityMaintString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer)
 {
-	if (NO_PLAYER == ePlayer)
-	{
-		return;
-	}
-	int iLoop;
-	int iDistanceMaint = 0;
-	int iColonyMaint = 0;
-	int iCorporationMaint = 0;
-
-	CvPlayer& player = GET_PLAYER(ePlayer);
-	for (CvCity* pLoopCity = player.firstCity(&iLoop); pLoopCity != NULL; pLoopCity = player.nextCity(&iLoop))
-	{
-		iDistanceMaint += (pLoopCity->calculateDistanceMaintenanceTimes100() * std::max(0, (pLoopCity->getMaintenanceModifier() + 100))) / 100;
-		iColonyMaint += (pLoopCity->calculateColonyMaintenanceTimes100() * std::max(0, (pLoopCity->getMaintenanceModifier() + 100))) / 100;
-		iCorporationMaint += (pLoopCity->calculateCorporationMaintenanceTimes100() * std::max(0, (pLoopCity->getMaintenanceModifier() + 100))) / 100;
-	}
-	iDistanceMaint /= 100;
-	iColonyMaint /= 100;
-	iCorporationMaint /= 100;
-
-	int iNumCityMaint = player.getTotalMaintenance() - iDistanceMaint - iColonyMaint - iCorporationMaint;
-
-	szBuffer.append(NEWLINE);
-	szBuffer.append(gDLL->getText("TXT_KEY_FINANCE_ADVISOR_CITY_MAINT_COST", iDistanceMaint, iNumCityMaint, iColonyMaint, iCorporationMaint, player.getTotalMaintenance()));
+    if (ePlayer == NO_PLAYER) return;
+    const CvPlayer& player = GET_PLAYER(ePlayer);
+    szBuffer.append(NEWLINE);
+    szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_FINANCE", player.getTotalMaintenance(), Administration::overload100(player) / 50));
 }
 
 void CvGameTextMgr::buildFinanceCivicUpkeepString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer)

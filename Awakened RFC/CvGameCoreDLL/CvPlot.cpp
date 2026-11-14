@@ -1,6 +1,7 @@
 // plot.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvPlot.h"
 #include "ObserverPerformance.h"
 #include "CvCity.h"
@@ -4930,6 +4931,7 @@ PlayerTypes CvPlot::getOwner() const
 
 void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotGroup)
 {
+    Administration::invalidateNetwork();
 	PROFILE_FUNC();
 
 	// Also cover explicit Python ownership changes during civilization births.
@@ -5489,6 +5491,7 @@ TerrainTypes CvPlot::getTerrainType() const
 
 void CvPlot::setTerrainType(TerrainTypes eNewValue, bool bRecalculate, bool bRebuildGraphics)
 {
+    Administration::invalidateNetwork();
 	bool bUpdateSight;
 
 	if (getTerrainType() != eNewValue)
@@ -5546,6 +5549,7 @@ FeatureTypes CvPlot::getFeatureType() const
 
 void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 {
+    Administration::invalidateNetwork();
 	CvCity* pLoopCity;
 	CvPlot* pLoopPlot;
 	FeatureTypes eOldFeature;
@@ -5914,6 +5918,7 @@ RouteTypes CvPlot::getRouteType() const
 
 void CvPlot::setRouteType(RouteTypes eNewValue, bool bUpdatePlotGroups)
 {
+    Administration::invalidateNetwork();
 	bool bOldRoute;
 	int iI;
 

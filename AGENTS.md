@@ -10,11 +10,15 @@ commands or clearly marked path placeholders.
 ## Lean working workflow
 
 - Keep work proportional to the request. Implement the agreed change and necessary integration; defer unrelated cleanup, redesign and tooling.
+- For small follow-up changes, inspect the known implementation and its direct callers, make the focused edit, then perform the required checks. Do not restart discovery or re-review the whole feature. Expand inspection only when a concrete dependency or inconsistency requires it.
+- Decide the affected behavior and necessary integration before editing. Do not grow a small request into a feature redesign, speculative edge-case audit, new preview, AI improvement or reporting extension unless required for the requested behavior. Mention useful optional work briefly instead of implementing it silently.
 - Reuse context and findings already established in the conversation. Do not repeat repository discovery or reread entire documents without a concrete reason.
 - Batch independent inspections. Read bounded snippets; parse minified XML to inspect selected entries instead of printing whole lines or files.
 - Use existing build, audit, generation and synchronization tools. Create new helpers only when needed for the implementation or ongoing maintenance, not merely to wrap a few edits.
 - Research only unresolved facts that affect the requested decision. Stop once there is sufficient evidence; do not turn routine implementation into a separate research project.
 - Choose static checks that cover the changed behavior and file types; do not run every available audit routinely. Run each applicable check once after the relevant edits. Repeat only after a failure, a further relevant edit or a specific unresolved concern. The no-unrequested-tests rule below still applies.
+- Finish the related edits and review their diff before building or synchronizing. Aim for one necessary DLL build and one synchronization pass per request; repeat only after a failure or a subsequent relevant change. Do not build after each small edit or rebuild merely for reassurance.
+- If a small change is taking unexpectedly long, identify the concrete blocker or scope expansion and simplify the approach. Do not respond by adding tooling, broad refactoring or more checks without evidence that they are needed. Stop once the requested behavior, necessary integration and required verification are complete.
 - Update an existing relevant document briefly when needed. Avoid duplicate reports, lengthy implementation narratives and transcripts of routine verification.
 - Give short progress updates about meaningful findings or blockers. Finish with the outcome, validation and any actual limitation; omit routine command inventories.
 - Preserve the legacy toolchain, localization, unique-power and user-operated gameplay requirements below. Efficiency must not bypass these safeguards.

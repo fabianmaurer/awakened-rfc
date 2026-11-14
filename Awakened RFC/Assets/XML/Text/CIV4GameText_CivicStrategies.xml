@@ -2,11 +2,11 @@
 <Civ4GameText xmlns="http://www.firaxis.com">
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TRIBAL_SYSTEM_STRATEGY</Tag>
-        <English>+20% unit production, -20% research, +100% distance and city-count maintenance.</English>
-        <French>+20% unit production, -20% research, +100% distance and city-count maintenance.</French>
-        <German>+20% Einheitenproduktion, -20% Forschung, +100% entfernungs- und st&#228;dtezahlabh&#228;ngiger Unterhalt.</German>
-        <Italian>+20% unit production, -20% research, +100% distance and city-count maintenance.</Italian>
-        <Spanish>+20% unit production, -20% research, +100% distance and city-count maintenance.</Spanish>
+        <English>+20% unit production and -20% research.</English>
+        <French>+20% unit production and -20% research.</French>
+        <German>+20% Einheitenproduktion und -20% Forschung.</German>
+        <Italian>+20% unit production and -20% research.</Italian>
+        <Spanish>+20% unit production and -20% research.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_MONARCHY_STRATEGY</Tag>
@@ -74,11 +74,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_RULE_OF_LAW_STRATEGY</Tag>
-        <English>+2 happiness in every city and +10% commerce.</English>
-        <French>+2 happiness in every city and +10% commerce.</French>
-        <German>+2 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.</German>
-        <Italian>+2 happiness in every city and +10% commerce.</Italian>
-        <Spanish>+2 happiness in every city and +10% commerce.</Spanish>
+        <English>+1 happiness in every city and +10% commerce.</English>
+        <French>+1 happiness in every city and +10% commerce.</French>
+        <German>+1 Zufriedenheit in jeder Stadt und +10% Wirtschaftspunkte.</German>
+        <Italian>+1 happiness in every city and +10% commerce.</Italian>
+        <Spanish>+1 happiness in every city and +10% commerce.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SELF_SUFFICIENCY_STRATEGY</Tag>
@@ -98,19 +98,19 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_SERFDOM_STRATEGY</Tag>
-        <English>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</English>
-        <French>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</French>
-        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 50% schneller. Kann Bev&#246;lkerung opfern, um Einheiten zu beschleunigen.</German>
-        <Italian>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</Italian>
-        <Spanish>+1 food from farms; workers build improvements 50% faster. Can sacrifice population to rush units.</Spanish>
+        <English>+1 food from farms; workers build improvements 25% faster. Can sacrifice population to rush units.</English>
+        <French>+1 food from farms; workers build improvements 25% faster. Can sacrifice population to rush units.</French>
+        <German>+1 Nahrung durch Bauernh&#246;fe; Bautrupps errichten Verbesserungen 25% schneller. Kann Bev&#246;lkerung opfern, um Einheiten zu beschleunigen.</German>
+        <Italian>+1 food from farms; workers build improvements 25% faster. Can sacrifice population to rush units.</Italian>
+        <Spanish>+1 food from farms; workers build improvements 25% faster. Can sacrifice population to rush units.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PLANNED_ECONOMY_STRATEGY</Tag>
-        <English>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</English>
-        <French>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</French>
-        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe; -10% Wirtschaftspunkte. Keine Handelswege mit Kapitalisten.</German>
-        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</Italian>
-        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms; -10% commerce. No trade routes with Capitalists.</Spanish>
+        <English>+1 production from workshops, watermills and windmills; +1 food from farms. No trade routes with Capitalists.</English>
+        <French>+1 production from workshops, watermills and windmills; +1 food from farms. No trade routes with Capitalists.</French>
+        <German>+1 Produktion durch Werkst&#228;tten, Wasser- und Windm&#252;hlen; +1 Nahrung durch Bauernh&#246;fe. Keine Handelswege mit Kapitalisten.</German>
+        <Italian>+1 production from workshops, watermills and windmills; +1 food from farms. No trade routes with Capitalists.</Italian>
+        <Spanish>+1 production from workshops, watermills and windmills; +1 food from farms. No trade routes with Capitalists.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CORPORATE_ECONOMY_STRATEGY</Tag>
@@ -138,11 +138,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY</Tag>
-        <English>+5% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +30%.</English>
-        <French>+5% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme effectivement exploit&#233;e par la ville productrice. Inclut les unit&#233;s de si&#232;ge ; exclut les unit&#233;s civiles et les navires. Six fermes exploit&#233;es donnent +30%.</French>
-        <German>+5% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet.</German>
-        <Italian>+5% alla produzione di unit&#224; militari terrestri per fattoria effettivamente lavorata dalla citt&#224; produttrice. Include le unit&#224; d&#8217;assedio; esclude le unit&#224; civili e le navi. Sei fattorie lavorate danno +30%.</Italian>
-        <Spanish>+5% a la producci&#243;n de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +30%.</Spanish>
+        <English>+4% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +24%.</English>
+        <French>+4% &#224; la production d&#8217;unit&#233;s militaires terrestres par ferme effectivement exploit&#233;e par la ville productrice. Inclut les unit&#233;s de si&#232;ge ; exclut les unit&#233;s civiles et les navires. Six fermes exploit&#233;es donnent +24%.</French>
+        <German>+4% Produktion f&#252;r milit&#228;rische Landeinheiten f&#252;r jeden Bauernhof, den eine Stadt bewirtschaftet.</German>
+        <Italian>+4% alla produzione di unit&#224; militari terrestri per fattoria effettivamente lavorata dalla citt&#224; produttrice. Include le unit&#224; d&#8217;assedio; esclude le unit&#224; civili e le navi. Sei fattorie lavorate danno +24%.</Italian>
+        <Spanish>+4% a la producci&#243;n de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +24%.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_PROFESSIONAL_ARMY_STRATEGY</Tag>
@@ -154,11 +154,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_CONSCRIPTION_STRATEGY</Tag>
-        <English>+25% unit production. Food surplus contributes to land military unit production.</English>
-        <French>+25% unit production. Food surplus contributes to land military unit production.</French>
-        <German>+25% Einheitenproduktion. Nahrungs&#252;berschuss tr&#228;gt zur Produktion milit&#228;rischer Landeinheiten bei.</German>
-        <Italian>+25% unit production. Food surplus contributes to land military unit production.</Italian>
-        <Spanish>+25% unit production. Food surplus contributes to land military unit production.</Spanish>
+        <English>+35% unit production. Food surplus contributes to land military unit production.</English>
+        <French>+35% unit production. Food surplus contributes to land military unit production.</French>
+        <German>+35% Einheitenproduktion. Nahrungs&#252;berschuss tr&#228;gt zur Produktion milit&#228;rischer Landeinheiten bei.</German>
+        <Italian>+35% unit production. Food surplus contributes to land military unit production.</Italian>
+        <Spanish>+35% unit production. Food surplus contributes to land military unit production.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_ANCESTOR_CULT_STRATEGY</Tag>
@@ -178,11 +178,11 @@
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_GOD_STATE_STRATEGY</Tag>
-        <English>+10% production in cities with the state religion; -1 happiness per non-state religion. Conquered cities are pacified by conversion.</English>
-        <French>+10% de production dans les villes de la religion d&#8217;&#201;tat ; -1 bonheur par autre religion. La conversion pacifie les villes conquises.</French>
-        <German>+10% Produktion in St&#228;dten mit Staatsreligion; -1 Zufriedenheit je fremder Religion. Eroberte St&#228;dte werden durch Konvertierung befriedet.</German>
-        <Italian>+10% produzione nelle citt&#224; con la religione di Stato; -1 felicit&#224; per ogni altra religione. La conversione pacifica le citt&#224; conquistate.</Italian>
-        <Spanish>+10% de producci&#243;n en ciudades con la religi&#243;n estatal; -1 felicidad por cada otra religi&#243;n. La conversi&#243;n pacifica las ciudades conquistadas.</Spanish>
+        <English>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</English>
+        <French>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</French>
+        <German>Verdoppelt den Religionseinfluss auf den Verwaltungsaufwand und erschwert fremde Religionsverbreitung deutlich. -1 Zufriedenheit je fremder Religion. Eroberte St&#228;dte werden durch Konvertierung befriedet.</German>
+        <Italian>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</Italian>
+        <Spanish>Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.</Spanish>
     </TEXT>
     <TEXT>
         <Tag>TXT_KEY_RFCMP_CIVIC_TOLERANCE_STRATEGY</Tag>

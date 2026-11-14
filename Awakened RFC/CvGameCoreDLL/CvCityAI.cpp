@@ -1,6 +1,7 @@
 // cityAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
 #include "CvGlobals.h"
@@ -397,6 +398,13 @@ bool CvCityAI::AI_avoidGrowth()
 {
 	PROFILE_FUNC();
 
+    const CvPlayerAI& adminOwner = GET_PLAYER(getOwnerINLINE());
+    if (!isHuman() && adminOwner.getID() < NUM_MAJOR_PLAYERS && getPopulation() >= 3 && !Administration::penaltiesSuspended(adminOwner))
+    {
+        int nextCitizen = Administration::effort100(*this) / std::max(1, getPopulation());
+        if (Administration::totalEffort100(adminOwner) + nextCitizen > Administration::capacity100(adminOwner))
+            return true;
+    }
 	if (AI_isEmphasizeAvoidGrowth())
 	{
 		return true;
@@ -3776,7 +3784,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 		}
 	}
 
-	int iValue = 0;
+    int iValue = Administration::infrastructureValue(*this, eBuilding);
 
 	for (iPass = 0; iPass < 2; iPass++)
 	{
@@ -4010,12 +4018,10 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 			if ((iFocusFlags & BUILDINGFOCUS_MAINTENANCE) || (iFocusFlags & BUILDINGFOCUS_GOLD) || (iPass > 0))
 			{
 
-				int iBaseMaintenance = getMaintenanceTimes100();
-				int iExistingUpkeep = (iBaseMaintenance * std::max(0, 100 + getMaintenanceModifier())) / 100;
-				int iNewUpkeep = (iBaseMaintenance * std::max(0, 100 + getMaintenanceModifier() + kBuilding.getMaintenanceModifier())) / 100;
-				
-				iTempValue = (iExistingUpkeep - iNewUpkeep) / 16;
-				
+                int relief = -kBuilding.getMaintenanceModifier();
+                int pressure = Administration::overload100(GET_PLAYER(getOwnerINLINE()));
+                iTempValue = relief > 0 ? relief * getPopulation() * (100 + std::min(300, pressure / 100)) / 200 : 0;
+
 				if (bFinancialTrouble)
 				{
 					iTempValue *= 2;
@@ -4127,7 +4133,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 				if (kBuilding.isGovernmentCenter())
 				{
 					FAssert(!(kBuilding.isCapital()));
-					iValue += ((calculateDistanceMaintenance() - 3) * iNumCitiesInArea);
+                // Travel-time and capacity effects are scored above.
 				}
 
 				if (kBuilding.isMapCentering())
@@ -5695,6 +5701,11 @@ void CvCityAI::AI_updateRouteToCity()
 						// Only a strictly nearer city can replace the current choice.
 						// Preserve iteration-order ties without an unnecessary path search.
 						iValue = plotDistance(getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE());
+                        if (!isHuman() && Administration::travelTime100(*this) >= 200)
+                        {
+                            iValue *= 4;
+                            if (pLoopCity->isGovernmentCenter() || Administration::hasResidence(*pLoopCity)) iValue /= 4;
+                        }
 						if (iValue >= iBestValue) continue;
 						if (!(gDLL->getFAStarIFace()->GeneratePath(&GC.getRouteFinder(), getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE(), false, getOwnerINLINE(), true)))
 						{
@@ -6722,7 +6733,7 @@ void CvCityAI::AI_doHurry(bool bForce)
 			{
 				if (GC.getBuildingInfo(eProductionBuilding).getMaintenanceModifier() < 0)
 				{
-					if (getMaintenance() >= 10)
+					if (Administration::overload100(GET_PLAYER(getOwnerINLINE())) > 0)
 					{
 						iMinTurns = std::min(iMinTurns, 10);
 						bEssential = true;

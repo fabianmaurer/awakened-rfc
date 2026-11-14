@@ -15,6 +15,129 @@ Historical goals are currently disabled for all civilizations. They grant no
 rewards or historical victory, and the scoreboard no longer shows goal progress.
 Historical objectives described below are inactive.
 
+## Administration and empire size
+
+Administration replaces stability penalties for city count, foreign territory
+and uncontrolled homeland cities. Base capacity is **50 on XL**, otherwise
+**33**, and grows by 25% of its initial value per era since Ancient, including
+late starts. Civic and wonder percentages add together before modifying this base.
+
+City effort is `population × (1 + 0.05 × travel time) × (1 + local modifiers)`.
+City administration costs round up to one decimal place after all modifiers; national capacity rounds up to whole points. National effort is the sum of the rounded city costs.
+
+Fractional travel times use two land movement points and current road speeds.
+Each sea leg uses one, two or four movement points with zero, one or two harbors
+at its coastal transitions. Mixed land/sea routes start from the capital. Open borders and vassal territory allow
+passage; troops and blockades are ignored. Ocean travel requires Astronomy.
+
+Connectivity and cost distance are separate. Continuous owned, passable land
+has no range limit. Owned towns relay overland sections. Owned harbors relay
+sea connections with each section below
+**ten reference turns**. Foreign/unowned land consumes section travel time; open
+borders do not create an unlimited owned land corridor. A new coastal city may
+be an endpoint without a harbor, but only an owned harbor renews a sea connection.
+Unconnected sites cannot be settled. Existing or conquered cities become
+independent after **10 XL turns or 5 ordinary turns** without reconnection.
+The full cost distance keeps increasing; it is no longer capped at ten turns.
+If no physical route exists, direct capital travel uses a 100-turn fallback.
+
+The **Governor's Residence** replaces the national Summer Palace. It is
+repeatable, costs **200 production and 3 gold per turn**, and requires Code of
+Laws, a local courthouse and **four population** to construct. It adds no
+national capacity. A city uses the cheaper of direct capital travel or travel
+to one residence plus **50% of that residence's direct capital travel**. A
+residence city always uses its own residence, including its own discount. The
+capital portion never uses another residence, so discounts cannot chain.
+Residences do not extend connectivity. Versailles grants national capacity only.
+
+A large **Abandon residence** button appears beneath the city building list.
+Confirmation previews national effort and the gold balance after removal,
+including upkeep and production-process changes at current settings. There is
+no construction refund. Build a replacement before abandoning the old residence
+if you want continuous regional coverage.
+
+Overload is `max(0, effort / capacity − 1)`. At 100% overload, city upkeep rises
+by 200%, current stability falls by 40 and production falls by 20%. Production
+is reduced after bonuses and reaches zero at 500% overload. The stability
+contribution disappears immediately when capacity is sufficient again.
+City upkeep is **0.5 gold per point of administrative effort** plus the overload surcharge.
+Distance, colonies and corporations add no separate upkeep. Buildings reduce
+upkeep through their reductions to administrative effort.
+
+Courthouses, Sacrificial Altars and Ziggurats reduce local effort by 20%; Rathaus
+and Delhi's replacement by 30%; Provincial Administration by 25%; Ikhanda by 5%;
+Digital Administration by 15%. Reductions add without a hard cap, with normal
+building combinations limited to 50%. Pyramids and Great Library give +10%
+national capacity each; Versailles gives +15%.
+
+| Category | Capacity |
+| --- | --- |
+| Government | Tribal System −40%; Monarchy, Republic, Dictatorship and Democracy 0%. |
+| Legitimacy | Despotism −10%, Theocratic Legitimacy +10%, Plutocracy −10%, Nationalism 0%, Rule of Law +20%. |
+| Economy | Self-sufficiency 0%, Slavery −10%, Serfdom +10%, Planned Economy −20%, Market Economy 0%. |
+| Military | Warrior Society −10%, Naval Warfare 0%, Feudal Retinues +10%, Professional Army +10%, Conscription −10%. |
+| Religion | All 0%; religion changes local effort instead. |
+
+Civilization-specific variants replace the generic value: **Pharaonic Kingship,
+Divine Kingship and Roman Legions 0%**, **Roman Republic +40%**, **Horde −10%**.
+Their existing special effects remain active. Organized Egyptian and Roman
+institutions do not inherit generic administration penalties. Early and late
+civic combinations can provide the same capacity bonus; era growth provides
+progression.
+
+State religion reduces effort by 5%, each foreign religion adds 10%. Without a
+state religion there is no religious adjustment. Tolerance removes both effects;
+State Atheism treats every religion as foreign. God State doubles religion's
+administrative effects, loses its production bonus and quarters foreign passive
+spread and missionary success chances.
+
+**F1** shows administration, overload effects, stability and a compact city list.
+Non-capital cities may join an existing own vassal or revive an available extinct
+civilization whose historical birth/flip area includes the city. Otherwise,
+only direct independence is offered. Future spawns and human slots are protected.
+Every release resets stored city culture for all civilizations to zero.
+The AI considers vassal releases after sustained 25% overload; independence
+requires at least 50% overload and receives half the release score.
+Voluntary administrative releases cause no city-loss stability shock or
+acquisition stability bonus and do not count toward the city-count collapse check.
+Automatic secession from lost connectivity retains the ordinary city-loss rules.
+There is no reintegration action. The map symbol also
+marks administration on civic cards and in the city screen. Runtime behavior,
+balance and multiplayer remain unverified.
+
+During an active jihad event, administration penalties are suspended: no overload upkeep surcharge, stability loss or
+production penalty. The distance-based loss-of-control countdown pauses. The
+AI suspends administration-based growth and conquest restrictions and does not
+release cities for relief. Effort and capacity remain visible; ordinary rules
+resume when the event ends. The connection requirements for settlement still apply. Crusades do not grant
+this exemption.
+
+The AI evaluates settlement sites at an early population of three and reserves
+some capacity for existing cities' growth. Excessively burdensome sites are
+rejected and costly conquest targets receive lower scores. Cities of population
+three or more avoid growth when another citizen would exceed capacity. Civic
+and state-religion choices account for their actual overload effects.
+
+Road connections prioritize distant, populous cities, the capital and governor residences.
+For harbors and governor residences, the AI shortlists geographically
+promising locations, then evaluates the best candidate's actual travel-time
+and effort savings using the existing route network. After at least three
+reference turns at 25% or more overload, it may release a suitable peripheral
+city to a vassal, at most once per five reference turns. Capitals, holy cities
+and cities with world wonders are protected. Voluntary release requires an
+eligible vassal slot and avoids severely overloading the recipient.
+
+State-religion missionaries can target foreign religions in owned cities.
+Missionary demand accounts for these targets; removal weighs administrative
+relief against the loss of religious buildings. The AI avoids purges under
+Tolerance or State Atheism, in foreign holy cities, and during an advanced
+culture-victory strategy. Human automated missionaries do not gain this action.
+Religious-purge decisions also weigh happiness changes from religion, lost
+building bonuses and religion-related war anger. Relieving existing angry
+citizens matters more than adding spare happiness.
+
+These are planning heuristics; their balance has not been validated in-game.
+
 ## Apostolic council
 
 The Apostolic Palace **cannot be constructed**. Once Christianity is present in
@@ -660,7 +783,7 @@ each qualifying building or worked improvement.
 For Egypt, Tribal System is called **Pharaonic Kingship** and Despotism is
 called **Divine Kingship**, in every era. Pharaonic Kingship grants +1 production
 from farms and per slave specialist, with medium civic upkeep. It replaces the
-unit production bonus, research penalty and city-maintenance penalties of Tribal
+unit production bonus, research penalty and administration penalty of Tribal
 System. Under Divine Kingship, each assigned priest in a city with an Egyptian
 Obelisk grants +1 happiness, capped at +2 per city. This replaces the happiness
 from palaces and monuments. Obelisks do not become obsolete while the civic is
@@ -676,7 +799,7 @@ ruler as embodying divine authority.
 
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
-| **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
+| **Tribal System** | None | None | +20% production for all units; -20% research; -40% administration capacity. |
 | **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. Special espionage towards other monarchies. |
 | **Republic** | Code of Laws | Medium | Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
@@ -690,7 +813,7 @@ ruler as embodying divine authority.
 | **Theocracy** | Divine Right | High | +1 happiness per building of the state religion; -2 happiness per building of another religion. With a state religion, land units receive +15% combat strength against barbarians and countries with a different or no state religion, on attack and defense. |
 | **Plutocracy** | Banking | Medium | +25% gold income; +50% commerce from trade routes. |
 | **Nationalism** | Nationalism | Medium | +5 culture in every city; +20% production; -5 happiness in cities where another player's culture exceeds the owner's culture on the city tile. |
-| **Rule of Law** | Constitution | High | +2 happiness in every city; +10% commerce yield. |
+| **Rule of Law** | Constitution | High | +1 happiness in every city; +10% commerce yield. |
 
 ### Labor
 
@@ -698,8 +821,8 @@ ruler as embodying divine authority.
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
 | **Slavery** | Bronze Working | Low | Captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
-| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 50% faster. Population can rush units only, not buildings or projects. |
-| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
+| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 25% faster. Population can rush units only, not buildings or projects. |
+| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
 Improvement growth includes every upgrade stage: **Cottage → Hamlet → Village →
@@ -740,9 +863,9 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Horde** (replaces Warrior Society for the Huns and Mongolia) | Horseback Riding | Medium | +50% mounted-unit production; newly trained mounted units start with +3 experience; +100% gold from pillaging improvements; -50% war weariness; **-25% research output**. |
 | **Naval Warfare** | Sailing | Low | +50% production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. |
-| **Feudal Retinues** | Feudalism | Medium | +5% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +30%. |
+| **Feudal Retinues** | Feudalism | Medium | +4% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +24%. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
-| **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
+| **Conscription** | Military Science | Medium | +35% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 
 Horde uses Warrior Society's existing slot, keeping five military choices for
 each civilization. The Huns and Mongolia start with Horde when its technology
@@ -869,7 +992,7 @@ The canonical partition causes neither city-loss stability penalties nor conques
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. Allows a state religion; -1 state-religion happiness cancels its normal +1 bonus. |
 | **State Religion** | Monotheism | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
-| **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
+| **Holy State** | Theology | High | Doubles religious administrative effects and strongly resists foreign religious spread; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
@@ -1489,10 +1612,14 @@ the funding divisor. Their force buildup continues to decay; replacement targets
 wait for the normal reassessment. Economic operations pause when their last
 direct trade route disappears, including when war ends trade.
 
-Each active force receives `total espionage / active forces + 10% of total
-espionage`. Forces with no operations or no valid assigned targets receive no
-funding and do not enter the divisor. One active force receives 110%, two receive
-60% each, and the three Medieval forces receive about 43.3% each: 130% combined.
+Each unlocked force adds 10% of base espionage to the operations budget,
+including forces with no operations. This budget is shared equally among forces
+with valid active assignments. Forces with no operations or no valid assigned
+targets receive no funding and do not enter the divisor. With three unlocked
+forces, the budget is 130% of base espionage: one active force receives 130%,
+two receive 65% each, and three receive about 43.3% each. Idle forces appear as
+supporting operations when at least one force is active. The team list includes
+an information tile explaining the budget and funding split.
 Cooperation bonuses strengthen offensive operations, but cooperation itself
 uses base output and never shares bonuses recursively.
 
@@ -2120,9 +2247,12 @@ help explains current conditions.
 
 At game start, seeded branch and size choices produce a saved catalogue of local
 reaches. The shared initiation rate per weighted river segment is calibrated against that
-catalogue and the map's flood-plain tiles to target **3.5 food per farmed desert
-flood-plain tile per turn**, averaged over random events in the long run. This
-includes overlapping events and healthy second rivers. The initiation chance
+catalogue and the map's flood-plain tiles against a baseline of **3.5 food per
+farmed desert flood-plain tile per turn**, averaged over random events in the
+long run. The actual initiation rate is **half this calibrated rate**, making
+normal droughts rarer and raising long-run food output above that baseline.
+Duration and severity are unchanged. The calibration includes overlapping events
+and healthy second rivers. The initiation chance
 depends on the seeded catalogue and models ordinary random droughts only. The initial grace
 period and Harappa's historical drought are excluded from this stationary estimate.
 Resources, technology, unique powers and irrigation from other sources can raise

@@ -28,6 +28,11 @@ typedef std::vector< std::pair<CivilizationTypes, LeaderHeadTypes> > CivLeaderAr
 class CvPlayer
 {
 public:
+    int getAdministrationValue(int kind, int cityID = -1) const;
+    int getAdministrationReleaseTarget(int cityID) const;
+    bool releaseAdministrationCity(int cityID, bool independent);
+    bool removeAdministrationResidence(int cityID);
+    int calculateInflatedCostsWithMaintenance(int maintenance) const;
 	CvPlayer();
 	virtual ~CvPlayer();
 

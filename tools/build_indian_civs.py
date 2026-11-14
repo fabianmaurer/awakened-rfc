@@ -249,7 +249,7 @@ def main():
         if offset==0:
             parent=building.find('SpecialistCounts');parent.clear();item=ET.SubElement(parent,'SpecialistCount');ET.SubElement(item,'SpecialistType').text='SPECIALIST_PRIEST';ET.SubElement(item,'iSpecialistCount').text='2'
         elif offset==1: set_value(building,'iTradeRouteModifier',75)
-        elif offset==2: set_value(building,'iMaintenanceModifier',-60)
+        elif offset==2: set_value(building,'iMaintenanceModifier',-30)
         elif offset==3:
             building.find('CommerceModifiers')[0].text='35'
         else:

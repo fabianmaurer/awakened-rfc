@@ -1,6 +1,7 @@
 // team.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
@@ -3902,6 +3903,7 @@ bool CvTeam::isOpenBorders(TeamTypes eIndex) const
 
 void CvTeam::setOpenBorders(TeamTypes eIndex, bool bNewValue)
 {
+    Administration::invalidateNetwork();
 	bool bOldFreeTrade;
 	int iI;
 
@@ -4030,6 +4032,7 @@ bool CvTeam::isVassal(TeamTypes eIndex) const
 
 void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 {
+    Administration::invalidateNetwork();
 	if (bNewValue)
 	{
 		if (GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
@@ -5157,6 +5160,7 @@ void CvTeam::announceTechToPlayers(TechTypes eIndex, bool bPartial)
 
 void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, bool bFirst, bool bAnnounce)
 {
+    Administration::invalidateNetwork();
 	PROFILE_FUNC();
 
 	CvCity* pCapitalCity;

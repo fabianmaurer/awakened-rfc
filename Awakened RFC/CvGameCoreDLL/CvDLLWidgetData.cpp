@@ -1,4 +1,5 @@
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvGameCoreUtils.h"
 #include "CvCity.h"
 #include "CvUnit.h"
@@ -3693,75 +3694,31 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 
 void CvDLLWidgetData::parseMaintenanceHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {
-	CvCity* pHeadSelectedCity;
-	wchar szTempBuffer[1024];
-	int iMaintenanceValue;
-
-	pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
-
-	if (pHeadSelectedCity != NULL)
-	{
-		if (pHeadSelectedCity->isWeLoveTheKingDay())
-		{
-			szBuffer.append(NEWLINE);
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_WE_LOVE_KING_MAINT"));
-		}
-		else
-		{
-			//		szBuffer = "Maintenance represents the total cost of governing this city.\n";
-			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_MAINT_INFO"));
-			szBuffer.append(NEWLINE);
-
-			iMaintenanceValue = pHeadSelectedCity->calculateDistanceMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				//			swprintf(szTempBuffer, "\n%s%d%c: %s", ((iMaintenanceValue > 0) ?  "+" : ""), iMaintenanceValue, GC.getCommerceInfo(COMMERCE_GOLD).getChar(), ((GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getNumGovernmentCenters() > 0) ? "Distance from Palace" : "No Palace Penalty"));
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_NUM_MAINT_FLOAT", szMaint.GetCString()) + ((GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getNumGovernmentCenters() > 0) ? gDLL->getText("TXT_KEY_MISC_DISTANCE_FROM_PALACE") : gDLL->getText("TXT_KEY_MISC_NO_PALACE_PENALTY")));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateNumCitiesMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				//			swprintf(szTempBuffer, "\n%s%d%c: Number of Cities", ((iMaintenanceValue > 0) ? "+" : ""), iMaintenanceValue, GC.getCommerceInfo(COMMERCE_GOLD).getChar());
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_NUM_CITIES_FLOAT", szMaint.GetCString()));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateColonyMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_COLONY_MAINT_FLOAT", szMaint.GetCString()));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateCorporationMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_CORPORATION_MAINT_FLOAT", szMaint.GetCString()));
-			}
-
-			szBuffer.append(SEPARATOR);
-
-			//		swprintf(szTempBuffer, "\n%d%c Total Maintenance", pHeadSelectedCity->getMaintenance(), GC.getCommerceInfo(COMMERCE_GOLD).getChar());
-			CvWString szMaint = CvWString::format(L"%d.%02d", pHeadSelectedCity->getMaintenanceTimes100()/100, pHeadSelectedCity->getMaintenanceTimes100()%100);
-			szBuffer.append(NEWLINE);
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_TOTAL_MAINT_FLOAT", szMaint.GetCString()));
-
-			iMaintenanceValue = pHeadSelectedCity->getMaintenanceModifier();
-
-			if (iMaintenanceValue != 0)
-			{
-				swprintf(szTempBuffer, L" (%s%d%%)", ((iMaintenanceValue > 0) ? L"+" : L""), iMaintenanceValue);
-				szBuffer.append(szTempBuffer);
-			}
-		}
-	}
+    CvCity* city = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+    if (!city) return;
+    szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_CITY_HELP", city->getPopulation(), gDLL->getSymbolID(MAP_CHAR)));
+    int travel = Administration::travelTime100(*city);
+    if (travel > 0)
+    {
+        // Each reference turn adds 5%; retain fractional percentages.
+        CvWString distanceText;
+        if (travel % 20 == 0) distanceText = CvWString::format(L"+%d", travel / 20);
+        else if (travel % 2 == 0) distanceText = CvWString::format(L"+%d.%d", travel / 20, (travel % 20) / 2);
+        else distanceText = CvWString::format(L"+%d.%02d", travel / 20, (travel % 20) * 5);
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_DISTANCE_MODIFIER", distanceText.GetCString()));
+    }
+    int local = Administration::localModifier(*city);
+    if (local != 0)
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_LOCAL_MODIFIER", local));
+    }
+    const CvPlayer& owner = GET_PLAYER(city->getOwnerINLINE());
+    if (!Administration::isReachable(owner, *city->plot()))
+    {
+        szBuffer.append(NEWLINE); szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_DISCONNECTED"));
+    }
 }
 
 

@@ -59,6 +59,8 @@ class CvEspionageAdvisor:
         screen.setPanelColor(name, PANEL_COLOR[0], PANEL_COLOR[1], PANEL_COLOR[2])
 
     def modeName(self, mode):
+        if mode == 5 and gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 301) > 0:
+            return tr("SUPPORT_MODE")
         if mode == 2 and gc.getPlayer(self.iActivePlayer).getIntelligenceData(-1, 32):
             return tr("DYNASTIC_MODE")
         return tr("MODE_%d" % mode)
@@ -161,10 +163,18 @@ class CvEspionageAdvisor:
                 screen.setLabelAt(name, scroll, u"<font=%s>%s</font>" % (size, value),
                     CvUtil.FONT_LEFT_JUSTIFY, 14, y + offset, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, f)
                 screen.setHitTest(name, HitTestTypes.HITTEST_NOHIT)
+        infoY = count * 112 + 8
         if count < gc.getNumEraInfos():
             name = self.name()
             screen.setLabelAt(name, scroll, u"<font=2>%s</font>" % tr("FORCE_UNLOCK", (gc.getEraInfo(count).getDescription(),)),
                 CvUtil.FONT_LEFT_JUSTIFY, 14, count * 112 + 14, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+            infoY += 42
+        infoTile = self.name()
+        screen.attachPanelAt(scroll, infoTile, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH,
+            4, infoY, 274, 160, WidgetTypes.WIDGET_GENERAL, -1, -1)
+        screen.setPanelColor(infoTile, PANEL_COLOR[0], PANEL_COLOR[1], PANEL_COLOR[2])
+        screen.attachMultilineText(infoTile, self.name(), u"<font=2>%s</font>" % tr("FUNDING_HELP"),
+            WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
         self.targets = []
         for slot in range(3):
             target = player.getIntelligenceData(self.iForce, 320 + slot)
@@ -254,6 +264,8 @@ class CvEspionageAdvisor:
         if mode == 2 and player.getIntelligenceData(-1, 32):
             return tr("DYNASTIC_REQUIRE") + u"\n" + tr("DYNASTIC_HELP")
         if mode == 5:
+            if player.getIntelligenceData(-1, 301) > 0:
+                return tr("SUPPORT_HELP")
             return tr("NONE_HELP")
         return tr(requirement) + u"\n" + tr(("TECH_HELP", "MILITARY_HELP", "POLITICS_HELP", "ECONOMIC_HELP", "COOP_HELP")[mode])
 
@@ -389,7 +401,7 @@ class CvEspionageAdvisor:
             self.label(tr("COOP_INFLUENCE", (chanceText(player.getIntelligenceData(i, 63)),)), 356, y + 32)
             self.body(tr("COOP_HELP"), 356, y + 96, 628, 88)
         else:
-            self.body(tr("NONE_HELP"), 356, y, 628, 140)
+            self.body(self.modeHelp(player, mode), 356, y, 628, 140)
         self.drawModeFooter(player, mode)
 
     def drawModeFooter(self, player, mode):

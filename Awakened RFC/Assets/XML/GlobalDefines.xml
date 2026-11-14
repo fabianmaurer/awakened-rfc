@@ -1761,4 +1761,47 @@
     <!-- Experimental deterministic late-game approximation, all peers must match. -->
     <Define><DefineName>RFCMP_FAST_LATE_GAME</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
     <Define><DefineName>RFCMP_FAST_LATE_YEAR</DefineName><iDefineIntVal>-10000</iDefineIntVal></Define>
+
+	<!-- Administration capacity: additive national percentage modifiers. -->
+	<Define><DefineName>ARFC_ADMIN_CIVIC_TRIBAL_SYSTEM</DefineName><iDefineIntVal>-40</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_MONARCHY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_REPUBLIC</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DICTATORSHIP</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DEMOCRACY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DESPOTISM</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_THEOCRATIC_LEGITIMACY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PLUTOCRACY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_NATIONALISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_RULE_OF_LAW</DefineName><iDefineIntVal>20</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SELF_SUFFICIENCY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SLAVERY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SERFDOM</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PLANNED_ECONOMY</DefineName><iDefineIntVal>-20</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_CORPORATE_ECONOMY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_WARRIOR_SOCIETY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_NAVAL_WARFARE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_FEUDAL_RETINUES</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PROFESSIONAL_ARMY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_CONSCRIPTION</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_ANCESTOR_CULT</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_STATE_RELIGION</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_GOD_STATE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_TOLERANCE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_STATE_ATHEISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_PYRAMID</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_GREAT_LIBRARY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_GREAT_PALACE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_VERSAILLES</DefineName><iDefineIntVal>15</iDefineIntVal></Define>
+
+	<!-- Civilization-specific civic capacity values replace their generic civic value. -->
+	<Define><DefineName>ARFC_ADMIN_PHARAONISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_DIVINE_KINGSHIP</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_ROMAN_REPUBLIC</DefineName><iDefineIntVal>40</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_ROMAN_LEGIONS</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_HORDE</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_LINK_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_UNREACHABLE_TRAVEL</DefineName><iDefineIntVal>100</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_CAPITAL_PERCENT</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_GOLD</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_MIN_POPULATION</DefineName><iDefineIntVal>4</iDefineIntVal></Define>
 </Civ4Defines>

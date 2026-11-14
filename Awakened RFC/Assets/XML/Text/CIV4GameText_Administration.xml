@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_NAME</Tag>
+    <English>Administration</English>
+    <French>Administration</French>
+    <German>Verwaltung</German>
+    <Italian>Amministrazione</Italian>
+    <Spanish>Administraci&#243;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_ADVISOR</Tag>
+    <English>Domestic Affairs</English>
+    <French>Affaires int&#233;rieures</French>
+    <German>Inlandsberater</German>
+    <Italian>Affari interni</Italian>
+    <Spanish>Asuntos internos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_OVERLOAD</Tag>
+    <English>Over capacity: %s1_Value%%</English>
+    <French>Surcharge : %s1_Value%%</French>
+    <German>&#220;berlastung: %s1_Value%%</German>
+    <Italian>Sovraccarico: %s1_Value%%</Italian>
+    <Spanish>Sobrecarga: %s1_Value%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_EFFECTS</Tag>
+    <English>City upkeep +%s1_Value%%   Stability %D2_Value   Production -%s3_Value%%</English>
+    <French>Entretien des villes +%s1_Value%%   Stabilit&#233; %D2_Value   Production -%s3_Value%%</French>
+    <German>St&#228;dteunterhalt +%s1_Value%%   Stabilit&#228;t %D2_Value   Produktion -%s3_Value%%</German>
+    <Italian>Mantenimento citt&#224; +%s1_Value%%   Stabilit&#224; %D2_Value   Produzione -%s3_Value%%</Italian>
+    <Spanish>Mantenimiento urbano +%s1_Value%%   Estabilidad %D2_Value   Producci&#243;n -%s3_Value%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CITY</Tag>
+    <English>City</English>
+    <French>Ville</French>
+    <German>Stadt</German>
+    <Italian>Citt&#224;</Italian>
+    <Spanish>Ciudad</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_POP</Tag>
+    <English>Population</English>
+    <French>Population</French>
+    <German>Bev&#246;lkerung</German>
+    <Italian>Popolazione</Italian>
+    <Spanish>Poblaci&#243;n</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_TRAVEL</Tag>
+    <English>Travel time</English>
+    <French>Temps de trajet</French>
+    <German>Reisezeit</German>
+    <Italian>Tempo di viaggio</Italian>
+    <Spanish>Tiempo de viaje</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CONTROL</Tag>
+    <English>Control</English>
+    <French>Contr&#244;le</French>
+    <German>Kontrolle</German>
+    <Italian>Controllo</Italian>
+    <Spanish>Control</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CONTROL_LOST_IN</Tag>
+    <English>%d1_Turns turns left</English>
+    <French>%d1_Turns tours restants</French>
+    <German>Noch %d1_Turns Runden</German>
+    <Italian>%d1_Turns turni rimasti</Italian>
+    <Spanish>Quedan %d1_Turns turnos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_RELEASE</Tag>
+    <English>Release</English>
+    <French>D&#233;tacher</French>
+    <German>Ausgliedern</German>
+    <Italian>Separare</Italian>
+    <Spanish>Separar</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_RELEASE_CONFIRM</Tag>
+    <English>Release %s1_City?</English>
+    <French>D&#233;tacher %s1_City ?</French>
+    <German>%s1_City ausgliedern?</German>
+    <Italian>Separare %s1_City?</Italian>
+    <Spanish>&#191;Separar %s1_City?</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_RELEASE_VASSAL</Tag>
+    <English>Vassal: %s1_Civ</English>
+    <French>Vassal : %s1_Civ</French>
+    <German>Vasall: %s1_Civ</German>
+    <Italian>Vassallo: %s1_Civ</Italian>
+    <Spanish>Vasallo: %s1_Civ</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_RELEASE_INDEPENDENT</Tag>
+    <English>Grant independence</English>
+    <French>Accorder l&#8217;ind&#233;pendance</French>
+    <German>Unabh&#228;ngigkeit gew&#228;hren</German>
+    <Italian>Concedi l&#8217;indipendenza</Italian>
+    <Spanish>Conceder independencia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_LOST</Tag>
+    <English>%s1_City has become independent because it could not be administered.</English>
+    <French>%s1_City devient ind&#233;pendante faute d&#8217;administration.</French>
+    <German>%s1_City ist wegen fehlender Erreichbarkeit unabh&#228;ngig geworden.</German>
+    <Italian>%s1_City &#232; diventata indipendente perch&#233; non poteva essere amministrata.</Italian>
+    <Spanish>%s1_City se ha independizado por falta de acceso administrativo.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_LOCAL_MOD</Tag>
+    <English>%D1_Value%% administrative effort %F2_Symbol</English>
+    <French>%D1_Value%% de charge administrative %F2_Symbol</French>
+    <German>%D1_Value%% Verwaltungsaufwand %F2_Symbol</German>
+    <Italian>%D1_Value%% di carico amministrativo %F2_Symbol</Italian>
+    <Spanish>%D1_Value%% de carga administrativa %F2_Symbol</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CAP_MOD</Tag>
+    <English>%D1_Value%% administration capacity %F2_Symbol</English>
+    <French>%D1_Value%% de capacit&#233; administrative %F2_Symbol</French>
+    <German>%D1_Value%% Verwaltungskapazit&#228;t %F2_Symbol</German>
+    <Italian>%D1_Value%% di capacit&#224; amministrativa %F2_Symbol</Italian>
+    <Spanish>%D1_Value%% de capacidad administrativa %F2_Symbol</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CITY_HELP</Tag>
+    <English>Base: %d1_Value %F2_Symbol</English>
+    <French>Base : %d1_Value %F2_Symbol</French>
+    <German>Basis: %d1_Value %F2_Symbol</German>
+    <Italian>Base: %d1_Value %F2_Symbol</Italian>
+    <Spanish>Base: %d1_Value %F2_Symbol</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_DISTANCE_MODIFIER</Tag>
+    <English>%s1_Value%% from distance</English>
+    <French>%s1_Value%% dus &#224; la distance</French>
+    <German>%s1_Value%% durch Entfernung</German>
+    <Italian>%s1_Value%% dalla distanza</Italian>
+    <Spanish>%s1_Value%% por distancia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_LOCAL_MODIFIER</Tag>
+    <English>%D1_Value%% from local modifiers</English>
+    <French>%D1_Value%% dus aux modificateurs locaux</French>
+    <German>%D1_Value%% durch lokale Modifikatoren</German>
+    <Italian>%D1_Value%% dai modificatori locali</Italian>
+    <Spanish>%D1_Value%% por modificadores locales</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_FINANCE</Tag>
+    <English>City upkeep: %d1_Gold[NEWLINE]Administration surcharge: %d2_Percent%%</English>
+    <French>Entretien des villes : %d1_Gold[NEWLINE]Surcharge administrative : %d2_Percent%%</French>
+    <German>St&#228;dteunterhalt: %d1_Gold[NEWLINE]Verwaltungsaufschlag: %d2_Percent%%</German>
+    <Italian>Mantenimento delle citt&#224;: %d1_Gold[NEWLINE]Sovrapprezzo amministrativo: %d2_Percent%%</Italian>
+    <Spanish>Mantenimiento de ciudades: %d1_Gold[NEWLINE]Recargo administrativo: %d2_Percent%%</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_UPKEEP_HELP</Tag>
+    <English>City upkeep: %s1_Value [ICON_GOLD][NEWLINE]0.5 gold per point of administrative effort; administration surcharge +%d2_Percent%%.</English>
+    <French>Entretien : %s1_Value [ICON_GOLD][NEWLINE]0,5 or par point de charge administrative ; surcharge administrative +%d2_Percent%%.</French>
+    <German>St&#228;dteunterhalt: %s1_Value [ICON_GOLD][NEWLINE]0,5 Gold je Punkt Verwaltungsaufwand; Verwaltungsaufschlag +%d2_Percent%%.</German>
+    <Italian>Mantenimento: %s1_Value [ICON_GOLD][NEWLINE]0,5 oro per punto di carico amministrativo; sovrapprezzo amministrativo +%d2_Percent%%.</Italian>
+    <Spanish>Mantenimiento: %s1_Value [ICON_GOLD][NEWLINE]0,5 oro por punto de carga administrativa; recargo administrativo +%d2_Percent%%.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_EFFORT</Tag>
+    <English>Administrative effort</English>
+    <French>Charge administrative</French>
+    <German>Verwaltungsaufwand</German>
+    <Italian>Carico amministrativo</Italian>
+    <Spanish>Carga administrativa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_PAUSED</Tag>
+    <English>Administrative penalties are suspended during the jihad.</English>
+    <French>Les p&#233;nalit&#233;s administratives sont suspendues pendant le jihad.</French>
+    <German>Verwaltungsabz&#252;ge sind w&#228;hrend des Jihad ausgesetzt.</German>
+    <Italian>Le penalit&#224; amministrative sono sospese durante il jihad.</Italian>
+    <Spanish>Las penalizaciones administrativas se suspenden durante el jihad.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_CONTROL_PAUSED</Tag>
+    <English>Suspended</English>
+    <French>Suspendu</French>
+    <German>Ausgesetzt</German>
+    <Italian>Sospeso</Italian>
+    <Spanish>Suspendido</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_GOVERNOR_RESIDENCE</Tag>
+    <English>Governor's Residence</English>
+    <French>R&#233;sidence du gouverneur</French>
+    <German>Gouverneursresidenz</German>
+    <Italian>Residenza del governatore</Italian>
+    <Spanish>Residencia del gobernador</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_GOVERNOR_RESIDENCE_STRATEGY</Tag>
+    <English>Reduces regional administrative effort at a running gold cost.</English>
+    <French>R&#233;duit la charge administrative r&#233;gionale moyennant un co&#251;t en or.</French>
+    <German>Senkt den regionalen Verwaltungsaufwand und kostet laufend Gold.</German>
+    <Italian>Riduce il carico amministrativo regionale con un costo continuo in oro.</Italian>
+    <Spanish>Reduce la carga administrativa regional a cambio de un coste continuo en oro.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BUILDING_GOVERNOR_RESIDENCE_PEDIA</Tag>
+    <English>Cities use the cheaper of direct capital travel or travel to one residence plus half its direct capital travel. A residence city always uses its own residence. Discounts never chain. Requires a courthouse and four population. Costs three gold per turn and can be abandoned without a refund. Residences do not replace harbor connections.</English>
+    <French>Les villes choisissent le trajet direct vers la capitale ou le trajet vers une r&#233;sidence plus la moiti&#233; de son trajet direct vers la capitale. Une ville dot&#233;e de sa r&#233;sidence utilise toujours celle-ci. Les r&#233;ductions ne se cumulent pas. N&#233;cessite un tribunal et quatre habitants. Co&#251;te trois pi&#232;ces par tour et peut &#234;tre abandonn&#233;e sans remboursement. Ne remplace pas les liaisons portuaires.</French>
+    <German>St&#228;dte nutzen den g&#252;nstigeren Weg: direkt zur Hauptstadt oder zu einer Residenz plus die H&#228;lfte ihrer direkten Hauptstadt-Reisezeit. Eine Residenzstadt nutzt immer ihre eigene Residenz. Rabatte lassen sich nicht verketten. Ben&#246;tigt ein Gerichtsgeb&#228;ude und vier Einwohner. Kostet drei Gold pro Runde und kann ohne Erstattung aufgegeben werden. Residenzen ersetzen keine Hafenverbindungen.</German>
+    <Italian>Le citt&#224; scelgono il viaggio diretto alla capitale oppure quello verso una residenza pi&#249; met&#224; del suo viaggio diretto alla capitale. Una citt&#224; con residenza usa sempre la propria. Gli sconti non si concatenano. Richiede un tribunale e quattro abitanti. Costa tre oro per turno e pu&#242; essere abbandonata senza rimborso. Non sostituisce i collegamenti portuali.</Italian>
+    <Spanish>Las ciudades eligen el trayecto directo a la capital o el trayecto a una residencia m&#225;s la mitad de su trayecto directo a la capital. Una ciudad con residencia siempre usa la suya. Los descuentos no se encadenan. Requiere un tribunal y cuatro habitantes. Cuesta tres de oro por turno y puede abandonarse sin reembolso. No sustituye los enlaces portuarios.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GOVERNOR_BUILD_HELP</Tag>
+    <English>Reduces regional administrative effort. Costs %d1_Gold gold per turn; requires %d2_Pop population.</English>
+    <French>R&#233;duit la charge administrative r&#233;gionale. Co&#251;te %d1_Gold or par tour ; n&#233;cessite %d2_Pop habitants.</French>
+    <German>Senkt den regionalen Verwaltungsaufwand. Kostet %d1_Gold Gold pro Runde und ben&#246;tigt %d2_Pop Einwohner.</German>
+    <Italian>Riduce il carico amministrativo regionale. Costa %d1_Gold oro per turno; richiede %d2_Pop abitanti.</Italian>
+    <Spanish>Reduce la carga administrativa regional. Cuesta %d1_Gold de oro por turno; requiere %d2_Pop habitantes.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GOVERNOR_REMOVE</Tag>
+    <English>Abandon residence</English>
+    <French>Abandonner la r&#233;sidence</French>
+    <German>Residenz aufgeben</German>
+    <Italian>Abbandona residenza</Italian>
+    <Spanish>Abandonar residencia</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GOVERNOR_REMOVE_TITLE</Tag>
+    <English>Abandon the residence in %s1_City?</English>
+    <French>Abandonner la r&#233;sidence de %s1_City ?</French>
+    <German>Residenz in %s1_City aufgeben?</German>
+    <Italian>Abbandonare la residenza a %s1_City?</Italian>
+    <Spanish>&#191;Abandonar la residencia en %s1_City?</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GOVERNOR_REMOVE_PREVIEW</Tag>
+    <English>National administrative effort: %s1_Before -> %s2_After[NEWLINE]Gold balance per turn: %D3_Before -> %D4_After[NEWLINE]No construction costs are refunded.</English>
+    <French>Charge administrative nationale : %s1_Before -> %s2_After[NEWLINE]Solde en or par tour : %D3_Before -> %D4_After[NEWLINE]Les frais de construction ne sont pas rembours&#233;s.</French>
+    <German>Landesweiter Verwaltungsaufwand: %s1_Before -> %s2_After[NEWLINE]Goldsaldo pro Runde: %D3_Before -> %D4_After[NEWLINE]Die Baukosten werden nicht erstattet.</German>
+    <Italian>Carico amministrativo nazionale: %s1_Before -> %s2_After[NEWLINE]Saldo in oro per turno: %D3_Before -> %D4_After[NEWLINE]Il costo di costruzione non viene rimborsato.</Italian>
+    <Spanish>Carga administrativa nacional: %s1_Before -> %s2_After[NEWLINE]Saldo de oro por turno: %D3_Before -> %D4_After[NEWLINE]No se devuelve el coste de construcci&#243;n.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_ROUTE_HELP</Tag>
+    <English>Administration via %s1_City[NEWLINE]Direct capital travel: %s2_Time turns</English>
+    <French>Administration via %s1_City[NEWLINE]Trajet direct vers la capitale : %s2_Time tours</French>
+    <German>Verwaltung &#252;ber %s1_City[NEWLINE]Direkte Reisezeit zur Hauptstadt: %s2_Time Runden</German>
+    <Italian>Amministrazione tramite %s1_City[NEWLINE]Viaggio diretto alla capitale: %s2_Time turni</Italian>
+    <Spanish>Administraci&#243;n a trav&#233;s de %s1_City[NEWLINE]Viaje directo a la capital: %s2_Time turnos</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_DISCONNECTED</Tag>
+    <English>No secure connection to the capital.</English>
+    <French>Aucune liaison s&#251;re avec la capitale.</French>
+    <German>Keine gesicherte Verbindung zur Hauptstadt.</German>
+    <Italian>Nessun collegamento sicuro con la capitale.</Italian>
+    <Spanish>No hay una conexi&#243;n segura con la capital.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GOVERNOR_UPKEEP</Tag>
+    <English>Residence: %d1_Gold [ICON_GOLD] per turn.</English>
+    <French>R&#233;sidence : %d1_Gold [ICON_GOLD] par tour.</French>
+    <German>Residenz: %d1_Gold [ICON_GOLD] pro Runde.</German>
+    <Italian>Residenza: %d1_Gold [ICON_GOLD] per turno.</Italian>
+    <Spanish>Residencia: %d1_Gold [ICON_GOLD] por turno.</Spanish>
+  </TEXT>
+</Civ4GameText>

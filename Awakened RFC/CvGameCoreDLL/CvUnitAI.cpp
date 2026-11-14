@@ -6,6 +6,7 @@
 #include "CvEventReporter.h"
 #include "WorkerPathFinder.h"
 #include "CvUnitAI.h"
+#include "CvAdministration.h"
 #include "CvMap.h"
 #include "CvArea.h"
 #include "CvPlot.h"
@@ -3979,6 +3980,8 @@ void CvUnitAI::AI_missionaryMove()
 {
 	OBSERVER_PERFORMANCE("unitAI.AI_missionaryMove");
 	PROFILE_FUNC();
+
+	if (!isHuman() && AI_purgeReligion()) return;
 
 	if (AI_spreadReligion())
 	{
@@ -9388,6 +9391,31 @@ bool CvUnitAI::AI_goldenAge()
 
 
 // Returns true if a mission was pushed...
+bool CvUnitAI::AI_purgeReligion()
+{
+    CvPlayerAI& owner = GET_PLAYER(getOwnerINLINE());
+    ReligionTypes religion = owner.getStateReligion();
+    if (isHuman() || religion == NO_RELIGION || m_pUnitInfo->getReligionSpreads(religion) <= 0) return false;
+    CvPlot* target = NULL;
+    CvPlot* step = NULL;
+    int best = 0, iterator;
+    for (CvCity* city = owner.firstCity(&iterator); city; city = owner.nextCity(&iterator))
+    {
+        if (city->area() != area() || !AI_plotValid(city->plot()) || city->plot()->isVisibleEnemyUnit(this)) continue;
+        int benefit = Administration::purgeValue(*city, religion);
+        if (benefit < 12 || owner.AI_plotTargetMissionAIs(city->plot(), MISSIONAI_SPREAD, getGroup()) > 0) continue;
+        int turns;
+        if (!generatePath(city->plot(), MOVE_SAFE_TERRITORY, true, &turns)) continue;
+        int value = benefit * 100 / (turns + 2);
+        if (value > best) { best = value; target = city->plot(); step = getPathEndTurnPlot(); }
+    }
+    if (!target) return false;
+    if (atPlot(target)) return purgeReligions();
+    if (!step || atPlot(step)) return false;
+    getGroup()->pushMission(MISSION_MOVE_TO, step->getX_INLINE(), step->getY_INLINE(), MOVE_SAFE_TERRITORY, false, false, MISSIONAI_SPREAD, target);
+    return true;
+}
+
 bool CvUnitAI::AI_spreadReligion()
 {
 	PROFILE_FUNC();
@@ -9539,6 +9567,15 @@ bool CvUnitAI::AI_spreadReligion()
 										if (pLoopCity->getOwnerINLINE() == getOwnerINLINE())
 										{
 											iValue *= (bCultureVictory ? 16 : 4);
+                                            if (!isHuman() && !GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_TOLERANCE")))
+                                            {
+                                                bool state = eReligion == GET_PLAYER(getOwnerINLINE()).getStateReligion();
+                                                bool atheist = GET_PLAYER(getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_STATE_ATHEISM"));
+                                                if (state && !atheist)
+                                                    iValue = iValue * (150 + std::min(200, Administration::overload100(GET_PLAYER(getOwnerINLINE())) / 100)) / 100;
+                                                else if (atheist || GET_PLAYER(getOwnerINLINE()).getStateReligion() != NO_RELIGION)
+                                                    iValue /= bCultureVictory ? 2 : 4;
+                                            }
 											bOurCity = true;
 										}
 										else if (pLoopCity->getTeam() == getTeam())
@@ -15581,8 +15618,16 @@ bool CvUnitAI::AI_routeCity()
 
 	FAssert(canBuildRoute());
 
-	for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
-	{
+    std::vector<std::pair<int, int> > priorities;
+    for (pLoopCity = GET_PLAYER(getOwnerINLINE()).firstCity(&iLoop); pLoopCity; pLoopCity = GET_PLAYER(getOwnerINLINE()).nextCity(&iLoop))
+    {
+        int priority = isHuman() ? 0 : Administration::travelTime100(*pLoopCity) * pLoopCity->getPopulation();
+        priorities.push_back(std::make_pair(-priority, pLoopCity->getID()));
+    }
+    std::sort(priorities.begin(), priorities.end());
+    for (unsigned int priority = 0; priority < priorities.size(); ++priority)
+    {
+        pLoopCity = GET_PLAYER(getOwnerINLINE()).getCity(priorities[priority].second);
 		if (AI_plotValid(pLoopCity->plot()))
 		{
 			pRouteToCity = pLoopCity->AI_getRouteToCity();

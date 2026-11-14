@@ -52,16 +52,16 @@ class Stability:
 
         def getBaseStabilityLastTurn( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lBaseStabilityLastTurn'][iCiv]
+                return scriptDict['lBaseStabilityLastTurn'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
 
         def setBaseStabilityLastTurn( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue
+                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
             
         def getStability( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                value = scriptDict['lStability'][iCiv]
+                value = scriptDict['lStability'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
                         return max(0, value)
                 return value
@@ -70,7 +70,7 @@ class Stability:
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
                         iNewValue = max(0, iNewValue)
-                scriptDict['lStability'][iCiv] = iNewValue
+                scriptDict['lStability'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 gc.getPlayer(iCiv).setIntelligenceStability(iNewValue)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
@@ -537,24 +537,6 @@ class Stability:
 
                         iTempExpansionThreshold = iNewBaseStability
 
-                        iMaxPlotsAbroad = 36
-                        iHandicap = gc.getGame().getHandicapType()
-                        
-                        iNumPlotsAbroad = max(0,self.getOwnedPlotsLastTurn(iPlayer)-iMaxPlotsAbroad)                        
-                        iPlotPenalty = iNumPlotsAbroad*2/7
-                        if (iPlayer == con.iRome and pPlayer.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
-                                scriptDict = pickle.loads(gc.getGame().getScriptData())
-                                iEligible = scriptDict["iRomanConnectedProvincePlots"]
-                                iPlotPenalty -= iPlotPenalty*iEligible/(2*max(1,self.getOwnedPlotsLastTurn(iPlayer)))
-                        iNewBaseStability -= iPlotPenalty
-                        #if (not gc.getPlayer(iPlayer).isHuman()):
-                        #        iNewBaseStability += iNumPlotsAbroad*1/14
-                        #print("iNewBaseStability number of owned plots abroad",iNewBaseStability, iPlayer)
-                        if (self.getOwnedCitiesLastTurn(iPlayer) <= 20):
-                                iNewBaseStability -= self.getOwnedCitiesLastTurn(iPlayer)*7
-                        else:
-                                iNewBaseStability -= (self.getOwnedCitiesLastTurn(iPlayer)-6)*10
-                        #print("iNewBaseStability number of cities in homeland not owned", self.getOwnedCitiesLastTurn(iPlayer), iNewBaseStability, iPlayer)
                         self.setParameter(iPlayer, iParExpansion3, False, iNewBaseStability - iTempExpansionThreshold)
 
                                         
@@ -758,23 +740,6 @@ class Stability:
                 self.setParameter(iPlayer, iParCivics1, False, iNewBaseStability - iTempCivicThreshold)
 
                 iTempExpansionThreshold = iNewBaseStability
-                iNumPlayerCities = pPlayer.getNumCities()
-                iEffectiveCities = iNumPlayerCities
-                if geo.turns(1) == 2:
-                        iEffectiveCities = iNumPlayerCities * 2 // 3
-                if (iEffectiveCities < 8):
-                        pass
-                else:
-                        iCityPenalty = (iEffectiveCities-5)*(iEffectiveCities-5)/9
-                        if (iPlayer == con.iRome and pPlayer.isCivic(gc.getInfoTypeForString("CIVIC_REPUBLIC"))):
-                                iConnected = 0
-                                for pyCity in PyPlayer(iPlayer).getCityList():
-                                        city = pyCity.GetCy()
-                                        if (pPlayer.isRomanProvince(city.getX(), city.getY()) and city.isConnectedToCapital(iPlayer)):
-                                                iConnected += 1
-                                iCityPenalty -= iCityPenalty*iConnected/(2*iNumPlayerCities)
-                        iNewBaseStability -= iCityPenalty
-                        #print("iNewBaseStability number of cities",iNewBaseStability, iPlayer)
                 self.setParameter(iPlayer, iParExpansion1, False, iNewBaseStability - iTempExpansionThreshold)
 
 
@@ -810,6 +775,7 @@ class Stability:
                 ##print ("iNewBaseStability", iNewBaseStability)
 
                                 
+                iNewBaseStability += pPlayer.getAdministrationValue(3, -1)
                 self.setStability(iPlayer, self.getStability(iPlayer) - self.getBaseStabilityLastTurn(iPlayer) + iNewBaseStability)
                 # Cap ordinary stability without limiting stacked population-loss penalties.
                 ordinary = self.getStability(iPlayer) - iPopulationLoss
@@ -837,6 +803,19 @@ class Stability:
 
 
         def onCityAcquired(self, owner, playerType, city, bConquest, bTrade):
+                import Administration
+                if (bTrade and not bConquest and
+                    Administration.releaseContext == (owner, city.getX(), city.getY())):
+                        # Orderly autonomy is neither a defeat nor a conquest gain.
+                        # Lower the collapse reference by this release only, so
+                        # actual military losses in the same interval still count.
+                        scriptDict = pickle.loads(gc.getGame().getScriptData())
+                        counts = scriptDict.get('lNumCities', [])
+                        if 0 <= owner < len(counts):
+                                counts[owner] = max(0, counts[owner] - 1)
+                                gc.getGame().setScriptData(pickle.dumps(scriptDict))
+                        return
+
                 # A provincial famine secession has no separate national shock.
                 if Famine.seceding:
                         return

@@ -1,3 +1,4 @@
+import Administration
 import ScenarioGeography as geo
 from Reporting import ENABLED as REPORTING_ENABLED
 ## Sid Meier's Civilization 4
@@ -1801,6 +1802,7 @@ class CvMainInterface:
 
 		screen.hide( "ResearchText" )
 		screen.hide( "GoldText" )
+		screen.hide( "AdministrationCapacityText" )
 		screen.hide( "TimeText" )
 		screen.hide( "ResearchBar" )
 
@@ -1864,6 +1866,17 @@ class CvMainInterface:
 				szText = CyGameTextMgr().getGoldStr(ePlayer)
 				screen.setLabel( "GoldText", "Background", szText, CvUtil.FONT_LEFT_JUSTIFY, 12, 6, -0.3, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 				screen.show( "GoldText" )
+				iAdminEffort = Administration.value(ePlayer, Administration.EFFORT)
+				iAdminCapacity = Administration.value(ePlayer, Administration.CAPACITY)
+				szAdminEffort = Administration.cost(iAdminEffort)
+				if iAdminEffort > iAdminCapacity:
+					if iAdminEffort * 4 >= iAdminCapacity * 5:
+						szAdminEffort = u"<color=255,80,60,255>%s</color>" % szAdminEffort
+					else:
+						szAdminEffort = u"<color=255,165,0,255>%s</color>" % szAdminEffort
+				szAdmin = u"%s %s/%s" % (Administration.symbol(), szAdminEffort, Administration.points(iAdminCapacity))
+				screen.setLabel( "AdministrationCapacityText", "Background", u"<font=2>%s</font>" % szAdmin, CvUtil.FONT_RIGHT_JUSTIFY, 268, 6, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+				screen.show( "AdministrationCapacityText" )
 				
 				if (((gc.getPlayer(ePlayer).calculateGoldRate() != 0) and not (gc.getPlayer(ePlayer).isAnarchy())) or (gc.getPlayer(ePlayer).getGold() != 0)):
 					screen.show( "GoldText" )
@@ -1950,8 +1963,13 @@ class CvMainInterface:
 		screen.hide( "ProductionBar" )
 		screen.hide( "GreatPeopleBar" )
 		screen.hide( "CultureBar" )
-		screen.hide( "MaintenanceText" )
-		screen.hide( "MaintenanceAmountText" )
+		screen.hide("AdministrationText")
+		screen.hide("AdministrationAmountText")
+		screen.hide("GovernorRemoveButton")
+		if getattr(self, "governorPending", None) is not None:
+			pending = self.governorPending
+			if pHeadSelectedCity is None or pHeadSelectedCity.isNone() or not CyInterface().isCityScreenUp() or (pHeadSelectedCity.getOwner(), pHeadSelectedCity.getID(), pHeadSelectedCity.getGameTurnFounded()) != pending:
+				self.hideGovernorConfirmation()
 		screen.hide( "NationalityText" )
 		screen.hide( "NationalityBar" )
 		screen.hide( "DefenseText" )
@@ -2221,7 +2239,10 @@ class CvMainInterface:
 
 				screen.addTableControlGFC( "TradeRouteTable", 3, 10, 187, 238, 98, False, False, 32, 32, TableStyles.TABLE_STYLE_STANDARD )
 				screen.setStyle( "TradeRouteTable", "Table_City_Style" )
-				screen.addTableControlGFC( "BuildingListTable", 3, 10, 317, 238, yResolution - 541, False, False, 32, 32, TableStyles.TABLE_STYLE_STANDARD )
+				iGovernorSpace = 0
+				if pHeadSelectedCity.getOwner() == gc.getGame().getActivePlayer() and Administration.value(pHeadSelectedCity.getOwner(), Administration.RESIDENCE_COST, pHeadSelectedCity.getID()):
+					iGovernorSpace = 54
+				screen.addTableControlGFC( "BuildingListTable", 3, 10, 317, 238, yResolution - 541 - iGovernorSpace, False, False, 32, 32, TableStyles.TABLE_STYLE_STANDARD )
 				screen.setStyle( "BuildingListTable", "Table_City_Style" )
 				
 				screen.setTableColumnHeader( "TradeRouteTable", 0, u"", 108 )
@@ -2431,16 +2452,19 @@ class CvMainInterface:
 				g_iNumCenterBonus = iCenterCount
 				g_iNumRightBonus = iRightCount
 				
-				iMaintenance = pHeadSelectedCity.getMaintenanceTimes100()
-
-				szBuffer = localText.getText("INTERFACE_CITY_MAINTENANCE", ())
-				
-				screen.setLabel( "MaintenanceText", "Background", szBuffer, CvUtil.FONT_LEFT_JUSTIFY, 15, 126, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_HELP_MAINTENANCE, -1, -1 )
-				screen.show( "MaintenanceText" )
-				
-				szBuffer = u"-%d.%02d %c" %(iMaintenance/100, iMaintenance%100, gc.getCommerceInfo(CommerceTypes.COMMERCE_GOLD).getChar())
-				screen.setLabel( "MaintenanceAmountText", "Background", szBuffer, CvUtil.FONT_RIGHT_JUSTIFY, 220, 125, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_HELP_MAINTENANCE, -1, -1 )
-				screen.show( "MaintenanceAmountText" )
+				szBuffer = u"<font=2>%s</font>" % localText.getText("TXT_KEY_ADMIN_EFFORT", ())
+				screen.setLabel("AdministrationText", "Background", szBuffer, CvUtil.FONT_LEFT_JUSTIFY, 15, 126, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_HELP_MAINTENANCE, -1, -1)
+				screen.show("AdministrationText")
+				szAdmin = u"%s %s" % (Administration.cost(Administration.value(pHeadSelectedCity.getOwner(), Administration.CITY_EFFORT, pHeadSelectedCity.getID())), Administration.symbol())
+				screen.setLabel("AdministrationAmountText", "Background", u"<font=2>%s</font>" % szAdmin, CvUtil.FONT_RIGHT_JUSTIFY, 220, 125, -0.3, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_HELP_MAINTENANCE, -1, -1)
+				screen.show("AdministrationAmountText")
+				if iGovernorSpace:
+					screen.setButtonGFC("GovernorRemoveButton", u"<font=3b>%s</font>" % localText.getText("TXT_KEY_GOVERNOR_REMOVE", ()), "", 14, yResolution - 276, 230, 48, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD)
+					screen.show("GovernorRemoveButton")
+					if getattr(self, "governorPending", None) is not None:
+						self.drawGovernorConfirmation(pHeadSelectedCity)
+				else:
+					self.hideGovernorConfirmation()
 
 				szBuffer = u""
 
@@ -3401,12 +3425,54 @@ class CvMainInterface:
 
 	# Will handle the input for this screen...
 	def handleInput (self, inputClass):
+
+		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED:
+			name = inputClass.getFunctionName()
+			if name == "GovernorRemoveButton":
+				city = CyInterface().getHeadSelectedCity()
+				if city and not city.isNone() and city.getOwner() == gc.getGame().getActivePlayer():
+					self.governorPending = (city.getOwner(), city.getID(), city.getGameTurnFounded())
+					self.drawGovernorConfirmation(city)
+				return 1
+			if name == "GovernorRemoveCancel":
+				self.hideGovernorConfirmation()
+				return 1
+			if name == "GovernorRemoveConfirm":
+				pending = getattr(self, "governorPending", None)
+				if pending is not None and pending[0] == gc.getGame().getActivePlayer():
+					city = gc.getPlayer(pending[0]).getCity(pending[1])
+					if not city.isNone() and city.getGameTurnFounded() == pending[2]:
+						Administration.requestRemoveResidence(city)
+				self.hideGovernorConfirmation()
+				return 1
 		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
 			import DebugExceptions
 			DebugExceptions.help_widget = (inputClass.getFunctionName(),
 				inputClass.getButtonType(), inputClass.getData1(), inputClass.getData2())
 		return 0
 	
+	def hideGovernorConfirmation(self):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		for name in ("GovernorRemovePanel", "GovernorRemoveTitle", "GovernorRemoveBody", "GovernorRemoveConfirm", "GovernorRemoveCancel"):
+			screen.deleteWidget(name)
+		self.governorPending = None
+
+	def drawGovernorConfirmation(self, city):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		owner, cid = city.getOwner(), city.getID()
+		if owner != gc.getGame().getActivePlayer() or not Administration.value(owner, Administration.RESIDENCE_COST, cid):
+			self.hideGovernorConfirmation()
+			return
+		x, y = (screen.getXResolution() - 620) // 2, (screen.getYResolution() - 240) // 2
+		screen.addPanel("GovernorRemovePanel", "", "", True, True, x, y, 620, 240, PanelStyles.PANEL_STYLE_MAIN)
+		screen.setLabel("GovernorRemoveTitle", "Background", u"<font=3b>%s</font>" % localText.getText("TXT_KEY_GOVERNOR_REMOVE_TITLE", (city.getName(),)), CvUtil.FONT_CENTER_JUSTIFY, x + 310, y + 15, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		before = gc.getPlayer(owner).calculateGoldRate()
+		after = before + Administration.value(owner, 18, cid) // 100
+		body = localText.getText("TXT_KEY_GOVERNOR_REMOVE_PREVIEW", (Administration.cost(Administration.value(owner, Administration.EFFORT)), Administration.cost(Administration.value(owner, 17, cid)), before, after))
+		screen.addMultilineText("GovernorRemoveBody", u"<font=3>%s</font>" % body, x + 25, y + 55, 570, 105, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+		screen.setButtonGFC("GovernorRemoveConfirm", localText.getText("TXT_KEY_GOVERNOR_REMOVE", ()), "", x + 25, y + 177, 270, 44, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD)
+		screen.setButtonGFC("GovernorRemoveCancel", localText.getText("TXT_KEY_SCREEN_CANCEL", ()), "", x + 325, y + 177, 270, 44, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD)
+
 	def updateApostolicCouncil(self):
 		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
 		game = gc.getGame()

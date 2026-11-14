@@ -15,6 +15,145 @@ Historische Ziele sind derzeit für alle Zivilisationen deaktiviert. Sie gewähr
 keine Belohnungen und keinen historischen Sieg. Die Länderliste zeigt keinen
 Zielfortschritt mehr an. Die unten beschriebenen historischen Ziele ruhen.
 
+## Verwaltung und Reichsgröße
+
+Verwaltungsaufwand ersetzt die Stabilitätsabzüge für Städtezahl, fremdes Gebiet
+und fehlende Heimatstädte. Die Anfangskapazität beträgt **50 auf XL**, sonst **33**.
+Jedes Zeitalter seit der Antike erhöht die Basis um 25% des Anfangswerts, auch
+bei späten Starts. Staatsformen- und Wunderboni werden addiert und auf diese
+Basis angewandt. Frühe Staatsformen können die Kapazität deutlich verringern.
+
+Eine Stadt benötigt `Bevölkerung × (1 + 0,05 × Reisezeit) × (1 + lokale Modifikatoren)`.
+Stadtaufwand wird nach allen Modifikatoren auf eine Nachkommastelle aufgerundet, die nationale Kapazität auf ganze Punkte. Der nationale Aufwand ist die Summe der gerundeten Stadtkosten.
+
+Reisezeiten berücksichtigen Bruchteile von Runden. Landwege rechnen mit zwei
+Bewegungspunkten und den aktuellen Straßenkosten. Seeabschnitte nutzen einen,
+zwei oder vier Bewegungspunkte, wenn an ihren beiden Küstenübergängen null,
+ein oder zwei Häfen vorhanden sind. Land- und Seewege dürfen sich abwechseln.
+Ausgangspunkt ist die Hauptstadt.
+Offene Grenzen und Vasallen erlauben Durchreise; feindliche Truppen und
+Blockaden zählen nicht. Hochseewege benötigen Astronomie.
+
+Erreichbarkeit und Kostenentfernung sind getrennt. Zusammenhängendes eigenes,
+passierbares Land hat keine Reichweitengrenze. Eigene Städte erneuern
+Landverbindungen. Eigene Häfen verlängern die
+Verbindung, wenn jeder Abschnitt unter **zehn Referenzrunden** bleibt. Fremdes
+oder unbesetztes Land verbraucht Abschnittsreisezeit; offene Grenzen ersetzen
+keinen durchgehenden eigenen Landkorridor. Eine neue Küstenstadt darf ohne
+Hafen Endpunkt sein, aber nur ein eigener Hafen erneuert eine Seeverbindung.
+Ohne Verbindung sind Neugründungen gesperrt. Bestehende und eroberte Städte
+werden nach **10 XL-Runden**, sonst **5**, ohne Wiederanbindung unabhängig.
+Der Aufwand steigt weiterhin mit der gesamten Reisezeit; die bisherige
+Zehn-Runden-Kostengrenze entfällt. Gibt es gar keinen nutzbaren Weg, gilt für
+die direkte Hauptstadt-Reisezeit ein Ersatzwert von 100 Runden.
+
+Die **Gouverneursresidenz** ersetzt die nationale Sommerresidenz. Sie ist
+mehrfach baubar, kostet **200 Produktion und 3 Gold pro Runde** und benötigt
+Gesetzgebung, ein lokales Gerichtsgebäude sowie **vier Einwohner** beim Bau.
+Sie gibt keine nationale Kapazität. Eine Stadt nutzt den günstigeren Weg:
+direkt zur Hauptstadt oder zu einer Residenz plus **50% ihrer direkten
+Hauptstadt-Reisezeit**. Eine Residenzstadt nutzt stets ihre eigene Residenz
+und erhält deren Rabatt selbst. Der Hauptstadtanteil wird immer ohne weitere
+Residenz berechnet; Rabatte lassen sich nicht verketten. Residenzen erweitern
+die Erreichbarkeit nicht. Versailles gibt nur nationale Kapazität.
+
+Ein großer Button **Residenz aufgeben** erscheint unter der Gebäudeliste.
+Die Bestätigung zeigt landesweiten Aufwand und Goldsaldo nach der Aufgabe,
+einschließlich Unterhalt und Produktionsprozessen bei aktuellen Einstellungen.
+Baukosten werden nicht erstattet. Für lückenlose regionale Verwaltung kann
+zuerst eine neue Residenz gebaut und danach die alte aufgegeben werden.
+
+Überlastung ist `max(0, Aufwand / Kapazität − 1)`. Bei 100% Überlastung entstehen
+**+200% Städteunterhalt, −40 aktuelle Stabilität und −20% Produktion**.
+Der Produktionsabzug wirkt nach Produktionsboni und erreicht bei 500%
+Überlastung 100%. Stabilität erholt sich unmittelbar mit der Entlastung;
+der Verwaltungsbeitrag wird nicht dauerhaft aufaddiert.
+Städteunterhalt beträgt grundsätzlich **0,5 Gold je Punkt Verwaltungsaufwand** plus
+Überlastungsaufschlag; Entfernung, Kolonien und Kapitalgesellschaften kosten
+keinen eigenen Unterhalt. Gebäude senken den Unterhalt über ihren Abschlag auf den Verwaltungsaufwand.
+
+Gerichtsgebäude, Opferaltar und Zikkurat senken den Aufwand um 20%, Rathaus und
+Delhis Gerichtsgebäude um 30%, Provinzverwaltung um 25%, Ikhanda um 5% und
+Digitalverwaltung um 15%. Die Abschläge sind additiv ohne technische Grenze;
+normale Gebäudekombinationen erreichen höchstens 50%. Pyramiden und Große
+Bibliothek geben je +10% nationale Kapazität, Versailles +15%. Die Kapazitätsbeiträge der Staatsformen sind:
+
+| Kategorie | Kapazität |
+| --- | --- |
+| Regierung | Stammessystem −40%; Monarchie, Republik, Diktatur und Demokratie 0%. |
+| Legitimation | Despotismus −10%, Theokratie +10%, Plutokratie −10%, Nationalismus 0%, Rechtsstaat +20%. |
+| Wirtschaft | Selbstversorgung 0%, Sklaverei −10%, Leibeigenschaft +10%, Planwirtschaft −20%, Marktwirtschaft 0%. |
+| Militär | Kriegergesellschaft −10%, Seekriegsführung 0%, Heeresfolge +10%, Berufsarmee +10%, Wehrpflicht −10%. |
+| Religion | Alle 0%; Religion verändert stattdessen den lokalen Aufwand. |
+
+Die besonderen Varianten ersetzen den jeweiligen Standardwert:
+**Pharaonentum, Gottkönigtum und Römische Legionen 0%**, **Römische Republik +40%**,
+**Horde −10%**. Ihre bisherigen Sonderboni bleiben aktiv. Die organisierten
+ägyptischen und römischen Institutionen übernehmen damit keinen pauschalen
+Verwaltungsmalus ihrer allgemeinen Ausgangs-Civic. Frühe und späte Kombinationen
+können denselben Kapazitätsbonus erreichen; Fortschritt entsteht über die Zeitalterbasis.
+
+Staatsreligion senkt den lokalen Aufwand um 5%; jede fremde Religion erhöht ihn
+um 10%. Ohne Staatsreligion gibt es keine religiöse Anpassung. Toleranz entfernt
+beide Effekte; unter Staatsatheismus zählt jede Religion als fremd. Gottesstaat
+verdoppelt die religiösen Anpassungen, verliert seinen Produktionsbonus und
+viertelt die natürliche Ausbreitung sowie Missionarserfolge fremder Religionen.
+
+**F1** zeigt Verwaltung, Folgen der Überlastung, Stabilität und eine kompakte
+Stadtliste. Nicht-Hauptstädte können einem eigenen bestehenden Vasallen oder
+einer verfügbaren untergegangenen Zivilisation als Vasall überlassen werden,
+wenn deren historisches Gründungs-/Übernahmegebiet die Stadt einschließt.
+Andernfalls ist nur direkte Unabhängigkeit möglich. Zukünftige Geburtsplätze und
+menschliche Spieler werden nicht dafür verwendet. Jede Freigabe setzt die
+gespeicherte Stadtkultur aller Zivilisationen auf null zurück.
+Die KI erwägt Vasallenfreigaben nach anhaltender Überlastung ab 25%; Unabhängigkeit
+erfordert mindestens 50% Überlastung und erhält die halbe Freigabebewertung.
+Freiwillige Verwaltungsfreigaben verursachen weder einen Stabilitätsverlust durch
+Stadtverlust noch einen Erwerbsbonus und zählen nicht bei der Zusammenbruchsprüfung
+wegen halbierter Stadtzahl. Automatische Abspaltungen durch fehlende Verbindung
+unterliegen weiterhin den normalen Stadtverlustregeln.
+Eine Wiedereingliederungsaktion
+ist nicht vorgesehen. Das Kartensymbol steht auch bei Staatsformen und im
+Stadtbildschirm für Verwaltung. Laufzeit, Balance und Multiplayer sind ungeprüft.
+
+Während eines aktiven Jihad-Ereignisses sind Verwaltungsabzüge ausgesetzt: kein Überlastungsaufschlag beim Unterhalt,
+kein Stabilitäts- oder Produktionsabzug. Der entfernungsbedingte Kontrollverlust
+pausiert; die KI begrenzt Wachstum und Eroberungsziele in dieser Zeit nicht
+wegen Verwaltung und gliedert keine Städte zur Entlastung aus. Aufwand und
+Kapazität bleiben sichtbar; nach Ereignisende gelten die Regeln wieder. Die
+Verbindungsanforderung für Neugründungen bleibt bestehen. Für Kreuzzüge
+gilt diese Ausnahme nicht.
+
+Die KI bewertet neue Siedlungsorte mit einer angenommenen frühen Größe von
+3 Bevölkerung und reserviert etwas Kapazität für das Wachstum bestehender
+Städte. Zu belastende Standorte werden verworfen, kostspielige Eroberungsziele
+abgewertet. Ab Größe 3 vermeidet sie Wachstum, wenn der nächste Einwohner
+die Kapazität überschreiten würde. Civics und Staatsreligion werden nach
+ihren Auswirkungen auf die tatsächliche Überlastung bewertet.
+
+Straßenverbindungen bevorzugen entfernte, bevölkerungsreiche Städte und
+Hauptstadt und Gouverneursresidenzen. Für Häfen und Residenzen wählt die KI
+zunächst geografisch geeignete Standorte; am besten Kandidaten berechnet sie
+die wirkliche Reisezeit- und Aufwandsersparnis mit dem bestehenden Wegenetz.
+Nach mindestens drei Referenzrunden mit mindestens 25% Überlastung kann sie
+eine geeignete Stadt an einen Vasallen ausgliedern, höchstens einmal in fünf
+Referenzrunden. Hauptstadt, heilige Städte und Weltwunderstädte bleiben erhalten.
+Ohne geeigneten Vasallenplatz erfolgt keine freiwillige Ausgliederung.
+
+Missionare der Staatsreligion können gezielt fremde Religionen in eigenen
+Städten entfernen. Die KI berücksichtigt dafür auch Missionarsbedarf,
+Verwaltungsentlastung und verlorene religiöse Gebäude. Unter Toleranz oder
+Staatsatheismus, in fremden heiligen Städten und bei fortgeschrittener
+Kultursiegstrategie plant sie keine solchen Säuberungen. Automatisierte
+Missionare menschlicher Spieler erhalten diese neue Aktion nicht.
+Die KI gewichtet bei religiöser Vertreibung auch die Zufriedenheitsänderung:
+religiöse Unzufriedenheit, verlorene Gebäudeboni und religionsbedingte
+Kriegsunzufriedenheit. Die Entlastung bereits unzufriedener Einwohner wiegt
+stärker als zusätzlicher Zufriedenheitsspielraum.
+
+Diese Bewertungen sind Heuristiken; ihre Spielbalance ist noch nicht im
+Spiel validiert.
+
 ## Kulturelle Grenzerweiterung
 
 Städte beginnen mit ihrem Stadtfeld und den acht Nachbarfeldern. Weitere Kultur
@@ -445,7 +584,7 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 Für Ägypten heißt das Stammessystem in jeder Epoche **Pharaonentum** und
 Despotismus **Gottkönigtum**. Pharaonentum gibt +1 Produktion durch Bauernhöfe
 und je Sklavenspezialist bei mittlerem Staatsform-Unterhalt. Es ersetzt die
-Einheitenproduktion, den Forschungsabzug und die erhöhten Unterhaltskosten des
+Einheitenproduktion, den Forschungsabzug und den Verwaltungsmalus des
 Stammessystems. Unter Gottkönigtum gibt jeder zugewiesene Priester in einer Stadt
 mit ägyptischem Obelisken +1 Zufriedenheit, höchstens +2 pro Stadt. Dies ersetzt
 die Zufriedenheit durch Palast und Monument. Obelisken veralten unter dieser
@@ -458,7 +597,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
-| **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
+| **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; −40% Verwaltungskapazität. |
 | **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. Besondere Spionage gegenüber anderen Monarchien. |
 | **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
@@ -472,7 +611,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit von Gebäuden der Staatsreligion; -2 Zufriedenheit von Gebäuden einer fremden Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit fremder oder keiner Staatsreligion, bei Angriff und Verteidigung. |
 | **Plutokratie** | Bankwesen | Mittel | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
 | **Nationalismus** | Nationalismus | Mittel | +5 Kultur in jeder Stadt; +20% Produktion; -5 Zufriedenheit in Städten, in denen die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers. |
-| **Rechtsstaat** | Verfassung | Hoch | +2 Zufriedenheit in jeder Stadt; +10% Handel. |
+| **Rechtsstaat** | Verfassung | Hoch | +1 Zufriedenheit in jeder Stadt; +10% Handel. |
 
 ### Arbeit
 
@@ -480,8 +619,8 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
-| **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
+| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 25% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
+| **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkstätten, Wassermühlen und Windmühlen; +1 Nahrung durch Bauernhöfe. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
 Das Wachstum umfasst sämtliche Ausbaustufen: **Hütte → Weiler → Dorf → Gemeinde**.
@@ -528,9 +667,9 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Horde** (ersetzt die Kriegergesellschaft für Hunnen und Mongolei) | Reiterei | Mittel | +50% Produktion für berittene Einheiten; neu ausgebildete berittene Einheiten erhalten +3 Erfahrung; +100% Gold beim Plündern von Modernisierungen; -50% Kriegsmüdigkeit; **-25% Forschungsleistung**. |
 | **Seekriegsführung** | Segeln | Niedrig | +50% Produktion und +2 Erfahrung für neu gebaute militärische Schiffe, einschließlich Transportschiffen. Arbeitsboote erhalten keinen dieser Boni. |
-| **Heeresfolge** | Feudalismus | Mittel | +5% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +30%. |
+| **Heeresfolge** | Feudalismus | Mittel | +4% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +24%. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
-| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
+| **Wehrpflicht** | Militärwissenschaft | Mittel | +35% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
 Die Horde belegt den bisherigen Platz der Kriegergesellschaft; jede
 Zivilisation behält fünf Militärstaatsformen. Hunnen und Mongolei beginnen mit
@@ -584,7 +723,7 @@ Die kanonische Teilung verursacht weder Stabilitätsabzüge für verlorene Städ
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
 | **Staatsreligion** | Monotheismus | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
-| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
+| **Gottesstaat** | Theologie | Hoch | Verdoppelter Religionseinfluss auf den Verwaltungsaufwand; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
 | **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. Erlaubt die Ausbildung von Missionaren aller Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
@@ -1097,10 +1236,14 @@ Im Geheimdienstberater wählen Sie den Fokus jeder Gruppe. Standard ist
 Technologie erreichte neue Epoche schaltet eine weitere frei. Änderungen gelten
 ab der nächsten Spielerrunde. Zeigen auf einen Fokus erklärt seine Wirkung.
 
-Jede aktive Gruppe erhält `gesamte Spionage / aktive Gruppen + 10% der gesamten
-Spionage`. Gruppen ohne Auftrag oder gültige zugewiesene Ziele erhalten keine
-Mittel und zählen nicht zum Teiler. Eine aktive Gruppe erhält 110%, zwei erhalten
-je 60%, drei mittelalterliche Gruppen je etwa 43,3%: zusammen 130%.
+Jede freigeschaltete Gruppe bringt 10% der Basisspionage zum Operationsbudget,
+einschließlich Gruppen ohne Operationen. Dieses Budget wird gleichmäßig auf
+Gruppen mit gültigen aktiven Aufträgen verteilt. Gruppen ohne Auftrag oder gültige
+Ziele erhalten keine Mittel und zählen nicht zum Teiler. Bei drei freigeschalteten
+Gruppen beträgt das Budget 130% der Basisspionage: Eine aktive Gruppe erhält 130%,
+zwei erhalten je 65%, drei je etwa 43,3%. Untätige Gruppen werden als Unterstützung
+angezeigt, sobald mindestens eine Gruppe aktiv ist. Eine Infokachel in der
+Gruppenliste erklärt das Budget und die Aufteilung.
 
 Alle fünf normalen Runden (zehn auf XL) wählt jede Gruppe automatisch bis zu
 drei Zielteams. Ein Fokuswechsel beginnt zur nächsten Runde eine neue Zuweisung.

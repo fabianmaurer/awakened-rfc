@@ -26,6 +26,13 @@ def record_mechanic(event, player, details):
         observer.fail('mechanic_recording')
 
 
+def record_religion_purge(player, values):
+    fields = ('city', 'founded', 'x', 'y', 'retained_religion', 'happiness_before',
+              'happiness_change_expected', 'effort100_before', 'religions_before',
+              'ai_value', 'happiness_after', 'effort100_after', 'religions_after', 'unit_type')
+    record_mechanic('administration_religion_purged', player, dict(zip(fields, values)))
+
+
 # Semantic payload version 1. Fields mirror the guarded native call sites.
 APOSTOLIC_FIELDS = {
     'papal_request': ('decision', 'can_become', 'cities', 'x', 'y', 'refuge'),
@@ -222,6 +229,7 @@ class Observer:
         self.reveal_map = False
         self.events = []
         self.previous = {}
+        self.administration_previous = {}
         self.births = {}
         self.turns = 0
         self.error_count = 0
@@ -545,6 +553,8 @@ class Observer:
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
                         'army_recording_version': 2, 'apostolic_recording_version': 2,
                         'espionage_recording_version': 2,
+                        'administration_recording_version': 2,
+                        'administration_units': 'capacity/effort/upkeep amounts: hundredths; overload/production/upkeep percentages: basis points; stability: points; travel: hundredths of reference turns',
                         'intelligence_modes': ['technology', 'military', 'politics', 'economy', 'cooperation', 'none'],
                         'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
                                                  '1': 'Amr: Egypt / North Africa',
@@ -570,6 +580,7 @@ class Observer:
             self.started = True
             self.camera_pending = self.reveal_map and self.autoplay
             self.observe_players(False)
+            self.observe_administration(True)
             self.snapshot('initial')
             self.checkpoint('initial')
             self.status('started', {'run_id': self.run_id, 'pid': os.getpid(), 'mode': self.mode})
@@ -692,7 +703,103 @@ class Observer:
                         self.civic_exposure[key] = self.civic_exposure.get(key, 0) + 1
             self.previous[i] = state
 
-    def city_data(self, city, diagnostic):
+    def administration_city(self, city, script):
+        player = self.gc.getPlayer(city.getOwner())
+        travel = player.getAdministrationValue(7, city.getID())
+        local = player.getAdministrationValue(9, city.getID())
+        effort = player.getAdministrationValue(8, city.getID())
+        before = max(0, city.getBaseYieldRate(1) * city.getBaseYieldRateModifier(1, 0) // 100)
+        key = (city.getOwner(), city.getID(), city.getGameTurnFounded())
+        return {'city': city.getID(), 'founded': city.getGameTurnFounded(), 'population': city.getPopulation(),
+                'travel_time100': travel, 'capital_travel_time100': player.getAdministrationValue(13, city.getID()),
+                'connected': bool(player.getAdministrationValue(14, city.getID())),
+                'residence_city': player.getAdministrationValue(15, city.getID()),
+                'residence_cost100': player.getAdministrationValue(16, city.getID()), 'effort100': effort,
+                'local_modifier_percent': local, 'building_modifier_percent': city.getMaintenanceModifier(),
+                'religion_modifier_percent': local - city.getMaintenanceModifier(),
+                'isolation_turns': script.get('administrationIsolation', {}).get(key, (-1, 0))[1],
+                'government_center': city.isGovernmentCenter(),
+                'upkeep_base100': effort // 2, 'upkeep100': city.getMaintenanceTimes100(),
+                'production_before_penalty': before, 'production': city.getYieldRate(1),
+                'production_yield_lost': before - city.getYieldRate(1)}
+
+    def administration_player(self, player, cities, script):
+        capacity = player.getAdministrationValue(0, -1)
+        effort = player.getAdministrationValue(1, -1)
+        overload = player.getAdministrationValue(2, -1)
+        baseline = script.get('lStability', [])
+        stability_base = None
+        stability_effective = None
+        if player.getID() < len(baseline):
+            stability_base = baseline[player.getID()]
+            stability_effective = stability_base + player.getAdministrationValue(3, -1)
+        return {'capacity100': capacity, 'effort100': effort,
+                'raw_overload100': max(0, effort * 10000 // max(1, capacity) - 10000),
+                'overload100': overload, 'suspended': bool(player.getAdministrationValue(10, -1)),
+                'stability_penalty': player.getAdministrationValue(3, -1),
+                'production_penalty100': player.getAdministrationValue(4, -1),
+                'upkeep_surcharge100': player.getAdministrationValue(5, -1),
+                'upkeep_base100': sum([c['upkeep_base100'] for c in cities]),
+                'upkeep100': sum([c['upkeep100'] for c in cities]),
+                'upkeep_gold': player.getTotalMaintenance(),
+                'residence_upkeep100': sum([c['residence_cost100'] for c in cities]),
+                'production_yield_lost': sum([c['production_yield_lost'] for c in cities]),
+                'isolated_cities': sum([not c['connected'] for c in cities]),
+                'growth_limited_cities': sum([c['population'] >= 3 and not player.isHuman() and
+                    not player.getAdministrationValue(10, -1) and effort + c['effort100'] // max(1, c['population']) > capacity for c in cities]),
+                'stability_baseline': stability_base, 'stability_effective': stability_effective,
+                'city_details': cities}
+
+    def observe_administration(self, initial=False):
+        import cPickle
+        import Consts
+        script = cPickle.loads(self.game.getScriptData())
+        players, checks = [], []
+        turn, year = self.game.getGameTurn(), self.game.getGameTurnYear()
+        for owner in range(Consts.iNumMajorPlayers):
+            player = self.gc.getPlayer(owner)
+            if not player.isAlive() or not player.getNumCities():
+                continue
+            cities = [self.administration_city(city, script) for city in self.cities(player)]
+            data = self.administration_player(player, cities, script)
+            data.update({'id': owner, 'civilization': self.gc.getCivilizationInfo(player.getCivilizationType()).getType(),
+                         'era': player.getCurrentEra(), 'population': player.getTotalPopulation(),
+                         'cities': len(cities), 'gold_rate': player.calculateGoldRate(),
+                         'research_rate': player.getCommerceRate(self.research_commerce),
+                         'civics': [player.getCivics(c) for c in range(self.gc.getNumCivicOptionInfos())]})
+            expected = data['raw_overload100']
+            if data['suspended'] or player.isMinorCiv() or player.isBarbarian():
+                expected = 0
+            rules = [('administration_effort_sum', data['effort100'], sum([c['effort100'] for c in cities])),
+                     ('administration_overload', data['overload100'], expected),
+                     ('administration_stability', data['stability_penalty'], -(expected // 250)),
+                     ('administration_production_penalty', data['production_penalty100'], min(10000, expected // 5)),
+                     ('administration_upkeep_surcharge', data['upkeep_surcharge100'], 2 * expected),
+                     ('administration_upkeep_total', data['upkeep_gold'], data['upkeep100'] // 100)]
+            for rule, actual, target in rules:
+                if actual != target:
+                    checks.append({'severity': 'error', 'rule': rule, 'player': owner, 'actual': actual, 'expected': target})
+            for city in cities:
+                rules = [('administration_city_effort', city['effort100'], ((city['population'] * (10000 + 5 * city['travel_time100']) * max(0, 100 + city['local_modifier_percent']) + 99999) // 100000) * 10),
+                         ('administration_city_upkeep', city['upkeep100'], city['effort100'] * (10000 + 2 * expected) // 20000 + city['residence_cost100']),
+                         ('administration_city_production', city['production'], city['production_before_penalty'] * max(0, 10000 - expected // 5) // 10000)]
+                for rule, actual, target in rules:
+                    if actual != target:
+                        checks.append({'severity': 'error', 'rule': rule, 'player': owner, 'city': city['city'], 'actual': actual, 'expected': target})
+            state = {'capacity100': data['capacity100'], 'overloaded': data['raw_overload100'] > 0, 'suspended': data['suspended']}
+            before = self.administration_previous.get(owner)
+            if before is not None and before != state:
+                record_mechanic('administration_state_changed', owner, {'before': before, 'after': state})
+            self.administration_previous[owner] = state
+            players.append(data)
+        phase = 'turn'
+        if initial:
+            phase = 'initial'
+        self.write({'kind': 'administration', 'phase': phase,
+                    'turn': turn, 'year': year, 'elapsed_turns': self.turns, 'players': players, 'checks': checks})
+        self.error_count += len(checks)
+
+    def city_data(self, city, diagnostic, script):
         data = {'id': city.getID(), 'name': city.getName(), 'x': city.getX(), 'y': city.getY(),
                 'population': city.getPopulation(), 'food': city.getFood(),
                 'famine_turns': city.getFamineTurns(), 'famine_unhappiness': city.getFamineUnhappiness(),
@@ -704,6 +811,11 @@ class Observer:
                 'production': city.getYieldRate(1), 'commerce': city.getYieldRate(2),
                 'happiness': city.happyLevel() - city.unhappyLevel(0),
                 'health': city.goodHealth() - city.badHealth(False)}
+        data['administration'] = self.administration_city(city, script)
+        if diagnostic:
+            player = self.gc.getPlayer(city.getOwner())
+            data['administration']['purge_happiness_change_expected'] = player.getAdministrationValue(11, city.getID())
+            data['administration']['purge_ai_value'] = player.getAdministrationValue(12, city.getID())
         slave = self.gc.getInfoTypeForString('SPECIALIST_SLAVE')
         if slave >= 0:
             data['slaves'] = city.getSpecialistCount(slave) + city.getFreeSpecialistCount(slave)
@@ -750,7 +862,7 @@ class Observer:
             if player.getCivilizationType() < 0:
                 continue
             team = gc.getTeam(player.getTeam())
-            cities = [self.city_data(city, diagnostic) for city in self.cities(player)]
+            cities = [self.city_data(city, diagnostic, script) for city in self.cities(player)]
             military = 0
             army = {}
             units = []
@@ -786,6 +898,9 @@ class Observer:
                     'food_exports': sum([c['food_exports'] for c in cities]),
                     'slaves': sum([c.get('slaves', 0) for c in cities])}
             data['city_details'] = cities
+            data['administration'] = self.administration_player(player, [c['administration'] for c in cities], script)
+            data['stability_baseline'] = player_stability
+            data['stability'] = data['administration']['stability_effective']
             imported += data['food_imports']
             exported += data['food_exports']
             if i in self.births:
@@ -1022,6 +1137,7 @@ class Observer:
                     self.enabled = False
                 return
             self.observe_players(True)
+            self.observe_administration()
             self.observe_espionage()
             self.observe_roman_campaign()
             self.observe_arabian_army()

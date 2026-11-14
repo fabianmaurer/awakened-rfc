@@ -20,7 +20,11 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 	// set the docstring of the current module scope 
 	python::scope().attr("__doc__") = "Civilization IV Player Class"; 
 	x
-		.def("isNone", &CyPlayer::isNone, "checks for a null player")
+		.def("getAdministrationValue", &CyPlayer::getAdministrationValue, "int (kind, cityID) - capacity, effort, overload and city administration")
+        .def("getAdministrationReleaseTarget", &CyPlayer::getAdministrationReleaseTarget)
+        .def("releaseAdministrationCity", &CyPlayer::releaseAdministrationCity)
+        .def("removeAdministrationResidence", &CyPlayer::removeAdministrationResidence)
+        .def("isNone", &CyPlayer::isNone, "checks for a null player")
         .def("getCaliphatePartitionDecision", &CyPlayer::getCaliphatePartitionDecision, "int () - pending caliphate partition, or -1")
         .def("isCaliphatePartitionInProgress", &CyPlayer::isCaliphatePartitionInProgress, "bool () - canonical partition city transfers in progress")
         .def("getCaliphateRealmMask", &CyPlayer::getCaliphateRealmMask, "int () - eligible successor realms")

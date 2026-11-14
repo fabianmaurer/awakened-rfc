@@ -5,6 +5,7 @@
 #include "ObserverPerformance.h"
 #include "FastLateGame.h"
 #include "CvUnit.h"
+#include "CvAdministration.h"
 #include "CvArea.h"
 #include "CvPlot.h"
 #include "CvCity.h"
@@ -5636,6 +5637,7 @@ bool CvUnit::spread(ReligionTypes eReligion)
 		iSpreadProb += (((GC.getNumReligionInfos() - pCity->getReligionCount()) * (100 - iSpreadProb)) / GC.getNumReligionInfos());
 
 		iSpreadProb = iSpreadProb * pCity->getReligionRivalryPercent(eReligion, true) / 100;
+        if (GET_PLAYER(pCity->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(pCity->getOwnerINLINE()).getStateReligion() != eReligion) iSpreadProb /= 4;
 
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Religion") < iSpreadProb)
 		{
@@ -5688,9 +5690,36 @@ bool CvUnit::purgeReligions()
 {
     if (!canPurgeReligions()) return false;
     CvCity* pCity = plot()->getPlotCity();
+#if ARFC_ENABLE_REPORTING
+    bool record = GC.getGameINLINE().isObserverAutoPlay() && !GC.getGameINLINE().isGameMultiPlayer() && !g_observerPerformance;
+    int values[14];
+    if (record)
+    {
+        values[0] = pCity->getID(); values[1] = pCity->getGameTurnFounded();
+        values[2] = pCity->getX_INLINE(); values[3] = pCity->getY_INLINE();
+        values[4] = NO_RELIGION;
+        for (int religion = 0; religion < GC.getNumReligionInfos(); ++religion)
+            if (m_pUnitInfo->getReligionSpreads(religion) > 0) { values[4] = religion; break; }
+        values[5] = pCity->happyLevel() - pCity->unhappyLevel();
+        values[6] = Administration::purgeHappinessChange(*pCity, values[4]);
+        values[7] = Administration::effort100(*pCity);
+        values[8] = pCity->getReligionCount(); values[9] = Administration::purgeValue(*pCity, values[4]);
+    }
+#endif
     for (int i = 0; i < GC.getNumReligionInfos(); ++i)
         if (m_pUnitInfo->getReligionSpreads(i) <= 0)
             pCity->removeReligionByInquisition((ReligionTypes)i);
+#if ARFC_ENABLE_REPORTING
+    if (record)
+    {
+        values[10] = pCity->happyLevel() - pCity->unhappyLevel();
+        values[11] = Administration::effort100(*pCity);
+        values[12] = pCity->getReligionCount(); values[13] = getUnitType();
+        CyArgsList args;
+        args.add(getOwnerINLINE()); args.add(values, 14);
+        gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordReligionPurge", args.makeFunctionArgs());
+    }
+#endif
     // Command execution is synchronized by the regular unit-command message.
     kill(true);
     return true;

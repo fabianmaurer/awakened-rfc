@@ -80,7 +80,7 @@ class RFCUtils:
 
         def getStability( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                value = scriptDict['lStability'][iCiv]
+                value = scriptDict['lStability'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
                         return max(0, value)
                 return value
@@ -89,17 +89,17 @@ class RFCUtils:
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
                         iNewValue = max(0, iNewValue)
-                scriptDict['lStability'][iCiv] = iNewValue
+                scriptDict['lStability'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 gc.getPlayer(iCiv).setIntelligenceStability(iNewValue)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getBaseStabilityLastTurn( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lBaseStabilityLastTurn'][iCiv]
+                return scriptDict['lBaseStabilityLastTurn'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
 
         def setBaseStabilityLastTurn( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue
+                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getStabilityParameters( self, iParameter ):

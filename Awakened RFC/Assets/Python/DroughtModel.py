@@ -6,6 +6,7 @@ No game imports: the runtime supplies geometry and synchronized random draws.
 MIN_REACH, MAX_REACH = 6, 12
 MIN_MARGIN, MAX_MARGIN = 2, 4
 TARGET_FOOD = 3.5
+NORMAL_FREQUENCY_SCALE = .5
 ORDINARY_DRY = (1., 1., 1., 1., .75, .5, .25)
 
 
@@ -113,5 +114,6 @@ def calibrate(floodBanks, regions):
         middle = (low + high) / 2.
         if expectedFood(rows, middle) > TARGET_FOOD: low = middle
         else: high = middle
-    chance = high * 10000.
+    # Halve ordinary initiations after calibrating the map-specific baseline.
+    chance = high * 10000. * NORMAL_FREQUENCY_SCALE
     return chance, expectedFood(rows, chance / 10000.)

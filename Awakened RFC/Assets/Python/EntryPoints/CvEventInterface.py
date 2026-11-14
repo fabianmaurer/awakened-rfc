@@ -80,3 +80,9 @@ def recordApostolicState(argsList):
     if REPORTING_ENABLED:
         import GameObserver
         GameObserver.record_apostolic_state(*argsList)
+
+
+def recordReligionPurge(argsList):
+    if REPORTING_ENABLED:
+        import GameObserver
+        GameObserver.record_religion_purge(*argsList)
