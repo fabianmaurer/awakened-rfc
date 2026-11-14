@@ -19,13 +19,9 @@
 #include "CvDLLFAStarIFaceBase.h"
 
 
-#define PATH_MOVEMENT_WEIGHT									(1000)
 #define PATH_RIVER_WEIGHT											(100)
 #define PATH_CITY_WEIGHT											(100)
 #define PATH_DEFENSE_WEIGHT										(10)
-#define PATH_TERRITORY_WEIGHT									(3)
-#define PATH_STEP_WEIGHT											(2)
-#define PATH_STRAIGHT_WEIGHT									(1)
 
 #define PATH_DAMAGE_WEIGHT										(500)
 CvPlot* plotCity(int iX, int iY, int iIndex)
@@ -1200,7 +1196,7 @@ int checkFreshWater(FAStarNode* parent, FAStarNode* node, int data, const void* 
 {
 	if (data == ASNL_ADDCLOSED)
 	{
-		if (GC.getMapINLINE().plotSorenINLINE(node->m_iX, node->m_iY)->isFreshWater())
+		if (GC.getMapINLINE().plotSorenINLINE(node->m_iX, node->m_iY)->isFreshWater(true))
 		{
 			*((bool *)pointer) = true;
 		}
@@ -1222,6 +1218,11 @@ int changeIrrigated(FAStarNode* parent, FAStarNode* node, int data, const void* 
 
 
 int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder)
+{
+	return pathDestValidForFlags(iToX, iToY, pointer, gDLL->getFAStarIFace()->GetInfo(finder));
+}
+
+int pathDestValidForFlags(int iToX, int iToY, const void* pointer, int iFlags)
 {
 	PROFILE_FUNC();
 
@@ -1253,7 +1254,7 @@ int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder)
 
 	if (bAIControl)
 	{
-		if (!(gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_IGNORE_DANGER))
+		if (!(iFlags & MOVE_IGNORE_DANGER))
 		{
 			if (!(pSelectionGroup->canFight()) && !(pSelectionGroup->alwaysInvisible()))
 			{
@@ -1303,7 +1304,7 @@ int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder)
 						{
 							if (pLoopUnit2->isGroupHead())
 							{
-								if (pLoopUnit2->getGroup()->canMoveOrAttackInto(pToPlot, (pSelectionGroup->AI_isDeclareWar(pToPlot) || (gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_DECLARE_WAR))))
+								if (pLoopUnit2->getGroup()->canMoveOrAttackInto(pToPlot, (pSelectionGroup->AI_isDeclareWar(pToPlot) || (iFlags & MOVE_DECLARE_WAR))))
 								{
 									bValid = true;
 									break;
@@ -1323,7 +1324,7 @@ int pathDestValid(int iToX, int iToY, const void* pointer, FAStar* finder)
 		}
 		else
 		{
-			if (!(pSelectionGroup->canMoveOrAttackInto(pToPlot, (pSelectionGroup->AI_isDeclareWar(pToPlot) || (gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_DECLARE_WAR)))))
+			if (!(pSelectionGroup->canMoveOrAttackInto(pToPlot, (pSelectionGroup->AI_isDeclareWar(pToPlot) || (iFlags & MOVE_DECLARE_WAR)))))
 			{
 				return FALSE;
 			}
@@ -1481,6 +1482,11 @@ int pathCost(FAStarNode* parent, FAStarNode* node, int data, const void* pointer
 
 int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointer, FAStar* finder)
 {
+	return pathValidForFlags(parent, node, pointer, gDLL->getFAStarIFace()->GetInfo(finder));
+}
+
+int pathValidForFlags(FAStarNode* parent, FAStarNode* node, const void* pointer, int iFlags)
+{
 	CvSelectionGroup* pSelectionGroup;
 	CvPlot* pFromPlot;
 	CvPlot* pToPlot;
@@ -1515,7 +1521,7 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 		return TRUE;
 	}
 
-	if (gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_SAFE_TERRITORY)
+	if (iFlags & MOVE_SAFE_TERRITORY)
 	{
 		if (!(pFromPlot->isRevealed(pSelectionGroup->getHeadTeam(), false)))
 		{
@@ -1531,7 +1537,7 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 		}
 	}
 
-	if (gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_NO_ENEMY_TERRITORY)
+	if (iFlags & MOVE_NO_ENEMY_TERRITORY)
 	{
 		if (pFromPlot->isOwned())
 		{
@@ -1548,7 +1554,7 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 	{
 		if ((parent->m_iData2 > 1) || (parent->m_iData1 == 0))
 		{
-			if (!(gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_IGNORE_DANGER))
+			if (!(iFlags & MOVE_IGNORE_DANGER))
 			{
 				if (!(pSelectionGroup->canFight()) && !(pSelectionGroup->alwaysInvisible()))
 				{
@@ -1563,7 +1569,7 @@ int pathValid(FAStarNode* parent, FAStarNode* node, int data, const void* pointe
 
 	if (bAIControl || pFromPlot->isRevealed(pSelectionGroup->getHeadTeam(), false))
 	{
-		if (gDLL->getFAStarIFace()->GetInfo(finder) & MOVE_THROUGH_ENEMY)
+		if (iFlags & MOVE_THROUGH_ENEMY)
 		{
 			if (!(pSelectionGroup->canMoveOrAttackInto(pFromPlot)))
 			{
@@ -2155,4 +2161,16 @@ void getUnitAIString(CvWString& szString, UnitAITypes eUnitAI)
 
 	default: szString = CvWString::format(L"unknown(%d)", eUnitAI); break;
 	}
+}
+
+// Religions founded by the regional historical rules, not technology races.
+bool isRegionalReligion(ReligionTypes eReligion)
+{
+    return eReligion == GC.getInfoTypeForString("RELIGION_JUDAISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_CHRISTIANITY") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_ISLAM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_HINDUISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_BUDDHISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_CONFUCIANISM") ||
+        eReligion == GC.getInfoTypeForString("RELIGION_TAOISM");
 }

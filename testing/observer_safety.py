@@ -35,6 +35,7 @@ def kernel_api():
         'OpenProcess': ([w.DWORD, w.BOOL, w.DWORD], w.HANDLE),
         'WaitForSingleObject': ([w.HANDLE, w.DWORD], w.DWORD),
         'TerminateProcess': ([w.HANDLE, w.UINT], w.BOOL),
+        'IsProcessInJob': ([w.HANDLE, w.HANDLE, ctypes.POINTER(w.BOOL)], w.BOOL),
         'CloseHandle': ([w.HANDLE], w.BOOL),
     }
     for name, (arguments, result) in signatures.items():
@@ -85,11 +86,16 @@ class BatchSafety:
             process.terminate()
             raise error
 
-    def arm_cleanup_timeout(self):
+    def arm_cleanup_timeout(self, process):
         # Diagnostic APIs themselves can block. The independent helper imposes
-        # a hard bound once a stalled batch is already destined to stop.
-        (self.batch / 'emergency-stop-deadline.json').write_text(
-            json.dumps({'deadline': time.time() + 15}), encoding='utf-8')
+        # a per-child bound without interrupting other games in the batch.
+        path = self.batch / ('cleanup-deadline-%d.json' % process.pid)
+        temporary = path.with_suffix('.tmp')
+        temporary.write_text(json.dumps({'pid': process.pid, 'deadline': time.time() + 30}), encoding='utf-8')
+        temporary.replace(path)
+
+    def disarm_cleanup_timeout(self, process):
+        (self.batch / ('cleanup-deadline-%d.json' % process.pid)).unlink(missing_ok=True)
 
     def close(self):
         if self.job:
@@ -177,6 +183,7 @@ def watch(batch, parent_pid, job_name):
     job = kernel.OpenJobObjectW(0x000C, False, job_name)  # QUERY | TERMINATE
     registered = False
     ready = batch / 'emergency-stop-ready.json'
+    cleanup = {}
     try:
         if not parent or not job:
             raise ctypes.WinError(ctypes.get_last_error())
@@ -198,13 +205,31 @@ def watch(batch, parent_pid, job_name):
             if (batch / 'STOP').exists():
                 reason = 'stop_file'
                 break
-            try:
-                deadline = json.loads((batch / 'emergency-stop-deadline.json').read_text(encoding='utf-8'))['deadline']
-                if time.time() >= deadline:
-                    reason = 'cleanup_timeout'
-                    break
-            except (OSError, ValueError, KeyError):
-                pass
+            for path in batch.glob('cleanup-deadline-*.json'):
+                if path in cleanup:
+                    continue
+                try:
+                    state = json.loads(path.read_text(encoding='utf-8'))
+                    child = kernel.OpenProcess(0x100401, False, state['pid'])  # SYNCHRONIZE | QUERY | TERMINATE
+                    if child:
+                        member = w.BOOL()
+                        if kernel.IsProcessInJob(child, job, ctypes.byref(member)) and member.value:
+                            cleanup[path] = (child, state['deadline'])
+                        else:
+                            kernel.CloseHandle(child)
+                except (OSError, ValueError, KeyError):
+                    pass
+            for path, (child, deadline) in list(cleanup.items()):
+                # Retain the exact process handle so PID reuse cannot target a
+                # later game. Never kill the batch for one child's timeout.
+                finished = kernel.WaitForSingleObject(child, 0) == 0
+                if not finished and path.exists() and time.time() >= deadline:
+                    kernel.TerminateProcess(child, 1)
+                    finished = True
+                if finished or not path.exists():
+                    path.unlink(missing_ok=True)
+                    kernel.CloseHandle(child)
+                    del cleanup[path]
             while user.PeekMessageW(ctypes.byref(message), None, 0, 0, 1):
                 if message.message == 0x0312:  # WM_HOTKEY
                     reason = 'hotkey'
@@ -230,6 +255,8 @@ def watch(batch, parent_pid, job_name):
         if job:
             kernel.TerminateJobObject(job, 1)
     finally:
+        for child, deadline in cleanup.values():
+            kernel.CloseHandle(child)
         if registered:
             user.UnregisterHotKey(None, 1)
         if parent:

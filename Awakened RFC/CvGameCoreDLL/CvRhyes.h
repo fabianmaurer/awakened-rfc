@@ -3,8 +3,6 @@
 #define CVRHYES_H
 
 // rhyes.h
-#define EARTH_X					(124)
-#define EARTH_Y					(68)
 
 
 #define MAX_COM_SHRINE			(20)
@@ -43,15 +41,20 @@
 #define KOREA (30)
 #define MISSISSIPPIANS (31)
 #define ESKIMOS (32)
-#define NUM_MAJOR_PLAYERS		(33)
-#define INDEPENDENT				(33)
-#define INDEPENDENT2			(34)
-#define NATIVE					(35)
-#define CELTIA					(36)
-#define CRUSADER_STATE (37)
-#define PAPAL_STATE (38)
+#define GANGES (33)
+#define CHOLA (34)
+#define DELHI (35)
+#define BENGAL (36)
+#define VIJAYANAGARA (37)
+#define NUM_MAJOR_PLAYERS		(38)
+#define INDEPENDENT				(38)
+#define INDEPENDENT2			(39)
+#define NATIVE					(40)
+#define CELTIA					(41)
+#define CRUSADER_STATE (42)
+#define PAPAL_STATE (43)
 #define ARFC_NET_PAPAL_DECISION (4280400)
-#define BARBARIAN				(39)
+#define BARBARIAN				(44)
 
 
 #define MEDITATION				(1)
@@ -180,29 +183,39 @@
 
 #define NUM_BUILDINGTYPES_PLAGUE	(128)
 
-#endif	// CVRHYES_H
+
 
 
 
 extern int startingTurn[];
-extern char loadingTime[45][4];
-extern char loadingTime600AD[45][4];
-extern char startingYear[45][6];
-extern bool startingEra[45];
-extern char startingYear600AD[45][6];
-extern bool startingEra600AD[45];
+extern char loadingTime[51][4];
+extern char loadingTime600AD[51][4];
+extern char startingYear[51][6];
+extern bool startingEra[51];
+extern char startingYear600AD[51][6];
+extern bool startingEra600AD[51];
 //extern int militaryBonus[2][18];
-extern char uniquePower[45][2][16];
-extern char uniqueGoals[45][3][18];
-extern char rating[45][6][15];
+extern char uniquePower[51][2][16];
+extern char uniqueGoals[51][3][18];
+extern char rating[51][6][15];
 
 extern int turnPlayed[MAX_PLAYERS];
 extern int civSpreadFactor[MAX_PLAYERS][7];
-extern int borders[33][33];
+extern int borders[38][38];
+CvWString getAuthoredCountryNameKey(int iCivilization, const std::vector<int>& civics, int iReligion, int iYear, int iCapitalX, int iCapitalY, int iNumCities);
 CvWString getIndependentCountryNameKey(int iPlayer, const std::vector<int>& civics, int iReligion, int iNumCities, int iYear, int iLandPlots, bool bUseLiveTechnology = true);
-extern wchar civDynamicNames[33][22][19]; //(dynamic civ names - not jdog's)
-extern int civDynamicNamesFlag[33];
-extern int civDynamicNamesEraThreshold[33];
-extern int settlersMaps[][68][124];
+extern wchar civDynamicNames[38][22][19]; //(dynamic civ names - not jdog's)
+extern int civDynamicNamesFlag[38];
+extern int civDynamicNamesEraThreshold[38];
+// Settlement rows are north-to-south, matching authored profile grids.
+int getSettlerMapValue(int iPlayer, int iY, int iX);
+void setSettlerMapValue(int iPlayer, int iY, int iX, int iValue);
+void resetSettlerMap(int iPlayer);
+int scenarioGeographyValue(const char* key, int index = 0);
+const std::vector<int>& scenarioGeographyValues(const char* key);
+int historicalTurns(int iReferenceTurns);
 
 
+
+
+#endif // CVRHYES_H

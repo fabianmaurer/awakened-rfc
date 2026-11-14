@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvGlobals.h"
 #include "CvSelectionGroup.h"
 #include "CvGameAI.h"
@@ -186,7 +187,24 @@ void CvSelectionGroup::doTurn()
 
 		if (AI_isControlled())
 		{
-			if ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0)))
+            CvUnit* head = getHeadUnit();
+            bool keepBlockade = fastLateGame() && getOwnerINLINE() == BARBARIAN_PLAYER &&
+                getActivityType() == ACTIVITY_PLUNDER && head && head->isBlockading() &&
+                head->canPlunder(plot()) && !(head->getDamage() >= 30 && head->canHeal(plot()));
+            if (keepBlockade) {
+                // A single adjacent visible attack opportunity wakes the group;
+                // otherwise leave ACTIVITY_PLUNDER and its trade network intact.
+                for (int direction = 0; direction < NUM_DIRECTION_TYPES && keepBlockade; ++direction) {
+                    CvPlot* nearby = plotDirection(getX(), getY(), (DirectionTypes)direction);
+                    if (nearby && nearby->isVisible(getTeam(), false) &&
+                        (nearby->isVisibleEnemyUnit(head) || nearby->isEnemyCity(*head)) &&
+                        head->canMoveInto(nearby, true) && AI_attackOdds(nearby, true) >= 25)
+                        keepBlockade = false;
+                }
+                if (keepBlockade && !isForceUpdate()) observerPerformanceCount("count.fast.barbBlockadeHeld");
+                else if (!keepBlockade) observerPerformanceCount("count.fast.barbBlockadeReact");
+            }
+			if (!keepBlockade && ((getActivityType() != ACTIVITY_MISSION) || (!canFight() && (GET_PLAYER(getOwnerINLINE()).AI_isPlotDanger(plot(), 2, true, isWorkerGroup()) > 0))))
 			{
 				setForceUpdate(true);
 			}
@@ -982,9 +1000,16 @@ void CvSelectionGroup::startMission()
 		}
 	}
 
+	// A repeated plunder order is a continuation, not a blockade stop/start.
+	// Validate it before preserving the network through mission setup.
+	const bool bContinueBlockade = fastLateGame() && !isHuman() &&
+		getOwnerINLINE() != BARBARIAN_PLAYER &&
+		headMissionQueueNode()->m_data.eMissionType == MISSION_PLUNDER &&
+		canStartMission(MISSION_PLUNDER, headMissionQueueNode()->m_data.iData1,
+			headMissionQueueNode()->m_data.iData2, plot());
 	if (canAllMove())
 	{
-		setActivityType(ACTIVITY_MISSION);
+		setActivityTypeInternal(ACTIVITY_MISSION, bContinueBlockade);
 	}
 	else
 	{
@@ -1030,7 +1055,7 @@ void CvSelectionGroup::startMission()
 			break;
 
 		case MISSION_PLUNDER:
-			setActivityType(ACTIVITY_PLUNDER);
+			setActivityTypeInternal(ACTIVITY_PLUNDER, bContinueBlockade);
 			bNotify = true;
 			bDelete = true;
 			break;
@@ -3024,7 +3049,7 @@ bool CvSelectionGroup::groupAttack(int iX, int iY, int iFlags, bool& bFailedAlre
 						return false;
 					}
 
-					bool bNoBlitz = (!pBestAttackUnit->isBlitz() || !pBestAttackUnit->isMadeAttack());
+					bool bNoBlitz = (!pBestAttackUnit->canAttackAgain() || !pBestAttackUnit->isMadeAttack());
 
 					if (groupDeclareWar(pDestPlot))
 					{
@@ -3617,6 +3642,12 @@ ActivityTypes CvSelectionGroup::getActivityType() const
 
 void CvSelectionGroup::setActivityType(ActivityTypes eNewValue)
 {
+	setActivityTypeInternal(eNewValue, false);
+}
+
+
+void CvSelectionGroup::setActivityTypeInternal(ActivityTypes eNewValue, bool bPreserveBlockade)
+{
 	CLLNode<IDInfo>* pUnitNode;
 	CvUnit* pLoopUnit;
 	CvPlot* pPlot;
@@ -3634,7 +3665,19 @@ void CvSelectionGroup::setActivityType(ActivityTypes eNewValue)
 			airCircle(false);
 		}
 
-		setBlockading(false);
+		if (bPreserveBlockade)
+		{
+			for (pUnitNode = headUnitNode(); pUnitNode != NULL; pUnitNode = nextUnitNode(pUnitNode))
+			{
+				pLoopUnit = ::getUnit(pUnitNode->m_data);
+				if (pLoopUnit->isBlockading() && pLoopUnit->canPlunder(pPlot))
+				{
+					observerPerformanceCount("count.fast.civBlockadePreserved");
+				}
+				else pLoopUnit->setBlockading(false);
+			}
+		}
+		else setBlockading(false);
 
 		m_eActivityType = eNewValue;
 

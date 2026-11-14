@@ -22,7 +22,7 @@
 		</SoundData>
 		<SoundData>
 			<SoundID>SONG_OPENING_MENU</SoundID>
-			<Filename>Sounds/Soundtrack/OpeningMenu</Filename>
+			<Filename>Sounds/Soundtrack/CourtlyVenture</Filename>
 			<LoadType>STREAMED</LoadType>
 			<bIsCompressed>1</bIsCompressed>
 			<bInGeneric>1</bInGeneric>

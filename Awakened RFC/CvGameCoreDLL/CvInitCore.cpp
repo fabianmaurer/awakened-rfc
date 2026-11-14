@@ -1789,6 +1789,12 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 					wcsicmp(szFileName, L"Start 3b - 900 AD.CivBeyondSwordWBSave") == 0;
 			if (wcsicmp(szFileName, L"Start 4 - 1453 AD.CivBeyondSwordWBSave") == 0)
 				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
+			// The setup screen must use the authored roster, not a game turn
+			// left over from an earlier game. Once a game is active, retain the
+			// normal birth gate for players joining later.
+			if (!gDLL->isGameActive() &&
+				wcsicmp(szFileName, L"Start 2 XL - 800BC.CivBeyondSwordWBSave") == 0)
+				return eID < NUM_MAJOR_PLAYERS && m_abPlayableCiv[eID];
 		}
 		if (eID == CALIPHATE_SLOT_1 || eID == CALIPHATE_SLOT_2) return false;
 
@@ -1834,8 +1840,8 @@ bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 		}
 		//if (eID < NUM_MAJOR_PLAYERS && startingTurn[eID] >= minTurn && (GC.getGameINLINE().getGameTurn() >= startingTurn[eID] + 1 || startingTurn[eID] == minTurn)) 
 		if (eID < NUM_MAJOR_PLAYERS && 
-			(startingTurn[eID] >= minTurn || (startingTurn[eID] < minTurn && GC.getGameINLINE().getGameTurn() >= 133 && (getLeader((PlayerTypes)INDEPENDENT) == (LeaderHeadTypes)5)) || (startingTurn[eID] < minTurn && GC.getGameINLINE().getGameTurn() >= 231 && getCiv((PlayerTypes)CELTIA) == (CivilizationTypes)4)) && 
-			(GC.getGameINLINE().getGameTurn() >= startingTurn[eID] + 1 || startingTurn[eID] == minTurn)) //unlocking early (locked in 800BC, dead in 600AD starts) civs after 250AD (turn 133) and 1400AD (turn 231)
+			(startingTurn[eID] >= minTurn || (startingTurn[eID] < minTurn && (GC.getGameINLINE().getGameTurn() / historicalTurns(1)) >= 133 && (getLeader((PlayerTypes)INDEPENDENT) == (LeaderHeadTypes)5)) || (startingTurn[eID] < minTurn && (GC.getGameINLINE().getGameTurn() / historicalTurns(1)) >= 231 && getCiv((PlayerTypes)CELTIA) == (CivilizationTypes)4)) &&
+			((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) >= startingTurn[eID] + 1 || startingTurn[eID] == minTurn)) //unlocking early (locked in 800BC, dead in 600AD starts) civs after 250AD (turn 133) and 1400AD (turn 231)
 			return true;
 		else
 			//return false;

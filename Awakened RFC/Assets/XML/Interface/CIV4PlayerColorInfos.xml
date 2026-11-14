@@ -342,15 +342,15 @@
 		<!-- Rhye - end -->
 		<PlayerColorInfo>
 			<Type>PLAYERCOLOR_ABBASID</Type>
-			<ColorTypePrimary>COLOR_PLAYER_BLACK</ColorTypePrimary>
+			<ColorTypePrimary>COLOR_PLAYER_ABBASID_EMERALD</ColorTypePrimary>
 			<ColorTypeSecondary>COLOR_PLAYER_GOLDENROD</ColorTypeSecondary>
-			<TextColorType>COLOR_PLAYER_GOLDENROD</TextColorType>
+			<TextColorType>COLOR_PLAYER_ABBASID_EMERALD_TEXT</TextColorType>
 		</PlayerColorInfo>
 		<PlayerColorInfo>
 			<Type>PLAYERCOLOR_ARABIA</Type>
-			<ColorTypePrimary>COLOR_PLAYER_DARK_RED</ColorTypePrimary>
+			<ColorTypePrimary>COLOR_PLAYER_MIDDLE_GREEN</ColorTypePrimary>
 			<ColorTypeSecondary>COLOR_PLAYER_GOLDENROD</ColorTypeSecondary>
-			<TextColorType>COLOR_PLAYER_DARK_RED_TEXT</TextColorType>
+			<TextColorType>COLOR_PLAYER_MIDDLE_GREEN_TEXT</TextColorType>
 		</PlayerColorInfo>
 		<PlayerColorInfo>
 			<Type>PLAYERCOLOR_FATIMID</Type>
@@ -366,9 +366,15 @@
 		</PlayerColorInfo>
 		<PlayerColorInfo>
 			<Type>PLAYERCOLOR_PAPAL</Type>
-			<ColorTypePrimary>COLOR_PLAYER_GOLDENROD</ColorTypePrimary>
-			<ColorTypeSecondary>COLOR_PLAYER_RED</ColorTypeSecondary>
-			<TextColorType>COLOR_PLAYER_YELLOW_TEXT</TextColorType>
+			<ColorTypePrimary>COLOR_WHITE</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_GOLDENROD</ColorTypeSecondary>
+			<TextColorType>COLOR_WHITE</TextColorType>
+		</PlayerColorInfo>
+		<PlayerColorInfo>
+			<Type>PLAYERCOLOR_ESKIMO</Type>
+			<ColorTypePrimary>COLOR_PLAYER_ICE_BLUE</ColorTypePrimary>
+			<ColorTypeSecondary>COLOR_PLAYER_DARK_CYAN</ColorTypeSecondary>
+			<TextColorType>COLOR_PLAYER_ICE_BLUE</TextColorType>
 		</PlayerColorInfo>
 	</PlayerColorInfos>
 </Civ4PlayerColorInfos>

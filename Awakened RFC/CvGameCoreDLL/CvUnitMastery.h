@@ -18,10 +18,12 @@ namespace UnitMastery
         MASTERY_MELEE, MASTERY_MOUNTED, MASTERY_ARCHER, MASTERY_GUN,
         MASTERY_ARMOR, MASTERY_SIEGE, MASTERY_NAVAL, MASTERY_ANIMAL,
         MASTERY_HEAL, MASTERY_SAME_TILE_HEAL, MASTERY_BLITZ, MASTERY_AMPHIB,
-        MASTERY_RIVER, MASTERY_ENEMY_ROUTE, MASTERY_ALWAYS_HEAL,
+        MASTERY_RIVER, MASTERY_ENEMY_ROAD, MASTERY_ALWAYS_HEAL,
         MASTERY_HILLS_DOUBLE, MASTERY_FOREST_DOUBLE, MASTERY_JUNGLE_DOUBLE,
         MASTERY_FIRST_IMMUNE, MASTERY_IGNORE_TERRAIN, MASTERY_IGNORE_BUILDING,
-        MASTERY_BOMBARD, MASTERY_VISIBILITY, NUM_MASTERY_EFFECTS
+        MASTERY_BOMBARD, MASTERY_VISIBILITY, MASTERY_CARGO,
+        MASTERY_CHARIOT_DEFENSE, MASTERY_ARCHER_ATTACK,
+        MASTERY_RIFLE_INFANTRY_ATTACK, MASTERY_SECOND_ATTACK, NUM_MASTERY_EFFECTS
     };
 
     TechTypes techForUnit(UnitTypes eUnit);
@@ -29,6 +31,7 @@ namespace UnitMastery
     int level(UnitTypes eUnit, TeamTypes eTeam);
     int modifier(UnitTypes eUnit, TeamTypes eTeam, Effect eEffect);
     bool isAvailable(const CvPlayer& kPlayer, TechTypes eTech);
+    void recordCombat(const CvUnit& kUnit);
     CvWString suffix(UnitTypes eUnit, TeamTypes eTeam);
     CvWString tooltipName(const CvUnit& kUnit);
     CvWString researchName(TechTypes eTech, TeamTypes eTeam);

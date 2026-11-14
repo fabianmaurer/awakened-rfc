@@ -1542,7 +1542,7 @@ bool CvDLLButtonPopup::launchChooseTechPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 					for (int iJ = 0; iJ < GC.getNumReligionInfos(); iJ++)
 					{
-						if (GC.getReligionInfo((ReligionTypes)iJ).getTechPrereq() == iI)
+						if (!isRegionalReligion((ReligionTypes)iJ) && GC.getReligionInfo((ReligionTypes)iJ).getTechPrereq() == iI)
 						{
 							if (!(GC.getGameINLINE().isReligionSlotTaken((ReligionTypes)iJ)))
 							{
@@ -2585,7 +2585,7 @@ bool CvDLLButtonPopup::launchFoundReligionPopup(CvPopup* pPopup, CvPopupInfo &in
 	for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
 	{
 		CvReligionInfo& kReligion = GC.getReligionInfo((ReligionTypes)iReligion);
-		if (!GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
+		if (!isRegionalReligion((ReligionTypes)iReligion) && !GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
 		{
 			gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, kReligion.getDescription(), kReligion.getButton(), iReligion, WIDGET_GENERAL);			
 			bFound = true;
@@ -2607,8 +2607,10 @@ bool CvDLLButtonPopup::launchPapalFoundingPopup(CvPopup* pPopup, CvPopupInfo &in
 	PlayerTypes eOwner = (PlayerTypes)info.getData2();
 	if (GC.getGameINLINE().getActivePlayer() != eOwner || !GC.getGameINLINE().isPapalDecisionValid(eOwner, info.getData1())) return false;
 	gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_EVENT_TITLE"));
-	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_EVENT_BODY", std::max(1, GC.getDefineINT("AP_PAPAL_RETRY_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent() / 100)));
-	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_ESTABLISH"), NULL, 0, WIDGET_GENERAL);
+	CvCity* pCity = GC.getGameINLINE().getPapalDecisionCity(info.getData1());
+    gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_AP_REFUGE_BODY", pCity->getNameKey(), std::max(1, GC.getDefineINT("AP_PAPAL_REFUSAL_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent() / 100)));
+    if (GET_PLAYER(eOwner).getNumCities() == 1) gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, gDLL->getText("TXT_KEY_AP_REFUGE_LAST_CITY", pCity->getNameKey(), std::max(1, GC.getDefineINT("AP_PAPAL_REFUSAL_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getVictoryDelayPercent() / 100)));
+	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_REFUGE_ACCEPT", pCity->getNameKey()), NULL, 0, WIDGET_GENERAL);
 	gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_DENY"), NULL, 1, WIDGET_GENERAL);
 	if (GC.getGameINLINE().canBecomePapacy(eOwner)) gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_AP_PAPAL_BECOME"), NULL, 2, WIDGET_GENERAL);
 	gDLL->getInterfaceIFace()->popupLaunch(pPopup, false, POPUPSTATE_IMMEDIATE);

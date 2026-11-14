@@ -1,6 +1,7 @@
 // team.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
 #include "CvPlayerAI.h"
@@ -202,6 +203,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 		m_abAtWar[iI] = false;
 		m_abPermanentWarPeace[iI] = false;
 		m_abOpenBorders[iI] = false;
+        m_abIntelligenceCooperation[iI] = false;
         m_abTradeEmbargo[iI] = false;
 		m_abDefensivePact[iI] = false;
 		m_abForcePeace[iI] = false;
@@ -221,6 +223,7 @@ void CvTeam::reset(TeamTypes eID, bool bConstructorCall)
 			kLoopTeam.m_abAtWar[getID()] = false;
 			kLoopTeam.m_abPermanentWarPeace[getID()] = false;
 			kLoopTeam.m_abOpenBorders[getID()] = false;
+            kLoopTeam.m_abIntelligenceCooperation[getID()] = false;
             kLoopTeam.m_abTradeEmbargo[getID()] = false;
 			kLoopTeam.m_abDefensivePact[getID()] = false;
 			kLoopTeam.m_abForcePeace[getID()] = false;
@@ -403,7 +406,8 @@ void CvTeam::addTeam(TeamTypes eTeam)
 			{
 				for (pNode = pLoopDeal->getFirstTrades()->head(); pNode; pNode = pLoopDeal->getFirstTrades()->next(pNode))
 				{
-					if ((pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
+					if ((pNode->m_data.m_eItemType == TRADE_INTELLIGENCE_COOPERATION) ||
+                          (pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
 						  (pNode->m_data.m_eItemType == TRADE_DEFENSIVE_PACT) ||
 						  (pNode->m_data.m_eItemType == TRADE_PEACE_TREATY) ||
 						  (pNode->m_data.m_eItemType == TRADE_VASSAL) ||
@@ -418,7 +422,8 @@ void CvTeam::addTeam(TeamTypes eTeam)
 			{
 				for (pNode = pLoopDeal->getSecondTrades()->head(); pNode; pNode = pLoopDeal->getSecondTrades()->next(pNode))
 				{
-					if ((pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
+					if ((pNode->m_data.m_eItemType == TRADE_INTELLIGENCE_COOPERATION) ||
+                          (pNode->m_data.m_eItemType == TRADE_OPEN_BORDERS) ||
 						  (pNode->m_data.m_eItemType == TRADE_DEFENSIVE_PACT) ||
 						  (pNode->m_data.m_eItemType == TRADE_PEACE_TREATY) ||
 						  (pNode->m_data.m_eItemType == TRADE_VASSAL) ||
@@ -1167,6 +1172,13 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 
 	if (!isAtWar(eTeam))
 	{
+        // Penalize the initiator once; defensive-pact and vassal recursion are not new decisions.
+        static int iDynasticDeclarationDepth = 0;
+        const bool bDynasticInitiator = (iDynasticDeclarationDepth++ == 0);
+        if (bDynasticInitiator)
+            for (int iPlayer = 0; iPlayer < NUM_MAJOR_PLAYERS; ++iPlayer)
+                if (GET_PLAYER((PlayerTypes)iPlayer).isAlive() && GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())
+                    GET_PLAYER((PlayerTypes)iPlayer).onDynasticWar(eTeam);
 		//FAssertMsg((isHuman() || isMinorCiv() || GET_TEAM(eTeam).isMinorCiv() || isBarbarian() || GET_TEAM(eTeam).isBarbarian() || AI_isSneakAttackReady(eTeam) || (GET_TEAM(eTeam).getAtWarCount(true) > 0) || !(GC.getGameINLINE().isFinalInitialized()) || gDLL->GetWorldBuilderMode() || getVassalCount() > 0  || isAVassal() || GET_TEAM(eTeam).getVassalCount() > 0  || GET_TEAM(eTeam).isAVassal() || getDefensivePactCount() > 0), "Possibly accidental AI war!!!");
 
 		for (pLoopDeal = GC.getGameINLINE().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGameINLINE().nextDeal(&iLoop))
@@ -1559,6 +1571,7 @@ void CvTeam::declareWar(TeamTypes eTeam, bool bNewDiplo, WarPlanTypes eWarPlan)
 				}
 			}
 		}
+        --iDynasticDeclarationDepth;
 	}
 }
 
@@ -2661,9 +2674,9 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}	
 		//discount for new born civs
 		int iTurnModifier = 5*(int)GET_PLAYER((PlayerTypes)getID()).getCurrentEra(); //0-5-10-15-20-25-30
-		if (GC.getGameINLINE().getGameTurn() <= startingTurn[getID()] + iTurnModifier) {
+		if ((GC.getGameINLINE().getGameTurn() / historicalTurns(1)) <= startingTurn[getID()] + iTurnModifier) {
 			
-			iCost *= 100 - ((startingTurn[getID()] + iTurnModifier) - GC.getGameINLINE().getGameTurn());
+			iCost *= 100 - ((startingTurn[getID()] + iTurnModifier) - (GC.getGameINLINE().getGameTurn() / historicalTurns(1)));
 			iCost /= 100;
 		}
 	}
@@ -2720,7 +2733,9 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 		}
 	}
 
-	if (bAstronomy && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
+	// Untradeable automation research stays outside tech diffusion even when
+	// its fixed pacing discount brings the XML price below the old threshold.
+	if (bAstronomy && GC.getTechInfo(eTech).isTrade() && !GC.getTechInfo(eTech).isRepeat() && GC.getTechInfo(eTech).getResearchCost() < 16000) {
 		for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 		{
 			if (GET_TEAM((TeamTypes)iI).isHasTech(eTech))
@@ -2733,14 +2748,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	}
 	//Rhye - end
 
-	//Rhye - start
-	//discount for the late game
-	if (GC.getGameINLINE().getGameTurn() > 400){ 
-		iCost *= 8; 
-		iCost /= 10; 
-	}
-
-	//Rhye - end
+	// The former turn-400 discount is baked into Modern/Future XML costs.
 	
 	//Rhye - start min and max turns cap
 	/*int iResearchRate = GET_PLAYER((PlayerTypes)getID()).calculateResearchRate(eTech);
@@ -3857,6 +3865,34 @@ void CvTeam::setTradeEmbargo(TeamTypes eIndex, bool bNewValue)
     gDLL->getInterfaceIFace()->setDirty(CityScreen_DIRTY_BIT, true);
 }
 
+bool CvTeam::isIntelligenceCooperation(TeamTypes eIndex) const
+{
+    return eIndex >= 0 && eIndex < MAX_TEAMS && eIndex != getID() &&
+        !isAtWar(eIndex) && m_abIntelligenceCooperation[eIndex];
+}
+
+void CvTeam::setIntelligenceCooperation(TeamTypes eIndex, bool bNewValue)
+{
+    FAssert(eIndex >= 0 && eIndex < MAX_TEAMS && eIndex != getID());
+    if (bNewValue)
+    {
+        bool bEligible = false;
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+            if (GET_PLAYER((PlayerTypes)i).getTeam() == getID())
+                for (int j = 0; j < NUM_MAJOR_PLAYERS; ++j)
+                    if (GET_PLAYER((PlayerTypes)j).getTeam() == eIndex &&
+                        GET_PLAYER((PlayerTypes)i).canCooperateIntelligence((PlayerTypes)j)) bEligible = true;
+        if (!bEligible) return;
+    }
+    m_abIntelligenceCooperation[eIndex] = bNewValue;
+    if (!bNewValue)
+        for (int i = 0; i < MAX_PLAYERS; ++i)
+            if (GET_PLAYER((PlayerTypes)i).getTeam() == getID())
+                GET_PLAYER((PlayerTypes)i).cancelIntelligenceCooperation(eIndex);
+    gDLL->getInterfaceIFace()->setDirty(Espionage_Advisor_DIRTY_BIT, true);
+    gDLL->getInterfaceIFace()->setDirty(GameData_DIRTY_BIT, true);
+}
+
 bool CvTeam::isOpenBorders(TeamTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
@@ -3867,6 +3903,7 @@ bool CvTeam::isOpenBorders(TeamTypes eIndex) const
 
 void CvTeam::setOpenBorders(TeamTypes eIndex, bool bNewValue)
 {
+    Administration::invalidateNetwork();
 	bool bOldFreeTrade;
 	int iI;
 
@@ -3995,6 +4032,7 @@ bool CvTeam::isVassal(TeamTypes eIndex) const
 
 void CvTeam::setVassal(TeamTypes eIndex, bool bNewValue, bool bCapitulated)
 {
+    Administration::invalidateNetwork();
 	if (bNewValue)
 	{
 		if (GC.getGameINLINE().isCrusadeWar(getID(), eIndex)) return;
@@ -4746,7 +4784,7 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 							if (pLoopCity->getNumBuilding(eIndex) > 0)
 							{
 								const CvPlayer& owner = GET_PLAYER((PlayerTypes)iI);
-								const bool bProtectedObelisk = eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") &&
+								const bool bProtectedObelisk = (eIndex == GC.getInfoTypeForString("BUILDING_EGYPTIAN_OBELISK") || eIndex == GC.getInfoTypeForString("BUILDING_PYRAMID")) &&
 									owner.getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_EGYPT") &&
 									owner.isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_DESPOTISM"));
 								if (!bProtectedObelisk)
@@ -5122,6 +5160,7 @@ void CvTeam::announceTechToPlayers(TechTypes eIndex, bool bPartial)
 
 void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, bool bFirst, bool bAnnounce)
 {
+    Administration::invalidateNetwork();
 	PROFILE_FUNC();
 
 	CvCity* pCapitalCity;
@@ -5224,8 +5263,12 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 		processTech(eIndex, ((bNewValue) ? 1 : -1));
 		if (bNewValue) UnitMastery::refreshResearch(*this, ePlayer);
-		// A capped military field must stop consuming research after level 15.
-		if (bNewValue && eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)
+		// Each mastery tier finishes the selected research, like an ordinary tech.
+		// Leave any explicitly queued next tech in place; otherwise the normal
+		// research-choice path below prompts humans and lets AI choose again.
+		// Global Military Research only leaves the queue at its level-15 cap.
+		if (bNewValue && (UnitMastery::unitForTech(eIndex) != NO_UNIT ||
+			(eIndex == GC.getInfoTypeForString("TECH_MILITARY_RESEARCH") && getTechCount(eIndex) >= 15)))
 		{
 			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
 				if (GET_PLAYER((PlayerTypes)iPlayer).getTeam() == getID())
@@ -5295,7 +5338,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 					{
 						for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
 						{
-							if (GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex)
+							if (!isRegionalReligion((ReligionTypes)iI) && GC.getReligionInfo((ReligionTypes)iI).getTechPrereq() == eIndex)
 							{
 								iBestValue = MAX_INT;
 								eBestPlayer = NO_PLAYER;
@@ -6442,6 +6485,7 @@ void CvTeam::read(FDataStreamBase* pStream)
 	pStream->Read(MAX_TEAMS, m_abAtWar);
 	pStream->Read(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Read(MAX_TEAMS, m_abOpenBorders);
+    pStream->Read(MAX_TEAMS, m_abIntelligenceCooperation);
     if (uiFlag & 1) pStream->Read(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Read(MAX_TEAMS, m_abDefensivePact);
 	pStream->Read(MAX_TEAMS, m_abForcePeace);
@@ -6547,6 +6591,7 @@ void CvTeam::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_TEAMS, m_abAtWar);
 	pStream->Write(MAX_TEAMS, m_abPermanentWarPeace);
 	pStream->Write(MAX_TEAMS, m_abOpenBorders);
+    pStream->Write(MAX_TEAMS, m_abIntelligenceCooperation);
     pStream->Write(MAX_TEAMS, m_abTradeEmbargo);
 	pStream->Write(MAX_TEAMS, m_abDefensivePact);
 	pStream->Write(MAX_TEAMS, m_abForcePeace);

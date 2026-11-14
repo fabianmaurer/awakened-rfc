@@ -81,7 +81,11 @@ protected:
 	void AI_animalMove();
 	void AI_settleMove();
 	void AI_workerMove();
+	bool AI_workerGeneratePath(const CvPlot* destination, int flags = 0, bool reuse = false, int* turns = NULL) const;
+	FAStarNode* AI_workerPathLastNode() const;
+	CvPlot* AI_workerPathEndTurnPlot() const;
 	void AI_barbAttackMove();
+    void AI_fastBarbarianMove();
 	void AI_attackMove();
 	bool AI_slaveMove();
 	bool AI_slaveMilitaryNeeded() const;
@@ -145,8 +149,10 @@ protected:
 	bool AI_pickupTargetSpy();
 	bool AI_chokeDefend();
 	bool AI_heal(int iDamagePercent = 0, int iMaxPath = MAX_INT);
+	bool AI_moveToHealingPlot(int iMaxPath);
 	bool AI_afterAttack();
 	bool AI_goldenAge();
+	bool AI_purgeReligion();
 	bool AI_spreadReligion();
 	bool AI_spreadCorporation();
 	bool AI_spreadReligionAirlift();

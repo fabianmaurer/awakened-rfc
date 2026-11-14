@@ -1,0 +1,479 @@
+# XL and Large World scenarios
+
+## XL pace and expansion
+
+Both XL starts use the XL game speed: 1,000 turns instead of 500, with half the
+calendar progression per turn. Production, research, food for growth, worker
+tasks, improvement upgrades, city Great People and culture thresholds use twice
+their ordinary requirements. Settlers retain their ordinary production cost;
+movement, per-turn yields and recurring upkeep retain their ordinary rates.
+Golden ages, anarchy, anger and related timed effects follow the slower speed.
+Chops, Great Person missions and population rushing scale their rewards to match
+the larger requirements; military Great General experience follows the original
+game-speed formula.
+
+Historical births, religions, city foundations, leader dates and victory
+deadlines retain their calendar dates. Recurring RFC checks and raids run once
+per two XL turns, with the same unit counts per event. The XL 800 BC start is
+engine turn 174, corresponding to standard turn 87. Observer turn limits still
+count actual simulated turns, so 150 XL turns cover 75 standard turns of history.
+
+For the city-count stability penalty, XL uses two-thirds of the actual number
+of cities, rounded down. The penalty begins at 12 actual cities; 18 cities receive
+the ordinary penalty for 12. Roman Republic mitigation still applies afterward.
+The number-of-cities maintenance component, including its cap, is reduced by one
+third. Distance, colonial and corporate maintenance and territorial stability
+rules retain their ordinary formulas. Named civilization unique powers remain
+active. These changes apply to new games; gameplay balance and multiplayer
+behavior require user-operated validation.
+
+## XL World, 800 BC
+
+Select **Start 2 XL - 800BC** for the existing 800 BC setup on the 200 x 110
+XL world. It retains the standard start's 17 cities, 62 placed units, player
+choices, diplomacy, buildings and religions, plus its Python starting armies,
+technologies and gold. Cities and units use local land/water placements and the
+reviewed XL birth and historical-city anchors. The standard 800 BC scenario
+remains available.
+
+Both XL selection menus use the historical country-name previews. The 800 BC
+XL start also uses the same starting civic profiles as standard 800 BC;
+its doubled engine turn is converted to the reference calendar for both.
+
+Resources follow the XL atlas, with all BC introductions present from the
+start. Roads expand with the map; 50 starting improvements fit the local XL
+terrain and resources. Five placements without a suitable local tile or
+resource are omitted. Merv, Anuradhapura, Palembang and Great
+Zimbabwe retain their later founding events in both ancient XL starts.
+
+Generate with `python tools/generate_800_bc_xl_scenario.py`, after generating
+the 3000 BC XL map if its geography has changed. Source/map and localization
+checks do not establish in-game loading or multiplayer readiness.
+
+## XL city names
+
+Both XL starts retain the original location-based naming grids, with 644
+tile-specific refinements and 668 local names/cultural variants across Europe,
+Asia, Africa and the Americas. These split enlarged naming regions and fill
+the opened Sichuan lowlands. Coverage includes smaller provincial towns,
+Swahili and Portuguese African ports, North American inland centres, Latin
+American colonial towns and Australian ports. The Inca grid gains 21 additional
+names. Existing capital, reserve and scripted city sites retain their names. Conquest uses the
+authored cultural variants at the same tile; other locations retain RFC's
+existing renaming rules. This has not been validated in game or multiplayer.
+
+Add entries to `tools/large_world_city_names.json`, grouped by region. Each
+entry uses a civilization name, XL tile coordinates and a city name; optional
+`variants` map an existing regional name to its local cultural replacement:
+
+```json
+{"civ": "England", "x": 85, "y": 88, "name": "St Albans", "variants": {"Londinium": "Verulamium", "Londres": "St Albans"}}
+```
+
+Use the civilization names listed in `CIVILIZATIONS` in
+`tools/large_world_city_names.py`. Coordinates are XL tiles, with y increasing
+northward. Other civilizations sharing the reference civilization's existing
+name at that tile inherit the new name automatically. Variants handle different
+parent names; omit them when unnecessary. Accents can be typed normally.
+The generator checks coordinates, duplicate sites, passable land and protected
+city sites, and generates the conquest-name mappings automatically.
+
+Run `python tools/generate_large_world.py --huge --city-names-only` to refresh
+the naming grids and profile without regenerating terrain or resources.
+The full XL generator includes the same refinements. Names use the existing
+grid vocabulary and historical regional centres, including
+[Caral](https://whc.unesco.org/en/list/1269/) and
+[Quirigua](https://whc.unesco.org/en/list/149/).
+
+## Additional Huge World start
+
+Select **Start 1 XL - 3000BC** for the additional 200 x 110 map.
+It has 22,000 tiles, 56.25% more than Large World, with 4,790 passable land
+tiles. Of its 8,134 land tiles, 3,344 (41.1%) are blocked by wasteland, peaks
+or ice, compared with 37.7% in Large World. It starts in 3000 BC with the same
+four founding civilizations and later RFC births.
+
+The map retains RFC's enlarged European proportions and compressed oceans at
+the larger grid scale. Taiwan occupies two coastal tiles. Europe keeps its
+settlement belt and ordinary mountain barriers. Additional wilderness extends
+the Saharan, Congo, Amazon, Canadian,
+Alaskan, Siberian and Australian interiors, with new Gobi and Patagonian
+barriers. This uses the EU4-inspired regional inventory below, with deliberately
+broad interiors outside Europe; it does not copy EU4 province boundaries.
+Coastal fringes, all 33 major birth sites and the 26 named route networks retain
+access. Route authoring protects 566 tiles and opens 21 peak tiles.
+There are no prebuilt roads or technology unlocks for the wastelands.
+
+The [island review](XLIslandReview.tsv) covers all 111 reference land components.
+After shoreline refinement, 70 island components lose 251 excess tiles; none falls
+below its non-XL land count. Approximate area budgets follow nearby mainland
+scale, including RFC's enlarged Europe. The Caribbean adds eight separate
+islands and expands Hispaniola to four tiles, adding ten land tiles overall.
+New islands have town names, inherited regional AI geography and nearby fisheries;
+sea lanes, historical city sites and physical island necks remain intact.
+Japan retains its original traversable crossings. Jamaica and Sri Lanka retain
+enough land for their original resources and dated introductions.
+The Peten/Belize lowlands around the Maya start retain tropical jungle, with
+clearings for historical settlements and cultivated resources.
+India's humid jungle belts extend through the southern Western Ghats and
+Bengal/Assam, while the drier interior retains its existing vegetation.
+Southeast Asian rainforest extends over humid coasts and maritime islands,
+including wooded hills; selected mainland monsoon areas use deciduous forest.
+Existing marshes, montane forests and agricultural clearings remain distinct.
+Around Mali, the Niger bend retains a narrow traversable valley through the
+Sahara mask. Dry savanna and seasonal woodland soften the transition to the
+Guinean rainforest; genuine floodplains and inland-delta marshes remain intact.
+`tools/large_world_islands.py` maintains these corrections before resources are placed.
+
+The [worldwide coastline review](XLCoastlineReview.tsv) compares every region's
+enlarged source shoreline with the finished map. Interpolated corners replace
+block-shaped coastal steps, with connectivity guards for peninsulas, islands,
+straits and lakes. Britain and Ireland retain their original XL outlines;
+Iceland gains a connected Westfjords neck, and Baja California has a tapered
+northwest/southeast outline beside the open Gulf. River segments bordering
+water are removed, and displaced mouths extend to the revised shores along
+land edges. All downstream endpoints reach coastal corners, including lake
+inlets. New coastal land inherits
+nearby terrain, names and AI geography. `tools/large_world_coasts.py` authors this
+pass; historical/setup sites and their immediate shores remain protected.
+
+The connectivity pass adds eastern and southern Tibetan approaches, extends
+the Andean corridor through central Chile, opens a central Andes-Pampas
+crossing, and connects Alberta and northern Great Basin resource pockets.
+Huge World's route paths share tile edges wherever source land allows, rather
+than relying on corner-only gaps between enlarged peak blocks. Diagonal-only
+isthmuses between water tiles retain Civ4's normal diagonal movement.
+Tibetan routes are coarse terrain adaptations of the
+[Sichuan/Yunnan-Tibet network](https://en.chinaculture.org/created/2005-09/16/content_73021_3.htm)
+and [Nepal-Tibet approaches](https://www.asiasocietymuseum.org/buddhist_trade/himalaya_nepal.html),
+not claims that these trade networks already operated in 3000 BC.
+
+The shared historical resource atlas is placed against the new finished terrain:
+804 initial resources and 189 later introductions, with 21 unsuitable sites
+omitted rather than moved far away. See [HugeWorldResources.tsv](HugeWorldResources.tsv).
+All 982 original XL atlas sites remain represented, with 11 additional sites.
+The independent `Earth200x110` profile supplies all geography grids, event
+coordinates and its own resource schedule. Generate this variant with
+`python tools/generate_large_world.py --huge`; the command without that flag
+continues to author Large World.
+
+Large World is temporarily disabled: its WorldBuilder file is retained under
+`tools/scenario_templates/disabled`, outside the playable mod and release ZIPs.
+The generator without `--huge` writes to that archived location.
+
+Huge's event geography includes every reference-profile key. The Libyan raids
+use the open coastal approach west of the Nile, and the early chariot raids
+have ordered west/east bounds. Gadir's crab and Karalis's clam beds are reserved
+for their founding-event fishing boats. All scripted raid areas have suitable
+terrain; ownership, culture and other normal gameplay conditions can still
+prevent an individual event. This is a static source/map review, not in-game
+or multiplayer validation.
+
+Both ancient XL starts schedule four independent cities: Merv in 600 BC,
+Anuradhapura in 400 BC, Palembang in AD 700 and Great Zimbabwe in AD 1100.
+Each starts at population one with a small garrison, and appears only if the
+site remains available under the normal ownership and nearby-city checks.
+Great Zimbabwe uses the inland cattle and gold belt rather than the dormant
+southern marker. These additions do not change the other scenarios.
+
+The resource/terrain correction pass expands fish, shellfish and whale sites
+from 110 to 207 using additional named shelves, estuaries and upwelling coasts.
+Every water resource, including offshore oil, is on the connected ocean and
+within Civ4's working radius of a potential coastal city on suitable land.
+Clams and crabs stay on coast terrain; whales may also use coastal migration
+waters. Polar or remote sites without a suitable nearby city site are omitted.
+The distribution follows productive coastal regions, not a uniform ocean quota;
+[NOAA's upwelling overview](https://oceanexplorer.noaa.gov/ocean-fact/upwelling/)
+provides the ecological basis for the richer current systems.
+
+All 48 remaining floodplain tiles are flat desert beside a river. Invalid
+off-river copies normally retain their underlying terrain: nine outer Nile
+tiles remain desert. Fourteen tiles in explicitly reviewed Niger inland-delta,
+Mesopotamian and Indus alluvial fringes use plains to represent broader seasonal
+flood/grazing land. There is no automatic grassland upgrade. This avoids widening
+Egypt's narrow farming belt simply because a source floodplain was enlarged;
+see [FAO on Nile soils and irrigation](https://www.fao.org/4/y5863e/y5863e06.htm)
+and [USGS on the Niger's seasonal flood extent](https://eros.usgs.gov/earthshots/inland-delta-seasonal-flooding).
+Mineral placements avoid these alluvial tiles.
+Named rocky districts prefer existing local hills; nine small hills/outcrops are
+authored where no suitable hill exists. Routes, starts, improvements and valley
+terrain are protected from these relief edits. Oil, sedimentary basins, alluvial
+deposits and ordinary quarries can retain flat terrain. Grain prefers local
+lowlands, with hillside sites retained where necessary; the DLL's bonus exception
+allows farms there. Egyptian gold, emeralds and Sinai copper/turquoise now use
+upland sites, while Nile limestone and Suez oil remain flat where appropriate.
+[UCL's geology summary](https://www.ucl.ac.uk/museums-static/digitalegypt/geo/geology.html)
+and [Sinai material](https://www.ucl.ac.uk/museums-static/digitalegypt/sinai/index.html)
+support that regional distinction.
+
+Fifteen source-footprint tiles in the Bolivian plateau belt retain their relief
+with open plains and no tropical jungle, protected from the overlapping Amazon
+mask. A narrow Andean plateau branch connects them to the existing route; Potosi
+silver stays in its local highland district. This adapts the highland/rainforest
+boundary described by [NASA](https://science.nasa.gov/earth/earth-observatory/bolivian-andes-8830/),
+with [Potosi's mountain setting](https://science.nasa.gov/earth/earth-observatory/potosi-and-cerro-rico-151059/)
+as a placement reference.
+
+Static review on 2026-11-02 covered plot dimensions and identifiers, all major
+birth sites, profile grids and native schema, resource introduction sites and
+five-language scenario text. The connectivity review confirmed local Tibetan,
+Andean, Alberta and Great Basin passages; all initial and future economic land
+resources, initial units/cities/improvements and major birth sites have land
+access to an open-ocean coast. The correction review also checked river adjacency,
+marine city workability, named rocky-site relief, crop terrain, unique atlas
+sites and the later-resource schedule. Empty polar and mountain pockets remain; they
+are not opened indiscriminately. No DLL changes are needed. In-game loading,
+campaign pacing and multiplayer remain unverified; travel distances, historical
+objectives and starting army sizes have not been rebalanced for this size.
+
+Huge World's mountain refinement replaces rectangular enlargement at range
+edges with interpolated foothills, retaining source summit anchors and links
+between neighboring peaks. Mountain-region boundaries use the finer grid;
+they cannot turn the softened shoulders straight back into peaks. The finished
+map has 703 peaks instead of 1,148, with the largest visible changes along the
+Rockies, Andes and central Asian ranges. Broad range interiors remain mountainous.
+Some additional edge land is traversable; this is a gameplay change as well as
+a visual adjustment. Routes and resources are regenerated against the new relief,
+and resource placement excludes enclosed foothill pockets without coastal access.
+The four enlarged Venice/Aquileia hill tiles are flattened to continue the
+eastern lowland toward the Adriatic; the Alpine foothills to their north remain.
+
+Crete has one hill and one lowland tile, with sheep, wine and
+one adjacent fish site. Its named supplies stay on the island or its immediate
+shore. This represents its [mountainous relief](https://www.crete.gov.gr/perifereia/),
+[pastoral economy](https://ashmolean.web.ox.ac.uk/article/dining-with-the-minoans)
+and [Minoan wine](https://heraklionmuseum.gr/en/en-oi-dromoi-tou-krasiou-sto-archaiologiko-mouseio-irakleiou-2/);
+resource dates are the atlas's broad abstractions, not exact first attestations.
+Mainland refinements add two Attic hills while keeping Athens's birth tile flat,
+and open one Peloponnesian valley tile. The existing Thessalian/Macedonian
+lowlands, Pindus uplands and coastal access remain.
+
+Birth placement preserves source-map river and shoreline access within each
+original tile's enlarged footprint. Egypt moves from dry desert `(112,54)` to
+Nile floodplains `(111,54)`; England, Russia and the Mississippians regain river
+access, and America and the Inca regain shoreline access. The other 27 primary
+birth sites remain unchanged. Reserve starts and Korean/native setup coordinates
+use the same placement rule, including the Mississippian setup override. The
+WorldBuilder start and generated capital table agree. This reviews geography,
+not starting-army balance or historical relocation of the original RFC capitals.
+
+The historical-centre review protects small Sichuan and Wei/middle Yellow River
+lowland belts from the mountain masks. It retains the surrounding uplands, adds
+no prebuilt irrigation, and follows the distinction between the
+[Chengdu plain and Tibetan margin](https://whc.unesco.org/en/list/1001/) and the
+[Chang'an/Luoyang centres](https://whc.unesco.org/en/list/1442/).
+Cyprus gains one coastal lowland beside its former summit, now a wooded hill;
+its copper moves from Syria onto the island, following its
+[Troodos deposits](https://www.gov.cy/moa-mines/en/documents/mineral-resources-of-cyprus/).
+Both island tiles use Salamis naming and matching AI geography. Two Red River
+delta tiles become lowlands, with a short river branch to the sea; the southern
+wetlands remain, reflecting the [Hanoi delta setting](https://whc.unesco.org/en/list/1328).
+Scripted foundations at Samarkand, Pagan, Hanoi, Nineveh, Bordeaux, Rusadir and
+Zimbabwe move within their source footprints to retain rivers or shore access.
+Where both cannot share an enlarged tile (Rusadir), the river takes priority
+with the shore at most two tiles away. Foundation dates and owners are unchanged.
+
+## Large World start
+
+Currently disabled: **Start 1b - 3000 BC - Large World**. Egypt, India, China and Babylonia
+are the four playable founding civilizations. Uruk retains its buildings and
+defenders; the usual RFC birth system supplies starting units and later births.
+Other scenarios retain their geography and resource events.
+
+| Measure | Original world | Large World |
+| --- | ---: | ---: |
+| Dimensions | 124 x 68 | 160 x 88 |
+| Total tiles | 8,432 | 14,080 (+66.98%) |
+| Passable land tiles | 2,714 | 3,330 (+22.70%) |
+
+Passable land counts flatland and hills without impassable terrain or ice.
+It is a movement measure, not a measure of fertile city sites. There is no
+barrier quota or resource quota per civilization.
+
+## Barriers and historical routes
+
+The map retains RFC's enlarged Europe and compressed oceans. Its regional
+barriers use the [EU4 1.30 SVG](https://github.com/primislas/eu4-svg-map/blob/master/maps/1.30.0/eu4-political.svg)
+as a benchmark, adapting regions rather than reproducing province borders.
+The reviewed inventory covers the Sahara; Namib and Kalahari; Guinea, Congo,
+Imatong and Urgoma; Amazon and Guyana; Great Basin and Rockies; northern Canada,
+Alaska and Greenland; Scandes, Alps, Carpathians, Caucasus, Atlas and Hakkari;
+Arabian deserts; northern Siberia; Tian Shan, Pamir, Himalaya, Changtang, Qilian
+and Suleiman; Southeast Asian border ranges and Changbai; Borneo, Papua and
+Australia. Adirondacks and Annamite were supplemental later-reference regions.
+**Takla Makan is passable desert in the benchmark and has no added barrier.**
+
+Nineteen named route networks protect 303 tiles. They cover western Saharan
+oases and Fezzan-Kanem, the Nile, Arabian incense routes, Persia-Bactria,
+northern and southern Tarim routes and Hexi, Khyber/Ganges, Bengal-Burma-Yunnan,
+mainland Southeast Asia, Congo/lake approaches, the Zambezi, Amazon and Andes,
+southern Canada and Siberia, two Alpine approaches and northern Caucasus access.
+Thirteen source peak tiles become hills where narrow passes are needed.
+Routes are ordinary traversable terrain, without prebuilt roads. Other peaks
+remain, and historical birth and settlement locations retain coastal access.
+Three improvements move locally; all 28 initial villages and both farms remain.
+
+The [UNESCO Chang'an-Tianshan corridor description](https://whc.unesco.org/en/list/1442/)
+supports connected routes through Hexi and around the Tian Shan; the
+[Metropolitan Museum's Sahel material](https://www.metmuseum.org/de/exhibitions/sahel-art-empire-sahara/inside-the-exhibition)
+provides the trans-Saharan oasis-network context. Route waypoints are coarse
+adaptations to RFC's projection, not precise archaeological itineraries.
+
+## Normal terrain features and fog
+
+The four special wilderness gameplay features are removed. Added barriers use
+normal jungle, evergreen forest, marsh/mud, ice, or bare desert; snowy barriers
+use ice rather than forest. Appended impassable terrain variants retain the
+appropriate underlying appearance. Terrain remains impassable even when a normal
+feature is present or removed; the DLL checks terrain and feature independently.
+
+Civ4 stores only one gameplay feature per plot. **FEATURE_IMPASSABLE** is a
+separate, transient display entity over blocked land, preserving normal trees,
+jungle and ice. It has no saved state or gameplay callback, and respects map
+revelation. Peaks and ocean ice use their ordinary artwork. The neutral fog
+retains animated fallout smoke without radiation glow; its vertex opacity is
+35% stronger than the previous coloured overlays. The original fallout feature
+is unchanged. Build the derived mesh with:
+
+```powershell
+.venv-art/Scripts/python.exe tools/build_wasteland_art.py
+```
+
+Impassability remains a permanent strategic abstraction. No technology-based
+unlocking, seasonal ice changes or save migration is introduced.
+
+## Ocean ice
+
+262 additional ocean tiles use normal impassable ice: central Arctic pack,
+Canadian high-Arctic waters and the extreme Antarctic fringe, including small
+Weddell/Ross extensions. The open Norwegian Atlantic and Bering approaches are
+outside the new northern mask. A local exception protects the southern Cape
+Horn sea lane, which lies close to the map edge; the Cape of Good Hope is
+outside the southern mask. This models a conservative perennial barrier,
+not the winter maximum or modern annual weather.
+
+[NSIDC's sea-ice overview](https://nsidc.org/learn/parts-cryosphere/sea-ice/science-sea-ice)
+distinguishes persistent Arctic pack from mostly seasonal Antarctic ice. The
+[Australian Antarctic Program](https://www.antarctica.gov.au/about-antarctica/weather-and-climate/climate-change/sea-ice/sea-ice/)
+describes the smaller summer ice concentrations used as the southern reference.
+There is no Bermuda Triangle barrier.
+
+## Resource atlas
+
+Resource authoring runs **after all terrain, routes and ocean ice**. Every old
+bonus is discarded. The independent atlas in `tools/large_world_resources.py`
+places **678 initial economic resources and 194 later introductions**, covering
+all 33 map resource types. Decorative swamp artwork is rebuilt separately from
+finished marsh terrain. [LargeWorldResources.tsv](LargeWorldResources.tsv)
+lists each placed resource, introduction year, named region and final coordinates.
+
+Mineral markers represent geological deposits, not the date a modern mine opened;
+existing technology reveals still govern visibility. Named districts include
+ancient copper/gold/silver sources and later-important coal, oil, bauxite and
+uranium basins. Generic quarry stone is lower priority than regionally distinctive
+resources. Random-map restrictions such as silver appearing only on tundra are
+not historical geology and do not constrain this authored map. Neither terrain
+nor relief is changed to accommodate a deposit.
+
+All resources previously scheduled for BC dates are present from the start of
+both Large World maps, including the eastern Nile Delta horses on XL. This lets
+players choose city sites with those resources in mind; normal technology
+requirements still govern resource visibility. Later introductions, such as
+livestock in the Americas and Australia, retain their scheduled dates. The
+locations and dates are in [HugeWorldResources.tsv](HugeWorldResources.tsv).
+North Africa's XL coast has four additional fisheries off Algeria, Tripolitania,
+Cyrenaica and Egypt. Cyrenaican wheat and wine, plus Tripolitanian and Marmarican
+sheep, support a few productive coastal cities without filling the desert interior.
+All eight additions are available from 3000 BC in both XL starts.
+XL birth tiles, reserve capitals, native/Korean setup capitals and the 800 BC
+scenario's 17 city sites are excluded from initial and later resource placement.
+The historical starting positions stay fixed; nearby resources move within their
+existing regional placement envelopes, retaining their types and introduction dates.
+`XL_EARLIER_YEARS` applies after site selection to retain existing resource locations;
+the disabled Large World authoring profile retains its original dates.
+
+Examples include Central Asian sheep and eastern African cattle from 3000 BC,
+southwestern US maize from 2200 BC, northern Chinese wheat from 2500 BC, and
+the later US cotton expansion sites from AD 1000 instead of AD 1800.
+
+Introduction years are coarse regional milestones, not precise first-find dates.
+The calendar-crossing callback works independently of game speed and replaces
+the original resource-event schedule only for this scenario. Future sites are
+reserved during authoring. An introduction never overwrites a bonus supplied by
+another mechanic, and cultivated fields may clear normal forest or jungle.
+Existing historical birth, trade and technology rules otherwise remain.
+
+Placement stays within a small local geographic envelope (at most 3.2 enlarged
+tiles from the atlas anchor), on the same local land/sea patch, outside barriers
+and ice. Nineteen unsuitable, crowded or inaccessible sites are omitted rather
+than moved far away. Small islands cannot display every historical commodity on
+Civ4's one-bonus-per-tile grid. Counts are not normalized for civilization balance;
+this is a history-first atlas, not a campaign balance claim.
+
+The precious-metal review gives XL 51 gold and 32 silver tiles in both starts.
+Witwatersrand and Potosi have three tiles each; Minas Gerais, Victoria,
+Zacatecas/Fresnillo and Guanajuato have two each. Gold also represents Alaska,
+the Klondike, Timmins/Abitibi, Muruntau and Benguet; Banska Stiavnica gains silver.
+Huancavelica's mercury district no longer supplies silver. Sado is a separate
+one-tile gold island, while the former mainland Sado silver represents Ikuno.
+A Yukon foothill and northern Luzon pass are opened for access. Other resources
+and introduction dates are retained; one nearby fishery shifts as Sado gains
+coastal waters. Minerals remain available from turn zero.
+
+Review references: [Witwatersrand](https://scielo.org.za/scielo.php?pid=S2225-62532023000400005&script=sci_arttext),
+[Potosi](https://whc.unesco.org/en/list/420/),
+[Guanajuato](https://whc.unesco.org/en/list/482/),
+[Zacatecas](https://whc.unesco.org/en/list/676/),
+[Minas Gerais](https://whc.unesco.org/en/list/124),
+[Victoria](https://www.ga.gov.au/bigobj/GA5409.pdf),
+[Huancavelica](https://whc.unesco.org/en/tentativelists/6263/),
+[Sado](https://whc.unesco.org/en/list/1698), and
+[Ikuno](https://www.city.asago.hyogo.jp/soshiki/24/1119.html).
+
+Evidence and authoring references:
+
+- [USGS mineral resource data](https://www.usgs.gov/programs/mineral-resources-program/mineral-resources-data)
+  and [Mineral Commodity Summaries](https://pubs.usgs.gov/publication/mcs2026)
+  for mineral districts and resource-bearing regions. Locations are manually
+  adapted to the projection, not an automatic import of reserve tonnages.
+- [Origins of food crops connect countries worldwide](https://pmc.ncbi.nlm.nih.gov/articles/PMC4920324/)
+  and the [Alliance of Bioversity/CIAT origin map](https://alliancebioversityciat.org/origin-crops-family-genus-center-origin-map)
+  for crop origins and regional diversity; [crop dispersal review](https://puruggananlab.org/Papers/2023/Crop_GeographicSpread_Adaptation_Review2023.pdf)
+  for ancient exchange and post-Columbian introductions.
+- [Ancient horse genomes](https://www.nature.com/articles/s41586-021-04018-9)
+  for the Pontic-Caspian origin and Bronze Age expansion of modern domestic horses.
+- [Horses in Ancient Egypt](https://www.ucl.ac.uk/museums-static/digitalegypt/foodproduction/horse.html)
+  for their Second Intermediate Period introduction and remains at Avaris.
+- Early availability evidence: [Central Asian sheep](https://www.nature.com/articles/s41562-021-01083-y),
+  [eastern African livestock](https://pmc.ncbi.nlm.nih.gov/articles/PMC6827346/),
+  [southwestern US maize](https://pmc.ncbi.nlm.nih.gov/articles/PMC2795521/) and
+  [Chinese wheat](https://www.nature.com/articles/s41477-018-0141-x).
+
+## Maintaining the scenario
+
+Athens starts at (109,67) on Attica's outer Aegean coast in XL. The Greek birth
+anchor and the 800 BC city, starting units and workers use this same tile.
+Sparta's nearby valley tile (106,65) is grassland with wheat representing
+Eurotas cereal farming; the surrounding hills and existing fishery remain.
+
+Run `python tools/generate_large_world.py`. It emits the WorldBuilder map,
+resource introduction schedule and atlas, geography values, native coordinates,
+compact civilization grids and appended terrain/feature definitions. Authoring
+coordinates use the original reference projection; runtime loads independent
+`Earth160x88` data. All 33 starts, city-name/settlement/war grids, birth/stability
+regions and scripted geographic bounds remain scenario-selected. Original
+terrain/feature IDs preceding the removed scenario-only entries are unchanged.
+The fog overlay and terrain/feature movement fix require the accompanying
+production DLL built with the legacy VC7.1 toolchain.
+
+Static review on 2026-11-02 confirmed all 33 starts, the 19 route networks,
+unique resource sites and schedules, Cape Horn and major ocean connections.
+Changed XML parses and each text entry has all five languages. The fog mesh
+reads back with six smoke layers and 0.54 vertex opacity (previously 0.40).
+The production VC7.1 build succeeded; changed runtime files and the DLL were
+synchronized to the installed mod and hash-verified.
+
+The previous revision loaded into Egypt's opening position in German. That is
+not runtime validation of this revision. No new game, campaign, observer test or
+multiplayer validation was run for these changes. Fixed travel distances,
+historical objectives and army sizes have not been rebalanced for the larger map.

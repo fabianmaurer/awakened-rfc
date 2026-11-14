@@ -29,6 +29,7 @@
 *.ilk
 *.idb
 *.pyc
+__pycache__/
 *.sdf
 *.opensdf
 

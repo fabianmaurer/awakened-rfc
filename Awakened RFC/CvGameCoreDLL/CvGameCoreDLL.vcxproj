@@ -186,6 +186,7 @@ nmake clean</NMakeCleanCommandLine>
     <ClCompile Include="CvGameCoreUtils.cpp" />
     <ClCompile Include="CvGameInterface.cpp" />
     <ClCompile Include="CvGameTextMgr.cpp" />
+    <ClCompile Include="CvIntelligence.cpp" />
     <ClCompile Include="CvGlobals.cpp" />
     <ClCompile Include="CvHallOfFameInfo.cpp" />
     <ClCompile Include="CvInfos.cpp" />
@@ -213,6 +214,7 @@ nmake clean</NMakeCleanCommandLine>
     <ClCompile Include="CvTeamAI.cpp" />
     <ClCompile Include="CvUnit.cpp" />
     <ClCompile Include="CvUnitAI.cpp" />
+    <ClCompile Include="WorkerPathFinder.cpp" />
     <ClCompile Include="CvXMLLoadUtility.cpp" />
     <ClCompile Include="CvXMLLoadUtilityGet.cpp" />
     <ClCompile Include="CvXMLLoadUtilityInit.cpp" />
@@ -336,6 +338,7 @@ nmake clean</NMakeCleanCommandLine>
     <ClInclude Include="CvTeamAI.h" />
     <ClInclude Include="CvUnit.h" />
     <ClInclude Include="CvUnitAI.h" />
+    <ClInclude Include="WorkerPathFinder.h" />
     <ClInclude Include="CvXMLLoadUtility.h" />
     <ClInclude Include="CyArea.h" />
     <ClInclude Include="CyArgsList.h" />

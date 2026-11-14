@@ -1,6 +1,7 @@
 // plot.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvPlot.h"
 #include "ObserverPerformance.h"
 #include "CvCity.h"
@@ -54,6 +55,7 @@ CvPlot::CvPlot()
 	m_apaiInvisibleVisibilityCount = NULL;
 	
 	m_pFeatureSymbol = NULL;
+	m_pImpassableSymbol = NULL;
 	m_pArchiveOutputSymbol = NULL;
 	m_pHuntingHerdSymbol = NULL;
 	m_pPlotBuilder = NULL;
@@ -96,6 +98,7 @@ void CvPlot::uninit()
 	SAFE_DELETE_ARRAY(m_szScriptData);
 
 	gDLL->getFeatureIFace()->destroy(m_pFeatureSymbol);
+	gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
 	gDLL->getFeatureIFace()->destroy(m_pArchiveOutputSymbol);
 	gDLL->getFeatureIFace()->destroy(m_pHuntingHerdSymbol);
 	if(m_pPlotBuilder)
@@ -170,6 +173,8 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	m_iForceUnownedTimer = 0;
 	m_iCityRadiusCount = 0;
 	m_iRiverID = -1;
+	m_iRiverDroughtEdges = 0;
+    m_aeRuinsBuildings.clear();
 	m_iMinOriginalStartDist = -1;
 	m_iReconCount = 0;
 	m_iRiverCrossingCount = 0;
@@ -772,7 +777,20 @@ void CvPlot::updateSymbols()
 		PlayerTypes eViewerOwner = getRevealedOwner(eActiveTeam, true);
 		if (eViewerOwner == NO_PLAYER) eViewerOwner = GC.getGameINLINE().getActivePlayer();
 		const bool bEskimo = eViewerOwner == NO_PLAYER || GET_PLAYER(eViewerOwner).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO");
-		eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_OUTPUT_3" : "FEATURE_ARCHIVE_OUTPUT_5");
+		if (calculateGold(true) > 0)
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_GOLD_OUTPUT_3" : "FEATURE_ARCHIVE_GOLD_OUTPUT_5");
+		else
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(bEskimo ? "FEATURE_ARCHIVE_OUTPUT_3" : "FEATURE_ARCHIVE_OUTPUT_5");
+	}
+	if (eBadge == NO_FEATURE)
+	{
+		const int iGold = calculateGold(true);
+		if (iGold > 0)
+		{
+			CvString szFeature;
+			szFeature.Format("FEATURE_GOLD_OUTPUT_%d", iGold);
+			eBadge = (FeatureTypes)GC.getInfoTypeForString(szFeature);
+		}
 	}
 	if (eBadge == NO_FEATURE)
 	{
@@ -1402,7 +1420,7 @@ bool CvPlot::isLake() const
 
 // XXX if this changes need to call updateIrrigated() and pCity->updateFreshWaterHealth()
 // XXX precalculate this???
-bool CvPlot::isFreshWater() const
+bool CvPlot::isFreshWater(bool bForIrrigation) const
 {
 	CvPlot* pLoopPlot;
 	int iDX, iDY;
@@ -1417,7 +1435,7 @@ bool CvPlot::isFreshWater() const
 		return false;
 	}
 
-	if (isRiver())
+	if (isRiver() && (!bForIrrigation || getRiverDrought() < 2))
 	{
 		return true;
 	}
@@ -1498,7 +1516,7 @@ bool CvPlot::isIrrigationAvailable(bool bIgnoreSelf) const
 		return true;
 	}
 
-	if (isFreshWater())
+	if (isFreshWater(true))
 	{
 		return true;
 	}
@@ -1770,6 +1788,7 @@ int CvPlot::seeThroughLevel() const
 
 void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, CvUnit* pUnit, bool bUpdatePlotGroups)
 {
+	int iExploredTiles = 0;
 	bool bAerial = (pUnit != NULL && pUnit->getDomainType() == DOMAIN_AIR);
 
 	DirectionTypes eFacingDirection = NO_DIRECTION;
@@ -1820,6 +1839,8 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 						CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
 						if (NULL != pPlot)
 						{
+							if (bIncrement && pUnit != NULL && eTeam == pUnit->getTeam() && !pPlot->isRevealed(eTeam, false))
+								++iExploredTiles;
 							pPlot->changeVisibilityCount(eTeam, ((bIncrement) ? 1 : -1), aSeeInvisibleTypes[i], bUpdatePlotGroups);
 						}
 					}
@@ -1832,6 +1853,8 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 						CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), dx, dy);
 						if (NULL != pPlot)
 						{
+							if (bIncrement && pUnit != NULL && eTeam == pUnit->getTeam() && !pPlot->isRevealed(eTeam, false))
+								++iExploredTiles;
 							pPlot->changeVisibilityCount(eTeam, 1, aSeeInvisibleTypes[i], bUpdatePlotGroups);
 							pPlot->changeVisibilityCount(eTeam, -1, aSeeInvisibleTypes[i], bUpdatePlotGroups);
 						}
@@ -1840,6 +1863,7 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 			}
 		}
 	}
+	if (iExploredTiles > 0) pUnit->awardExplorationExperience(iExploredTiles);
 }
 
 bool CvPlot::canSeePlot(CvPlot *pPlot, TeamTypes eTeam, int iRange, DirectionTypes eFacingDirection) const
@@ -2072,6 +2096,7 @@ void CvPlot::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 		
 		
 		changeAdjacentSight(pLoopUnit->getTeam(), pLoopUnit->visibilityRange(), bIncrement, pLoopUnit, bUpdatePlotGroups);
+        pLoopUnit->changeIntelligenceSight(this, bIncrement, bUpdatePlotGroups);
 	}
 
 	if (getReconCount() > 0)
@@ -3113,19 +3138,32 @@ void CvPlot::restoreFortCultureAfterPeace(TeamTypes eFirstTeam, TeamTypes eSecon
 }
 
 
+bool CvPlot::canPapalCultureClaim(PlayerTypes ePlayer) const
+{
+	if (!GC.getGameINLINE().isPapalState(ePlayer)) return true;
+	if (isCity() && getPlotCity()->getOwnerINLINE() == ePlayer) return true;
+	CvCity* pRome = GC.getGameINLINE().getPapalSeat();
+	return pRome != NULL && pRome->getOwnerINLINE() == ePlayer && !isCity() &&
+		abs(getX_INLINE() - pRome->getX_INLINE()) <= 1 &&
+		abs(getY_INLINE() - pRome->getY_INLINE()) <= 1;
+}
+
 PlayerTypes CvPlot::calculateCulturalOwner() const
 {
 	PROFILE("CvPlot::calculateCulturalOwner()")
 
-	// Papal Rome retains its immediate territory regardless of foreign culture
-	// or fort garrisons. Other city tiles still follow normal conquest rules.
-	if (abs(getX_INLINE() - 60) <= 1 && abs(getY_INLINE() - 44) <= 1)
+	// Impassable terrain, peaks and ice never acquire cultural ownership,
+	// including through border-hole filling or special territorial claims.
+	if (isImpassable())
 	{
-		CvCity* pRome = GC.getGameINLINE().getPapalRome();
-		if (pRome != NULL && GC.getGameINLINE().isPapalState(pRome->getOwnerINLINE()) &&
-			(!isCity() || getPlotCity() == pRome))
-			return pRome->getOwnerINLINE();
+		return NO_PLAYER;
 	}
+
+    // The Papal seat retains its immediate territory regardless of its location.
+    CvCity* pPapalSeat = GC.getGameINLINE().getPapalSeat();
+    if (pPapalSeat != NULL && GC.getGameINLINE().isPapalState(pPapalSeat->getOwnerINLINE()) &&
+        abs(getX_INLINE() - pPapalSeat->getX_INLINE()) <= 1 && abs(getY_INLINE() - pPapalSeat->getY_INLINE()) <= 1 &&
+        (!isCity() || getPlotCity() == pPapalSeat)) return pPapalSeat->getOwnerINLINE();
 
 	PlayerTypes eGarrisonOwner = getFortGarrisonOwner();
 	if (eGarrisonOwner != NO_PLAYER)
@@ -3154,7 +3192,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 
 	for (iI = 0; iI < MAX_PLAYERS; ++iI)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && canPapalCultureClaim((PlayerTypes)iI))
 		{
 			iCulture = getCulture((PlayerTypes)iI);
 
@@ -3162,7 +3200,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 			{
 				//Rhye - start (core territories of modern civs are not invaded by old civs' culture dominance)
 				if (iI < NUM_MAJOR_PLAYERS) {
-					if (settlersMaps[iI][EARTH_Y - 1 - getY_INLINE()][getX_INLINE()] >= 500)
+					if (getSettlerMapValue(iI, GC.getMapINLINE().getGridHeightINLINE() - 1 - getY_INLINE(), getX_INLINE()) >= 500)
 						if (!isCity())
 							iCulture *= 4;
 						//else
@@ -3197,7 +3235,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 				{
 					pLoopCity = pLoopPlot->getPlotCity();
 
-					if (pLoopCity != NULL)
+					if (pLoopCity != NULL && canPapalCultureClaim(pLoopCity->getOwnerINLINE()))
 					{
 						if (pLoopCity->getTeam() == GET_PLAYER(eBestPlayer).getTeam() || GET_TEAM(GET_PLAYER(eBestPlayer).getTeam()).isVassal(pLoopCity->getTeam()))
 						{
@@ -3269,7 +3307,7 @@ PlayerTypes CvPlot::calculateCulturalOwner() const
 		}
 	}
 
-	return eBestPlayer;
+	return canPapalCultureClaim(eBestPlayer) ? eBestPlayer : NO_PLAYER;
 }
 
 
@@ -3775,7 +3813,7 @@ bool CvPlot::isValidRoute(const CvUnit* pUnit) const
 {
 	if (isRoute())
 	{
-		if (!pUnit->isEnemy(getTeam(), this) || pUnit->isEnemyRoute())
+		if (!pUnit->isEnemy(getTeam(), this) || pUnit->canUseEnemyRoute(getRouteType()))
 		{
 			return true;
 		}
@@ -4015,7 +4053,10 @@ bool CvPlot::isImpassable() const
 		return false;
 	}
 
-	return ((getFeatureType() == NO_FEATURE) ? GC.getTerrainInfo(getTerrainType()).isImpassable() : GC.getFeatureInfo(getFeatureType()).isImpassable());
+	// Vegetation must not cancel a terrain barrier (Large World uses normal
+	// forests/jungles over impassable terrain, with a separate fog display).
+	return GC.getTerrainInfo(getTerrainType()).isImpassable() ||
+		(getFeatureType() != NO_FEATURE && GC.getFeatureInfo(getFeatureType()).isImpassable());
 }
 
 
@@ -4890,6 +4931,7 @@ PlayerTypes CvPlot::getOwner() const
 
 void CvPlot::setOwner(PlayerTypes eNewValue, bool bCheckUnits, bool bUpdatePlotGroup)
 {
+    Administration::invalidateNetwork();
 	PROFILE_FUNC();
 
 	// Also cover explicit Python ownership changes during civilization births.
@@ -5449,6 +5491,7 @@ TerrainTypes CvPlot::getTerrainType() const
 
 void CvPlot::setTerrainType(TerrainTypes eNewValue, bool bRecalculate, bool bRebuildGraphics)
 {
+    Administration::invalidateNetwork();
 	bool bUpdateSight;
 
 	if (getTerrainType() != eNewValue)
@@ -5485,6 +5528,7 @@ void CvPlot::setTerrainType(TerrainTypes eNewValue, bool bRecalculate, bool bReb
 			//Update terrain graphics
 			gDLL->getEngineIFace()->RebuildPlot(getX_INLINE(), getY_INLINE(),false,true);
 			updateRouteSymbol(true, true);
+			updateFeatureSymbol(true);
 			//gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true); //minimap does a partial update
 			//gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 		}
@@ -5505,6 +5549,7 @@ FeatureTypes CvPlot::getFeatureType() const
 
 void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 {
+    Administration::invalidateNetwork();
 	CvCity* pLoopCity;
 	CvPlot* pLoopPlot;
 	FeatureTypes eOldFeature;
@@ -5512,6 +5557,15 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 	int iI;
 
 	eOldFeature = getFeatureType();
+    const FeatureTypes flood = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS");
+    const FeatureTypes drought = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT");
+    const FeatureTypes severe = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
+    if (eNewValue == flood || eNewValue == drought || eNewValue == severe)
+    {
+        const int stage = getRiverDrought();
+        eNewValue = stage == 2 ? severe : (stage == 1 ? drought : flood);
+        iVariety = 0;
+    }
 
 	if (eNewValue != NO_FEATURE)
 	{
@@ -5743,6 +5797,8 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 			}
 		}
 
+        if (eOldImprovement == (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT"))
+            m_aeRuinsBuildings.clear();
 		updatePlotGroupBonus(false);
 		m_eImprovementType = eNewValue;
 		m_eFortOccupier = NO_PLAYER;
@@ -5862,6 +5918,7 @@ RouteTypes CvPlot::getRouteType() const
 
 void CvPlot::setRouteType(RouteTypes eNewValue, bool bUpdatePlotGroups)
 {
+    Administration::invalidateNetwork();
 	bool bOldRoute;
 	int iI;
 
@@ -6143,6 +6200,95 @@ void CvPlot::setWorkingCityOverride( const CvCity* pNewValue)
 }
 
 
+const std::vector<BuildingTypes>& CvPlot::getRuinsBuildings() const
+{
+    return m_aeRuinsBuildings;
+}
+
+void CvPlot::recordRuinsBuildings(const CvCity& city)
+{
+    m_aeRuinsBuildings.clear();
+    const BuildingTypes plague = (BuildingTypes)GC.getInfoTypeForString("BUILDING_PLAGUE");
+    for (int i = 0; i < GC.getNumBuildingInfos(); ++i)
+    {
+        const BuildingTypes building = (BuildingTypes)i;
+        const CvBuildingInfo& info = GC.getBuildingInfo(building);
+        if (city.getNumBuilding(building) <= 0 || building == plague || info.isCapital()) continue;
+        if (isLimitedWonderClass((BuildingClassTypes)info.getBuildingClassType())) continue;
+        if (CvString(info.getType()).find("_ARCTIC_DISPLAY") != CvString::npos) continue;
+        m_aeRuinsBuildings.push_back(building);
+    }
+}
+
+int CvPlot::getRuinsBuildingChecksum() const
+{
+    int value = (int)m_aeRuinsBuildings.size();
+    for (size_t i = 0; i < m_aeRuinsBuildings.size(); ++i)
+        value += ((int)i + 1) * ((int)m_aeRuinsBuildings[i] + 1) * 131;
+    return value;
+}
+
+int CvPlot::getRuinsRecoveryCount() const
+{
+    return (int)m_aeRuinsBuildings.size() / 2;
+}
+
+int CvPlot::getRiverDrought() const
+{
+    // A usable second river protects the tile. Civ4 stores its south and east
+    // edges here, and its north/west edges on the neighbouring plots.
+    int iBest = 2;
+    bool bFound = false;
+    if (isNOfRiver())
+    {
+        iBest = std::min(iBest, m_iRiverDroughtEdges % 3);
+        bFound = true;
+    }
+    if (isWOfRiver())
+    {
+        iBest = std::min(iBest, m_iRiverDroughtEdges / 3);
+        bFound = true;
+    }
+    const CvPlot* pNorth = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_NORTH);
+    if (pNorth != NULL && pNorth->isNOfRiver())
+    {
+        iBest = std::min(iBest, pNorth->m_iRiverDroughtEdges % 3);
+        bFound = true;
+    }
+    const CvPlot* pWest = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_WEST);
+    if (pWest != NULL && pWest->isWOfRiver())
+    {
+        iBest = std::min(iBest, pWest->m_iRiverDroughtEdges / 3);
+        bFound = true;
+    }
+    return bFound ? iBest : 0;
+}
+
+int CvPlot::getRiverDroughtEdges() const
+{
+    return m_iRiverDroughtEdges;
+}
+
+void CvPlot::setRiverDrought(int iSouthEdge, int iEastEdge)
+{
+    // Independent base-three digits: 0 normal, 1 drought, 2 severe drought.
+    int iNew = range(iSouthEdge, 0, 2) + 3 * range(iEastEdge, 0, 2);
+    if (m_iRiverDroughtEdges == iNew) return;
+    m_iRiverDroughtEdges = iNew;
+    for (int iDX = -1; iDX <= 1; ++iDX)
+    {
+        for (int iDY = -1; iDY <= 1; ++iDY)
+        {
+            CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
+            if (pPlot == NULL) continue;
+            if (pPlot->isFloodPlains())
+                pPlot->setFeatureType(pPlot->getFeatureType(), pPlot->getRiverDrought());
+            pPlot->updateYield();
+            pPlot->setLayoutDirty(true);
+        }
+    }
+}
+
 int CvPlot::getRiverID() const
 {
 	return m_iRiverID;
@@ -6207,8 +6353,23 @@ int CvPlot::getYield(YieldTypes eIndex) const
 }
 
 
+bool CvPlot::isFloodPlains() const
+{
+    const FeatureTypes feature = getFeatureType();
+    return feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS") ||
+        feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT") ||
+        feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
+}
+
+bool CvPlot::isDroughtFoodSuppressed() const
+{
+    return isFloodPlains() && getRiverDrought() == 2;
+}
+
+
 int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnoreFeature) const
 {
+    if (eYield == YIELD_FOOD && !bIgnoreFeature && isDroughtFoodSuppressed()) return 0;
 	BonusTypes eBonus;
 	int iYield;
 
@@ -6266,7 +6427,11 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 
 		if (eBonus != NO_BONUS)
 		{
-			iYield += GC.getBonusInfo(eBonus).getYieldChange(eYield);
+            int bonusYield = GC.getBonusInfo(eBonus).getYieldChange(eYield);
+            if (eYield == YIELD_FOOD && !bIgnoreFeature &&
+                isFloodPlains() && getRiverDrought() == 1)
+                bonusYield = std::max(0, bonusYield - 2);
+            iYield += bonusYield;
 		}
 	}
 
@@ -6285,6 +6450,9 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 		if (getFeatureType() != NO_FEATURE)
 		{
 			iYield += GC.getFeatureInfo(getFeatureType()).getYieldChange(eYield);
+			if (eYield == YIELD_FOOD && getRiverDrought() > 0 &&
+				isFloodPlains())
+				iYield -= (getRiverDrought() == 2 ? 3 : 2);
 		}
 	}
 
@@ -6346,14 +6514,46 @@ int CvPlot::getHuntingGroundsYieldLoss(PlayerTypes ePlayer) const
 	return iLoss;
 }
 
+int CvPlot::calculateImprovementGold(ImprovementTypes eImprovement, TeamTypes eTeam) const
+{
+	if (eImprovement != GC.getInfoTypeForString("IMPROVEMENT_MINE")) return 0;
+	const BonusTypes eBonus = getBonusType(eTeam);
+	int iGold = 0;
+	if (eBonus == GC.getInfoTypeForString("BONUS_GOLD")) iGold = 6;
+	else if (eBonus == GC.getInfoTypeForString("BONUS_SILVER")) iGold = 4;
+	const CvCity* pCity = getWorkingCity();
+	if (pCity != NULL && (eBonus == GC.getInfoTypeForString("BONUS_GOLD") ||
+		eBonus == GC.getInfoTypeForString("BONUS_SILVER") || eBonus == GC.getInfoTypeForString("BONUS_COPPER")))
+		iGold += pCity->getMintGold(this, eImprovement);
+	return iGold;
+}
+
+int CvPlot::calculateGold(bool bDisplay) const
+{
+	if (getTerrainType() == NO_TERRAIN || !isPotentialCityWork()) return 0;
+	const TeamTypes eTeam = bDisplay ? GC.getGameINLINE().getActiveTeam() : getTeam();
+	if (bDisplay && eTeam == NO_TEAM) return 0;
+	const BonusTypes eBonus = getBonusType(eTeam);
+	const int iBaseGold = eBonus == GC.getInfoTypeForString("BONUS_GOLD") || eBonus == GC.getInfoTypeForString("BONUS_SILVER") ? 1 : 0;
+	const ImprovementTypes eImprovement = bDisplay ? getRevealedImprovementType(eTeam, false) : getImprovementType();
+	return iBaseGold + calculateImprovementGold(eImprovement, eTeam);
+}
+
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
+    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
 	PROFILE_FUNC();
 
 	BonusTypes eBonus;
 	int iBestYield;
 	int iYield;
 	int iI;
+
+	// Precious-metal extraction adds gold, not production, including railroad
+	// and civic mine bonuses. Natural hill/terrain production is unaffected.
+	const BonusTypes eProductionBonus = getBonusType(ePlayer == NO_PLAYER ? NO_TEAM : GET_PLAYER(ePlayer).getTeam());
+	if (eYield == YIELD_PRODUCTION && eImprovement == GC.getInfoTypeForString("IMPROVEMENT_MINE") &&
+		(eProductionBonus == GC.getInfoTypeForString("BONUS_GOLD") || eProductionBonus == GC.getInfoTypeForString("BONUS_SILVER"))) return 0;
 
 	if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_HUNTING_GROUNDS"))
 	{
@@ -6420,7 +6620,16 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 
 		if (eBonus != NO_BONUS)
 		{
-			iYield += GC.getImprovementInfo(eImprovement).getImprovementBonusYield(eBonus, eYield);
+            int bonusYield = GC.getImprovementInfo(eImprovement).getImprovementBonusYield(eBonus, eYield);
+            if (eYield == YIELD_FOOD &&
+                isFloodPlains() && getRiverDrought() == 1)
+            {
+                // The natural resource yield above consumes the first part of
+                // a shared two-food reduction; never subtract that part twice.
+                const int naturalBonus = std::max(0, GC.getBonusInfo(eBonus).getYieldChange(YIELD_FOOD));
+                bonusYield = std::max(0, bonusYield - std::max(0, 2 - naturalBonus));
+            }
+            iYield += bonusYield;
 		}
 	}
 
@@ -6430,6 +6639,8 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 
 int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 {
+    // Total food is zero, including city centres, resources and named bonuses.
+    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
 	CvCity* pCity;
 	CvCity* pWorkingCity;
 	ImprovementTypes eImprovement;
@@ -6494,9 +6705,8 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 			if (!bDisplay || pCity->isRevealed(GC.getGameINLINE().getActiveTeam(), false))
 			{
 				// City centres retain natural terrain/feature yields. Settlement
-				// adds one production and one commerce, without a food floor.
-				if (eYield == YIELD_PRODUCTION || eYield == YIELD_COMMERCE)
-					iYield += 1;
+				// adds one food, one production and one commerce.
+				iYield += 1;
 			}
 		}
 
@@ -6585,6 +6795,7 @@ int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_CELT") &&
 			eYield == YIELD_FOOD && getFeatureType() == GC.getInfoTypeForString("FEATURE_FOREST"))
 			++iYield; // Sacred Groves: reward preserving forests.
+		if (eCiv == GC.getInfoTypeForString("CIVILIZATION_BENGAL") && eYield == YIELD_COMMERCE && isRiver()) ++iYield;
 		if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_FARM"))
 		{
 			if ((eCiv == GC.getInfoTypeForString("CIVILIZATION_NATIVE_AMERICA") ||
@@ -6624,7 +6835,7 @@ bool CvPlot::hasYield() const
 		}
 	}
 
-	return false;
+	return calculateGold() > 0;
 }
 
 
@@ -6670,7 +6881,14 @@ void CvPlot::updateYield()
 		}
 	}
 
-	if (bChange)
+	// Gold is direct commerce, so it can change without a standard yield change.
+	pWorkingCity = getWorkingCity();
+	if (pWorkingCity != NULL)
+	{
+		if (isBeingWorked()) pWorkingCity->updateCommerce(COMMERCE_GOLD);
+		pWorkingCity->AI_setAssignWorkDirty(true);
+	}
+	if (bChange || calculateGold() > 0 || m_pArchiveOutputSymbol != NULL)
 	{
 		updateSymbols();
 	}
@@ -8043,6 +8261,13 @@ void CvPlot::updateFeatureSymbolVisibility()
 		return;
 	}
 
+	if (m_pImpassableSymbol != NULL)
+	{
+		const TeamTypes eTeam = GC.getGameINLINE().getActiveTeam();
+		gDLL->getFeatureIFace()->Hide(m_pImpassableSymbol,
+			eTeam == NO_TEAM || !isRevealed(eTeam, true));
+	}
+
 	if (m_pFeatureSymbol != NULL)
 	{
 		bool bVisible = isRevealed(GC.getGameINLINE().getActiveTeam(), true);
@@ -8074,6 +8299,30 @@ void CvPlot::updateFeatureSymbol(bool bForce)
 	}
 
 	eFeature = getFeatureType();
+
+	// Display-only second feature: never replaces vegetation or enters saves.
+	// Ice uses its ordinary artwork; peaks already explain their own barrier.
+	const bool bFog = !isWater() && !isPeak() && getTerrainType() != NO_TERRAIN &&
+		GC.getTerrainInfo(getTerrainType()).isImpassable();
+	if (!bFog)
+	{
+		gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
+	}
+	else
+	{
+		const FeatureTypes eFog = (FeatureTypes)GC.getInfoTypeForString("FEATURE_IMPASSABLE");
+		if (eFog != NO_FEATURE)
+		{
+			if (bForce || m_pImpassableSymbol == NULL)
+			{
+				gDLL->getFeatureIFace()->destroy(m_pImpassableSymbol);
+				m_pImpassableSymbol = gDLL->getFeatureIFace()->createFeature();
+				gDLL->getFeatureIFace()->init(m_pImpassableSymbol, 0, 0, eFog, this);
+			}
+			else gDLL->getFeatureIFace()->updatePosition(m_pImpassableSymbol);
+			updateFeatureSymbolVisibility();
+		}
+	}
 
 	gDLL->getEngineIFace()->RebuildTileArt(m_iX,m_iY);
 
@@ -8927,7 +9176,7 @@ void CvPlot::doCulture()
 	pCity = getPlotCity();
 
 	// The minor-player majority rule below must not override Rome's immunity.
-	if (pCity != NULL && pCity == GC.getGameINLINE().getPapalRome() &&
+	if (pCity != NULL && pCity == GC.getGameINLINE().getPapalSeat() &&
 		GC.getGameINLINE().isPapalState(pCity->getOwnerINLINE())) return;
 
 	if (pCity != NULL)
@@ -8961,7 +9210,7 @@ void CvPlot::doCulture()
 				{
 					//if (GC.getGameINLINE().getSorenRandNum(100, "Revolt #1") < pCity->getRevoltTestProbability())
 					//RFCMP
-					if (GC.getGameINLINE().getFakeRandNum(100) < pCity->getRevoltTestProbability())
+					if (GC.getGameINLINE().getGameTurn() % historicalTurns(1) == 0 && GC.getGameINLINE().getFakeRandNum(100) < pCity->getRevoltTestProbability())
 					{
 						iCityStrength = pCity->cultureStrength(eCulturalOwner);
 						iGarrison = pCity->cultureGarrison(eCulturalOwner);
@@ -9218,6 +9467,15 @@ void CvPlot::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iForceUnownedTimer);
 	pStream->Read(&m_iCityRadiusCount);
 	pStream->Read(&m_iRiverID);
+	pStream->Read(&m_iRiverDroughtEdges);
+    int ruinsCount;
+    pStream->Read(&ruinsCount);
+    for (int iRuins = 0; iRuins < ruinsCount; ++iRuins)
+    {
+        int building;
+        pStream->Read(&building);
+        m_aeRuinsBuildings.push_back((BuildingTypes)building);
+    }
 	pStream->Read(&m_iMinOriginalStartDist);
 	pStream->Read(&m_iReconCount);
 	pStream->Read(&m_iRiverCrossingCount);
@@ -9446,6 +9704,10 @@ void CvPlot::write(FDataStreamBase* pStream)
 	pStream->Write(m_iForceUnownedTimer);
 	pStream->Write(m_iCityRadiusCount);
 	pStream->Write(m_iRiverID);
+	pStream->Write(m_iRiverDroughtEdges);
+    pStream->Write((int)m_aeRuinsBuildings.size());
+    for (size_t iRuins = 0; iRuins < m_aeRuinsBuildings.size(); ++iRuins)
+        pStream->Write((int)m_aeRuinsBuildings[iRuins]);
 	pStream->Write(m_iMinOriginalStartDist);
 	pStream->Write(m_iReconCount);
 	pStream->Write(m_iRiverCrossingCount);
@@ -9814,6 +10076,7 @@ bool CvPlot::shouldUsePlotBuilder()
 
 int CvPlot::calculateMaxYield(YieldTypes eYield) const
 {
+    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
 	if (getTerrainType() == NO_TERRAIN)
 	{
 		return 0;
@@ -9884,6 +10147,7 @@ int CvPlot::getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUp
 		}
 	}
 		
+	if (eYield == YIELD_FOOD && !bIgnoreFeature && isDroughtFoodSuppressed()) return 0;
 	iYield += calculateNatureYield(eYield, getTeam(), bIgnoreFeature);
     if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH") &&
         getTerrainType() == GC.getInfoTypeForString("TERRAIN_MARSH"))

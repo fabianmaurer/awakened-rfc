@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_BEN_ADJ</Tag>
+    <English>Bengali</English>
+    <French>Bengali</French>
+    <German>bengalisch</German>
+    <Italian>Bengali</Italian>
+    <Spanish>Bengali</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_BUILDING</Tag>
+    <English>Muslin Bazaar</English>
+    <French>Muslin Bazaar</French>
+    <German>Musselinbasar</German>
+    <Italian>Muslin Bazaar</Italian>
+    <Spanish>Muslin Bazaar</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_CITY0</Tag>
+    <English>Gaur</English>
+    <French>Gaur</French>
+    <German>Gaur</German>
+    <Italian>Gaur</Italian>
+    <Spanish>Gaur</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_CITY1</Tag>
+    <English>Sonargaon</English>
+    <French>Sonargaon</French>
+    <German>Sonargaon</German>
+    <Italian>Sonargaon</Italian>
+    <Spanish>Sonargaon</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_CITY2</Tag>
+    <English>Tamralipti</English>
+    <French>Tamralipti</French>
+    <German>Tamralipti</German>
+    <Italian>Tamralipti</Italian>
+    <Spanish>Tamralipti</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_CITY3</Tag>
+    <English>Chittagong</English>
+    <French>Chittagong</French>
+    <German>Chittagong</German>
+    <Italian>Chittagong</Italian>
+    <Spanish>Chittagong</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_CITY4</Tag>
+    <English>Pandua</English>
+    <French>Pandua</French>
+    <German>Pandua</German>
+    <Italian>Pandua</Italian>
+    <Spanish>Pandua</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_DESC</Tag>
+    <English>Bengal Sultanate</English>
+    <French>Bengal Sultanate</French>
+    <German>Sultanat von Bengalen</German>
+    <Italian>Bengal Sultanate</Italian>
+    <Spanish>Bengal Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_PEDIA</Tag>
+    <English>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</English>
+    <French>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</French>
+    <German>Macht das Gangesdelta zu einem wohlhabenden Zentrum des Fluss- und &#220;berseehandels. Einzigartige F&#228;higkeit: Handel im Delta. Flussfelder erhalten +1 Handel.</German>
+    <Italian>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</Italian>
+    <Spanish>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_SHORT</Tag>
+    <English>Bengal</English>
+    <French>Bengal</French>
+    <German>Bengalen</German>
+    <Italian>Bengal</Italian>
+    <Spanish>Bengal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_STRATEGY</Tag>
+    <English>Turn the Bengal delta into a wealthy centre of river and overseas commerce.</English>
+    <French>Turn the Bengal delta into a wealthy centre of river and overseas commerce.</French>
+    <German>Macht das Gangesdelta zu einem wohlhabenden Zentrum des Fluss- und &#220;berseehandels.</German>
+    <Italian>Turn the Bengal delta into a wealthy centre of river and overseas commerce.</Italian>
+    <Spanish>Turn the Bengal delta into a wealthy centre of river and overseas commerce.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_BEN_UNIT</Tag>
+    <English>Paik</English>
+    <French>Paik</French>
+    <German>Paik</German>
+    <Italian>Paik</Italian>
+    <Spanish>Paik</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_ADJ</Tag>
+    <English>Chola</English>
+    <French>Chola</French>
+    <German>cholisch</German>
+    <Italian>Chola</Italian>
+    <Spanish>Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_BUILDING</Tag>
+    <English>Merchant Guild</English>
+    <French>Merchant Guild</French>
+    <German>H&#228;ndlergilde</German>
+    <Italian>Merchant Guild</Italian>
+    <Spanish>Merchant Guild</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_CITY0</Tag>
+    <English>Thanjavur</English>
+    <French>Thanjavur</French>
+    <German>Thanjavur</German>
+    <Italian>Thanjavur</Italian>
+    <Spanish>Thanjavur</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_CITY1</Tag>
+    <English>Kanchipuram</English>
+    <French>Kanchipuram</French>
+    <German>Kanchipuram</German>
+    <Italian>Kanchipuram</Italian>
+    <Spanish>Kanchipuram</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_CITY2</Tag>
+    <English>Madurai</English>
+    <French>Madurai</French>
+    <German>Madurai</German>
+    <Italian>Madurai</Italian>
+    <Spanish>Madurai</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_CITY3</Tag>
+    <English>Nagapattinam</English>
+    <French>Nagapattinam</French>
+    <German>Nagapattinam</German>
+    <Italian>Nagapattinam</Italian>
+    <Spanish>Nagapattinam</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_CITY4</Tag>
+    <English>Polonnaruwa</English>
+    <French>Polonnaruwa</French>
+    <German>Polonnaruwa</German>
+    <Italian>Polonnaruwa</Italian>
+    <Spanish>Polonnaruwa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_DESC</Tag>
+    <English>Chola Empire</English>
+    <French>Chola Empire</French>
+    <German>Chola-Reich</German>
+    <Italian>Chola Empire</Italian>
+    <Spanish>Chola Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_PEDIA</Tag>
+    <English>Unite the Tamil country and prosper through Indian Ocean trade. Its unique power is Oceanic Networks: Coastal cities gain +1 trade route.</English>
+    <French>Unite the Tamil country and prosper through Indian Ocean trade. Its unique power is Oceanic Networks: Coastal cities gain +1 trade route.</French>
+    <German>Vereint das tamilische Land und gelangt durch den Handel im Indischen Ozean zu Wohlstand. Einzigartige F&#228;higkeit: Ozeanische Handelsnetze. K&#252;stenst&#228;dte erhalten einen zus&#228;tzlichen Handelsweg.</German>
+    <Italian>Unite the Tamil country and prosper through Indian Ocean trade. Its unique power is Oceanic Networks: Coastal cities gain +1 trade route.</Italian>
+    <Spanish>Unite the Tamil country and prosper through Indian Ocean trade. Its unique power is Oceanic Networks: Coastal cities gain +1 trade route.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_SHORT</Tag>
+    <English>Chola</English>
+    <French>Chola</French>
+    <German>Chola</German>
+    <Italian>Chola</Italian>
+    <Spanish>Chola</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_STRATEGY</Tag>
+    <English>Unite the Tamil country and prosper through Indian Ocean trade.</English>
+    <French>Unite the Tamil country and prosper through Indian Ocean trade.</French>
+    <German>Vereint das tamilische Land und gelangt durch den Handel im Indischen Ozean zu Wohlstand.</German>
+    <Italian>Unite the Tamil country and prosper through Indian Ocean trade.</Italian>
+    <Spanish>Unite the Tamil country and prosper through Indian Ocean trade.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_CHO_UNIT</Tag>
+    <English>Kappal</English>
+    <French>Kappal</French>
+    <German>Kappal</German>
+    <Italian>Kappal</Italian>
+    <Spanish>Kappal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_ADJ</Tag>
+    <English>Delhi</English>
+    <French>Delhi</French>
+    <German>delhisch</German>
+    <Italian>Delhi</Italian>
+    <Spanish>Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_BUILDING</Tag>
+    <English>Diwan</English>
+    <French>Diwan</French>
+    <German>Diwan</German>
+    <Italian>Diwan</Italian>
+    <Spanish>Diwan</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_CITY0</Tag>
+    <English>Delhi</English>
+    <French>Delhi</French>
+    <German>Delhi</German>
+    <Italian>Delhi</Italian>
+    <Spanish>Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_CITY1</Tag>
+    <English>Lahore</English>
+    <French>Lahore</French>
+    <German>Lahore</German>
+    <Italian>Lahore</Italian>
+    <Spanish>Lahore</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_CITY2</Tag>
+    <English>Agra</English>
+    <French>Agra</French>
+    <German>Agra</German>
+    <Italian>Agra</Italian>
+    <Spanish>Agra</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_CITY3</Tag>
+    <English>Ajmer</English>
+    <French>Ajmer</French>
+    <German>Ajmer</German>
+    <Italian>Ajmer</Italian>
+    <Spanish>Ajmer</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_CITY4</Tag>
+    <English>Kannauj</English>
+    <French>Kannauj</French>
+    <German>Kannauj</German>
+    <Italian>Kannauj</Italian>
+    <Spanish>Kannauj</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_DESC</Tag>
+    <English>Delhi Sultanate</English>
+    <French>Delhi Sultanate</French>
+    <German>Sultanat von Delhi</German>
+    <Italian>Delhi Sultanate</Italian>
+    <Spanish>Delhi Sultanate</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_PEDIA</Tag>
+    <English>Use mounted armies to build a northern Indian sultanate. Its unique power is Mounted Conquest: Mounted units gain +25% city attack.</English>
+    <French>Use mounted armies to build a northern Indian sultanate. Its unique power is Mounted Conquest: Mounted units gain +25% city attack.</French>
+    <German>Errichtet mit berittenen Heeren ein Sultanat in Nordindien. Einzigartige F&#228;higkeit: Berittene Eroberer. Berittene Einheiten erhalten +25 % Stadtangriff.</German>
+    <Italian>Use mounted armies to build a northern Indian sultanate. Its unique power is Mounted Conquest: Mounted units gain +25% city attack.</Italian>
+    <Spanish>Use mounted armies to build a northern Indian sultanate. Its unique power is Mounted Conquest: Mounted units gain +25% city attack.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_SHORT</Tag>
+    <English>Delhi</English>
+    <French>Delhi</French>
+    <German>Delhi</German>
+    <Italian>Delhi</Italian>
+    <Spanish>Delhi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_STRATEGY</Tag>
+    <English>Use mounted armies to build a northern Indian sultanate.</English>
+    <French>Use mounted armies to build a northern Indian sultanate.</French>
+    <German>Errichtet mit berittenen Heeren ein Sultanat in Nordindien.</German>
+    <Italian>Use mounted armies to build a northern Indian sultanate.</Italian>
+    <Spanish>Use mounted armies to build a northern Indian sultanate.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DEL_UNIT</Tag>
+    <English>Ghulam</English>
+    <French>Ghulam</French>
+    <German>Ghulam</German>
+    <Italian>Ghulam</Italian>
+    <Spanish>Ghulam</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_ADJ</Tag>
+    <English>Magadhan</English>
+    <French>Magadhien</French>
+    <German>Magadhisch</German>
+    <Italian>Magadhano</Italian>
+    <Spanish>Magadh&#237;</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_BUILDING</Tag>
+    <English>Gurukula</English>
+    <French>Gurukula</French>
+    <German>Gurukula</German>
+    <Italian>Gurukula</Italian>
+    <Spanish>Gurukula</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_CITY0</Tag>
+    <English>Pataliputra</English>
+    <French>Pataliputra</French>
+    <German>Pataliputra</German>
+    <Italian>Pataliputra</Italian>
+    <Spanish>Pataliputra</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_CITY1</Tag>
+    <English>Varanasi</English>
+    <French>Varanasi</French>
+    <German>Varanasi</German>
+    <Italian>Varanasi</Italian>
+    <Spanish>Varanasi</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_CITY2</Tag>
+    <English>Ayodhya</English>
+    <French>Ayodhya</French>
+    <German>Ayodhya</German>
+    <Italian>Ayodhya</Italian>
+    <Spanish>Ayodhya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_CITY3</Tag>
+    <English>Kannauj</English>
+    <French>Kannauj</French>
+    <German>Kannauj</German>
+    <Italian>Kannauj</Italian>
+    <Spanish>Kannauj</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_CITY4</Tag>
+    <English>Rajagriha</English>
+    <French>Rajagriha</French>
+    <German>Rajagriha</German>
+    <Italian>Rajagriha</Italian>
+    <Spanish>Rajagriha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_DESC</Tag>
+    <English>Tribes of Magadha</English>
+    <French>Tribus de Magadha</French>
+    <German>St&#228;mme von Magadha</German>
+    <Italian>Trib&#249; di Magadha</Italian>
+    <Spanish>Tribus de Magadha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_PEDIA</Tag>
+    <English>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</English>
+    <French>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</French>
+    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit. Einzigartige F&#228;higkeit: Heilige Gelehrsamkeit. Priester erhalten +1 Forschung.</German>
+    <Italian>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Italian>
+    <Spanish>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_SHORT</Tag>
+    <English>Magadha</English>
+    <French>Magadha</French>
+    <German>Magadha</German>
+    <Italian>Magadha</Italian>
+    <Spanish>Magadha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_STRATEGY</Tag>
+    <English>Develop the Ganges plain and build a civilization of sacred learning.</English>
+    <French>Develop the Ganges plain and build a civilization of sacred learning.</French>
+    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit.</German>
+    <Italian>Develop the Ganges plain and build a civilization of sacred learning.</Italian>
+    <Spanish>Develop the Ganges plain and build a civilization of sacred learning.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAN_UNIT</Tag>
+    <English>Mahout Elephant</English>
+    <French>Mahout Elephant</French>
+    <German>Mahut-Elefant</German>
+    <Italian>Mahout Elephant</Italian>
+    <Spanish>Mahout Elephant</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_BEN</Tag>
+    <English>Ilyas Shah</English>
+    <French>Ilyas Shah</French>
+    <German>Ilyas Schah</German>
+    <Italian>Ilyas Shah</Italian>
+    <Spanish>Ilyas Shah</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_CHO</Tag>
+    <English>Vijayalaya</English>
+    <French>Vijayalaya</French>
+    <German>Vijayalaya</German>
+    <Italian>Vijayalaya</Italian>
+    <Spanish>Vijayalaya</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_DEL</Tag>
+    <English>Qutb al-Din Aibak</English>
+    <French>Qutb al-Din Aibak</French>
+    <German>Qutb ad-Din Aibak</German>
+    <Italian>Qutb al-Din Aibak</Italian>
+    <Spanish>Qutb al-Din Aibak</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_GAN</Tag>
+    <English>Magadhan Council</English>
+    <French>Conseil de Magadha</French>
+    <German>Rat von Magadha</German>
+    <Italian>Consiglio di Magadha</Italian>
+    <Spanish>Consejo de Magadha</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_LEADER_VIJ</Tag>
+    <English>Harihara I</English>
+    <French>Harihara I</French>
+    <German>Harihara I.</German>
+    <Italian>Harihara I</Italian>
+    <Spanish>Harihara I</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_BEN1</Tag>
+    <English>Control six cities on rivers by 1500 AD.</English>
+    <French>Control six cities on rivers by 1500 AD.</French>
+    <German>Kontrolliert bis 1500 n. Chr. sechs St&#228;dte an Fl&#252;ssen.</German>
+    <Italian>Control six cities on rivers by 1500 AD.</Italian>
+    <Spanish>Control six cities on rivers by 1500 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_BEN2</Tag>
+    <English>Trade with four foreign civilizations by 1600 AD.</English>
+    <French>Trade with four foreign civilizations by 1600 AD.</French>
+    <German>Handelt bis 1600 n. Chr. mit vier fremden Zivilisationen.</German>
+    <Italian>Trade with four foreign civilizations by 1600 AD.</Italian>
+    <Spanish>Trade with four foreign civilizations by 1600 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_BEN3</Tag>
+    <English>Accumulate 5,000 gold by 1700 AD.</English>
+    <French>Accumulate 5,000 gold by 1700 AD.</French>
+    <German>Sammelt bis 1700 n. Chr. 5.000 Gold an.</German>
+    <Italian>Accumulate 5,000 gold by 1700 AD.</Italian>
+    <Spanish>Accumulate 5,000 gold by 1700 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_CHO1</Tag>
+    <English>Control four cities in southern India by 1100 AD.</English>
+    <French>Control four cities in southern India by 1100 AD.</French>
+    <German>Kontrolliert bis 1100 n. Chr. vier St&#228;dte in S&#252;dindien.</German>
+    <Italian>Control four cities in southern India by 1100 AD.</Italian>
+    <Spanish>Control four cities in southern India by 1100 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_CHO2</Tag>
+    <English>Control a city in Sri Lanka and trade with three foreign civilizations by 1250 AD.</English>
+    <French>Control a city in Sri Lanka and trade with three foreign civilizations by 1250 AD.</French>
+    <German>Kontrolliert bis 1250 n. Chr. eine Stadt auf Sri Lanka und handelt mit drei fremden Zivilisationen.</German>
+    <Italian>Control a city in Sri Lanka and trade with three foreign civilizations by 1250 AD.</Italian>
+    <Spanish>Control a city in Sri Lanka and trade with three foreign civilizations by 1250 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_CHO3</Tag>
+    <English>Accumulate 3,000 gold by 1300 AD.</English>
+    <French>Accumulate 3,000 gold by 1300 AD.</French>
+    <German>Sammelt bis 1300 n. Chr. 3.000 Gold an.</German>
+    <Italian>Accumulate 3,000 gold by 1300 AD.</Italian>
+    <Spanish>Accumulate 3,000 gold by 1300 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_DEL1</Tag>
+    <English>Control six cities in northern India by 1350 AD.</English>
+    <French>Control six cities in northern India by 1350 AD.</French>
+    <German>Kontrolliert bis 1350 n. Chr. sechs St&#228;dte in Nordindien.</German>
+    <Italian>Control six cities in northern India by 1350 AD.</Italian>
+    <Spanish>Control six cities in northern India by 1350 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_DEL2</Tag>
+    <English>Spread Islam to eight of your cities by 1450 AD.</English>
+    <French>Spread Islam to eight of your cities by 1450 AD.</French>
+    <German>Verbreitet den Islam bis 1450 n. Chr. in acht Eurer St&#228;dte.</German>
+    <Italian>Spread Islam to eight of your cities by 1450 AD.</Italian>
+    <Spanish>Spread Islam to eight of your cities by 1450 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_DEL3</Tag>
+    <English>Control Delhi and three cities in the Deccan by 1500 AD.</English>
+    <French>Control Delhi and three cities in the Deccan by 1500 AD.</French>
+    <German>Kontrolliert bis 1500 n. Chr. Delhi und drei St&#228;dte im Dekkan.</German>
+    <Italian>Control Delhi and three cities in the Deccan by 1500 AD.</Italian>
+    <Spanish>Control Delhi and three cities in the Deccan by 1500 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_GAN1</Tag>
+    <English>Control the Hindu and Buddhist holy cities by 200 BC.</English>
+    <French>Control the Hindu and Buddhist holy cities by 200 BC.</French>
+    <German>Kontrolliert bis 200 v. Chr. die heiligen St&#228;dte des Hinduismus und des Buddhismus.</German>
+    <Italian>Control the Hindu and Buddhist holy cities by 200 BC.</Italian>
+    <Spanish>Control the Hindu and Buddhist holy cities by 200 BC.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_GAN2</Tag>
+    <English>Accumulate 2,500 culture by 200 AD.</English>
+    <French>Accumulate 2,500 culture by 200 AD.</French>
+    <German>Sammelt bis 200 n. Chr. 2.500 Kultur an.</German>
+    <Italian>Accumulate 2,500 culture by 200 AD.</Italian>
+    <Spanish>Accumulate 2,500 culture by 200 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_GAN3</Tag>
+    <English>Control six cities in the Ganges region by 600 AD.</English>
+    <French>Control six cities in the Ganges region by 600 AD.</French>
+    <German>Kontrolliert bis 600 n. Chr. sechs St&#228;dte im Gangesgebiet.</German>
+    <Italian>Control six cities in the Ganges region by 600 AD.</Italian>
+    <Spanish>Control six cities in the Ganges region by 600 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_VIJ1</Tag>
+    <English>Control four cities in southern India by 1500 AD.</English>
+    <French>Control four cities in southern India by 1500 AD.</French>
+    <German>Kontrolliert bis 1500 n. Chr. vier St&#228;dte in S&#252;dindien.</German>
+    <Italian>Control four cities in southern India by 1500 AD.</Italian>
+    <Spanish>Control four cities in southern India by 1500 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_VIJ2</Tag>
+    <English>Have eight Hindu temples by 1600 AD.</English>
+    <French>Have eight Hindu temples by 1600 AD.</French>
+    <German>Besitzt bis 1600 n. Chr. acht hinduistische Tempel.</German>
+    <Italian>Have eight Hindu temples by 1600 AD.</Italian>
+    <Spanish>Have eight Hindu temples by 1600 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UHV_VIJ3</Tag>
+    <English>Accumulate 50,000 culture by 1650 AD.</English>
+    <French>Accumulate 50,000 culture by 1650 AD.</French>
+    <German>Sammelt bis 1650 n. Chr. 50.000 Kultur an.</German>
+    <Italian>Accumulate 50,000 culture by 1650 AD.</Italian>
+    <Spanish>Accumulate 50,000 culture by 1650 AD.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_BEN</Tag>
+    <English>Delta Commerce</English>
+    <French>Delta Commerce</French>
+    <German>Handel im Delta</German>
+    <Italian>Delta Commerce</Italian>
+    <Spanish>Delta Commerce</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_BEN2</Tag>
+    <English>River tiles gain +1 commerce.</English>
+    <French>Les cases riveraines gagnent +1 commerce.</French>
+    <German>Flussfelder erhalten +1 Handel.</German>
+    <Italian>Le caselle fluviali ottengono +1 commercio.</Italian>
+    <Spanish>Las casillas de r&#237;o obtienen +1 de comercio.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_CHO</Tag>
+    <English>Oceanic Networks</English>
+    <French>Oceanic Networks</French>
+    <German>Ozeanische Handelsnetze</German>
+    <Italian>Oceanic Networks</Italian>
+    <Spanish>Oceanic Networks</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_CHO2</Tag>
+    <English>Coastal cities gain +1 trade route.</English>
+    <French>Les villes c&#244;ti&#232;res gagnent une route commerciale.</French>
+    <German>K&#252;stenst&#228;dte erhalten einen zus&#228;tzlichen Handelsweg.</German>
+    <Italian>Le citt&#224; costiere ottengono una rotta commerciale aggiuntiva.</Italian>
+    <Spanish>Las ciudades costeras obtienen una ruta comercial adicional.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_DEL</Tag>
+    <English>Mounted Conquest</English>
+    <French>Mounted Conquest</French>
+    <German>Berittene Eroberer</German>
+    <Italian>Mounted Conquest</Italian>
+    <Spanish>Mounted Conquest</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_DEL2</Tag>
+    <English>Mounted units gain +25% city attack.</English>
+    <French>Les unit&#233;s mont&#233;es gagnent +25 % en attaque urbaine.</French>
+    <German>Berittene Einheiten erhalten +25 % Stadtangriff.</German>
+    <Italian>Le unit&#224; montate ottengono +25% all&#8217;attacco delle citt&#224;.</Italian>
+    <Spanish>Las unidades montadas obtienen +25% al atacar ciudades.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_GAN</Tag>
+    <English>Sacred Learning</English>
+    <French>Sacred Learning</French>
+    <German>Heilige Gelehrsamkeit</German>
+    <Italian>Sacred Learning</Italian>
+    <Spanish>Sacred Learning</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_GAN2</Tag>
+    <English>Priests gain +1 research.</English>
+    <French>Les pr&#234;tres gagnent +1 recherche.</French>
+    <German>Priester erhalten +1 Forschung.</German>
+    <Italian>I sacerdoti ottengono +1 ricerca.</Italian>
+    <Spanish>Los sacerdotes obtienen +1 de investigaci&#243;n.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_VIJ</Tag>
+    <English>Fortified Heartland</English>
+    <French>Fortified Heartland</French>
+    <German>Befestigtes Kernland</German>
+    <Italian>Fortified Heartland</Italian>
+    <Spanish>Fortified Heartland</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_UP_VIJ2</Tag>
+    <English>Cities gain +25% defense.</English>
+    <French>Les villes gagnent +25 % de d&#233;fense.</French>
+    <German>St&#228;dte erhalten +25 % Verteidigung.</German>
+    <Italian>Le citt&#224; ottengono +25% alla difesa.</Italian>
+    <Spanish>Las ciudades obtienen +25% de defensa.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_ADJ</Tag>
+    <English>Vijayanagaran</English>
+    <French>Vijayanagaran</French>
+    <German>vijayanagarisch</German>
+    <Italian>Vijayanagaran</Italian>
+    <Spanish>Vijayanagaran</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_BUILDING</Tag>
+    <English>Royal Temple</English>
+    <French>Royal Temple</French>
+    <German>K&#246;niglicher Tempel</German>
+    <Italian>Royal Temple</Italian>
+    <Spanish>Royal Temple</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_CITY0</Tag>
+    <English>Vijayanagara</English>
+    <French>Vijayanagara</French>
+    <German>Vijayanagara</German>
+    <Italian>Vijayanagara</Italian>
+    <Spanish>Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_CITY1</Tag>
+    <English>Mysuru</English>
+    <French>Mysuru</French>
+    <German>Mysuru</German>
+    <Italian>Mysuru</Italian>
+    <Spanish>Mysuru</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_CITY2</Tag>
+    <English>Goa</English>
+    <French>Goa</French>
+    <German>Goa</German>
+    <Italian>Goa</Italian>
+    <Spanish>Goa</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_CITY3</Tag>
+    <English>Bengaluru</English>
+    <French>Bengaluru</French>
+    <German>Bengaluru</German>
+    <Italian>Bengaluru</Italian>
+    <Spanish>Bengaluru</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_CITY4</Tag>
+    <English>Warangal</English>
+    <French>Warangal</French>
+    <German>Warangal</German>
+    <Italian>Warangal</Italian>
+    <Spanish>Warangal</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_DESC</Tag>
+    <English>Vijayanagara Empire</English>
+    <French>Vijayanagara Empire</French>
+    <German>Vijayanagara-Reich</German>
+    <Italian>Vijayanagara Empire</Italian>
+    <Spanish>Vijayanagara Empire</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_PEDIA</Tag>
+    <English>Defend the southern heartland and build a rich temple civilization. Its unique power is Fortified Heartland: Cities gain +25% defense.</English>
+    <French>Defend the southern heartland and build a rich temple civilization. Its unique power is Fortified Heartland: Cities gain +25% defense.</French>
+    <German>Verteidigt das s&#252;dliche Kernland und errichtet eine reiche Tempelkultur. Einzigartige F&#228;higkeit: Befestigtes Kernland. St&#228;dte erhalten +25 % Verteidigung.</German>
+    <Italian>Defend the southern heartland and build a rich temple civilization. Its unique power is Fortified Heartland: Cities gain +25% defense.</Italian>
+    <Spanish>Defend the southern heartland and build a rich temple civilization. Its unique power is Fortified Heartland: Cities gain +25% defense.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_SHORT</Tag>
+    <English>Vijayanagara</English>
+    <French>Vijayanagara</French>
+    <German>Vijayanagara</German>
+    <Italian>Vijayanagara</Italian>
+    <Spanish>Vijayanagara</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_STRATEGY</Tag>
+    <English>Defend the southern heartland and build a rich temple civilization.</English>
+    <French>Defend the southern heartland and build a rich temple civilization.</French>
+    <German>Verteidigt das s&#252;dliche Kernland und errichtet eine reiche Tempelkultur.</German>
+    <Italian>Defend the southern heartland and build a rich temple civilization.</Italian>
+    <Spanish>Defend the southern heartland and build a rich temple civilization.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_VIJ_UNIT</Tag>
+    <English>Nayaka</English>
+    <French>Nayaka</French>
+    <German>Nayaka</German>
+    <Italian>Nayaka</Italian>
+    <Spanish>Nayaka</Spanish>
+  </TEXT>
+</Civ4GameText>

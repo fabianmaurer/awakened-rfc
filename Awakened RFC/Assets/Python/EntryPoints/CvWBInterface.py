@@ -5,6 +5,7 @@ from CvPythonExtensions import *
 import CvWBPopups
 import CvUtil
 import CvWBDesc
+import ScenarioGeography
 
 # globals
 WBDesc = CvWBDesc.CvWBDesc()
@@ -23,8 +24,11 @@ def readAndApplyDesc(argsList):
 	fileName = argsList[0]
 	if WBDesc.read(fileName) < 0:
 		return -1
+	WBDesc.gameDesc.speedType = ScenarioGeography.scenarioSpeed(fileName)
+	ScenarioGeography.prepare(fileName, WBDesc.mapDesc)
 	if (WBDesc.applyMap() < 0):
 		return -1
+	CyMap().finalizeScenarioGeography()
 	return WBDesc.applyInitialItems()
 
 def readDesc(argsList):
@@ -37,11 +41,16 @@ def readDesc(argsList):
 			lastFileRead=fileName
 	else:
 		ret=0		
+	if ret == 0:
+		WBDesc.gameDesc.speedType = ScenarioGeography.scenarioSpeed(fileName)
 	return ret
 		
 def applyMapDesc():	
 	"After reading, applies the map loaded data"
-	return WBDesc.applyMap()
+	ScenarioGeography.prepare(lastFileRead, WBDesc.mapDesc)
+	result = WBDesc.applyMap()
+	if result >= 0: CyMap().finalizeScenarioGeography()
+	return result
 
 def applyInitialItems():	
 	"After reading, applies player units, cities, and techs"

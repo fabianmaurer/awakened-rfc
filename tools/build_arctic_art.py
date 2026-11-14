@@ -934,6 +934,72 @@ def archive_symbols(assets):
         for research in (3,5)])
 
 
+def gold_symbols(assets):
+    """Display direct plot gold beside the engine's three ordinary yields."""
+    folder = MOD / 'Assets/Art/Interface/GoldSymbols'
+    folder.mkdir(parents=True, exist_ok=True)
+    atlas = Image.open(MOD / 'Assets/res/Fonts/GameFont.tga').convert('RGBA')
+    # First commerce glyph is treasury gold; commerce yield uses a different icon.
+    cells, start = [], 0
+    for x in range(atlas.width):
+        r, g, b, alpha = atlas.getpixel((x, 93))
+        if r > 230 and g < 20 and b > 230:
+            if x > start:
+                cells.append((start, x))
+            start = x + 1
+    left, right = cells[0]
+    icon = atlas.crop((left, 93, right, 113)).resize((64, 64), Image.Resampling.LANCZOS)
+    for amount in (1, 5, 7, 10):
+        image = Image.new('RGBA', (256, 128))
+        if amount == 10:
+            small_icon = icon.resize((48, 48), Image.Resampling.LANCZOS)
+            for i in range(amount):
+                image.alpha_composite(small_icon, (12 + (i % 5)*40, 8 + (i // 5)*56))
+        else:
+            for i in range(amount):
+                image.alpha_composite(icon, (12 + i*30, 44 - i*5))
+        image.save(folder / ('Gold%d.dds' % amount), pixel_format='DXT5')
+        model = NifFormat.Data()
+        model.read(io.BytesIO(assets.read('base:Art/Interface/Symbols/Commerce/Commerce01.nif')))
+        for block in model.get_global_iterator():
+            if isinstance(block, NifFormat.NiSourceTexture):
+                block.file_name = ('Art/Interface/GoldSymbols/Gold%d.dds' % amount).encode('ascii')
+            if isinstance(block, NifFormat.NiTriStripsData):
+                for vertex in block.vertices:
+                    vertex.x *= 2.0
+                block.update_center_radius()
+        model.roots[0].translation.z += 45.0
+        with (folder / ('Gold%d.nif' % amount)).open('wb') as output:
+            model.write(output)
+    entries = [
+        ('FEATURE_GOLD_OUTPUT_%d' % amount, 'TXT_KEY_PRECIOUS_METAL_OUTPUT',
+         'TXT_KEY_PRECIOUS_METAL_MINE_HELP', 'Art/Interface/GoldSymbols/Gold%d.nif' % amount)
+        for amount in (1, 5, 7, 10)]
+    # An archive can occupy a snow hill with a precious-metal deposit. Its
+    # research/GPP badge must retain the deposit's independent +1 gold icon.
+    archives = MOD / 'Assets/Art/Arctic/ArchiveSymbols'
+    for research in (3, 5):
+        image = Image.open(archives / ('Archive%d.dds' % research)).convert('RGBA')
+        if research == 3:
+            scientist = image.crop((176, 32, 240, 96))
+            image.paste((0, 0, 0, 0), (160, 0, 256, 128))
+            image.alpha_composite(scientist, (128, 32))
+        image.alpha_composite(icon, (192, 44))
+        image.save(folder / ('ArchiveGold%d.dds' % research), pixel_format='DXT5')
+        model = NifFormat.Data()
+        with (archives / ('Archive%d.nif' % research)).open('rb') as source:
+            model.read(source)
+        for block in model.get_global_iterator():
+            if isinstance(block, NifFormat.NiSourceTexture):
+                block.file_name = ('Art/Interface/GoldSymbols/ArchiveGold%d.dds' % research).encode('ascii')
+        with (folder / ('ArchiveGold%d.nif' % research)).open('wb') as output:
+            model.write(output)
+        entries.append(('FEATURE_ARCHIVE_GOLD_OUTPUT_%d' % research, 'TXT_KEY_DEEP_ARCHIVE',
+                        'TXT_KEY_DEEP_ARCHIVE_PEDIA',
+                        'Art/Interface/GoldSymbols/ArchiveGold%d.nif' % research))
+    render_feature_templates(entries)
+
+
 def render_feature_templates(entries):
     """Register render-only models; none are assigned to map terrain."""
     import copy
@@ -974,7 +1040,7 @@ def render_feature_templates(entries):
             art.append(copy.deepcopy(variety))
         for tag, text, entry in [('FeatureInfo', feature_text, feature),
                                   ('FeatureArtInfo', art_text, art)]:
-            entry_text = ET.tostring(entry, encoding='unicode')
+            entry_text = '\n'.join(line.rstrip() for line in ET.tostring(entry, encoding='unicode').splitlines())
             pattern = r'<'+tag+r'>\s*<Type>'+re.escape(entry.findtext('Type'))+r'</Type>.*?</'+tag+'>'
             if re.search(pattern, text, re.S):
                 text = re.sub(pattern, lambda m: entry_text, text, flags=re.S)
@@ -1034,6 +1100,7 @@ def main():
     eskimo_banner()
     special_art(assets)
     archive_symbols(assets)
+    gold_symbols(assets)
     snowy_road_art(assets)
     icy_building_art(assets)
     print('Created Arctic units, improvements, igloos and ice city libraries.')
@@ -1058,5 +1125,7 @@ if __name__ == '__main__':
         snowy_road_art(Assets())
     elif '--archive-symbols-only' in sys.argv:
         archive_symbols(Assets())
+    elif '--gold-symbols-only' in sys.argv:
+        gold_symbols(Assets())
     else:
         main()

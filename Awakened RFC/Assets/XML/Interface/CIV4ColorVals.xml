@@ -1051,5 +1051,12 @@
 			<fBlue>0.55</fBlue>
 			<fAlpha>1.00</fAlpha>
 		</ColorVal>
+		<ColorVal>
+			<Type>COLOR_PLAYER_ICE_BLUE</Type>
+			<fRed>0.62</fRed>
+			<fGreen>0.88</fGreen>
+			<fBlue>1.00</fBlue>
+			<fAlpha>1.00</fAlpha>
+		</ColorVal>
 	</ColorVals>
 </Civ4ColorVals>

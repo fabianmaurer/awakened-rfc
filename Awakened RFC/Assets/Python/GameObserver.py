@@ -26,9 +26,16 @@ def record_mechanic(event, player, details):
         observer.fail('mechanic_recording')
 
 
+def record_religion_purge(player, values):
+    fields = ('city', 'founded', 'x', 'y', 'retained_religion', 'happiness_before',
+              'happiness_change_expected', 'effort100_before', 'religions_before',
+              'ai_value', 'happiness_after', 'effort100_after', 'religions_after', 'unit_type')
+    record_mechanic('administration_religion_purged', player, dict(zip(fields, values)))
+
+
 # Semantic payload version 1. Fields mirror the guarded native call sites.
 APOSTOLIC_FIELDS = {
-    'papal_request': ('decision', 'can_become', 'cities'),
+    'papal_request': ('decision', 'can_become', 'cities', 'x', 'y', 'refuge'),
     'papal_decision': ('decision', 'choice'),
     'papal_penalty_applied': ('observer', 'amount', 'accumulated', 'attitude_extra_after'),
     'papal_penalty_cleared': ('observer', 'amount', 'attitude_extra_before', 'attitude_extra_after'),
@@ -105,17 +112,26 @@ def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ba
         header_keys = ('version', 'papal_player', 'refuser', 'retry_turn', 'palace_active',
                        'rome_owner', 'rome_christian', 'founding_eligible', 'palace_buildings',
                        'crusade_region', 'crusade_end_turn', 'base_duration', 'inactivity_duration')
-        if len(header) != len(header_keys) or header[0] != 1:
+        if header[0] == 2:
+            header_keys += ('seat_x', 'seat_y', 'protector', 'exile', 'conqueror')
+        if len(header) != len(header_keys) or header[0] not in (1, 2):
             raise ValueError('Unexpected apostolic state payload')
         details = dict(zip(header_keys, header))
+        if header[0] == 2:
+            details['seat_owner'] = details['rome_owner']
+            details['seat_christian'] = details['rome_christian']
         def rows(values, keys):
             width = len(keys)
             if len(values) % width:
                 raise ValueError('Incomplete apostolic state rows')
             return [dict(zip(keys, values[i:i+width])) for i in range(0, len(values), width)]
-        details['players'] = rows(flat_players, ('id', 'alive', 'team', 'state_religion', 'legitimation',
-                                  'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state',
-                                  'refusal_penalty', 'attitude_extra_to_refuser', 'cities'))
+        player_keys = ('id', 'alive', 'team', 'state_religion', 'legitimation',
+                       'religion_civic', 'gold', 'plunder', 'rewards', 'holy_state')
+        if header[0] == 1:
+            player_keys += ('refusal_penalty', 'attitude_extra_to_refuser', 'cities')
+        else:
+            player_keys += ('refusal_turns', 'papal_relation_to_refuser', 'cities')
+        details['players'] = rows(flat_players, player_keys)
         details['teams'] = rows(flat_teams, ('id', 'alive', 'participant', 'target'))
         details['pairs'] = rows(flat_pairs, ('team', 'other', 'at_war', 'can_declare_war', 'can_change_war_peace', 'military_access'))
         details['ballots'] = rows(flat_ballots, ('ballot', 'proposal', 'deadline', 'player', 'weight', 'delivery_turn', 'choice'))
@@ -135,9 +151,9 @@ def record_apostolic_state(header, flat_players, flat_teams, flat_pairs, flat_ba
         pope = players.get(details['papal_player'])
         if pope and pope['alive'] and pope['religion_civic'] == atheism:
             issues.append('papacy_adopted_state_atheism')
-        if details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
+        if header[0] == 1 and details['refuser'] >= 0 and details['rome_owner'] != details['refuser']:
             issues.append('refusal_penalty_survived_loss_of_rome')
-        if details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
+        if header[0] == 1 and details['refuser'] < 0 and sum([p['refusal_penalty'] for p in players.values()]):
             issues.append('refusal_penalty_without_refuser')
         if details['crusade_region'] >= 0:
             for pair in details['pairs']:
@@ -213,6 +229,7 @@ class Observer:
         self.reveal_map = False
         self.events = []
         self.previous = {}
+        self.administration_previous = {}
         self.births = {}
         self.turns = 0
         self.error_count = 0
@@ -227,6 +244,8 @@ class Observer:
         self.performance = {}
         self.performance_stack = []
         self.performance_boundary = None
+        self.performance_start = None
+        self.performance_recent_turns = []
         self.output = None
         config = os.environ.get('AWAKENED_RFC_OBSERVER_CONFIG')
         token = os.environ.get('AWAKENED_RFC_OBSERVER_TOKEN')
@@ -246,6 +265,9 @@ class Observer:
                 self.scenario = get('Scenario')
             if self.scenario not in ('3000bc', '800bc', '600ad'):
                 raise ValueError('Unsupported observer scenario/mode')
+            self.xl = (parser.has_option('Observer', 'XL') and parser.getboolean('Observer', 'XL'))
+            if self.xl and self.scenario not in ('3000bc', '800bc'):
+                raise ValueError('Unsupported XL observer scenario')
             if self.mode == 'off':
                 return
             if self.mode not in ('balance', 'diagnostics', 'performance'):
@@ -258,6 +280,11 @@ class Observer:
                                parser.getboolean('Observer', 'Unattended'))
             self.limit = int(get('Turns'))
             self.checkpoint_interval = int(get('CheckpointInterval'))
+            self.autosave_interval = 0
+            if parser.has_option('Observer', 'AutosaveInterval'):
+                self.autosave_interval = int(get('AutosaveInterval'))
+            if self.autosave_interval < 0:
+                raise ValueError('Autosave interval must be zero or positive')
             self.record_interval = parser.getint('Observer', 'RecordInterval')
             self.seed = int(get('Seed'))
             self.version = get('ModVersion')
@@ -385,11 +412,14 @@ class Observer:
             self.gc = CyGlobalContext()
             self.game = self.gc.getGame()
             self.research_commerce = CommerceTypes.COMMERCE_RESEARCH
+            self.espionage_commerce = CommerceTypes.COMMERCE_ESPIONAGE
             game = self.game
             if game.isGameMultiPlayer() or game.isPitboss():
                 raise ValueError('Observer launcher currently supports single-player only')
             expected_turn, expected_player = {'3000bc': (0, 26), '800bc': (87, 26),
                                                '600ad': (181, 2)}[self.scenario]
+            if self.xl:
+                expected_turn *= 2
             if game.getStartYear() != -3000 or game.getGameTurn() != expected_turn:
                 raise ValueError('Observer scenario start turn/year mismatch')
             if self.unattended:
@@ -422,11 +452,14 @@ class Observer:
                             'setup_player': setup_player,
                             'civilization': actual_civ, 'speed': actual_speed,
                             'handicap': actual_handicap, 'expected_player': expected_player})
+                expected_speed = 'GAMESPEED_NORMAL'
+                if self.xl:
+                    expected_speed = 'GAMESPEED_XL'
                 if (actual_player != expected_player or
-                        actual_speed != 'GAMESPEED_NORMAL' or
+                        actual_speed != expected_speed or
                         actual_handicap != 'HANDICAP_PRINCE'):
-                    raise ValueError('Automatic setup mismatch: player=%d (%s), expected=%d; speed=%s, expected=GAMESPEED_NORMAL; handicap=%s, expected=HANDICAP_PRINCE' %
-                                     (actual_player, actual_civ, expected_player, actual_speed, actual_handicap))
+                    raise ValueError('Automatic setup mismatch: player=%d (%s), expected=%d; speed=%s, expected=%s; handicap=%s, expected=HANDICAP_PRINCE' %
+                                     (actual_player, actual_civ, expected_player, actual_speed, expected_speed, actual_handicap))
             # A WorldBuilder scenario need not appear in getMapScriptName():
             # that API names the map generator, not necessarily the loaded WB
             # file. Prefer the loader's cached filename when it is available.
@@ -435,13 +468,16 @@ class Observer:
             self.loaded_scenario = getattr(CvWBInterface, 'lastFileRead', None)
             expected = {'3000bc': 'start 1 - 3000 bc', '800bc': 'start 2 - 800 bc',
                         '600ad': 'start 3 - 600 ad'}[self.scenario]
+            if self.xl:
+                expected = {'3000bc': 'start 1 xl - 3000bc', '800bc': 'start 2 xl - 800bc'}[self.scenario]
+            expected += '.civbeyondswordwbsave'
             if self.loaded_scenario:
                 filename = str(self.loaded_scenario).replace('\\', '/').split('/')[-1].lower()
-                if not filename.startswith(expected):
+                if filename != expected:
                     raise ValueError('Observer scenario mismatch; WB loader reports: ' + str(self.loaded_scenario))
             elif str(self.map_script).lower().endswith('.civbeyondswordwbsave'):
                 filename = str(self.map_script).replace('\\', '/').split('/')[-1].lower()
-                if not filename.startswith(expected):
+                if filename != expected:
                     raise ValueError('Observer scenario mismatch; map reports: ' + str(self.map_script))
             # If neither API exposes a filename, the turn/year checks above
             # remain mandatory. The launcher itself selects and fingerprints
@@ -482,9 +518,14 @@ class Observer:
                 self.started = True
                 self.camera_pending = self.reveal_map and self.autoplay
                 self.performance_boundary = time.clock()
+                self.performance_start = self.performance_boundary
+                scenario_label = self.scenario
+                if self.xl:
+                    scenario_label += '-xl'
                 self.write({'kind': 'performance_metadata', 'mode': self.mode,
-                            'scenario': self.scenario, 'start_turn': game.getGameTurn(),
+                            'scenario': scenario_label, 'start_turn': game.getGameTurn(),
                             'seed': self.seed, 'reveal_map': self.reveal_map, 'runtime_fingerprint': self.fingerprint,
+                            'autosave_interval': self.autosave_interval,
                             'seed_applied_at': 'CvGame.init before scenario initialization; no GameStart reseed',
                             'rng_state_before_rfc_setup': self.initial_rng_state,
                             'timer': 'Windows Python time.clock wall seconds',
@@ -510,15 +551,21 @@ class Observer:
             self.write({'kind': 'metadata', 'schema': SCHEMA, 'run_id': self.run_id,
                         'mode': self.mode, 'autoplay': self.autoplay, 'seed': self.seed,
                         'reveal_map': self.reveal_map, 'army_enum_names': enum_names,
-                        'army_recording_version': 2, 'apostolic_recording_version': 1,
+                        'army_recording_version': 2, 'apostolic_recording_version': 2,
+                        'espionage_recording_version': 2,
+                        'administration_recording_version': 2,
+                        'administration_units': 'capacity/effort/upkeep amounts: hundredths; overload/production/upkeep percentages: basis points; stability: points; travel: hundredths of reference turns',
+                        'intelligence_modes': ['technology', 'military', 'politics', 'economy', 'cooperation', 'none'],
                         'jihad_campaign_names': {'0': 'Khalid: Levant / Iraq',
                                                  '1': 'Amr: Egypt / North Africa',
                                                  '2': "Sa'd: Iraq / Persia"},
                         'seed_applied_at': 'GameStart, before RFC setup (map and initial placement already loaded)',
                         'mod_version': self.version, 'runtime_fingerprint': self.fingerprint,
                         'scenario': self.loaded_scenario, 'map_script': self.map_script,
+                        'xl': self.xl,
                         'scenario_identity_available': bool(self.loaded_scenario), 'settings': settings,
                         'record_interval': self.record_interval,
+                        'autosave_interval': self.autosave_interval,
                         'infos': infos, 'boundary': 'EndGameTurn after RFC implosion processing, before next-turn trade recalculation'})
             if self.mode == 'diagnostics':
                 plots = []
@@ -533,6 +580,7 @@ class Observer:
             self.started = True
             self.camera_pending = self.reveal_map and self.autoplay
             self.observe_players(False)
+            self.observe_administration(True)
             self.snapshot('initial')
             self.checkpoint('initial')
             self.status('started', {'run_id': self.run_id, 'pid': os.getpid(), 'mode': self.mode})
@@ -655,9 +703,106 @@ class Observer:
                         self.civic_exposure[key] = self.civic_exposure.get(key, 0) + 1
             self.previous[i] = state
 
-    def city_data(self, city, diagnostic):
+    def administration_city(self, city, script):
+        player = self.gc.getPlayer(city.getOwner())
+        travel = player.getAdministrationValue(7, city.getID())
+        local = player.getAdministrationValue(9, city.getID())
+        effort = player.getAdministrationValue(8, city.getID())
+        before = max(0, city.getBaseYieldRate(1) * city.getBaseYieldRateModifier(1, 0) // 100)
+        key = (city.getOwner(), city.getID(), city.getGameTurnFounded())
+        return {'city': city.getID(), 'founded': city.getGameTurnFounded(), 'population': city.getPopulation(),
+                'travel_time100': travel, 'capital_travel_time100': player.getAdministrationValue(13, city.getID()),
+                'connected': bool(player.getAdministrationValue(14, city.getID())),
+                'residence_city': player.getAdministrationValue(15, city.getID()),
+                'residence_cost100': player.getAdministrationValue(16, city.getID()), 'effort100': effort,
+                'local_modifier_percent': local, 'building_modifier_percent': city.getMaintenanceModifier(),
+                'religion_modifier_percent': local - city.getMaintenanceModifier(),
+                'isolation_turns': script.get('administrationIsolation', {}).get(key, (-1, 0))[1],
+                'government_center': city.isGovernmentCenter(),
+                'upkeep_base100': effort // 2, 'upkeep100': city.getMaintenanceTimes100(),
+                'production_before_penalty': before, 'production': city.getYieldRate(1),
+                'production_yield_lost': before - city.getYieldRate(1)}
+
+    def administration_player(self, player, cities, script):
+        capacity = player.getAdministrationValue(0, -1)
+        effort = player.getAdministrationValue(1, -1)
+        overload = player.getAdministrationValue(2, -1)
+        baseline = script.get('lStability', [])
+        stability_base = None
+        stability_effective = None
+        if player.getID() < len(baseline):
+            stability_base = baseline[player.getID()]
+            stability_effective = stability_base + player.getAdministrationValue(3, -1)
+        return {'capacity100': capacity, 'effort100': effort,
+                'raw_overload100': max(0, effort * 10000 // max(1, capacity) - 10000),
+                'overload100': overload, 'suspended': bool(player.getAdministrationValue(10, -1)),
+                'stability_penalty': player.getAdministrationValue(3, -1),
+                'production_penalty100': player.getAdministrationValue(4, -1),
+                'upkeep_surcharge100': player.getAdministrationValue(5, -1),
+                'upkeep_base100': sum([c['upkeep_base100'] for c in cities]),
+                'upkeep100': sum([c['upkeep100'] for c in cities]),
+                'upkeep_gold': player.getTotalMaintenance(),
+                'residence_upkeep100': sum([c['residence_cost100'] for c in cities]),
+                'production_yield_lost': sum([c['production_yield_lost'] for c in cities]),
+                'isolated_cities': sum([not c['connected'] for c in cities]),
+                'growth_limited_cities': sum([c['population'] >= 3 and not player.isHuman() and
+                    not player.getAdministrationValue(10, -1) and effort + c['effort100'] // max(1, c['population']) > capacity for c in cities]),
+                'stability_baseline': stability_base, 'stability_effective': stability_effective,
+                'city_details': cities}
+
+    def observe_administration(self, initial=False):
+        import cPickle
+        import Consts
+        script = cPickle.loads(self.game.getScriptData())
+        players, checks = [], []
+        turn, year = self.game.getGameTurn(), self.game.getGameTurnYear()
+        for owner in range(Consts.iNumMajorPlayers):
+            player = self.gc.getPlayer(owner)
+            if not player.isAlive() or not player.getNumCities():
+                continue
+            cities = [self.administration_city(city, script) for city in self.cities(player)]
+            data = self.administration_player(player, cities, script)
+            data.update({'id': owner, 'civilization': self.gc.getCivilizationInfo(player.getCivilizationType()).getType(),
+                         'era': player.getCurrentEra(), 'population': player.getTotalPopulation(),
+                         'cities': len(cities), 'gold_rate': player.calculateGoldRate(),
+                         'research_rate': player.getCommerceRate(self.research_commerce),
+                         'civics': [player.getCivics(c) for c in range(self.gc.getNumCivicOptionInfos())]})
+            expected = data['raw_overload100']
+            if data['suspended'] or player.isMinorCiv() or player.isBarbarian():
+                expected = 0
+            rules = [('administration_effort_sum', data['effort100'], sum([c['effort100'] for c in cities])),
+                     ('administration_overload', data['overload100'], expected),
+                     ('administration_stability', data['stability_penalty'], -(expected // 250)),
+                     ('administration_production_penalty', data['production_penalty100'], min(10000, expected // 5)),
+                     ('administration_upkeep_surcharge', data['upkeep_surcharge100'], 2 * expected),
+                     ('administration_upkeep_total', data['upkeep_gold'], data['upkeep100'] // 100)]
+            for rule, actual, target in rules:
+                if actual != target:
+                    checks.append({'severity': 'error', 'rule': rule, 'player': owner, 'actual': actual, 'expected': target})
+            for city in cities:
+                rules = [('administration_city_effort', city['effort100'], ((city['population'] * (10000 + 5 * city['travel_time100']) * max(0, 100 + city['local_modifier_percent']) + 99999) // 100000) * 10),
+                         ('administration_city_upkeep', city['upkeep100'], city['effort100'] * (10000 + 2 * expected) // 20000 + city['residence_cost100']),
+                         ('administration_city_production', city['production'], city['production_before_penalty'] * max(0, 10000 - expected // 5) // 10000)]
+                for rule, actual, target in rules:
+                    if actual != target:
+                        checks.append({'severity': 'error', 'rule': rule, 'player': owner, 'city': city['city'], 'actual': actual, 'expected': target})
+            state = {'capacity100': data['capacity100'], 'overloaded': data['raw_overload100'] > 0, 'suspended': data['suspended']}
+            before = self.administration_previous.get(owner)
+            if before is not None and before != state:
+                record_mechanic('administration_state_changed', owner, {'before': before, 'after': state})
+            self.administration_previous[owner] = state
+            players.append(data)
+        phase = 'turn'
+        if initial:
+            phase = 'initial'
+        self.write({'kind': 'administration', 'phase': phase,
+                    'turn': turn, 'year': year, 'elapsed_turns': self.turns, 'players': players, 'checks': checks})
+        self.error_count += len(checks)
+
+    def city_data(self, city, diagnostic, script):
         data = {'id': city.getID(), 'name': city.getName(), 'x': city.getX(), 'y': city.getY(),
                 'population': city.getPopulation(), 'food': city.getFood(),
+                'famine_turns': city.getFamineTurns(), 'famine_unhappiness': city.getFamineUnhappiness(),
                 'food_consumption': city.foodConsumption(False, 0), 'growth_threshold': city.growthThreshold(),
                 'disorder': city.isDisorder(), 'anarchy': self.gc.getPlayer(city.getOwner()).isAnarchy(),
                 'occupation': city.getOccupationTimer(), 'food_production': city.isFoodProduction(),
@@ -666,6 +811,11 @@ class Observer:
                 'production': city.getYieldRate(1), 'commerce': city.getYieldRate(2),
                 'happiness': city.happyLevel() - city.unhappyLevel(0),
                 'health': city.goodHealth() - city.badHealth(False)}
+        data['administration'] = self.administration_city(city, script)
+        if diagnostic:
+            player = self.gc.getPlayer(city.getOwner())
+            data['administration']['purge_happiness_change_expected'] = player.getAdministrationValue(11, city.getID())
+            data['administration']['purge_ai_value'] = player.getAdministrationValue(12, city.getID())
         slave = self.gc.getInfoTypeForString('SPECIALIST_SLAVE')
         if slave >= 0:
             data['slaves'] = city.getSpecialistCount(slave) + city.getFreeSpecialistCount(slave)
@@ -712,7 +862,7 @@ class Observer:
             if player.getCivilizationType() < 0:
                 continue
             team = gc.getTeam(player.getTeam())
-            cities = [self.city_data(city, diagnostic) for city in self.cities(player)]
+            cities = [self.city_data(city, diagnostic, script) for city in self.cities(player)]
             military = 0
             army = {}
             units = []
@@ -742,10 +892,15 @@ class Observer:
                     'civics': civics, 'state_religion': player.getStateReligion(),
                     'power': player.getPower(), 'military_units': military, 'army': army,
                     'stability': player_stability,
+                    'starvation_losses': player.getStarvationLosses(),
+                    'population_loss_stability': (script['lPopulationLossPenalty'] + [0] * gc.getMAX_PLAYERS())[i],
                     'food_imports': sum([c['food_imports'] for c in cities]),
                     'food_exports': sum([c['food_exports'] for c in cities]),
                     'slaves': sum([c.get('slaves', 0) for c in cities])}
             data['city_details'] = cities
+            data['administration'] = self.administration_player(player, [c['administration'] for c in cities], script)
+            data['stability_baseline'] = player_stability
+            data['stability'] = data['administration']['stability_effective']
             imported += data['food_imports']
             exported += data['food_exports']
             if i in self.births:
@@ -870,13 +1025,103 @@ class Observer:
                         'native_campaign_active': active})
         self.events.append(details)
 
+    def observe_espionage(self):
+        """Read-only per-turn state, independent of the general snapshot interval."""
+        import Consts
+        gc = self.gc
+        turn = self.game.getGameTurn()
+        players = []
+        for i in range(Consts.iNumPlayers):
+            player = gc.getPlayer(i)
+            gold_received = player.getIntelligenceData(-1, 66)
+            gold_lost = player.getIntelligenceData(-1, 67)
+            if not player.isAlive() and not gold_received and not gold_lost:
+                continue
+            operating = player.isAlive() and player.getNumCities() > 0 and not player.isMinorCiv()
+            if not operating and not gold_received and not gold_lost:
+                continue
+            forces = []
+            assigned = set()
+            if operating:
+                for f in range(player.getIntelligenceData(-1, 300)):
+                    targets = [player.getIntelligenceData(f, 320 + slot) for slot in range(3)]
+                    targets = [target for target in targets if target >= 0]
+                    assigned.update(targets)
+                    forces.append({'id': f, 'mode': player.getIntelligenceData(f, 310),
+                                   'pending_mode': player.getIntelligenceData(f, 311),
+                                   'targets': targets, 'review_in': player.getIntelligenceData(f, 312),
+                                   'funding_bp': player.getIntelligenceData(f, 313),
+                                   'target_effort_percent': player.getIntelligenceData(f, 314),
+                                   'buildup_bp': [player.getIntelligenceData(f, 330 + mode) for mode in range(6)]})
+            targets = []
+            team = gc.getTeam(player.getTeam())
+            fields = [('access_percent', 2), ('trade_routes', 3), ('embassy', 4),
+                      ('full_output_effective_rate', 5), ('defense', 9), ('resistance_percent', 13),
+                      ('resentment_penalty', 8), ('research_contribution', 14),
+                      ('technology_stock', 57), ('technology_influence_bp', 58),
+                      ('combat_bonus_bp', 6), ('infiltration_chance_bp', 7),
+                      ('troop_coverage_bp', 30), ('military_stock', 31),
+                      ('dynastic_stage', 33), ('dynastic_stock', 34), ('dynastic_chance_bp', 35),
+                      ('dynastic_eligible', 36), ('dynastic_relations', 37), ('dynastic_union_eligible', 39),
+                      ('political_stock', 46), ('political_influence_bp', 47),
+                      ('civic_chance_bp', 48), ('client_chance_bp', 49),
+                      ('political_relations', 50), ('culture_budget_hundredths', 51),
+                      ('economic_stock', 52), ('economic_influence_bp', 53),
+                      ('gold_request_hundredths', 54), ('food_share_bp', 55), ('art_chance_bp', 56),
+                      ('cooperation_agreement', 62), ('cooperation_influence_bp', 63),
+                      ('cooperation_contribution', 64), ('cooperation_stock', 65)]
+            for target in sorted(assigned):
+                rival = gc.getPlayer(target)
+                data = {'player': target, 'civilization': gc.getCivilizationInfo(rival.getCivilizationType()).getType(),
+                        'team': rival.getTeam(), 'at_war': team.isAtWar(rival.getTeam()),
+                        'attitude': player.AI_getAttitude(target), 'reverse_attitude': rival.AI_getAttitude(i),
+                        'human': rival.isHuman(), 'base_output': rival.getCommerceRate(self.espionage_commerce),
+                        'research_output': rival.getCommerceRate(self.research_commerce),
+                        'population': rival.getTotalPopulation(), 'military_units': rival.getNumMilitaryUnits(),
+                        'stability_penalty': rival.getIntelligenceData(-1, 20)}
+                for name, field in fields:
+                    data[name] = player.getIntelligenceData(target, field)
+                data['discovery_chance_bp'] = [player.getIntelligenceData(target, 200 + mode) for mode in range(6)]
+                targets.append(data)
+            project = player.getIntelligenceData(-1, 21)
+            progress = 0
+            cost = 0
+            stolen = 0
+            if project >= 0:
+                progress = team.getResearchProgress(project)
+                cost = team.getResearchCost(project)
+            if operating:
+                stolen = player.getIntelligenceData(-1, 23)
+            players.append({'id': i, 'civilization': gc.getCivilizationInfo(player.getCivilizationType()).getType(),
+                            'alive': player.isAlive(), 'operating': operating, 'human': player.isHuman(), 'era': player.getCurrentEra(),
+                            'base_output': player.getCommerceRate(self.espionage_commerce),
+                            'effective_output': player.getIntelligenceData(-1, 59),
+                            'slider_percent': player.getCommercePercent(self.espionage_commerce),
+                            'cooperation_bonus': player.getIntelligenceData(-1, 60),
+                            'cooperation_stability': player.getIntelligenceData(-1, 61),
+                            'stability_penalty': player.getIntelligenceData(-1, 20),
+                            'research_project': project,
+                            'research_progress': progress,
+                            'research_cost': cost,
+                            'current_research_rate': player.getIntelligenceData(-1, 22),
+                            'research_stolen': stolen,
+                            'gold_transfer_turn': turn - 1, 'gold_received': gold_received, 'gold_lost': gold_lost,
+                            'dynastic': player.getIntelligenceData(-1, 32), 'forces': forces, 'targets': targets})
+        self.write({'kind': 'espionage', 'version': 2, 'turn': turn,
+                    'year': self.game.getGameTurnYear(), 'elapsed_turns': self.turns, 'players': players})
+
     def end_turn(self, args):
         if not self.enabled or not self.started:
             return
         try:
             self.turns += 1
+            if self.autosave_interval > 0 and self.turns % self.autosave_interval == 0:
+                self.save_game('autosave')
             if self.mode == 'performance':
                 now = time.clock()
+                self.performance_recent_turns.append(now - self.performance_boundary)
+                if len(self.performance_recent_turns) > 10:
+                    del self.performance_recent_turns[0]
                 self.write({'kind': 'performance', 'turn': self.game.getGameTurn(),
                             'elapsed_turns': self.turns,
                             'boundary_seconds': now - self.performance_boundary,
@@ -892,6 +1137,8 @@ class Observer:
                     self.enabled = False
                 return
             self.observe_players(True)
+            self.observe_administration()
+            self.observe_espionage()
             self.observe_roman_campaign()
             self.observe_arabian_army()
             if self.turns % self.record_interval == 0 or self.turns >= self.limit:
@@ -913,6 +1160,9 @@ class Observer:
     def checkpoint(self, label):
         if self.mode == 'performance' or self.checkpoint_interval <= 0:
             return
+        self.save_game(label)
+
+    def save_game(self, label):
         folder = os.path.join(self.output, 'saves')
         if not os.path.isdir(folder):
             os.makedirs(folder)

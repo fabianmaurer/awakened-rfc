@@ -23,6 +23,7 @@
 #America HERE + in CvCity::getCulturePercentAnger()
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers   
 import Popup
@@ -79,8 +80,8 @@ pMongolia = gc.getPlayer(iMongolia)
 teamMongolia = gc.getTeam(pMongolia.getTeam())
 
 
-tRussianTopLeft = (65, 49)
-tRussianBottomRight = (121, 65)
+geo.bind(globals(), 'tRussianTopLeft', 'UniquePowers.tRussianTopLeft')
+geo.bind(globals(), 'tRussianBottomRight', 'UniquePowers.tRussianBottomRight')
 
 
 iNumReligions = con.iNumReligions
@@ -161,13 +162,13 @@ class UniquePowers:
                 if (iGameTurn >= con.i860AD):
                         self.russianUP()
 
-                if (iGameTurn >= con.tBirth[iAmerica]+5 and ((self.getImmigrationTurnLength() != 0) or ((utils.getFakeRandNum(30, 'random') % 20) == 0 and gc.getPlayer(iAmerica).isAlive()))):
+                if (iGameTurn >= con.tBirth[iAmerica]+geo.turns(5) and ((self.getImmigrationTurnLength() != 0) or ((utils.getFakeRandNum(30, 'random') % 20) == 0 and gc.getPlayer(iAmerica).isAlive()))):
                         self.americanUP()
 
                 if (iGameTurn >= con.i1190AD):
                 #if (iGameTurn >= 0): #debug
                         for iTimer in range(iMongolianTimer+1):
-                                if (iGameTurn == self.getLatestRazeData(0)+iTimer):
+                                if (geo.historyTurn(iGameTurn - self.getLatestRazeData(0)) == iTimer):
                                         self.useMongolUP()
 
 
@@ -424,7 +425,7 @@ class UniquePowers:
                                         sourceCity = self.selectRandomCitySourceCiv(iPlayer)
                                         print ("immigrating from ", iPlayer)
                                         if ( sourceCity != False):
-                                                sourceCity.changePopulation(-1)
+                                                sourceCity.changePopulationPeacefully(-1)
                                                 if (gc.getPlayer(iPlayer).isHuman()):
                                                         CyInterface().addMessage(iPlayer, False, con.iDuration, CyTranslator().getText("TXT_KEY_UP_EMIGRATION", ()), "", 0, "", ColorTypes(con.iWhite), -1, -1, True, True)
                                                 targetCity.changePopulation(1)

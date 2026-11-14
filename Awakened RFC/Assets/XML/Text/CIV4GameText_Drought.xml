@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_WARNING</Tag>
+    <English>Low river levels threaten a drought. Prepare food reserves.</English>
+    <French>Le faible niveau du fleuve menace les r&#233;coltes. Constituez des r&#233;serves de nourriture.</French>
+    <German>Niedrige Flusspegel k&#252;ndigen eine D&#252;rre an. Legt Nahrungsvorr&#228;te an.</German>
+    <Italian>Il basso livello del fiume preannuncia una siccit&#224;. Preparate riserve di cibo.</Italian>
+    <Spanish>El bajo nivel del r&#237;o anuncia una sequ&#237;a. Preparad reservas de alimentos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_FLOODPLAINS_LOST</Tag>
+    <English>Some floodplains have dried permanently. Their food will not recover when the drought ends.</English>
+    <French>Certaines plaines inondables se sont ass&#233;ch&#233;es d&#233;finitivement. Leur nourriture ne reviendra pas apr&#232;s la s&#233;cheresse.</French>
+    <German>Einige Schwemmlandfelder sind dauerhaft ausgetrocknet. Ihr Nahrungsertrag erholt sich nach der D&#252;rre nicht.</German>
+    <Italian>Alcune pianure alluvionali si sono prosciugate per sempre. Il loro cibo non torner&#224; al termine della siccit&#224;.</Italian>
+    <Spanish>Algunas llanuras aluviales se han secado para siempre. Sus alimentos no se recuperar&#225;n cuando termine la sequ&#237;a.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_HARAPPA_WARNING</Tag>
+    <English>The eastern Indus is drying. Prolonged drought will permanently destroy some floodplains.</English>
+    <French>L&#8217;Indus oriental s&#8217;ass&#232;che. Une longue s&#233;cheresse d&#233;truira d&#233;finitivement certaines plaines inondables.</French>
+    <German>Das &#246;stliche Indusgebiet trocknet aus. Eine lange D&#252;rre wird einige Schwemmlandfelder dauerhaft zerst&#246;ren.</German>
+    <Italian>L&#8217;Indo orientale si sta prosciugando. Una lunga siccit&#224; distrugger&#224; per sempre alcune pianure alluvionali.</Italian>
+    <Spanish>El Indo oriental se est&#225; secando. Una sequ&#237;a prolongada destruir&#225; para siempre algunas llanuras aluviales.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_START</Tag>
+    <English>Drought has reduced food from the river&#8217;s flood plains.</English>
+    <French>La s&#233;cheresse r&#233;duit la nourriture des plaines inondables du fleuve.</French>
+    <German>D&#252;rre verringert die Nahrung aus den Schwemml&#228;ndern des Flusses.</German>
+    <Italian>La siccit&#224; riduce il cibo delle pianure alluvionali del fiume.</Italian>
+    <Spanish>La sequ&#237;a reduce los alimentos de las llanuras aluviales del r&#237;o.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_SEVERE</Tag>
+    <English>Severe drought has stopped the river from supplying irrigation.</English>
+    <French>Une s&#233;cheresse intense emp&#234;che le fleuve de fournir de l&#8217;eau d&#8217;irrigation.</French>
+    <German>Wegen schwerer D&#252;rre liefert der Fluss kein Bew&#228;sserungswasser mehr.</German>
+    <Italian>Una grave siccit&#224; impedisce al fiume di fornire acqua per l&#8217;irrigazione.</Italian>
+    <Spanish>Una sequ&#237;a grave impide que el r&#237;o suministre agua de riego.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_END</Tag>
+    <English>Normal flooding has returned. The river&#8217;s flood plains have recovered.</English>
+    <French>Les crues normales ont repris. Les plaines inondables du fleuve se sont r&#233;tablies.</French>
+    <German>Die normalen &#220;berschwemmungen sind zur&#252;ck. Die Schwemml&#228;nder des Flusses haben sich erholt.</German>
+    <Italian>Le piene normali sono tornate. Le pianure alluvionali del fiume si sono riprese.</Italian>
+    <Spanish>Las crecidas normales han vuelto. Las llanuras aluviales del r&#237;o se han recuperado.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_HELP</Tag>
+    <English>[COLOR_PLAYER_ORANGE_TEXT]Drought[COLOR_REVERT]</English>
+    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse[COLOR_REVERT]</French>
+    <German>[COLOR_PLAYER_ORANGE_TEXT]D&#252;rre[COLOR_REVERT]</German>
+    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Siccit&#224;[COLOR_REVERT]</Italian>
+    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a[COLOR_REVERT]</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_DROUGHT_SEVERE_HELP</Tag>
+    <English>[COLOR_PLAYER_ORANGE_TEXT]Severe drought[COLOR_REVERT]</English>
+    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse intense[COLOR_REVERT]</French>
+    <German>[COLOR_PLAYER_ORANGE_TEXT]Schwere D&#252;rre[COLOR_REVERT]</German>
+    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Grave siccit&#224;[COLOR_REVERT]</Italian>
+    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a grave[COLOR_REVERT]</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FEATURE_FLOOD_PLAINS_DROUGHT_PEDIA</Tag>
+    <English>Flood plains add 3 food without reducing city health. On XL maps, river droughts reduce this bonus to 1 food. Severe drought also stops the river supplying irrigation. Farms remain and recover when water returns; other water sources can sustain irrigation. Resources, technologies and unique powers can change the final yields.</English>
+    <French>Les plaines inondables ajoutent 3 nourritures sans nuire &#224; la sant&#233; des villes. Sur les cartes XL, la s&#233;cheresse r&#233;duit ce bonus &#224; 1. Une s&#233;cheresse intense prive aussi le fleuve d&#8217;eau d&#8217;irrigation. Les fermes restent en place et retrouvent leur rendement au retour de l&#8217;eau ; d&#8217;autres sources peuvent maintenir l&#8217;irrigation. Les ressources, technologies et pouvoirs uniques peuvent modifier les rendements.</French>
+    <German>Schwemmland bringt 3 zus&#228;tzliche Nahrung und beeintr&#228;chtigt die Stadtgesundheit nicht. Auf XL-Karten senkt D&#252;rre diesen Bonus auf 1 Nahrung. Bei schwerer D&#252;rre liefert der Fluss auch kein Bew&#228;sserungswasser. Bauernh&#246;fe bleiben bestehen und erholen sich mit der Wasserversorgung; andere Wasserquellen k&#246;nnen die Bew&#228;sserung erhalten. Ressourcen, Technologien und einzigartige F&#228;higkeiten k&#246;nnen die Ertr&#228;ge ver&#228;ndern.</German>
+    <Italian>Le pianure alluvionali aggiungono 3 cibi senza danneggiare la salute delle citt&#224;. Sulle mappe XL, la siccit&#224; riduce questo bonus a 1. La siccit&#224; grave impedisce anche al fiume di fornire acqua per l&#8217;irrigazione. Le fattorie rimangono e recuperano quando torna l&#8217;acqua; altre fonti possono mantenere l&#8217;irrigazione. Risorse, tecnologie e poteri unici possono modificare le rese.</Italian>
+    <Spanish>Las llanuras aluviales aportan 3 alimentos sin perjudicar la salud de las ciudades. En los mapas XL, la sequ&#237;a reduce esta bonificaci&#243;n a 1. La sequ&#237;a grave tambi&#233;n impide que el r&#237;o suministre agua de riego. Las granjas permanecen y recuperan su rendimiento cuando vuelve el agua; otras fuentes pueden mantener el riego. Los recursos, las tecnolog&#237;as y los poderes &#250;nicos pueden modificar los rendimientos.</Spanish>
+  </TEXT>
+</Civ4GameText>

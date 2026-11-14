@@ -1,0 +1,4 @@
+CoastBLEND.dds is adapted from Kai Fiebach's Blue Marble terrain, with a
+adjusted coastal water colors.
+Source: https://github.com/dguenms/DoC-Blue-Marble (BlueMarble.FPK)
+Blue Marble: https://www.civfanatics.net/bluemarble/content/index.php

@@ -1,0 +1,11 @@
+Generated using the built-in image_gen tool.
+Source: military-espionage-background.png
+Runtime texture: Awakened RFC/Assets/Art/Interface/Buttons/Intelligence/MilitaryBackground.dds
+Runtime conversion: 1024x512 RGBA DXT3; displayed at the details tile's aspect ratio.
+
+Use case: historical-scene
+Asset type: one wide background illustration for a Civilization IV intelligence-advisor details tile, landscape approximately 2.15:1.
+Style: restrained historical strategy-game concept art, painterly engraving texture, exceptionally dark charcoal, blackened brown and muted burgundy. A discreet Renaissance setting matching an espionage archive illustration. Very dim warm highlights, soft vignette at all edges. The entire left two thirds must remain quiet, nearly black negative space: white game text will be placed there. Recognizable scene elements concentrated at the far right and lower edge. Broad soft forms, restrained detail; no bright paper or lights. Artwork must remain perceptible but never compete with text.
+Constraints: background artwork only; opaque; no UI, readable writing, labels, lettering, logos, border or watermark.
+
+Primary scene: Military espionage: a shadowed scout observing a distant fortress and quiet military encampment through a stone arch. A folded campaign map, a few dark troop markers and a spyglass on the table at lower right suggest reconnaissance and tactical intelligence. No active battle, gore or bright fires.

@@ -18,6 +18,10 @@ class CySelectionGroup;
 class CyPlayer
 {
 public:
+    int getAdministrationValue(int kind, int cityID);
+    int getAdministrationReleaseTarget(int cityID);
+    bool releaseAdministrationCity(int cityID, bool independent);
+    bool removeAdministrationResidence(int cityID);
 	CyPlayer();
 	CyPlayer(CvPlayer* pPlayer);		// Call from C++
 	CvPlayer* getPlayer() { return m_pPlayer;	}	// Call from C++
@@ -228,6 +232,8 @@ public:
 	int getAdvancedStartTechCost(int /*TechTypes*/ eTech, bool bAdd);
 	int getAdvancedStartVisibilityCost(bool bAdd, CyPlot* pPlot);
 
+	int getIntelligenceData(int iTarget, int iField);
+    void setIntelligenceStability(int iValue);
 	int getEspionageSpending(int /*PlayerTypes*/ ePlayer);
 	bool canDoEspionageMission(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);
 	int getEspionageMissionCost(int /*EspionageMissionTypes*/ eMission, int /*PlayerTypes*/ eTargetPlayer, CyPlot* pPlot, int iExtraData);
@@ -283,6 +289,7 @@ public:
 	int getExtraUnitCost();
 	int getNumMilitaryUnits();
 	int getHappyPerMilitaryUnit();
+	int getStarvationLosses();
 	bool isMilitaryFoodProduction();
 	int getHighestUnitLevel();
 

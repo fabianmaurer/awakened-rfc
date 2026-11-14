@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_RUINS_RECOVERY_HELP</Tag>
+    <English>Founding here recovers up to %d1 former buildings.</English>
+    <French>Fonder une ville ici permet de r&#233;cup&#233;rer jusqu'&#224; %d1 anciens b&#226;timents.</French>
+    <German>Eine Stadtgr&#252;ndung hier stellt bis zu %d1 fr&#252;here Geb&#228;ude wieder her.</German>
+    <Italian>Fondare una citt&#224; qui recupera fino a %d1 edifici precedenti.</Italian>
+    <Spanish>Fundar una ciudad aqu&#237; recupera hasta %d1 edificios anteriores.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_RUINS_BUILDINGS_RECOVERED</Tag>
+    <English>%s2 recovered %d1 buildings from the ruins.</English>
+    <French>%s2 a r&#233;cup&#233;r&#233; %d1 b&#226;timents dans les ruines.</French>
+    <German>%s2 hat %d1 Geb&#228;ude aus den Ruinen wiederhergestellt.</German>
+    <Italian>%s2 ha recuperato %d1 edifici dalle rovine.</Italian>
+    <Spanish>%s2 ha recuperado %d1 edificios de las ruinas.</Spanish>
+  </TEXT>
+</Civ4GameText>

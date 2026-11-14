@@ -932,6 +932,16 @@ int CyPlayer::getAdvancedStartVisibilityCost(bool bAdd, CyPlot* pPlot)
 	return m_pPlayer ? m_pPlayer->getAdvancedStartVisibilityCost(bAdd, NULL != pPlot ? pPlot->getPlot() : NULL) : -1;
 }
 
+int CyPlayer::getIntelligenceData(int iTarget, int iField)
+{
+    return m_pPlayer ? m_pPlayer->getIntelligenceData(iTarget, iField) : 0;
+}
+
+void CyPlayer::setIntelligenceStability(int iValue)
+{
+    if (m_pPlayer) m_pPlayer->setIntelligenceStability(iValue);
+}
+
 int CyPlayer::getEspionageSpending(int /*TeamTypes*/ eIndex)
 {
 	return m_pPlayer ? m_pPlayer->getEspionageSpending((TeamTypes) eIndex) : -1;
@@ -1195,6 +1205,11 @@ int CyPlayer::getNumMilitaryUnits()
 int CyPlayer::getHappyPerMilitaryUnit()
 {
 	return m_pPlayer ? m_pPlayer->getHappyPerMilitaryUnit() : -1;
+}
+
+int CyPlayer::getStarvationLosses()
+{
+    return m_pPlayer ? m_pPlayer->getStarvationLosses() : 0;
 }
 
 bool CyPlayer::isMilitaryFoodProduction()
@@ -2362,3 +2377,10 @@ int CyPlayer::getNetID()
 }
 
 //Rhye - end
+
+int CyPlayer::getAdministrationValue(int kind, int cityID) { return m_pPlayer ? m_pPlayer->getAdministrationValue(kind, cityID) : 0; }
+int CyPlayer::getAdministrationReleaseTarget(int cityID) { return m_pPlayer ? m_pPlayer->getAdministrationReleaseTarget(cityID) : -1; }
+bool CyPlayer::releaseAdministrationCity(int cityID, bool independent) { return m_pPlayer && m_pPlayer->releaseAdministrationCity(cityID, independent); }
+
+
+bool CyPlayer::removeAdministrationResidence(int cityID) { return m_pPlayer && m_pPlayer->removeAdministrationResidence(cityID); }

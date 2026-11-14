@@ -5,7 +5,8 @@ import CvUtil
 import ScreenInput
 import PyHelpers
 import time
-import Consts as con #Rhye
+import Consts as con
+import Harappa #Rhye
 import cPickle as pickle #Rhye
 import RFCUtils #Rhye
 
@@ -508,7 +509,7 @@ class CvVictoryScreen:
 		
 		for iLoopVC in range(gc.getNumVictoryInfos()):
 			victory = gc.getVictoryInfo(iLoopVC)
-			if gc.getGame().isVictoryValid(iLoopVC):
+			if gc.getGame().isVictoryValid(iLoopVC) and (iLoopVC != 7 or con.HISTORICAL_GOALS_ENABLED):
 				
 				iNumRows = screen.getTableNumRows(szTable)
 				szVictoryType = u"<font=4b>" + victory.getDescription().upper() + u"</font>"
@@ -794,7 +795,7 @@ class CvVictoryScreen:
                                 if (iLoopVC == 7):
                                         for i in range(3):
                                                 iRow = screen.appendTableRow(szTable)
-                                                screen.setTableText(szTable, 0, iRow, localText.getText(con.tGoals[self.iActivePlayer][i], ()), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+                                                screen.setTableText(szTable, 0, iRow, localText.getText(Harappa.goalKeys(self.iActivePlayer)[i], ()), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
                                                 screen.setTableText(szTable, 2, iRow, localText.getText("TXT_KEY_VICTORY_SCREEN_ACCOMPLISHED", ()), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
                                                 if (utils.getGoal(self.iActivePlayer, i) == 1):       
                                                         screen.setTableText(szTable, 3, iRow, localText.getText("TXT_KEY_VICTORY_SCREEN_YES", ()), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)

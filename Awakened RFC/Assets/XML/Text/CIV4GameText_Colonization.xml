@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+    <TEXT>
+        <Tag>TXT_KEY_UNIT_CARAVEL_STRATEGY</Tag>
+        <English>Can cross oceans and carry one land unit.</English>
+        <French>Peut traverser les oc&#233;ans et transporter une unit&#233; terrestre.</French>
+        <German>Kann Ozeane &#252;berqueren und eine Landeinheit transportieren.</German>
+        <Italian>Pu&#242; attraversare gli oceani e trasportare un'unit&#224; terrestre.</Italian>
+        <Spanish>Puede cruzar oc&#233;anos y transportar una unidad terrestre.</Spanish>
+    </TEXT>
+</Civ4GameText>

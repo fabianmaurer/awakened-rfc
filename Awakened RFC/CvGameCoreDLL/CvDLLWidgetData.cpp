@@ -1,4 +1,5 @@
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvGameCoreUtils.h"
 #include "CvCity.h"
 #include "CvUnit.h"
@@ -41,6 +42,37 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102)
+    {
+        const char* aszRequirements[] = {"TXT_KEY_INTEL_TECH_REQUIRE", "TXT_KEY_INTEL_MILITARY_REQUIRE",
+            "TXT_KEY_INTEL_POLITICS_REQUIRE", "TXT_KEY_INTEL_ECONOMIC_REQUIRE", "TXT_KEY_INTEL_COOP_REQUIRE"};
+        const int iMode = widgetDataStruct.m_iData2;
+        if (iMode >= 0 && iMode < INTEL_NONE)
+        {
+            const bool bDynastic = iMode == INTEL_POLITICS && GC.getGameINLINE().getActivePlayer() != NO_PLAYER &&
+                GET_PLAYER(GC.getGameINLINE().getActivePlayer()).isDynasticIntelligence();
+            szBuffer.assign(gDLL->getText(bDynastic ? "TXT_KEY_INTEL_DYNASTIC_REQUIRE" : aszRequirements[iMode]));
+        }
+        return;
+    }
+
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7104)
+    {
+        const char* aszUnlocks[] = {"TECH", "MILITARY", "POLITICS", "ECONOMIC", "COOP", "DYNASTIC"};
+        const int iUnlock = widgetDataStruct.m_iData2;
+        if (iUnlock >= 0 && iUnlock < 6)
+        {
+            CvString szKey = CvString::format("TXT_KEY_INTEL_UNLOCK_%s", aszUnlocks[iUnlock]);
+            szBuffer.assign(gDLL->getText(szKey));
+        }
+        return;
+    }
+
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData2 == 7627)
+    {
+        szBuffer.assign(gDLL->getText("TXT_KEY_INTEL_FINANCE_GOLD_HELP"));
+        return;
+    }
 	if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData2 == 7626 &&
 		widgetDataStruct.m_iData1 >= 0 && widgetDataStruct.m_iData1 < GC.getNumCivicInfos())
 	{
@@ -1981,7 +2013,11 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				}
 
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_TURN_OR_TURNS", iTurns));
+                if (iTurns == MAX_INT)
+                    szBuffer.append(gDLL->getText(pMissionPlot->isCity() ?
+                        "TXT_KEY_SUPPLY_CITY_HEAL_BLOCKED" : "TXT_KEY_SUPPLY_TILE_HEAL_BLOCKED"));
+                else
+                    szBuffer.append(gDLL->getText("TXT_KEY_MISC_TURN_OR_TURNS", iTurns));
 			}
 			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_PILLAGE)
 			{
@@ -2650,6 +2686,17 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					}
 				}
 
+				if (eImprovement != NO_IMPROVEMENT)
+				{
+					const int iGoldChange = pMissionPlot->calculateImprovementGold(eImprovement, pHeadSelectedUnit->getTeam()) -
+						pMissionPlot->calculateImprovementGold(pMissionPlot->getImprovementType(), pHeadSelectedUnit->getTeam());
+					if (iGoldChange != 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_PRECIOUS_METAL_GOLD_CHANGE", iGoldChange));
+					}
+				}
+
 				if (GC.getBuildInfo(eBuild).isKill())
 				{
 					szBuffer.append(NEWLINE);
@@ -2724,7 +2771,8 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						GAMETEXT.setYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_ACTION_IRRIGATED").c_str(), L": ", L"", GC.getImprovementInfo(eImprovement).getIrrigatedYieldChangeArray());
 					}
 
-					if (eRoute == NO_ROUTE)
+					if (eRoute == NO_ROUTE && !(eImprovement == GC.getInfoTypeForString("IMPROVEMENT_MINE") &&
+						(eBonus == GC.getInfoTypeForString("BONUS_GOLD") || eBonus == GC.getInfoTypeForString("BONUS_SILVER"))))
 					{
 						for (iI = 0; iI < GC.getNumRouteInfos(); iI++)
 						{
@@ -3585,6 +3633,9 @@ void CvDLLWidgetData::parseTradeItem(CvWidgetDataStruct &widgetDataStruct, CvWSt
 		case TRADE_VASSAL:
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_VASSAL"));
 			break;
+        case TRADE_INTELLIGENCE_COOPERATION:
+            szBuffer.append(gDLL->getText("TXT_KEY_INTEL_AGREEMENT_HELP"));
+            break;
 		case TRADE_OPEN_BORDERS:
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_OPEN_BORDERS"));
 			break;
@@ -3643,75 +3694,31 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 
 void CvDLLWidgetData::parseMaintenanceHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {
-	CvCity* pHeadSelectedCity;
-	wchar szTempBuffer[1024];
-	int iMaintenanceValue;
-
-	pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
-
-	if (pHeadSelectedCity != NULL)
-	{
-		if (pHeadSelectedCity->isWeLoveTheKingDay())
-		{
-			szBuffer.append(NEWLINE);
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_WE_LOVE_KING_MAINT"));
-		}
-		else
-		{
-			//		szBuffer = "Maintenance represents the total cost of governing this city.\n";
-			szBuffer.assign(gDLL->getText("TXT_KEY_MISC_MAINT_INFO"));
-			szBuffer.append(NEWLINE);
-
-			iMaintenanceValue = pHeadSelectedCity->calculateDistanceMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				//			swprintf(szTempBuffer, "\n%s%d%c: %s", ((iMaintenanceValue > 0) ?  "+" : ""), iMaintenanceValue, GC.getCommerceInfo(COMMERCE_GOLD).getChar(), ((GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getNumGovernmentCenters() > 0) ? "Distance from Palace" : "No Palace Penalty"));
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_NUM_MAINT_FLOAT", szMaint.GetCString()) + ((GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getNumGovernmentCenters() > 0) ? gDLL->getText("TXT_KEY_MISC_DISTANCE_FROM_PALACE") : gDLL->getText("TXT_KEY_MISC_NO_PALACE_PENALTY")));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateNumCitiesMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				//			swprintf(szTempBuffer, "\n%s%d%c: Number of Cities", ((iMaintenanceValue > 0) ? "+" : ""), iMaintenanceValue, GC.getCommerceInfo(COMMERCE_GOLD).getChar());
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_NUM_CITIES_FLOAT", szMaint.GetCString()));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateColonyMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_COLONY_MAINT_FLOAT", szMaint.GetCString()));
-			}
-
-			iMaintenanceValue = pHeadSelectedCity->calculateCorporationMaintenanceTimes100();
-			if (iMaintenanceValue != 0)
-			{
-				CvWString szMaint = CvWString::format(L"%d.%02d", iMaintenanceValue/100, iMaintenanceValue%100);
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_MISC_CORPORATION_MAINT_FLOAT", szMaint.GetCString()));
-			}
-
-			szBuffer.append(SEPARATOR);
-
-			//		swprintf(szTempBuffer, "\n%d%c Total Maintenance", pHeadSelectedCity->getMaintenance(), GC.getCommerceInfo(COMMERCE_GOLD).getChar());
-			CvWString szMaint = CvWString::format(L"%d.%02d", pHeadSelectedCity->getMaintenanceTimes100()/100, pHeadSelectedCity->getMaintenanceTimes100()%100);
-			szBuffer.append(NEWLINE);
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_TOTAL_MAINT_FLOAT", szMaint.GetCString()));
-
-			iMaintenanceValue = pHeadSelectedCity->getMaintenanceModifier();
-
-			if (iMaintenanceValue != 0)
-			{
-				swprintf(szTempBuffer, L" (%s%d%%)", ((iMaintenanceValue > 0) ? L"+" : L""), iMaintenanceValue);
-				szBuffer.append(szTempBuffer);
-			}
-		}
-	}
+    CvCity* city = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+    if (!city) return;
+    szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_CITY_HELP", city->getPopulation(), gDLL->getSymbolID(MAP_CHAR)));
+    int travel = Administration::travelTime100(*city);
+    if (travel > 0)
+    {
+        // Each reference turn adds 5%; retain fractional percentages.
+        CvWString distanceText;
+        if (travel % 20 == 0) distanceText = CvWString::format(L"+%d", travel / 20);
+        else if (travel % 2 == 0) distanceText = CvWString::format(L"+%d.%d", travel / 20, (travel % 20) / 2);
+        else distanceText = CvWString::format(L"+%d.%02d", travel / 20, (travel % 20) * 5);
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_DISTANCE_MODIFIER", distanceText.GetCString()));
+    }
+    int local = Administration::localModifier(*city);
+    if (local != 0)
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_LOCAL_MODIFIER", local));
+    }
+    const CvPlayer& owner = GET_PLAYER(city->getOwnerINLINE());
+    if (!Administration::isReachable(owner, *city->plot()))
+    {
+        szBuffer.append(NEWLINE); szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_DISCONNECTED"));
+    }
 }
 
 
@@ -3804,12 +3811,24 @@ void CvDLLWidgetData::parsePopulationHelp(CvWidgetDataStruct &widgetDataStruct, 
 		szBuffer.assign(gDLL->getText("TXT_KEY_MISC_FOOD_THRESHOLD", pHeadSelectedCity->getFood(), pHeadSelectedCity->growthThreshold()));
         szBuffer.append(NEWLINE);
         szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_FOOD_TRADE_TOTAL", pHeadSelectedCity->getFoodTradeImports(), pHeadSelectedCity->getFoodTradeExports()));
-        int iPenalty = 10000 - pHeadSelectedCity->getGrowthRateTimes100();
         int iGrowth = pHeadSelectedCity->getGrowthFoodTimes100();
-        CvWString szPenalty = CvWString::format(L"%d.%d", iPenalty / 100, (iPenalty % 100) / 10);
-        CvWString szGrowth = CvWString::format(L"%d.%02d", std::max(0, iGrowth) / 100, std::max(0, iGrowth) % 100);
-        szBuffer.append(NEWLINE);
-        szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TECH_GROWTH", szPenalty.GetCString(), szGrowth.GetCString()));
+        if (pHeadSelectedCity->getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_HARAPPA"))
+        {
+            CvWString szChange = CvWString::format(L"%s%d.%02d", iGrowth < 0 ? L"-" : L"+",
+                abs(iGrowth) / 100, abs(iGrowth) % 100);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_UP_HAR2"));
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_HAR_FOOD_CHANGE", szChange.GetCString()));
+        }
+        else
+        {
+            int iPenalty = 10000 - pHeadSelectedCity->getGrowthRateTimes100();
+            CvWString szPenalty = CvWString::format(L"%d.%d", iPenalty / 100, (iPenalty % 100) / 10);
+            CvWString szGrowth = CvWString::format(L"%d.%02d", std::max(0, iGrowth) / 100, std::max(0, iGrowth) % 100);
+            szBuffer.append(NEWLINE);
+            szBuffer.append(gDLL->getText("TXT_KEY_RFCMP_TECH_GROWTH", szPenalty.GetCString(), szGrowth.GetCString()));
+        }
 	}
 }
 

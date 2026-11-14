@@ -5,8 +5,8 @@ Mediterranean hegemony. This is a desired alternate-history frequency, not an
 estimate of the historical probability of winning the Punic Wars.
 
 The first sections record the original diagnosis and proposed approach.
-The implemented first pass is documented at the end. The Pompeii terrain
-change is documented separately in `ItalianCoreYieldAudit.md`.
+The implemented first pass is documented at the end. The Pompeii tile at
+(62, 42) was changed from plains hills to grassland hills in all four scenarios.
 
 ## North African invasions
 

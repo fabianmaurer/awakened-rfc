@@ -22,11 +22,11 @@ ENTRIES = {
         '[ICON_BULLET]+50% alla produzione di navi militari, inclusi i trasporti[NEWLINE][ICON_BULLET]+2 esperienza per le nuove navi militari',
         '[ICON_BULLET]+50% a la producción de barcos militares, incluidos los transportes[NEWLINE][ICON_BULLET]+2 de experiencia para los nuevos barcos militares'),
     'TXT_KEY_RFCMP_CIVIC_EFFECT_FEUDAL_RETINUES': translations(
-        '[ICON_BULLET]+5% land military unit production per Farm worked by this city, including siege units',
-        '[ICON_BULLET]+5% à la production d’unités militaires terrestres par ferme exploitée par cette ville, unités de siège comprises',
-        '[ICON_BULLET]+5% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet',
-        '[ICON_BULLET]+5% alla produzione di unità militari terrestri per fattoria lavorata da questa città, incluse le unità d’assedio',
-        '[ICON_BULLET]+5% a la producción de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio'),
+        '[ICON_BULLET]+4% land military unit production per Farm worked by this city, including siege units',
+        '[ICON_BULLET]+4% à la production d’unités militaires terrestres par ferme exploitée par cette ville, unités de siège comprises',
+        '[ICON_BULLET]+4% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet',
+        '[ICON_BULLET]+4% alla produzione di unità militari terrestri per fattoria lavorata da questa città, incluse le unità d’assedio',
+        '[ICON_BULLET]+4% a la producción de unidades militares terrestres por granja trabajada por esta ciudad, incluidas las unidades de asedio'),
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_STRATEGY': translations(
         '+50% military ship production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. Available to every civilization with Sailing.',
         '+50% à la production de navires militaires et +2 points d’expérience pour les nouveaux navires militaires, transports compris. Les bateaux de pêche ne reçoivent aucun de ces bonus. Accessible à toute civilisation connaissant la voile.',
@@ -34,11 +34,11 @@ ENTRIES = {
         '+50% alla produzione e +2 esperienza per le nuove navi militari, inclusi i trasporti. Le barche da lavoro non ricevono questi bonus. Disponibile per tutte le civiltà con la Vela.',
         '+50% a la producción y +2 de experiencia para los nuevos barcos militares, incluidos los transportes. Los barcos de trabajo no reciben estas bonificaciones. Disponible para todas las civilizaciones con Navegación a vela.'),
     'TXT_KEY_RFCMP_CIVIC_FEUDAL_RETINUES_STRATEGY': translations(
-        '+5% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +30%.',
-        '+5% à la production d’unités militaires terrestres par ferme effectivement exploitée par la ville productrice. Inclut les unités de siège ; exclut les unités civiles et les navires. Six fermes exploitées donnent +30%.',
-        '+5% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet.',
-        '+5% alla produzione di unità militari terrestri per fattoria effettivamente lavorata dalla città produttrice. Include le unità d’assedio; esclude le unità civili e le navi. Sei fattorie lavorate danno +30%.',
-        '+5% a la producción de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +30%.'),
+        '+4% land military unit production per Farm actually worked by the producing city. Includes siege units; excludes civilian units and ships. Six worked Farms give +24%.',
+        '+4% à la production d’unités militaires terrestres par ferme effectivement exploitée par la ville productrice. Inclut les unités de siège ; exclut les unités civiles et les navires. Six fermes exploitées donnent +24%.',
+        '+4% Produktion für militärische Landeinheiten für jeden Bauernhof, den eine Stadt bewirtschaftet.',
+        '+4% alla produzione di unità militari terrestri per fattoria effettivamente lavorata dalla città produttrice. Include le unità d’assedio; esclude le unità civili e le navi. Sei fattorie lavorate danno +24%.',
+        '+4% a la producción de unidades militares terrestres por granja efectivamente trabajada por la ciudad productora. Incluye las unidades de asedio; excluye las unidades civiles y los barcos. Seis granjas trabajadas otorgan +24%.'),
     'TXT_KEY_RFCMP_CIVIC_NAVAL_WARFARE_PEDIA': translations(
         'Naval Warfare organizes shipyards, crews and transport fleets for war at sea and overseas expeditions. A maritime power can devote more resources to replacing ships and training crews, while another military institution may better serve a continental army.',
         'La guerre navale organise les chantiers, les équipages et les flottes de transport pour le combat en mer et les expéditions outre-mer. Une puissance maritime peut renforcer sa flotte et former ses équipages, tandis qu’une autre institution militaire peut mieux servir une armée continentale.',

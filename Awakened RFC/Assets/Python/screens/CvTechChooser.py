@@ -77,14 +77,16 @@ class CvTechChooser:
 		else:
 			screen.hide( "CivDropDown" )
 			
-		if ( screen.isPersistent() and self.iCivSelected == gc.getGame().getActivePlayer()):
+		# Native screen persistence can outlive the Python state (for example,
+		# after a reload). Only reuse a fully initialized technology list.
+		if ( screen.isPersistent() and self.iCivSelected == gc.getGame().getActivePlayer() and len(self.aiCurrentState) == gc.getNumTechInfos()):
 			self.updateTechRecords(false)
 			return
 		
 		self.nWidgetCount = 0
 		self.iCivSelected = gc.getGame().getActivePlayer()
 		self.aiCurrentState = []
-		screen.setPersistent( True )
+		screen.setPersistent( False )
 		self.prepareLayout(screen)
 		
 		# Advanced Start
@@ -135,6 +137,7 @@ class CvTechChooser:
 		screen.moveToFront( "CivDropDown" )
 		
 		screen.moveToFront( "AddTechButton" )
+		screen.setPersistent( True )
 	
 	def masteryUnit(self, iTech):
 		szType = gc.getTechInfo(iTech).getType()
@@ -293,6 +296,19 @@ class CvTechChooser:
 
 			j = 0
 			k = 0
+
+			# Intelligence unlocks share a navy/gold frame and eye emblem.
+			if not gc.getGame().isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE):
+				intelUnlocks = (("TECH_ALPHABET", "Technology"), ("TECH_WRITING", "Military"),
+					("TECH_CODE_OF_LAWS", "Political"), ("TECH_CURRENCY", "Economic"),
+					("TECH_CIVIL_SERVICE", "Cooperation"), ("TECH_MONARCHY", "Dynastic"))
+				for unlock, (tech, icon) in enumerate(intelUnlocks):
+					if i == gc.getInfoTypeForString(tech):
+						screen.addDDSGFCAt("IntelUnlock" + str(i), szTechRecord,
+							"Art/Interface/Buttons/Intelligence/Unlock" + icon + ".dds",
+							iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE,
+							WidgetTypes.WIDGET_GENERAL, 7104, unlock, False)
+						fX += X_INCREMENT
 
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
@@ -711,7 +727,7 @@ class CvTechChooser:
 
 			# Religions unlocked
 			for j in range( gc.getNumReligionInfos() ):
-				if ( gc.getReligionInfo(j).getTechPrereq() == i ):
+				if ( gc.getReligionInfo(j).getTechPrereq() == i and j not in (gc.getInfoTypeForString("RELIGION_JUDAISM"), gc.getInfoTypeForString("RELIGION_CHRISTIANITY"), gc.getInfoTypeForString("RELIGION_ISLAM"), gc.getInfoTypeForString("RELIGION_HINDUISM"), gc.getInfoTypeForString("RELIGION_BUDDHISM"), gc.getInfoTypeForString("RELIGION_CONFUCIANISM"), gc.getInfoTypeForString("RELIGION_TAOISM")) ):
 					szFoundReligion = "FoundReligionButton" + str( ( i * 1000 ) + j )
 					if gc.getGame().isOption(GameOptionTypes.GAMEOPTION_PICK_RELIGION):
 						szButton = ArtFileMgr.getInterfaceArtInfo("INTERFACE_POPUPBUTTON_RELIGION").getPath()

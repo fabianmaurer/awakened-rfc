@@ -71,6 +71,13 @@ than assuming uniform development across the archipelago. The Wheel is retained
 solely as Pottery's game-tree prerequisite, not a claim of wheeled transport.
 India's Writing is
 left to research, reflecting its predominantly oral late Vedic tradition.
+In the XL start, India's worker begins in Delhi. Authored farm and pasture
+placements keep its starting improvements inside Indian borders rather than
+leaving development in neutral territory after coordinate scaling.
+The XL placement review also moves Greece's two workers to Athenai and
+Babylonia's worker to Babili, with its pasture and mine inside Babylonian
+borders. The inherited eastern Mediterranean fishing improvement is omitted:
+the XL resource atlas has no suitable fishery inside its owner's starting borders.
 Calendar recipients also have its Sailing and Mathematics prerequisites; the
 calendar and mathematics technologies represent broad practical knowledge.
 China also receives Priesthood to complete its existing Monarchy prerequisites.

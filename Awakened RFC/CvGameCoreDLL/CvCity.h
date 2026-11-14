@@ -89,6 +89,9 @@ public:
     int getGrowthFoodTimes100() const;
     int getGrowthFoodStoredTimes100() const;
     int getGrowthFoodRemainder() const;
+    int getFamineTurns() const { return m_iFamineTurns; }
+    int getFamineUnhappiness() const;
+    void setFamineTurns(int iTurns);
 	int getFoodTurnsLeft() const;																				// Exposed to Python
 	bool isProduction() const;																					// Exposed to Python
 	bool isProductionLimited() const;																							// Exposed to Python
@@ -279,8 +282,10 @@ public:
 	void setGameTurnAcquired(int iNewValue);
 
 	int getPopulation() const;														// Exposed to Python
-	void setPopulation(int iNewValue);										// Exposed to Python
-	void changePopulation(int iChange);										// Exposed to Python
+	void setPopulation(int iNewValue, bool bInvoluntary = true);										// Exposed to Python
+	void changePopulation(int iChange, bool bInvoluntary = true);
+	void restoreRuinsBuildings(const std::vector<BuildingTypes>& buildings);
+	bool applyInvoluntaryPopulationLoss(int iLoss, bool bStarvation = false, bool bRecordStability = true);
 
 	long getRealPopulation() const;																	// Exposed to Python
 
@@ -297,6 +302,10 @@ public:
 	void changeNumGreatPeople(int iChange);															
 
 	int countWorkedDeepArchives() const;
+	int getWorkedPlotGold() const;
+	bool hasLocalMintMetal() const;
+	int getMintGold(const CvPlot* pPlot, ImprovementTypes eImprovement, bool bAssumeMint = false) const;
+	int getMintGoldPotential() const;
 	int getBaseGreatPeopleRate() const;																		// Exposed to Python
 	int getGreatPeopleRate() const;																				// Exposed to Python
 	int getTotalGreatPeopleRateModifier() const;													// Exposed to Python
@@ -352,6 +361,9 @@ public:
 	int getEspionageHealthCounter() const;														// Exposed to Python
 	void changeEspionageHealthCounter(int iChange);													// Exposed to Python
 
+    int getIntelligenceUnrestTurns() const;
+    int divertEconomicFood(int iSurplus);
+    void startIntelligenceUnrest(int iTurns);
 	int getEspionageHappinessCounter() const;														// Exposed to Python
 	void changeEspionageHappinessCounter(int iChange);													// Exposed to Python
 
@@ -515,6 +527,8 @@ public:
 
 	bool isAreaBorderObstacle() const;																				// Exposed to Python
 
+	void rollIntelligenceSuppression(PlayerTypes eAttacker, int iChance);
+    int getIntelligenceChecksum() const;
 	int getDefenseDamage() const;																					// Exposed to Python
 	void changeDefenseDamage(int iChange);													// Exposed to Python
 	void changeDefenseModifier(int iChange);													// Exposed to Python
@@ -1025,6 +1039,8 @@ protected:
 	int m_iHealRate;
 	int m_iEspionageHealthCounter;
 	int m_iEspionageHappinessCounter;
+    int m_iIntelligenceUnrestTurns;
+    int m_iEconomicFoodRemainder;
 	int m_iFreshWaterGoodHealth;
 	int m_iFreshWaterBadHealth;
 	int m_iFeatureGoodHealth;
@@ -1059,6 +1075,7 @@ protected:
 	int m_iBuildingOnlyHealthyCount;
 	int m_iFood;
     int m_iGrowthFoodRemainder; // 1/10000 food, saved and synchronized
+    int m_iFamineTurns; // Consecutive empty-store shortages, with gradual recovery.
 	std::vector<int> m_aiSlaveSpecialistExpiryTurns;
 	std::vector<int> m_aiSlaveRefugeeUnhappinessExpiryTurns;
 	int m_iFoodKept;
@@ -1082,6 +1099,8 @@ protected:
 	int m_iPowerCount;
 	int m_iDirtyPowerCount;
 	int m_iDefenseDamage;
+    int m_iIntelligenceSuppressionTurn;
+    int m_iIntelligenceSuppressionRollTurn;
 	int m_iLastDefenseDamage;
 	int m_iOccupationTimer;
 	TechTypes m_eConquestResearchTech;
@@ -1197,7 +1216,9 @@ protected:
 	int*	m_aiCommerceRank;
 	bool*	m_abCommerceRankValid;
 
-	void doGrowth();
+	bool doGrowth(); // False when starvation has removed this city.
+    void relocateFaminePopulation();
+    void abandonToFamine();
 	void doCulture();
 	void doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate);
 	void doProduction(bool bAllowNoProduction);

@@ -9,6 +9,9 @@ from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parents[1]
 XML = ROOT / 'Awakened RFC/Assets/XML'
+# Fixed late-tech pacing combines the former 92% and 80% discounts.
+# Basis points retain the exact 73.6% factor without floating-point rounding.
+LATE_RESEARCH_COST_PER_10000 = 7360
 AIR_TECHS = {'TECH_FLIGHT', 'TECH_ADVANCED_FLIGHT', 'TECH_STEALTH'}
 RETIRED_UNITS = {'UNIT_CARRIER', 'UNIT_GUNSHIP', 'UNIT_SAM_INFANTRY', 'UNIT_MOBILE_SAM', 'UNIT_ICBM'}
 RETIRED_BUILDINGS = {'BUILDING_AIRPORT', 'BUILDING_BOMB_SHELTER'}
@@ -47,7 +50,7 @@ UNITS = [
 ]
 BUILDINGS = [
     # suffix, English, German, tech, cost, gold%, science%, production%, maintenance%, health, happiness
-    ('DIGITAL_ADMINISTRATION', 'Digital Administration Centre', 'Digitales Verwaltungszentrum', 'DIGITAL_ADMINISTRATION', 400, 0, 0, 0, -20, 0, 0),
+    ('DIGITAL_ADMINISTRATION', 'Digital Administration Centre', 'Digitales Verwaltungszentrum', 'DIGITAL_ADMINISTRATION', 400, 0, 0, 0, -15, 0, 0),
     ('MACHINE_LEARNING', 'Machine Learning Laboratory', 'Labor für maschinelles Lernen', 'MACHINE_LEARNING', 500, 0, 25, 0, 0, 0, 0),
     ('AI_SERVICES', 'AI Services Centre', 'KI-Dienstleistungszentrum', 'AI_SERVICES', 650, 15, 0, 0, 0, 2, 1),
     ('NETWORKED_PRODUCTION', 'Networked Factory', 'Vernetzte Fabrik', 'NETWORKED_PRODUCTION', 850, 0, 0, 25, 0, 0, 0),
@@ -119,7 +122,8 @@ def main():
         block = re.sub(r'<!--.*?-->', '', template, flags=re.S)
         values = {'Type': 'TECH_' + suffix, 'Description': 'TXT_KEY_TECH_' + suffix,
                   'Civilopedia': 'TXT_KEY_TECH_' + suffix + '_PEDIA', 'Help': 'TXT_KEY_TECH_' + suffix + '_HELP',
-                  'Strategy': 'TXT_KEY_TECH_' + suffix + '_PEDIA', 'iCost': cost, 'bDisable': 0,
+                  'Strategy': 'TXT_KEY_TECH_' + suffix + '_PEDIA',
+                  'iCost': (cost * LATE_RESEARCH_COST_PER_10000 + 9999) // 10000, 'bDisable': 0,
                   'bRepeat': repeat, 'bTrade': 0, 'iHealth': health, 'iHappiness': happy,
                   'iGridX': x, 'iGridY': y, 'Era': 'ERA_MODERN' if repeat else 'ERA_FUTURE',
                   'iAIWeight': 0, 'iAsset': 32, 'iPower': 0, 'iAdvancedStartCost': -1,
@@ -182,7 +186,7 @@ def main():
         additions.append(block)
         add('TXT_KEY_BUILDING_' + suffix, en, de)
         en_effects, de_effects = [], []
-        for value, english, german in ((gold, 'gold', 'Gold'), (science, 'research', 'Forschung'), (production, 'production', 'Produktion'), (maintenance, 'city maintenance', 'städtische Unterhaltskosten')):
+        for value, english, german in ((gold, 'gold', 'Gold'), (science, 'research', 'Forschung'), (production, 'production', 'Produktion'), (maintenance, 'administrative effort', 'Verwaltungsaufwand')):
             if value:
                 en_effects.append('%+d%% %s' % (value, english))
                 de_effects.append('%+d %% %s' % (value, german))

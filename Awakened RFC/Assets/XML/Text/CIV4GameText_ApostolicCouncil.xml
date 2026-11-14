@@ -440,14 +440,14 @@
 		<Italian>Establish the Papal State: cede Rome and establish the Council of Rome.</Italian>
 		<Spanish>Establish the Papal State: cede Rome and establish the Council of Rome.</Spanish>
 	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_AP_PAPAL_DENY</Tag>
-		<English>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</English>
-		<French>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</French>
-		<German>Ablehnen: Rom behalten; weitere -2 Beziehungen zu anderen christlichen Nationen.</German>
-		<Italian>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</Italian>
-		<Spanish>Refuse the Pope: keep Rome; -2 relations with all other Christian nations until you accept or lose Rome.</Spanish>
-	</TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_AP_PAPAL_DENY</Tag>
+    <English>Refuse.</English>
+    <French>Refuser.</French>
+    <German>Ablehnen.</German>
+    <Italian>Rifiuta.</Italian>
+    <Spanish>Rechazar.</Spanish>
+  </TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_AP_PAPAL_BECOME</Tag>
 		<English>Become the Papal State: retain your nation and establish the Palace in Rome.</English>
@@ -483,11 +483,11 @@
 
 <TEXT>
 	<Tag>TXT_KEY_AP_UP_HELP</Tag>
-	<English>The Power of the Holy See: while the Papacy controls an active Apostolic Palace, Rome gains +2 [ICON_GOLD] per foreign Christian city. Christian Papal cities gain +50% defense.</English>
-	<French>Le pouvoir du Saint-Si&#232;ge : tant que la Papaut&#233; contr&#244;le un Palais apostolique actif, Rome gagne +2 [ICON_GOLD] par ville chr&#233;tienne &#233;trang&#232;re. Les villes pontificales chr&#233;tiennes gagnent +50% de d&#233;fense.</French>
-	<German>Die Macht des Heiligen Stuhls: Solange das Papsttum einen aktiven Apostolischen Palast kontrolliert erh&#228;lt Rom +2 [ICON_GOLD] je ausl&#228;ndischer christlicher Stadt. Christliche St&#228;dte des Kirchenstaats erhalten +50% Verteidigung.</German>
-	<Italian>Il potere della Santa Sede: finch&#233; il Papato controlla un Palazzo Apostolico attivo, Roma ottiene +2 [ICON_GOLD] per citt&#224; cristiana straniera. Le citt&#224; pontificie cristiane ottengono +50% difesa.</Italian>
-	<Spanish>El poder de la Santa Sede: mientras el Papado controle un Palacio Apost&#243;lico activo, Roma obtiene +2 [ICON_GOLD] por ciudad cristiana extranjera. Las ciudades pontificias cristianas obtienen +50% defensa.</Spanish>
+	<English>The Power of the Holy See: while the Papacy controls an active Apostolic Palace, the Papal seat gains +2 [ICON_GOLD] per foreign Christian city. Christian Papal cities gain +50% defense.</English>
+	<French>Le pouvoir du Saint-Si&#232;ge : tant que la Papaut&#233; contr&#244;le un Palais apostolique actif, le si&#232;ge papal gagne +2 [ICON_GOLD] par ville chr&#233;tienne &#233;trang&#232;re. Les villes pontificales chr&#233;tiennes gagnent +50% de d&#233;fense.</French>
+	<German>Die Macht des Heiligen Stuhls: Solange das Papsttum einen aktiven Apostolischen Palast kontrolliert erh&#228;lt der Papstsitz +2 [ICON_GOLD] je ausl&#228;ndischer christlicher Stadt. Christliche St&#228;dte des Kirchenstaats erhalten +50% Verteidigung.</German>
+	<Italian>Il potere della Santa Sede: finch&#233; il Papato controlla un Palazzo Apostolico attivo, la sede papale ottiene +2 [ICON_GOLD] per citt&#224; cristiana straniera. Le citt&#224; pontificie cristiane ottengono +50% difesa.</Italian>
+	<Spanish>El poder de la Santa Sede: mientras el Papado controle un Palacio Apost&#243;lico activo, la sede papal obtiene +2 [ICON_GOLD] por ciudad cristiana extranjera. Las ciudades pontificias cristianas obtienen +50% defensa.</Spanish>
 </TEXT>
 
 <TEXT>

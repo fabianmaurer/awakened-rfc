@@ -1,8 +1,10 @@
 // playerAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvPlayerAI.h"
 #include "CvRandom.h"
 #include "CvGlobals.h"
@@ -33,6 +35,16 @@
 #define GREATER_FOUND_RANGE			(5)
 #define CIVIC_CHANGE_DELAY			(25)
 #define RELIGION_CHANGE_DELAY		(15)
+
+static bool isResearchingEndlessTech(const CvPlayer& kPlayer)
+{
+    const TechTypes eTech = kPlayer.getCurrentResearch();
+    // Finite military tracks use repeatable XML techs, but are not the end
+    // of the tech tree. Keep normal science, savings and strategy decisions.
+    return eTech != NO_TECH && GC.getTechInfo(eTech).isRepeat()
+        && UnitMastery::unitForTech(eTech) == NO_UNIT
+        && eTech != GC.getInfoTypeForString("TECH_MILITARY_RESEARCH");
+}
 
 // statics
 
@@ -370,7 +382,8 @@ void CvPlayerAI::AI_doTurnPost()
 		return;
 	}
 
-	AI_doDiplo();
+    if (!fastLateGame() || fastLateDue(getID(), 4)) AI_doDiplo();
+    else observerPerformanceCount("count.fast.diplomacySkipped");
 
 	//AI_doSplit(); //Rhye - disabled until a solution for vassalage is found
 
@@ -387,7 +400,16 @@ void CvPlayerAI::AI_doTurnUnitsPre()
 	OBSERVER_PERFORMANCE("CvPlayerAI::AI_doTurnUnitsPre");
 	PROFILE_FUNC();
 
-	AI_updateFoundValues();
+    // The experimental AI keeps site scores for several turns. Direct and
+    // starting-location recalculations remain immediate. Human players are
+    // unchanged; a civilization with settlers refreshes more often.
+    const bool fastSites = !isHuman() && fastLateGame();
+    const int settleInterval = fastSites && AI_totalUnitAIs(UNITAI_SETTLE) > 0 ? 8 : 16;
+    if (!fastSites || GC.getGameINLINE().getGameTurn() <= GC.getGameINLINE().getStartTurn() + 1 ||
+        fastLateDue(getID(), settleInterval)) {
+        observerPerformanceCount(fastSites ? "count.fast.foundRefresh" : "count.fast.foundRegularRefresh");
+        AI_updateFoundValues();
+    } else observerPerformanceCount("count.fast.foundRefreshSkipped");
 
 	if (GC.getGameINLINE().getSorenRandNum(8, "AI Update Area Targets") == 0) // XXX personality???
 	{
@@ -435,6 +457,11 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 	{
 		for(pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
 		{
+            if (!isHuman() && fastLateGame() && !fastLateDue(pLoopUnit->getID() + getID(), 4)) {
+                observerPerformanceCount("count.fast.promotionReviewsDeferred");
+                continue;
+            }
+            observerPerformanceCount("count.fast.promotionReviews");
 			pLoopUnit->AI_promote();
 		}
 	}
@@ -449,6 +476,11 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 	{
 		for(pLoopUnit = firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = nextUnit(&iLoop))
 		{
+            if (fastLateGame() && !fastLateDue(pLoopUnit->getID() + getID(), 4)) {
+                if (iPass == 3) observerPerformanceCount("count.fast.upgradeReviewsDeferred");
+                continue;
+            }
+            if (iPass == 3) observerPerformanceCount("count.fast.upgradeReviews");
 			bool bNoDisband = false;
 			bValid = false;
 
@@ -939,6 +971,43 @@ void CvPlayerAI::AI_updateFoundValues(bool bStartingLoc) const
 		{
 			int iMaxCityCount = 4;
 			AI_updateCitySites(AI_getMinFoundValue(), iMaxCityCount);
+			// Keep one known coastal overseas opportunity in the shared site list,
+			// even when stronger home sites occupy the ordinary shortlist.
+			if (!isHuman() && !isMinorCiv() && getCapitalCity() != NULL &&
+				GET_TEAM(getTeam()).isHasTech((TechTypes)OPTICS))
+			{
+				bool bHasOverseas = false;
+				for (int iSite = 0; iSite < AI_getNumCitySites(); ++iSite)
+				{
+					CvPlot* pSite = AI_getCitySite(iSite);
+					if (pSite->getArea() != getCapitalCity()->getArea() && pSite->isCoastalLand())
+						bHasOverseas = true;
+				}
+				if (!bHasOverseas)
+				{
+					CvPlot* pBestOverseas = NULL;
+					int iBestOverseasValue = AI_getMinFoundValue();
+					for (int iPlot = 0; iPlot < GC.getMapINLINE().numPlotsINLINE(); ++iPlot)
+					{
+						CvPlot* pCandidate = GC.getMapINLINE().plotByIndexINLINE(iPlot);
+						if (!pCandidate->isRevealed(getTeam(), false) || !pCandidate->isCoastalLand() ||
+							pCandidate->getArea() == getCapitalCity()->getArea() || AI_isPlotCitySite(pCandidate)) continue;
+						int iFoundValue = pCandidate->getFoundValue(getID());
+						if (iFoundValue > iBestOverseasValue)
+						{
+							iBestOverseasValue = iFoundValue;
+							pBestOverseas = pCandidate;
+						}
+					}
+					if (pBestOverseas != NULL)
+					{
+						m_aiAICitySites.push_back(GC.getMapINLINE().plotNum(pBestOverseas->getX_INLINE(), pBestOverseas->getY_INLINE()));
+						AI_recalculateFoundValues(pBestOverseas->getX_INLINE(), pBestOverseas->getY_INLINE(), CITY_PLOTS_RADIUS, 2 * CITY_PLOTS_RADIUS);
+						observerPerformanceCount("count.colony.overseasSiteSelected");
+					}
+					else observerPerformanceCount("count.colony.noKnownOverseasSite");
+				}
+			}
 		}
 	}
 }
@@ -1604,30 +1673,14 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 			}
 		}
 		break;
-	case COMMERCE_ESPIONAGE:
-		{
-		int iEspMultiplier = 0;
-		//for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam) //Rhye
-		for (int iTeam = 0; iTeam < NUM_MAJOR_PLAYERS; ++iTeam) //Rhye
-		{
-			CvTeam& kLoopTeam = GET_TEAM((TeamTypes)iTeam);
-			if (kLoopTeam.isAlive() && iTeam != getTeam() && !kLoopTeam.isVassal(getTeam()) && !GET_TEAM(getTeam()).isVassal((TeamTypes)iTeam))
-			{
-				int iPointDiff = kLoopTeam.getEspionagePointsAgainstTeam(getTeam()) - GET_TEAM(getTeam()).getEspionagePointsAgainstTeam((TeamTypes)iTeam);
-				if (iPointDiff > 0)
-				{
-					iEspMultiplier += 1;
-					break;
-				}
-			}
-		}
-			iEspMultiplier += (iEspMultiplier > 0) ? 3 : 0;
-			iWeight *= iEspMultiplier;
-		iWeight *= AI_getEspionageWeight();
-		iWeight /= 100;
-		}
-		break;
-		
+    case COMMERCE_ESPIONAGE:
+        // Networks have immediate utility; do not value obsolete point-balance races.
+        iWeight = 70;
+        if (GET_TEAM(getTeam()).getAtWarCount(true) > 0) iWeight = 110;
+        if (AI_isFinancialTrouble()) iWeight /= 2;
+        if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE)) iWeight = 0;
+        break;
+
 	default:
 		break;
 	}
@@ -2993,7 +3046,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	}
 
 	iValue /= (std::max(0, (iBadTile - (NUM_CITY_PLOTS / 4))) + 3);
-	if (!(iX >= 67 && iX <= 70 && iY >= 43 && iY <= 46) && !(iX >= 79 && iX <= 18 && iY >= 110 && iY <= 10)) { //Rhye (exclude Turkey and Siberia)
+	if (!(iX >= scenarioGeographyValue("CvPlayerAI.bound_1") && iX <= scenarioGeographyValue("CvPlayerAI.bound_2") && iY >= scenarioGeographyValue("CvPlayerAI.bound_3") && iY <= scenarioGeographyValue("CvPlayerAI.bound_4")) && !(iX >= scenarioGeographyValue("CvPlayerAI.bound_5") && iX <= scenarioGeographyValue("CvPlayerAI.bound_6") && iY >= scenarioGeographyValue("CvPlayerAI.bound_7") && iY <= scenarioGeographyValue("CvPlayerAI.bound_8"))) { //Rhye (exclude Turkey and Siberia)
 	if (bStartingLoc)
 	{
 		iDifferentAreaTile = 0;
@@ -3017,32 +3070,42 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 	int tempY = pPlot->getY_INLINE();
 
 
-	iValue *= settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX];
+	iValue *= getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX);
 	iValue /= 100;
 
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] <= 3)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) <= 3)
 		iValue /= 2;
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] <= 60)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) <= 60)
 		iValue /= 2;
-	/*if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] >= 200) {
+	/*if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) >= 200) {
 		iValue *= 11;
 		iValue /= 10;
 	}
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] >= 400) {
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) >= 400) {
 		iValue *= 11;
 		iValue /= 10;
 	}*/
-	if (settlersMaps[getID()][EARTH_Y - 1 - tempY][tempX] > 60)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - tempY, tempX) > 60)
 	//	iValue += GC.getGameINLINE().getSorenRandNum(1000, "Random Value");
 	{
 		//iValue *= 100 + GC.getASyncRand().get(40, "Random Value");
-		iValue *= (100 + ((GC.getGameINLINE().getSorenRand().getSeed() % ((tempX+10)*(tempY+10) + (EARTH_X-tempX) + (EARTH_Y-tempY))) % 50)); //RFCMP
+		iValue *= (100 + ((GC.getGameINLINE().getSorenRand().getSeed() % ((tempX+10)*(tempY+10) + (GC.getMapINLINE().getGridWidthINLINE()-tempX) + (GC.getMapINLINE().getGridHeightINLINE()-tempY))) % 50)); //RFCMP
 		iValue /= 100;
 	} 
 	//Rhye - end
 
 
 
+    if (!bStartingLoc && !bAdvancedStart && getID() < NUM_MAJOR_PLAYERS && getNumCities() > 0)
+    {
+        int weight = Administration::expansionWeight(*this, *pPlot, 3);
+        if (weight < 50) return 0;
+        iValue = iValue * weight / 100;
+    }
+    // Salvage is a modest tie-breaker, not a reason to settle an unsuitable site.
+    if (!bStartingLoc && pPlot->getRevealedImprovementType(getTeam(), false) ==
+        (ImprovementTypes)GC.getDefineINT("RUINS_IMPROVEMENT"))
+        iValue += std::min(std::max(0, iValue) / 5, pPlot->getRuinsRecoveryCount() * 40);
 	return std::max(1, iValue);
 }
 
@@ -3151,17 +3214,17 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 
 	//Rhye - start
 
-	if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] <= 3)
+	if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 3)
 		iValue -= 2;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] <= 20)
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) <= 20)
 		iValue -= 1;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 500) //500-700
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 500) //500-700
 		iValue += 4;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 300) //300-400
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 300) //300-400
 		iValue += 3;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 150) //150-200
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 150) //150-200
 		iValue += 2;
-	else if (settlersMaps[getID()][EARTH_Y - 1 - pCity->plot()->getY_INLINE()][pCity->plot()->getX_INLINE()] >= 40) //40-60-90
+	else if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() - 1 - pCity->plot()->getY_INLINE(), pCity->plot()->getX_INLINE()) >= 40) //40-60-90
 		iValue += 1;
 
 	if (pCity->getOwner() >= NUM_MAJOR_PLAYERS)
@@ -3295,7 +3358,7 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 	}
 
 	//Rhye - start switch
-	if (pCity->getX_INLINE() <= 43) { //wars in America
+	if (pCity->getX_INLINE() <= scenarioGeographyValue("CvPlayerAI.bound_9")) { //wars in America
 		switch (getID())
 		{
 			case SPAIN:
@@ -3343,6 +3406,15 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 	if (!isHuman() && GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
 		iValue = std::max(1, iValue) * 3;
 
+    if (getID() < NUM_MAJOR_PLAYERS && pCity->getOwnerINLINE() != getID()
+        && !GC.getGameINLINE().isCrusadeConquest(getID(), *pCity))
+    {
+        int local = pCity->getMaintenanceModifier() + Administration::religionModifier(*pCity,
+            getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION")), getStateReligion());
+        int weight = Administration::expansionWeight(*this, *pCity->plot(), pCity->getPopulation(), local);
+        if (pCity->isEverOwned(getID())) weight = std::max(50, weight);
+        iValue = std::max(1, iValue * std::max(10, weight) / 100);
+    }
 	if (bRandomize)
 	{
 		//iValue += GC.getGameINLINE().getSorenRandNum(((pCity->getPopulation() / 2) + 1), "AI Target City Value");
@@ -3404,7 +3476,7 @@ bool CvPlayerAI::AI_isCommercePlot(CvPlot* pPlot) const
 static bool isIgnoredWorkerThreat(PlayerTypes eOwner)
 {
 	if (eOwner == NO_PLAYER) return false;
-	if (eOwner == BARBARIAN_PLAYER) return true;
+	if (eOwner == BARBARIAN_PLAYER) return false;
 
 	// Scenarios can place Independent factions in additional player slots
 	// (for example, the Andalusian minors in 900 AD).
@@ -3682,7 +3754,7 @@ bool CvPlayerAI::AI_avoidScience() const
     {
         return true;
     }
-	if (isCurrentResearchRepeat())
+	if (isResearchingEndlessTech(*this))
 	{
 		return true;
 	}
@@ -3702,7 +3774,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 	//if (getCommercePercent(COMMERCE_GOLD) > 50)
 	{
 		//Rhye - start
-		int iGameTurn = GC.getGameINLINE().getGameTurn();
+		int iGameTurn = GC.getGameINLINE().getGameTurn() / historicalTurns(1);
 		if (iGameTurn == startingTurn[getID()] || iGameTurn == startingTurn[getID()] + 1 || iGameTurn == startingTurn[getID()] + 2)
 			return false;
 		if ((GET_PLAYER((PlayerTypes)CELTIA).getCivilizationType() == (CivilizationTypes)4 && iGameTurn <= 181+2) || 
@@ -3725,7 +3797,7 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 			iSafePercent -= 12;
 		}
 		
-		if (isCurrentResearchRepeat())
+		if (isResearchingEndlessTech(*this))
 		{
 			iSafePercent -= 10;
 		}
@@ -5959,6 +6031,10 @@ int CvPlayerAI::AI_getAttitudeVal(PlayerTypes ePlayer, bool bForced) const
 
 	iAttitude += AI_getColonyAttitude(ePlayer);
 	iAttitude += AI_getAttitudeExtra(ePlayer);
+    iAttitude += GC.getGameINLINE().getPapalDiplomaticModifier(getID(), ePlayer);
+    iAttitude -= GET_PLAYER(ePlayer).getIntelligenceRelationPenalty(getTeam());
+    iAttitude += getDynasticRelationBonus(ePlayer);
+    iAttitude += GET_PLAYER(ePlayer).getPoliticalRelationBonus(getID());
 
 	return range(iAttitude, -100, 100);
 }
@@ -6866,6 +6942,9 @@ int CvPlayerAI::AI_dealVal(PlayerTypes ePlayer, const CLinkList<TradeData>* pLis
 				iValue += GET_TEAM(getTeam()).AI_vassalTradeVal(GET_PLAYER(ePlayer).getTeam());
 			}
 			break;
+        case TRADE_INTELLIGENCE_COOPERATION:
+            iValue += 20;
+            break;
 		case TRADE_OPEN_BORDERS:
 			iValue += GET_TEAM(getTeam()).AI_openBordersTradeVal(GET_PLAYER(ePlayer).getTeam());
 			break;
@@ -8183,7 +8262,7 @@ int CvPlayerAI::AI_cityTradeVal(CvCity* pCity) const
 
 
 	if (GET_PLAYER(pCity->getOwnerINLINE()).getNumCities() > 12) 
-		if (settlersMaps[pCity->getOwnerINLINE()][EARTH_Y -1 - pCity->getY()][pCity->getX()] < 500) { //not in core area
+		if (getSettlerMapValue(pCity->getOwnerINLINE(), GC.getMapINLINE().getGridHeightINLINE() -1 - pCity->getY(), pCity->getX()) < 500) { //not in core area
 			iValue *= 2;
 			iValue /= 3;
 		}
@@ -9059,6 +9138,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, CvArea* pArea
 		case UNITAI_MISSILE_CARRIER_SEA:
 			if (GC.getUnitInfo(eUnit).getCargoSpace() > 0)
 			{
+				if ((eUnitAI == UNITAI_MISSIONARY_SEA || eUnitAI == UNITAI_SPY_SEA) &&
+					GC.getUnitInfo(eUnit).getSpecialCargo() == NO_SPECIALUNIT &&
+					GC.getUnitInfo(eUnit).getDomainCargo() == DOMAIN_LAND) bValid = true;
 				if (GC.getUnitInfo(eUnit).getSpecialCargo() != NO_SPECIALUNIT)
 				{
 					for (int i = 0; i < NUM_UNITAI_TYPES; ++i)
@@ -9726,6 +9808,13 @@ int CvPlayerAI::AI_neededMissionaries(CvArea* pArea, ReligionTypes eReligion) co
 
 	iCount = 0;
 
+    if (bState && !isHuman())
+    {
+        int iterator, targets = 0;
+        for (CvCity* city = firstCity(&iterator); city; city = nextCity(&iterator))
+            if (city->area() == pArea && Administration::purgeValue(*city, eReligion) > 0) ++targets;
+        iCount += std::min(2, targets);
+    }
     //internal spread.
     if (bCultureVictory || bState || bHoly)
     {
@@ -9921,6 +10010,26 @@ int CvPlayerAI::AI_missionaryValue(CvArea* pArea, ReligionTypes eReligion, Playe
 		iSpreadInternalValue = 0;
 	}
 	
+    if (!isHuman())
+    {
+        int iterator, purge = 0, targets = 0, missionaries = 0;
+        for (CvCity* city = firstCity(&iterator); city; city = nextCity(&iterator))
+            if (pArea == NULL || city->area() == pArea)
+            {
+                int benefit = Administration::purgeValue(*city, eReligion);
+                if (benefit > 0) { purge = std::max(purge, benefit); ++targets; }
+            }
+        for (CvUnit* unit = firstUnit(&iterator); unit; unit = nextUnit(&iterator))
+            if (unit->AI_getUnitAIType() == UNITAI_MISSIONARY && unit->getUnitInfo().getReligionSpreads(eReligion) > 0
+                && (pArea == NULL || unit->area() == pArea)) ++missionaries;
+        for (int u = 0; u < GC.getNumUnitClassInfos(); ++u)
+        {
+            UnitTypes unit = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(u);
+            if (unit != NO_UNIT && GC.getUnitInfo(unit).getReligionSpreads(eReligion) > 0)
+                missionaries += getUnitClassMaking((UnitClassTypes)u);
+        }
+        if (targets > missionaries) iSpreadInternalValue += std::min(4000, 1000 + purge * 20) / (1 + missionaries);
+    }
 	if (iSpreadExternalValue > 0)
 	{
 		int iBestPlayer = NO_PLAYER;
@@ -10238,6 +10347,7 @@ int CvPlayerAI::AI_plotTargetMissionAIs(CvPlot* pPlot, MissionAITypes eMissionAI
 
 int CvPlayerAI::AI_plotTargetMissionAIs(CvPlot* pPlot, MissionAITypes* aeMissionAI, int iMissionAICount, int& iClosestTargetRange, CvSelectionGroup* pSkipSelectionGroup, int iRange) const
 {
+	OBSERVER_PERFORMANCE("playerAI.plotTargetMissionAIs");
 	PROFILE_FUNC();
 
 	int iCount = 0;
@@ -10285,6 +10395,7 @@ int CvPlayerAI::AI_unitTargetMissionAIs(CvUnit* pUnit, MissionAITypes eMissionAI
 
 int CvPlayerAI::AI_unitTargetMissionAIs(CvUnit* pUnit, MissionAITypes* aeMissionAI, int iMissionAICount, CvSelectionGroup* pSkipSelectionGroup) const
 {
+	OBSERVER_PERFORMANCE("playerAI.unitTargetMissionAIs");
 	PROFILE_FUNC();
 
 	CvSelectionGroup* pLoopSelectionGroup;
@@ -10524,8 +10635,6 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 		{
-			if (isRomanProvince(pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE()) && pLoopCity->isConnectedToCapital())
-				iValue += 12;
 			if (pLoopCity->getOccupationTimer() > 0) iValue += 8;
 		}
 		if (getCurrentEra() <= GC.getInfoTypeForString("ERA_CLASSICAL")) iValue += getNumCities() * 8;
@@ -10594,7 +10703,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		// capacity. Do not count every farm in the empire or forecast new ones.
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 		{
-			const int iModifier = 5 * pLoopCity->countWorkedFarms();
+			const int iModifier = 4 * pLoopCity->countWorkedFarms();
 			iValue += (iModifier * pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) * iWarmongerPercent) /
 				(bWarPlan ? 1500 : 2500);
 		}
@@ -10663,7 +10772,7 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 	{
 		for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 			if (getStateReligion() != NO_RELIGION && pLoopCity->isHasReligion(getStateReligion()))
-				iValue += pLoopCity->getBaseYieldRate(YIELD_PRODUCTION) / 2;
+				iValue += pLoopCity->getPopulation() * (10 - 20 * std::max(0, pLoopCity->getReligionCount() - 1)) / 5;
 		if (getStateReligion() != NO_RELIGION && bWarPlan)
 			iValue += getNumCities() * 3;
 	}
@@ -10764,7 +10873,9 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 		iValue += (kCivic.getFreeExperience() * getNumCities() * (bWarPlan ? 8 : 5) * iWarmongerPercent * iExperienceShare) / 10000;
 	iValue += ((kCivic.getWorkerSpeedModifier() * AI_getNumAIUnits(UNITAI_WORKER)) / 15);
 	iValue += ((kCivic.getImprovementUpgradeRateModifier() * getNumCities()) / 50);
-	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 ); 
+	iValue += (kCivic.getMilitaryProductionModifier() * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500 );
+	if (eCivic == GC.getInfoTypeForString("CIVIC_CONSCRIPTION"))
+		iValue += (35 * getNumCities() * iWarmongerPercent) / (bWarPlan ? 300 : 500);
 	iValue += (kCivic.getBaseFreeUnits() / 2);
 	iValue += (kCivic.getBaseFreeMilitaryUnits() / 3);
 	iValue += ((kCivic.getFreeUnitsPopulationPercent() * getTotalPopulation()) / 200);
@@ -11155,6 +11266,18 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic) const
 			eCivic == GC.getInfoTypeForString("CIVIC_ANCESTOR_CULT")) iValue -= iReligiousWeight;
 	}
 
+    int adminCapacity = Administration::capacity100(*this);
+    int adminEffort = Administration::totalEffort100(*this);
+    int adminOption = kCivic.getCivicOptionType();
+    int adminChange = Administration::civicModifier(*this, eCivic) - Administration::civicModifier(*this, getCivics((CivicOptionTypes)adminOption));
+    int adminBase = (historicalTurns(1) == 2 ? 50 : 33) * (100 + 25 * std::max(0, (int)getCurrentEra()));
+    int candidateCapacity = std::max(1, adminCapacity + adminBase * adminChange / 100);
+    int candidateEffort = adminEffort;
+    if (adminOption == GC.getInfoTypeForString("CIVICOPTION_RELIGION"))
+        candidateEffort = Administration::religionEffort100(*this, eCivic, kCivic.isStateReligion() ? (eBestReligion != NO_RELIGION ? eBestReligion : getStateReligion()) : NO_RELIGION);
+    iValue += Administration::civicModifier(*this, eCivic);
+    iValue += Administration::burdenValue(*this, adminEffort, adminCapacity) - Administration::burdenValue(*this, candidateEffort, candidateCapacity);
+
 	return iValue;
 }
 
@@ -11176,6 +11299,12 @@ ReligionTypes CvPlayerAI::AI_bestReligion() const
 		if (canDoReligion((ReligionTypes)iI))
 		{
 			iValue = AI_religionValue((ReligionTypes)iI);
+            int religionCivic = getCivics((CivicOptionTypes)GC.getInfoTypeForString("CIVICOPTION_RELIGION"));
+            int candidate = Administration::religionEffort100(*this, religionCivic, iI);
+            int current = Administration::religionEffort100(*this, religionCivic, getStateReligion());
+            iValue += (current - candidate) / 100;
+            iValue += Administration::burdenValue(*this, current, Administration::capacity100(*this)) -
+                Administration::burdenValue(*this, candidate, Administration::capacity100(*this));
 
 			if (getStateReligion() == ((ReligionTypes)iI))
 			{
@@ -12668,11 +12797,6 @@ void CvPlayerAI::AI_doCommerce()
 		{
 			setCommercePercent(COMMERCE_ESPIONAGE, 0);
 
-			for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
-			{
-				setEspionageSpendingWeightAgainstTeam((TeamTypes)iTeam, 0);
-			}
-
 			bReset = true;
 		}
 	}
@@ -12771,80 +12895,53 @@ void CvPlayerAI::AI_doCommerce()
 		}
 	}
 
-	if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !bFirstTech)
-	{
-		int iEspionageTargetRate = 0;
-		//Rhye
-		//for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
-		for (int iTeam = 0; iTeam < NUM_MAJOR_PLAYERS; ++iTeam)
-		{
-			CvTeam& kLoopTeam = GET_TEAM((TeamTypes)iTeam);
-			if (kLoopTeam.isAlive() && iTeam != getTeam() && !kLoopTeam.isVassal(getTeam()) && !GET_TEAM(getTeam()).isVassal((TeamTypes)iTeam))
-			{
-				int iTarget = (kLoopTeam.getEspionagePointsAgainstTeam(getTeam()) - GET_TEAM(getTeam()).getEspionagePointsAgainstTeam((TeamTypes)iTeam)) / 8;
+    if (isCommerceFlexible(COMMERCE_ESPIONAGE) && !GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
+    {
+        int iDesired = 0;
+        int aiScores[NUM_INTELLIGENCE_MODES] = {0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        {
+            const PlayerTypes eTarget = (PlayerTypes)i;
+            if (!canIntelligenceTarget(eTarget)) continue;
+            const TeamTypes eTeam = GET_PLAYER(eTarget).getTeam();
+            const bool bAlly = GET_TEAM(getTeam()).isVassal(eTeam) || GET_TEAM(eTeam).isVassal(getTeam()) ||
+                GET_TEAM(getTeam()).isDefensivePact(eTeam) || AI_getAttitude(eTarget) >= ATTITUDE_FRIENDLY;
+            for (int m = 0; m < INTEL_NONE; ++m)
+            {
+                if (bAlly && m != INTEL_COOPERATION && !(m == INTEL_POLITICS && isDynasticIntelligence())) continue;
+                int iScore = getIntelligenceTargetScore(eTarget, m);
+                if (m == INTEL_MILITARY && GET_TEAM(getTeam()).isAtWar(eTeam)) iScore *= 3;
+                if (m == INTEL_COOPERATION) iScore *= 2;
+                aiScores[m] = std::max(aiScores[m], iScore);
+            }
+        }
+        int aiAssigned[NUM_INTELLIGENCE_MODES] = {0, 0, 0, 0, 0, 0};
+        for (int f = 0; f < getIntelligenceForceCount(); ++f)
+        {
+            int iBest = INTEL_NONE;
+            for (int m = 0; m < INTEL_NONE; ++m)
+                if (aiScores[m] / (1 + aiAssigned[m]) > aiScores[iBest] / (1 + aiAssigned[iBest])) iBest = m;
+            // Focus changes use the same planning cadence as automatic target selection.
+            if (m_aiForceMode[f] == INTEL_NONE || GC.getGameINLINE().getGameTurn() >= m_aiForceNextTurn[f])
+                setIntelligenceForceMode(f, iBest);
+            ++aiAssigned[m_aiForcePending[f]];
+            if (m_aiForcePending[f] != INTEL_NONE) iDesired = std::max(iDesired, m_aiForcePending[f] == INTEL_MILITARY ? 30 : 20);
+        }
+        if (bFirstTech) iDesired = std::min(iDesired, 10);
+        if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3)) iDesired = 0;
+        while (getCommercePercent(COMMERCE_ESPIONAGE) > iDesired && getCommercePercent(COMMERCE_ESPIONAGE) >= 10)
+        {
+            changeCommercePercent(COMMERCE_ESPIONAGE, -10);
+            changeCommercePercent(COMMERCE_RESEARCH, 10);
+        }
+        while (getCommercePercent(COMMERCE_ESPIONAGE) < iDesired && getCommercePercent(COMMERCE_RESEARCH) >= 10)
+        {
+            changeCommercePercent(COMMERCE_RESEARCH, -10);
+            changeCommercePercent(COMMERCE_ESPIONAGE, 10);
+            if (getGold() + iTargetTurns * calculateGoldRate() < iGoldTarget) break;
+        }
+    }
 
-				iTarget -= GET_TEAM(getTeam()).AI_getAttitudeVal((TeamTypes)iTeam);
-
-				if (iTarget > 0)
-				{
-					iEspionageTargetRate += iTarget;
-					changeEspionageSpendingWeightAgainstTeam((TeamTypes)iTeam, iTarget);
-				}
-			}
-		}
-
-		//if economy is weak, neglect espionage spending.
-		//instead invest hammers into espionage via spies/builds
-		if (AI_isFinancialTrouble() || AI_isDoStrategy(AI_STRATEGY_CULTURE3))
-		{
-			//can still get trickle espionage income
-			iEspionageTargetRate = 0;
-		}
-		else
-		{
-			iEspionageTargetRate *= (110 - getCommercePercent(COMMERCE_GOLD) * 2);
-			iEspionageTargetRate /= 110;
-
-			iEspionageTargetRate *= GC.getLeaderHeadInfo(getLeaderType()).getEspionageWeight();
-			iEspionageTargetRate /= 100;
-
-			//Rhye - start
-			//world size weight
-			iEspionageTargetRate *= 7; //default number of players
-			iEspionageTargetRate /= 26; //actual number of major players
-
-			//reduce even more
-			iEspionageTargetRate *= 70;
-			iEspionageTargetRate /= 100;
-			//Rhye - end
-
-			int iInitialResearchPercent = getCommercePercent(COMMERCE_RESEARCH);
-
-			while (getCommerceRate(COMMERCE_ESPIONAGE) < iEspionageTargetRate && getCommercePercent(COMMERCE_ESPIONAGE) < 20)
-			{
-				changeCommercePercent(COMMERCE_RESEARCH, -GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS"));			
-				changeCommercePercent(COMMERCE_ESPIONAGE, GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS"));
-
-				if (getGold() + iTargetTurns * calculateGoldRate() < iGoldTarget)
-				{
-					break;
-				}
-
-				if (!AI_avoidScience() && !isNoResearchAvailable())
-				{
-	//				if (2 * getCommercePercent(COMMERCE_RESEARCH) < iInitialResearchPercent)
-	//				{
-	//					break;
-	//				}
-					if (getCommercePercent(COMMERCE_RESEARCH) * 2 <= (getCommercePercent(COMMERCE_ESPIONAGE) + GC.getDefineINT("COMMERCE_PERCENT_CHANGE_INCREMENTS")) * 3)
-					{
-						break;
-					}
-				}
-			}
-		}
-	}
-	
 	if (!bFirstTech && (getGold() < iGoldTarget) && (getCommercePercent(COMMERCE_RESEARCH) > 40))
 	{
 		bool bHurryGold = false;
@@ -13409,7 +13506,30 @@ void CvPlayerAI::AI_doDiplo()
 											{
 												setTradeItem(&item, TRADE_VASSAL);
 
-												if (canTradeItem((PlayerTypes)iI, item, true))
+												// Seek a trusted, substantially stronger protector only under a concrete military threat.
+												CvTeamAI& kOfferTeam = GET_TEAM(getTeam());
+												CvTeamAI& kMasterTeam = GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam());
+												const int iOurPower = std::max(1, kOfferTeam.getPower(true));
+												bool bNeedsProtection = false;
+												if ((__int64)kMasterTeam.getPower(false) >= (__int64)2 * iOurPower &&
+												    kOfferTeam.AI_getAttitude(kMasterTeam.getID()) >= ATTITUDE_PLEASED)
+												{
+												    for (int iThreat = 0; iThreat < MAX_CIV_TEAMS && !bNeedsProtection; ++iThreat)
+												    {
+												        CvTeamAI& kThreat = GET_TEAM((TeamTypes)iThreat);
+												        if (!kThreat.isAlive() || kThreat.isMinorCiv() || kThreat.getID() == getTeam() ||
+												            kThreat.getID() == kMasterTeam.getID() || !kOfferTeam.isHasMet(kThreat.getID()) ||
+												            kThreat.isVassal(getTeam()) || kOfferTeam.isVassal(kThreat.getID())) continue;
+												        const int iThreatPower = kThreat.getPower(true);
+												        if (kOfferTeam.isAtWar(kThreat.getID()))
+												            bNeedsProtection = iThreatPower > iOurPower;
+												        else
+												            bNeedsProtection = (__int64)2 * iThreatPower >= (__int64)3 * iOurPower &&
+												                kThreat.AI_isLandTarget(getTeam()) && kThreat.AI_getAttitude(getTeam()) <= ATTITUDE_ANNOYED;
+												    }
+												}
+												if (bNeedsProtection && canTradeItem((PlayerTypes)iI, item, true) &&
+												    GC.getGameINLINE().getSorenRandNum(4 * historicalTurns(1), "AI offer voluntary vassalage") == 0)
 												{
 													ourList.clear();
 													theirList.clear();
@@ -13926,6 +14046,47 @@ void CvPlayerAI::AI_doDiplo()
 
 												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
 													GET_TEAM(getTeam()).AI_hasMilitaryAccessInterest(GET_PLAYER((PlayerTypes)iI).getTeam()))
+												{
+													ourList.clear();
+													theirList.clear();
+
+													ourList.insertAtEnd(item);
+													theirList.insertAtEnd(item);
+
+													if (GET_PLAYER((PlayerTypes)iI).isHuman())
+													{
+														if (!(abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()]))
+														{
+															AI_changeContactTimer(((PlayerTypes)iI), CONTACT_OPEN_BORDERS, GC.getLeaderHeadInfo(getPersonalityType()).getContactDelay(CONTACT_OPEN_BORDERS));
+															pDiplo = new CvDiploParameters(getID());
+															FAssertMsg(pDiplo != NULL, "pDiplo must be valid");
+															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_OFFER_DEAL"));
+															pDiplo->setAIContact(true);
+															pDiplo->setOurOfferList(theirList);
+															pDiplo->setTheirOfferList(ourList);
+															gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
+															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
+														}
+													}
+													else
+													{
+														GC.getGameINLINE().implementDeal(getID(), ((PlayerTypes)iI), &ourList, &theirList);
+													}
+												}
+											}
+										}
+									}
+
+									if (GET_TEAM(getTeam()).getLeaderID() == getID())
+									{
+										if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_OPEN_BORDERS) == 0)
+										{
+											if (GC.getGameINLINE().getSorenRandNum(GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_OPEN_BORDERS), "AI Diplo Intelligence Cooperation") == 0)
+											{
+												setTradeItem(&item, TRADE_INTELLIGENCE_COOPERATION);
+
+												if (canTradeItem(((PlayerTypes)iI), item, true) && GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true) &&
+													(getCommerceRate(COMMERCE_ESPIONAGE) > 0 || GET_PLAYER((PlayerTypes)iI).getCommerceRate(COMMERCE_ESPIONAGE) > 0))
 												{
 													ourList.clear();
 													theirList.clear();
@@ -16280,7 +16441,7 @@ int CvPlayerAI::AI_getStrategyHash() const
 		
 		if (iOurVictoryCountdown < 0)
 		{
-			if (isCurrentResearchRepeat())
+			if (isResearchingEndlessTech(*this))
 			{
 				int iStronger = 0;
 				int iAlive = 1;
@@ -16309,7 +16470,7 @@ int CvPlayerAI::AI_getStrategyHash() const
 		
 	}
 
-	if (isCurrentResearchRepeat())
+	if (isResearchingEndlessTech(*this))
 	{
 		int iTotalVictories = 0;
 		int iAchieveVictories = 0;
@@ -18278,7 +18439,7 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 			CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
 			if (pLoopPlot->isRevealed(getTeam(), false))
 			{
-				if (settlersMaps[getID()][EARTH_Y -1 - pLoopPlot->getY()][pLoopPlot->getX()] >= 90) //Rhye
+				if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 - pLoopPlot->getY(), pLoopPlot->getX()) >= 90) //Rhye
 				{ //Rhye
 				iValue = pLoopPlot->getFoundValue(getID());
 				if (iValue > iMinFoundValueThreshold)
@@ -18345,17 +18506,17 @@ int CvPlayerAI::AI_browseStep(int iMinFoundValueThreshold, int iBestFoundValue, 
 	//int iI;
 	int iI, iJ;
 
-	for (iI = 0; iI < EARTH_X; iI++)
+	for (iI = 0; iI < GC.getMapINLINE().getGridWidthINLINE(); iI++)
 	{
-	for (iJ = 0; iJ < EARTH_Y; iJ++)
+	for (iJ = 0; iJ < GC.getMapINLINE().getGridHeightINLINE(); iJ++)
 	{
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotINLINE(iI, iJ);
-		if (settlersMaps[getID()][EARTH_Y -1 -iJ][iI] == iModifier)
+		if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 -iJ, iI) == iModifier)
 
 	/*for (iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
 	{		
 		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
-		if (settlersMaps[getID()][EARTH_Y -1 - pLoopPlot->getY()][pLoopPlot->getX()] == iModifier)*/
+		if (getSettlerMapValue(getID(), GC.getMapINLINE().getGridHeightINLINE() -1 - pLoopPlot->getY(), pLoopPlot->getX()) == iModifier)*/
 		{
 			if (pLoopPlot->isRevealed(getTeam(), false))
 			{
@@ -18780,7 +18941,7 @@ int CvPlayerAI::AI_calculateUnitAIViability(UnitAITypes eUnitAI, DomainTypes eDo
 ReligionTypes CvPlayerAI::AI_chooseReligion()
 {
 	ReligionTypes eFavorite = (ReligionTypes)GC.getLeaderHeadInfo(getLeaderType()).getFavoriteReligion();
-	if (NO_RELIGION != eFavorite && !GC.getGameINLINE().isReligionFounded(eFavorite))
+	if (NO_RELIGION != eFavorite && !isRegionalReligion(eFavorite) && !GC.getGameINLINE().isReligionFounded(eFavorite))
 	{
 		return eFavorite;
 	}
@@ -18788,7 +18949,7 @@ ReligionTypes CvPlayerAI::AI_chooseReligion()
 	std::vector<ReligionTypes> aeReligions;
 	for (int iReligion = 0; iReligion < GC.getNumReligionInfos(); ++iReligion)
 	{
-		if (!GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
+		if (!isRegionalReligion((ReligionTypes)iReligion) && !GC.getGameINLINE().isReligionFounded((ReligionTypes)iReligion))
 		{
 			aeReligions.push_back((ReligionTypes)iReligion);
 		}
@@ -19104,6 +19265,7 @@ void CvPlayerAI::AI_invalidateCloseBordersAttitudeCache()
 
 bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves, bool bIgnoreWorkerThreats) const
 {
+	OBSERVER_PERFORMANCE("playerAI.isPlotThreatened");
 	PROFILE_FUNC();
 
 	CvArea *pPlotArea = pPlot->area();
@@ -19132,6 +19294,12 @@ bool CvPlayerAI::AI_isPlotThreatened(CvPlot* pPlot, int iRange, bool bTestMoves,
 							if (pLoopUnit->canMoveOrAttackInto(pPlot))
 							{
 								int iPathTurns = 0;
+                                if (bTestMoves && !isHuman() && fastLateGame()) {
+                                    // Conservative regional estimate: a visible attacker in
+                                    // range is dangerous even if terrain blocks its route.
+                                    observerPerformanceCount("count.fast.threatPathsSkipped");
+                                    return true;
+                                }
 								if (bTestMoves)
 								{
 									if (!pLoopUnit->getGroup()->generatePath(pLoopPlot, pPlot, MOVE_MAX_MOVES | MOVE_IGNORE_DANGER, false, &iPathTurns))

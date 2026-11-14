@@ -1,3 +1,4 @@
+import ScenarioGeography as geo
 # Sid Meier's Civilization 4
 # Copyright Firaxis Games 2005
 #
@@ -3072,8 +3073,8 @@ def canApplyCrusadeDone2(argsList):
 
 	#Rhye - switch to Jerusalem
 	if (gc.getGame().getStartTurn() != 0): #late start condition
-		if (holyCity.getX() == 60 and holyCity.getY() == 44):
-			pJerusalem = gc.getMap().plot(73, 38)
+		if ((holyCity.getX(), holyCity.getY()) == geo.value("CvRandomEventInterface.rome")):
+			pJerusalem = gc.getMap().plot(*geo.value("CvRandomEventInterface.jerusalem"))
 			if (not pJerusalem.getPlotCity().isNone()):
 				holyCity = pJerusalem.getPlotCity()
 			else:

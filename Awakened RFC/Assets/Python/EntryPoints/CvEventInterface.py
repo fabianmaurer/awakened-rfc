@@ -33,6 +33,18 @@ def beginEvent(context, argsList=-1):
 
 # Native mod callbacks must enter through an engine-visible EntryPoints module.
 # Resolve ordinary helper modules with Python imports, not native module lookup.
+def recordPopulationLoss(argsList):
+    iPlayer, iCity, losses, capital, starvation, population = argsList
+    import Famine
+    return Famine.recordPopulationLoss(iPlayer, iCity, losses, capital, starvation, population)
+
+
+def recordCityAbandonment(argsList):
+    iPlayer, iCity = argsList
+    import Famine
+    Famine.recordCityAbandonment(iPlayer, iCity)
+
+
 def canRomanCampaign(argsList):
     iPlayer = argsList[0]
     import RomanEmpire
@@ -68,3 +80,9 @@ def recordApostolicState(argsList):
     if REPORTING_ENABLED:
         import GameObserver
         GameObserver.record_apostolic_state(*argsList)
+
+
+def recordReligionPurge(argsList):
+    if REPORTING_ENABLED:
+        import GameObserver
+        GameObserver.record_religion_purge(*argsList)

@@ -13,6 +13,51 @@
 #include "CvGlobals.h"
 #include "CvMapGenerator.h"
 #include "CvInitCore.h"
+#include "CvRhyes.h"
+
+bool CyMap::configureScenarioGeography(python::list& data)
+{
+    if (m_pMap == NULL || PySequence_Size(data.ptr()) != 8) return false;
+    const std::string profile = python::extract<std::string>(data[0]);
+    const int width = python::extract<int>(data[1]);
+    const int height = python::extract<int>(data[2]);
+    const int areaCount = python::extract<int>(data[3]);
+    python::list areas = python::extract<python::list>(data[4]);
+    python::list settlers = python::extract<python::list>(data[5]);
+    python::list keys = python::extract<python::list>(data[6]);
+    python::list numbers = python::extract<python::list>(data[7]);
+    std::vector<int> areaValues, settlerValues;
+    std::map<CvString, std::vector<int> > values;
+    for (int i = 0; i < PySequence_Size(areas.ptr()); ++i)
+        areaValues.push_back(python::extract<int>(areas[i]));
+    for (int i = 0; i < PySequence_Size(settlers.ptr()); ++i)
+        settlerValues.push_back(python::extract<int>(settlers[i]));
+    if (PySequence_Size(keys.ptr()) != PySequence_Size(numbers.ptr())) return false;
+    for (int i = 0; i < PySequence_Size(keys.ptr()); ++i)
+    {
+        const std::string key = python::extract<std::string>(keys[i]);
+        python::list entries = python::extract<python::list>(numbers[i]);
+        std::vector<int>& target = values[key.c_str()];
+        for (int j = 0; j < PySequence_Size(entries.ptr()); ++j)
+            target.push_back(python::extract<int>(entries[j]));
+    }
+    return m_pMap->configureScenarioGeography(profile.c_str(), width, height,
+        areaCount, areaValues, settlerValues, values);
+}
+
+std::string CyMap::getScenarioGeographyName()
+{
+    return m_pMap ? m_pMap->getScenarioGeographyName().c_str() : "";
+}
+
+void CyMap::finalizeScenarioGeography()
+{
+    // Player initialization can precede WorldBuilder map creation. Apply regional
+    // successor maps only after both the selected geography and grid are ready.
+    if (m_pMap == NULL || m_pMap->getScenarioGeographyName().empty()) return;
+    for (int i = 0; i < NUM_MAJOR_PLAYERS; ++i)
+        GET_PLAYER((PlayerTypes)i).configureCaliphateSuccessor();
+}
 
 CyMap::CyMap() : m_pMap(NULL)
 {

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT><Tag>TXT_KEY_BIRTH_SUCCESSION_TITLE</Tag>
+    <English>Lead the new civilization</English>
+    <French>Lead the new civilization</French>
+    <German>Die neue Zivilisation f&#252;hren</German>
+    <Italian>Lead the new civilization</Italian>
+    <Spanish>Lead the new civilization</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_BIRTH_SUCCESSION_OFFER</Tag>
+    <English>%d1 of your cities have joined %s2. Would you like to lead this civilization? Your former civilization will continue under AI control.</English>
+    <French>%d1 of your cities have joined %s2. Would you like to lead this civilization? Your former civilization will continue under AI control.</French>
+    <German>%d1 Eurer St&#228;dte haben sich %s2 angeschlossen. M&#246;chtet Ihr diese Zivilisation f&#252;hren? Eure bisherige Zivilisation wird von der KI weitergef&#252;hrt.</German>
+    <Italian>%d1 of your cities have joined %s2. Would you like to lead this civilization? Your former civilization will continue under AI control.</Italian>
+    <Spanish>%d1 of your cities have joined %s2. Would you like to lead this civilization? Your former civilization will continue under AI control.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_DESC</Tag>
+    <English>City-States of Harappa</English>
+    <French>Cit&#233;s-&#201;tats de Harappa</French>
+    <German>Stadtstaaten von Harappa</German>
+    <Italian>Citt&#224;-stato di Harappa</Italian>
+    <Spanish>Ciudades-Estado de Harappa</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_SHORT</Tag>
+    <English>Harappa</English>
+    <French>Harappa</French>
+    <German>Harappa</German>
+    <Italian>Harappa</Italian>
+    <Spanish>Harappa</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_ADJ</Tag>
+    <English>Harappan</English>
+    <French>harapp&#233;en</French>
+    <German>harappisch</German>
+    <Italian>harappano</Italian>
+    <Spanish>harapense</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_KINGDOM</Tag>
+    <English>Kingdom of Harappa</English>
+    <French>Kingdom of Harappa</French>
+    <German>K&#246;nigreich Harappa</German>
+    <Italian>Kingdom of Harappa</Italian>
+    <Spanish>Kingdom of Harappa</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_REPUBLIC</Tag>
+    <English>Harappan Republic</English>
+    <French>Harappan Republic</French>
+    <German>Harappische Republik</German>
+    <Italian>Harappan Republic</Italian>
+    <Spanish>Harappan Republic</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_PEDIA</Tag>
+    <English>The Harappan civilization developed cities, drainage systems and long-distance trade in the Indus region. Its script remains undeciphered, and the names of its rulers and political institutions are unknown. Archaeological site names identify its cities here. The Council is a gameplay abstraction. In the 3000 BC XL scenario, develop the Indus and Gujarat, build foreign trade links and preserve your independence.</English>
+    <French>The Harappan civilization developed cities, drainage systems and long-distance trade in the Indus region. Its script remains undeciphered, and the names of its rulers and political institutions are unknown. Archaeological site names identify its cities here. The Council is a gameplay abstraction. In the 3000 BC XL scenario, develop the Indus and Gujarat, build foreign trade links and preserve your independence.</French>
+    <German>Die Harappa-Zivilisation entwickelte St&#228;dte, Entw&#228;sserungssysteme und Fernhandel im Indusgebiet. Ihre Schrift ist nicht entziffert; die Namen ihrer Herrscher und politischen Institutionen sind unbekannt. Arch&#228;ologische Fundorte dienen hier als Stadtnamen. Der Rat ist eine spielerische Abstraktion. Entwickelt im XL-Szenario von 3000 v. Chr. das Indusgebiet und Gujarat, knuepft Handelskontakte und bewahrt Eure Unabh&#228;ngigkeit.</German>
+    <Italian>The Harappan civilization developed cities, drainage systems and long-distance trade in the Indus region. Its script remains undeciphered, and the names of its rulers and political institutions are unknown. Archaeological site names identify its cities here. The Council is a gameplay abstraction. In the 3000 BC XL scenario, develop the Indus and Gujarat, build foreign trade links and preserve your independence.</Italian>
+    <Spanish>The Harappan civilization developed cities, drainage systems and long-distance trade in the Indus region. Its script remains undeciphered, and the names of its rulers and political institutions are unknown. Archaeological site names identify its cities here. The Council is a gameplay abstraction. In the 3000 BC XL scenario, develop the Indus and Gujarat, build foreign trade links and preserve your independence.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_COUNCIL</Tag>
+    <English>Harappan Council</English>
+    <French>Conseil harapp&#233;en</French>
+    <German>Rat von Harappa</German>
+    <Italian>Consiglio harappano</Italian>
+    <Spanish>Consejo harapense</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_COUNCIL_PEDIA</Tag>
+    <English>A representative council stands for the unknown leadership of the Indus cities. It does not represent a documented ruler or a known form of government.</English>
+    <French>A representative council stands for the unknown leadership of the Indus cities. It does not represent a documented ruler or a known form of government.</French>
+    <German>Ein stellvertretender Rat verk&#246;rpert die unbekannte F&#252;hrung der Indusst&#228;dte. Er stellt weder einen belegten Herrscher noch eine nachgewiesene Regierungsform dar.</German>
+    <Italian>A representative council stands for the unknown leadership of the Indus cities. It does not represent a documented ruler or a known form of government.</Italian>
+    <Spanish>A representative council stands for the unknown leadership of the Indus cities. It does not represent a documented ruler or a known form of government.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_BUILDER</Tag>
+    <English>City Founder</English>
+    <French>Fondateur de villes</French>
+    <German>St&#228;dtebauer</German>
+    <Italian>Fondatore di citt&#224;</Italian>
+    <Spanish>Fundador de ciudades</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_BUILDER_PEDIA</Tag>
+    <English>Harappan cities relied on planned streets, wells and drainage. This Settler replacement founds cities with a population of 2.</English>
+    <French>Les villes harapp&#233;ennes poss&#233;daient des rues planifi&#233;es, des puits et des &#233;gouts. Ce rempla&#231;ant du colon fonde des villes de population 2.</French>
+    <German>Die St&#228;dte der Harappa-Kultur besa&#223;en planm&#228;&#223;ig angelegte Stra&#223;en, Brunnen und Abwasserkan&#228;le. Dieser Siedler-Ersatz gr&#252;ndet St&#228;dte mit Gr&#246;&#223;e 2.</German>
+    <Italian>Le citt&#224; harappane avevano strade pianificate, pozzi e fognature. Questa alternativa al colono fonda citt&#224; con popolazione 2.</Italian>
+    <Spanish>Las ciudades harapenses contaban con calles planificadas, pozos y alcantarillado. Este sustituto del colono funda ciudades con poblaci&#243;n 2.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_BUILDER_STRATEGY</Tag>
+    <English>Founds cities with a population of 2.</English>
+    <French>Fonde des villes de population 2.</French>
+    <German>Gr&#252;ndet St&#228;dte mit Gr&#246;&#223;e 2.</German>
+    <Italian>Fonda citt&#224; con popolazione 2.</Italian>
+    <Spanish>Funda ciudades con poblaci&#243;n 2.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_RESERVOIR</Tag>
+    <English>Reservoir</English>
+    <French>R&#233;servoir</French>
+    <German>Reservior</German>
+    <Italian>Serbatoio</Italian>
+    <Spanish>Dep&#243;sito de agua</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_RESERVOIR_PEDIA</Tag>
+    <English>Water storage and drainage supported life in the Indus cities. This granary replacement retains food storage and adds +2 health.</English>
+    <French>Water storage and drainage supported life in the Indus cities. This granary replacement retains food storage and adds +2 health.</French>
+    <German>Wasserspeicher und Entw&#228;sserung unterst&#252;tzten das Leben in den Indusst&#228;dten. Dieser Kornspeicher-Ersatz behaelt die Nahrungsspeicherung und gibt +2 Gesundheit.</German>
+    <Italian>Water storage and drainage supported life in the Indus cities. This granary replacement retains food storage and adds +2 health.</Italian>
+    <Spanish>Water storage and drainage supported life in the Indus cities. This granary replacement retains food storage and adds +2 health.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_RESERVOIR_STRATEGY</Tag>
+    <English>Stores food and provides +2 health.</English>
+    <French>Stocke la nourriture et donne +2 sant&#233;.</French>
+    <German>Speichert Nahrung und gibt +2 Gesundheit.</German>
+    <Italian>Conserva cibo e fornisce +2 salute.</Italian>
+    <Spanish>Almacena alimentos y proporciona +2 salud.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_HAR</Tag>
+    <English>The Power of Urban Cycles</English>
+    <French>Le pouvoir des cycles urbains</French>
+    <German>Die Macht der Stadtzyklen</German>
+    <Italian>Il potere dei cicli urbani</Italian>
+    <Spanish>El poder de los ciclos urbanos</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UP_HAR2</Tag>
+    <English>Cities grow and shrink 30% faster.</English>
+    <French>Les villes croissent et d&#233;clinent 30 % plus vite.</French>
+    <German>St&#228;dte wachsen und schrumpfen 30% schneller.</German>
+    <Italian>Le citt&#224; crescono e si riducono il 30% pi&#249; velocemente.</Italian>
+    <Spanish>Las ciudades crecen y decrecen un 30% m&#225;s r&#225;pido.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_HAR1</Tag>
+    <English>Have three cities of population 5 in the Indus region by 2000 BC.</English>
+    <French>Have three cities of population 5 in the Indus region by 2000 BC.</French>
+    <German>Besitzt bis 2000 v. Chr. drei St&#228;dte mit je 5 Einwohnern im Indusgebiet.</German>
+    <Italian>Have three cities of population 5 in the Indus region by 2000 BC.</Italian>
+    <Spanish>Have three cities of population 5 in the Indus region by 2000 BC.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_HAR2</Tag>
+    <English>Have trade routes with two foreign civilizations by 1500 BC.</English>
+    <French>Have trade routes with two foreign civilizations by 1500 BC.</French>
+    <German>Unterhaltet bis 1500 v. Chr. Handelswege mit zwei fremden Zivilisationen.</German>
+    <Italian>Have trade routes with two foreign civilizations by 1500 BC.</Italian>
+    <Spanish>Have trade routes with two foreign civilizations by 1500 BC.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_UHV_HAR3</Tag>
+    <English>Accumulate 500 gold by 1000 BC.</English>
+    <French>Accumulate 500 gold by 1000 BC.</French>
+    <German>Sammelt bis 1000 v. Chr. 500 Gold an.</German>
+    <Italian>Accumulate 500 gold by 1000 BC.</Italian>
+    <Spanish>Accumulate 500 gold by 1000 BC.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_INTRO</Tag>
+    <English>3000 BC: Lead the cities of the Indus. Build prosperous river settlements, improve their water supply and establish trade with distant peoples. Your homeland lies west of the Ganges. Preserve Harappa through the rise of new powers, or follow your cities into a new civilization when a birth transfers them.</English>
+    <French>3000 BC: Lead the cities of the Indus. Build prosperous river settlements, improve their water supply and establish trade with distant peoples. Your homeland lies west of the Ganges. Preserve Harappa through the rise of new powers, or follow your cities into a new civilization when a birth transfers them.</French>
+    <German>3000 v. Chr.: F&#252;hrt die St&#228;dte des Indus. Gr&#252;ndet wohlhabende Flusssiedlungen, verbessert ihre Wasserversorgung und handelt mit fernen V&#246;lkern. Eure Heimat liegt westlich des Ganges. Bewahrt Harappa beim Aufstieg neuer M&#228;chte oder folgt Euren St&#228;dten in eine neue Zivilisation, wenn sie bei deren Entstehung &#252;bergehen.</German>
+    <Italian>3000 BC: Lead the cities of the Indus. Build prosperous river settlements, improve their water supply and establish trade with distant peoples. Your homeland lies west of the Ganges. Preserve Harappa through the rise of new powers, or follow your cities into a new civilization when a birth transfers them.</Italian>
+    <Spanish>3000 BC: Lead the cities of the Indus. Build prosperous river settlements, improve their water supply and establish trade with distant peoples. Your homeland lies west of the Ganges. Preserve Harappa through the rise of new powers, or follow your cities into a new civilization when a birth transfers them.</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_0</Tag>
+    <English>Harappa</English>
+    <French>Harappa</French>
+    <German>Harappa</German>
+    <Italian>Harappa</Italian>
+    <Spanish>Harappa</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_1</Tag>
+    <English>Mohenjo-daro</English>
+    <French>Mohenjo-daro</French>
+    <German>Mohenjo-daro</German>
+    <Italian>Mohenjo-daro</Italian>
+    <Spanish>Mohenjo-daro</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_2</Tag>
+    <English>Dholavira</English>
+    <French>Dholavira</French>
+    <German>Dholavira</German>
+    <Italian>Dholavira</Italian>
+    <Spanish>Dholavira</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_3</Tag>
+    <English>Lothal</English>
+    <French>Lothal</French>
+    <German>Lothal</German>
+    <Italian>Lothal</Italian>
+    <Spanish>Lothal</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_4</Tag>
+    <English>Rakhigarhi</English>
+    <French>Rakhigarhi</French>
+    <German>Rakhigarhi</German>
+    <Italian>Rakhigarhi</Italian>
+    <Spanish>Rakhigarhi</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_CITY_5</Tag>
+    <English>Kalibangan</English>
+    <French>Kalibangan</French>
+    <German>Kalibangan</German>
+    <Italian>Kalibangan</Italian>
+    <Spanish>Kalibangan</Spanish>
+  </TEXT>
+  <TEXT><Tag>TXT_KEY_HAR_FOOD_CHANGE</Tag>
+    <English>Food storage change: %s1_Change[ICON_FOOD] per turn.</English>
+    <French>Variation des r&#233;serves : %s1_Change[ICON_FOOD] par tour.</French>
+    <German>&#196;nderung der Nahrungsvorr&#228;te: %s1_Change[ICON_FOOD] pro Runde.</German>
+    <Italian>Variazione delle scorte: %s1_Change[ICON_FOOD] per turno.</Italian>
+    <Spanish>Cambio en las reservas: %s1_Change[ICON_FOOD] por turno.</Spanish>
+  </TEXT>
+</Civ4GameText>

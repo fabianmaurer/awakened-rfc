@@ -847,6 +847,15 @@ bool CvDeal::startTrade(TradeData trade, PlayerTypes eFromPlayer, PlayerTypes eT
 		}
 		break;
 
+    case TRADE_INTELLIGENCE_COOPERATION:
+        if (trade.m_iData == 0)
+        {
+            startTeamTrade(TRADE_INTELLIGENCE_COOPERATION, GET_PLAYER(eFromPlayer).getTeam(), GET_PLAYER(eToPlayer).getTeam(), true);
+            GET_TEAM(GET_PLAYER(eFromPlayer).getTeam()).setIntelligenceCooperation(GET_PLAYER(eToPlayer).getTeam(), true);
+        }
+        else bSave = true;
+        break;
+
 	case TRADE_OPEN_BORDERS:
 		if (trade.m_iData == 0)
 		{
@@ -937,6 +946,11 @@ void CvDeal::endTrade(TradeData trade, PlayerTypes eFromPlayer, PlayerTypes eToP
 			endTeamTrade(TRADE_SURRENDER, GET_PLAYER(eFromPlayer).getTeam(), GET_PLAYER(eToPlayer).getTeam());
 		}
 		break;
+
+    case TRADE_INTELLIGENCE_COOPERATION:
+        GET_TEAM(GET_PLAYER(eFromPlayer).getTeam()).setIntelligenceCooperation(GET_PLAYER(eToPlayer).getTeam(), false);
+        if (bTeam) endTeamTrade(TRADE_INTELLIGENCE_COOPERATION, GET_PLAYER(eFromPlayer).getTeam(), GET_PLAYER(eToPlayer).getTeam());
+        break;
 
 	case TRADE_OPEN_BORDERS:
 		GET_TEAM(GET_PLAYER(eFromPlayer).getTeam()).setOpenBorders(((TeamTypes)(GET_PLAYER(eToPlayer).getTeam())), false);
@@ -1103,6 +1117,7 @@ bool CvDeal::isAnnual(TradeableItems eItem)
 	case TRADE_GOLD_PER_TURN:
 	case TRADE_VASSAL:
 	case TRADE_SURRENDER:
+	case TRADE_INTELLIGENCE_COOPERATION:
 	case TRADE_OPEN_BORDERS:
 	case TRADE_DEFENSIVE_PACT:
 	case TRADE_PERMANENT_ALLIANCE:
@@ -1118,6 +1133,7 @@ bool CvDeal::isDual(TradeableItems eItem, bool bExcludePeace)
 {
 	switch (eItem)
 	{
+	case TRADE_INTELLIGENCE_COOPERATION:
 	case TRADE_OPEN_BORDERS:
 	case TRADE_DEFENSIVE_PACT:
 	case TRADE_PERMANENT_ALLIANCE:
@@ -1135,6 +1151,7 @@ bool CvDeal::hasData(TradeableItems eItem)
 	return (eItem != TRADE_MAPS &&
 		eItem != TRADE_VASSAL &&
 		eItem != TRADE_SURRENDER &&
+		eItem != TRADE_INTELLIGENCE_COOPERATION &&
 		eItem != TRADE_OPEN_BORDERS &&
 		eItem != TRADE_DEFENSIVE_PACT &&
 		eItem != TRADE_PERMANENT_ALLIANCE &&

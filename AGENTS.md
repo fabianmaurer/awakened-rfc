@@ -10,11 +10,15 @@ commands or clearly marked path placeholders.
 ## Lean working workflow
 
 - Keep work proportional to the request. Implement the agreed change and necessary integration; defer unrelated cleanup, redesign and tooling.
+- For small follow-up changes, inspect the known implementation and its direct callers, make the focused edit, then perform the required checks. Do not restart discovery or re-review the whole feature. Expand inspection only when a concrete dependency or inconsistency requires it.
+- Decide the affected behavior and necessary integration before editing. Do not grow a small request into a feature redesign, speculative edge-case audit, new preview, AI improvement or reporting extension unless required for the requested behavior. Mention useful optional work briefly instead of implementing it silently.
 - Reuse context and findings already established in the conversation. Do not repeat repository discovery or reread entire documents without a concrete reason.
 - Batch independent inspections. Read bounded snippets; parse minified XML to inspect selected entries instead of printing whole lines or files.
 - Use existing build, audit, generation and synchronization tools. Create new helpers only when needed for the implementation or ongoing maintenance, not merely to wrap a few edits.
 - Research only unresolved facts that affect the requested decision. Stop once there is sufficient evidence; do not turn routine implementation into a separate research project.
 - Choose static checks that cover the changed behavior and file types; do not run every available audit routinely. Run each applicable check once after the relevant edits. Repeat only after a failure, a further relevant edit or a specific unresolved concern. The no-unrequested-tests rule below still applies.
+- Finish the related edits and review their diff before building or synchronizing. Aim for one necessary DLL build and one synchronization pass per request; repeat only after a failure or a subsequent relevant change. Do not build after each small edit or rebuild merely for reassurance.
+- If a small change is taking unexpectedly long, identify the concrete blocker or scope expansion and simplify the approach. Do not respond by adding tooling, broad refactoring or more checks without evidence that they are needed. Stop once the requested behavior, necessary integration and required verification are complete.
 - Update an existing relevant document briefly when needed. Avoid duplicate reports, lengthy implementation narratives and transcripts of routine verification.
 - Give short progress updates about meaningful findings or blockers. Finish with the outcome, validation and any actual limitation; omit routine command inventories.
 - Preserve the legacy toolchain, localization, unique-power and user-operated gameplay requirements below. Efficiency must not bypass these safeguards.
@@ -27,6 +31,16 @@ Scenario `ModPath` values and launch arguments must use `Mods\Awakened RFC`.
 The repository is `git@github.com:fabianmaurer/awakened-rfc.git`. The checkout
 directory may have a different name from the mod directory. Internal `RFCMP` XML keys,
 defines and asset subdirectories remain valid identifiers.
+
+## Release ZIP naming
+
+Use `python tools/package_release.py` to create `dist/Awakened-RFC.zip` for
+ordinary release ZIP requests. When the user specifies a release version or
+tag, pass it unchanged with `--version` to produce
+`dist/Awakened-RFC-<version>.zip` (for example, `Awakened-RFC-v0.1.0.zip`).
+Do not invent version numbers or append dates, commit hashes or other labels.
+Keep the archive's top-level mod folder named `Awakened RFC`. The packager's
+`-reporting` suffix is reserved for explicitly requested development packages.
 
 ## Save compatibility
 
@@ -75,7 +89,7 @@ This invokes `nmake` for source/dependency preparation and `bin\jom build` for t
 - The DLL must be x86 and link against the VC7.1-era runtime (`MSVCR71.dll`, `msvcp71.dll`), Python 2.4 and `boost_python-vc71-mt-1_32.dll`.
 - Inspect DLL architecture and dependencies when changing the toolchain/link settings or preparing a release; do not repeat the inspection for ordinary builds using unchanged, already-verified settings. Do not ship a DLL that unexpectedly imports the modern VC runtime.
 - All multiplayer peers need the same mod files and DLL. In-game checks are user-operated: validate affected UI/loading when requested, and validate gameplay changes in multiplayer before claiming multiplayer readiness. Unrequested runtime validation is not a prerequisite for completing an implementation; state that it remains unverified where relevant.
-- For routine installed-mod synchronization, copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
+- For routine installed-mod synchronization, use a reporting-enabled DLL (`ARFC_ENABLE_REPORTING=1`) by default unless the user requests a different build. Ensure the installed DLL has this capability; build the reporting variant when needed instead of synchronizing a production DLL. Copy changed runtime files and the rebuilt DLL when applicable, and verify those copies. Reserve full runtime-manifest comparisons for release preparation, suspected workspace/install mismatches, or an explicit request. Do not synchronize documentation-only changes.
 - Do not add/run tests unless the user asks. The game itself is the authoritative load/runtime check.
 
 ### Player-specific event popups
@@ -91,10 +105,11 @@ Static review on 2026-10-18: checked all added event/decision paths for recipien
 
 ## Optional AI observer
 
-Keep optional reporting out of normal builds. Native reporting is guarded by
-`ARFC_ENABLE_REPORTING`, defaulting to zero; opt in through the legacy Makefile
-with `ARFC_ENABLE_REPORTING=1`. Python hooks use `Reporting.ENABLED`, which reads the
-DLL capability. Guard reporting imports and payload construction as well as
+Use reporting-enabled builds for local development and installed-mod
+synchronization by default, unless the user requests another build. Set
+`ARFC_ENABLE_REPORTING=1` through the legacy Makefile and local settings for these
+builds. The source fallback remains zero for production builds. Python hooks use
+`Reporting.ENABLED`, which reads the DLL capability. Guard reporting imports and payload construction as well as
 callbacks. Preserve gameplay callbacks independently of these guards. Normal
 release packaging must omit reporting implementations and reject a development
 DLL; see `testing/README.md` for the explicit development workflow.

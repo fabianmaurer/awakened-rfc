@@ -5,7 +5,10 @@
 
 #if ARFC_ENABLE_REPORTING
 // Process-local instrumentation, enabled only by authenticated observer autoplay.
+class CvUnit;
 extern bool g_observerPerformance;
+bool observerPerformanceSample(unsigned int salt);
+void observerPerformanceDecision(const char* reason, const CvUnit* unit, int value);
 void observerPerformanceStart();
 void observerPerformanceFlush();
 // Event counts and aggregate work, without a clock query for each event.
@@ -30,6 +33,9 @@ private:
 #else
 // Inline empty hooks disappear from optimized gameplay builds.
 #define g_observerPerformance false
+class CvUnit;
+inline bool observerPerformanceSample(unsigned int) { return false; }
+inline void observerPerformanceDecision(const char*, const CvUnit*, int) {}
 inline void observerPerformanceStart() {}
 inline void observerPerformanceFlush() {}
 inline void observerPerformanceCount(const char*, unsigned int = 1) {}

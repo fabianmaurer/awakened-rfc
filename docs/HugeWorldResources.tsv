@@ -1,0 +1,1008 @@
+resource	year	region	x	y
+CRAB	-3000	Gadir crab	81	65
+CLAM	-3000	Karalis shellfish	92	68
+BANANA	-3000	New Guinea early cultivation	187	41
+GEMS	-3000	Sri Lanka	150	47
+GOLD	-3000	New Guinea	186	42
+SPICES	-3000	Banda nutmeg	186	40
+SPICES	-3000	Moluccas cloves	186	43
+SPICES	-3000	Sri Lanka cinnamon	150	48
+SUGAR	-3000	New Guinea	188	41
+PIG	-3000	New Guinea	185	43
+SUGAR	1000	Sicily	99	65
+SUGAR	1500	Madeira	76	61
+SUGAR	1600	Barbados	57	53
+SUGAR	1600	Cuba	42	62
+SUGAR	1600	Guadeloupe	55	56
+SUGAR	1600	Hispaniola	49	59
+SUGAR	1600	Jamaica	44	59
+CORN	-3000	Balsas valley	26	61
+CORN	-3000	Ecuador coastal	42	43
+CORN	-3000	Guatemala	35	57
+CORN	-3000	Gulf Mexico lowlands	34	59
+CORN	-3000	Oaxaca	32	57
+CORN	-3000	north Peru coast	41	39
+COTTON	-3000	Gujarat	142	60
+COTTON	-3000	Indus Sindh	141	63
+COTTON	-3000	Peru central coast	43	36
+COTTON	-3000	Peru north coast	41	38
+COW	-3000	Anatolia	117	71
+COW	-3000	Britain	84	88
+COW	-3000	Danube	105	80
+COW	-3000	Deccan zebu	147	57
+COW	-3000	Denmark	97	89
+COW	-3000	Ethiopian highlands	118	47
+COW	-3000	Ganges	149	63
+COW	-3000	Gaul	89	80
+COW	-3000	Gujarat zebu	141	60
+COW	-3000	Indus Punjab	142	67
+COW	-3000	Ireland	79	91
+COW	-3000	Levant	118	63
+COW	-3000	Mesopotamia	125	67
+COW	-3000	Nile delta	110	57
+COW	-3000	Nubia	112	48
+COW	-3000	Po valley	97	76
+COW	-3000	Sahel east	94	47
+COW	-3000	Sahel west	84	49
+DYE	-3000	Anatolian madder	117	70
+DYE	-3000	Bengal indigo	154	62
+DYE	-3000	Britain woad	86	88
+DYE	-3000	China indigo	170	68
+DYE	-3000	European woad	88	80
+DYE	-3000	Indian Deccan indigo	146	57
+DYE	-3000	Indus indigo	142	61
+DYE	-3000	Levant madder	118	64
+DYE	-3000	Maya indigo	37	59
+DYE	-3000	Mexico cochineal	31	57
+DYE	-3000	Peru cochineal	45	39
+PIG	-3000	Anatolia	117	72
+PIG	-3000	Danube	104	80
+PIG	-3000	Ganges	150	63
+PIG	-3000	Gaul woodland farms	89	79
+PIG	-3000	Levant	119	63
+PIG	-3000	Po valley	96	76
+PIG	-3000	Rhineland	95	84
+PIG	-3000	Sichuan	162	68
+PIG	-3000	Yangtze	168	70
+PIG	-3000	Yellow River	166	75
+PIG	-3000	south China	170	67
+PIG	-3000	southern Britain	86	86
+RICE	-3000	Hunan	166	68
+RICE	-3000	lower Yangtze	171	71
+RICE	-3000	middle Yangtze	165	70
+RICE	-3000	south China	169	67
+SHEEP	-3000	Anatolia	120	71
+SHEEP	-3000	Atlas	83	59
+SHEEP	-3000	Bactria	137	73
+SHEEP	-3000	Balkans	107	76
+SHEEP	-3000	Britain	84	89
+SHEEP	-3000	Caucasus	125	73
+SHEEP	-3000	Crete uplands	111	63
+SHEEP	-3000	Gaul uplands	89	78
+SHEEP	-3000	Greece	108	69
+SHEEP	-3000	Iberian meseta	84	71
+SHEEP	-3000	Indus	142	65
+SHEEP	-3000	Iran	134	68
+SHEEP	-3000	Ireland	78	91
+SHEEP	-3000	Italy Apennines	99	71
+SHEEP	-3000	Levant	119	62
+SHEEP	-3000	Marmarican pasture	108	59
+SHEEP	-3000	Mesopotamia	124	67
+SHEEP	-3000	Nile	110	55
+SHEEP	-3000	Sardinia	94	70
+SHEEP	-3000	Tripolitanian pasture	97	59
+SHEEP	-3000	Zagros	128	67
+WHEAT	-3000	Algeria	89	63
+WHEAT	-3000	Anatolia	116	71
+WHEAT	-3000	Bactria	136	73
+WHEAT	-3000	British south	85	86
+WHEAT	-3000	Cyrenaican farmland	104	59
+WHEAT	-3000	Danube	105	79
+WHEAT	-3000	Eurotas valley cereals	106	65
+WHEAT	-3000	Ganges northwest	144	65
+WHEAT	-3000	Greece	108	71
+WHEAT	-3000	Guadalquivir	83	68
+WHEAT	-3000	Iberian interior	83	71
+WHEAT	-3000	Indus Punjab	141	67
+WHEAT	-3000	Indus Sindh	140	63
+WHEAT	-3000	Iranian plateau	133	67
+WHEAT	-3000	Ireland east	82	88
+WHEAT	-3000	Italian south	99	69
+WHEAT	-3000	Jutland	96	89
+WHEAT	-3000	Levant	119	64
+WHEAT	-3000	Lower Nile	110	56
+WHEAT	-3000	Mesopotamia north	126	68
+WHEAT	-3000	Mesopotamia south	125	65
+WHEAT	-3000	Morocco	83	61
+WHEAT	-3000	Paris basin	88	81
+WHEAT	-3000	Po valley	97	75
+WHEAT	-3000	Rhineland	95	83
+WHEAT	-3000	Sicily	97	65
+WHEAT	-3000	Sogdia	136	78
+WHEAT	-3000	Thrace	110	73
+WHEAT	-3000	Tunisia	94	62
+WHEAT	-3000	Ukraine	113	83
+WHEAT	-3000	Upper Nile	111	53
+WHEAT	-3000	southern Gaul	89	76
+WHEAT	-3000	southern Sweden	102	93
+WINE	-3000	Aegean	108	68
+WINE	-3000	Anatolia	116	70
+WINE	-3000	Armenia	126	71
+WINE	-3000	Crete vineyards	112	63
+WINE	-3000	Cyrenaican vineyards	103	59
+WINE	-3000	Georgia	124	73
+WINE	-3000	Levant	118	61
+WINE	-3000	Nile delta	111	57
+WINE	-3000	Zagros	130	68
+HORSE	-3000	Kazakhstan steppe	141	86
+HORSE	-3000	Pontic steppe	115	81
+HORSE	-3000	lower Volga Don	123	83
+RICE	-3000	Assam	158	63
+RICE	-3000	Bengal	153	62
+RICE	-3000	Odisha	153	61
+RICE	-3000	Yunnan	162	67
+RICE	-3000	middle Ganges	150	64
+WHEAT	-3000	Gansu Hexi	158	78
+WHEAT	-3000	Shandong	171	76
+WHEAT	-3000	Tarim oases	152	76
+WHEAT	-3000	north China	165	75
+HORSE	-3000	Eastern Nile delta	112	57
+CORN	-3000	Bolivia valleys	54	34
+CORN	-3000	Chile central	49	23
+CORN	-3000	Colombian valleys	45	44
+CORN	-3000	Peru highland valleys	46	39
+CORN	-3000	Yucatan	37	60
+COTTON	-3000	Maya lowlands	36	59
+COTTON	-3000	Mesoamerica Gulf	35	60
+HORSE	-3000	Anatolia	119	71
+HORSE	-3000	Balkans	106	76
+HORSE	-3000	Central Europe	100	83
+HORSE	-3000	Indus northwest	142	66
+HORSE	-3000	Iran	134	69
+HORSE	-3000	Mesopotamia	125	68
+HORSE	-3000	Mongolia	162	83
+HORSE	-3000	Ukraine	112	83
+HORSE	-3000	north China	166	78
+RICE	-3000	Mekong	165	56
+RICE	-3000	Red River	163	62
+RICE	-3000	central Thailand	163	55
+RICE	-3000	lower Burma	158	57
+RICE	-3000	south India	149	54
+SHEEP	-3000	Central Asian steppe	140	86
+SHEEP	-3000	Mongolia	162	84
+SHEEP	-3000	north China	165	78
+COW	-3000	east Africa	112	38
+COW	-3000	north China	166	76
+COW	-3000	southern Africa	109	26
+PIG	-3000	Japan	185	74
+PIG	-3000	Java	168	40
+PIG	-3000	Korea	177	77
+PIG	-3000	Southeast Asia	163	57
+SUGAR	-3000	Bengal	154	63
+SUGAR	-3000	Ganges	151	63
+SUGAR	-3000	south India	148	54
+WHEAT	-3000	Ethiopian highlands	118	48
+WHEAT	-3000	eastern Ganges	152	63
+WINE	-3000	Etruria	97	73
+WINE	-3000	Greece north	107	71
+WINE	-3000	Iberian south	84	67
+WINE	-3000	Italy Campania	99	70
+WINE	-3000	Sicily	98	65
+WINE	-3000	Tunisia	93	62
+HORSE	-3000	Arabia north	123	59
+HORSE	-3000	Britain	85	88
+HORSE	-3000	Central Asian oases	137	78
+HORSE	-3000	Gaul	90	80
+HORSE	-3000	Iberia	83	70
+HORSE	-3000	Numidia	90	62
+RICE	-3000	Japan Kyushu	179	69
+RICE	-3000	Java	171	41
+RICE	-3000	Korea	176	77
+RICE	-3000	Luzon	176	55
+RICE	-3000	Niger inland delta African rice	87	49
+RICE	-3000	Sri Lanka	151	47
+RICE	-3000	Sumatra	162	44
+RICE	-3000	upper Guinea African rice	83	46
+WINE	-3000	Gaul Mediterranean	91	76
+WINE	-3000	Iberian interior	86	71
+WINE	-3000	Bordeaux	86	78
+WINE	-3000	Burgundy	91	80
+WINE	-3000	Moselle	94	83
+WINE	-3000	Rhine	95	82
+CORN	-3000	Mississippi middle	37	75
+CORN	-3000	Ohio valley	41	76
+CORN	-3000	southwest pueblos	27	69
+COTTON	-3000	Central Asia	136	76
+COTTON	-3000	Deccan	147	56
+COTTON	-3000	Ganges	149	64
+COTTON	-3000	Nubia	112	50
+SUGAR	500	Java	169	41
+SUGAR	500	south China	170	66
+RICE	900	Iberian Valencia	87	70
+CORN	0	Great Lakes south	38	78
+CORN	0	Iroquois country	47	81
+CORN	0	Mississippi lower	37	71
+CORN	0	southeastern US	43	72
+CORN	-3000	southern Brazil	62	29
+COTTON	-3000	Bengal	153	63
+COTTON	1000	Egypt	111	58
+COTTON	1000	Iberian south	83	67
+COTTON	1000	Syria	120	65
+COTTON	1000	south China	169	66
+SUGAR	1000	Egypt	109	59
+SUGAR	1000	Iberian south	84	66
+SUGAR	1000	Khuzestan	129	63
+RICE	1500	Po valley	97	77
+CORN	1600	Balkans	107	75
+CORN	1600	Congo	105	38
+CORN	1600	Iberian north	83	72
+CORN	1600	India west	144	59
+CORN	1600	Po valley	99	76
+CORN	1600	Sichuan	163	68
+CORN	1600	Yunnan	161	67
+CORN	1600	western Africa	88	46
+COW	1600	Argentina Pampas	57	20
+COW	1600	Brazil northeast	66	41
+COW	1600	Caribbean Cuba	43	62
+COW	1600	Colombia	45	46
+COW	1600	Mexico central	28	60
+DYE	1600	Caribbean indigo	49	60
+DYE	1600	Carolina indigo	44	73
+HORSE	1600	Argentina Pampas	56	20
+HORSE	1600	Chile	49	21
+HORSE	1600	Mexico north	28	65
+PIG	1600	Brazil	66	33
+PIG	1600	Cuba	44	62
+PIG	1600	Mexico	29	59
+PIG	1600	US southeast	42	71
+SHEEP	1600	Argentina Patagonia	53	14
+SHEEP	1600	Mexico uplands	29	63
+SHEEP	1600	Peru highlands	45	38
+SUGAR	1600	Brazil Bahia	66	35
+SUGAR	1600	Brazil Pernambuco	70	38
+WHEAT	1600	Chile central	48	23
+WHEAT	1600	central Mexico	31	60
+WINE	1700	Argentina Mendoza	52	21
+WINE	1700	Chile central	48	21
+WINE	1700	South Africa Cape	105	16
+CORN	1750	China northeast	176	82
+CORN	1750	South Africa	110	23
+CORN	500	US Corn Belt	37	76
+COW	1750	Brazil south	61	29
+COW	1750	California	19	73
+COW	1750	Texas	31	70
+COW	1750	US east	45	75
+HORSE	1750	Brazil south	62	28
+HORSE	1750	Canada prairie	29	84
+HORSE	1750	US Great Plains	31	76
+HORSE	1750	US Texas	31	69
+RICE	1750	Brazil Maranhao	65	41
+RICE	1750	Carolina lowcountry	45	74
+SUGAR	1750	Louisiana	36	70
+WHEAT	1750	Argentina Pampas	55	20
+WHEAT	1750	New England	49	80
+WHEAT	1750	Pennsylvania	47	76
+WHEAT	1750	Virginia	44	75
+COTTON	-3000	Brazil northeast	68	39
+COTTON	1000	Egypt delta expansion	112	58
+COTTON	1000	US Alabama	41	70
+COTTON	1000	US Mississippi	36	71
+COTTON	1000	US Texas	33	70
+SHEEP	1800	Australia southeast	189	20
+SHEEP	1800	Australia southwest	168	21
+SHEEP	1800	Tasmania	185	13
+COW	1850	Australia Queensland	189	29
+COW	1850	Australia southeast	189	19
+COW	1850	New Zealand North Island	197	16
+HORSE	1850	Australia southeast	188	17
+RICE	1850	California Sacramento	18	76
+RICE	1850	Louisiana	37	69
+SHEEP	1850	New Zealand South Island	196	11
+WHEAT	1850	Australia southwest	167	20
+WHEAT	1850	Canadian prairie	28	84
+WHEAT	1850	New Zealand Canterbury	196	10
+WHEAT	1850	US Great Plains north	31	81
+WHEAT	1850	US Great Plains south	31	73
+WINE	1850	Australia south	182	18
+WINE	1850	California	18	75
+CLAM	-3000	Aegean shellfish	110	68
+CLAM	-3000	Australia southeast shellfish	191	20
+CLAM	-3000	Bengal estuary	154	60
+CLAM	-3000	Brazil northeast estuaries	70	41
+CLAM	-3000	Brazil south	65	26
+CLAM	-3000	British Columbia shellfish	16	87
+CLAM	-3000	Brittany oysters	83	80
+CLAM	-3000	California shellfish	18	73
+CLAM	-3000	Carolina estuaries	46	72
+CLAM	-3000	Channel oysters	86	84
+CLAM	-3000	Chesapeake shellfish	49	75
+CLAM	-3000	Chile coast	47	21
+CLAM	-3000	China southeast shellfish	175	68
+CLAM	-3000	Danish shellfish	97	88
+CLAM	-3000	Dutch Wadden shellfish	94	87
+CLAM	-3000	East Africa shellfish	116	34
+CLAM	-3000	Florida Gulf	42	68
+CLAM	-3000	Galician shellfish	78	75
+CLAM	-3000	Guangdong estuary shellfish	173	65
+CLAM	-3000	Guianas mangrove shellfish	59	49
+CLAM	-3000	Gulf Mexico oysters	39	68
+CLAM	-3000	Ireland shellfish	79	90
+CLAM	-3000	Japan shellfish	185	72
+CLAM	-3000	Korea shellfish	176	79
+CLAM	-3000	Malabar estuary shellfish	144	51
+CLAM	-3000	Mediterranean shellfish	97	67
+CLAM	-3000	Mozambique estuary shellfish	118	31
+CLAM	-3000	New England shellfish	52	80
+CLAM	-3000	New Guinea estuary shellfish	192	44
+CLAM	-3000	New Zealand shellfish	199	18
+CLAM	-3000	Nova Scotia shellfish	55	83
+CLAM	-3000	Persian Gulf shellfish	130	57
+CLAM	-3000	Peru coast	39	39
+CLAM	-3000	Philippines mangrove shellfish	176	52
+CLAM	-3000	Portugal shellfish	78	70
+CLAM	-3000	Senegal estuary shellfish	77	48
+CLAM	-3000	Sumatra estuary shellfish	163	46
+CLAM	-3000	Thailand Gulf shellfish	164	52
+CLAM	-3000	Tunisia shellfish	95	62
+CLAM	-3000	Vietnam shellfish	166	60
+CLAM	-3000	West Africa estuaries	82	43
+CRAB	-3000	Alaska king crab	10	94
+CRAB	-3000	Australia north mud crab	178	39
+CRAB	-3000	Bengal crab	155	61
+CRAB	-3000	British Columbia crab	17	88
+CRAB	-3000	Brittany crab	82	80
+CRAB	-3000	California Dungeness	17	76
+CRAB	-3000	Chesapeake blue crab	48	75
+CRAB	-3000	China coast crab	175	71
+CRAB	-3000	Gulf Mexico blue crab	37	67
+CRAB	-3000	Iberia crab	78	71
+CRAB	-3000	Ireland crab	78	88
+CRAB	-3000	Japan Hokkaido crab	187	83
+CRAB	-3000	Japan snow crab	183	76
+CRAB	-3000	Java mangrove crab	170	42
+CRAB	-3000	Korea crab	177	78
+CRAB	-3000	Labrador crab	57	92
+CRAB	-3000	Madagascar mangrove crab	119	31
+CRAB	-3000	Myanmar mangrove crab	157	57
+CRAB	-3000	New Zealand coastal crab	196	16
+CRAB	-3000	North Sea crab	92	92
+CRAB	-3000	Norway crab	93	99
+CRAB	-3000	Nova Scotia crab	54	81
+CRAB	-3000	Oman coast crab	134	54
+CRAB	-3000	Oregon crab	16	80
+CRAB	-3000	Patagonia crab	54	10
+CRAB	-3000	Queensland mud crab	190	32
+CRAB	-3000	Scottish crab	85	97
+CRAB	-3000	Vietnam crab	168	57
+DEER	-3000	Alaska caribou	13	95
+DEER	-3000	Amur deer	180	88
+DEER	-3000	Appalachians deer	45	76
+DEER	-3000	Britain woodland	85	89
+DEER	-3000	Canada prairie edge	29	86
+DEER	-3000	Finland reindeer	109	101
+DEER	-3000	Gaul red deer	88	79
+DEER	-3000	Great Lakes deer	38	80
+DEER	-3000	Japan deer	184	74
+DEER	-3000	Korea deer	178	82
+DEER	-3000	Manchuria deer	174	83
+DEER	-3000	Pacific northwest deer	18	84
+DEER	-3000	Patagonia deer	49	15
+DEER	-3000	Poland woodland	104	86
+DEER	-3000	Quebec caribou	48	88
+DEER	-3000	Russia forest	120	93
+DEER	-3000	Scandinavia reindeer	104	102
+DEER	-3000	Scotland red deer	84	94
+DEER	-3000	Siberia central	160	88
+DEER	-3000	Siberia west	143	90
+DEER	-3000	Urals reindeer	130	94
+DEER	-3000	central Europe red deer	99	84
+FISH	-3000	Adriatic	102	73
+FISH	-3000	Aegean	110	67
+FISH	-3000	Alaska Gulf east	15	94
+FISH	-3000	Alaska salmon	13	94
+FISH	-3000	Alboran Sea	87	65
+FISH	-3000	Algerian coast	89	65
+FISH	-3000	Angola upwelling	97	33
+FISH	-3000	Arabian Sea	137	59
+FISH	-3000	Arafura shelf	187	38
+FISH	-3000	Bahamas banks	47	65
+FISH	-3000	Baja Pacific	20	68
+FISH	-3000	Baltic	105	93
+FISH	-3000	Baltic south coast	104	88
+FISH	-3000	Bass Strait fisheries	186	15
+FISH	-3000	Bay Bengal	154	57
+FISH	-3000	Bay Biscay south	83	76
+FISH	-3000	Bengal outer shelf	154	59
+FISH	-3000	Benguela	97	26
+FISH	-3000	Bering Sea	198	96
+FISH	-3000	Biscay	81	76
+FISH	-3000	Black Sea	116	76
+FISH	-3000	Black Sea east shelf	121	75
+FISH	-3000	Brazil northeast shelf	70	42
+FISH	-3000	Brazil shelf	71	39
+FISH	-3000	Brazil southeast shelf	68	33
+FISH	-3000	British Atlantic	79	89
+FISH	-3000	British Columbia salmon	16	86
+FISH	-3000	California current	16	76
+FISH	-3000	Cape	105	15
+FISH	-3000	Carolina shelf	47	73
+FISH	-3000	Chesapeake	49	76
+FISH	-3000	Chile central upwelling	46	21
+FISH	-3000	Chile northern upwelling	45	31
+FISH	-3000	Chile upwelling	46	25
+FISH	-3000	Coromandel shelf	152	54
+FISH	-3000	Crete coastal fish	110	62
+FISH	-3000	Cuba north shelf	44	63
+FISH	-3000	Cyrenaican coast	104	60
+FISH	-3000	East China Sea	179	70
+FISH	-3000	Ecuador upwelling	38	46
+FISH	-3000	Egyptian Mediterranean coast	110	60
+FISH	-3000	Faroes shelf	83	99
+FISH	-3000	Florida Atlantic	47	67
+FISH	-3000	Georges Bank	52	79
+FISH	-3000	Grand Banks	57	84
+FISH	-3000	Guianas shelf	61	48
+FISH	-3000	Guinea shelf	81	44
+FISH	-3000	Gujarat shelf	141	59
+FISH	-3000	Gulf Aden	125	47
+FISH	-3000	Gulf California	23	67
+FISH	-3000	Gulf California north	23	70
+FISH	-3000	Gulf Lion	92	73
+FISH	-3000	Gulf Maine	53	81
+FISH	-3000	Gulf St Lawrence	52	84
+FISH	-3000	Gulf Thailand	166	52
+FISH	-3000	Gulf Tonkin	170	62
+FISH	-3000	Hokkaido	189	81
+FISH	-3000	Iceland south	76	103
+FISH	-3000	Iceland west shelf	71	103
+FISH	-3000	Ionian Sea	104	67
+FISH	-3000	Japan Pacific	189	73
+FISH	-3000	Japan Seto coast	183	71
+FISH	-3000	Japan Tohoku shelf	189	78
+FISH	-3000	Java Sea	169	42
+FISH	-3000	Java south shelf	168	39
+FISH	-3000	Kamchatka shelf	197	92
+FISH	-3000	Korean east shelf	181	78
+FISH	-3000	Labrador shelf	57	93
+FISH	-3000	Leeward Islands shelf	55	57
+FISH	-3000	Levantine coast	116	63
+FISH	-3000	Louisiana shelf	36	67
+FISH	-3000	Makassar Strait	178	44
+FISH	-3000	Malabar shelf	143	52
+FISH	-3000	Malacca strait	162	47
+FISH	-3000	Mauritania upwelling	76	54
+FISH	-3000	Mediterranean west	90	68
+FISH	-3000	Mekong shelf	169	55
+FISH	-3000	Morocco northern shelf	78	62
+FISH	-3000	Morocco upwelling	78	59
+FISH	-3000	Mozambique channel	118	33
+FISH	-3000	Myanmar shelf	158	55
+FISH	-3000	Namibia upwelling	97	23
+FISH	-3000	New England outer shelf	52	78
+FISH	-3000	New Guinea coast	193	45
+FISH	-3000	New Zealand	197	18
+FISH	-3000	New Zealand east shelf	199	19
+FISH	-3000	Newfoundland east banks	58	88
+FISH	-3000	Nigeria shelf	95	41
+FISH	-3000	North Sea	93	91
+FISH	-3000	North Sea south banks	92	88
+FISH	-3000	Norway central shelf	95	101
+FISH	-3000	Norwegian coast	92	99
+FISH	-3000	Nova Scotia shelf	55	82
+FISH	-3000	Oman upwelling	134	53
+FISH	-3000	Oregon upwelling	15	80
+FISH	-3000	Patagonia northern shelf	59	16
+FISH	-3000	Patagonia shelf	57	13
+FISH	-3000	Peru central upwelling	39	38
+FISH	-3000	Peru upwelling north	38	41
+FISH	-3000	Peru upwelling south	41	36
+FISH	-3000	Philippines	178	54
+FISH	-3000	Philippines central shelf	178	50
+FISH	-3000	Portuguese upwelling	77	71
+FISH	-3000	Puerto Rico shelf	53	60
+FISH	-3000	Queensland shelf	191	31
+FISH	-3000	Red Sea	117	53
+FISH	-3000	Rio de la Plata shelf	61	21
+FISH	-3000	Sakhalin shelf	186	88
+FISH	-3000	Scottish east shelf	88	94
+FISH	-3000	Sea Okhotsk	191	88
+FISH	-3000	Senegal upwelling	76	50
+FISH	-3000	Shandong shelf	175	75
+FISH	-3000	Sicily channel	97	63
+FISH	-3000	Skagerrak	98	92
+FISH	-3000	Somali upwelling	125	43
+FISH	-3000	Sri Lanka	153	49
+FISH	-3000	Sumatra west shelf	159	46
+FISH	-3000	Sunda shelf	166	46
+FISH	-3000	Taiwan Strait	176	67
+FISH	-3000	Trinidad shelf	57	52
+FISH	-3000	Tripolitanian coast	99	61
+FISH	-3000	Tyrrhenian Sea	95	70
+FISH	-3000	Vancouver outer coast	16	84
+FISH	-3000	Vietnam coast	168	59
+FISH	-3000	Windward Islands shelf	54	54
+FISH	-3000	Yellow Sea	174	75
+FISH	-3000	Yucatan shelf	39	62
+FISH	-3000	south China coast	175	65
+FISH	-3000	southeast Australia	192	21
+FISH	-3000	southwest Australia	165	20
+FUR	-3000	Alaska	14	95
+FUR	-3000	Amur	180	87
+FUR	-3000	Baikal	160	87
+FUR	-3000	Finland	109	99
+FUR	-3000	Great Lakes	39	81
+FUR	-3000	Hokkaido	184	84
+FUR	-3000	Hudson Bay south	39	84
+FUR	-3000	Kamchatka	193	93
+FUR	-3000	Mackenzie	28	94
+FUR	-3000	New England	48	80
+FUR	-3000	Novgorod	112	90
+FUR	-3000	Ob basin	142	90
+FUR	-3000	Pacific northwest	18	85
+FUR	-3000	Quebec	48	87
+FUR	-3000	Scandinavia	102	99
+FUR	-3000	Scotland	83	94
+FUR	-3000	Urals	130	93
+FUR	-3000	Volga forests	123	91
+FUR	-3000	Yenisei	154	90
+INCENSE	-3000	Dhofar frankincense	130	52
+INCENSE	-3000	Ethiopia myrrh	120	44
+INCENSE	-3000	Hadramaut frankincense	128	50
+INCENSE	-3000	Somalia myrrh	121	42
+INCENSE	-3000	Yemen myrrh	123	52
+IVORY	-3000	Akan forest elephants	89	44
+IVORY	-3000	Borneo elephants	172	46
+IVORY	-3000	Cameroon elephants	99	46
+IVORY	-3000	Congo forest elephants	106	39
+IVORY	-3000	East Africa elephants	112	37
+IVORY	-3000	Ethiopian lowlands	117	45
+IVORY	-3000	Guinea elephants	86	44
+IVORY	-3000	India Assam elephants	156	63
+IVORY	-3000	India eastern elephants	152	60
+IVORY	-3000	Myanmar elephants	158	60
+IVORY	-3000	Nigeria elephants	95	42
+IVORY	-3000	Sri Lanka elephants	151	46
+IVORY	-3000	Sudan elephants	112	47
+IVORY	-3000	Sumatra elephants	161	44
+IVORY	-3000	Thailand elephants	163	56
+IVORY	-3000	Zambezi elephants	112	31
+IVORY	-3000	southern Africa elephants	109	25
+SILK	-3000	Sichuan	162	69
+SILK	-3000	lower Yangtze	170	71
+SILK	-3000	lower Yellow River	168	75
+SPICES	-3000	Bengal ginger	155	63
+SPICES	-3000	Guinea grains of paradise	84	44
+SPICES	-3000	Java spices	169	40
+SPICES	-3000	Malabar pepper	145	52
+SPICES	-3000	Sumatra pepper	161	45
+SPICES	-3000	southwest China ginger	162	64
+WHALE	-3000	Alaska whales	6	95
+WHALE	-3000	Australia south whales	180	17
+WHALE	-3000	Azores whales	69	71
+WHALE	-3000	Biscay right whales	79	76
+WHALE	-3000	California whales	16	73
+WHALE	-3000	Chile whales	46	23
+WHALE	-3000	Iceland whales	76	100
+WHALE	-3000	Indian Ocean whales	125	29
+WHALE	-3000	Japan whales	188	72
+WHALE	-3000	New Zealand whales	195	13
+WHALE	-3000	Newfoundland whales	58	84
+WHALE	-3000	North Pacific whales	192	85
+WHALE	-3000	Norway whales	92	100
+WHALE	-3000	Patagonia whales	58	14
+WHALE	-3000	Peru whales	38	38
+WHALE	-3000	South Africa whales	104	14
+BANANA	-3000	Java	170	41
+BANANA	-3000	Malaysia	162	48
+BANANA	-3000	Philippines	175	55
+BANANA	-3000	Sri Lanka	151	48
+BANANA	-3000	Sumatra	163	43
+BANANA	-3000	south India	149	55
+SILK	200	India Assam	157	62
+SILK	200	Japan	182	73
+SILK	200	Korea	178	76
+BANANA	500	Congo southern fringe	105	37
+BANANA	500	East African lakes	112	40
+BANANA	500	coastal East Africa	115	34
+SILK	600	Byzantine Anatolia	115	71
+SILK	600	Iran	132	67
+SILK	600	Sogdia	136	77
+BANANA	1000	Guinea	86	45
+SILK	1200	Iberian Valencia	86	70
+SILK	1200	Italy Lucca	95	75
+BANANA	1600	Brazil coastal	68	38
+BANANA	1600	Caribbean	48	59
+BANANA	1600	Central America	38	54
+SPICES	1750	Zanzibar cloves	116	33
+ALUMINUM	-3000	Anatolia	118	70
+ALUMINUM	-3000	Arkansas	34	73
+ALUMINUM	-3000	Bintan	163	47
+ALUMINUM	-3000	Brazil Minas Gerais	63	30
+ALUMINUM	-3000	Brazil Para	63	43
+ALUMINUM	-3000	Cameroon	97	45
+ALUMINUM	-3000	China Guangxi	165	65
+ALUMINUM	-3000	China Guizhou	163	65
+ALUMINUM	-3000	China Henan	165	72
+ALUMINUM	-3000	Dalmatia	104	75
+ALUMINUM	-3000	Ghana bauxite	90	44
+ALUMINUM	-3000	Greece	107	69
+ALUMINUM	-3000	Guinea bauxite	84	45
+ALUMINUM	-3000	Guyana	58	48
+ALUMINUM	-3000	Hispaniola	48	60
+ALUMINUM	-3000	Hungary	103	81
+ALUMINUM	-3000	India Gujarat	142	59
+ALUMINUM	-3000	India Odisha	152	59
+ALUMINUM	-3000	Jamaica	44	58
+ALUMINUM	-3000	Northern Territory Gove	179	36
+ALUMINUM	-3000	Provence	92	77
+ALUMINUM	-3000	Queensland Weipa	185	35
+ALUMINUM	-3000	Suriname	60	46
+ALUMINUM	-3000	Urals	131	89
+ALUMINUM	-3000	Vietnam central highlands	166	57
+ALUMINUM	-3000	Western Australia Darling	167	22
+COAL	-3000	Alberta	24	83
+COAL	-3000	Appalachian north	44	76
+COAL	-3000	Appalachian south	41	74
+COAL	-3000	Asturias	83	73
+COAL	-3000	Bengal	156	62
+COAL	-3000	Bohemia	99	83
+COAL	-3000	Colombia	45	50
+COAL	-3000	Donbas	118	81
+COAL	-3000	Fushun	175	80
+COAL	-3000	Henan	166	73
+COAL	-3000	Hokkaido	184	83
+COAL	-3000	Illinois basin	36	76
+COAL	-3000	Jharkhand	151	62
+COAL	-3000	Kalimantan	172	45
+COAL	-3000	Karaganda	142	84
+COAL	-3000	Korea	176	81
+COAL	-3000	Kuzbass	152	87
+COAL	-3000	Kyushu	181	69
+COAL	-3000	New South Wales	189	22
+COAL	-3000	New Zealand South Island	197	12
+COAL	-3000	Northumberland	86	93
+COAL	-3000	Nova Scotia	54	83
+COAL	-3000	Pechora	127	94
+COAL	-3000	Powder River	28	82
+COAL	-3000	Queensland	189	30
+COAL	-3000	Ruhr	94	84
+COAL	-3000	Saar	92	81
+COAL	-3000	Scotland	84	93
+COAL	-3000	Shaanxi	162	72
+COAL	-3000	Shanxi	163	75
+COAL	-3000	Sichuan	161	69
+COAL	-3000	Silesia	104	83
+COAL	-3000	South Africa	107	22
+COAL	-3000	South Wales	83	89
+COAL	-3000	Sumatra	162	43
+COAL	-3000	Wallonia	91	83
+COAL	-3000	Yorkshire	86	89
+COAL	-3000	Zimbabwe	110	28
+COAL	-3000	central India	149	59
+COPPER	-3000	Akjoujt	82	52
+COPPER	-3000	Altai	148	84
+COPPER	-3000	Anatolia	120	70
+COPPER	-3000	Arizona	25	70
+COPPER	-3000	Atacama	49	27
+COPPER	-3000	Atlas	82	60
+COPPER	-3000	Balkans	105	74
+COPPER	-3000	Balkhash	144	83
+COPPER	-3000	British Columbia	19	87
+COPPER	-3000	Butte	25	81
+COPPER	-3000	Carajas	64	42
+COPPER	-3000	Caucasus	124	75
+COPPER	-3000	Cyprus	115	65
+COPPER	-3000	Falun	100	97
+COPPER	-3000	Faynan	118	57
+COPPER	-3000	Great Lakes	37	81
+COPPER	-3000	Great Orme	82	89
+COPPER	-3000	Iberian pyrite belt	82	68
+COPPER	-3000	Iranian plateau	133	68
+COPPER	-3000	Japan	187	74
+COPPER	-3000	Jiangxi	168	68
+COPPER	-3000	Katanga	107	37
+COPPER	-3000	Khetri	144	62
+COPPER	-3000	Michoacan	27	59
+COPPER	-3000	Mitterberg	99	78
+COPPER	-3000	Mount Isa	183	32
+COPPER	-3000	Namaqualand	105	21
+COPPER	-3000	Namibia	100	30
+COPPER	-3000	Oman	133	55
+COPPER	-3000	Peru Andes	45	37
+COPPER	-3000	Rio Tinto	81	67
+COPPER	-3000	Ross Island	78	89
+COPPER	-3000	Rudna Glava	105	77
+COPPER	-3000	Sinai	115	55
+COPPER	-3000	Singhbhum	151	61
+COPPER	-3000	Sonora	26	64
+COPPER	-3000	South Australia	178	21
+COPPER	-3000	Timna	115	59
+COPPER	-3000	Tonglushan	166	71
+COPPER	-3000	Urals	131	87
+COPPER	-3000	Yunnan	162	65
+COPPER	-3000	Zambia copperbelt	107	32
+COPPER	-3000	central Chile	49	22
+GEMS	-3000	Afghanistan Badakhshan	139	72
+GEMS	-3000	Altai	149	84
+GEMS	-3000	Angola diamonds	104	33
+GEMS	-3000	Australia Argyle	177	34
+GEMS	-3000	Brazil Bahia	66	34
+GEMS	-3000	Brazil Minas Gerais	64	30
+GEMS	-3000	Colombia emeralds	45	45
+GEMS	-3000	Congo diamonds	106	38
+GEMS	-3000	Egypt emeralds	115	51
+GEMS	-3000	Golconda	149	57
+GEMS	-3000	Kashmir	144	67
+GEMS	-3000	Madagascar	121	28
+GEMS	-3000	Mozambique	115	29
+GEMS	-3000	Myanmar Mogok	157	61
+GEMS	-3000	Myanmar jade	158	65
+GEMS	-3000	Namibia diamonds	99	24
+GEMS	-3000	Panna	149	62
+GEMS	-3000	Sinai turquoise	115	56
+GEMS	-3000	South Africa Kimberley	105	22
+GEMS	-3000	Tanzania	113	36
+GEMS	-3000	Thailand Cambodia	166	54
+GEMS	-3000	Urals	131	90
+GEMS	-3000	Vietnam rubies	162	62
+GOLD	-3000	Altai	149	85
+GOLD	-3000	Armenia	125	71
+GOLD	-3000	Asturias	82	73
+GOLD	-3000	Bambuk	83	47
+GOLD	-3000	Black Hills	29	80
+GOLD	-3000	Bolivia	51	35
+GOLD	-3000	Borneo	171	44
+GOLD	-3000	Bure	86	46
+GOLD	-3000	California Sierra	18	74
+GOLD	-3000	Colombia	43	47
+GOLD	-3000	Colorado	29	75
+GOLD	-3000	Dacia	109	78
+GOLD	-3000	Ecuador	42	41
+GOLD	-3000	Egyptian eastern desert	115	53
+GOLD	-3000	Ethiopian highlands	120	46
+GOLD	-3000	Ghana Akan	87	42
+GOLD	-3000	Ghanaian rivers	88	43
+GOLD	-3000	Hutti	147	58
+GOLD	-3000	Irish gold	78	90
+GOLD	-3000	Kalgoorlie	171	19
+GOLD	-3000	Karnataka Kolar	147	54
+GOLD	-3000	Kolyma	189	99
+GOLD	-3000	Lobi	89	47
+GOLD	-3000	Lydia	113	69
+GOLD	-3000	Mexico	28	63
+GOLD	-3000	Minas Gerais	62	30
+GOLD	-3000	Nevada	23	77
+GOLD	-3000	Nubia eastern desert	115	49
+GOLD	-3000	Peru	44	37
+GOLD	-3000	Shandong	172	76
+GOLD	-3000	Sumatra	161	43
+GOLD	-3000	Tanzania	113	35
+GOLD	-3000	Thrace	108	74
+GOLD	-3000	Transbaikal	164	87
+GOLD	-3000	Urals	132	88
+GOLD	-3000	Victoria	183	17
+GOLD	-3000	Wales	83	88
+GOLD	-3000	Witwatersrand	107	21
+GOLD	-3000	Yunnan	161	65
+GOLD	-3000	Zimbabwe	111	29
+IRON	-3000	Afghanistan	139	69
+IRON	-3000	Alabama	39	70
+IRON	-3000	Algeria	88	62
+IRON	-3000	Altai	150	82
+IRON	-3000	Anatolia	121	71
+IRON	-3000	Angara	159	88
+IRON	-3000	Asturias	83	74
+IRON	-3000	California	18	77
+IRON	-3000	Carajas	64	43
+IRON	-3000	Chota Nagpur	152	62
+IRON	-3000	Congo	106	37
+IRON	-3000	Cumbria	83	90
+IRON	-3000	Dacia	109	79
+IRON	-3000	Deccan	145	60
+IRON	-3000	Elba	94	69
+IRON	-3000	Etruria	96	74
+IRON	-3000	Gabon	99	41
+IRON	-3000	Guinea	85	45
+IRON	-3000	Hebei	166	77
+IRON	-3000	Iran	132	68
+IRON	-3000	Japan Chugoku	183	70
+IRON	-3000	Karnataka	144	54
+IRON	-3000	Kiruna	104	104
+IRON	-3000	Korea	177	76
+IRON	-3000	Krivyi Rih	114	81
+IRON	-3000	Kursk	116	86
+IRON	-3000	Labrador	54	88
+IRON	-3000	Lebanon	119	61
+IRON	-3000	Liaoning	174	80
+IRON	-3000	Lorraine	91	81
+IRON	-3000	Marcona	45	34
+IRON	-3000	Meroe	111	47
+IRON	-3000	Mesabi	34	80
+IRON	-3000	Michigan	37	80
+IRON	-3000	Minas Gerais	66	32
+IRON	-3000	Missouri	34	75
+IRON	-3000	Moncayo	86	72
+IRON	-3000	Morocco	82	59
+IRON	-3000	Nigeria	95	47
+IRON	-3000	Noricum	101	79
+IRON	-3000	Normandy	87	81
+IRON	-3000	Nubia	111	48
+IRON	-3000	Odisha	152	61
+IRON	-3000	Pilbara	169	29
+IRON	-3000	Quebec	47	86
+IRON	-3000	Senegal	81	48
+IRON	-3000	Shandong	171	73
+IRON	-3000	Shanxi	163	74
+IRON	-3000	South Africa	106	21
+IRON	-3000	South Australia	179	21
+IRON	-3000	Sweden Bergslagen	101	97
+IRON	-3000	Thrace	108	73
+IRON	-3000	Urals	132	87
+IRON	-3000	Weald	87	86
+IRON	-3000	Yilgarn	167	23
+IRON	-3000	Yunnan	161	66
+IRON	-3000	Zimbabwe	109	28
+IRON	-3000	central Kazakhstan	141	84
+IRON	-3000	middle Yangtze	167	70
+OIL	-3000	Alaska north slope	13	104
+OIL	-3000	Alberta	24	89
+OIL	-3000	Algeria	89	57
+OIL	-3000	Angola offshore	97	34
+OIL	-3000	Argentina Patagonia	52	13
+OIL	-3000	Assam	157	64
+OIL	-3000	Baku	129	76
+OIL	-3000	Bass Strait offshore	185	15
+OIL	-3000	Borneo	172	47
+OIL	-3000	Brazil Santos offshore	65	27
+OIL	-3000	Brunei offshore	173	49
+OIL	-3000	California	19	72
+OIL	-3000	Caspian northeast	130	80
+OIL	-3000	Daqing	178	84
+OIL	-3000	Egypt Suez	113	56
+OIL	-3000	Gabon offshore	96	39
+OIL	-3000	Gujarat	143	60
+OIL	-3000	Kazakhstan	134	81
+OIL	-3000	Khuzestan	128	63
+OIL	-3000	Kuwait	126	60
+OIL	-3000	Libya	99	57
+OIL	-3000	Louisiana offshore	37	66
+OIL	-3000	Mesopotamia Kirkuk	126	67
+OIL	-3000	Mexico Gulf	33	63
+OIL	-3000	Nigeria delta offshore	95	39
+OIL	-3000	North Sea east offshore	97	94
+OIL	-3000	North Sea west offshore	91	94
+OIL	-3000	Northwest Australia offshore	168	38
+OIL	-3000	Norway offshore	91	99
+OIL	-3000	Oklahoma	33	73
+OIL	-3000	Oman	132	55
+OIL	-3000	Persian Gulf offshore	131	59
+OIL	-3000	Punjab Potwar	142	68
+OIL	-3000	Sakhalin	184	88
+OIL	-3000	Shengli	171	77
+OIL	-3000	Sudan	113	47
+OIL	-3000	Sumatra	160	46
+OIL	-3000	Tarim	151	76
+OIL	-3000	Texas	30	70
+OIL	-3000	Timan Pechora	126	94
+OIL	-3000	Trinidad	56	51
+OIL	-3000	Venezuela Maracaibo	46	50
+OIL	-3000	Venezuela Orinoco	54	50
+OIL	-3000	Volga Urals	128	88
+OIL	-3000	eastern Arabia	128	57
+OIL	-3000	north Java	170	40
+SILVER	-3000	Anatolia	118	71
+SILVER	-3000	Armenia	125	72
+SILVER	-3000	Bohemia	99	81
+SILVER	-3000	Broken Hill	181	20
+SILVER	-3000	Chile Norte Chico	48	22
+SILVER	-3000	Colorado	29	74
+SILVER	-3000	Erzgebirge	98	81
+SILVER	-3000	Guanajuato	28	62
+SILVER	-3000	Harz	98	84
+SILVER	-3000	Iberian southeast	87	68
+SILVER	-3000	Idaho	23	81
+SILVER	-3000	Iran	133	69
+SILVER	-3000	Japan Iwami	182	70
+SILVER	-3000	Korea	177	82
+SILVER	-3000	Laurion	107	68
+SILVER	-3000	Mongolia	165	80
+SILVER	-3000	Nevada Comstock	21	78
+SILVER	-3000	Norway Kongsberg	98	97
+SILVER	-3000	Peru Pasco	44	39
+SILVER	-3000	Potosi	54	33
+SILVER	-3000	Rio Tinto	82	67
+SILVER	-3000	Sardinia	94	68
+SILVER	-3000	Siphnos	109	66
+SILVER	-3000	Taxco	29	58
+SILVER	-3000	Yunnan	161	64
+SILVER	-3000	Zacatecas	29	65
+URANIUM	-3000	Athabasca	31	90
+URANIUM	-3000	Australia Olympic Dam	177	21
+URANIUM	-3000	Australia Ranger	177	35
+URANIUM	-3000	Brazil Bahia	67	35
+URANIUM	-3000	China Jiangxi	167	68
+URANIUM	-3000	Colorado plateau	25	78
+URANIUM	-3000	Congo Shinkolobwe	109	36
+URANIUM	-3000	Czech Bohemia	100	82
+URANIUM	-3000	Elliot Lake	41	80
+URANIUM	-3000	France Limousin	90	78
+URANIUM	-3000	India Jaduguda	150	62
+URANIUM	-3000	Kazakhstan Chu Sarysu	142	80
+URANIUM	-3000	Namibia Rossing	98	26
+URANIUM	-3000	New Mexico	28	70
+URANIUM	-3000	South Africa	106	22
+URANIUM	-3000	Ukraine	115	84
+URANIUM	-3000	Uzbekistan Kyzylkum	136	80
+MARBLE	-3000	Afghanistan	138	69
+MARBLE	-3000	Belgian marble	90	83
+MARBLE	-3000	British Columbia	19	86
+MARBLE	-3000	Carrara	94	75
+MARBLE	-3000	Dokimeion	115	70
+MARBLE	-3000	Georgia	40	70
+MARBLE	-3000	Hunan	165	68
+MARBLE	-3000	Iberian Estremoz	81	68
+MARBLE	-3000	Irish Connemara	79	92
+MARBLE	-3000	Macedonia	106	73
+MARBLE	-3000	Makrana	143	62
+MARBLE	-3000	Norwegian Fauske	100	102
+MARBLE	-3000	Paros	109	68
+MARBLE	-3000	Pentelikon	106	68
+MARBLE	-3000	Proconnesus	113	71
+MARBLE	-3000	Pyrenees	86	75
+MARBLE	-3000	Thasos	109	71
+MARBLE	-3000	Urals	130	89
+MARBLE	-3000	Vermont	49	82
+MARBLE	-3000	Yunnan Dali	159	67
+STONE	-3000	Aegean	106	70
+STONE	-3000	Anatolia	118	72
+STONE	-3000	Andean stone	43	37
+STONE	-3000	Angkor sandstone	166	56
+STONE	-3000	Armorica granite	84	81
+STONE	-3000	Aswan granite	112	52
+STONE	-3000	Australia sandstone	190	21
+STONE	-3000	Bohemian sandstone	101	83
+STONE	-3000	China central plains	165	73
+STONE	-3000	Deccan basalt	144	56
+STONE	-3000	Ethiopian basalt	119	46
+STONE	-3000	Fujian granite	173	68
+STONE	-3000	Ganges sandstone	150	61
+STONE	-3000	German sandstone	97	83
+STONE	-3000	Iberian granite	82	70
+STONE	-3000	Iranian limestone	130	67
+STONE	-3000	Irish limestone	77	89
+STONE	-3000	Japan granite	185	75
+STONE	-3000	Korea granite	175	79
+STONE	-3000	Latium tuff	98	71
+STONE	-3000	Levant limestone	120	62
+STONE	-3000	Malta	99	60
+STONE	-3000	Mesopotamian uplands	127	70
+STONE	-3000	New England granite	51	81
+STONE	-3000	Nile limestone	112	56
+STONE	-3000	Po foothills	96	75
+STONE	-3000	Portugal limestone	79	69
+STONE	-3000	Rajasthan sandstone	144	61
+STONE	-3000	Scandinavian granite	102	96
+STONE	-3000	Sichuan sandstone	163	69
+STONE	-3000	Sinai	113	55
+STONE	-3000	Ukrainian granite	113	82
+STONE	-3000	Wales slate	83	87
+STONE	-3000	Wessex chalk	84	86
+STONE	-3000	Yucatan limestone	36	60
+STONE	-3000	Zimbabwe granite	110	27
+STONE	-3000	central Mexico basalt	29	61
+GOLD	-3000	Witwatersrand West Rand	106	20
+GOLD	-3000	Witwatersrand Orange Free State	107	19
+GOLD	-3000	Minas Gerais Mariana	61	30
+GOLD	-3000	Victoria Bendigo	181	19
+GOLD	-3000	Alaska interior	15	95
+GOLD	-3000	Klondike	16	95
+GOLD	-3000	Timmins Abitibi	42	82
+GOLD	-3000	Muruntau Kyzylkum	138	78
+GOLD	-3000	Benguet Luzon	175	58
+GOLD	-3000	Japan Sado	183	78
+SILVER	-3000	Potosi western lodes	53	33
+SILVER	-3000	Potosi southern lodes	54	32
+SILVER	-3000	Fresnillo Zacatecas	30	65
+SILVER	-3000	Guanajuato La Luz	27	62
+SILVER	-3000	Banska Stiavnica	102	81
+SILVER	-3000	Japan Ikuno	181	73

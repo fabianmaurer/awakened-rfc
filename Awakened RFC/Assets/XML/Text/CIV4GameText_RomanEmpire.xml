@@ -18,11 +18,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ROMAN_REPUBLIC_EFFECT</Tag>
-    <English>Conquest resistance is halved (rounded up). Connected historical provinces halve their share of foreign-territory and empire-size stability penalties. Enables Provincial Administration with Writing. Territorial losses first threaten peripheral cities while Roma and at least two Italian cities remain Roman and stability is at least -40. Replaces the ordinary Republic specialist food discount.</English>
-    <French>Conquest resistance is halved (rounded up). Connected historical provinces halve their share of foreign-territory and empire-size stability penalties. Enables Provincial Administration with Writing. Territorial losses first threaten peripheral cities while Roma and at least two Italian cities remain Roman and stability is at least -40. Replaces the ordinary Republic specialist food discount.</French>
-    <German>Eroberungswiderstand wird halbiert (aufgerundet). Angebundene historische Provinzen halbieren ihren Anteil an den Stabilit&#228;tsabz&#252;gen f&#252;r fremdes Gebiet und Reichsgr&#246;&#223;e. Erm&#246;glicht die Provinzverwaltung mit Schrift. Gebietsverluste bedrohen zuerst Randst&#228;dte, solange Roma und mindestens zwei italienische St&#228;dte r&#246;misch bleiben und die Stabilit&#228;t mindestens -40 betr&#228;gt. Ersetzt die Nahrungsersparnis f&#252;r Spezialisten der normalen Republik.</German>
-    <Italian>Conquest resistance is halved (rounded up). Connected historical provinces halve their share of foreign-territory and empire-size stability penalties. Enables Provincial Administration with Writing. Territorial losses first threaten peripheral cities while Roma and at least two Italian cities remain Roman and stability is at least -40. Replaces the ordinary Republic specialist food discount.</Italian>
-    <Spanish>Conquest resistance is halved (rounded up). Connected historical provinces halve their share of foreign-territory and empire-size stability penalties. Enables Provincial Administration with Writing. Territorial losses first threaten peripheral cities while Roma and at least two Italian cities remain Roman and stability is at least -40. Replaces the ordinary Republic specialist food discount.</Spanish>
+    <English>Conquest resistance is halved (rounded up). Enables Provincial Administration with Writing. Territorial losses first threaten peripheral cities while Roma and at least two Italian cities remain Roman and stability is at least -40. Replaces the ordinary Republic specialist food discount.</English>
+    <French>La r&#233;sistance apr&#232;s conqu&#234;te est r&#233;duite de moiti&#233;, arrondie au sup&#233;rieur. Permet l&#8217;Administration provinciale avec l&#8217;&#201;criture. Les pertes territoriales menacent d&#8217;abord les villes p&#233;riph&#233;riques tant que Rome et au moins deux villes italiennes restent romaines et que la stabilit&#233; est au moins de -40. Remplace la r&#233;duction de nourriture des sp&#233;cialistes de la R&#233;publique.</French>
+    <German>Eroberungswiderstand wird halbiert (aufgerundet). Erm&#246;glicht Provinzverwaltung mit Schrift. Gebietsverluste bedrohen zuerst Randst&#228;dte, solange Roma und mindestens zwei italienische St&#228;dte r&#246;misch bleiben und die Stabilit&#228;t mindestens -40 betr&#228;gt. Ersetzt den &#252;blichen Nahrungsrabatt f&#252;r Spezialisten der Republik.</German>
+    <Italian>La resistenza dopo la conquista &#232; dimezzata, arrotondando per eccesso. Abilita l&#8217;Amministrazione provinciale con la Scrittura. Le perdite territoriali minacciano prima le citt&#224; periferiche finch&#233; Roma e almeno due citt&#224; italiane restano romane e la stabilit&#224; &#232; almeno -40. Sostituisce lo sconto alimentare degli specialisti della Repubblica.</Italian>
+    <Spanish>La resistencia tras la conquista se reduce a la mitad, redondeando hacia arriba. Permite la Administraci&#243;n provincial con Escritura. Las p&#233;rdidas territoriales amenazan primero a las ciudades perif&#233;ricas mientras Roma y al menos dos ciudades italianas sigan siendo romanas y la estabilidad sea de al menos -40. Sustituye la reducci&#243;n de alimento de los especialistas de la Rep&#250;blica.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ROMAN_LEGIONS_EFFECT</Tag>
@@ -66,10 +66,10 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_ROMAN_ADMINISTRATION_STRATEGY</Tag>
-    <English>Build in expensive provinces to reduce city maintenance by 50%. Requires Writing and the Roman Republic. Costs half as much as an ordinary Courthouse.</English>
-    <French>Build in expensive provinces to reduce city maintenance by 50%. Requires Writing and the Roman Republic. Costs half as much as an ordinary Courthouse.</French>
-    <German>In teuren Provinzen bauen, um den Stadtunterhalt um 50% zu senken. Erfordert Schrift und die R&#246;mische Republik. Kostet halb so viel wie ein normales Gerichtsgeb&#228;ude.</German>
-    <Italian>Build in expensive provinces to reduce city maintenance by 50%. Requires Writing and the Roman Republic. Costs half as much as an ordinary Courthouse.</Italian>
-    <Spanish>Build in expensive provinces to reduce city maintenance by 50%. Requires Writing and the Roman Republic. Costs half as much as an ordinary Courthouse.</Spanish>
+    <English>Reduces local administrative effort by 25%. Requires Writing and the Roman Republic. Costs half as much as an ordinary Courthouse.</English>
+    <French>R&#233;duit de 25% la charge administrative locale. N&#233;cessite l&#8217;&#201;criture et la R&#233;publique romaine. Co&#251;te moiti&#233; moins qu&#8217;un tribunal ordinaire.</French>
+    <German>Verringert den lokalen Verwaltungsaufwand um 25%. Ben&#246;tigt Schrift und die R&#246;mische Republik. Kostet halb so viel wie ein gew&#246;hnliches Gerichtsgeb&#228;ude.</German>
+    <Italian>Riduce del 25% il carico amministrativo locale. Richiede Scrittura e Repubblica romana. Costa la met&#224; di un tribunale normale.</Italian>
+    <Spanish>Reduce un 25% la carga administrativa local. Requiere Escritura y Rep&#250;blica romana. Cuesta la mitad que un juzgado normal.</Spanish>
   </TEXT>
 </Civ4GameText>

@@ -223,6 +223,7 @@ protected:
 
 	void activateHeadMission();
 	void deactivateHeadMission();
+	void setActivityTypeInternal(ActivityTypes eNewValue, bool bPreserveBlockade);
 	
 	bool sentryAlert() const;
 };

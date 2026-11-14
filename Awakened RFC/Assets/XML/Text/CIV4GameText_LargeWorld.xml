@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_GAMESPEED_XL</Tag>
+    <English>XL</English>
+    <French>XL</French>
+    <German>XL</German>
+    <Italian>XL</Italian>
+    <Spanish>XL</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_GAMESPEED_XL_HELP</Tag>
+    <English>History progresses at half speed. Most costs and durations are doubled. Settlers keep their normal cost.</English>
+    <French>L'histoire progresse deux fois plus lentement. La plupart des co&#251;ts et des dur&#233;es sont doubl&#233;s. Les colons conservent leur co&#251;t normal.</French>
+    <German>Die Geschichte schreitet halb so schnell voran. Die meisten Kosten und Zeitspannen sind verdoppelt. Siedler behalten ihre normalen Kosten.</German>
+    <Italian>La storia avanza a met&#224; velocit&#224;. Quasi tutti i costi e le durate sono raddoppiati. I coloni mantengono il costo normale.</Italian>
+    <Spanish>La historia avanza a la mitad de velocidad. La mayor&#237;a de los costes y duraciones se duplican. Los colonos conservan su coste normal.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ARFC_800_BC_XL_DESC</Tag>
+    <English>800 BC: XL World. Ancient kingdoms and new civilizations share a 200 x 110 world. Choose an established realm or lead Persia, Carthage, Rome, Japan, Korea, the Adena or the Eskimos.</English>
+    <French>800 av. J.-C. : Monde XL. Royaumes antiques et nouvelles civilisations partagent une carte de 200 x 110 cases. Choisissez un royaume &#233;tabli ou dirigez la Perse, Carthage, Rome, le Japon, la Cor&#233;e, les Adenas ou les Esquimaux.</French>
+    <German>800 v. Chr.: XL-Welt. Antike Reiche und neue Zivilisationen teilen sich eine Welt mit 200 x 110 Feldern. W&#228;hlt ein bestehendes Reich oder f&#252;hrt Persien, Karthago, Rom, Japan, Korea, die Adena oder die Eskimos.</German>
+    <Italian>800 a.C.: Mondo XL. Regni antichi e nuove civilt&#224; condividono una mappa di 200 x 110 caselle. Scegli un regno esistente o guida Persia, Cartagine, Roma, Giappone, Corea, Adena o Eschimesi.</Italian>
+    <Spanish>800 a. C.: Mundo XL. Reinos antiguos y nuevas civilizaciones comparten un mapa de 200 x 110 casillas. Elige un reino establecido o lidera Persia, Cartago, Roma, Jap&#243;n, Corea, los Adena o los esquimales.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ARFC_HUGE_WORLD_DESC</Tag>
+    <English>3000 BC: Huge World. A 200 x 110 world centred on Europe, with vast impassable interiors and open historical routes. Begin as Egypt, India, China or Babylonia.</English>
+    <French>3000 av. J.-C. : Monde immense. Une carte de 200 x 110 cases centr&#233;e sur l'Europe, avec de vastes terres int&#233;rieures infranchissables et des voies historiques ouvertes. Incarnez l'&#201;gypte, l'Inde, la Chine ou la Babylonie.</French>
+    <German>3000 v. Chr.: Riesige Welt. Eine Welt mit 200 x 110 Feldern und Europa im Mittelpunkt, mit weiten unpassierbaren Binnengebieten und offenen historischen Routen. Beginnt als &#196;gypten, Indien, China oder Babylonien.</German>
+    <Italian>3000 a.C.: Mondo immenso. Una mappa di 200 x 110 caselle incentrata sull'Europa, con vasti territori interni invalicabili e percorsi storici aperti. Inizia con Egitto, India, Cina o Babilonia.</Italian>
+    <Spanish>3000 a. C.: Mundo inmenso. Un mapa de 200 x 110 casillas centrado en Europa, con vastas tierras interiores infranqueables y rutas hist&#243;ricas abiertas. Comienza con Egipto, India, China o Babilonia.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ARFC_LARGE_WORLD_DESC</Tag>
+    <English>3000 BC: Large World. A 160 x 88 world with vast impassable wilderness and selected travel routes. Begin as Egypt, India, China or Babylonia.</English>
+    <French>3000 av. J.-C. : Grand monde. Une carte de 160 x 88 cases avec de vastes zones sauvages infranchissables et quelques voies de passage. Incarnez l'&#201;gypte, l'Inde, la Chine ou la Babylonie.</French>
+    <German>3000 v. Chr.: Gro&#223;e Welt. Eine Welt mit 160 x 88 Feldern, ausgedehnter unpassierbarer Wildnis und ausgew&#228;hlten Reiserouten. Beginnt als &#196;gypten, Indien, China oder Babylonien.</German>
+    <Italian>3000 a.C.: Grande mondo. Una mappa di 160 x 88 caselle con vaste zone selvagge invalicabili e vie di passaggio selezionate. Inizia con Egitto, India, Cina o Babilonia.</Italian>
+    <Spanish>3000 a. C.: Gran mundo. Un mapa de 160 x 88 casillas con extensas zonas salvajes infranqueables y rutas de paso seleccionadas. Comienza con Egipto, India, China o Babilonia.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ARFC_IMPASSABLE_LAND</Tag>
+    <English>Impassable</English>
+    <French>Infranchissable</French>
+    <German>Unpassierbar</German>
+    <Italian>Invalicabile</Italian>
+    <Spanish>Infranqueable</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ARFC_IMPASSABLE_LAND_PEDIA</Tag>
+    <English>This terrain blocks movement. Use the open passes and corridors.</English>
+    <French>Ce terrain bloque les d&#233;placements. Empruntez les cols et les passages ouverts.</French>
+    <German>Dieses Gel&#228;nde blockiert die Bewegung. Nutzt die offenen P&#228;sse und Korridore.</German>
+    <Italian>Questo terreno blocca il movimento. Usa i valichi e i corridoi aperti.</Italian>
+    <Spanish>Este terreno bloquea el movimiento. Usa los pasos y corredores abiertos.</Spanish>
+  </TEXT>
+<TEXT>
+    <Tag>TXT_KEY_ARFC_DEEP_DESERT_PEDIA</Tag>
+    <English>Armies cannot cross this vast, arid interior. Use the open oasis routes.</English>
+    <French>Les arm&#233;es ne peuvent pas traverser ce vaste int&#233;rieur aride. Empruntez les routes ouvertes des oasis.</French>
+    <German>Armeen k&#246;nnen dieses weite, trockene Landesinnere nicht durchqueren. Nutzt die offenen Oasenrouten.</German>
+    <Italian>Gli eserciti non possono attraversare questo vasto entroterra arido. Usa le vie aperte tra le oasi.</Italian>
+    <Spanish>Los ej&#233;rcitos no pueden cruzar este vasto interior &#225;rido. Usa las rutas abiertas entre oasis.</Spanish>
+  </TEXT>
+<TEXT>
+    <Tag>TXT_KEY_ARFC_DEEP_JUNGLE_PEDIA</Tag>
+    <English>Armies cannot cross this dense rainforest interior.</English>
+    <French>Les arm&#233;es ne peuvent pas traverser cette for&#234;t tropicale dense.</French>
+    <German>Armeen k&#246;nnen diesen dichten Regenwald nicht durchqueren.</German>
+    <Italian>Gli eserciti non possono attraversare questa fitta foresta pluviale.</Italian>
+    <Spanish>Los ej&#233;rcitos no pueden cruzar esta selva densa.</Spanish>
+  </TEXT>
+<TEXT>
+    <Tag>TXT_KEY_ARFC_REMOTE_FOREST_PEDIA</Tag>
+    <English>Armies cannot cross this remote northern wilderness.</English>
+    <French>Les arm&#233;es ne peuvent pas traverser cette r&#233;gion sauvage isol&#233;e du Nord.</French>
+    <German>Armeen k&#246;nnen diese abgelegene n&#246;rdliche Wildnis nicht durchqueren.</German>
+    <Italian>Gli eserciti non possono attraversare questo remoto territorio selvaggio settentrionale.</Italian>
+    <Spanish>Los ej&#233;rcitos no pueden cruzar este remoto territorio salvaje del norte.</Spanish>
+  </TEXT>
+<TEXT>
+    <Tag>TXT_KEY_ARFC_FROZEN_WILDERNESS_PEDIA</Tag>
+    <English>Armies cannot cross this frozen interior.</English>
+    <French>Les arm&#233;es ne peuvent pas traverser cet int&#233;rieur gel&#233;.</French>
+    <German>Armeen k&#246;nnen dieses vereiste Landesinnere nicht durchqueren.</German>
+    <Italian>Gli eserciti non possono attraversare questo entroterra gelato.</Italian>
+    <Spanish>Los ej&#233;rcitos no pueden cruzar este interior helado.</Spanish>
+  </TEXT>
+</Civ4GameText>

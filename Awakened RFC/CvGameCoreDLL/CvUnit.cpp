@@ -2,7 +2,10 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvUnitMastery.h"
+#include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CvUnit.h"
+#include "CvAdministration.h"
 #include "CvArea.h"
 #include "CvPlot.h"
 #include "CvCity.h"
@@ -314,6 +317,9 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 
 	AI_init(eUnitAI);
 
+	for (int iObserver = 0; iObserver < MAX_CIV_TEAMS; ++iObserver)
+        updateIntelligenceTracking((TeamTypes)iObserver);
+
 	CvEventReporter::getInstance().unitCreated(this);
 }
 
@@ -355,6 +361,8 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iDamage = 0;
 	m_iMoves = 0;
 	m_iExperience = 0;
+	m_iExplorationExperienceRemainder = 0;
+    for (int iObserver = 0; iObserver < MAX_TEAMS; ++iObserver) m_abIntelligenceTracked[iObserver] = false;
 	m_iLevel = 1;
 	m_iCargo = 0;
 	m_iAttackPlotX = INVALID_PLOT_COORD;
@@ -401,6 +409,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iImmobileTimer = 0;
 
 	m_bMadeAttack = false;
+	m_iAttacksMade = 0;
 	m_bMadeInterception = false;
 	m_bPromotionReady = false;
 	m_bDeathDelay = false;
@@ -504,8 +513,11 @@ void CvUnit::convert(CvUnit* pUnit)
 	setDamage(pUnit->getDamage());
 	m_iLastHunPillageHealTurn = pUnit->m_iLastHunPillageHealTurn;
 	setMoves(pUnit->getMoves());
+	m_bMadeAttack = pUnit->m_bMadeAttack;
+	m_iAttacksMade = pUnit->m_iAttacksMade;
 
 	setLevel(pUnit->getLevel());
+	m_iExplorationExperienceRemainder = pUnit->m_iExplorationExperienceRemainder;
 	int iOldModifier = std::max(1, 100 + GET_PLAYER(pUnit->getOwnerINLINE()).getLevelExperienceModifier());
 	int iOurModifier = std::max(1, 100 + GET_PLAYER(getOwnerINLINE()).getLevelExperienceModifier());
 	setExperience(std::max(0, (pUnit->getExperience() * iOurModifier) / iOldModifier));
@@ -1055,7 +1067,7 @@ void CvUnit::updateAirCombat(bool bQuick)
 				return;
 			}
 
-			setMadeAttack(true);
+			recordAttack();
 
 			setCombatUnit(pInterceptor, true);
 			pInterceptor->setCombatUnit(this, false);
@@ -1398,7 +1410,7 @@ void CvUnit::updateCombat(bool bQuick)
 				return;
 			}
 
-			setMadeAttack(true);
+			recordAttack();
 
 			//rotate to face plot
 			DirectionTypes newDirection = estimateDirection(this->plot(), pDefender->plot());
@@ -1491,6 +1503,9 @@ void CvUnit::updateCombat(bool bQuick)
 			kBattle.setDamage(BATTLE_UNIT_DEFENDER, BATTLE_TIME_BEGIN, pDefender->getDamage());
 
 			resolveCombat(pDefender, pPlot, kBattle);
+
+			UnitMastery::recordCombat(*this);
+			UnitMastery::recordCombat(*pDefender);
 
 			if (!bVisible)
 			{
@@ -1671,7 +1686,7 @@ void CvUnit::updateCombat(bool bQuick)
 
 void CvUnit::checkRemoveSelectionAfterAttack()
 {
-	if (!canMove() || !isBlitz())
+	if (!canMove() || !canAttackAgain())
 	{
 		if (IsSelected())
 		{
@@ -2650,7 +2665,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, bool bAttack, bool bDeclareWar, bo
 
 	if (bAttack)
 	{
-		if (isMadeAttack() && !isBlitz())
+		if (!canAttackAgain())
 		{
 			return false;
 		}
@@ -3686,9 +3701,21 @@ bool CvUnit::canSentry(const CvPlot* pPlot) const
 }
 
 
+bool CvUnit::hasHealingSupply(const CvPlot* pPlot) const
+{
+    if (pPlot == NULL) return false;
+    const CvCity* city = pPlot->getPlotCity();
+    if (city != NULL)
+        return city->getFood() > 0 || city->foodDifference() > 0;
+    return pPlot->getYield(YIELD_FOOD) > 0 || pPlot->isFreshWater();
+}
+
+
 int CvUnit::healRate(const CvPlot* pPlot) const
 {
 	PROFILE_FUNC();
+    // Supply gates all healing, including medics, promotions and mastery.
+    if (!hasHealingSupply(pPlot)) return 0;
 
 	CLLNode<IDInfo>* pUnitNode;
 	CvCity* pCity;
@@ -4113,7 +4140,7 @@ bool CvUnit::nuke(int iX, int iY)
 		gDLL->getEntityIFace()->AddMission(&kDefiniton);
 	}
 
-	setMadeAttack(true);
+	recordAttack();
 	setAttackPlot(pPlot, false);
 
 	for (iI = 0; iI < MAX_TEAMS; iI++)
@@ -4346,7 +4373,7 @@ bool CvUnit::paradrop(int iX, int iY)
 	CvPlot* pPlot = GC.getMapINLINE().plotINLINE(iX, iY);
 
 	changeMoves(GC.getMOVE_DENOMINATOR() / 2);
-	setMadeAttack(true);
+	recordAttack();
 
 	setXY(pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
@@ -4522,7 +4549,7 @@ bool CvUnit::airBomb(int iX, int iY)
 
 	setReconPlot(pPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	if (pPlot->isActiveVisible(false))
@@ -4645,7 +4672,7 @@ bool CvUnit::bombard()
 	pBombardCity->changeDefenseModifier(-(bombardRate() * std::max(0, 100 + iBombardModifier)) / 100);
 	if (pBombardCity->getDefenseModifier(false) < iCrusadeDefense) GC.getGameINLINE().recordCrusadeActivity(getTeam(), pTargetPlot->getTeam(), pTargetPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_DEFENSES_IN_CITY_REDUCED_TO", pBombardCity->getNameKey(), pBombardCity->getDefenseModifier(false), GET_PLAYER(getOwnerINLINE()).getNameKey());
@@ -4758,7 +4785,8 @@ bool CvUnit::pillage()
 		CvUnit* pInterceptor = bestSeaPillageInterceptor(this, GC.getDefineINT("COMBAT_DIE_SIDES") / 2);
 		if (NULL != pInterceptor)
 		{
-			setMadeAttack(false);
+			// The forced interception fight must not reset this turn's attack count.
+			m_bMadeAttack = false;
 
 			int iWithdrawal = withdrawalProbability();
 			changeExtraWithdrawal(-iWithdrawal); // no withdrawal since we are really the defender
@@ -4968,6 +4996,7 @@ void CvUnit::updatePlunder(int iChange, bool bUpdatePlotGroups)
 
 		if (bUpdatePlotGroups)
 		{
+            if (isBarbarian() && fastLateGame()) observerPerformanceCount("count.fast.barbBlockadeNetworkRebuilds");
 			GC.getGameINLINE().updatePlotGroups();
 		}
 	}
@@ -4976,7 +5005,7 @@ void CvUnit::updatePlunder(int iChange, bool bUpdatePlotGroups)
 
 int CvUnit::sabotageCost(const CvPlot* pPlot) const
 {
-	return GC.getDefineINT("BASE_SPY_SABOTAGE_COST");
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_SABOTAGE_COST"));
 }
 
 
@@ -5163,7 +5192,7 @@ int CvUnit::destroyCost(const CvPlot* pPlot) const
 		bLimited = isLimitedProject(pCity->getProductionProject());
 	}
 
-	return (GC.getDefineINT("BASE_SPY_DESTROY_COST") + (pCity->getProduction() * ((bLimited) ? GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER_LIMITED") : GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER"))));
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_DESTROY_COST") + (pCity->getProduction() * ((bLimited) ? GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER_LIMITED") : GC.getDefineINT("SPY_DESTROY_COST_MULTIPLIER"))));
 }
 
 
@@ -5326,7 +5355,7 @@ int CvUnit::stealPlansCost(const CvPlot* pPlot) const
 		return 0;
 	}
 
-	return (GC.getDefineINT("BASE_SPY_STEAL_PLANS_COST") + ((GET_TEAM(pCity->getTeam()).getTotalLand() + GET_TEAM(pCity->getTeam()).getTotalPopulation()) * GC.getDefineINT("SPY_STEAL_PLANS_COST_MULTIPLIER")));
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(GC.getDefineINT("BASE_SPY_STEAL_PLANS_COST") + ((GET_TEAM(pCity->getTeam()).getTotalLand() + GET_TEAM(pCity->getTeam()).getTotalPopulation()) * GC.getDefineINT("SPY_STEAL_PLANS_COST_MULTIPLIER")));
 }
 
 
@@ -5500,7 +5529,8 @@ bool CvUnit::found()
 		gDLL->getInterfaceIFace()->lookAt(plot()->getPoint(), CAMERALOOKAT_NORMAL);
 	}
 
-	GET_PLAYER(getOwnerINLINE()).found(getX_INLINE(), getY_INLINE());
+	const int iPopulation = getUnitType() == GC.getInfoTypeForString("UNIT_HARAPPAN_BUILDER") ? 2 : 1;
+	GET_PLAYER(getOwnerINLINE()).found(getX_INLINE(), getY_INLINE(), iPopulation);
 
 	if (plot()->isActiveVisible(false))
 	{
@@ -5607,6 +5637,7 @@ bool CvUnit::spread(ReligionTypes eReligion)
 		iSpreadProb += (((GC.getNumReligionInfos() - pCity->getReligionCount()) * (100 - iSpreadProb)) / GC.getNumReligionInfos());
 
 		iSpreadProb = iSpreadProb * pCity->getReligionRivalryPercent(eReligion, true) / 100;
+        if (GET_PLAYER(pCity->getOwnerINLINE()).isCivic((CivicTypes)GC.getInfoTypeForString("CIVIC_GOD_STATE")) && GET_PLAYER(pCity->getOwnerINLINE()).getStateReligion() != eReligion) iSpreadProb /= 4;
 
 		if (GC.getGameINLINE().getSorenRandNum(100, "Unit Spread Religion") < iSpreadProb)
 		{
@@ -5659,9 +5690,36 @@ bool CvUnit::purgeReligions()
 {
     if (!canPurgeReligions()) return false;
     CvCity* pCity = plot()->getPlotCity();
+#if ARFC_ENABLE_REPORTING
+    bool record = GC.getGameINLINE().isObserverAutoPlay() && !GC.getGameINLINE().isGameMultiPlayer() && !g_observerPerformance;
+    int values[14];
+    if (record)
+    {
+        values[0] = pCity->getID(); values[1] = pCity->getGameTurnFounded();
+        values[2] = pCity->getX_INLINE(); values[3] = pCity->getY_INLINE();
+        values[4] = NO_RELIGION;
+        for (int religion = 0; religion < GC.getNumReligionInfos(); ++religion)
+            if (m_pUnitInfo->getReligionSpreads(religion) > 0) { values[4] = religion; break; }
+        values[5] = pCity->happyLevel() - pCity->unhappyLevel();
+        values[6] = Administration::purgeHappinessChange(*pCity, values[4]);
+        values[7] = Administration::effort100(*pCity);
+        values[8] = pCity->getReligionCount(); values[9] = Administration::purgeValue(*pCity, values[4]);
+    }
+#endif
     for (int i = 0; i < GC.getNumReligionInfos(); ++i)
         if (m_pUnitInfo->getReligionSpreads(i) <= 0)
             pCity->removeReligionByInquisition((ReligionTypes)i);
+#if ARFC_ENABLE_REPORTING
+    if (record)
+    {
+        values[10] = pCity->happyLevel() - pCity->unhappyLevel();
+        values[11] = Administration::effort100(*pCity);
+        values[12] = pCity->getReligionCount(); values[13] = getUnitType();
+        CyArgsList args;
+        args.add(getOwnerINLINE()); args.add(values, 14);
+        gDLL->getPythonIFace()->callFunction("CvEventInterface", "recordReligionPurge", args.makeFunctionArgs());
+    }
+#endif
     // Command execution is synchronized by the regular unit-command message.
     kill(true);
     return true;
@@ -6326,38 +6384,8 @@ int CvUnit::getEspionagePoints(const CvPlot* pPlot) const
 
 bool CvUnit::canInfiltrate(const CvPlot* pPlot, bool bTestVisible) const
 {
-	if (isDelayedDeath())
-	{
-		return false;
-	}
-
-	if (GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE))
-	{
-		return false;
-	}
-
-	if (getEspionagePoints(NULL) == 0)
-	{
-		return false;
-	}
-
-	CvCity* pCity = pPlot->getPlotCity();
-	if (pCity == NULL || pCity->isBarbarian()) //Rhye - add minors here?
-	{
-		return false;
-	}
-
-	if (!bTestVisible)
-	{
-		if (NULL != pCity && pCity->getTeam() == getTeam())
-		{
-			return false;
-		}
-	}
-
-	return true;
+    return false; // Great Spies support networks through settlement and Scotland Yard.
 }
-
 
 bool CvUnit::infiltrate()
 {
@@ -6494,7 +6522,7 @@ bool CvUnit::espionage(EspionageMissionTypes eMission, int iData)
 			if (!testSpyIntercepted(eTargetPlayer, GC.getDefineINT("ESPIONAGE_SPY_MISSION_ESCAPE_MOD")))
 			{
 				setFortifyTurns(0);
-				setMadeAttack(true);
+				recordAttack();
 				finishMoves();
 
 				CvCity* pCapital = GET_PLAYER(getOwnerINLINE()).getCapitalCity();
@@ -6813,7 +6841,7 @@ void CvUnit::promote(PromotionTypes ePromotion, int iLeaderUnitId)
 	if (!GC.getPromotionInfo(ePromotion).isLeader())
 	{
 		changeLevel(1);
-		changeDamage(-(getDamage() / 2));
+		if (hasHealingSupply(plot())) changeDamage(-(getDamage() / 2));
 	}
 
 	setHasPromotion(ePromotion, true);
@@ -7049,7 +7077,7 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 
 	iPrice -= (iPrice * getUpgradeDiscount()) / 100;
 
-	return iPrice;
+	return GET_PLAYER(getOwnerINLINE()).inflateOneTimeCost(iPrice);
 }
 
 
@@ -7210,6 +7238,7 @@ CvCity* CvUnit::getUpgradeCity(bool bSearch) const
 // NULL result means the upgrade is not possible
 CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue) const
 {
+	OBSERVER_PERFORMANCE("unitTask.getUpgradeCity");
 	if (eUnit == NO_UNIT)
 	{
 		return false;
@@ -7218,27 +7247,27 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	CvUnitInfo& kUnitInfo = GC.getUnitInfo(eUnit);
 
-    // Only the newest weapon tier unlocked by this team is an armed-slave
-    // upgrade target. Keep the XML chain so obsolete slaves can skip directly
-    // to it; do not offer cheaper intermediate tiers to the player or AI.
-    const char* aszArmedSlaveTypes[] = {
-        "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN",
-        "UNIT_SLAVE_MACEMAN", "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN",
-        "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
-    };
-    UnitTypes eLatestArmedSlave = NO_UNIT;
-    bool bArmedSlaveTarget = false;
-    for (int iSlaveTier = 0; iSlaveTier < (int)(sizeof(aszArmedSlaveTypes) / sizeof(aszArmedSlaveTypes[0])); ++iSlaveTier)
-    {
-        UnitTypes eSlaveTier = (UnitTypes)GC.getInfoTypeForString(aszArmedSlaveTypes[iSlaveTier]);
-        if (eSlaveTier == NO_UNIT) continue;
-        if (eUnit == eSlaveTier) bArmedSlaveTarget = true;
-        TechTypes eWeaponTech = (TechTypes)GC.getUnitInfo(eSlaveTier).getPrereqAndTech();
-        if (eWeaponTech == NO_TECH || GET_TEAM(getTeam()).isHasTech(eWeaponTech))
-            eLatestArmedSlave = eSlaveTier;
+    // Most upgrade targets are not slave tiers. Check the target name first
+    // so ordinary units avoid seven XML lookups and technology checks per call.
+    const char* targetName = kUnitInfo.getType();
+    if (targetName && (strncmp(targetName, "UNIT_SLAVE_", 11) == 0 || strcmp(targetName, "UNIT_ARMED_SLAVE") == 0)) {
+        const char* slaveTypes[] = {
+            "UNIT_ARMED_SLAVE", "UNIT_SLAVE_SWORDSMAN", "UNIT_SLAVE_MACEMAN",
+            "UNIT_SLAVE_MUSKETMAN", "UNIT_SLAVE_RIFLEMAN", "UNIT_SLAVE_INFANTRY", "UNIT_SLAVE_MODERN_INFANTRY"
+        };
+        bool isTier = false;
+        for (int tier = 0; tier < 7; ++tier) if (strcmp(targetName, slaveTypes[tier]) == 0) { isTier = true; break; }
+        if (isTier) {
+            UnitTypes latest = NO_UNIT;
+            for (int tier = 0; tier < 7; ++tier) {
+                const UnitTypes type = (UnitTypes)GC.getInfoTypeForString(slaveTypes[tier]);
+                if (type == NO_UNIT) continue;
+                const TechTypes tech = (TechTypes)GC.getUnitInfo(type).getPrereqAndTech();
+                if (tech == NO_TECH || GET_TEAM(getTeam()).isHasTech(tech)) latest = type;
+            }
+            if (eUnit != latest) return NULL;
+        }
     }
-    if (bArmedSlaveTarget && eUnit != eLatestArmedSlave)
-        return NULL;
 
 	if (GC.getCivilizationInfo(kPlayer.getCivilizationType()).getCivilizationUnits(kUnitInfo.getUnitClassType()) != eUnit)
 	{
@@ -8009,6 +8038,7 @@ int CvUnit::baseCombatStr() const
 int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDetails* pCombatDetails) const
 {
 	int iCombat;
+    int iIntelligenceModifier = 0; // Basis points, separate from whole-percent legacy modifiers.
 
 	FAssertMsg((pPlot == NULL) || (pPlot->getTerrainType() != NO_TERRAIN), "(pPlot == NULL) || (pPlot->getTerrainType() is not expected to be equal with NO_TERRAIN)");
 	
@@ -8329,7 +8359,11 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 		{
 			FAssertMsg(pAttacker != this, "pAttacker is not expected to be equal with this");
 
-			iExtraModifier = unitClassDefenseModifier(pAttacker->getUnitClassType());
+			iIntelligenceModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pAttacker->getOwnerINLINE()) -
+                (pAttacker->getDomainType() == DOMAIN_AIR ? 0 : GET_PLAYER(pAttacker->getOwnerINLINE()).getIntelligenceMilitaryBonus(getOwnerINLINE()));
+            if (pCombatDetails != NULL) pCombatDetails->iExtraCombatPercent += iIntelligenceModifier / 100;
+
+            iExtraModifier = unitClassDefenseModifier(pAttacker->getUnitClassType());
 			iTempModifier += iExtraModifier;
 			if (pCombatDetails != NULL)
 			{
@@ -8446,18 +8480,15 @@ int CvUnit::maxCombatStr(const CvPlot* pPlot, const CvUnit* pAttacker, CombatDet
 
 	if (pCombatDetails != NULL)
 	{
-		pCombatDetails->iModifierTotal = iModifier;
+		pCombatDetails->iModifierTotal = iModifier + iIntelligenceModifier / 100;
 		pCombatDetails->iBaseCombatStr = baseCombatStr();
 	}
 
-	if (iModifier > 0)
-	{
-		iCombat = (baseCombatStr() * (iModifier + 100));
-	}
-	else
-	{
-		iCombat = ((baseCombatStr() * 10000) / (100 - iModifier));
-	}
+    const __int64 iModifierBasisPoints = (__int64)iModifier * 100 + iIntelligenceModifier;
+    if (iModifierBasisPoints > 0)
+        iCombat = (int)((__int64)baseCombatStr() * (iModifierBasisPoints + 10000) / 100);
+    else
+        iCombat = (int)((__int64)baseCombatStr() * 1000000 / (10000 - iModifierBasisPoints));
 
 	if (pCombatDetails != NULL)
 	{
@@ -8607,6 +8638,7 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 {
 	int iModifier;
 	int iCombat;
+    int iIntelligenceModifier = 0;
 
 	if (airBaseCombatStr() == 0)
 	{
@@ -8627,6 +8659,7 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 
 	if (NULL != pOther)
 	{
+        iIntelligenceModifier = GET_PLAYER(getOwnerINLINE()).getIntelligenceMilitaryBonus(pOther->getOwnerINLINE());
 		if (pOther->getUnitCombatType() != NO_UNITCOMBAT)
 		{
 			iModifier += unitCombatModifier(pOther->getUnitCombatType());
@@ -8640,14 +8673,11 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 		}
 	}
 
-	if (iModifier > 0)
-	{
-		iCombat = (airBaseCombatStr() * (iModifier + 100));
-	}
-	else
-	{
-		iCombat = ((airBaseCombatStr() * 10000) / (100 - iModifier));
-	}
+    const __int64 iModifierBasisPoints = (__int64)iModifier * 100 + iIntelligenceModifier;
+    if (iModifierBasisPoints > 0)
+        iCombat = (int)((__int64)airBaseCombatStr() * (iModifierBasisPoints + 10000) / 100);
+    else
+        iCombat = (int)((__int64)airBaseCombatStr() * 1000000 / (10000 - iModifierBasisPoints));
 
 	return std::max(1, iCombat);
 }
@@ -9137,6 +9167,8 @@ int CvUnit::collateralDamageMaxUnits() const
 int CvUnit::cityAttackModifier() const
 {
 	int iModifier = m_pUnitInfo->getCityAttackModifier() + getExtraCityAttackPercent() + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CITY_ATTACK);
+	if (GET_PLAYER(getOwnerINLINE()).getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_DELHI") &&
+		getUnitCombatType() == GC.getInfoTypeForString("UNITCOMBAT_MOUNTED")) iModifier += 25;
 	return iModifier;
 }
 
@@ -9203,7 +9235,15 @@ int CvUnit::unitClassAttackModifier(UnitClassTypes eUnitClass) const
 {
 	FAssertMsg(eUnitClass >= 0, "eUnitClass is expected to be non-negative (invalid Index)");
 	FAssertMsg(eUnitClass < GC.getNumUnitClassInfos(), "eUnitClass is expected to be within maximum bounds (invalid Index)");
-	return m_pUnitInfo->getUnitClassAttackModifier(eUnitClass);
+	static const UnitClassTypes eArcher = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_ARCHER");
+	static const UnitClassTypes eRifleman = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_RIFLEMAN");
+	static const UnitClassTypes eInfantry = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_INFANTRY");
+	int iMastery = 0;
+	if (eUnitClass == eArcher)
+		iMastery += UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ARCHER_ATTACK);
+	if (eUnitClass == eRifleman || eUnitClass == eInfantry)
+		iMastery += UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_RIFLE_INFANTRY_ATTACK);
+	return m_pUnitInfo->getUnitClassAttackModifier(eUnitClass) + iMastery;
 }
 
 
@@ -9211,7 +9251,10 @@ int CvUnit::unitClassDefenseModifier(UnitClassTypes eUnitClass) const
 {
 	FAssertMsg(eUnitClass >= 0, "eUnitClass is expected to be non-negative (invalid Index)");
 	FAssertMsg(eUnitClass < GC.getNumUnitClassInfos(), "eUnitClass is expected to be within maximum bounds (invalid Index)");
-	return m_pUnitInfo->getUnitClassDefenseModifier(eUnitClass);
+	static const UnitClassTypes eChariot = (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_CHARIOT");
+	const int iMastery = eUnitClass == eChariot ?
+		UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CHARIOT_DEFENSE) : 0;
+	return m_pUnitInfo->getUnitClassDefenseModifier(eUnitClass) + iMastery;
 }
 
 
@@ -9271,11 +9314,12 @@ DomainTypes CvUnit::domainCargo() const
 
 int CvUnit::cargoSpace() const
 {
-	// Changing civics never strands existing passengers; no new cargo can be
-	// loaded above the current civic capacity until the excess has disembarked.
+	int iCapacity = m_iCargoCapacity + UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_CARGO);
 	if (GET_PLAYER(getOwnerINLINE()).isRomanLogisticsUnit(getUnitType()))
-		return std::max(getCargo(), m_iCargoCapacity + GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType()));
-	return m_iCargoCapacity;
+		iCapacity += GET_PLAYER(getOwnerINLINE()).getRomanCargoBonus(getUnitType());
+	// Losing a civic or team mastery bonus never strands existing passengers.
+	// No new cargo can load until enough passengers have disembarked.
+	return std::max(getCargo(), iCapacity);
 }
 
 void CvUnit::changeCargoSpace(int iChange)
@@ -9798,6 +9842,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	{
 		pOldPlot->removeUnit(this, bUpdate && !hasCargo());
 
+		changeIntelligenceSight(pOldPlot, false, true);
 		pOldPlot->changeAdjacentSight(getTeam(), visibilityRange(), false, this, true);
 
 		pOldPlot->area()->changeUnitsPerPlayer(getOwnerINLINE(), -1);
@@ -9960,6 +10005,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		setFortifyTurns(0);
 
 		pNewPlot->changeAdjacentSight(getTeam(), visibilityRange(), true, this, true); // needs to be here so that the square is considered visible when we move into it...
+		changeIntelligenceSight(pNewPlot, true, true);
 
 		pNewPlot->addUnit(this, bUpdate && !hasCargo());
 
@@ -10351,6 +10397,25 @@ int CvUnit::getExperience() const
 	return m_iExperience;
 }
 
+void CvUnit::awardExplorationExperience(int iTiles)
+{
+	const int iRate = GC.getDefineINT("SCOUT_EXPLORATION_XP_HUNDREDTHS");
+	if (iTiles <= 0 || iRate <= 0) return;
+	const UnitClassTypes eClass = getUnitClassType();
+	if (eClass != (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_SCOUT") &&
+		eClass != (UnitClassTypes)GC.getInfoTypeForString("UNITCLASS_EXPLORER")) return;
+
+	// Fixed point keeps fractional awards deterministic on every multiplayer peer.
+	const __int64 iTotal = m_iExplorationExperienceRemainder + (__int64)iTiles * iRate;
+	m_iExplorationExperienceRemainder = (int)(iTotal % 100);
+	const int iAward = (int)std::min((__int64)(MAX_INT - getExperience()), iTotal / 100);
+	if (iAward > 0)
+	{
+		changeExperience(iAward);
+		testPromotionReady();
+	}
+}
+
 void CvUnit::setExperience(int iNewValue, int iMax)
 {
 	// Slave units cannot gain experience, including direct grants and upgrades.
@@ -10610,7 +10675,15 @@ int CvUnit::getEnemyRouteCount() const
 
 bool CvUnit::isEnemyRoute() const
 {
-	return (UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ENEMY_ROUTE) > 0) || (getEnemyRouteCount() > 0);
+	return getEnemyRouteCount() > 0;
+}
+
+bool CvUnit::canUseEnemyRoute(RouteTypes eRoute) const
+{
+	// Commando (including the Panzer's free promotion) still uses all routes.
+	if (isEnemyRoute()) return true;
+	static const RouteTypes eRoad = (RouteTypes)GC.getInfoTypeForString("ROUTE_ROAD");
+	return eRoute == eRoad && UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_ENEMY_ROAD) > 0;
 }
 
 void CvUnit::changeEnemyRouteCount(int iChange)
@@ -11106,6 +11179,20 @@ bool CvUnit::isMadeAttack() const
 void CvUnit::setMadeAttack(bool bNewValue)
 {
 	m_bMadeAttack = bNewValue;
+	m_iAttacksMade = bNewValue ? std::max(1, m_iAttacksMade) : 0;
+}
+
+void CvUnit::recordAttack()
+{
+	m_bMadeAttack = true;
+	++m_iAttacksMade;
+}
+
+bool CvUnit::canAttackAgain() const
+{
+	if (!isMadeAttack() || isBlitz()) return true;
+	return m_iAttacksMade < 2 &&
+		UnitMastery::modifier(getUnitType(), getTeam(), UnitMastery::MASTERY_SECOND_ATTACK) > 0;
 }
 
 
@@ -11208,8 +11295,11 @@ void CvUnit::setBlockading(bool bNewValue)
 	if (bNewValue != isBlockading())
 	{
 		m_bBlockading = bNewValue;
-
-		updatePlunder(isBlockading() ? 1 : -1, true);
+        if (isBarbarian() && fastLateGame()) {
+            observerPerformanceCount(bNewValue ? "count.fast.barbBlockadeStarts" : "count.fast.barbBlockadeEnds");
+            ObserverPerformanceScope scope("fast.barbarianBlockadeUpdate");
+            updatePlunder(isBlockading() ? 1 : -1, true);
+        } else updatePlunder(isBlockading() ? 1 : -1, true);
 	}
 }
 
@@ -11991,6 +12081,8 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iDamage);
 	pStream->Read(&m_iMoves);
 	pStream->Read(&m_iExperience);
+	pStream->Read(&m_iExplorationExperienceRemainder);
+    pStream->Read(MAX_TEAMS, m_abIntelligenceTracked);
 	pStream->Read(&m_iLevel);
 	pStream->Read(&m_iCargo);
 	pStream->Read(&m_iCargoCapacity);
@@ -12044,6 +12136,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iImmobileTimer);
 
 	pStream->Read(&m_bMadeAttack);
+	pStream->Read(&m_iAttacksMade);
 	pStream->Read(&m_bMadeInterception);
 	pStream->Read(&m_bPromotionReady);
 	pStream->Read(&m_bDeathDelay);
@@ -12087,7 +12180,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=3;
+	uint uiFlag=4;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -12103,6 +12196,8 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iDamage);
 	pStream->Write(m_iMoves);
 	pStream->Write(m_iExperience);
+	pStream->Write(m_iExplorationExperienceRemainder);
+    pStream->Write(MAX_TEAMS, m_abIntelligenceTracked);
 	pStream->Write(m_iLevel);
 	pStream->Write(m_iCargo);
 	pStream->Write(m_iCargoCapacity);
@@ -12151,6 +12246,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iImmobileTimer);
 
 	pStream->Write(m_bMadeAttack);
+	pStream->Write(m_iAttacksMade);
 	pStream->Write(m_bMadeInterception);
 	pStream->Write(m_bPromotionReady);
 	pStream->Write(m_bDeathDelay);
@@ -12527,7 +12623,7 @@ bool CvUnit::airStrike(CvPlot* pPlot)
 
 	setReconPlot(pPlot);
 
-	setMadeAttack(true);
+	recordAttack();
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
 	int iDamage = airCombatDamage(pDefender);
@@ -12570,7 +12666,7 @@ bool CvUnit::canRangeStrike() const
 		return false;
 	}
 
-	if (isMadeAttack() && !isBlitz())
+	if (!canAttackAgain())
 	{
 		return false;
 	}
@@ -12647,7 +12743,7 @@ bool CvUnit::rangeStrike(int iX, int iY)
 
 	if (GC.getDefineINT("RANGED_ATTACKS_USE_MOVES") == 0)
 	{
-		setMadeAttack(true);
+		recordAttack();
 	}
 	changeMoves(GC.getMOVE_DENOMINATOR());
 
@@ -13151,7 +13247,7 @@ void CvUnit::applyEvent(EventTypes eEvent)
 
 	if (0 != kEvent.getUnitExperience())
 	{
-		setDamage(0);
+		if (hasHealingSupply(plot())) setDamage(0);
 		changeExperience(kEvent.getUnitExperience());
 	}
 

@@ -11,6 +11,7 @@
 #include "CvGameCoreDLL.h"
 #include "ObserverPerformance.h"
 #include "CvMap.h"
+#include "CvRhyes.h"
 #include "CvCity.h"
 #include "CvPlotGroup.h"
 #include "CvGlobals.h"
@@ -39,6 +40,7 @@
 
 CvMap::CvMap()
 {
+	m_iScenarioWidth = m_iScenarioHeight = m_iScenarioAreaCount = 0;
 	CvMapInitData defaultMapData;
 
 	m_paiNumBonus = NULL;
@@ -53,6 +55,76 @@ CvMap::CvMap()
 CvMap::~CvMap()
 {
 	uninit();
+}
+
+bool CvMap::configureScenarioGeography(const CvString& profile, int width, int height,
+    int areaCount, const std::vector<int>& areas, const std::vector<int>& settlers,
+    const std::map<CvString, std::vector<int> >& values)
+{
+    if (profile.empty() || width <= 0 || height <= 0 || width > 32767 || height > 32767 ||
+        (__int64)width * height * NUM_MAJOR_PLAYERS != settlers.size() ||
+        areaCount < 0 || areas.size() % 5 != 0) return false;
+    for (int i = 0; i < (int)areas.size(); i += 5)
+        if (areas[i] < 0 || areas[i] >= areaCount || areas[i+1] < 0 || areas[i+2] < 0 ||
+            areas[i+3] >= width || areas[i+4] >= height ||
+            areas[i+1] > areas[i+3] || areas[i+2] > areas[i+4]) return false;
+    m_scenarioGeographyName = profile;
+    m_iScenarioWidth = width;
+    m_iScenarioHeight = height;
+    m_iScenarioAreaCount = areaCount;
+    m_scenarioAreas = areas;
+    m_scenarioBaseSettlers = settlers;
+    m_scenarioSettlers = settlers;
+    m_scenarioValues = values;
+    return true;
+}
+
+const std::vector<int>& CvMap::getScenarioGeographyValues(const char* key) const
+{
+    std::map<CvString, std::vector<int> >::const_iterator it = m_scenarioValues.find(key);
+    if (it != m_scenarioValues.end()) return it->second;
+    static const std::vector<int> empty;
+    FAssertMsg(m_scenarioGeographyName.empty(), "Missing required scenario geography value");
+    return empty;
+}
+
+int CvMap::getScenarioSettlerValue(int player, int row, int x) const
+{
+    if (player < 0 || player >= NUM_MAJOR_PLAYERS || row < 0 || row >= m_iScenarioHeight ||
+        x < 0 || x >= m_iScenarioWidth) return 0;
+    return m_scenarioSettlers[(player * m_iScenarioHeight + row) * m_iScenarioWidth + x];
+}
+
+void CvMap::setScenarioSettlerValue(int player, int row, int x, int value)
+{
+    if (player < 0 || player >= NUM_MAJOR_PLAYERS || row < 0 || row >= m_iScenarioHeight ||
+        x < 0 || x >= m_iScenarioWidth) return;
+    m_scenarioSettlers[(player * m_iScenarioHeight + row) * m_iScenarioWidth + x] = value;
+}
+
+void CvMap::resetScenarioSettlerMap(int player)
+{
+    if (player < 0 || player >= NUM_MAJOR_PLAYERS) return;
+    const int length = m_iScenarioWidth * m_iScenarioHeight;
+    for (int i = player * length; i < (player + 1) * length; ++i)
+        m_scenarioSettlers[i] = m_scenarioBaseSettlers[i];
+}
+
+namespace
+{
+void readGeographyVector(FDataStreamBase* stream, std::vector<int>& values)
+{
+    int count;
+    stream->Read(&count);
+    values.resize(count);
+    if (count > 0) stream->Read(count, &values[0]);
+}
+
+void writeGeographyVector(FDataStreamBase* stream, const std::vector<int>& values)
+{
+    stream->Write((int)values.size());
+    if (!values.empty()) stream->Write((int)values.size(), &values[0]);
+}
 }
 
 // FUNCTION: init()
@@ -77,6 +149,9 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init saved data
 	reset(pInitInfo);
+	FAssertMsg(m_scenarioGeographyName.empty() ||
+        (m_iGridWidth == m_iScenarioWidth && m_iGridHeight == m_iScenarioHeight),
+        "The scenario geography dimensions do not match its map");
 
 	//--------------------------------
 	// Init containers
@@ -1263,6 +1338,23 @@ void CvMap::read(FDataStreamBase* pStream)
 	pStream->Read(&m_bWrapX);
 	pStream->Read(&m_bWrapY);
 
+    pStream->ReadString(m_scenarioGeographyName);
+    pStream->Read(&m_iScenarioWidth);
+    pStream->Read(&m_iScenarioHeight);
+    pStream->Read(&m_iScenarioAreaCount);
+    readGeographyVector(pStream, m_scenarioAreas);
+    readGeographyVector(pStream, m_scenarioBaseSettlers);
+    readGeographyVector(pStream, m_scenarioSettlers);
+    m_scenarioValues.clear();
+    int geographyKeys;
+    pStream->Read(&geographyKeys);
+    for (int i = 0; i < geographyKeys; ++i)
+    {
+        CvString key;
+        pStream->ReadString(key);
+        readGeographyVector(pStream, m_scenarioValues[key]);
+    }
+
 	FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated");
 	pStream->Read(GC.getNumBonusInfos(), m_paiNumBonus);
 	pStream->Read(GC.getNumBonusInfos(), m_paiNumBonusOnLand);
@@ -1301,6 +1393,21 @@ void CvMap::write(FDataStreamBase* pStream)
 
 	pStream->Write(m_bWrapX);
 	pStream->Write(m_bWrapY);
+
+    pStream->WriteString(m_scenarioGeographyName);
+    pStream->Write(m_iScenarioWidth);
+    pStream->Write(m_iScenarioHeight);
+    pStream->Write(m_iScenarioAreaCount);
+    writeGeographyVector(pStream, m_scenarioAreas);
+    writeGeographyVector(pStream, m_scenarioBaseSettlers);
+    writeGeographyVector(pStream, m_scenarioSettlers);
+    pStream->Write((int)m_scenarioValues.size());
+    for (std::map<CvString, std::vector<int> >::const_iterator it = m_scenarioValues.begin();
+        it != m_scenarioValues.end(); ++it)
+    {
+        pStream->WriteString(it->first);
+        writeGeographyVector(pStream, it->second);
+    }
 
 	FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated");
 	pStream->Write(GC.getNumBonusInfos(), m_paiNumBonus);
@@ -1365,150 +1472,28 @@ void CvMap::calculateAreas()
 			gDLL->getFAStarIFace()->GeneratePath(&GC.getAreaFinder(), pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), -1, -1, pLoopPlot->isWater(), iArea);
 		}
 	}
-	//Rhye - start (continents)
-	CvArea* sudamericaArea = addArea();
-	int sudamericaID = sudamericaArea->getID();
-	sudamericaArea->init(sudamericaID, false);
-	CvArea* europaArea = addArea();
-	int europaID = europaArea->getID();
-	europaArea->init(europaID, false);
-	CvArea* africaArea = addArea();
-	int africaID = africaArea->getID();
-	africaArea->init(africaID, false);
-
-
-	for (int iX = 24; iX <= 25; iX++)
-	{
-		gDLL->callUpdater();
-		for (int iY = 23; iY <= 29; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(sudamericaID);
-		}
-	}
-	for (int iX = 26; iX <= 34; iX++)
-	{
-		for (int iY = 3; iY <= 32; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(sudamericaID);
-		}
-	}
-	for (int iX = 35; iX <= 43; iX++)
-	{
-		for (int iY = 10; iY <= 29; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(sudamericaID);
-		}
-	}
-
-	for (int iX = 49; iX <= 56; iX++)
-	{
-		gDLL->callUpdater();
-		for (int iY = 40; iY <= 52; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-	for (int iX = 59; iX <= 68; iX++)
-	{
-		for (int iY = 40; iY <= 45; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-	for (int iX = 57; iX <= 78; iX++)
-	{
-		for (int iY = 46; iY <= 65; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-	for (int iX = 79; iX <= 83; iX++) //a slice of central asia
-	{
-		for (int iY = 52; iY <= 63; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-	for (int iX = 84; iX <= 91; iX++) //a slice of siberia
-	{
-		for (int iY = 54; iY <= 65; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-	for (int iX = 92; iX <= 123; iX++) //a slice of north siberia
-	{
-		for (int iY = 57; iY <= 65; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(europaID);
-		}
-	}
-
-	//for (int iX = 48; iX <= 67; iX++)
-	//{
-	//	gDLL->callUpdater();
-	//	for (int iY = 26; iY <= 39; iY++)
-	//	{
-	//		if (!plotSorenINLINE(iX, iY)->isWater())
-	//			plotSorenINLINE(iX, iY)->setArea(africaID);
-	//	}
-	//}
-	//for (int iX = 60; iX <= 72; iX++)
-	//{
-	//	for (int iY = 10; iY <= 25; iY++)
-	//	{
-	//		if (!plotSorenINLINE(iX, iY)->isWater())
-	//			plotSorenINLINE(iX, iY)->setArea(africaID);
-	//	}
-	//}
-	//for (int iX = 68; iX <= 72; iX++)
-	//{
-	//	for (int iY = 26; iY <= 36; iY++)
-	//	{
-	//		if (!plotSorenINLINE(iX, iY)->isWater())
-	//			plotSorenINLINE(iX, iY)->setArea(africaID);
-	//	}
-	//}
-	//for (int iX = 73; iX <= 77; iX++)
-	//{
-	//	for (int iY = 24; iY <= 29; iY++)
-	//	{
-	//		if (!plotSorenINLINE(iX, iY)->isWater())
-	//			plotSorenINLINE(iX, iY)->setArea(africaID);
-	//	}
-	//}
-	//if (!plotSorenINLINE(73, 30)->isWater())
-	//	plotSorenINLINE(73, 30)->setArea(africaID);
-	//only subsaharian
-	for (int iX = 61; iX <= 72; iX++)
-	{
-		for (int iY = 10; iY <= 22; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(africaID);
-		}
-	}
-
-	//this will be done later, slightly before the Malinese spawn date
-	/*for (int iX = 48; iX <= 64; iX++)
-	{
-		gDLL->callUpdater();
-		for (int iY = 22; iY <= 33; iY++)
-		{
-			if (!plotSorenINLINE(iX, iY)->isWater())
-				plotSorenINLINE(iX, iY)->setArea(africaID);
-		}
-	}*/
-	//Rhye - end
+    // Profiles explicitly author continent subdivisions; impassability does not
+    // alter the engine's underlying land/water connectivity calculation.
+    std::vector<int> areaIDs;
+    for (int group = 0; group < m_iScenarioAreaCount; ++group)
+    {
+        CvArea* area = addArea();
+        area->init(area->getID(), false);
+        areaIDs.push_back(area->getID());
+    }
+    for (int i = 0; i + 4 < (int)m_scenarioAreas.size(); i += 5)
+    {
+        const int group = m_scenarioAreas[i];
+        for (int x = m_scenarioAreas[i+1]; x <= m_scenarioAreas[i+3]; ++x)
+        {
+            gDLL->callUpdater();
+            for (int y = m_scenarioAreas[i+2]; y <= m_scenarioAreas[i+4]; ++y)
+            {
+                CvPlot* plot = plotSorenINLINE(x, y);
+                if (plot != NULL && !plot->isWater()) plot->setArea(areaIDs[group]);
+            }
+        }
+    }
 }
 
 

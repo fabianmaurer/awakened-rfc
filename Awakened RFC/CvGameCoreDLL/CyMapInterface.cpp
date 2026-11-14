@@ -19,6 +19,9 @@ void CyMapPythonInterface()
 
 	python::class_<CyMap>("CyMap")
 		.def("isNone", &CyMap::isNone, "bool () - valid CyMap() interface")
+        .def("configureScenarioGeography", &CyMap::configureScenarioGeography, "bool (list data) - installs validated scenario geography before map creation")
+        .def("finalizeScenarioGeography", &CyMap::finalizeScenarioGeography, "void () - applies player regions after WorldBuilder map creation")
+        .def("getScenarioGeographyName", &CyMap::getScenarioGeographyName, "str () - saved scenario geography profile")
 
 		.def("erasePlots", &CyMap::erasePlots, "() - erases the plots")
 		.def("setRevealedPlots", &CyMap::setRevealedPlots, "void (int /*TeamTypes*/ eTeam, bool bNewValue, bool bTerrainOnly) - reveals the plots to eTeam")

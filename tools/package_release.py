@@ -28,12 +28,17 @@ Requires Civilization IV: Beyond the Sword, patched to 3.19.
    .../Sid Meier's Civilization IV Beyond the Sword/Beyond the Sword/Mods/
 2. Keep the folder named "Awakened RFC". Do not nest it inside another folder.
 3. Start Beyond the Sword and choose Advanced > Load a Mod > Awakened RFC.
-4. Choose one of the included scenarios: 3000 BC, 800 BC, 600 AD, 900 AD or 1453 AD.
+4. Choose one of the included scenarios: 3000 BC, 800 BC, 600 AD or 1453 AD.
 
 When updating, replace the previous Awakened RFC folder rather than merging
 files. Changes are
 intended for new games; compatibility with older saves is not guaranteed.
 All multiplayer participants must use the same release.
+
+Optional graphics: after installing the mod, run the PowerShell installer
+"Install Graphics Upgrade.ps1" inside the mod folder. It downloads the latest
+GraphicsUpgrade release and installs it beside the Beyond the Sword executable.
+See the repository README for details and update instructions.
 
 No compiler, separate Python installation or original RFC mod is required
 to play. The compiled game DLL, scripts and assets are included.
@@ -56,13 +61,13 @@ def runtime_files(include_reporting=False):
     if expected not in dll or other in dll:
         raise ValueError('DLL reporting mode does not match package mode; rebuild with '
                          'ARFC_ENABLE_REPORTING=' + ('1' if include_reporting else '0'))
-    for folder in ('Assets', 'PublicMaps'):
+    for folder in ('Assets', 'PublicMaps', 'Resource'):
         if not (MOD / folder).is_dir():
             raise ValueError('Missing runtime directory: ' + str(MOD / folder))
     if not any((MOD / 'PublicMaps').glob('*.CivBeyondSwordWBSave')):
         raise ValueError('No playable scenarios found in PublicMaps.')
-    paths = [config]
-    for folder in ('Assets', 'PublicMaps'):
+    paths = [config, MOD / 'Install Graphics Upgrade.ps1']
+    for folder in ('Assets', 'PublicMaps', 'Resource', 'GraphicsUpgrade'):
         for path in (MOD / folder).rglob('*'):
             relative = path.relative_to(MOD)
             if not include_reporting and relative.as_posix() in REPORTING_FILES:

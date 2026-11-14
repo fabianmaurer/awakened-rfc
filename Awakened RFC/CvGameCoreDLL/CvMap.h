@@ -92,6 +92,17 @@ public:
 
 	void doTurn();																			
 
+    // Geography is installed before WorldBuilder rebuilds the map and saved
+    // with it. Authored settlement rows are ordered north-to-south.
+    bool configureScenarioGeography(const CvString& profile, int width, int height,
+        int areaCount, const std::vector<int>& areas, const std::vector<int>& settlers,
+        const std::map<CvString, std::vector<int> >& values);
+    const CvString& getScenarioGeographyName() const { return m_scenarioGeographyName; }
+    const std::vector<int>& getScenarioGeographyValues(const char* key) const;
+    int getScenarioSettlerValue(int player, int row, int x) const;
+    void setScenarioSettlerValue(int player, int row, int x, int value);
+    void resetScenarioSettlerMap(int player);
+
 	DllExport void updateFlagSymbols();
 
 	DllExport void updateFog();
@@ -284,6 +295,13 @@ protected:
 	int* m_paiNumBonusOnLand;
 
 	CvPlot* m_pMapPlots;
+
+    CvString m_scenarioGeographyName;
+    int m_iScenarioWidth, m_iScenarioHeight, m_iScenarioAreaCount;
+    std::vector<int> m_scenarioAreas;
+    std::vector<int> m_scenarioBaseSettlers;
+    std::vector<int> m_scenarioSettlers;
+    std::map<CvString, std::vector<int> > m_scenarioValues;
 
 	FFreeListTrashArray<CvArea> m_areas;
 

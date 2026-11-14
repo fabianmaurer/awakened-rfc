@@ -12,6 +12,7 @@ import Islam
 import Caliphate
 from CvPythonExtensions import CyGlobalContext
 import NativeAmerica
+import ScenarioGeography
 
 class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
@@ -57,7 +58,6 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
 
         self.CustomEvents = {
             7614 : ('RiseAndFallPopupEvent', self.rnfEventApply7614, self.rnfEventBegin7614),
-            7615 : ('FlipPopupEvent', self.rnfEventApply7615, self.rnfEventBegin7615),
             7616 : ('VotePopupEvent', self.congEventApply7616, self.congEventBegin7616),
             7617 : ('AskCityPopupEvent', self.congEventApply7617, self.congEventBegin7617),
             7618 : ('DecisionPopupEvent', self.congEventApply7618, self.congEventBegin7618),
@@ -91,6 +91,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         self.addEventHandler("GameStart", Caliphate.onLoadGame)
         import Korea
         self.addEventHandler("OnLoad", Korea.configureRegions)
+        import BirthSuccession
+        self.addEventHandler("OnLoad", BirthSuccession.loaded)
+        self.addEventHandler("GameStart", BirthSuccession.loaded)
+        self.addEventHandler("BeginPlayerTurn", BirthSuccession.showPending)
         self.addEventHandler("GameStart", Korea.configureRegions)
         if REPORTING_ENABLED:
             self.observer.install_after(self)
@@ -146,6 +150,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
                 # the last 6 arguments are for internal use by handleEvent
                 try:
                     eventHandler(argsList[:len(argsList) - 6])
+                except ScenarioGeography.MissingCoordinate:
+                    continue
                 except:
                     if REPORTING_ENABLED:
                         self.observer.exception(eventType)
@@ -164,7 +170,10 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
         if self.EventHandlerMap.has_key(eventType):
             for eventHandler in self.EventHandlerMap[eventType]:
                 # the last 6 arguments are for internal use by handleEvent
-                result = eventHandler(argsList[:len(argsList) - 6])
+                try:
+                    result = eventHandler(argsList[:len(argsList) - 6])
+                except ScenarioGeography.MissingCoordinate:
+                    continue
                 if (result > 0):
                     return result
         return 0
@@ -185,6 +194,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
     # TODO: this probably needs to be more complex
     def _handleOnLoadEvent(self, eventType, argsList):
         """Handles OnLoad events."""
+        import ScenarioGeography
+        ScenarioGeography.restore()
         result = self._handleDefaultEvent(eventType, argsList)
         NativeAmerica.configureRegions()
         # Refresh only after all saved players and load-time identities are ready.
@@ -220,13 +231,8 @@ class CvRFCEventManager(CvEventManager.CvEventManager, object):
             pass
        
     def rnfEventApply7614(self, playerID, netUserData, popupReturn):
-            self.rnf.eventApply7614(popupReturn)
-
-    def rnfEventBegin7615(self):
-            pass
-       
-    def rnfEventApply7615(self, playerID, netUserData, popupReturn):
-            self.rnf.eventApply7615(popupReturn)
+            import BirthSuccession
+            BirthSuccession.apply(playerID, netUserData, popupReturn)
 
     def congEventBegin7616(self):
             pass

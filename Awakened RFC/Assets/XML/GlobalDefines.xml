@@ -5,6 +5,16 @@
 <!-- -->
 <!-- Global Defines -->
 <Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
+	<!-- Exploration XP per newly revealed tile, in hundredths; 10 = 0.1 XP. -->
+	<Define>
+		<DefineName>SCOUT_EXPLORATION_XP_HUNDREDTHS</DefineName>
+		<iDefineIntVal>10</iDefineIntVal>
+	</Define>
+	<!-- Percent of the next mastery level's total research cost per combat; 0 disables. -->
+	<Define>
+		<DefineName>UNIT_MASTERY_COMBAT_RESEARCH_PERCENT</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	<Define>
 		<DefineName>CIV4_VERSION</DefineName>
 		<iDefineIntVal>319</iDefineIntVal>
@@ -1142,11 +1152,12 @@
 	</Define>
 	<Define>
 		<DefineName>CAMERA_MIN_YAW</DefineName>
-		<fDefineFloatVal>-45.0</fDefineFloatVal>
+		<!-- Keep yaw limits distinct: equal values break camera zoom transitions. -->
+		<fDefineFloatVal>-0.1</fDefineFloatVal>
 	</Define>
 	<Define>
 		<DefineName>CAMERA_MAX_YAW</DefineName>
-		<fDefineFloatVal>45.0</fDefineFloatVal>
+		<fDefineFloatVal>0.1</fDefineFloatVal>
 	</Define>
 	<Define>
 		<DefineName>CAMERA_START_DISTANCE</DefineName>
@@ -1735,5 +1746,62 @@
     <Define><DefineName>RFCMP_GREAT_WALL_CROSSING_DAMAGE</DefineName><iDefineIntVal>20</iDefineIntVal></Define>
 	<Define><DefineName>AP_CRUSADE_BASE_TURNS</DefineName><iDefineIntVal>30</iDefineIntVal></Define>
 	<Define><DefineName>AP_CRUSADE_INACTIVITY_TURNS</DefineName><iDefineIntVal>8</iDefineIntVal></Define>
-	<Define><DefineName>AP_PAPAL_RETRY_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>AP_PAPAL_RETRY_TURNS</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
+	<Define><DefineName>AP_PAPAL_REFUSAL_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>AP_PAPAL_EXILE_WAIT_TURNS</DefineName><iDefineIntVal>5</iDefineIntVal></Define>
+
+    <!-- Metal inflation: 10,000 units = one percentage point; rates scale with game speed. -->
+    <Define><DefineName>RFCMP_METAL_INFLATION_PRESSURE_TIMES10000</DefineName><iDefineIntVal>10000</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_METAL_INFLATION_DECAY_TIMES10000</DefineName><iDefineIntVal>500</iDefineIntVal></Define>
+    <!-- Speeds adjustment toward equilibrium without changing it. -->
+    <Define><DefineName>RFCMP_METAL_INFLATION_CHANGE_MULTIPLIER</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+    <!-- Pass-scoped trade cache; shadow sampling is reporting-only (zero disables checks). -->
+    <Define><DefineName>RFCMP_PERF_TRADE_CACHE</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_PERF_SHADOW_INTERVAL</DefineName><iDefineIntVal>64</iDefineIntVal></Define>
+    <!-- Experimental deterministic late-game approximation, all peers must match. -->
+    <Define><DefineName>RFCMP_FAST_LATE_GAME</DefineName><iDefineIntVal>1</iDefineIntVal></Define>
+    <Define><DefineName>RFCMP_FAST_LATE_YEAR</DefineName><iDefineIntVal>-10000</iDefineIntVal></Define>
+
+	<!-- Administration capacity: additive national percentage modifiers. -->
+	<Define><DefineName>ARFC_ADMIN_CIVIC_TRIBAL_SYSTEM</DefineName><iDefineIntVal>-40</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_MONARCHY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_REPUBLIC</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DICTATORSHIP</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DEMOCRACY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_DESPOTISM</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_THEOCRATIC_LEGITIMACY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PLUTOCRACY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_NATIONALISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_RULE_OF_LAW</DefineName><iDefineIntVal>20</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SELF_SUFFICIENCY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SLAVERY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_SERFDOM</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PLANNED_ECONOMY</DefineName><iDefineIntVal>-20</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_CORPORATE_ECONOMY</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_WARRIOR_SOCIETY</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_NAVAL_WARFARE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_FEUDAL_RETINUES</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_PROFESSIONAL_ARMY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_CONSCRIPTION</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_ANCESTOR_CULT</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_STATE_RELIGION</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_GOD_STATE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_TOLERANCE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_CIVIC_STATE_ATHEISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_PYRAMID</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_GREAT_LIBRARY</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_GREAT_PALACE</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_BUILDING_VERSAILLES</DefineName><iDefineIntVal>15</iDefineIntVal></Define>
+
+	<!-- Civilization-specific civic capacity values replace their generic civic value. -->
+	<Define><DefineName>ARFC_ADMIN_PHARAONISM</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_DIVINE_KINGSHIP</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_ROMAN_REPUBLIC</DefineName><iDefineIntVal>40</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_ROMAN_LEGIONS</DefineName><iDefineIntVal>0</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_HORDE</DefineName><iDefineIntVal>-10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_LINK_TURNS</DefineName><iDefineIntVal>10</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_UNREACHABLE_TRAVEL</DefineName><iDefineIntVal>100</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_CAPITAL_PERCENT</DefineName><iDefineIntVal>50</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_GOLD</DefineName><iDefineIntVal>3</iDefineIntVal></Define>
+	<Define><DefineName>ARFC_ADMIN_RESIDENCE_MIN_POPULATION</DefineName><iDefineIntVal>4</iDefineIntVal></Define>
 </Civ4Defines>

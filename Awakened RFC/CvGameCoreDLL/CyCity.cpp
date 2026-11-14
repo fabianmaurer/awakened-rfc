@@ -607,6 +607,16 @@ int CyCity::foodDifference(bool bBottom)
 	return m_pCity ? m_pCity->foodDifference(bBottom) : -1;
 }
 
+int CyCity::getFamineTurns()
+{
+    return m_pCity ? m_pCity->getFamineTurns() : 0;
+}
+
+int CyCity::getFamineUnhappiness()
+{
+    return m_pCity ? m_pCity->getFamineUnhappiness() : 0;
+}
+
 int CyCity::growthThreshold()
 {
 	return m_pCity ? m_pCity->growthThreshold() : -1;
@@ -783,6 +793,12 @@ void CyCity::changePopulation(int iChange)
 		m_pCity->changePopulation(iChange);
 }
 
+void CyCity::changePopulationPeacefully(int iChange)
+{
+    if (m_pCity)
+        m_pCity->changePopulation(iChange, false);
+}
+
 long CyCity::getRealPopulation()
 {
 	return m_pCity ? m_pCity->getRealPopulation() : -1;
@@ -951,6 +967,11 @@ void CyCity::changeEspionageHealthCounter(int iChange)
 {
 	if (m_pCity)
 		m_pCity->changeEspionageHealthCounter(iChange);
+}
+
+int CyCity::getIntelligenceUnrestTurns()
+{
+    return m_pCity ? m_pCity->getIntelligenceUnrestTurns() : 0;
 }
 
 int CyCity::getEspionageHappinessCounter()

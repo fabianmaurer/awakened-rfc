@@ -1,3 +1,4 @@
+import Administration
 ## Sid Meier's Civilization 4
 ## Copyright Firaxis Games 2005
 from CvPythonExtensions import *
@@ -176,6 +177,7 @@ class CvCivicsScreen:
 					screen.addCheckBoxGFC(self.getCivicsButtonName(j), CivicNames.button(j, self.iActivePlayer), ArtFileMgr.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath(), fX + self.BUTTON_SIZE/2, fY, self.BUTTON_SIZE, self.BUTTON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1, ButtonStyles.BUTTON_STYLE_LABEL)
 					screen.setText(self.getCivicsTextName(j), "", CivicNames.description(j, self.iActivePlayer), CvUtil.FONT_LEFT_JUSTIFY, fX + self.BUTTON_SIZE + self.TEXT_MARGIN, fY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
+
 			self.drawCivicOptionButtons(i)
 					
 							
@@ -204,9 +206,6 @@ class CvCivicsScreen:
 		iCivicOption = gc.getCivicInfo(iCivic).getCivicOptionType()
 		
 		# Set the previous widget
-		iGovernment = gc.getInfoTypeForString("CIVICOPTION_GOVERNMENT")
-		if iCivicOption != iGovernment and self.m_paeCurrentCivics[iGovernment] == gc.getInfoTypeForString("CIVIC_DEMOCRACY"):
-			return 0
 		iCivicPrev = self.m_paeCurrentCivics[iCivicOption]
 		
 		# Switch the widgets
@@ -273,7 +272,14 @@ class CvCivicsScreen:
 
 		fY = self.HELP_TOP + 3 * self.TEXT_MARGIN
 		szHelpAreaID = self.HELP_AREA_NAME + str(iCivicOption)		
-		screen.addMultilineText(szHelpAreaID, szHelpText, fX+5, fY, self.HEADINGS_WIDTH-7, self.HELP_BOTTOM - fY-2, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)				
+		iAdmin = activePlayer.getAdministrationValue(6, iCivic)
+		szAdminID = "CivicAdministrationDetail" + str(iCivicOption)
+		screen.deleteWidget(szAdminID)
+		iHelpBottom = self.HELP_BOTTOM - 2
+		if iAdmin:
+			iHelpBottom -= 26
+			screen.setLabel(szAdminID, "Background", u"<font=2>%+d%% %s</font>" % (iAdmin, Administration.symbol()), CvUtil.FONT_RIGHT_JUSTIFY, fX + self.HEADINGS_WIDTH - 10, self.HELP_BOTTOM - 25, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iCivic, -1)
+		screen.addMultilineText(szHelpAreaID, szHelpText, fX+5, fY, self.HEADINGS_WIDTH-7, iHelpBottom - fY, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 		
 	# Will draw the help text

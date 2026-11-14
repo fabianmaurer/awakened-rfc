@@ -11,24 +11,156 @@ This README describes the gameplay changes implemented in this fork. The
 original RFC MP world maps, historical civilization spawns, unique powers,
 victory goals, and other inherited systems form the underlying game.
 
+Historical goals are currently disabled for all civilizations. They grant no
+rewards or historical victory, and the scoreboard no longer shows goal progress.
+Historical objectives described below are inactive.
+
+## Administration and empire size
+
+Administration replaces stability penalties for city count, foreign territory
+and uncontrolled homeland cities. Base capacity is **50 on XL**, otherwise
+**33**, and grows by 25% of its initial value per era since Ancient, including
+late starts. Civic and wonder percentages add together before modifying this base.
+
+City effort is `population × (1 + 0.05 × travel time) × (1 + local modifiers)`.
+City administration costs round up to one decimal place after all modifiers; national capacity rounds up to whole points. National effort is the sum of the rounded city costs.
+
+Fractional travel times use two land movement points and current road speeds.
+Each sea leg uses one, two or four movement points with zero, one or two harbors
+at its coastal transitions. Mixed land/sea routes start from the capital. Open borders and vassal territory allow
+passage; troops and blockades are ignored. Ocean travel requires Astronomy.
+
+Connectivity and cost distance are separate. Continuous owned, passable land
+has no range limit. Owned towns relay overland sections. Owned harbors relay
+sea connections with each section below
+**ten reference turns**. Foreign/unowned land consumes section travel time; open
+borders do not create an unlimited owned land corridor. A new coastal city may
+be an endpoint without a harbor, but only an owned harbor renews a sea connection.
+Unconnected sites cannot be settled. Existing or conquered cities become
+independent after **10 XL turns or 5 ordinary turns** without reconnection.
+The full cost distance keeps increasing; it is no longer capped at ten turns.
+If no physical route exists, direct capital travel uses a 100-turn fallback.
+
+The **Governor's Residence** replaces the national Summer Palace. It is
+repeatable, costs **200 production and 3 gold per turn**, and requires Code of
+Laws, a local courthouse and **four population** to construct. It adds no
+national capacity. A city uses the cheaper of direct capital travel or travel
+to one residence plus **50% of that residence's direct capital travel**. A
+residence city always uses its own residence, including its own discount. The
+capital portion never uses another residence, so discounts cannot chain.
+Residences do not extend connectivity. Versailles grants national capacity only.
+
+A large **Abandon residence** button appears beneath the city building list.
+Confirmation previews national effort and the gold balance after removal,
+including upkeep and production-process changes at current settings. There is
+no construction refund. Build a replacement before abandoning the old residence
+if you want continuous regional coverage.
+
+Overload is `max(0, effort / capacity − 1)`. At 100% overload, city upkeep rises
+by 200%, current stability falls by 40 and production falls by 20%. Production
+is reduced after bonuses and reaches zero at 500% overload. The stability
+contribution disappears immediately when capacity is sufficient again.
+City upkeep is **0.5 gold per point of administrative effort** plus the overload surcharge.
+Distance, colonies and corporations add no separate upkeep. Buildings reduce
+upkeep through their reductions to administrative effort.
+
+Courthouses, Sacrificial Altars and Ziggurats reduce local effort by 20%; Rathaus
+and Delhi's replacement by 30%; Provincial Administration by 25%; Ikhanda by 5%;
+Digital Administration by 15%. Reductions add without a hard cap, with normal
+building combinations limited to 50%. Pyramids and Great Library give +10%
+national capacity each; Versailles gives +15%.
+
+| Category | Capacity |
+| --- | --- |
+| Government | Tribal System −40%; Monarchy, Republic, Dictatorship and Democracy 0%. |
+| Legitimacy | Despotism −10%, Theocratic Legitimacy +10%, Plutocracy −10%, Nationalism 0%, Rule of Law +20%. |
+| Economy | Self-sufficiency 0%, Slavery −10%, Serfdom +10%, Planned Economy −20%, Market Economy 0%. |
+| Military | Warrior Society −10%, Naval Warfare 0%, Feudal Retinues +10%, Professional Army +10%, Conscription −10%. |
+| Religion | All 0%; religion changes local effort instead. |
+
+Civilization-specific variants replace the generic value: **Pharaonic Kingship,
+Divine Kingship and Roman Legions 0%**, **Roman Republic +40%**, **Horde −10%**.
+Their existing special effects remain active. Organized Egyptian and Roman
+institutions do not inherit generic administration penalties. Early and late
+civic combinations can provide the same capacity bonus; era growth provides
+progression.
+
+State religion reduces effort by 5%, each foreign religion adds 10%. Without a
+state religion there is no religious adjustment. Tolerance removes both effects;
+State Atheism treats every religion as foreign. God State doubles religion's
+administrative effects, loses its production bonus and quarters foreign passive
+spread and missionary success chances.
+
+**F1** shows administration, overload effects, stability and a compact city list.
+Non-capital cities may join an existing own vassal or revive an available extinct
+civilization whose historical birth/flip area includes the city. Otherwise,
+only direct independence is offered. Future spawns and human slots are protected.
+Every release resets stored city culture for all civilizations to zero.
+The AI considers vassal releases after sustained 25% overload; independence
+requires at least 50% overload and receives half the release score.
+Voluntary administrative releases cause no city-loss stability shock or
+acquisition stability bonus and do not count toward the city-count collapse check.
+Automatic secession from lost connectivity retains the ordinary city-loss rules.
+There is no reintegration action. The map symbol also
+marks administration on civic cards and in the city screen. Runtime behavior,
+balance and multiplayer remain unverified.
+
+During an active jihad event, administration penalties are suspended: no overload upkeep surcharge, stability loss or
+production penalty. The distance-based loss-of-control countdown pauses. The
+AI suspends administration-based growth and conquest restrictions and does not
+release cities for relief. Effort and capacity remain visible; ordinary rules
+resume when the event ends. The connection requirements for settlement still apply. Crusades do not grant
+this exemption.
+
+The AI evaluates settlement sites at an early population of three and reserves
+some capacity for existing cities' growth. Excessively burdensome sites are
+rejected and costly conquest targets receive lower scores. Cities of population
+three or more avoid growth when another citizen would exceed capacity. Civic
+and state-religion choices account for their actual overload effects.
+
+Road connections prioritize distant, populous cities, the capital and governor residences.
+For harbors and governor residences, the AI shortlists geographically
+promising locations, then evaluates the best candidate's actual travel-time
+and effort savings using the existing route network. After at least three
+reference turns at 25% or more overload, it may release a suitable peripheral
+city to a vassal, at most once per five reference turns. Capitals, holy cities
+and cities with world wonders are protected. Voluntary release requires an
+eligible vassal slot and avoids severely overloading the recipient.
+
+State-religion missionaries can target foreign religions in owned cities.
+Missionary demand accounts for these targets; removal weighs administrative
+relief against the loss of religious buildings. The AI avoids purges under
+Tolerance or State Atheism, in foreign holy cities, and during an advanced
+culture-victory strategy. Human automated missionaries do not gain this action.
+Religious-purge decisions also weigh happiness changes from religion, lost
+building bonuses and religion-related war anger. Relieving existing angry
+citizens matters more than adding spare happiness.
+
+These are planning heuristics; their balance has not been validated in-game.
+
 ## Apostolic council
 
 The Apostolic Palace **cannot be constructed**. Once Christianity is present in
 the city of Rome at (60,44), the Papal State founding event becomes eligible:
 
-- A Christian owner may cede Rome to a new Papal State, or refuse for a stacking
-  **-2 relations penalty from every other Christian nation**. Refusal repeats after
-  10 turns at Normal speed (`AP_PAPAL_RETRY_TURNS`), scaled to game speed. All
-  accumulated refusal penalties disappear when the owner cedes Rome or loses Rome (including gifting or razing it).
-- Independent Rome flips to the Papal State automatically. Barbarian ownership,
-  non-Christian ownership, Tolerance and State Atheism prevent the event.
+- A Christian owner may cede Rome to a new Papal State or refuse. Refusal gives
+  **-2 relations with other Christian nations for 20 XL turns** (10 at Normal
+  speed). Repeated refusals refresh this duration rather than stacking the penalty.
+- Independent Rome accepts automatically. Barbarian ownership, non-Christian
+  ownership, Tolerance and State Atheism prevent the initial Rome event.
+- Accepting makes the surviving major owner **Protector of the Holy See**:
+  **+2 relations with Christian nations and one extra council vote** while the
+  ceded city remains the Papal seat. A non-Christian protector receives its one
+  protector vote without ordinary Christian voting weight. Independent hosts
+  receive no protector reward. The bonus applies to new ballots; existing ballots
+  retain their recorded weights.
 
 The Papal State is a minor state, excluded from normal major-power diplomacy and
 victory competition. It cannot train settlers or receive neighboring Crusade
 settlements, but retains its seat and chairmanship in the Apostolic council.
 A major civilization cannot turn its whole empire into the Papal State.
 
-A newly established Papal State receives Rome, its own player slot, a capital and
+A newly established Papal State receives the offered city, its own player slot, a capital and
 two defensive units. It begins with Monarchy, Theocracy, Holy State and Christianity.
 Papal identity is separate from the Independent Crusader States. The leader is
 named Pope. Like other minor states, it has no scoreboard entry or ordinary
@@ -40,23 +172,44 @@ Ancestor Worship receives casual wording, State Religion respectful wording,
 Holy State reverent wording, and Tolerance or State Atheism sceptical wording.
 Human recipients receive an informational popup and an event-log message.
 
-While Rome belongs to the Papal State, its eight adjacent non-city tiles remain
-Papal territory regardless of foreign culture or fort garrisons. Rome itself
+While the Papal seat belongs to the Papal State, its passable adjacent non-city tiles remain
+Papal territory regardless of foreign culture or fort garrisons. Papal culture
+cannot claim tiles beyond this area, on land or at sea. The seat itself
 cannot suffer cultural revolts or cultural unhappiness. These protections also
-apply under Tolerance; Rome can still be lost through military conquest.
+apply under Tolerance; the seat can still be lost through military conquest.
 
 The Papal State cannot change its state religion or legitimation civic while it
 is not using **Tolerance**. **State Atheism is always unavailable**. Adopting
 Tolerance disables the Palace, council voting and all Palace effects, including
 cached religious-building yields and the Palace's own commerce/Great Person effects.
 Returning to Christian religious rule reactivates them; secularization is reversible.
-The Palace is also inactive when the Papal State no longer controls Rome.
-After losing Rome, the Papal State has **10 turns** to recover it. Recovery resets
-this deadline; a later loss starts a new ten-turn period. If it fails, its remaining
-cities become Independent and its army disbands. A cityless Papal State with
-surviving units keeps its recovery opportunity. A new founding event cannot fire
-while any existing Papal State survives, including during the recovery period.
-After elimination or dissolution, an eligible Rome event may restore the Papacy.
+If the Papal seat is conquered, the Papal State ends immediately and its active
+Crusade stops, applying the ordinary Crusade-end peace rules. There is no
+recapture grace period. Remaining Papal cities become Independent and its army
+is disbanded. The Protector bonus ends and the Pope enters exile.
+
+After **10 XL turns** (5 at Normal speed), a synchronized random Christian city
+in Europe is selected for refuge. Europe uses the five European Crusade fronts.
+The conqueror's cities and cities already approached in that exile are excluded.
+Non-capitals are preferred; capitals are considered only when no eligible
+non-capital remains. Any non-barbarian owner of a Christian city can receive an
+offer. The owner is asked to cede that specific city; a last-city warning applies.
+Independent owners accept automatically. AI major owners accept when Christian
+and retaining another city; other AI owners refuse.
+
+Acceptance establishes the new Papal State and Palace in the offered city, with
+the same seat protections, Holy See power and Protector reward. Refusal gives the
+20-XL-turn diplomatic penalty, and another city is approached after **10 XL turns**.
+Several nations' penalties can overlap; accepting clears the accepting owner's
+penalty without clearing other nations' penalties. Lost ownership or Christianity
+invalidates an unanswered offer without a penalty, followed by the same wait.
+If no eligible city remains, the Pope stays in exile and checks again after the
+wait; previously approached sites stay excluded until a new exile begins.
+Initial founding remains confined to Rome, and refuge never resumes an ended
+Crusade. A new campaign requires a new council vote.
+
+The delays scale with game speed through `AP_PAPAL_EXILE_WAIT_TURNS`,
+`AP_PAPAL_RETRY_TURNS` and `AP_PAPAL_REFUSAL_TURNS` in `GlobalDefines.xml`.
 
 Every founding or restoration starts the Papal AI with a strong preference for
 **Theocracy and Holy State**, and against Tolerance and Ancestor Worship. Once the
@@ -66,15 +219,16 @@ preference and restarts the fade. This AI preference adds no civic restrictions
 to human players beyond the existing Papal rules.
 
 The Papal unique power, **The Power of the Holy See**, is active while the Papal
-State controls an active Apostolic Palace. Rome gains **+2 base gold per foreign
+State controls an active Apostolic Palace. The seat gains **+2 base gold per foreign
 city containing Christianity**, regardless of that city's owner's state religion;
-Rome's gold modifiers amplify this income. Papal cities containing Christianity
+the seat's gold modifiers amplify this income. Papal cities containing Christianity
 receive **+50% city defense**, reduced normally by bombardment. These bonuses
-stop when the Palace is inactive, including under Tolerance or after losing Rome,
+stop when the Palace is inactive, including under Tolerance or after losing the seat,
 and return when it reactivates. They apply to the Papal State,
-including countries that choose to become the Papacy.
+at its current seat, including refuge cities.
 
-Only nations with Christianity as their state religion participate in council votes.
+Nations with Christianity as their state religion participate in council votes.
+A non-Christian Protector also receives its single protector vote.
 The Papal State chairs the council. The UN retains its existing rules.
 
 The first council session opens at the later of three turns after founding or
@@ -161,8 +315,10 @@ scenario-slot maintenance use this layout. New games are required.
 A persistent main-interface reminder shows the region, remaining turns, the
 player's plunder and total coalition plunder. Plunder counts regional pillage gold,
 city-capture gold and Crusade victory rewards. Coalition membership remains binding
-for the campaign even if a participant changes religion. Only Yes, No and Abstain
-are available, and every member adheres to a passed result.
+for the campaign even if a participant changes religion.
+Restored crusader kingdoms resume required wars without receiving a fresh
+combat-reward allowance. Papal refuge ends the previous Crusade instead.
+Only Yes, No and Abstain are available, and every member adheres to a passed result.
 
 Treaties passed by the council bypass their ordinary technology requirement.
 There is no defiance veto: No and Abstain voters are bound by passed resolutions.
@@ -192,9 +348,27 @@ former-colony claims, local culture conversion and nearby unit flips stay within
 these bounds, excluding Rome (60,44) and its adjacent tiles. Ancient Rome's birth
 area and stability regions are unchanged.
 
+## Regional religion founding
+
+Religions arise in eligible regional cities belonging to any owner; the city owner receives founding credit. The game checks every turn after the earliest date and waives the technology requirement at the fallback date.
+
+| Religion | Region | Earliest date and technology | Fallback |
+|---|---|---|---|
+| Hinduism | Northern India | 1500 BC, Meditation | 1000 BC |
+| Buddhism | Northern India | 500 BC, Priesthood | 200 BC |
+| Confucianism | China | 500 BC, Mathematics | 200 BC |
+| Daoism | China | 400 BC, Calendar | 200 BC |
+| Judaism | Levant | 1500 BC, Monotheism | 1000 BC |
+| Christianity | Levant | 33 AD, Theology | 200 AD |
+| Islam | Arabia | 622 AD, Divine Right | 650 AD |
+
+Jerusalem is preferred for Judaism and Christianity, and Mecca for Islam. Before its fallback, Christianity requires either Jerusalem or a city containing Judaism; afterwards it may arise in any eligible Levantine city, still preferring Jewish cities after Jerusalem. The other religions prefer their historical heartlands, then population; Buddhism and Daoism prefer a different holy city from Hinduism and Confucianism respectively. If no eligible city exists, founding waits. These religions are excluded from the ordinary technology race and Choose Religions selection. India's historical victory requires it to found Hinduism and Buddhism and to have five distinct religions across its cities by 1200 AD.
+
 ## Cultural border expansion
 
-Cities begin with their center and eight neighboring tiles. Further culture
+Cultural reach is capped at radius 4 (Civ4 plot distance): up to 61 tiles
+including the city, extending four tiles along the cardinal directions and
+three diagonally. Cities begin with their center and eight neighboring tiles. Further culture
 expands coverage **one tile per individual culture threshold**, rather than a
 whole ring at each culture level. Nearby tiles come first; water, hills, peaks
 and features cost more, while rivers and resources revealed when the city is
@@ -272,8 +446,8 @@ These additional requirements apply equally to human players and AI. Regions ref
 - **25 civics in five columns:** Government, Legitimacy, Labor, Military, and
   Religion replace the original six-column arrangement. The civic screen fills
   the available width and includes new civic artwork.
-- **Democratic elections:** every ten turns, one other civic column changes to
-  a randomly selected available alternative.
+- **Democratic elections:** every five turns (ten on XL), there is a 10% chance
+  to change one other civic column to an available alternative. Manual changes remain possible.
 - **Starting civics:** every civilization receives a starting profile suited to
   its period, using civics available with its scenario or spawn technologies.
 - **Civic-combination stability:** compatible institutions receive small bonuses;
@@ -310,11 +484,19 @@ costs through the Medieval era**; Persia gains **+2 stability per conquered city
 
 ## Independent city development
 
-Workers, including automated workers and work boats, ignore nearby Barbarian and Independent borders and units when checking whether to interrupt orders, retreat or reject a route as dangerous. Independent civilizations are recognized in any player slot, including the 900 AD Andalusian minors. Major-civilization threats still interrupt work normally. Border-entry restrictions and enemy occupation still apply, and workers can still be captured.
+Workers, including automated workers and work boats, interrupt orders, retreat or reject dangerous routes when threatened by nearby Barbarians or major civilizations. They ignore Independent borders and units in these danger checks. Independent civilizations are recognized in any player slot, including the 900 AD Andalusian minors. Border-entry restrictions and enemy occupation still apply, and workers can still be captured.
+
+The option to leave existing improvements allows workers to clear harmful jungle
+from plantations and other improved tiles, and to add routes, while preserving
+the existing improvement.
+
+Mines and quarries can be built in jungle with Mining and Masonry, respectively,
+without clearing the jungle, just as plantations preserve it. Jungle penalties
+remain until workers clear it with Iron Working.
 
 The 3000 BC start includes Independent Uruk at `(77, 38)`, population 4, with a Granary, Barracks, Walls, Monument and two defending Archers. Babylon keeps its start at `(76, 40)`; the mod's one-tile minimum city exclusion allows both cities to coexist. Uruk's Independent faction starts at peace with Babylon, overriding random initial wars; later wars remain possible, and Uruk must be acquired through normal gameplay. Shushan to the east is founded as a Barbarian city.
 
-In that start, early Egyptian frontier pressure consists of two Nubian Warriors every 18 turns (first on turn 12) along the southern Nile approach, and one Libyan Warrior every 28 turns (first on turn 22) west of Egypt, ending after 850 BC. These named Barbarian raiders use pillage AI and spawn only on empty, uncultured land; expansion can close their entry areas. Heroic Gesture and Great Mediator cannot make peace with Natives, Celts, Independents or Barbarians, including through their apply/click callbacks. In-game balance and multiplayer behavior remain unverified.
+In that start, early Egyptian frontier pressure consists of Nubian Warriors every 18 turns (first on turn 12) along the southern Nile approach: one Warrior in each of the first two scheduled waves, then two Warriors per wave, and one Libyan Warrior every 28 turns (first on turn 22) west of Egypt, ending after 850 BC. These named Barbarian raiders use pillage AI, approaching Egyptian cities when no nearby pillage or combat target is available instead of camping on defensive resource tiles or patrolling outside the borders. They spawn only on empty, uncultured land; expansion can close their entry areas. Heroic Gesture and Great Mediator cannot make peace with Natives, Celts, Independents or Barbarians, including through their apply/click callbacks. In-game balance and multiplayer behavior remain unverified.
 
 The AD 190–550 barbarian camel raids enter on the lower Mesopotamian approaches between `(77, 35)` and `(81, 41)`, shifting pressure toward Babylon and Susa and away from Jerusalem. Group size and spawn schedule are unchanged; entry tiles still require no culture, city or unit. This reduces nearby spawn pressure without preventing barbarian attacks or razing.
 
@@ -327,6 +509,28 @@ Independent cities establish a local improvement economy before expanding their 
 All seven religious shrines grant **two free Priests**, replacing their three assignable Priest slots. Their former per-city gold income and shrine cap are replaced by **one raw commerce per five followers worldwide**. A city's contribution to each religion it contains is `population / number of religions present`; contributions retain their fractional shares and are summed worldwide before dividing by five and rounding down. Thus a population-12 city with three religions contributes four followers to each. This is commerce allocated by the owner's sliders, not direct gold. Existing culture, Great Person points and religious functions remain. Expulsion and State Atheism still suppress shrine effects.
 
 Jerusalem automatically receives the Jewish shrine, Solomon's Temple, on the first turn at or after **957 BC**, if the city exists and contains Judaism. The date follows the traditional completion chronology in [Getty's First Temple record](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039). Later scenarios apply the grant at setup. If Jerusalem is absent or lacks Judaism, the grant waits; it is never duplicated if the shrine has already been created elsewhere, nor automatically rebuilt after destruction. The grant is synchronized game state and saved. In-game and multiplayer validation remain pending.
+
+## Fixed research pacing
+
+Research no longer reprices all technologies at turns 75, 181 or 401. Each
+technology's fixed XML cost reflects the former pacing for its own era:
+
+| Technology era | Factor applied to the original XML base cost |
+| --- | ---: |
+| Ancient | 105% |
+| Classical and Medieval | 150% |
+| Renaissance and Industrial | 92% |
+| Modern and Future | 73.6% (92% multiplied by 80%) |
+
+Costs round upward to whole research points. The old 8% discount is included
+in later-era prices for every civilization instead of changing with the turn.
+Mastery I uses the base cost and era of the unit's most expensive required
+technology; levels II and III cost 2x and 4x that base. Warriors require no tech
+and use a fallback base cost of 100. Unit production costs are unchanged. Other research modifiers
+and Maya's unique power still apply. These bands reproduce the old era-associated
+factors; actual research dates and integer rounding can differ from the old
+calendar-based prices. Gameplay and multiplayer validation remain user-operated
+and unverified; these rules target new games.
 
 ## Knowledge from conquest
 
@@ -383,6 +587,52 @@ stores run out. Only a positive surplus is converted into production.
 use hundredths of a percentage point. Existing saves begin with zero fractional
 growth remainder and use the new rate immediately.
 
+## Precious metals and inflation
+
+Worked gold and silver deposits each give **+1 gold**, replacing their base commerce.
+A mine adds **+6 gold on gold** or **+4 gold on silver**, for totals of **7 or 5 gold**.
+These mines add no production, including from railroads or mine modifiers; natural
+terrain production remains. Copper mines retain their normal production.
+All metal income is added after city gold modifiers, independently of the sliders.
+Unworked deposits and trade connections alone provide no income.
+
+The **Coin Mint** costs 80 production and requires Currency plus an owned copper,
+silver or gold mine in the city's workable radius. Each worked copper/silver/gold
+mine gains **+1/+2/+3 gold**, respectively: totals of **1/7/10 direct gold**.
+An imported resource does not qualify. The building can remain after losing its
+mines, but generates income only from mines actually worked by that city.
+The Malian Mint remains a separate forge replacement with its existing effects.
+Tile icons, tile help, build previews and the city gold breakdown show the income.
+Automation values it alongside commerce, without multiplying it by city gold bonuses.
+
+Precious-metal inflation starts at zero and is saved per player. Each normal turn,
+its change in percentage points is
+**50 × (worked metal income / total commerce - 0.05 × (1 + current inflation / 12.5))**,
+using the percentage number (20 for 20%). Recovery strengthens as inflation rises,
+balancing sustained metal income at an equilibrium. The change multiplier controls
+how quickly inflation approaches that equilibrium without changing it.
+Income includes the base gold from deposits, gold/silver mine income, and all
+Mint bonuses, including copper. Resource trades do not generate this income;
+only productive cities count.
+Commerce is the empire's city commerce yield, including trade routes, before sliders.
+A zero-commerce economy uses one commerce for this calculation.
+
+- Ratios of 5% or less lead toward zero inflation. A sustained 15% ratio settles
+  at 25% inflation; 25% settles at 50%, and 35% at 75%.
+- With no metal income, inflation falls by 4.5 points at 10% inflation,
+  6.5 points at 20%, and 12.5 points at 50% per normal turn, stopping at zero.
+- There is no per-turn rise cap or overall ceiling; inflation cannot fall below zero.
+- XL halves the per-turn changes. Other speeds scale with their growth percentage.
+- Inflation increases unit costs, supply, maintenance and civic upkeep, as well as
+  one-time prices such as upgrades, hurrying production and slave-market purchases.
+  Recurring costs use fractional inflation; one-time prices use whole percentages.
+  Inflation is not calendar-driven.
+
+For example, 21 metal income and 60 commerce increase inflation by about 15 points
+at zero inflation, or 11 points at 20%, per normal turn; the equilibrium is 75%.
+The finance advisor's inflation tooltip shows the current level,
+projected change, metal income, commerce and added upkeep.
+
 ## Land reclamation
 
 - **Burn forest** lets workers and Fast Workers remove forest from the start without gaining production. It takes the same time as chopping (300 base work). **Bronze Working** replaces it with normal chopping that grants production.
@@ -433,6 +683,9 @@ selected, the partner city's tile becomes revealed to the route owner's team.
   connection gives **100% efficiency without a range limit**. Water-assisted
   connections (sea or river, including mixed road/water paths) require **Sailing**
   and give 100% within distance **12**, or **20** when the originating city has a harbor, until **Astronomy** removes the range limit. The existing terrain-navigation restrictions still apply.
+  On XL maps, these distances scale with the enlarged geography: caravan
+  efficiency stays at 50% through **8**, then declines linearly to zero at **24**;
+  the pre-Astronomy water limits are **19**, or **32** with an originating harbor.
   Cities on different landmasses require an actual navigable connection;
   infrastructure-free caravan routes cannot bypass these sea-trade restrictions.
   Water-assisted trade runs at **50% instead of 100%** unless both cities have
@@ -494,7 +747,7 @@ Food flows along actual trade routes toward the city with the stronger combined 
 - Wealth inequality contributes up to **100 pressure points**. Wellbeing inequality remains capped at **50 pressure points**: happiness differences can supply the full 50, while health differences supply at most 25. The signed pressures are added before the food-flow direction and amount are chosen. A healthy, happy new city can therefore attract food despite a modest wealth disadvantage; wellbeing cannot overcome a large wealth gap by itself.
 - Base food demand is `ceil(absolute combined pressure / 10) + max(0, route commerce - 1)`, multiplied by infrastructure efficiency. Routes at 0% efficiency cannot be established or transfer food. For reciprocal routes, use the stronger request once rather than counting the city pair twice.
 - Route selection values the expected food import or export as one commerce per food, alongside the route's ordinary commerce. The estimate does not reserve a supplier's food: the shared export cap is still applied after all routes have been selected.
-- A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or starve. Size-one cities may export only their local surplus after consumption and health costs.
+- A supplier's combined exports are capped at **one food per population point**. Exports need not come from surplus: supplying cities can grow more slowly or lose population through peaceful emigration. Size-one cities may export only their local surplus after consumption and health costs.
 - When requests exceed capacity, destinations receive proportional shares. Total food is rounded down to whole points, with the remaining whole points assigned to the largest fractional shares; ties use deterministic city/route order. Small requests may yield no food.
 - All allocations are computed together once per game turn before player turns, then saved. Before either endpoint processes growth, the shipment is checked against current routes, disruption and export capacity. Its final amount is then locked identically at both ends: a later population/cap change or disruption cannot erase only the debit or only the credit. Already booked shipments finish their matching accounting, even if a city enters disorder; later allocations reflect the disruption. Freed capacity is redistributed at the next allocation, not mid-turn.
 - Food is deducted from the supplier and added to the recipient **after yield modifiers**. Imports are not multiplied by food bonuses and cannot be exported again. They affect ordinary growth, starvation, and food-based unit production. Routes inherit the existing infrastructure, Sailing, Astronomy and harbor rules.
@@ -514,7 +767,7 @@ The `RFCMP_FOOD_EXPORT_PER_POPULATION` and `RFCMP_TRADE_FOOD_PRESSURE_PER_FOOD` 
 
 Stationed military units provide **+1 happiness per two units**, rounded down, up to **+3 happiness at six units**. This applies under every civic and appears in the city's military presence happiness breakdown.
 
-City tiles retain their natural terrain, hill, river, feature and revealed resource yields, then gain **+1 production and +1 commerce**. There is no minimum food yield: a bare desert city tile produces no food. Founding a city preserves flood plains and their natural yields. This applies to all city tiles; previously removed flood plains are not restored in existing saves.
+City tiles retain their natural terrain, hill, river, feature and revealed resource yields, then gain **+1 food, +1 production and +1 commerce**. A bare desert city tile produces one food; working an ordinary coast tile supplies the second food needed by one citizen before unhealthiness or other penalties. Founding a city preserves flood plains and their natural yields. This applies to all city tiles; previously removed flood plains are not restored in existing saves.
 
 Each column allows one active civic. Bonuses from different columns combine;
 for example, Dictatorship and Nationalism together provide +40% production.
@@ -530,7 +783,7 @@ each qualifying building or worked improvement.
 For Egypt, Tribal System is called **Pharaonic Kingship** and Despotism is
 called **Divine Kingship**, in every era. Pharaonic Kingship grants +1 production
 from farms and per slave specialist, with medium civic upkeep. It replaces the
-unit production bonus, research penalty and city-maintenance penalties of Tribal
+unit production bonus, research penalty and administration penalty of Tribal
 System. Under Divine Kingship, each assigned priest in a city with an Egyptian
 Obelisk grants +1 happiness, capped at +2 per city. This replaces the happiness
 from palaces and monuments. Obelisks do not become obsolete while the civic is
@@ -546,11 +799,11 @@ ruler as embodying divine authority.
 
 | Civic | Required technology | Upkeep | Effects |
 | --- | --- | --- | --- |
-| **Tribal System** | None | None | +20% production for all units; -20% research; +100% distance and number-of-cities maintenance. |
-| **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. |
+| **Tribal System** | None | None | +20% production for all units; -20% research; -40% administration capacity. |
+| **Monarchy** | Monarchy | Medium | Capital buildings give +1 culture and +1 commerce each. Capital world wonders give +1 happiness in all cities, capped at +3, including obsolete wonders. Enables inheritance events. Special espionage towards other monarchies. |
 | **Republic** | Code of Laws | Medium | Assigned non-slave specialists consume 1 less food. Free specialists and settled Great People are excluded. |
 | **Dictatorship** | Fascism | High | +20% production; no war weariness; -2 happiness in every city. |
-| **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Adoption randomizes all other civic columns; elections every ten turns change one column. Other columns cannot be changed manually while Democracy is retained. Leaving adds two turns to normal revolution anarchy. |
+| **Democracy** | Democracy | High | +2 happiness in every city; +1 commerce per assigned or free specialist. Civics remain manually selectable. Every five turns (ten on XL), a 10% election roll may change one non-government column. Leaving adds two turns to normal revolution anarchy. |
 
 ### Legitimacy
 
@@ -560,7 +813,7 @@ ruler as embodying divine authority.
 | **Theocracy** | Divine Right | High | +1 happiness per building of the state religion; -2 happiness per building of another religion. With a state religion, land units receive +15% combat strength against barbarians and countries with a different or no state religion, on attack and defense. |
 | **Plutocracy** | Banking | Medium | +25% gold income; +50% commerce from trade routes. |
 | **Nationalism** | Nationalism | Medium | +5 culture in every city; +20% production; -5 happiness in cities where another player's culture exceeds the owner's culture on the city tile. |
-| **Rule of Law** | Constitution | High | +2 happiness in every city; +10% commerce yield. |
+| **Rule of Law** | Constitution | High | +1 happiness in every city; +10% commerce yield. |
 
 ### Labor
 
@@ -568,8 +821,8 @@ ruler as embodying divine authority.
 | --- | --- | --- | --- |
 | **Self-sufficiency** | None | None | +2 health in every city; cottage improvements do not grow; assigned specialists are blocked and existing assignments removed; free specialists remain. |
 | **Slavery** | Bronze Working | Low | Captured population becomes slave units. Slave units have 25% upkeep, are targeted first in combat, can upgrade along a dedicated line, and can work in cities for 20 turns as a +3 production, -1 food specialist. Revolt risk falls with total garrison strength and disappears once it matches the available armed-slave force. Large conquests create regional slave-market or refugee events. Slave units created from captured populations retain a small origin-based promotion. |
-| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 50% faster. Population can rush units only, not buildings or projects. |
-| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms; -10% commerce yield. No trade routes with Capitalists. |
+| **Serfdom** | Civil Service | Low | +1 food from farms; workers build improvements 25% faster. Population can rush units only, not buildings or projects. |
+| **Planned Economy** | Communism | High | +1 production from workshops, watermills, and windmills; +1 food from farms. No trade routes with Capitalists. |
 | **Market Economy** | Economics | Medium | +1 free specialist in every city; cottage improvements grow twice as fast. No trade routes with Communists. |
 
 Improvement growth includes every upgrade stage: **Cottage → Hamlet → Village →
@@ -610,9 +863,9 @@ A land attacker under Slavery also has a **50% chance to capture one slave** aft
 | **Warrior Society** | None | None | Melee units start with +2 experience; siege units have -20% combat strength. |
 | **Horde** (replaces Warrior Society for the Huns and Mongolia) | Horseback Riding | Medium | +50% mounted-unit production; newly trained mounted units start with +3 experience; +100% gold from pillaging improvements; -50% war weariness; **-25% research output**. |
 | **Naval Warfare** | Sailing | Low | +50% production and +2 experience for newly trained military ships, including transports. Workboats receive neither bonus. |
-| **Feudal Retinues** | Feudalism | Medium | +5% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +30%. |
+| **Feudal Retinues** | Feudalism | Medium | +4% land military unit production per Farm worked by the city, including siege units. Six worked Farms give +24%. |
 | **Professional Army** | Military Tradition | High | Units start with +5 experience. |
-| **Conscription** | Military Science | Medium | +25% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
+| **Conscription** | Military Science | Medium | +35% production for all units. Food surplus also produces military land units, stopping growth while they are trained. Ships do not use this food conversion. |
 
 Horde uses Warrior Society's existing slot, keeping five military choices for
 each civilization. The Huns and Mongolia start with Horde when its technology
@@ -739,7 +992,7 @@ The canonical partition causes neither city-loss stability penalties nor conques
 | --- | --- | --- | --- |
 | **Ancestor Cult** | None | None | +1 culture from monuments, including civilization-specific replacements. Allows a state religion; -1 state-religion happiness cancels its normal +1 bonus. |
 | **State Religion** | Monotheism | Low | +1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings. |
-| **Holy State** | Theology | High | +10% production in cities with the state religion; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
+| **Holy State** | Theology | High | Doubles religious administrative effects and strongly resists foreign religious spread; an additional -1 happiness per non-state religion. Conquered cities are pacified by conversion. |
 | **Tolerance** | Liberalism | Low | Removes unhappiness caused by foreign religions and different-religion diplomatic penalties involving your country. Countries with a different state religion have +2 relations toward you, except under State Atheism. The bonus requires both countries to have state religions. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of all religions. |
 | **State Atheism** | Scientific Method | High | +10% research and +10% production; -1 happiness in all cities. Religious buildings have no effects; religions cannot spread in your cities. |
 
@@ -792,21 +1045,20 @@ Existing civilizations in saved games keep their current civics. See
 
 ## Democratic elections
 
-Elections occur on **global turn multiples of ten**, while Democracy is active.
-Adoption immediately chooses an available civic at random in each other column,
-including the possibility of retaining the existing civic. Other columns cannot
-be changed manually while retaining Democracy; leaving it unlocks them and adds
-**two turns to normal revolution anarchy**. Existing immunity to anarchy applies.
-They select one of the other four columns that has an available alternative,
-then select a different civic that the player can currently adopt. If no column
-has an available alternative, there is no change. Human players receive a
-notification of the result.
+While Democracy is active, **global turn multiples of five** (ten on XL) have a
+**10% chance** of an election changing one eligible non-government civic column.
+The government remains Democracy. Manual civic changes use the normal revolution
+rules, and adoption preserves the player's selected civics. Leaving Democracy
+still adds **two turns to normal revolution anarchy**, respecting anarchy immunity.
+On a successful election roll, one other column with an available alternative is
+selected, then a different civic the player can currently adopt. If no column has
+an alternative, there is no change. Human players receive an addressed notification.
 
 Each election also opens a civic-specific announcement with a single **Adopt** button. Its tooltip says only **Adopt [civic]**. The result applies immediately; acknowledging the popup does not change synchronized game state. English and German announcements include a little satire about the winning policy.
 
 Democracy ignores all **negative civic combination stability modifiers**, including Plutocracy with Planned Economy and Theocracy with Tolerance. Positive combination bonuses remain active. Other stability losses still apply.
 
-The game uses its synchronized random generator for both selections. The
+The game uses its synchronized random generator for the election chance and both selections. The
 government remains Democracy, and elections have no additional transition
 stability penalty.
 
@@ -822,8 +1074,8 @@ The human heir also receives an addressed acknowledgement popup.
 When a monarchy with a state religion collapses, it has a **50%** chance to be
 inherited instead of fragmenting. An heir must be a living monarchy with the
 same state religion, at least **0 stability**, and at least one city on the
-continent of the collapsing monarchy's capital. One eligible heir is selected
-deterministically; there is no size requirement. Capitals must be within **12 map
+continent of the collapsing monarchy's capital. Eligible heirs are selected with deterministic weighted odds: established dynastic
+ties and accumulated influence increase a candidate's weight. There is no size requirement. Capitals must be within **12 map
 tiles**, and every inherited city must be within **12 tiles** of a city already
 owned by the heir (`RFCMP_MONARCHY_INHERITANCE_MAX_DISTANCE`). If even one city
 is too distant, that candidate cannot inherit the realm. The heir receives every city
@@ -883,6 +1135,15 @@ after founding or restoration (`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). This
 also covers the first 30 turns of a scenario. Wartime capitulation and voluntary
 choices by human-controlled teams retain their existing rules.
 
+AI-initiated voluntary vassal offers require Pleased or better relations and a
+prospective master's own military power of at least twice the offering team's
+power, including its vassals. The offering country must also face either a stronger
+major enemy at war, or a known hostile land neighbor with at least 1.5 times its
+power and an Annoyed-or-worse attitude toward it. Eligible offers have a 25% chance
+per opportunity at Normal speed (12.5% on XL), for both human and AI recipients.
+Requested deals, wartime capitulation and dynastic personal unions use their
+existing paths.
+
 ### Tile tooltips
 
 Hovering over a tile shows the **base country names** of pending civilizations
@@ -908,6 +1169,13 @@ name, for example **“The [people] are rising up!”** This warning accompanies
 system; it does not introduce a separate unit-flipping rule.
 
 ### Returning civilizations
+
+Harappa, Babylonia, Carthage, Xiongnu and the Mississippians cannot respawn after
+elimination. These slots do not represent later successor states. This restriction
+uses civilization identity, so India remains eligible on starts where its slot
+is India rather than Harappa. Maya, Inca, Aztec and Inuit returns remain enabled,
+as does Rome's return as Italy. Surviving civilizations may continue or relocate
+normally; a surviving Xiongnu state can still receive the Mongol replacement army.
 
 A respawn can claim a major civilization's cities only when that owner's
 stability is **below -20**. The hidden ten-point stability deduction and the
@@ -1020,6 +1288,51 @@ See [CountryNames.csv](CountryNames.csv) for the catalogue and
 [CountryNaming.md](CountryNaming.md) for selection rules. English and German
 names are provided; French, Italian, and Spanish use English fallbacks for the
 new country-name entries.
+
+Harappa and the five XL Indian civilizations retain ten civic-dependent forms
+as fallbacks, with full translations in all five languages. Historical names
+now take precedence for monarchies with a matching date and capital region,
+except under Planned Economy. Coordinates below refer to the XL 200 x 110 map;
+other dimensions are normalized to that grid. Renaming has no gameplay effects.
+
+| Civilization | Historical identities and selection conditions |
+| --- | --- |
+| Magadha | Eastern capital `(150..152, 63..66)`: Magadha from 800 BC; Nanda 362-322 BC (2+ cities), Maurya 321-186 BC (3+), Shunga 185-74 BC (2+), Kanva 73-29 BC, Gupta AD 320-549 (3+), and Buddhist Pala 750-1161 (3+). These names require a non-Islamic monarchy. |
+| Magadha, western capitals | Kosala at Ayodhya `(149, 66)` in 600-301 BC; Harsha with a capital near Kannauj `(147..149, 64..67)` in AD 606-647 and 3+ cities. |
+| Delhi | Islamic monarchy with capital in `(144..147, 63..67)`: Delhi Sultanate from 1200; with 3+ cities, Mughal Empire from 1526, interrupted by Sur in 1540-1554. |
+| Bengal | Islamic monarchy with capital in `(153..157, 62..67)`: Bengal Sultanate from 1350; Nawabate of Bengal from 1717. No Mughal annexation or provincial status is implied. |
+| Chola | Non-Islamic monarchy with capital in the Tamil core `(147..149, 51..54)` from 850 retains Chola; a Hindu capital at Madurai `(147, 51)` selects Pandya in 1279-1334, or an Islamic monarchy there selects Madurai Sultanate in 1335-1377. |
+| Vijayanagara | Non-Islamic monarchy with capital in its original core `(144..146, 55..58)` from 1336 retains Vijayanagara; a relocated capital near Mysore `(145, 53..54)` selects Mysore from 1610. |
+| Southern territorial successors | Chola or Vijayanagara with no more than two cities and a Hindu capital at Madurai from 1565 selects its Nayaka kingdom; at Thanjavur `(147, 52)`, Nayaka from 1565 and Maratha from 1676. |
+
+These are historical and territorial naming associations, not claims that every
+state was the direct political continuation of its predecessor. Early dates
+are approximate; thresholds and region boxes are gameplay choices. Existing
+empires can survive their historical defeat dates. Republican, democratic and
+dictatorial alternatives keep civic-specific names rather than adopting a
+royal dynasty. Harappa keeps descriptive names: its script and political
+institutions do not justify assigning a known later dynasty as its successor.
+
+The selection preview passes the scenario's palace location, city count and
+year to the same DLL rule as live naming. Future Indian births use their
+authored birth year, capital and intended starting faith; their eventual live
+name still reflects the cities, available civics and religion at that time.
+Regenerate both catalogues with
+`python tools/build_indian_civs.py --country-names-only`.
+
+Historical references: [Harvard's pre-Mauryan chronology](https://timelinesouthasianhistory.hsites.harvard.edu/pre-mauryan-age),
+[the Mauryan Empire](https://education.nationalgeographic.org/resource/mauryan-empire/),
+[Shunga and Kanva](https://ebooks.inflibnet.ac.in/icp01/chapter/sunga-kanva-and-satavahana-dynasties/),
+[Gupta and Harsha](https://www.metmuseum.org/ko/toah/ht/06/ssn.html),
+[Pala](https://en.banglapedia.org/index.php?title=Pala_Rule),
+[Mughal and Sur succession](https://www.metmuseum.org/de/toah/ht/08/ssa.html),
+[Bengal's nawabi regime](https://en.banglapedia.org/index.php?title=Murshid_Quli_Khan),
+[Chola and Pandya](https://education.nationalgeographic.org/resource/three-crowned-kings-tamilakam/),
+[Madurai Sultanate](https://dindigul.nic.in/history/),
+[Thanjavur Nayakas](https://thanjavur.nic.in/nayaks-history/),
+[Thanjavur Marathas](https://thanjavur.nic.in/marattas-history/),
+[Mysore's Vijayanagara connection](https://whc.unesco.org/en/tentativelists/5895/),
+and [Harappa's archaeological context](https://www.harappa.com/content/brief-introduction-ancient-indus-civilization).
 
 ## Korea
 
@@ -1245,6 +1558,15 @@ the first matching combination below wins. All names are in
 The VC7.1 DLL builds successfully; gameplay, art rendering and multiplayer
 balance still require user-operated in-game validation.
 
+## Exploration experience
+
+Scouts, Explorers and their unique replacements earn 0.1 XP for each tile they
+reveal for the first time to their team. Every ten tiles grant one usable XP;
+fractions remain with the unit through saves, upgrades and gifts. Previously
+mapped tiles, including traded maps, do not count. Exploration grants no Great
+General points. `SCOUT_EXPLORATION_XP_HUNDREDTHS` sets the rate in hundredths of XP
+per tile; 0 disables it. This change is intended for new games.
+
 ## Early American tribal raids
 
 Through AD 1600, settled North America, Mesoamerica and the Andes receive
@@ -1256,3 +1578,719 @@ established major civilization's city on the same landmass, including jungle.
 The two tile rings around every city are excluded from spawning. Raids start
 at least eight turns after scenario start; new cities attract them after eight turns. Raids pause without eligible cities or spawn tiles, and respect No Barbarians.
 The later North American native resistance and Caribbean pirates remain active.
+
+Non-animal barbarian patrols favor enemy territory, then unclaimed border tiles.
+Barbarian attack and pillage units plunder their current enemy tile before
+moving on. Their pillage searches include improvements around target cities
+and outside city working areas.
+
+
+## Intelligence networks
+
+Spy units and missions are replaced by task forces. The intelligence advisor
+lets you choose each force's focus; **No operations** is the default. One force
+is available in the Ancient era, with one more unlocked on reaching each new
+era through technology. Focus changes take effect at the next player turn.
+Hovering a focus previews its rules without changing the selection.
+
+Focuses unlock through technology. The advisor keeps locked focuses visible
+with their requirements; matching navy-and-gold eye badges mark the unlocks
+in the technology tree and their effects appear in technology help.
+
+| Focus | Technology | Target conditions |
+| --- | --- | --- |
+| Military espionage | Writing | Contact; available in peace and war, including city-defense infiltration. |
+| Technology stealing | Alphabet | Contact; stolen technologies retain their normal prerequisites. |
+| Economic subversion | Currency | A direct trade route in either direction. |
+| Political meddling | Code of Laws | Sponsor uses a non-Monarchy government. |
+| Dynastic politics | Monarchy | Both countries use Monarchy and are at peace. |
+| Intelligence cooperation | Civil Service in both countries | An embassy in either direction, peace and a mutual agreement. |
+
+Hostile focuses require only the sponsor's technology. Invalid assignments
+immediately stop receiving funding or applying effects and do not count toward
+the funding divisor. Their force buildup continues to decay; replacement targets
+wait for the normal reassessment. Economic operations pause when their last
+direct trade route disappears, including when war ends trade.
+
+Each unlocked force adds 10% of base espionage to the operations budget,
+including forces with no operations. This budget is shared equally among forces
+with valid active assignments. Forces with no operations or no valid assigned
+targets receive no funding and do not enter the divisor. With three unlocked
+forces, the budget is 130% of base espionage: one active force receives 130%,
+two receive 65% each, and three receive about 43.3% each. Idle forces appear as
+supporting operations when at least one force is active. The team list includes
+an information tile explaining the budget and funding split.
+Cooperation bonuses strengthen offensive operations, but cooperation itself
+uses base output and never shares bonuses recursively.
+
+Every five Normal turns (ten on XL), each force automatically chooses up to
+three target teams. Changing focus starts a new assignment at the next turn
+boundary. Targets are ranked by access, resistance and the focus's prospective
+return. Military priority adds separate bonuses for war, poor relations and
+being a land neighbor. Technology favors useful research sources; economics
+favors gold income; cooperation requires an agreement and favors strong espionage
+partners with mutual trust. Dynastic politics requires an eligible monarchy.
+
+For the best one, two or three eligible targets, the force compares the sum of
+scores multiplied by 100%, 70% or 57% respectively. Each selected country receives
+that fraction of the force's effort. Thus three comparable targets yield 171%
+of concentrated effort in total, whereas sharply weaker alternatives favor one
+or two targets. Several forces may target the same country, including with
+different focuses. Invalid assignments stop working immediately; replacement
+waits for the next scheduled review.
+
+Buildup belongs to the force and focus, so switching countries preserves it.
+Each Normal turn retains 90% and adds twice the force's allocated base output;
+XL retains 95% and adds one allocation. Inactive focuses continue to decay.
+The advisor shows this funding-relative maturity as a consistent percentage
+under every focus and in the details panel; No operations displays a dash.
+Target-specific effects apply the concentration factor, access, resistance and
+any applicable cooperation bonus to that stored buildup. The saturation curves
+below use this derived target buildup, combining forces with the same focus.
+Established dynastic stages remain attached to their countries.
+
+The advisor lists forces, current targets, funding and turns until reassessment.
+Clicking a target changes only the displayed details. Basic demographics remain
+available for known civilizations. Existing espionage buildings, specialists
+and settled Great Spies remain useful; Great Spies can establish Scotland Yard
+or contribute to a Golden Age, but cannot perform infiltration missions.
+
+Distance between capitals reduces access by up to 60 percentage points. An
+embassy on either side adds 20 points; direct outgoing trade routes add 5 each,
+up to four routes. Access is bounded at 40-140%. Counterintelligence reduces the
+result: effective strength is `A * (A + 20) / (A + 20 + D)`, rounded down, where
+`A` is output after access and `D` is 10 plus the target team's espionage output.
+Security Bureaus increase `D`, weighted by their cities' share of team population.
+
+- **Intelligence cooperation:** a mutual diplomatic Intelligence Cooperation
+  agreement unlocks this mode for both countries; either side may invest
+  independently. Both teams must know Civil Service, have an embassy in either
+  direction, and remain at peace. AI partners require at least
+  Pleased relations and no war preparations against the other party.
+  Cooperation uses its force's allocated base output and portable buildup after access. Counterintelligence does not resist
+  cooperation. Network strength is `B / (B + 40000)`, multiplied by mutual trust:
+  Furious 0%, Annoyed 10%, Cautious 35%, Pleased 75%, Friendly 100%. Human teams'
+  consent is represented by the agreement, so their side uses full trust.
+  Each partner team contributes its base espionage output multiplied by this
+  strength. Each team counts once. Combined contributions are capped at 100%
+  of your own base output. Contributions never include cooperation bonuses,
+  preventing feedback loops. The resulting effective output strengthens other
+  operations before access and counterintelligence, including their shared
+  research, culture and gold budgets. Operations against agreement partners
+  receive only base output. Defensive counterintelligence still uses base output.
+  The top-left UI shows base output followed by the effective total
+  in colored parentheses when cooperation provides a bonus. The advisor lists each partner's contribution before
+  the combined cap.
+  Both countries gradually gain stability from their strongest incoming or
+  outgoing cooperation network, up to +3; reciprocal networks and additional
+  partners do not stack this limit. The target bonus is three times network
+  strength, approached at 0.20 stability per Normal turn (0.10 on XL), rounded
+  to the nearest point for gameplay. Cancelling the agreement or declaring war
+  immediately ends its intelligence contribution and locks the mode again;
+  stability fades at the same calendar-scaled rate. Cooperation has no discovery
+  risk and does not change attitudes, civics, culture or political pressure.
+- **Technology stealing:** one eligible technology is randomly selected as a
+  shared project and retained until completed or unavailable. Prerequisites must
+  be fulfilled. Each rival in technology mode that knows the project contributes
+  effective strength multiplied by `1 + 0.1 * min(10, eligible technologies)`.
+  Contributions add together, capped at three times your espionage output;
+  concentration is already accounted for by the force allocation. Only the
+  current project receives progress; excess does not spill into another stolen
+  technology that turn. Progress is ordinary research progress and remains when
+  you switch modes. A project pauses if no active technology network supplies it.
+  Technology networks need buildup, with 10.0% decay and twice the effective espionage
+  input per Normal turn; XL halves both. Let `E` be current effective espionage,
+  `H = 20 * (20 + target research output)` and `S(B) = B / (B + H)`.
+  Each source's old contribution is multiplied by `min(1, S(B) / S(20 * E))`.
+  Steady funding therefore approaches the old stealing rate, without exceeding
+  it. Increasing funding requires additional buildup; reducing it can leave an
+  already mature network. Decay continues when unfunded or using another mode.
+  At 100 effective espionage against 100 research output, the old rate is reached
+  at 77.4% after 10 Normal turns, 93.0% after 20 and 99.2% after 40.
+  Existing research progress remains, but missed startup research is not refunded.
+- **Military espionage:** `B` is the combined assigned forces' derived buildup
+  against the target team. Decay continues without funding and in other modes; effects require
+  military mode. Without funding, buildup halves in about 6.6 Normal turns (13.5 on XL).
+  With `U` enemy military units, the shared effect fraction is
+  `B / (B + 20 * (40 + U))`. Combat strength approaches +30%, city-infiltration
+  chance approaches 30%, and troop-tracking coverage approaches 100%. Effects retain hundredths of a percentage point internally and are
+  displayed with one decimal. Final combat strength uses the game's normal rounding.
+  Larger armies require more buildup, and additional investment has diminishing returns.
+  Tracking follows a stable selection of enemy land, sea and air combat units,
+  revealing only their occupied tiles. Ordinary invisibility rules still apply.
+  A tracked tile can also reveal other units sharing it, including garrisons, but
+  the network does not provide city-radius visibility. Sight leaves a tile when
+  the tracked unit moves or dies, unless another source still reveals it.
+  During war, an adjacent attacking land unit permits one city-infiltration roll
+  per defending city per game turn, shared across attackers. Success suppresses
+  the city's defense component for that game turn. Terrain, unit promotions and
+  fortification remain. Stored bombardment damage is untouched.
+- **Political meddling:** non-monarchies build political factions using a decaying
+  network. Influence improves the target's relations toward the sponsor, promotes
+  eligible sponsor civics, spreads the sponsor's city culture, and gradually
+  destabilizes the target. Rare client-government outcomes require severe
+  instability and independent countries. See Political factions below. Monarchies
+  use dynastic politics instead.
+- **Economic Subversion:** covert networks steal gold, divert growth food and
+  occasionally steal art. Buildup gains twice the effective output and decays by 10.0% per Normal turn (5.0% on XL).
+  Influence is `B / (B + 400)`. At 50.0% influence, the limits are 2.5% of
+  positive growth-food surplus and a 0.5% art-theft chance per Normal turn.
+  All attackers share ceilings of 5.0% of growth surplus and a 1.0% art-theft
+  chance per target per Normal turn, weighted by influence. Gold is drawn from
+  the current treasury, shared proportionally when requests exceed available gold. The financial advisor shows actual
+  gold stolen and gold lost to espionage during the last completed game turn,
+  including them in its income and expense totals. Each row is hidden when its
+  amount is zero. These transfers are already included in the treasury; they
+  do not change the ordinary gold-per-turn rate. Each sponsor shares a gold budget
+  based on force allocation: 50.0% of the espionage assigned to that target,
+  multiplied by its network influence. Fractional coins accrue. Fractional food shipments
+  accrue per city after growth modifiers; only new positive growth surplus is
+  diverted. Stored food, consumption and food used for unit production are
+  untouched. Shipments go to the nearest orderly sponsor city. Food and gold
+  are transferred rather than created. Art theft selects a city with at least
+  100 local culture and positive culture production. The nearest orderly sponsor
+  city gains five turns of the victim city's culture output, capped at 100 culture.
+  The victim receives intelligence unrest (+2 unhappiness, three Normal turns),
+  without stacking with existing intelligence unrest or removing historical
+  culture and borders. XL halves buildup, decay, transfers and event chances
+  per turn; art rewards remain unchanged. Operations require an active direct
+  trade route in either direction and pause when that connection is lost.
+  Map reports and their city visibility have been removed.
+
+Discovery risk rises with effort, approaching the previous fixed chances as
+upper bounds: 1.0% for technology/economic operations, 3.0% for military and
+6.0% for political meddling per Normal turn. The formula is
+`cap * effort / (effort + 50)`, where `effort = max(E, B / 20)`, using current
+effective espionage `E` and the selected operation's buildup `B`. Small efforts
+have lower risk; reducing funding leaves risk while stored buildup decays.
+No funding and no buildup means no risk. Dynastic politics remains exempt.
+One discovery roll is made per active focus, sponsor and target team, even
+with multiple forces or players on that team. XL halves the chance. Discovery adds diplomatic resentment,
+with respective caps of -1, -3 and -6 attitude. Existing resentment survives
+mode changes and decays by two hundredths of an attitude point per Normal
+turn, or one hundredth per XL turn. Non-combat event chances scale with the
+calendar; military infiltration continues to roll every gameplay turn. The
+advisor and diplomatic attitude tooltip show the resulting penalty. The AI
+chooses modes and budgets for catch-up, warfare, political hostility, economic
+subversion and cooperation, and can leave friendly networks inactive.
+
+
+The AI chooses force focuses from the same target-efficacy scores, prioritizes
+wartime military intelligence, and gives additional forces a preference for
+useful alternative focuses. Allied targets are excluded from its hostile-focus
+selection; automatic assignment itself follows the same rules as human forces.
+Spending follows selected focuses and remains constrained by finances. These
+heuristics do not guarantee optimal play.
+
+For example, against 100 military units the half-effect buildup is 2,800.
+At 100 effective espionage per Normal turn, starting from zero:
+
+| Turns funded | Buildup | Combat bonus | Infiltration chance | Troop coverage |
+| --- | ---: | ---: | ---: | ---: |
+| 10 | 1,303 | +9.5% | 9.5% | 31.8% |
+| 20 | 1,757 | +11.6% | 11.6% | 38.5% |
+| 40 | 1,970 | +12.4% | 12.4% | 41.3% |
+| Sustained equilibrium | about 2,000 | +12.5% | about 12.5% | about 41.7% |
+
+Against the same army, sustained outputs of 25, 400 and 1,000 settle near
++4.5%, +22.2% and +26.3% combat strength, respectively. At 10,000 effective output,
+the bonus still only reaches about +29.6%, with roughly 98.6% troop coverage. These
+figures use effective output after access and resistance, not the raw slider.
+Coverage is the fraction used to select troops; actual coverage varies with
+unit identities and stacks. Switching modes ends military effects immediately
+at the turn boundary but preserves the decaying buildup for later use.
+
+### Political factions
+
+Each target team has political buildup `B`, retaining 90% and adding twice the effective
+espionage output each Normal turn; XL retains 95% and adds the unmultiplied output.
+Switching modes or adopting Monarchy ends regular meddling effects and funding;
+stored buildup continues decaying. Counterintelligence and access reduce funding.
+With target population `P`, the shared effect fraction is
+`F = B / (B + 20 * (20 + P))`.
+
+- At 25% influence, the target gains +1 relations toward the sponsor; at 75%, +2.
+  War suspends the relation bonus. Discovery resentment can outweigh these benefits.
+- Each Normal turn has up to a 5% chance, multiplied by `F`, of adopting one civic
+  currently used by the sponsor. The target must meet its prerequisites; forced
+  civic options and the existing civic setter restrictions remain respected.
+  Anarchy or an active revolution cooldown blocks this roll. A successful reform
+  starts a five-Normal-turn cooldown, with no additional automatic anarchy.
+- Each political target receives culture worth up to one quarter of the
+  espionage allocated to it per Normal turn, multiplied by its own `F`, then distributes the share
+  among its cities by population. Culture is added to the cities, without a free
+  pulse of surrounding tile culture. More cities do not multiply the reward.
+- Each network contributes up to `6 * F` stability pressure; combined foreign
+  pressure remains capped at -6 and approaches its target gradually. Existing
+  civic-change anarchy and occasional local unrest remain, with their previous caps
+  and cooldowns. Incorporating countries retain their instability protection.
+- Client-government chances approach 0.1% per Normal turn against ordinary
+  governments, 0.3% against Republics and 1% against Democracies, multiplied by `F`.
+  Stability must be below -20: vulnerability rises linearly from zero at -20 to
+  full effect at -40. Both countries must be independent, at peace with one another,
+  and have cities. Existing vassals cannot be reassigned. All living members of a
+  target team must qualify; the least vulnerable member determines the team's
+  chance. The No Vassal States option and existing jihad restrictions apply.
+  A successful roll establishes voluntary vassalage, without annexing cities.
+
+XL halves civic-adoption and client-government chances and culture per gameplay
+turn. Relation and stability magnitudes do not change. Chance calculations retain
+hundredths of a percent; the advisor shows one decimal and labels smaller nonzero
+client chances as below 0.1%. All rolls and effects run in synchronized gameplay;
+messages are addressed to the affected players and contain no gameplay click callback.
+
+For example, with population 80, half effect requires 2,000 buildup. Sustained
+100 effective espionage per Normal turn approaches that amount: +1 relations,
+a 2.5% civic-adoption chance and about -3 stability pressure. Against a severely
+unstable Democracy, the client-government chance approaches 0.5% per Normal turn.
+At 400 effective output, influence approaches 80%: +2 relations, 4% civic adoption,
+about -4.8 pressure and up to 0.8% client-government chance against that Democracy.
+
+### Dynastic politics
+
+Monarchy replaces political meddling with marriage politics toward other monarchies.
+No common religion or relative empire size is required for this operation. The old
+collapse-inheritance eligibility rules still apply separately. Marriage diplomacy
+has no espionage-discovery penalty. Established kinship applies in both directions:
+distant relatives grant +1 relations; close relatives and later stages grant +2.
+
+Influence uses the assigned political forces' derived buildup: `B_next = 0.90 * B + 2 * E`
+at Normal speed, or `0.95 * B + E` on XL. `E` is effective espionage after
+access and counterintelligence, increased by 2% for each point of negative target
+stability, capped at twice the normal rate at -50. Nonnegative stability adds no
+resistance. There is no population or army-size divisor. Half strength is reached
+at 100 influence. At Normal speed the signed stage chance is
+`20% * B / (B + 100) - stage offset`:
+
+| Current stage | Offset | Possible chance per Normal turn |
+| --- | ---: | ---: |
+| Insignificant | 0% | 0% to +20% |
+| Distant relatives | 5% | -5% to +15% |
+| Close relatives | 10% | -10% to +10% |
+| Personal union | 10% | -10% to +10% |
+| Incorporation | — | No further rolls |
+
+XL halves the complete signed chance, including the offset. One synchronized
+roll per target team per game turn advances one stage for positive chances or
+regresses one stage for negative chances. War stops funding and advancement;
+influence continues decaying. Changing operations or leaving Monarchy stops
+funding. While both parties remain monarchies, unsupported kinship can regress
+even in another mode. At Close relatives or later, the initiator of a war between
+the dynasties suffers -6 stability for 20 Normal turns (40 on XL). This does not
+add civic anarchy or unrest; repeated declarations refresh rather than stack it.
+
+Personal union establishes ordinary voluntary vassalage. A vassal cannot become
+a master, another master's vassal cannot be taken, and the No Vassal States option
+blocks this step. Regression from Personal union ends vassalage created by that
+network; pre-existing vassal agreements are not cancelled. If a personal union
+breaks through ordinary vassal rules, its stage returns to Close relatives.
+
+Incorporation is terminal. While the vassal relationship remains, the nearest
+city to the heir's existing cities transfers peacefully each gameplay turn,
+including on XL. Ties use stable player/city iteration order. The limit is one
+city per target team per game turn, shared across claimants on the same team.
+City garrisons transfer with their city; the remaining army transfers with its
+owner's final city. No conquest rewards or razing choices are created. Transfers
+continue without espionage funding and after civic changes, but pause during war
+or if vassalage ends. The incorporating country has a stability floor of zero
+while that union remains; political pressure cannot cause stability loss, extra
+anarchy or local unrest during incorporation. Other unrelated city-loss mechanics
+are unchanged.
+
+Collapse inheritance keeps its existing 50% chance, religion, stability and distance
+requirements. Candidate weight is `100 + 100 * stage + 400 * B / (B + 100)`.
+Thus related and influential dynasties are favored, without excluding other
+eligible monarchies. The AI moderately favors marriage politics against monarchies
+at peace, with a higher score for established dynastic stages. It normally
+reviews operations every five Normal turns (ten on XL) and requires a clear
+advantage before switching. War and unusable operations permit earlier changes.
+AI dynastic investment targets a 20% espionage budget when affordable.
+
+At 20 effective espionage per Normal turn, buildup after 10 and 20 turns is about
+261 and 351. These give first-stage chances of 14.5% and 15.6%, or 4.5% and 5.6%
+at Close relatives. Sustained output of 20 approaches 400 buildup: about 16.0%,
+11.0%, 6.0% and 6.0% at the four rolling stages. Stopping funding eventually turns
+the later-stage chances negative. At 100 sustained output, the corresponding
+chances approach 19.0%, 14.0%, 9.0% and 9.0%.
+
+These are initial balance values. The VC7.1 DLL and static asset checks cover
+implementation; in-game presentation, balance and multiplayer behavior require
+user-operated validation. The new save layout targets new games.
+
+
+## Birth succession
+
+A civilization's historical birth can offer control to one affected human player.
+Eligibility requires an actual city transfer during that birth; ordinary conquests,
+resurrections, gifts and scenario setup transfers do not qualify. A birth into a
+human-controlled civilization never offers a takeover.
+
+A player whose entire city network transfers has first priority and switches
+without a prompt. Otherwise the player losing the most cities receives the only
+offer. Equal counts use the lower player-slot number. If several players lose all
+their cities, the largest such civilization wins priority; the others can still be
+eliminated. Declining leaves the new civilization under AI control, without a second
+offer. A surviving former civilization becomes AI-controlled when its human switches.
+Both civilizations retain their own leaders, technologies, diplomacy and victory progress.
+Birth flips can include capitals and last cities, within the existing conversion limit.
+
+Decisions are saved and resolved once through synchronized player-owned callbacks.
+Last-city elimination waits until automatic succession is resolved. Network handover,
+loading, hotseat and multiplayer behavior still require user-operated game validation.
+
+## Harappa in the 3000 BC XL start
+
+The original India slot represents a distinct Harappan civilization in this start.
+Its capital site is Harappa at `(141, 64)`. The Indus/Punjab and Gujarat form its
+preferred settlement area; the Ganges and southern peninsula are outside its core.
+The separate geography profile retains XL's calendar, resource history and trade distances.
+The XL 800 BC start instead gives the surviving northern Indian polity to Magadha;
+Harappa is absent there. Standard maps retain their existing civilizations.
+
+- **Urban Cycles:** cities grow and shrink 30% faster. Food surpluses and
+  shortages change stored food at 1.3 times the normal rate. The normal technology-based growth modifier still applies
+  to surpluses. Tile yields, food trade, consumption and food-based production
+  are unchanged; starvation still removes at most one population per food turn.
+- **City Founder:** replaces the Settler and founds cities with population 2.
+  It has the ordinary Settler cost and movement, and cannot build improvements.
+- **Reservoir:** replaces the Granary, retains its food storage and adds +2 health.
+- The opening has Harappa at `(141, 64)` with population 6 and a Palace,
+  Mohenjo-daro at `(140, 62)` with population 4, and Rakhigarhi at `(141, 66)`
+  with population 5. All three centres stand on floodplains along a compact
+  river corridor, with overlapping farmland and fewer grassland alternatives.
+  An authored eastern distributary supplies the early alluvium. These cities
+  retain ordinary population unhappiness and unhealthiness. Each
+  has a Warrior. Agriculture is the only starting technology; there is no free
+  Settler, City Founder or Worker, and no free improvements or Reservoirs.
+- Historical goals: three cities of population 5 in the Indus region by 2000 BC;
+  live trade routes with two foreign civilizations by 1500 BC; 500 gold by 1000 BC.
+  The urban goal counts cities inside `(135, 55)` to `(146, 68)`, inclusive. Trade
+  partners must belong to different teams from Harappa. Each goal can be achieved
+  before its deadline; the trade partners must exist simultaneously.
+
+The Harappan Council is an abstraction for unknown leadership. Archaeological site
+names label the cities. The first implementation reuses existing leader, flag and
+unit art. Harappa has its own power and goals rather than India's no-anarchy power,
+religious victory or Huna event. There is no forced historical collapse.
+Hinduism and Buddhism can found in the Ganges belt `(146, 60)` to `(155, 69)`, with
+the existing Varanasi/Bodh Gaya preferences and technology/fallback dates. Ownership
+is unrestricted, so an independent or Harappan city in that belt can host a religion.
+
+## Other Indian civilizations on XL
+
+Both XL scenarios include these five major civilizations. Their births use the
+ordinary two-stage birth and city-flip system, including the human succession
+choice. Only Magadha is selectable at either scenario's opening; the other four
+arrive at their scheduled births. Dates use the nearest existing calendar turn. The 3000 BC opening gives
+Magadha a Settler and Warrior, Agriculture and Mysticism, without Harappa's prebuilt
+city, City Founder or exceptional Indus farmland. Its capital is nine tiles east of Harappa.
+The early Magadhan Council represents farming communities rather than an already
+unified Vedic kingdom. In 800 BC, Magadha inherits the old northern Indian cities,
+troops, technology and diplomacy, with its palace at Pataliputra.
+
+| Civilization | Birth | Capital site | Unique power |
+|---|---|---|---|
+| Magadha | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +1 research. |
+| Chola | 850 AD | Thanjavur `(147, 52)` | Oceanic Networks: coastal cities gain one trade route. |
+| Delhi | 1200 AD | Delhi `(145, 65)` | Mounted Conquest: mounted units gain +25% city attack. |
+| Bengal | 1350 AD | Gaur `(154, 65)` | Delta Commerce: river tiles gain +1 commerce. |
+| Vijayanagara | 1350 AD | Vijayanagara `(145, 56)` | Fortified Heartland: cities gain +25% defense. |
+
+- Magadha's **Mahout Elephant** replaces the War Elephant with strength 9. Its
+  **Gurukula** replaces the Library's two Scientist slots with two Priest slots.
+- Chola's **Kappal** replaces the Galley with three movement and three cargo
+  slots. Its **Merchant Guild** replaces the Harbor, raising its trade-route
+  modifier from 50% to 75%.
+- Delhi's **Ghulam** replaces the Knight with strength 11. Its **Diwan** replaces
+  the Courthouse, reducing maintenance by 60% instead of 50%.
+- Bengal's **Paik** replaces the Crossbowman and adds 25% city defense. Its
+  **Muslin Bazaar** replaces the Market, raising the gold modifier to 35%.
+- Vijayanagara's **Nayaka** replaces the Pikeman with strength 7. Its **Royal
+  Temple** replaces the Hindu Temple and adds two production per turn.
+
+Later births receive era-appropriate technologies, two Settlers, workers and
+regional armies. Chola also receives coastal ships; Delhi emphasizes mounted
+assault, Bengal crossbow defense and Vijayanagara pikes. They adopt Hinduism
+(Chola/Vijayanagara) or Islam (Delhi/Bengal) when already founded, with a
+missionary to establish it. These are opening forces, not ongoing cost modifiers.
+The Huna event now targets Magadha on XL; Harappa retains its separate identity.
+
+Each civilization has three historical goals, completed at any time before its
+deadline: Magadha controls both Indian holy cities by 200 BC, reaches 2,500 culture
+by 200 AD and controls six Gangetic cities by 600 AD. Chola controls four southern
+cities by 1100, holds a Sri Lankan city while trading with three foreign teams by
+1250 and stores 3,000 gold by 1300. Delhi controls six northern cities by 1350,
+has Islam in eight cities by 1450 and controls Delhi plus three Deccan cities by
+1500. Bengal holds six river cities by 1500, trades with four foreign teams by
+1600 and stores 5,000 gold by 1700. Vijayanagara controls four southern cities by
+1500, has eight Hindu temples by 1600 and reaches 50,000 culture by 1650. City and
+trade goals require simultaneous control. Goal regions are explicit XL bounds in
+`IndianCivs.py`. Expired goals are failed when starting a later scenario.
+
+The five slots are 33–37; minor players shift to 38–43 and barbarians to 44. Older
+maps receive empty reserved slots and the corresponding owner/team renumbering,
+without gaining these civilizations. All player tables and geography planes use
+the expanded DLL capacity. The authoring tools preserve the XL additions.
+Existing art is reused for leaders, units, buildings and flags. All new text keys
+have five languages; the unique-power effects are translated, with English
+fallbacks for other unfinished translations. Loading, balance and multiplayer
+gameplay remain user-operated validation.
+
+
+## Famine, migration and abandonment
+
+New cities begin with half of their growth food threshold in storage, rounded down.
+Ownership changes preserve existing food and famine pressure instead of supplying a
+fresh reserve; captured stores are capped below the new growth threshold. Explicitly
+authored scenario food values still apply.
+
+A food deficit first consumes stored food. If the deficit exceeds the remaining
+reserve, the city loses one population, as before. A city already at size one is
+instead abandoned and leaves ruins. There is no size-one starvation floor or extra
+grace period. The food tooltip warns size-one cities with a deficit.
+
+A city of any size is also abandoned after repeated starvation losses relative
+to its current population, measured after the latest loss. The required number
+of distinct starvation-loss turns is `max(3, ceil(0.7 * population))`, within the
+latest `max(5, population + 2)` game turns, including the current turn. For example,
+a city shrinking from size 10 to 6 after four losses survives: it needs five
+starvation-loss turns within eight turns. At size 5, four such turns within seven
+turns are enough, so shrinking from 10 to 5 over five to seven turns triggers
+abandonment. A single turn losing several people counts only once toward this
+trigger. The window uses actual turns on every speed and follows the city through
+ownership changes; refounding starts a new history. Capitals and
+independent/barbarian cities follow this rule too. The remaining population
+disperses, causing garrison damage and possible refugee resettlement but no
+additional stability penalty. A major civilization's final
+city instead supplies one Settler, as described below.
+
+Population loss is peaceful emigration when retaining that turn's food exports
+would have prevented the loss, including growth scaling and fractional food.
+The city still loses one population, but this does not count toward famine
+abandonment or population-loss stability penalties, damage its garrison, create
+famine refugees, or increase famine pressure. Exports cannot remove the final
+population point. A shortage that would cause population loss even without
+exports remains starvation.
+
+Famine pressure increases on each food turn whose deficit exhausts the reserve,
+up to 12. It falls by two per food turn when supplies recover. After three such
+turns it causes one unhappiness, rising to two at five turns and three at seven.
+These counters follow actual food-consumption turns on every map, including XL.
+Cities that prohibit unhappiness still ignore famine unhappiness.
+
+Each population point lost to starvation has a 25% chance to resettle in a city
+within 12 tiles on the same landmass, with a land path and enough current food
+surplus for the additional citizen. Otherwise the population is lost. Own cities have priority, then distance and player/city order. Foreign
+cities require peace, open borders (or a shared team) and a trade connection.
+There is no population award when no suitable destination exists. If a major
+civilization loses its final city, the last inhabitants instead become a Settler
+before the city disappears, allowing relocation. Existing units remain available.
+
+After three famine turns, a non-capital city above size one can become independent
+if it still has empty stores and a deficit, and also has political unhappiness
+beyond famine anger or a majority of foreign plot culture. Occupied cities do not
+secede. The city and its local garrison use the existing independent-city transfer
+rules. Its food and famine state persist. This is not a civilization birth and
+never grants a takeover offer.
+
+At the first starvation loss of an episode, calculate how many consecutive
+ordinary loss turns would cause abandonment under the existing rule. Hold this
+denominator fixed until the city recovers. A complete decline to abandonment
+costs national stability equal to `60 * city population / national population`,
+plus 30 points for the capital. Divide that budget across the projected loss
+turns. For a fresh episode starting at size 7, the denominator is 3; at size 20,
+it is 9.
+
+Freeze national and city reference populations immediately before the first
+starvation loss of the national crisis. Keep them until all its starvation
+penalties have cleared, so shrinking cities do not increase later penalties.
+Cities founded or acquired during the crisis use their population before their
+first loss. For equally sized cities, five ordinary cities collapsing in a
+40-city empire cost 7.5 points in total; its capital costs 31.5. A capital in a
+four-city empire costs 45, and in a two-city empire 60. Budgets round to the
+nearest hundredth; hundredths are distributed across losses so the budget is
+preserved. Existing recent loss turns are included when projecting abandonment.
+Immigration, other causes of population loss or a change of capital can alter
+the episode's total; there is no cap. A city already at size one has no ordinary
+loss before abandonment.
+The population removed by abandonment adds no stability penalty. Other
+involuntary losses still cost 4 points per person in the capital or 1 elsewhere.
+Capital status is evaluated when the loss occurs; a later capital move does not
+reprice earlier losses.
+
+Starvation penalties do not decay while their source city has a food deficit
+excluding exports, or lost population to starvation that turn. Once supplies
+recover, they fade over ten recovery turns on normal maps or twenty on XL;
+renewed starvation pauses recovery again. Abandoned cities start recovery on
+the following turn. A recovered city's next famine starts a new episode.
+Other involuntary-loss penalties fade over ten normal-map or twenty XL turns
+regardless of hunger.
+All outstanding losses stack without a limit. Fractional contributions are
+summed before rounding the total penalty away from zero for integer stability.
+The penalty updates after every player turn; it is a temporary part of the
+stability base, not a repeated permanent deduction.
+
+Starvation, disasters and revolt losses count, including ordinary starvation
+losses whose survivors successfully resettle. Final famine abandonment, whipping,
+drafting, Advanced Start sales and peaceful emigration do not count. The previous
+population-weighted famine-pressure score, its -30 cap and its separate recovery
+rate are removed. Hunger without population loss causes no direct national
+stability penalty. Famine anger remains excluded from national happiness
+stability; famine secessions add no separate national city-loss shock. Ordinary
+economic and territorial consequences still apply.
+
+Civil-war collapse checks run at the end of every game turn. Stability at -80
+or lower triggers civil war immediately at that check, without a history window.
+Otherwise, stability must be below -40 on at least four of the latest five
+consecutive game turns, on every game speed. This sustained-instability trigger
+requires a full five-turn window. Each civilization retains its
+initial protection of twenty-five reference turns (fifty XL turns) and Golden
+Age protection. Protected turns clear the history, as does a civil war.
+
+Units in a city cannot heal while its food stores are empty and its food
+balance is zero or negative. Outside cities, healing requires positive tile
+food output or fresh water, regardless of ownership. These restrictions apply
+to ordinary healing, medics, promotions and experience-event recovery. The Huns'
+named recovery through raiding remains active.
+
+Each population point lost involuntarily inflicts an independently rolled
+10–30 HP of damage on every military unit stationed in the city, including
+ships and aircraft. Damage can kill; civilians are exempt. Starvation, plague,
+disasters and revolt losses use this rule, including the final population lost
+when a city is abandoned to famine. Whipping, drafting, Advanced Start sales
+and peaceful emigration do not cause garrison damage. Plague is temporarily
+disabled through `Plague.ENABLED`: scheduled outbreaks, first-contact outbreaks,
+infection, spread and plague population losses are inactive. If re-enabled,
+its population losses use the same stability and garrison rules; it has no
+separate direct unit-damage mechanic.
+
+Wounded AI groups seek nearby safe tiles where healing is possible and avoid
+unsupplied recovery cities. A city is not stripped of its last defending group
+solely to find healing. Unit and city tooltips explain blocked healing.
+Food and unrest warnings are localized in all five languages. Famine counters
+and synchronized damage rolls use the normal multiplayer state and RNG.
+Gameplay and multiplayer balance remain unverified.
+
+## Refounding ruined cities
+
+Founding a city on ruins recovers a random selection of the destroyed city's
+ordinary buildings: **50%, rounded down**. Technologies, religions, resources,
+coastal location and other construction prerequisites do not restrict recovery.
+Original building variants are retained, including another civilization's
+unique buildings. Palaces, world/team/national wonders, plague markers and
+display proxies are excluded from the recoverable pool.
+
+Buildings already supplied to the new city are not duplicated. Recovery draws
+from the remaining building classes, up to half the original recoverable count;
+if too few remain, it restores all remaining candidates. For example, seven
+eligible buildings yield up to three recovered buildings, while one yields none.
+The restored buildings have their normal effects, including obsolescence.
+
+Ruins remember the most recently destroyed city, including cities abandoned to
+famine. Founding consumes that record; clearing or replacing the ruins also
+removes it. Ordinary captures and ownership transfers do not grant this recovery.
+Scenario-authored ruins without a recorded city have no buildings to recover.
+The record is saved and included in the multiplayer checksum, and selection
+uses synchronized gameplay randomness. Ruins tooltips show the recoverable
+count, and AI settlement evaluation gives known recoverable ruins a modest bonus.
+Gameplay and multiplayer behavior remain unverified.
+
+## River droughts on XL maps
+
+Flood plains no longer reduce city health. On XL maps, connected river systems
+with flood plains can experience drought, regardless of their inhabitants. Rivers
+remain present for fresh-water health, commerce, crossings and trade. Their flood
+plains normally add 3 food; ordinary drought reduces this to 1. Severe drought
+forces an affected floodplain tile's total food to zero, including farms,
+resources, city-centre food, technologies and unique-power food bonuses. It also
+stops that river supplying irrigation. Ordinary desert flood plains consequently
+yield 3/4 food without/with a farm normally, 1/2 during ordinary drought and 0/0
+during severe drought. Ordinary drought also removes up to two food from the
+resource's combined natural and improvement bonuses. A wheat floodplain with a
+farm consequently falls from five to three food during ordinary drought, before
+other technology or unique-power bonuses. Egypt's Nile power still applies
+outside severe drought. Farms remain in place and recover. Other water sources
+can preserve irrigation, but cannot override zero food on a severely dry floodplain.
+Conditions are stored on individual river edges. A tile bordering several rivers
+uses its healthiest bordering river for both flood-plain food and its appearance:
+one normal river preserves the normal yield; ordinary plus severe drought gives
+ordinary drought yields. River irrigation stops only when every bordering river
+is in severe drought. Both banks of a changed edge update together.
+
+Each random event follows one continuous river path for a randomly chosen six to
+twelve segments, anchored beside flood plains. Random events remain at ordinary
+severity. Only segments beside existing flood plains dry out, and notifications
+point to flood plains. Reaches without remaining flood plains cannot start events.
+Only Harappa's scripted event can cause severe drought. Segment counts follow bends, not a
+radius across land. Upstream forks select one branch with synchronized seeded
+randomness. Downstream traversal follows the flow and never turns upstream into
+a tributary joining later. Distributaries likewise select one continuation.
+River ends, missing flow directions and previously visited segments shorten the
+reach. No event spreads through every tributary of a connected system.
+
+After 20 reference-calendar turns of initial protection, each eligible connected
+river system gets exactly one initiation roll per reference turn, including while
+other events are ongoing. Its chance is proportional to the current length of
+river bordering flood plains, with a minimum weight of three tile-edge segments.
+Each segment counts once, even with flood plains on both banks. Systems without
+remaining flood plains have zero chance. There is no long protected period after
+an event. Events can coexist; overlapping conditions take
+the worse stage on each edge, and consecutive events can prolong a local dry spell.
+Notifications of recovery use actual tile conditions so an ending event does not
+announce recovery where another drought is still active.
+
+Random events have two reference turns of advance warning, followed by
+four to seven turns of ordinary drought and then recovery to normal conditions.
+XL doubles these durations in engine turns; food consumption continues each
+engine turn. Notifications go to human owners of affected flood plains, and tile
+help explains current conditions.
+
+At game start, seeded branch and size choices produce a saved catalogue of local
+reaches. The shared initiation rate per weighted river segment is calibrated against that
+catalogue and the map's flood-plain tiles against a baseline of **3.5 food per
+farmed desert flood-plain tile per turn**, averaged over random events in the
+long run. The actual initiation rate is **half this calibrated rate**, making
+normal droughts rarer and raising long-run food output above that baseline.
+Duration and severity are unchanged. The calibration includes overlapping events
+and healthy second rivers. The initiation chance
+depends on the seeded catalogue and models ordinary random droughts only. The initial grace
+period and Harappa's historical drought are excluded from this stationary estimate.
+Resources, technology, unique powers and irrigation from other sources can raise
+actual food output; local tiles can differ from the map average. This is an
+analytical balance target, not an observed gameplay result.
+
+The 3000 BC XL start adds early alluvial farmland and a narrow eastern
+distributary around the three Harappan cities. Their centres and shared
+floodplains are exposed together. Nearby grassland becomes plains, reducing
+food sources that would otherwise escape the drying. A historical sequence
+affects river edges in
+`(139, 60)`–`(145, 66)`, plus the joining river edge at `(138, 62)`:
+warning from 2100 BC, an abrupt onset of severe drought from 2000 BC,
+partial recovery from 1800 BC and an end to the scripted drought from 1700 BC.
+All 15 starting floodplain tiles in the Harappan homeland border this reach;
+random droughts can still delay their recovery.
+Five added floodplains at `(141, 63)`, `(141, 66)`, `(142, 66)`,
+`(140, 62)` and `(141, 62)` disappear permanently from 1900 BC.
+This includes Rakhigarhi's and Mohenjo-daro's centres. These tiles retain their
+desert substrate, rivers, farms and cities, but lose the floodplain food bonus.
+Recovery does not restore them. Harappa retains its added city-centre
+floodplain, and the original Indus floodplains remain.
+These dates and boundaries are gameplay approximations. The western/lower Indus
+farther south remains outside this scripted reach, though it can suffer random
+drought. This sequence depends on geography, not the survival or ownership of
+Harappa. The 800 BC XL start uses the reduced floodplain footprint and random
+droughts without replaying this ancient sequence. Other maps retain
+ordinary flood-plain yields. No other historical droughts are scripted yet.
+
+Green, faded and dry ochre flood-plain textures distinguish the stages without
+changing river geometry. The dry source is
+`art/drought/FloodPlain_SevereDrought.png`, edited with the built-in imagegen tool
+from Civ4's flood-plain texture using the prompt: "Severe drought version; flat,
+homogeneous, fine-grained, tileable ochre/tan soil and dead vegetation; preserve
+scale and omit objects, rivers, large cracks, borders and lighting gradients."
+`tools/build_drought_art.py` prepares the two DDS variants, retaining the original
+alpha and blending the intermediate stage with the original green texture.
+Climate state is saved and included in the multiplayer checksum. In-game balance,
+multiplayer behavior and the engine's display of the separate drought feature
+types remain
+user-operated validation.

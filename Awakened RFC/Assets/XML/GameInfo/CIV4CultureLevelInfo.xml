@@ -15,6 +15,10 @@
 				<SpeedThreshold>
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>0</iThreshold>
+				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>0</iThreshold>
 				</SpeedThreshold>				
 			</SpeedThresholds>
 			<!-- Rhye - end -->
@@ -27,6 +31,10 @@
 			<SpeedThresholds>
 				<SpeedThreshold>
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
+					<iThreshold>0</iThreshold>
+				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
 					<iThreshold>0</iThreshold>
 				</SpeedThreshold>
 			</SpeedThresholds>
@@ -42,6 +50,10 @@
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>10</iThreshold>
 				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>20</iThreshold>
+				</SpeedThreshold>
 			</SpeedThresholds>
 			<!-- Rhye - end -->
 		</CultureLevelInfo>
@@ -54,6 +66,10 @@
 				<SpeedThreshold>
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>100</iThreshold>
+				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>200</iThreshold>
 				</SpeedThreshold>
 			</SpeedThresholds>
 			<!-- Rhye - end -->
@@ -68,6 +84,10 @@
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>500</iThreshold>
 				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>1000</iThreshold>
+				</SpeedThreshold>
 			</SpeedThresholds>
 			<!-- Rhye - end -->
 		</CultureLevelInfo>
@@ -81,6 +101,10 @@
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>5000</iThreshold>
 				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>10000</iThreshold>
+				</SpeedThreshold>
 			</SpeedThresholds>
 			<!-- Rhye - end -->
 		</CultureLevelInfo>
@@ -93,6 +117,10 @@
 				<SpeedThreshold>
 					<GameSpeedType>GAMESPEED_NORMAL</GameSpeedType>
 					<iThreshold>50000</iThreshold>
+				</SpeedThreshold>
+				<SpeedThreshold>
+					<GameSpeedType>GAMESPEED_XL</GameSpeedType>
+					<iThreshold>100000</iThreshold>
 				</SpeedThreshold>
 			</SpeedThresholds>
 			<!-- Rhye - end -->

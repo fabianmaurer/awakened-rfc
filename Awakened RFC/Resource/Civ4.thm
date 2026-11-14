@@ -1,0 +1,2 @@
+resource_path "../Resource";
+include "Mods/Awakened RFC/Resource/Themes/Civ4/Civ4Theme.thm";

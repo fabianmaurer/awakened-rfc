@@ -150,6 +150,8 @@ public:
 	int foodConsumption(bool bNoAngry, int iExtra);												 
 	int foodDifference(bool bBottom);
 	int growthThreshold();
+    int getFamineTurns();
+    int getFamineUnhappiness();
 	int productionLeft();
 	int hurryCost(bool bExtra);																						 
 	int hurryGold(int /*HurryTypes*/ iHurry);
@@ -184,6 +186,7 @@ public:
 	int getPopulation();
 	void setPopulation(int iNewValue);
 	void changePopulation(int iChange);
+	void changePopulationPeacefully(int iChange);
 	long getRealPopulation();
 
 	int getHighestPopulation();
@@ -220,6 +223,7 @@ public:
 
 	int getEspionageHealthCounter();
 	void changeEspionageHealthCounter(int iChange);
+    int getIntelligenceUnrestTurns();
 	int getEspionageHappinessCounter();
 	void changeEspionageHappinessCounter(int iChange);
 

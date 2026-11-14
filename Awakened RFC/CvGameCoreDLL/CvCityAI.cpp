@@ -1,6 +1,7 @@
 // cityAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvAdministration.h"
 #include "CityAssignmentTradeCache.h"
 #include "ObserverPerformance.h"
 #include "CvGlobals.h"
@@ -397,6 +398,13 @@ bool CvCityAI::AI_avoidGrowth()
 {
 	PROFILE_FUNC();
 
+    const CvPlayerAI& adminOwner = GET_PLAYER(getOwnerINLINE());
+    if (!isHuman() && adminOwner.getID() < NUM_MAJOR_PLAYERS && getPopulation() >= 3 && !Administration::penaltiesSuspended(adminOwner))
+    {
+        int nextCitizen = Administration::effort100(*this) / std::max(1, getPopulation());
+        if (Administration::totalEffort100(adminOwner) + nextCitizen > Administration::capacity100(adminOwner))
+            return true;
+    }
 	if (AI_isEmphasizeAvoidGrowth())
 	{
 		return true;
@@ -1573,6 +1581,54 @@ void CvCityAI::AI_chooseProduction()
 	}
 	
 	
+	// Organize a real overseas expedition when a known coastal site is viable.
+	// Produce one settler and an ocean-capable transport at home; normal unit
+	// missions handle loading, sailing, danger and founding the city.
+	if (!isHuman() && !isBarbarian() && !kPlayer.isMinorCiv() && pWaterArea != NULL &&
+		!bDanger && !bLandWar && !bAssault && !bFinancialTrouble &&
+		GET_TEAM(getTeam()).isHasTech((TechTypes)OPTICS) && iWaterAreaBestFoundValue > iMinFoundValue)
+	{
+		observerPerformanceCount("count.colony.portOpportunity");
+		if (iNumSettlers == 0 && kPlayer.AI_getNumTrainAIUnits(UNITAI_SETTLE) == 0 &&
+			AI_chooseUnit(UNITAI_SETTLE))
+		{
+			observerPerformanceCount("count.colony.settlerOrdered");
+			return;
+		}
+		const TerrainTypes eOcean = (TerrainTypes)GC.getInfoTypeForString("TERRAIN_OCEAN");
+		bool bTransport = false;
+		int iUnitLoop;
+		for (CvUnit* pShip = kPlayer.firstUnit(&iUnitLoop); pShip != NULL; pShip = kPlayer.nextUnit(&iUnitLoop))
+		{
+			if (pShip->AI_getUnitAIType() != UNITAI_SETTLER_SEA || pShip->plot()->waterArea() != pWaterArea) continue;
+			const CvUnitInfo& kShip = GC.getUnitInfo(pShip->getUnitType());
+			const TechTypes ePass = eOcean == NO_TERRAIN ? NO_TECH : (TechTypes)kShip.getTerrainPassableTech(eOcean);
+			if (eOcean != NO_TERRAIN && (!kShip.getTerrainImpassable(eOcean) ||
+				(ePass != NO_TECH && GET_TEAM(getTeam()).isHasTech(ePass)))) { bTransport = true; break; }
+		}
+		if (!bTransport && kPlayer.AI_getNumTrainAIUnits(UNITAI_SETTLER_SEA) == 0 && eOcean != NO_TERRAIN)
+		{
+			UnitTypes eBestShip = NO_UNIT;
+			int iBestShipValue = 0;
+			for (int iClass = 0; iClass < GC.getNumUnitClassInfos(); ++iClass)
+			{
+				UnitTypes eShip = (UnitTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationUnits(iClass);
+				if (eShip == NO_UNIT || !canTrain(eShip)) continue;
+				const CvUnitInfo& kShip = GC.getUnitInfo(eShip);
+				const TechTypes ePass = (TechTypes)kShip.getTerrainPassableTech(eOcean);
+				if (kShip.getTerrainImpassable(eOcean) && (ePass == NO_TECH || !GET_TEAM(getTeam()).isHasTech(ePass))) continue;
+				const int iValue = kPlayer.AI_unitValue(eShip, UNITAI_SETTLER_SEA, pWaterArea);
+				if (iValue > iBestShipValue) { iBestShipValue = iValue; eBestShip = eShip; }
+			}
+			if (eBestShip != NO_UNIT && AI_chooseUnit(eBestShip, UNITAI_SETTLER_SEA))
+			{
+				observerPerformanceCount("count.colony.transportOrdered");
+				return;
+			}
+			observerPerformanceCount("count.colony.noOceanTransportAvailable");
+		}
+	}
+
 	if ((iAreaBestFoundValue > iMinFoundValue) || (iWaterAreaBestFoundValue > iMinFoundValue))
 	{		
 		if (pWaterArea != NULL)
@@ -3728,7 +3784,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 		}
 	}
 
-	int iValue = 0;
+    int iValue = Administration::infrastructureValue(*this, eBuilding);
 
 	for (iPass = 0; iPass < 2; iPass++)
 	{
@@ -3952,15 +4008,20 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 				iValue += (kBuilding.getDomainProductionModifier(DOMAIN_SEA) / 4);
 			}
 
+			if (eBuilding == GC.getInfoTypeForString("BUILDING_COIN_MINT") &&
+				((iFocusFlags & BUILDINGFOCUS_GOLD) || iPass > 0))
+			{
+				const int iMintGold = getMintGoldPotential();
+				iValue += iMintGold * 4 * kOwner.AI_commerceWeight(COMMERCE_GOLD) / 100 * (bFinancialTrouble ? 2 : 1);
+			}
+
 			if ((iFocusFlags & BUILDINGFOCUS_MAINTENANCE) || (iFocusFlags & BUILDINGFOCUS_GOLD) || (iPass > 0))
 			{
 
-				int iBaseMaintenance = getMaintenanceTimes100();
-				int iExistingUpkeep = (iBaseMaintenance * std::max(0, 100 + getMaintenanceModifier())) / 100;
-				int iNewUpkeep = (iBaseMaintenance * std::max(0, 100 + getMaintenanceModifier() + kBuilding.getMaintenanceModifier())) / 100;
-				
-				iTempValue = (iExistingUpkeep - iNewUpkeep) / 16;
-				
+                int relief = -kBuilding.getMaintenanceModifier();
+                int pressure = Administration::overload100(GET_PLAYER(getOwnerINLINE()));
+                iTempValue = relief > 0 ? relief * getPopulation() * (100 + std::min(300, pressure / 100)) / 200 : 0;
+
 				if (bFinancialTrouble)
 				{
 					iTempValue *= 2;
@@ -4072,7 +4133,7 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 				if (kBuilding.isGovernmentCenter())
 				{
 					FAssert(!(kBuilding.isCapital()));
-					iValue += ((calculateDistanceMaintenance() - 3) * iNumCitiesInArea);
+                // Travel-time and capacity effects are scored above.
 				}
 
 				if (kBuilding.isMapCentering())
@@ -5640,6 +5701,11 @@ void CvCityAI::AI_updateRouteToCity()
 						// Only a strictly nearer city can replace the current choice.
 						// Preserve iteration-order ties without an unnecessary path search.
 						iValue = plotDistance(getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE());
+                        if (!isHuman() && Administration::travelTime100(*this) >= 200)
+                        {
+                            iValue *= 4;
+                            if (pLoopCity->isGovernmentCenter() || Administration::hasResidence(*pLoopCity)) iValue /= 4;
+                        }
 						if (iValue >= iBestValue) continue;
 						if (!(gDLL->getFAStarIFace()->GeneratePath(&GC.getRouteFinder(), getX_INLINE(), getY_INLINE(), pLoopCity->getX_INLINE(), pLoopCity->getY_INLINE(), false, getOwnerINLINE(), true)))
 						{
@@ -5791,7 +5857,12 @@ int CvCityAI::AI_totalBestBuildValue(CvArea* pArea)
 			{
 				if (pLoopPlot->area() == pArea)
 				{
-					if ((pLoopPlot->getImprovementType() == NO_IMPROVEMENT) || !(GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_SAFE_AUTOMATION) && !(pLoopPlot->getImprovementType() == (GC.getDefineINT("RUINS_IMPROVEMENT")))))
+					// Safe automation permits clearing and routes that preserve improvements.
+					if ((pLoopPlot->getImprovementType() == NO_IMPROVEMENT) ||
+						!GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_SAFE_AUTOMATION) ||
+						pLoopPlot->getImprovementType() == GC.getDefineINT("RUINS_IMPROVEMENT") ||
+						(AI_getBestBuild(iI) != NO_BUILD && GC.getBuildInfo(AI_getBestBuild(iI)).getImprovement() == NO_IMPROVEMENT &&
+						!GC.getImprovementInfo(pLoopPlot->getImprovementType()).isRequiresFeature()))
 					{
 						iTotalValue += AI_getBestBuildValue(iI);
 					}
@@ -6662,7 +6733,7 @@ void CvCityAI::AI_doHurry(bool bForce)
 			{
 				if (GC.getBuildingInfo(eProductionBuilding).getMaintenanceModifier() < 0)
 				{
-					if (getMaintenance() >= 10)
+					if (Administration::overload100(GET_PLAYER(getOwnerINLINE())) > 0)
 					{
 						iMinTurns = std::min(iMinTurns, 10);
 						bEssential = true;
@@ -7698,22 +7769,25 @@ void CvCityAI::AI_juggleCitizens()
 }
 
 
-bool CvCityAI::AI_potentialPlot(short* piYields)
+bool CvCityAI::AI_potentialPlot(short* piYields, int iDirectGold)
 {
 	int iNetFood = piYields[YIELD_FOOD] - GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	// Direct gold supports the economy just as commerce does. Otherwise a
+	// low-food precious-metal mine can incorrectly receive the 1/16 penalty.
+	const int iEconomicYield = piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] + iDirectGold;
 
 	if (iNetFood < 0)
 	{
  		if (piYields[YIELD_FOOD] == 0)
 		{
-			if (piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] < 2)
+			if (iEconomicYield < 2)
 			{
 				return false;
 			}
 		}
 		else
 		{
-			if (piYields[YIELD_PRODUCTION] + piYields[YIELD_COMMERCE] == 0)
+			if (iEconomicYield == 0)
 			{
 				return false;
 			}
@@ -7754,7 +7828,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 			{
 				iFoodCount += pLoopPlot->getYield(YIELD_FOOD);
 			}
-			else if ((pLoopPlot->getWorkingCity() == this) && AI_potentialPlot(pLoopPlot->getYield()))
+			else if ((pLoopPlot->getWorkingCity() == this) && AI_potentialPlot(pLoopPlot->getYield(), pLoopPlot->calculateGold()))
 			{
 				abPlotAvailable[iI] = true;
 			}
@@ -7827,7 +7901,7 @@ bool CvCityAI::AI_foodAvailable(int iExtra)
 }
 
 
-int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood, bool bIgnoreGrowth, bool bIgnoreStarvation, bool bWorkerOptimization)
+int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoidGrowth, bool bRemove, bool bIgnoreFood, bool bIgnoreGrowth, bool bIgnoreStarvation, bool bWorkerOptimization, int iFlatGold)
 {
 	CitizenEvaluationCache* pConditions = CitizenEvaluationCache::active;
 	if (pConditions != NULL && pConditions->city != this)
@@ -7890,6 +7964,7 @@ int CvCityAI::AI_yieldValue(short* piYields, short* piCommerceYields, bool bAvoi
 			iCommerceTimes100 += piCommerceYields[iJ] * 100;
 		}
 		aiCommerceYieldsTimes100[iJ] += (iCommerceTimes100 * iModifier) / 100;
+		if (iJ == COMMERCE_GOLD) aiCommerceYieldsTimes100[iJ] += iFlatGold * 100;
 	}
 
 	if (isProductionProcess() && !bWorkerOptimization)
@@ -8414,7 +8489,9 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 	}
 	
 	
-	int iYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation) * 100);
+	short aiDirectCommerce[NUM_COMMERCE_TYPES] = {0};
+	aiDirectCommerce[COMMERCE_GOLD] = pPlot->calculateGold();
+	int iYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation, false, aiDirectCommerce[COMMERCE_GOLD]) * 100);
 
 	if (eFinalImprovement != NO_IMPROVEMENT)
 	{
@@ -8423,7 +8500,8 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 			iYieldDiff = (pPlot->calculateImprovementYieldChange(eFinalImprovement, ((YieldTypes)iI), getOwnerINLINE()) - pPlot->calculateImprovementYieldChange(eCurrentImprovement, ((YieldTypes)iI), getOwnerINLINE()));
 			aiYields[iI] += iYieldDiff;
 		}
-		int iFinalYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation) * 100);
+		aiDirectCommerce[COMMERCE_GOLD] += pPlot->calculateImprovementGold(eFinalImprovement, getTeam()) - pPlot->calculateImprovementGold(eCurrentImprovement, getTeam());
+		int iFinalYieldValue = (AI_yieldValue(aiYields, NULL, bAvoidGrowth, bRemove, bIgnoreFood, bIgnoreGrowth, bIgnoreStarvation, false, aiDirectCommerce[COMMERCE_GOLD]) * 100);
 		
 		if (iFinalYieldValue > iYieldValue)
 		{
@@ -8436,8 +8514,8 @@ int CvCityAI::AI_plotValue(CvPlot* pPlot, bool bAvoidGrowth, bool bRemove, bool 
 	}
 	// unless we are emph food (and also food not production)
 	if (!(AI_isEmphasizeYield(YIELD_FOOD) && !isFoodProduction()))
-		// if this plot is super bad (less than 2 food and less than combined 2 prod/commerce
-		if (!AI_potentialPlot(aiYields))
+		// Penalize genuinely poor plots, counting direct gold alongside commerce.
+		if (!AI_potentialPlot(aiYields, aiDirectCommerce[COMMERCE_GOLD]))
 			// undervalue it even more!
 			iYieldValue /= 16;
 	iValue += iYieldValue;
@@ -8882,6 +8960,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 						aiDiffYields[iJ] = (aiFinalYields[iJ] - (2 * pPlot->getYield(((YieldTypes)iJ))));
 					}
 
+					aiDiffYields[YIELD_COMMERCE] += 2 * (pPlot->calculateImprovementGold(eImprovement, getTeam()) - pPlot->calculateImprovementGold(pPlot->getImprovementType(), getTeam()));
 					const int iArchiveValue = getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? 4 : 5;
 					if (eImprovement == GC.getInfoTypeForString("IMPROVEMENT_DEEP_ARCHIVE"))
 						aiDiffYields[YIELD_COMMERCE] += 2 * iArchiveValue;

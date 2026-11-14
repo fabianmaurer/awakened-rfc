@@ -2,6 +2,7 @@ from Reporting import ENABLED as REPORTING_ENABLED
 # Rhye's and Fall of Civilization - Utilities
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers
 import Consts as con
@@ -60,6 +61,8 @@ class RFCUtils:
                 return scriptDict['lGoals'][i][j]
 
         def setGoal( self, i, j, iNewValue ):
+                if not con.HISTORICAL_GOALS_ENABLED:
+                        return
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
                 scriptDict['lGoals'][i][j] = iNewValue
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
@@ -77,20 +80,26 @@ class RFCUtils:
 
         def getStability( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lStability'][iCiv]
+                value = scriptDict['lStability'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        return max(0, value)
+                return value
 
         def setStability( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                scriptDict['lStability'][iCiv] = iNewValue
+                if gc.getPlayer(iCiv).getIntelligenceData(-1, 42):
+                        iNewValue = max(0, iNewValue)
+                scriptDict['lStability'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
+                gc.getPlayer(iCiv).setIntelligenceStability(iNewValue)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getBaseStabilityLastTurn( self, iCiv ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                return scriptDict['lBaseStabilityLastTurn'][iCiv]
+                return scriptDict['lBaseStabilityLastTurn'][iCiv] + gc.getPlayer(iCiv).getAdministrationValue(3, -1)
 
         def setBaseStabilityLastTurn( self, iCiv, iNewValue ):
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
-                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue
+                scriptDict['lBaseStabilityLastTurn'][iCiv] = iNewValue - gc.getPlayer(iCiv).getAdministrationValue(3, -1)
                 gc.getGame().setScriptData( pickle.dumps(scriptDict) )
 
         def getStabilityParameters( self, iParameter ):
@@ -342,7 +351,7 @@ class RFCUtils:
                         y = city.getY()
                         for iActiveCiv in range( iNumActivePlayers ):
                                 if (gc.getPlayer(iActiveCiv).isAlive() and not gc.getPlayer(iActiveCiv).isHuman()):
-                                        if (gc.getPlayer(iActiveCiv).getSettlersMaps( 67-y, x ) >= 90):
+                                        if (gc.getPlayer(iActiveCiv).getSettlersMaps( (geo.height() - 1) - y, x ) >= 90):
                                                 if (not teamMinor.isAtWar(iActiveCiv)):
                                                         teamMinor.declareWar(iActiveCiv, False, WarPlanTypes.WARPLAN_LIMITED)
                                                         print ("Minor war", city.getName(), gc.getPlayer(iActiveCiv).getCivilizationAdjective(0))
@@ -400,14 +409,14 @@ class RFCUtils:
                         if (unit.getOwner() == iOldOwner):
                                 unit.kill(False, con.iBarbarian)
                                 if (iNewOwner < con.iNumActivePlayers or unitType > con.iSettler):
-                                        self.makeUnit(unitType, iNewOwner, [0, 67], 1)
+                                        self.makeUnit(unitType, iNewOwner, geo.value('RFCUtils.flipUnitsInCityBefore.location_1'), 1)
                         else:
                                 j += 1
         #RiseAndFall
         def flipUnitsInCityAfter(self, tCityPlot, iCiv):
                 #moves new units back in their place
                 print ("tCityPlot After", tCityPlot)
-                tempPlot = gc.getMap().plot(0,67)
+                tempPlot = gc.getMap().plot(*geo.value('RFCUtils.plot_1'))
                 if (tempPlot.getNumUnits() != 0):
                         iNumUnitsInAPlot = tempPlot.getNumUnits()
                         #print ("iNumUnitsInAPlot", iNumUnitsInAPlot)                        
@@ -415,21 +424,21 @@ class RFCUtils:
                                 unit = tempPlot.getUnit(0)
                                 unit.setXYOld(tCityPlot[0],tCityPlot[1])
                 #cover plots revealed
-                gc.getMap().plot(0, 67).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(0, 66).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(1, 66).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(1, 67).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(123, 67).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(123, 66).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(2, 67).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(2, 66).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(2, 65).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(1, 65).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(0, 65).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(122, 67).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(122, 66).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(122, 65).setRevealed(iCiv, False, True, -1);
-                gc.getMap().plot(123, 65).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_2')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_3')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_4')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_5')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_6')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_7')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_8')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_9')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_10')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_11')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_12')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_13')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_14')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_15')).setRevealed(iCiv, False, True, -1);
+                gc.getMap().plot(*geo.value('RFCUtils.plot_16')).setRevealed(iCiv, False, True, -1);
 
         def killUnitsInArea(self, tTopLeft, tBottomRight, iCiv):
                 for x in range(tTopLeft[0], tBottomRight[0]+1):
@@ -445,7 +454,7 @@ class RFCUtils:
                                                         
         #RiseAndFall
         def flipUnitsInArea(self, tTopLeft, tBottomRight, iNewOwner, iOldOwner, bSkipPlotCity, bKillSettlers, bProtectForts=False, tPlotBounds=None):
-                """Deletes, recreates units in 0,67 and moves them to the previous tile.
+                """Recreates units at the configured staging tile and returns them to their previous tile.
                 If there are units belonging to others in that plot and the new owner is barbarian, the units aren't recreated.
                 Settlers aren't created.
                 If bSkipPlotCity is True, units in a city won't flip. This is to avoid converting barbarian units that would capture a city before the flip delay.
@@ -460,7 +469,7 @@ class RFCUtils:
                                 iNumUnitsInAPlot = killPlot.getNumUnits()
                                 if (iNumUnitsInAPlot):
                                         bRevealedZero = False
-                                        if (gc.getMap().plot(0, 67).isRevealed(iNewOwner, False)):
+                                        if (gc.getMap().plot(*geo.value('RFCUtils.plot_17')).isRevealed(iNewOwner, False)):
                                                 bRevealedZero = True
                                         #print ("killplot", x, y)
                                         if (bSkipPlotCity == True) and (killPlot.isCity()):
@@ -476,13 +485,13 @@ class RFCUtils:
                                                                 unit.kill(False, con.iBarbarian)
                                                                 if (bKillSettlers):
                                                                         if ((unit.getUnitType() > iSettler)):
-                                                                                self.makeUnit(unit.getUnitType(), iNewOwner, [0, 67], 1)
+                                                                                self.makeUnit(unit.getUnitType(), iNewOwner, geo.value('RFCUtils.flipUnitsInArea.location_1'), 1)
                                                                 else:
                                                                         if ((unit.getUnitType() >= iSettler)): #skip animals
-                                                                                self.makeUnit(unit.getUnitType(), iNewOwner, [0, 67], 1)
+                                                                                self.makeUnit(unit.getUnitType(), iNewOwner, geo.value('RFCUtils.flipUnitsInArea.location_2'), 1)
                                                         else:
                                                                 j += 1
-                                                tempPlot = gc.getMap().plot(0,67)
+                                                tempPlot = gc.getMap().plot(*geo.value('RFCUtils.plot_18'))
                                                 #moves new units back in their place
                                                 if (tempPlot.getNumUnits() != 0):
                                                         iNumUnitsInAPlot = tempPlot.getNumUnits()
@@ -491,21 +500,21 @@ class RFCUtils:
                                                                 unit.setXYOld(x,y)
                                                         iCiv = iNewOwner
                                                         if (bRevealedZero == False):
-                                                                gc.getMap().plot(0, 67).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(0, 66).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(1, 66).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(1, 67).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(123, 67).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(123, 66).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(2, 67).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(2, 66).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(2, 65).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(1, 65).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(0, 65).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(122, 67).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(122, 66).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(122, 65).setRevealed(iCiv, False, True, -1);
-                                                                gc.getMap().plot(123, 65).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_19')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_20')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_21')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_22')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_23')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_24')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_25')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_26')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_27')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_28')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_29')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_30')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_31')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_32')).setRevealed(iCiv, False, True, -1);
+                                                                gc.getMap().plot(*geo.value('RFCUtils.plot_33')).setRevealed(iCiv, False, True, -1);
                                 
 
 
@@ -643,9 +652,9 @@ class RFCUtils:
                                         if (city.getOwner() >= iNumMajorPlayers):
                                                 iMinor = city.getOwner()
                                                 iDen = 25
-                                                if (gc.getPlayer(iMajorCiv).getSettlersMaps( 67-y, x ) >= 400):
+                                                if (gc.getPlayer(iMajorCiv).getSettlersMaps( (geo.height() - 1) - y, x ) >= 400):
                                                         iDen = 10
-                                                elif (gc.getPlayer(iMajorCiv).getSettlersMaps( 67-y, x ) >= 150):
+                                                elif (gc.getPlayer(iMajorCiv).getSettlersMaps( (geo.height() - 1) - y, x ) >= 150):
                                                         iDen = 15
                                                         
                                                 iMinorCityCulture = city.getCulture(iMinor)
@@ -773,7 +782,7 @@ class RFCUtils:
                         self.cultureManager(tCoords, 50, iNewCiv, iCiv, False, False, False)
                         self.flipCity(tCoords, 0, 0, iNewCiv, [iCiv]) #by trade because by conquest may raze the city
                         #pyCity.GetCy().setHasRealBuilding(con.iPlague, False)  #buggy
-                self.flipUnitsInArea([0,0], [123,67], iNewCiv, iCiv, False, True)
+                self.flipUnitsInArea([0,0], geo.value('RFCUtils.killCiv.location_1'), iNewCiv, iCiv, False, True)
                 #self.killUnitsInArea([0,0], [123,67], iNewCiv, iCiv) ?
                 if (iCiv < iNumMajorPlayers):
                         self.clearEmbassies(iCiv)
@@ -853,7 +862,7 @@ class RFCUtils:
                                 self.flipUnitsInArea([tCoords[0]-1,tCoords[1]-1], [tCoords[0]+1,tCoords[1]+1], iNewCiv, iCiv, False, True)
                 if (bAssignOneCity == False):
                         #self.flipUnitsInArea([0,0], [123,67], iNewCiv1, iCiv, False, True) #causes a bug: if a unit was inside another city's civ, when it becomes independent or barbarian, may raze it
-                        self.killUnitsInArea([0,0], [123,67], iCiv)
+                        self.killUnitsInArea([0,0], geo.value('RFCUtils.killAndFragmentCiv.location_1'), iCiv)
                         self.resetUHV(iCiv)
                 if (iCiv < iNumMajorPlayers):
                         self.clearEmbassies(iCiv)
@@ -918,7 +927,13 @@ class RFCUtils:
                 iSeed = gc.getGame().getSorenRand().getSeed() + gc.getGame().getGameTurn() * 31 + iCiv * 17
                 if (iSeed % 100 >= iChance):
                         return -1
-                return heirs[(iSeed + iCiv * 29) % len(heirs)]
+                weights = [gc.getPlayer(iHeir).getIntelligenceData(iCiv, 38) for iHeir in heirs]
+                roll = (iSeed + iCiv * 29) % sum(weights)
+                for iHeir, weight in zip(heirs, weights):
+                        if roll < weight:
+                                return iHeir
+                        roll -= weight
+                return -1
 
 
         def tryMonarchyInheritance(self, iCiv):
@@ -1041,7 +1056,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         if (pCurrent.countTotalCulture() == 0 ):
@@ -1057,7 +1072,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isWater()):
+                if (pCurrent.isWater() and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10 ):
                                 iClean = 0
                                 for x in range(tCoords[0] - 1, tCoords[0] + 2):        # from x-1 to x+1
@@ -1077,7 +1092,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isWater()):
+                if (pCurrent.isWater() and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10):
                                 if (pCurrent.countTotalCulture() == 0 ):
                                         iClean = 0
@@ -1097,7 +1112,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.getTerrainType() == con.iCoast):
+                if (pCurrent.getTerrainType() == con.iCoast and not pCurrent.isImpassable()):
                         if ( not pCurrent.isCity() and not pCurrent.isUnit() and pCurrent.area().getNumTiles() > 10 ):
                                 if (pCurrent.countTotalCulture() == 0 ):
                                         iClean = 0
@@ -1119,7 +1134,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         iClean = 0
@@ -1141,7 +1156,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         if (pCurrent.getOwner() in argsList ):
@@ -1156,7 +1171,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                         iClean = 0
@@ -1248,7 +1263,7 @@ class RFCUtils:
                 bPaint = True
                 bContinue = True
                 pCurrent = gc.getMap().plot( tCoords[0], tCoords[1] )
-                if ( pCurrent.isHills() or pCurrent.isFlatlands() ):
+                if ((pCurrent.isHills() or pCurrent.isFlatlands()) and not pCurrent.isImpassable()):
                         if (pCurrent.getTerrainType() != con.iMarsh) and (pCurrent.getFeatureType() != con.iJungle):
                                 if ( not pCurrent.isCity() and not pCurrent.isUnit() ):
                                             if (pCurrent.getOwner() == argsList ):

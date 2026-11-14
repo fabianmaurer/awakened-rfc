@@ -18,6 +18,13 @@ class CvReplayInfo;
 
 typedef std::vector<const CvReplayMessage*> ReplayMessageList;
 
+struct PapalDecisionData
+{
+    PlayerTypes owner;
+    int x, y;
+    bool refuge;
+};
+
 class CvGame
 {
 
@@ -304,7 +311,12 @@ public:
 	DllExport PlayerTypes getActivePlayer() const;																				// Exposed to Python
 	DllExport void setActivePlayer(PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python
 	//DllExport void switchActivePlayer(int eOldPlayerNetID, PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python //Rhye (RFCMP)
-	DllExport void switchActivePlayer(PlayerTypes eOldActivePlayer, PlayerTypes eNewValue, bool bForceHotSeat = false);		// Exposed to Python //Rhye (RFCMP)
+	DllExport void switchActivePlayer(PlayerTypes eOldActivePlayer, PlayerTypes eNewValue, bool bForceHotSeat = false);
+	void beginBirthFlip();
+	void endBirthFlip();
+	void refreshDroughtIrrigation();
+	bool isBirthFlipInProgress() const { return m_bBirthFlipInProgress; }
+	bool transferBirthControl(PlayerTypes eOldPlayer, PlayerTypes eNewPlayer);		// Exposed to Python //Rhye (RFCMP)
 	DllExport void updateUnitEnemyGlow();
 
 	DllExport HandicapTypes getHandicapType() const;
@@ -480,6 +492,13 @@ public:
 	void prepareCrusadeState(PlayerTypes ePlayer, PlayerTypes eSponsor);
 	bool isCrusadeHolyState(PlayerTypes ePlayer) const;
 	CvCity* getPapalRome() const;
+	CvCity* getPapalSeat() const;
+	CvCity* getPapalDecisionCity(int iDecision) const;
+	bool isPapalRefugeCity(const CvCity* pCity, bool bCheckVisited = true) const;
+	bool isPapalProtector(PlayerTypes ePlayer) const;
+	int getPapalDiplomaticModifier(PlayerTypes eObserver, PlayerTypes eTarget) const;
+	int getPapalRefusalTurns(PlayerTypes ePlayer) const;
+	void onPapalSeatConquered(PlayerTypes eOwner, PlayerTypes eConqueror);
 	bool isPapalState(PlayerTypes ePlayer) const;
 	bool canFoundPapacy(PlayerTypes ePlayer) const;
 	bool canBecomePapacy(PlayerTypes ePlayer) const;
@@ -491,8 +510,7 @@ public:
 	bool canPapalSurviveWithoutCities(PlayerTypes ePlayer) const;
 	int getPapalDevotionPercent(PlayerTypes ePlayer) const;
 	void resolvePapalDecision(PlayerTypes ePlayer, int iDecision, int iChoice);
-	void establishPapacy(PlayerTypes eOwner, bool bBecome);
-	void clearPapalRefusalPenalties();
+	void establishPapacy(PlayerTypes eOwner, bool bBecome, CvCity* pSeat = NULL);
 #if ARFC_ENABLE_REPORTING
 	void reportApostolicMechanic(const char* event, int player = -1, int a = -1, int b = -1, int c = -1, int d = -1, int e = -1, int f = -1, int g = -1, int h = -1) const;
 	void reportApostolicState();
@@ -729,10 +747,15 @@ protected:
 	int m_iPapalDevotionFadeStart;
 	int m_iPapalDecisionSerial;
 	int m_iPapalRefuser;
-	int m_aiPapalRefusalPenalties[MAX_CIV_PLAYERS];
-	std::map<int, PlayerTypes> m_papalDecisions;
+	int m_aiPapalRefusalExpiry[MAX_CIV_PLAYERS];
+	int m_iPapalSeatX, m_iPapalSeatY;
+	int m_iPapalConqueror, m_iPapalProtector;
+	bool m_bPapalExile;
+	std::vector<int> m_papalRefugeVisited;
+	std::map<int, PapalDecisionData> m_papalDecisions;
 	bool m_bPapalPalaceEffects;
 	bool m_bPapalCivicOverride;
+	bool m_bBirthFlipInProgress; // Synchronous birth transaction; never saved.
 	FFreeListTrashArray<VoteTriggeredData> m_votesTriggered;
 
 	CvRandom m_mapRand;

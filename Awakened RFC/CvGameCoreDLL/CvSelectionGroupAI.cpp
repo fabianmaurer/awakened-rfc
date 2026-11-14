@@ -9,6 +9,8 @@
 #include "CvDLLEntityIFaceBase.h"
 #include "CvGameCoreUtils.h"
 #include "FProfiler.h"
+#include "ObserverPerformance.h"
+#include "FastLateGame.h"
 #include "CVInfos.h"
 
 // Public Functions...
@@ -151,7 +153,11 @@ bool CvSelectionGroupAI::AI_update()
 	if (isForceUpdate())
 	{
 		clearMissionQueue(); // XXX ???
-		setActivityType(ACTIVITY_AWAKE);
+		// Reconsider normal naval orders without temporarily reconnecting the
+		// trade network. The chosen mission will end or renew the blockade.
+		const bool bPreserveBlockade = fastLateGame() && !isHuman() &&
+			getOwnerINLINE() != BARBARIAN_PLAYER && getActivityType() == ACTIVITY_PLUNDER;
+		setActivityTypeInternal(ACTIVITY_AWAKE, bPreserveBlockade);
 		setForceUpdate(false);
 
 		// if we are in the middle of attacking with a stack, cancel it
@@ -170,6 +176,8 @@ bool CvSelectionGroupAI::AI_update()
 		iTempHack++;
 		if (iTempHack > 100)
 		{
+            observerPerformanceCount("count.perf.ai.legacyLoopLimit");
+			observerPerformanceDecision("legacy_loop_limit", getHeadUnit(), iTempHack);
 			FAssert(false);
 			CvUnit* pHeadUnit = getHeadUnit();
 			if (NULL != pHeadUnit)
@@ -342,7 +350,7 @@ CvUnit* CvSelectionGroupAI::AI_getBestGroupAttacker(const CvPlot* pPlot, bool bP
 			{
 				bCanAttack = pLoopUnit->canAttack();
 
-				if (bCanAttack && bNoBlitz && pLoopUnit->isBlitz() && pLoopUnit->isMadeAttack())
+				if (bCanAttack && bNoBlitz && pLoopUnit->isMadeAttack())
 				{
 					bCanAttack = false;
 				}
@@ -409,7 +417,7 @@ CvUnit* CvSelectionGroupAI::AI_getBestGroupSacrifice(const CvPlot* pPlot, bool b
 			{
 				bCanAttack = pLoopUnit->canAttack();
 
-				if (bCanAttack && bNoBlitz && pLoopUnit->isBlitz() && pLoopUnit->isMadeAttack())
+				if (bCanAttack && bNoBlitz && pLoopUnit->isMadeAttack())
 				{
 					bCanAttack = false;
 				}

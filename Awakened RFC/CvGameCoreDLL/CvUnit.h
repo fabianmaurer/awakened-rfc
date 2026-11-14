@@ -68,6 +68,9 @@ class CvUnit : public CvDLLEntity
 {
 
 public:
+	void awardExplorationExperience(int iTiles);
+	int getExplorationExperienceRemainder() const { return m_iExplorationExperienceRemainder; }
+
 
 	CvUnit();
 	virtual ~CvUnit();
@@ -145,6 +148,7 @@ public:
 	bool canHeal(const CvPlot* pPlot) const;																											// Exposed to Python
 	bool canSentry(const CvPlot* pPlot) const;																										// Exposed to Python
 
+	bool hasHealingSupply(const CvPlot* pPlot) const;
 	int healRate(const CvPlot* pPlot) const;
 	int healTurns(const CvPlot* pPlot) const;
 	void doHeal();
@@ -306,6 +310,10 @@ public:
 	bool isNoCapture() const;																							// Exposed to Python 
 	bool isRivalTerritory() const;																				// Exposed to Python 
 	bool isMilitaryHappiness() const;																			// Exposed to Python
+
+    void updateIntelligenceTracking(TeamTypes eObserver);
+    void changeIntelligenceSight(CvPlot* pPlot, bool bIncrement, bool bUpdatePlotGroups) const;
+    int getIntelligenceTrackingChecksum() const;
 	bool isInvestigate() const;																						// Exposed to Python
 	bool isCounterSpy() const;																						// Exposed to Python
 	bool isSpy() const;
@@ -514,6 +522,7 @@ public:
 																																														
 	int getEnemyRouteCount() const;																									
 	bool isEnemyRoute() const;																											// Exposed to Python					
+	bool canUseEnemyRoute(RouteTypes eRoute) const;
 	void changeEnemyRouteCount(int iChange);																									
 																																														
 	int getAlwaysHealCount() const;																														
@@ -618,6 +627,9 @@ public:
 
 	bool isMadeAttack() const;																																// Exposed to Python
 	void setMadeAttack(bool bNewValue);																							// Exposed to Python
+	bool canAttackAgain() const;
+	void recordAttack();
+	int getAttacksMade() const { return m_iAttacksMade; }
 
 	bool isMadeInterception() const;																													// Exposed to Python
 	void setMadeInterception(bool bNewValue);																				// Exposed to Python
@@ -791,6 +803,8 @@ protected:
 	int m_iDamage;
 	int m_iMoves;
 	int m_iExperience;
+	int m_iExplorationExperienceRemainder;
+    bool m_abIntelligenceTracked[MAX_TEAMS];
 	int m_iLevel;
 	int m_iCargo;
 	int m_iCargoCapacity;
@@ -841,6 +855,7 @@ protected:
     int m_iJihadCampaign;
 
 	bool m_bMadeAttack;
+	int m_iAttacksMade;
 	bool m_bMadeInterception;
 	bool m_bPromotionReady;
 	bool m_bDeathDelay;

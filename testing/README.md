@@ -1,5 +1,77 @@
 # AI-only observer recordings
 
+Overseas settlement uses normally produced settlers and ships rather than free
+expedition packages. First contact no longer creates conqueror armies. In
+performance reports, `count.colony.*` tracks known overseas sites, port
+opportunities, production orders, loaded-transport reviews, issued or failed
+transport missions, and AI cities founded on a different land area from the
+capital. Reviews and missions can count the same ship repeatedly; overseas
+cities are not necessarily in the Americas. Compare outcomes across scenarios,
+including XL, because these counters do not establish successful gameplay.
+
+## Administration observations
+
+Balance and diagnostics recordings include explicit per-turn administration records
+(version 2): capacity, effort, overload, Jihad suspension, actual extra upkeep,
+production yield lost, stability contribution and city travel/isolation values.
+Version 2 separates connection status, full capital travel, effective travel,
+chosen residence and fixed residence costs; residence removals are semantic events.
+The existing report adds a compact Administration table; summary.json retains
+per-era totals and release/purge events. Older recordings remain readable and
+show missing observations as unavailable. Formula mismatches enter the existing
+recording checks. Upkeep checks use half the administrative effort, with the
+overload multiplier applied before rounding. Reports separate overload upkeep
+from residence costs and reconstruct the baseline from city effort in older
+recordings. Existing recorded findings remain unchanged.
+Purges retain predicted and actual happiness changes; predictions
+are local estimates. These observations describe outcomes, not causal proof.
+Performance mode does not collect these state records.
+
+## Experimental fast AI behavior
+
+`RFCMP_FAST_LATE_GAME=1` enables the retained optimizations from
+`RFCMP_FAST_LATE_YEAR` (-10000 by default, covering all scenario starts). All
+multiplayer peers must use identical mod files and settings. Set the switch to 0
+to disable these changes.
+
+Barbarian attack, pillage and pirate roles react to visible adjacent plots:
+defend a last city garrison, pillage, attack, heal, blockade or move one tile.
+They do not plan multi-turn raids or search for distant cities. Active barbarian
+blockades persist unless an adjacent attack, healing, invalid position or another
+forced update warrants a response. This deliberately makes barbarians less
+strategic. Other minor civilizations and player-owned privateers retain their
+existing AI.
+
+Normal AI civilizations still reconsider naval orders each turn, but a valid
+blockade remains active while they choose an action and renew a plunder order.
+This avoids temporary trade-network reconnections when the ship continues the
+same blockade. Other missions, movement, death and invalid blockade positions
+still remove it. This optimization uses the same fast-AI switch and leaves
+human orders unchanged. `count.fast.civBlockadePreserved` counts individual unit
+blockades retained through activity transitions, not ships or turns. Its time
+savings and multiplayer behavior remain unverified in-game.
+
+For AI civilizations, settlement-site scores refresh every eight turns with a
+settler and every sixteen turns otherwise; direct and starting-location updates
+remain immediate. Diplomacy and unit promotion, upgrade and associated disband
+reviews are staggered over four turns. Worker threat checks conservatively treat
+a visible attacker in range as dangerous without checking its path. These changes
+can delay decisions or cause workers to avoid unreachable threats. Human behavior
+is unchanged. An independent upgrade lookup optimization retains the normal
+upgrade-tier rules.
+
+Performance reports include `count.fast.*` events for skipped and performed
+reviews, settlement refreshes, threat checks and barbarian decisions, as well as
+`fast.barbarianLocalMove` and `fast.barbarianBlockadeUpdate` timings. These counts
+do not directly measure time saved. Compare matched scenarios and turn ranges;
+gameplay and multiplayer behavior require in-game validation.
+
+Authenticated performance recordings add `count.fast.*` event counters and
+record both settings. The report lists events alongside elapsed times. Compare
+matched scenarios and turn ranges, and inspect world state and outcomes as well
+as timings. Event counts do not measure saved time. Neither gameplay nor
+multiplayer synchronization has been validated in-game.
+
 All external test launchers, analysis tools, configuration and recordings live
 in this `testing/` directory. Launchers can be double-clicked from here;
 Python command examples below assume the repository root as the working directory.
@@ -53,6 +125,19 @@ Modes are `balance`, `diagnostics`, and `performance`. Starts are zero-based:
 | 0 | 3000 BC | America |
 | 1 | 800 BC | America |
 | 2 | 600 AD | China |
+
+Add `--xl` with either `--start` or `--scenario` to prefer the installed XL map
+for that date. XL starts currently exist for 3000 BC and 800 BC. If the date has
+no XL version, or its XL file is missing, the launcher prints a notice and uses
+the standard scenario. It prints the selected filename and records the actual
+variant; XL batches include `-xl` in their folder names.
+XL uses its slower game speed automatically. `--turns` counts actual turns:
+150 XL turns cover the calendar progression of 75 standard turns. The 800 BC
+XL scenario starts at engine turn 174; its observer still uses America.
+
+```powershell
+.\testing\run-test --mode diagnostics --start 1 --xl --runs 1 --turns 150
+```
 
 `--runs` sets the total number of games. `--turns` counts simulated turns
 from the scenario start. Seeds begin at `--seed` (default 1) and increment for
@@ -114,7 +199,7 @@ python testing/run_observer.py --mode diagnostics --turns 100 --checkpoint-inter
 python testing/run_observer.py --mode balance --turns 250 --record-interval 25 --checkpoint-interval 25
 ```
 
-All modes support the four installed scenarios. Loaded saves are rejected.
+All modes support the three start dates above, including available XL variants. Loaded saves are rejected.
 Runtime validation checks each scenario's expected starting turn, start year,
 and WorldBuilder filename when available. If the filename is unavailable,
 metadata marks this and validation relies on turn/year checks and the launcher's
@@ -160,6 +245,16 @@ is not saved, and does not change normal-game autosave settings or `--observe-on
 It does not call RFC's existing `setAIAutoPlay`, which deletes that player's
 possessions. While explicitly enabled, all civilizations use their AI paths
 and the game can continue without a surviving human civilization.
+
+Add `--autosave X` to save every X simulated turns in any mode, including
+performance mode. For example:
+`testing\run-test.cmd --mode performance --start 0 --xl --turns 250 --autosave 10`.
+These normal Civ4 save files go under each game's `saves/autosave-<game-turn>.CivBeyondSwordSave`
+and remain separate from the game's usual autosave folder and other runs.
+The interval counts actual simulated turns, including on XL maps. Omit the
+option or use `--autosave 0` to disable these saves. Explicit autosaves are
+independent of `--checkpoint-interval` and add save overhead to performance timings.
+
 Pass `--reveal-map` to `testing\run-test.cmd` to watch the AI on a fully
 revealed map with the normal HUD, minimap and scoreboard. For example:
 `testing\run-test.cmd --mode balance --turns 220 --seed 1 --reveal-map`.
@@ -173,7 +268,8 @@ leave it off for comparable performance measurements. The setting is recorded
 in run metadata and is not saved in checkpoints.
 
 By default, AI simulations use an **interface-only black progress screen** with a centered
-green progress bar on a white track. Map rendering, normal HUD/minimap/scoreboard
+green progress bar on a white track, with a localized completed/target turn counter
+below it. Map rendering, normal HUD/minimap/scoreboard
 refreshes, and spectator reveal overrides are disabled. No zoom setup runs.
 Movement display, combat presentation, enemy glow and mission-animation delays
 are suppressed only while observer AI control is active. This includes balance,
@@ -197,8 +293,11 @@ the launcher closes its child game when the requested recording ends.
 
 Use `--startup-timeout` and `--stall-timeout` to accommodate slow loading,
 long late-game turns or manual play. On completion, failure or timeout the
-launcher terminates **only the game process it created** and stops a failed
-batch rather than silently counting missing games. Turns are flushed and
+launcher terminates **only the game process it created**. Balance and diagnostics
+batches retain failed/stalled outcomes and continue the other active and queued
+games, then return a nonzero exit status if any game did not complete. Performance
+batches still stop on failure. Launcher/safety errors and emergency stop requests
+stop the whole batch. Turns are flushed and
 checkpoint saves are written before completion. It never terminates a game
 that was already running.
 
@@ -213,9 +312,10 @@ job. If debugger cleanup cannot finish, it also stops that exact launcher after
 five seconds. Closing the launcher also terminates its job's games. The launcher
 refuses to start games if the job or emergency hotkey cannot be initialized.
 An external stop request can also be made by creating an empty `STOP` file in
-the batch directory. After a stall timeout, diagnostics and shutdown have a
-15-second independent deadline so a blocked dump writer cannot trap the desktop.
-The default no-progress timeout is 60 seconds, reset by each heartbeat; use
+the batch directory. After a stall timeout, the helper enforces a 30-second
+cleanup deadline for that child only, allowing both bounded dump attempts before
+terminating it. Other games continue; the emergency hotkey still stops the batch.
+The default no-progress timeout is 90 seconds, reset by each heartbeat; use
 `--stall-timeout` to override it. The separate startup timeout remains five minutes.
 Emergency hotkey/`STOP` requests attempt `hang-emergency.dmp` for the game with
 the oldest heartbeat before minimizing the windows, so minimization does not
@@ -275,7 +375,8 @@ exceptions that reached the debugger after application handlers failed. Capture
 does not suppress application exceptions or change gameplay decisions.
 
 Each batch preserves its exact `CvGameCoreDLL.dll` in `crash-build/`, along with
-matching PDB/map files when available and the native source diff. Reporting Release
+matching PDB/map files when available and the native source diff. Untracked native
+`.cpp`/`.h` additions are retained under `crash-build/native-source-extra/`. Reporting Release
 builds now generate optimized VC7.1 debug symbols; rebuild once after this change.
 Keep the batch folder for analysis after subsequent DLL rebuilds. In WinDbg, add
 `crash-build/` to the symbol/image paths, open the dump and select the JSON's
@@ -352,17 +453,57 @@ elapsed time now uses the same high-resolution timer as turn boundaries.
 `unitAI.AI_*Move` timers additionally distinguish combat, worker, exploration,
 settler, missionary, naval and air roles. These include nested pathfinding and
 danger timings; compare inclusive parent totals rather than adding them.
+Captive, barbarian and the remaining movement roles are timed separately too.
+`unitTask.*` timers cover regrouping, city targeting/guarding, pillaging,
+post-attack decisions, follower actions and upgrade-city searches. Work units count
+visited candidates for captive cities, regrouping units, target cities and pillage
+tiles. `playerAI.*` timers separate mission-target scans and exact movement-threat
+queries. Existing report tables include these scopes automatically.
 
-Trade-route selection now computes the origin city's attraction once per pass
-and reuses candidate food pressure, infrastructure efficiency and base profit
-instead of recalculating them for food demand and route income. Attraction is
-not cached across route updates, and route-update timing and candidate ordering
-are preserved. The next recording must measure the actual gain.
+### Retained turn-time improvements and evidence
 
-City AI road-connection planning checks candidate distance before pathfinding,
-skipping cities that cannot beat the nearest disconnected candidate already
-found. Candidate ordering and tie handling are preserved.
-`cityAI.updateRouteToCity` measures this planning routine separately.
+The existing shared worker search remains. The retained November 8 gameplay
+optimization caches harbor presence and food-trade attraction only during one
+synchronous trade-route update pass, including nested city updates. It does not
+cache across turns, civic transitions or later mutations, change update ordering,
+or draw gameplay RNG. In the completed recording it avoided 81% of scoped
+attraction recalculations and 85% of scoped harbor scans. All 153,670 sampled
+native getter comparisons matched. These are work reductions, not measured
+whole-trade or turn-time speedup factors.
+
+Two defines remain in `Assets/XML/GlobalDefines.xml`:
+
+| Define | Default | Purpose |
+| --- | ---: | --- |
+| `RFCMP_PERF_TRADE_CACHE` | 1 | Enable the pass-scoped trade cache. Set to 0 for an uncached comparison. |
+| `RFCMP_PERF_SHADOW_INTERVAL` | 64 | Reporting-only deterministic cache/reference sampling. Set to 0 for clean timing runs. It does not draw gameplay RNG. |
+
+Reports show configuration, `count.perf.trade.*` hit/miss/sample/mismatch counters,
+`perf.trade.*Compute` timing and `check.perf.trade.*Reference` shadow timing under
+**Optimization evidence**. Mismatches invalidate the cache-lifetime assumption;
+zero samples provide no validation. Shadow time is included in turn timings.
+Reporting remains compiled out of production DLLs and disabled in ordinary launches.
+
+Expanded unit/mission/upgrade timings and the visible loading-screen turn counter
+remain. `performance-outcomes.csv` records cities, units, population, gold and
+research per player plus hashes of citizen assignments, improvement plans,
+unit positions/missions and trade partners. These locate the first divergence
+in matched runs, not full game-state equivalence; their cost is timed as
+`reporting.outcomes`. `performance-decisions.csv` identifies units reaching the
+original 100-iteration AI loop guard, without changing that fallback.
+
+Bounded guard searches, target reuse/pruning, settlement/improvement planning
+deferrals, clean-assignment skipping, civic refresh batching and the early
+repeated-decision stop were removed. Their speed or gameplay evidence was
+insufficient. In particular, isolated modeling of the implemented target bound
+skipped only 1 of 512 requests on broad synthetic maps, with effectively unchanged
+Python time. Its earlier 83% result used a tighter model-specific bound.
+
+Historical recordings and offline results remain under ignored `testing/runs/`.
+The final isolated result folder also preserves the benchmark/replay source under
+`source/`; these models are research evidence, not installed game algorithms.
+Python models and differing full-game trajectories do not establish native
+turn-time gains. In-game multiplayer validation remains user-operated.
 
 ### Expanded parallelism assessment
 
@@ -452,6 +593,84 @@ in the user-operated run; no speedup or multiplayer validation is claimed.
 Run the same 400-turn seed-1 launcher for the next comparison; no game is started
 by building or analysing recordings.
 
+### Worker candidate distance fields
+
+Land AI workers travelling alone now share a lazy Dijkstra distance field across
+candidate queries in one worker decision, with separate fields for movement flags.
+Terrain/road movement costs, ownership/damage costs, danger and movement permissions
+use the existing rules. One movement-state label per plot is an approximation;
+candidate rankings and arrival estimates may differ. Mission execution still uses
+the engine pathfinder. Human automation, combat workers, groups, cargo and unsupported
+flags retain the engine search. Fields are discarded at the end of each decision;
+integer costs and plot-index ties make the new search deterministic.
+The algorithm uses the [single-source distance-field pattern](https://www.redblobgames.com/pathfinding/distance-to-any/),
+extended to weighted movement with Dijkstra's algorithm.
+
+The November 2 seed-1 XL comparison reduced mean turn-boundary time for turns
+200-249 from 7.773 to 2.994 seconds. Combined engine/shared pathfinding fell from
+5.915 to 1.432 seconds per turn. All 250 sampled city/unit/alive-player counts
+matched the baseline; this does not establish identical routes or gameplay.
+The remaining shared-search cost is concentrated in `AI_retreatToCity`
+(about 0.95 seconds per late turn). No replay comparisons were available from
+that run because the original capture threshold produced no files.
+The November 3 capture run saved two resource-improvement batches (ten queries):
+paired shared/legacy query times were 2.559/10.776 ms in total (4.21x faster),
+with matching reachability, arrival turns and remaining movement, and zero
+native/replay mismatches. These samples do not cover the retreat bottleneck.
+Weighted A* with weight 32 reduced expansions on those local queries, but
+broader destination probes on the saved graphs favored sharing explored regions
+over restarting searches. This is search-work evidence, not a DLL speed estimate.
+
+Worker retreats now collect eligible cities before searching and stop the shared
+field at the first eligible city reached in path-cost order. Already explored
+cities can be reused. Safer-city preferences, primary-area/airlift restrictions,
+turn limits and fallback phases remain; noncombat workers in no danger skip
+the impossible search for a city with negative danger. City selection now favors
+path cost rather than exhaustively comparing every city's arrival turn, so
+choices may differ. Other unit roles keep their previous retreat selection.
+Speedup for this change has not yet been measured.
+
+For a short user-operated comparison, `Compare Retreat From Autosave.cmd` selects
+the preserved before/after production DLLs under ignored `testing/bin/retreat-comparison/`.
+Close Civ4, select **before**, load a fixed autosave and time 3-5 end turns. Close
+Civ4, select **after**, reload the same save and repeat the same turns/actions.
+Use the same graphics settings and finish with **after** installed. Neither the
+switcher nor the assistant launches the game. No reporting build or full observer
+run is needed. These local DLL snapshots must be prepared again in a fresh checkout.
+The save fixes the initial state; changed AI choices can diverge afterward.
+
+Double-click `Profile XL Worker Paths.cmd` to build the reporting DLL, run one
+250-turn 3000 BC XL capture game with seed 1, and restore the production DLL afterward.
+Pass `-IncludeCleanRun` to the PowerShell script to precede capture with a separate
+clean timing run. Capture uses `--capture-worker-paths`: one worker decision
+with at least four candidate queries or a query expanding at least 256 plots is
+captured every 25 turns from turn 150 through 350. The former 16-query threshold
+produced no captures in the November 2 XL run, whose expensive decisions were
+short retreat-to-city batches. Missing capture reports now make the launcher
+return an error even when the game itself completes. No game is started by
+compiling or analyzing this code.
+Mode switches compare the selected cached DLL with the shared output by content,
+so a newer production DLL cannot mask an older reporting build. The launcher
+verifies the published DLL hashes and mode tag before proceeding. Build logs
+are kept separately as `legacy-toolchain/worker-profile-build-0.log` and
+`legacy-toolchain/worker-profile-build-1.log`.
+
+Captures write `worker-path-*-queries.csv` with paired native/legacy query timings
+and `worker-path-*-flags<N>.json` with replayable terrain, road costs, permissions,
+danger and movement state. Sampled turn durations include substantial graph-export
+and comparison overhead; use a clean run for whole-game timing. Query CSV timings
+exclude graph export. Capture is reporting-only and requires the explicit launcher
+flag; normal games and ordinary performance recordings do not export graphs.
+
+The capture run automatically writes `worker-path-report.md` and
+`worker-path-summary.json`. Regenerate with
+`python testing/analyze_worker_paths.py <run-or-batch-folder>`.
+The analyzer checks that captured native results and expansion counts replay,
+compares repeated A* and weighted A* (weights 8 and 32), and reports changes in
+reachability/arrival estimates. Repeated A* is an independent algorithm reference;
+the paired in-game timings, which honor legacy reuse requests, measure actual
+engine comparisons. Python replay times are not estimates of DLL speed.
+
 ### Historical path query detail
 
 Detailed path-query collection is disabled: simulations no longer write
@@ -517,12 +736,55 @@ only at snapshot boundaries, so sparse sampling can miss short-lived changes.
 | Civilization population, cities, land, gold/rate, research/rate, era, tech count, power, army composition, civics, religion and stability | Yes | Yes |
 | Basic city population, food, imports/exports, yields, happiness, health and slaves | Yes | Yes |
 | War, city founding/conquest/razing, technologies, religion, victory and observed civic/alive/religion changes | Yes | Yes |
+| Espionage spending, forces, assignments, buildup, cooperation, target effects and actual stolen research/gold (every turn) | Yes | Yes |
 | Arabian combat units: positions, damage, movement, roles, groups, missions, targets and cached AI decisions (every turn) | Yes | Yes |
 | Exact known-tech lists, all-unit positions/damage/XP/promotions | No | Yes |
 | Buildings, specialists, production target/progress, occupation and city/tile culture | No | Yes |
 | Routes with infrastructure efficiency, profit and net food; slave revolt chance | No | Yes |
 | Initial terrain/features/resources/improvements/routes/owners and subsequent changes | No | Yes |
 | Global food conservation and city export-cap checks | No | Yes |
+
+Detailed espionage recording version 1 writes a separate `kind: espionage`
+record at every EndGameTurn in balance and diagnostics mode, independently of
+`--record-interval`. It is disabled in performance mode and ordinary games.
+Metadata identifies the version and maps the six focus IDs. Established major
+players are included, plus eliminated/cityless players with a previous-turn
+gold transfer still to report. The observer only reads state; it does not choose
+targets, run AI decisions or roll gameplay RNG.
+
+Each player records base/effective EP, slider, cooperation EP and stability,
+political stability penalty, research project/progress/cost, current research
+rate and actual research stolen on that player turn. Each force records active
+and pending focus, assigned player IDs, next-review countdown, funding in basis
+points of total EP, per-target concentration percentage, and all six stored
+focus-maturity percentages. A funding value of 4333 means 43.33% of total output;
+`buildup_bp` uses basis points too, with -1 for No operations.
+
+Every unique assigned target records war, mutual attitudes, agreement, access,
+embassy, routes and resistance; raw stocks; current research contribution;
+military combat/infiltration/tracking effects; political influence, culture
+budget, civic/client probabilities and relations; dynastic stage/eligibility/
+chance; economic shares/art probability; cooperation contribution/influence;
+and discovery probability for each focus. Effects combine all assigned forces
+of that focus: do not sum a target's effect again for each force. Stocks are in
+whole EP-equivalent points, culture budget in hundredths, and fields ending
+`_bp` are hundredths of a percent (negative dynastic chance means regression).
+Mutual attitudes are AI attitude IDs; human agreement consent still uses the
+gameplay trust rule. Probabilities and budgets describe current state, not
+proof that a roll succeeded or a transfer happened. Actual food/art theft,
+discovery incidents, civic adoption and client creation are not separately
+attributed by these records.
+
+Gold fields are actual previous-completed-game-turn transfers from the financial
+advisor ledger. `gold_transfer_turn` identifies their accounting window, which
+lags the current engine turn by one; the run's final engine turn is therefore
+not included in gold totals. The analyzer deduplicates windows and player-turns,
+never multiplies them by snapshot spans. `report.md` adds civilization totals
+and per-era force usage, target concentration, maturity and military effects.
+`summary.json` retains the counters by civilization/era and observed assignment
+changes; full per-turn details remain in the recordings. Older recordings show
+espionage as unavailable, not zero. These observations support balance analysis
+but do not establish causal impact or multiplayer correctness.
 
 `arabian_army_state` events capture every combat unit each turn after Arabia
 has a city, and for any other nation while its full jihad event is active,

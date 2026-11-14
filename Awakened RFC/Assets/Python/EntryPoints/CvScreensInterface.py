@@ -84,6 +84,16 @@ def getCrusadeFlipRecipient(argsList):
 def getBirthFlipMask(argsList):
         return con.getBirthFlipMask(argsList)
 
+def isAdministrationHistoricalCity(argsList):
+        iCiv, iX, iY = argsList
+        if iCiv in (con.iCaliphateSlot1, con.iCaliphateSlot2):
+                return 0
+        if iCiv == con.iMongolia and con.isMongolianBirthReplaced():
+                return 0
+        tTL, tBR = con.getBirthFlipArea(iCiv)
+        return int((tTL[0] <= iX <= tBR[0] and tTL[1] <= iY <= tBR[1]) or
+                   (iX, iY) in con.getBirthFlipExceptions(iCiv))
+
 def resetStabilityParameters(argsList):
         for i in range(con.iNumStabilityParameters):
                 utils.setStabilityParameters(i, 0)

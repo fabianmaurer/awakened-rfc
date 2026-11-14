@@ -1,9 +1,17 @@
 # Awakened RFC starting institutions. Compatible with Civ4's Python 2.4.
 from CvPythonExtensions import CyGlobalContext
+import ScenarioGeography
 
 # Columns: Government, Legitimacy, Labor, Military, Religion.
 # These are preferences; unavailable choices use the fallbacks below.
 PROFILES = {
+    "CIVILIZATION_GANGES": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
+    "CIVILIZATION_CHOLA": ("MONARCHY", "THEOCRATIC_LEGITIMACY", "SERFDOM", "NAVAL_WARFARE", "STATE_RELIGION"),
+    "CIVILIZATION_DELHI": ("MONARCHY", "THEOCRATIC_LEGITIMACY", "SERFDOM", "FEUDAL_RETINUES", "GOD_STATE"),
+    "CIVILIZATION_BENGAL": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "NAVAL_WARFARE", "STATE_RELIGION"),
+    "CIVILIZATION_VIJAYANAGARA": ("MONARCHY", "THEOCRATIC_LEGITIMACY", "SERFDOM", "FEUDAL_RETINUES", "STATE_RELIGION"),
+
+    "CIVILIZATION_HARAPPA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_ADENA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_ESKIMO": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_NATIVE_AMERICA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
@@ -43,6 +51,7 @@ DEFAULTS = ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY",
 # The nine civilizations present in the 800 BC start. Later births retain
 # their usual profiles; these choices are shared with the selection preview.
 PROFILES_800BC = {
+    "CIVILIZATION_GANGES": ("MONARCHY", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "STATE_RELIGION"),
     "CIVILIZATION_ADENA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_MAYA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
     "CIVILIZATION_KOREA": ("TRIBAL_SYSTEM", "DESPOTISM", "SELF_SUFFICIENCY", "WARRIOR_SOCIETY", "ANCESTOR_CULT"),
@@ -117,10 +126,10 @@ def apply(iPlayer):
     civType = player.getCivilizationType()
     if civType < 0:
         return
-    profile = getProfile(gc.getCivilizationInfo(civType).getType(),
-                         gc.getGame().getStartTurn())
+    startTurn = ScenarioGeography.historyTurn(gc.getGame().getStartTurn())
+    profile = getProfile(gc.getCivilizationInfo(civType).getType(), startTurn)
     # Dedicated Andalusi minor player; leave the global independent cities alone.
-    if gc.getGame().getStartTurn() == 211 and iPlayer == 28 and player.isMinorCiv():
+    if startTurn == 211 and iPlayer == 28 and player.isMinorCiv():
         profile = getProfile("CIVILIZATION_UMAYYAD", 211)
     for iColumn in range(len(profile)):
         for name in (profile[iColumn],) + FALLBACKS[iColumn]:

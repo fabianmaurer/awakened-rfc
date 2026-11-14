@@ -1,6 +1,7 @@
 # Rhye's and Fall of Civilization - Religions management
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers       
 import Popup
@@ -22,14 +23,14 @@ iIndependent = con.iIndependent
 iIndependent2 = con.iIndependent2
 iCeltia = con.iCeltia
 
-i2250BC = con.i2250BC
-i2085BC = con.i2085BC
-i1800BC = con.i1800BC
-i600BC = con.i600BC
-i483BC = con.i483BC
-i479BC = con.i479BC
-i33AD = con.i33AD
-i622AD = con.i622AD
+geo.bindTime(globals(), 'i2250BC', con._timeValues['i2250BC'])
+geo.bindTime(globals(), 'i2085BC', con._timeValues['i2085BC'])
+geo.bindTime(globals(), 'i1800BC', con._timeValues['i1800BC'])
+geo.bindTime(globals(), 'i600BC', con._timeValues['i600BC'])
+geo.bindTime(globals(), 'i483BC', con._timeValues['i483BC'])
+geo.bindTime(globals(), 'i479BC', con._timeValues['i479BC'])
+geo.bindTime(globals(), 'i33AD', con._timeValues['i33AD'])
+geo.bindTime(globals(), 'i622AD', con._timeValues['i622AD'])
 
 
 
@@ -53,26 +54,34 @@ iMissionary_Taoist = con.iTaoistMissionary
 
 # initialise coordinates
 
-tJerusalem = (73, 38)
-tJewishTL = (68, 34)
-tJewishBR = (80, 42)
-tVaranasiTL = (91, 37)
-tVaranasiBR = (94, 40)
-tBodhgayaTL = (92, 38)
-tBodhgayaBR = (95, 40)
-tBuddhistTL = (87, 33)
-tBuddhistBR = (102, 44)
-tHenanTL = (101, 43)
-tHenanBR = (104, 46)
-tSEAsiaTL = (97, 31)
-tSEAsiaBR = (107, 46)
-tAsiaTL = (83, 28)
-tAsiaBR = (1, 66)
-tEuropeTL = (48, 33)
-tEuropeBR = (72, 65)
-tQufuTL = (102, 44)
-tQufuBR = (106, 46)
-tMecca = (75, 33)
+geo.bind(globals(), 'tJerusalem', 'Religions.tJerusalem')
+geo.bind(globals(), 'tJewishTL', 'Religions.tJewishTL')
+geo.bind(globals(), 'tJewishBR', 'Religions.tJewishBR')
+geo.bind(globals(), 'tLevantTL', 'Religions.tLevantTL')
+geo.bind(globals(), 'tLevantBR', 'Religions.tLevantBR')
+geo.bind(globals(), 'tArabiaTL', 'Religions.tArabiaTL')
+geo.bind(globals(), 'tArabiaBR', 'Religions.tArabiaBR')
+geo.bind(globals(), 'tNorthIndiaTL', 'Religions.tNorthIndiaTL')
+geo.bind(globals(), 'tNorthIndiaBR', 'Religions.tNorthIndiaBR')
+geo.bind(globals(), 'tChinaTL', 'Religions.tChinaTL')
+geo.bind(globals(), 'tChinaBR', 'Religions.tChinaBR')
+geo.bind(globals(), 'tVaranasiTL', 'Religions.tVaranasiTL')
+geo.bind(globals(), 'tVaranasiBR', 'Religions.tVaranasiBR')
+geo.bind(globals(), 'tBodhgayaTL', 'Religions.tBodhgayaTL')
+geo.bind(globals(), 'tBodhgayaBR', 'Religions.tBodhgayaBR')
+geo.bind(globals(), 'tBuddhistTL', 'Religions.tBuddhistTL')
+geo.bind(globals(), 'tBuddhistBR', 'Religions.tBuddhistBR')
+geo.bind(globals(), 'tHenanTL', 'Religions.tHenanTL')
+geo.bind(globals(), 'tHenanBR', 'Religions.tHenanBR')
+geo.bind(globals(), 'tSEAsiaTL', 'Religions.tSEAsiaTL')
+geo.bind(globals(), 'tSEAsiaBR', 'Religions.tSEAsiaBR')
+geo.bind(globals(), 'tAsiaTL', 'Religions.tAsiaTL')
+geo.bind(globals(), 'tAsiaBR', 'Religions.tAsiaBR')
+geo.bind(globals(), 'tEuropeTL', 'Religions.tEuropeTL')
+geo.bind(globals(), 'tEuropeBR', 'Religions.tEuropeBR')
+geo.bind(globals(), 'tQufuTL', 'Religions.tQufuTL')
+geo.bind(globals(), 'tQufuBR', 'Religions.tQufuBR')
+geo.bind(globals(), 'tMecca', 'Religions.tMecca')
 
 
 
@@ -129,91 +138,51 @@ class Religions:
 
         def checkTurn(self, iGameTurn):
                 self.grantFirstTemple()
+                self.checkRegionalFounding()
 
-                #print ("JUDAISM", i2085BC + 48*self.getSeed()/100)
-                #popup = Popup.PyPopup() 
-                #popup.setBodyString(  'JUDAISM %d' %(i2085BC + 48*self.getSeed()/100))
-                #popup.launch()
-                if (not gc.getGame().isReligionFounded(iJudaism)):
-                        iIndianModifier = 0
-                        if (gc.getPlayer(con.iIndia).isHuman()):
-                                iIndianModifier = 15 #for the UHV
-                        if (iGameTurn == i2250BC + 30*self.getSeed()/100 + iIndianModifier): #Judaism up to 1500BC
-                                pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])                
-                                if (not pJerusalem.getPlotCity().isNone()):                            
-                                        if (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian):
-                                                self.foundReligion(tJerusalem, iJudaism)
-                                        else:
-                                                tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent)
-                                                self.foundReligion(tCity, iJudaism)
-                    
-
-                if (not gc.getGame().isReligionFounded(iChristianity)):
-                        iEthiopianModifier = 0
-                        if (gc.getPlayer(con.iEthiopia).isHuman()):
-                                iEthiopianModifier = 15 #for the UHV
-                        if (iGameTurn == i33AD + 8*self.getSeed()/100 + iEthiopianModifier): #Christianity up to 190AD (15 = 330AD)
-                                pJerusalem = gc.getMap().plot(tJerusalem[0], tJerusalem[1])
-                                # A razed Jerusalem must still allow the alternative-city search.
-                                if (not pJerusalem.getPlotCity().isNone() and (pJerusalem.getPlotCity().getOwner() == iIndependent or pJerusalem.getPlotCity().getOwner() == iIndependent2 or pJerusalem.getPlotCity().getOwner() == iBarbarian)):
-                                        bChristianResult = self.foundReligion(tJerusalem, iChristianity)
-                                        tCity = tJerusalem
-                                else:
-                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iIndependent2)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iIndependent2)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iCeltia)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iCeltia)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityReligionCiv(iJudaism, iBarbarian)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tJewishTL, tJewishBR, iBarbarian)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iIndependent2)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iCeltia)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == False):
-                                        tCity = self.selectRandomCityAreaCiv(tEuropeTL, tEuropeBR, iBarbarian)
-                                        bChristianResult = self.foundReligion(tCity, iChristianity)
-                                if (bChristianResult == True):
-                                        self.spreadReligion(tCity, 3, iMissionary_Christian)
-
-
-                if (iGameTurn == i622AD+1):
-                        if (gc.getGame().isReligionFounded(iIslam)):
-                                for pyCity in PyPlayer(iArabia).getCityList():
-                                        if (pyCity.GetCy().isHolyCityByType(iIslam)):
-                                                if (gc.getPlayer(pyCity.GetCy().getOwner()).isHuman() == 0):
-                                                        print ("spreading Islam", iMissionary_Islamic)
-                                                        #self.spreadReligion( tMecca, 4, iMissionary_Islamic)
-                                                        self.spreadReligion( (pyCity.GetCy().getX(), pyCity.GetCy().getY()), 4, iMissionary_Islamic) 
-
-                if (iGameTurn == 181):
-                        if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4): #late start condition (RFCMP)
-                                pMecca = gc.getMap().plot(tMecca[0], tMecca[1])                
-                                if (not pMecca.getPlotCity().isNone()):                            
-                                        if (pMecca.getPlotCity().getOwner() == con.iArabia):
-                                                self.foundReligion(tMecca, iIslam)
-
+        def checkRegionalFounding(self):
+                game = gc.getGame()
+                year = game.getGameTurnYear()
+                # Religion, earliest year, fallback year, technology, region, preferred area, other holy city.
+                rules = (
+                        (iJudaism, -1500, -1000, "TECH_MONOTHEISM", tLevantTL, tLevantBR, tJerusalem, tJerusalem, -1),
+                        (iChristianity, 33, 200, "TECH_THEOLOGY", tLevantTL, tLevantBR, tJerusalem, tJerusalem, -1),
+                        (iIslam, 622, 650, "TECH_DIVINE_RIGHT", tArabiaTL, tArabiaBR, tMecca, tMecca, -1),
+                        (iHinduism, -1500, -1000, "TECH_MEDITATION", tNorthIndiaTL, tNorthIndiaBR, tVaranasiTL, tVaranasiBR, -1),
+                        (iBuddhism, -500, -200, "TECH_PRIESTHOOD", tNorthIndiaTL, tNorthIndiaBR, tBodhgayaTL, tBodhgayaBR, iHinduism),
+                        (iConfucianism, -500, -200, "TECH_MATHEMATICS", tChinaTL, tChinaBR, tHenanTL, tHenanBR, -1),
+                        (iTaoism, -400, -200, "TECH_CALENDAR", tChinaTL, tChinaBR, tHenanTL, tHenanBR, iConfucianism),
+                )
+                for religion, start, fallback, techName, lower, upper, preferredLower, preferredUpper, other in rules:
+                        if year < start or game.isReligionFounded(religion):
+                                continue
+                        tech = gc.getInfoTypeForString(techName)
+                        bestCity = None
+                        bestRank = None
+                        for x in range(lower[0], upper[0] + 1):
+                                for y in range(lower[1], upper[1] + 1):
+                                        city = gc.getMap().plot(x, y).getPlotCity()
+                                        if city.isNone():
+                                                continue
+                                        player = gc.getPlayer(city.getOwner())
+                                        if year < fallback and not gc.getTeam(player.getTeam()).isHasTech(tech):
+                                                continue
+                                        if religion == iChristianity and year < fallback and (x, y) != tJerusalem and not city.isHasReligion(iJudaism):
+                                                continue
+                                        distinct = other < 0 or not city.isHolyCityByType(other)
+                                        preferred = preferredLower[0] <= x <= preferredUpper[0] and preferredLower[1] <= y <= preferredUpper[1]
+                                        jewish = religion == iChristianity and city.isHasReligion(iJudaism)
+                                        rank = (distinct, preferred, jewish, city.getPopulation())
+                                        if bestRank is None or rank > bestRank:
+                                                bestRank = rank
+                                                bestCity = city
+                        if bestCity is not None:
+                                game.setHolyCity(religion, bestCity, True)
+                                coords = (bestCity.getX(), bestCity.getY())
+                                if religion == iChristianity:
+                                        self.spreadReligion(coords, 3, iMissionary_Christian)
+                                elif religion == iIslam and bestCity.getOwner() == iArabia and not gc.getPlayer(iArabia).isHuman():
+                                        self.spreadReligion(coords, 4, iMissionary_Islamic)
 
         def foundReligion(self, tPlot, iReligion):
                 if (tPlot != False):

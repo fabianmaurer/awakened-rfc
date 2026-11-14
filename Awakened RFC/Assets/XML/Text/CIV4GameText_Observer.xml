@@ -8,4 +8,24 @@
         <Italian>Simulazione: %d1/%d2</Italian>
         <Spanish>Simulaci&#243;n: %d1/%d2</Spanish>
     </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_ELAPSED</Tag>
+        <English>Elapsed</English><French>Temps &#233;coul&#233;</French><German>Vergangen</German><Italian>Tempo trascorso</Italian><Spanish>Tiempo transcurrido</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_CURRENT_TURN</Tag>
+        <English>Current turn</English><French>Tour actuel</French><German>Aktuelle Runde</German><Italian>Turno attuale</Italian><Spanish>Turno actual</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_LAST_TURN</Tag>
+        <English>Last turn</English><French>Dernier tour</French><German>Letzte Runde</German><Italian>Ultimo turno</Italian><Spanish>&#218;ltimo turno</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_RECENT_AVERAGE</Tag>
+        <English>Average (last 10 turns)</English><French>Moyenne (10 derniers tours)</French><German>Durchschnitt (letzte 10 Runden)</German><Italian>Media (ultimi 10 turni)</Italian><Spanish>Media (&#250;ltimos 10 turnos)</Spanish>
+    </TEXT>
+    <TEXT>
+        <Tag>TXT_KEY_OBSERVER_ESTIMATED_REMAINING</Tag>
+        <English>Estimated remaining</English><French>Temps restant estim&#233;</French><German>Gesch&#228;tzte Restzeit</German><Italian>Tempo rimanente stimato</Italian><Spanish>Tiempo restante estimado</Spanish>
+    </TEXT>
 </Civ4GameText>

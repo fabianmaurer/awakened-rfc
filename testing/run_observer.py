@@ -24,6 +24,8 @@ SCENARIO = 'Start 1 - 3000 BC.CivBeyondSwordWBSave'
 SCENARIOS = {'3000bc': SCENARIO,
              '800bc': 'Start 2 - 800 BC.CivBeyondSwordWBSave',
              '600ad': 'Start 3 - 600 AD.CivBeyondSwordWBSave'}
+XL_SCENARIOS = {'3000bc': 'Start 1 XL - 3000BC.CivBeyondSwordWBSave',
+                '800bc': 'Start 2 XL - 800BC.CivBeyondSwordWBSave'}
 
 
 def fingerprint(mod):
@@ -39,7 +41,8 @@ def fingerprint(mod):
     for folder in ('Assets', 'PublicMaps'):
         files += [p for p in (mod / folder).rglob('*') if p.is_file()
                   and '__pycache__' not in p.parts and not any(s.startswith('.') for s in p.relative_to(mod).parts)
-                  and p.suffix.lower() not in ('.pyc', '.pyo', '.log', '.tmp', '.bak')]
+                  # Machine-local backups (such as CvGameCoreDLL.dll.previous.local) are not runtime assets.
+                  and p.suffix.lower() not in ('.pyc', '.pyo', '.log', '.tmp', '.bak', '.local')]
     if not (mod / 'Assets/CvGameCoreDLL.dll').is_file() or not (mod / 'PublicMaps' / SCENARIO).is_file():
         raise ValueError('Missing mod DLL or 3000 BC scenario in ' + str(mod))
     for path in sorted(files):
@@ -88,19 +91,24 @@ def main():
     start.add_argument('--scenario', choices=tuple(SCENARIOS))
     start.add_argument('--start', type=int, choices=range(3),
                        help='0: 3000 BC, 1: 800 BC, 2: 600 AD')
+    parser.add_argument('--xl', action='store_true', help='Use the XL version of the selected start when installed; otherwise use the standard scenario')
     parser.add_argument('--games', '--runs', dest='games', type=int, default=1)
     parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; setup is serialized (default: 1)')
     parser.add_argument('--turns', type=int)
     parser.add_argument('--seed', type=int, default=1, help='First seed; incremented for each game')
     parser.add_argument('--observe-only', action='store_true', help='Record a human-controlled game; do not enable AI control')
     parser.add_argument('--reveal-map', action='store_true', help='Show the fully revealed map and normal HUD from directly above, with twice the default view span and normal map detail')
+    parser.add_argument('--capture-worker-paths', action='store_true',
+                        help='Performance only: capture busy worker search graphs and compare both pathfinders; sampled turns include substantial extra overhead')
     parser.add_argument('--manual-start', action='store_true', help='Leave scenario setup to the user instead of confirming it automatically')
     parser.add_argument('--exe', type=Path, default=DEFAULT_EXE)
     parser.add_argument('--output-dir', type=Path, default=TESTING / 'runs')
     parser.add_argument('--checkpoint-interval', type=int, help='Turns between saves; 0 disables saves')
+    parser.add_argument('--autosave', type=int, default=0, metavar='X',
+                        help='Save every X simulated turns, including performance mode (default: 0, disabled); files go in each run\'s saves folder')
     parser.add_argument('--record-interval', type=int, default=1, help='Turns between state snapshots (events are collected every turn)')
     parser.add_argument('--startup-timeout', type=int, default=300)
-    parser.add_argument('--stall-timeout', type=int, default=60,
+    parser.add_argument('--stall-timeout', type=int, default=90,
                         help='Seconds without recorded progress before capturing stacks and stopping (default: 60)')
     args = parser.parse_args()
     args.scenario = args.scenario or tuple(SCENARIOS)[args.start if args.start is not None else 0]
@@ -113,6 +121,10 @@ def main():
     config = configparser.ConfigParser()
     config.read(TESTING / 'observer.local.ini', encoding='utf-8')
     mode = args.mode or config.get('Observer', 'Mode', fallback='balance')
+    if args.capture_worker_paths and mode != 'performance':
+        parser.error('--capture-worker-paths requires --mode performance')
+    if args.autosave < 0:
+        parser.error('--autosave must be zero or positive')
     turns = args.turns if args.turns is not None else config.getint('Observer', 'Turns', fallback=500)
     interval = args.checkpoint_interval
     if interval is None:
@@ -136,8 +148,17 @@ def main():
     if game_running():
         parser.error('Close Civ4 before starting a batch; existing games are never terminated')
     installed = args.exe.resolve().parent / 'Mods/Awakened RFC'
+    using_xl = False
+    if args.xl:
+        xl_scenario = XL_SCENARIOS.get(args.scenario)
+        if xl_scenario and (installed / 'PublicMaps' / xl_scenario).is_file():
+            scenario = xl_scenario
+            using_xl = True
+        else:
+            print('XL scenario unavailable for %s; using the standard scenario.' % args.scenario, flush=True)
     if not (installed / 'PublicMaps' / scenario).is_file():
         parser.error('Scenario not found: ' + scenario)
+    print('Scenario: ' + scenario, flush=True)
     output_root = args.output_dir.resolve()
     if output_root.is_relative_to(installed.resolve()) or output_root.is_relative_to((ROOT / 'Awakened RFC').resolve()):
         parser.error('--output-dir must be outside both mod folders')
@@ -163,7 +184,7 @@ def main():
                              capture_output=True, text=True).stdout.strip() or 'unknown'
     control = 'human' if args.observe_only else 'ai'
     batch_name = '%s-%s-%s-%dgames-%dturns-seeds-%d-%d-%s-%s' % (
-        mode, control, args.scenario, args.games, turns, args.seed, args.seed + args.games - 1,
+        mode, control, args.scenario + ('-xl' if using_xl else ''), args.games, turns, args.seed, args.seed + args.games - 1,
         time.strftime('%Y%m%d-%H%M%S'), secrets.token_hex(3))
     batch = output_root / batch_name
     batch.mkdir(parents=True)
@@ -183,6 +204,17 @@ def main():
     source_diff = subprocess.run(['git', 'diff', 'HEAD', '--', 'Awakened RFC/CvGameCoreDLL'],
                                  cwd=ROOT, capture_output=True, check=True).stdout
     (evidence / 'native-source.patch').write_bytes(source_diff)
+    # Git's tracked diff omits newly introduced native sources.
+    untracked = subprocess.run(['git', 'ls-files', '--others', '--exclude-standard', '-z', '--',
+                                'Awakened RFC/CvGameCoreDLL'], cwd=ROOT, capture_output=True, check=True).stdout
+    for relative in untracked.decode('utf-8').split('\0'):
+        if not relative:
+            continue
+        source = (ROOT / relative).resolve()
+        if source.is_relative_to(native.resolve()) and source.suffix.lower() in ('.cpp', '.h'):
+            target = evidence / 'native-source-extra' / source.relative_to(native.resolve())
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
     print('Batch: ' + str(batch), flush=True)
     results = []
     results_lock = threading.Lock()
@@ -199,14 +231,19 @@ def main():
         activation = run / 'observer.ini'
         env = os.environ.copy()
         env.pop('AWAKENED_RFC_PERFORMANCE_OUTPUT', None)
+        env.pop('AWAKENED_RFC_CAPTURE_WORKER_PATHS', None)
         if mode == 'performance':
             env['AWAKENED_RFC_PERFORMANCE_OUTPUT'] = str(run / 'performance-native.csv')
+            if args.capture_worker_paths:
+                env['AWAKENED_RFC_CAPTURE_WORKER_PATHS'] = '1'
         env['AWAKENED_RFC_OBSERVER_CONFIG'] = str(activation)
         env['AWAKENED_RFC_OBSERVER_TOKEN'] = token
         settings = configparser.RawConfigParser()
         settings['Observer'] = {'Mode': mode, 'Autoplay': str(not args.observe_only),
                                 'RevealMap': str(int(args.reveal_map)), 'Scenario': args.scenario,
+                                'XL': str(using_xl),
                                 'Turns': str(turns), 'Seed': str(seed), 'CheckpointInterval': str(interval),
+                                'AutosaveInterval': str(args.autosave),
                                 'RecordInterval': str(args.record_interval), 'Unattended': str(unattended),
                                 'OutputDirectory': str(run), 'Token': token, 'ProcessId': '0',
                                 'ModVersion': version, 'RuntimeFingerprint': runtime_hash, 'RunId': run.name}
@@ -226,9 +263,12 @@ def main():
             command += ' multiple'
         (run / 'launch.json').write_text(json.dumps({'seed': seed, 'mode': mode, 'turns': turns,
                                                    'scenario': args.scenario,
+                                                   'xl': using_xl, 'scenario_file': scenario,
                                                    'autoplay': not args.observe_only, 'version': version,
                                                    'unattended': unattended, 'reveal_map': args.reveal_map,
                                                    'jobs': args.jobs,
+                                                   'capture_worker_paths': args.capture_worker_paths,
+                                                   'autosave_interval': args.autosave,
                                                    'crash_capture': mode != 'performance',
                                                    'record_interval': args.record_interval,
                                                    'runtime_fingerprint': runtime_hash, 'command': command}, indent=2))
@@ -294,7 +334,7 @@ def main():
                 timeout = args.stall_timeout if started else args.startup_timeout
                 if time.monotonic() - last_progress > timeout:
                     outcome.update(status='stalled' if started else 'startup_timeout', last_heartbeat=heartbeat)
-                    safety.arm_cleanup_timeout()
+                    safety.arm_cleanup_timeout(process)
                     # A hung game raises no exception. Save two live thread-stack
                     # samples before termination so loops and waits can be located.
                     if started:
@@ -323,7 +363,7 @@ def main():
                     print('%s: Civ4 exited before completion (code %s / 0x%08X).' %
                           (run.name, process.returncode, process.returncode & 0xffffffff), flush=True)
         finally:
-            if outcome['status'] != 'complete':
+            if mode == 'performance' and outcome['status'] != 'complete':
                 stopping.set()
             # Only terminate the child created for this run, never other games.
             # Recorded turns/checkpoints have already been flushed to disk.
@@ -337,6 +377,7 @@ def main():
                         time.sleep(0.05)
                 if process.poll() is None:
                     raise RuntimeError('Launcher-owned Civ4 did not exit after termination: %d' % process.pid)
+            safety.disarm_cleanup_timeout(process)
             if capture:
                 (run / 'crash-capture.json').write_text(json.dumps({
                     'attached': True, 'pid': process.pid, 'debug_events': capture.event_counts,
@@ -362,11 +403,17 @@ def main():
                 try:
                     summarize(run)
                     print('Performance report: ' + str(run / 'performance-report.md'), flush=True)
+                    if args.capture_worker_paths:
+                        from analyze_worker_paths import summarize as summarize_worker_paths
+                        print('Worker path report: ' + str(summarize_worker_paths(run)), flush=True)
                 except (OSError, ValueError, KeyError) as error:
                     print('Could not summarize performance; raw timings retained: ' + str(error), flush=True)
         print(run.name + ': ' + outcome['status'], flush=True)
-        if outcome['status'] != 'complete':
+        if mode == 'performance' and outcome['status'] != 'complete':
             raise RuntimeError('Batch stopped; inspect ' + str(run))
+        if args.capture_worker_paths and not (run / 'worker-path-summary.json').exists():
+            raise RuntimeError('Game completed, but worker path capture/reporting failed. '
+                               'Ordinary performance timings remain valid; inspect ' + str(run))
 
     def worker(index):
         # Hold foreground setup ownership until started.json confirms that
@@ -406,6 +453,9 @@ def main():
         executor.shutdown(wait=True, cancel_futures=True)
     analyzer = 'analyze_performance.py' if mode == 'performance' else 'analyze_observer.py'
     print('Finished. Analyse with: python testing/' + analyzer + ' "' + str(batch) + '"')
+    incomplete = sum(item['status'] != 'complete' for item in results)
+    if incomplete:
+        raise RuntimeError('%d game(s) did not complete; outcomes and recordings retained in %s' % (incomplete, batch))
 
 
 if __name__ == '__main__':

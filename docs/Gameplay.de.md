@@ -11,6 +11,149 @@ Diese README beschreibt die Spieländerungen dieses Projekts. Weltkarten,
 historische Gründungszeitpunkte, einzigartige Fähigkeiten, Siegziele und weitere
 Systeme aus dem ursprünglichen RFC MP bilden weiterhin die Grundlage.
 
+Historische Ziele sind derzeit für alle Zivilisationen deaktiviert. Sie gewähren
+keine Belohnungen und keinen historischen Sieg. Die Länderliste zeigt keinen
+Zielfortschritt mehr an. Die unten beschriebenen historischen Ziele ruhen.
+
+## Verwaltung und Reichsgröße
+
+Verwaltungsaufwand ersetzt die Stabilitätsabzüge für Städtezahl, fremdes Gebiet
+und fehlende Heimatstädte. Die Anfangskapazität beträgt **50 auf XL**, sonst **33**.
+Jedes Zeitalter seit der Antike erhöht die Basis um 25% des Anfangswerts, auch
+bei späten Starts. Staatsformen- und Wunderboni werden addiert und auf diese
+Basis angewandt. Frühe Staatsformen können die Kapazität deutlich verringern.
+
+Eine Stadt benötigt `Bevölkerung × (1 + 0,05 × Reisezeit) × (1 + lokale Modifikatoren)`.
+Stadtaufwand wird nach allen Modifikatoren auf eine Nachkommastelle aufgerundet, die nationale Kapazität auf ganze Punkte. Der nationale Aufwand ist die Summe der gerundeten Stadtkosten.
+
+Reisezeiten berücksichtigen Bruchteile von Runden. Landwege rechnen mit zwei
+Bewegungspunkten und den aktuellen Straßenkosten. Seeabschnitte nutzen einen,
+zwei oder vier Bewegungspunkte, wenn an ihren beiden Küstenübergängen null,
+ein oder zwei Häfen vorhanden sind. Land- und Seewege dürfen sich abwechseln.
+Ausgangspunkt ist die Hauptstadt.
+Offene Grenzen und Vasallen erlauben Durchreise; feindliche Truppen und
+Blockaden zählen nicht. Hochseewege benötigen Astronomie.
+
+Erreichbarkeit und Kostenentfernung sind getrennt. Zusammenhängendes eigenes,
+passierbares Land hat keine Reichweitengrenze. Eigene Städte erneuern
+Landverbindungen. Eigene Häfen verlängern die
+Verbindung, wenn jeder Abschnitt unter **zehn Referenzrunden** bleibt. Fremdes
+oder unbesetztes Land verbraucht Abschnittsreisezeit; offene Grenzen ersetzen
+keinen durchgehenden eigenen Landkorridor. Eine neue Küstenstadt darf ohne
+Hafen Endpunkt sein, aber nur ein eigener Hafen erneuert eine Seeverbindung.
+Ohne Verbindung sind Neugründungen gesperrt. Bestehende und eroberte Städte
+werden nach **10 XL-Runden**, sonst **5**, ohne Wiederanbindung unabhängig.
+Der Aufwand steigt weiterhin mit der gesamten Reisezeit; die bisherige
+Zehn-Runden-Kostengrenze entfällt. Gibt es gar keinen nutzbaren Weg, gilt für
+die direkte Hauptstadt-Reisezeit ein Ersatzwert von 100 Runden.
+
+Die **Gouverneursresidenz** ersetzt die nationale Sommerresidenz. Sie ist
+mehrfach baubar, kostet **200 Produktion und 3 Gold pro Runde** und benötigt
+Gesetzgebung, ein lokales Gerichtsgebäude sowie **vier Einwohner** beim Bau.
+Sie gibt keine nationale Kapazität. Eine Stadt nutzt den günstigeren Weg:
+direkt zur Hauptstadt oder zu einer Residenz plus **50% ihrer direkten
+Hauptstadt-Reisezeit**. Eine Residenzstadt nutzt stets ihre eigene Residenz
+und erhält deren Rabatt selbst. Der Hauptstadtanteil wird immer ohne weitere
+Residenz berechnet; Rabatte lassen sich nicht verketten. Residenzen erweitern
+die Erreichbarkeit nicht. Versailles gibt nur nationale Kapazität.
+
+Ein großer Button **Residenz aufgeben** erscheint unter der Gebäudeliste.
+Die Bestätigung zeigt landesweiten Aufwand und Goldsaldo nach der Aufgabe,
+einschließlich Unterhalt und Produktionsprozessen bei aktuellen Einstellungen.
+Baukosten werden nicht erstattet. Für lückenlose regionale Verwaltung kann
+zuerst eine neue Residenz gebaut und danach die alte aufgegeben werden.
+
+Überlastung ist `max(0, Aufwand / Kapazität − 1)`. Bei 100% Überlastung entstehen
+**+200% Städteunterhalt, −40 aktuelle Stabilität und −20% Produktion**.
+Der Produktionsabzug wirkt nach Produktionsboni und erreicht bei 500%
+Überlastung 100%. Stabilität erholt sich unmittelbar mit der Entlastung;
+der Verwaltungsbeitrag wird nicht dauerhaft aufaddiert.
+Städteunterhalt beträgt grundsätzlich **0,5 Gold je Punkt Verwaltungsaufwand** plus
+Überlastungsaufschlag; Entfernung, Kolonien und Kapitalgesellschaften kosten
+keinen eigenen Unterhalt. Gebäude senken den Unterhalt über ihren Abschlag auf den Verwaltungsaufwand.
+
+Gerichtsgebäude, Opferaltar und Zikkurat senken den Aufwand um 20%, Rathaus und
+Delhis Gerichtsgebäude um 30%, Provinzverwaltung um 25%, Ikhanda um 5% und
+Digitalverwaltung um 15%. Die Abschläge sind additiv ohne technische Grenze;
+normale Gebäudekombinationen erreichen höchstens 50%. Pyramiden und Große
+Bibliothek geben je +10% nationale Kapazität, Versailles +15%. Die Kapazitätsbeiträge der Staatsformen sind:
+
+| Kategorie | Kapazität |
+| --- | --- |
+| Regierung | Stammessystem −40%; Monarchie, Republik, Diktatur und Demokratie 0%. |
+| Legitimation | Despotismus −10%, Theokratie +10%, Plutokratie −10%, Nationalismus 0%, Rechtsstaat +20%. |
+| Wirtschaft | Selbstversorgung 0%, Sklaverei −10%, Leibeigenschaft +10%, Planwirtschaft −20%, Marktwirtschaft 0%. |
+| Militär | Kriegergesellschaft −10%, Seekriegsführung 0%, Heeresfolge +10%, Berufsarmee +10%, Wehrpflicht −10%. |
+| Religion | Alle 0%; Religion verändert stattdessen den lokalen Aufwand. |
+
+Die besonderen Varianten ersetzen den jeweiligen Standardwert:
+**Pharaonentum, Gottkönigtum und Römische Legionen 0%**, **Römische Republik +40%**,
+**Horde −10%**. Ihre bisherigen Sonderboni bleiben aktiv. Die organisierten
+ägyptischen und römischen Institutionen übernehmen damit keinen pauschalen
+Verwaltungsmalus ihrer allgemeinen Ausgangs-Civic. Frühe und späte Kombinationen
+können denselben Kapazitätsbonus erreichen; Fortschritt entsteht über die Zeitalterbasis.
+
+Staatsreligion senkt den lokalen Aufwand um 5%; jede fremde Religion erhöht ihn
+um 10%. Ohne Staatsreligion gibt es keine religiöse Anpassung. Toleranz entfernt
+beide Effekte; unter Staatsatheismus zählt jede Religion als fremd. Gottesstaat
+verdoppelt die religiösen Anpassungen, verliert seinen Produktionsbonus und
+viertelt die natürliche Ausbreitung sowie Missionarserfolge fremder Religionen.
+
+**F1** zeigt Verwaltung, Folgen der Überlastung, Stabilität und eine kompakte
+Stadtliste. Nicht-Hauptstädte können einem eigenen bestehenden Vasallen oder
+einer verfügbaren untergegangenen Zivilisation als Vasall überlassen werden,
+wenn deren historisches Gründungs-/Übernahmegebiet die Stadt einschließt.
+Andernfalls ist nur direkte Unabhängigkeit möglich. Zukünftige Geburtsplätze und
+menschliche Spieler werden nicht dafür verwendet. Jede Freigabe setzt die
+gespeicherte Stadtkultur aller Zivilisationen auf null zurück.
+Die KI erwägt Vasallenfreigaben nach anhaltender Überlastung ab 25%; Unabhängigkeit
+erfordert mindestens 50% Überlastung und erhält die halbe Freigabebewertung.
+Freiwillige Verwaltungsfreigaben verursachen weder einen Stabilitätsverlust durch
+Stadtverlust noch einen Erwerbsbonus und zählen nicht bei der Zusammenbruchsprüfung
+wegen halbierter Stadtzahl. Automatische Abspaltungen durch fehlende Verbindung
+unterliegen weiterhin den normalen Stadtverlustregeln.
+Eine Wiedereingliederungsaktion
+ist nicht vorgesehen. Das Kartensymbol steht auch bei Staatsformen und im
+Stadtbildschirm für Verwaltung. Laufzeit, Balance und Multiplayer sind ungeprüft.
+
+Während eines aktiven Jihad-Ereignisses sind Verwaltungsabzüge ausgesetzt: kein Überlastungsaufschlag beim Unterhalt,
+kein Stabilitäts- oder Produktionsabzug. Der entfernungsbedingte Kontrollverlust
+pausiert; die KI begrenzt Wachstum und Eroberungsziele in dieser Zeit nicht
+wegen Verwaltung und gliedert keine Städte zur Entlastung aus. Aufwand und
+Kapazität bleiben sichtbar; nach Ereignisende gelten die Regeln wieder. Die
+Verbindungsanforderung für Neugründungen bleibt bestehen. Für Kreuzzüge
+gilt diese Ausnahme nicht.
+
+Die KI bewertet neue Siedlungsorte mit einer angenommenen frühen Größe von
+3 Bevölkerung und reserviert etwas Kapazität für das Wachstum bestehender
+Städte. Zu belastende Standorte werden verworfen, kostspielige Eroberungsziele
+abgewertet. Ab Größe 3 vermeidet sie Wachstum, wenn der nächste Einwohner
+die Kapazität überschreiten würde. Civics und Staatsreligion werden nach
+ihren Auswirkungen auf die tatsächliche Überlastung bewertet.
+
+Straßenverbindungen bevorzugen entfernte, bevölkerungsreiche Städte und
+Hauptstadt und Gouverneursresidenzen. Für Häfen und Residenzen wählt die KI
+zunächst geografisch geeignete Standorte; am besten Kandidaten berechnet sie
+die wirkliche Reisezeit- und Aufwandsersparnis mit dem bestehenden Wegenetz.
+Nach mindestens drei Referenzrunden mit mindestens 25% Überlastung kann sie
+eine geeignete Stadt an einen Vasallen ausgliedern, höchstens einmal in fünf
+Referenzrunden. Hauptstadt, heilige Städte und Weltwunderstädte bleiben erhalten.
+Ohne geeigneten Vasallenplatz erfolgt keine freiwillige Ausgliederung.
+
+Missionare der Staatsreligion können gezielt fremde Religionen in eigenen
+Städten entfernen. Die KI berücksichtigt dafür auch Missionarsbedarf,
+Verwaltungsentlastung und verlorene religiöse Gebäude. Unter Toleranz oder
+Staatsatheismus, in fremden heiligen Städten und bei fortgeschrittener
+Kultursiegstrategie plant sie keine solchen Säuberungen. Automatisierte
+Missionare menschlicher Spieler erhalten diese neue Aktion nicht.
+Die KI gewichtet bei religiöser Vertreibung auch die Zufriedenheitsänderung:
+religiöse Unzufriedenheit, verlorene Gebäudeboni und religionsbedingte
+Kriegsunzufriedenheit. Die Entlastung bereits unzufriedener Einwohner wiegt
+stärker als zusätzlicher Zufriedenheitsspielraum.
+
+Diese Bewertungen sind Heuristiken; ihre Spielbalance ist noch nicht im
+Spiel validiert.
+
 ## Kulturelle Grenzerweiterung
 
 Städte beginnen mit ihrem Stadtfeld und den acht Nachbarfeldern. Weitere Kultur
@@ -97,8 +240,8 @@ Diese zusätzlichen Voraussetzungen gelten gleichermaßen für Menschen und KI. 
 - **25 Staatsformen in fünf Kategorien:** Regierung, Legitimation, Arbeit,
   Militär und Religion ersetzen die bisherigen sechs Kategorien. Der Bildschirm
   nutzt die verfügbare Breite und enthält neue Illustrationen.
-- **Demokratische Wahlen:** Alle zehn Runden wird eine andere Kategorie auf eine
-  zufällig ausgewählte verfügbare Staatsform umgestellt.
+- **Demokratische Wahlen:** Alle fünf Runden, auf XL alle zehn, besteht eine Chance
+  von 10% auf den Wechsel einer anderen Kategorie. Manuelle Wechsel bleiben möglich.
 - **Start-Staatsformen:** Jede Zivilisation erhält ein Profil passend zu ihrer
   Zeit, soweit die Starttechnologien des Szenarios oder der Gründung es erlauben.
 - **Stabilität durch Kombinationen:** Passende Institutionen erhalten kleine
@@ -218,6 +361,20 @@ Alle sieben religiösen Schreine gewähren **zwei kostenlose Priester** statt dr
 Jerusalem erhält den jüdischen Schrein, den Salomonischen Tempel, automatisch im ersten Zug ab **957 v. Chr.**, sofern die Stadt besteht und das Judentum enthält. Das Datum folgt der traditionellen Bauchronologie in [Gettys Eintrag zum Ersten Tempel](https://www.getty.edu/cona/CONAFullSubject.aspx?subid=700009039). Spätere Szenarien wenden die Vergabe beim Start an. Fehlt die Stadt oder das Judentum, wartet die Vergabe. Ein bereits andernorts errichteter Schrein wird nicht dupliziert; nach einer Zerstörung erfolgt kein automatischer Wiederaufbau. Die Vergabe wird synchron verarbeitet und gespeichert. Spiel- und Mehrspieler-Validierung stehen noch aus.
 
 ## Wissen durch Eroberungen
+
+Forschungskosten ändern sich nicht mehr allein durch das Erreichen der Runden
+75, 181 oder 401. Die festen XML-Kosten verwenden je nach Epoche folgende Faktoren
+auf die ursprünglichen Basiskosten: Antike 105%, Klassik und Mittelalter 150%,
+Renaissance und Industriezeitalter 92%, Moderne und Zukunft 73,6% (92% mal 80%).
+Die Kosten werden auf ganze Forschungspunkte aufgerundet. Meisterschaft
+I verwendet Basiskosten und Epoche der teuersten benötigten Technologie;
+Stufen II und III kosten das Doppelte und Vierfache. Krieger benötigen keine
+Technologie und verwenden Basiskosten von 100. Produktionskosten bleiben unverändert.
+Die frühere Ermäßigung von 8% steckt nun für alle Zivilisationen in den Kosten
+späterer Epochen. Die Faktoren entsprechen den bisherigen Epochenabschnitten;
+Forschungszeitpunkt und Rundung können vom alten Kalenderpreis abweichen.
+Eine genaue Spielbalance ist noch nicht im Spiel geprüft. Andere Modifikatoren
+und die einzigartige Fähigkeit der Maya bleiben aktiv. Dies gilt für neue Partien.
 
 Alle Forschungskosten erhalten zusätzlich den globalen Faktor **1,1**
 (`RFCMP_GLOBAL_RESEARCH_COST_PERCENT = 110` in `GlobalDefines.xml`).
@@ -427,7 +584,7 @@ gelten je passendem Gebäude beziehungsweise bearbeiteter Verbesserung.
 Für Ägypten heißt das Stammessystem in jeder Epoche **Pharaonentum** und
 Despotismus **Gottkönigtum**. Pharaonentum gibt +1 Produktion durch Bauernhöfe
 und je Sklavenspezialist bei mittlerem Staatsform-Unterhalt. Es ersetzt die
-Einheitenproduktion, den Forschungsabzug und die erhöhten Unterhaltskosten des
+Einheitenproduktion, den Forschungsabzug und den Verwaltungsmalus des
 Stammessystems. Unter Gottkönigtum gibt jeder zugewiesene Priester in einer Stadt
 mit ägyptischem Obelisken +1 Zufriedenheit, höchstens +2 pro Stadt. Dies ersetzt
 die Zufriedenheit durch Palast und Monument. Obelisken veralten unter dieser
@@ -440,11 +597,11 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 
 | Staatsform | Benötigte Technologie | Unterhalt | Effekte |
 | --- | --- | --- | --- |
-| **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; +100% entfernungsabhängiger und durch die Städteanzahl verursachter Städteunterhalt. |
-| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. |
+| **Stammessystem** | Keine | Keiner | +20% Produktion für alle Einheiten; -20% Forschung; −40% Verwaltungskapazität. |
+| **Monarchie** | Monarchie | Mittel | Hauptstadtgebäude geben je +1 Kultur und +1 Handel. Weltwunder der Hauptstadt geben je +1 Zufriedenheit in allen Städten, maximal +3, auch nach ihrer Veraltung. Ermöglicht Erbfolgeereignisse. Besondere Spionage gegenüber anderen Monarchien. |
 | **Republik** | Gesetzgebung | Mittel | Zugewiesene Spezialisten außer Sklaven verbrauchen 1 Nahrung weniger. Freie Spezialisten und angesiedelte Große Persönlichkeiten sind ausgenommen. |
 | **Diktatur** | Faschismus | Hoch | +20% Produktion; keine Kriegsmüdigkeit; -2 Zufriedenheit in jeder Stadt. |
-| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Einführung wählt alle anderen Kategorien zufällig; Wahlen ändern alle zehn Runden eine Kategorie. Bei Beibehaltung der Demokratie sind manuelle Wechsel anderer Kategorien gesperrt. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
+| **Demokratie** | Demokratie | Hoch | +2 Zufriedenheit in jeder Stadt; +1 Handel je zugewiesenem oder freiem Spezialisten. Manuelle Staatsformwechsel bleiben möglich. Alle fünf Runden, auf XL alle zehn, besteht eine Wahlchance von 10% auf den Wechsel einer anderen Kategorie. Abschaffung verlängert die normale Revolutionsanarchie um zwei Runden. |
 
 ### Legitimation
 
@@ -454,7 +611,7 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | **Theokratie** | Göttliches Recht | Hoch | +1 Zufriedenheit von Gebäuden der Staatsreligion; -2 Zufriedenheit von Gebäuden einer fremden Religion. Mit eigener Staatsreligion erhalten Landeinheiten +15% Kampfstärke gegen Barbaren und Länder mit fremder oder keiner Staatsreligion, bei Angriff und Verteidigung. |
 | **Plutokratie** | Bankwesen | Mittel | +25% Goldeinnahmen; +50% Handel durch Handelswege. |
 | **Nationalismus** | Nationalismus | Mittel | +5 Kultur in jeder Stadt; +20% Produktion; -5 Zufriedenheit in Städten, in denen die Kultur eines anderen Spielers auf dem Stadtfeld größer ist als die des Besitzers. |
-| **Rechtsstaat** | Verfassung | Hoch | +2 Zufriedenheit in jeder Stadt; +10% Handel. |
+| **Rechtsstaat** | Verfassung | Hoch | +1 Zufriedenheit in jeder Stadt; +10% Handel. |
 
 ### Arbeit
 
@@ -462,8 +619,8 @@ Gottkönigtum den Herrscher selbst als Verkörperung göttlicher Autorität vers
 | --- | --- | --- | --- |
 | **Selbstversorgung** | Keine | Keiner | +2 Gesundheit in jeder Stadt; Hüttenverbesserungen wachsen nicht; zugewiesene Spezialisten sind gesperrt und bestehende Zuweisungen werden entfernt; freie Spezialisten bleiben erhalten. |
 | **Sklaverei** | Bronzebearbeitung | Niedrig | Eroberte Bevölkerung wird zu Sklaveneinheiten. Sklaveneinheiten haben 25% Unterhalt, werden im Kampf zuerst verteidigen, können eine eigene Upgrade-Reihe nutzen und 20 Runden lang als Spezialist mit +3 Produktion und -1 Nahrung in Städten arbeiten. Das Aufstandsrisiko sinkt proportional zur Gesamtstärke der Garnison und entfällt, wenn sie der verfügbaren bewaffneten Sklavenstreitmacht entspricht. Große Eroberungen lösen regionale Sklavenmarkt- oder Flüchtlingsereignisse aus. Sklaveneinheiten aus eroberter Bevölkerung behalten eine kleine herkunftsabhängige Beförderung. |
-| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 50% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
-| **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkst?tten, Wasserm?hlen und Windm?hlen; +1 Nahrung durch Bauernh?fe; -10% Handel. Keine Handelswege mit Kapitalisten. |
+| **Leibeigenschaft** | Öffentliche Verwaltung | Niedrig | +1 Nahrung durch Bauernhöfe; Bautrupps errichten Verbesserungen 25% schneller. Bevölkerung kann nur Einheiten beschleunigen, keine Gebäude oder Projekte. |
+| **Planwirtschaft** | Kommunismus | Hoch | +1 Produktion durch Werkstätten, Wassermühlen und Windmühlen; +1 Nahrung durch Bauernhöfe. Keine Handelswege mit Kapitalisten. |
 | **Marktwirtschaft** | Wirtschaftswesen | Mittel | +1 freier Spezialist in jeder Stadt; H?ttenverbesserungen wachsen doppelt so schnell. Keine Handelswege mit Kommunisten. |
 
 Das Wachstum umfasst sämtliche Ausbaustufen: **Hütte → Weiler → Dorf → Gemeinde**.
@@ -510,9 +667,9 @@ Ein Landangreifer unter Sklaverei hat außerdem eine **Chance von 50%, einen Skl
 | **Kriegergesellschaft** | Keine | Keiner | Nahkampfeinheiten starten mit +2 Erfahrung; Belagerungseinheiten haben -20% Kampfstärke. |
 | **Horde** (ersetzt die Kriegergesellschaft für Hunnen und Mongolei) | Reiterei | Mittel | +50% Produktion für berittene Einheiten; neu ausgebildete berittene Einheiten erhalten +3 Erfahrung; +100% Gold beim Plündern von Modernisierungen; -50% Kriegsmüdigkeit; **-25% Forschungsleistung**. |
 | **Seekriegsführung** | Segeln | Niedrig | +50% Produktion und +2 Erfahrung für neu gebaute militärische Schiffe, einschließlich Transportschiffen. Arbeitsboote erhalten keinen dieser Boni. |
-| **Heeresfolge** | Feudalismus | Mittel | +5% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +30%. |
+| **Heeresfolge** | Feudalismus | Mittel | +4% Produktion für militärische Landeinheiten je von der Stadt bewirtschaftetem Bauernhof, einschließlich Belagerungseinheiten. Sechs bewirtschaftete Bauernhöfe geben +24%. |
 | **Berufsarmee** | Militärwesen | Hoch | Einheiten starten mit +5 Erfahrung. |
-| **Wehrpflicht** | Militärwissenschaft | Mittel | +25% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
+| **Wehrpflicht** | Militärwissenschaft | Mittel | +35% Produktion für alle Einheiten. Nahrungsüberschuss produziert zusätzlich militärische Landeinheiten; währenddessen ruht das Wachstum. Schiffe nutzen diese Nahrungsumwandlung nicht. |
 
 Die Horde belegt den bisherigen Platz der Kriegergesellschaft; jede
 Zivilisation behält fünf Militärstaatsformen. Hunnen und Mongolei beginnen mit
@@ -566,7 +723,7 @@ Die kanonische Teilung verursacht weder Stabilitätsabzüge für verlorene Städ
 | --- | --- | --- | --- |
 | **Ahnenkult** | Keine | Keiner | +1 Kultur durch Monumente einschließlich ihrer zivilisationsspezifischen Ersatzgebäude. |
 | **Staatsreligion** | Monotheismus | Niedrig | +1 Zufriedenheit in Städten mit Staatsreligion; +100% Produktion für Missionare und +25% Produktion für Gebäude der Staatsreligion. |
-| **Gottesstaat** | Theologie | Hoch | +10% Produktion in Städten mit Staatsreligion; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
+| **Gottesstaat** | Theologie | Hoch | Verdoppelter Religionseinfluss auf den Verwaltungsaufwand; zusätzlich -1 Zufriedenheit je fremder Religion. Eroberte Städte werden durch Konvertierung befriedet. |
 | **Toleranz** | Liberalismus | Niedrig | Entfernt Unzufriedenheit durch fremde Religionen und diplomatische Religionsmali mit eurem Land. Länder mit anderer Staatsreligion erhalten +2 Beziehungen zu euch, außer unter Staatsatheismus. Beide Länder müssen eine Staatsreligion haben. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene Städte. Erlaubt die Ausbildung von Missionaren aller Religionen. |
 | **Staatsatheismus** | Wissenschaftliche Methode | Hoch | +10% Forschung und +10% Produktion; -1 Zufriedenheit in allen Städten. Religiöse Gebäude haben keine Effekte; Religionen können sich in den eigenen Städten nicht verbreiten. |
 
@@ -628,15 +785,15 @@ Jede reguläre Wahl öffnet eine eigene, leicht satirische Bekanntmachung zur ge
 
 Demokratie ignoriert alle **negativen Stabilitätsmodifikatoren durch Staatsformkombinationen**, einschließlich Plutokratie mit Planwirtschaft und Theokratie mit Toleranz. Positive Kombinationsboni bleiben aktiv. Andere Stabilitätsverluste gelten weiterhin.
 
-Bei Einführung wird in jeder anderen Kategorie sofort eine verfügbare Staatsform zufällig gewählt; die bisherige kann erneut gewählt werden. Solange Demokratie beibehalten wird, sind andere Kategorien nicht manuell wechselbar. Ihre Abschaffung entsperrt sie und verlängert die normale Revolutionsanarchie um **zwei Runden**. Bestehende Anarchieimmunität gilt weiterhin.
+Die anderen Staatsformen bleiben manuell wählbar. Die Einführung der Demokratie
+bewahrt die gewählten Staatsformen. Ihre Abschaffung verlängert die normale
+Revolutionsanarchie weiterhin um zwei Runden; Anarchieimmunität bleibt erhalten.
+Bei aktiver Demokratie besteht auf globalen Vielfachen von fünf Runden, auf XL
+von zehn, eine Wahlchance von 10%. Ein erfolgreicher Wurf wählt eine andere
+Kategorie mit einer verfügbaren Alternative und anschließend eine andere,
+zulässige Staatsform. Ohne Alternative erfolgt kein Wechsel. Der betroffene
+menschliche Spieler erhält eine adressierte Mitteilung.
 
-Wahlen finden bei aktiver Demokratie auf **globalen Rundenzahlen statt, die
-durch zehn teilbar sind**. Zuerst wird eine der anderen vier Kategorien mit
-verfügbarer Alternative ausgewählt, dann eine andere Staatsform, die der Spieler
-aktuell annehmen kann. Gibt es keine verfügbare Alternative, erfolgt kein
-Wechsel. Menschliche Spieler erhalten eine Benachrichtigung.
-
-Beide Auswahlen verwenden den synchronisierten Zufallsgenerator des Spiels.
 Die Regierung bleibt Demokratie; Wahlen verursachen keinen zusätzlichen
 Stabilitätsmalus für den Übergang.
 
@@ -713,6 +870,15 @@ keine freiwillige Vasallisierung anbieten oder annehmen
 (`RFCMP_SPAWN_VASSAL_PROTECTION_TURNS`). Dies gilt auch für die ersten 30 Runden
 eines Szenarios. Kapitulation im Krieg und freiwillige Entscheidungen menschlich
 gesteuerter Teams folgen weiterhin den bisherigen Regeln.
+
+Freiwillige Vasallenangebote der KI erfordern mindestens erfreute Beziehungen und
+einen möglichen Lehnsherrn mit mindestens doppelter eigener Militärmacht gegenüber
+der anbietenden Partei einschließlich ihrer Vasallen. Zusätzlich muss ein stärkerer
+Hauptgegner im Krieg oder ein bekannter feindseliger Landnachbar mit mindestens
+1,5-facher Macht drohen; dessen Haltung muss verärgert oder schlechter sein.
+Bei erfüllten Bedingungen beträgt die Chance je Gelegenheit 25% bei normalem Tempo,
+auf XL 12,5%. Dies gilt gegenüber Menschen und anderen KIs. Angefragte Abkommen,
+Kriegskapitulation und dynastische Personalunionen behalten ihre bisherigen Abläufe.
 
 ### Garnisonen in Festungen
 
@@ -1035,6 +1201,16 @@ Figurenvarianten und unregelmäßigen Formationen.
 Die [Dokumentation zur Einheitengrafik](SlaveUnitArt.md) enthält die Modelle
 aller Waffenstufen, Quellenangaben und eine statische Vorschau.
 
+## Erfahrung durch Erkundung
+
+Späher, Entdecker und ihre einzigartigen Ersatzeinheiten erhalten 0,1 EP für
+jedes Feld, das sie erstmals für ihr Team aufdecken. Je zehn Felder ergeben
+einen nutzbaren Erfahrungspunkt. Bruchteile bleiben beim Speichern, Aufrüsten
+und Verschenken erhalten. Bereits kartierte Felder zählen nicht, auch nach
+Kartentausch. Erkundung erzeugt keine Punkte für Große Generäle.
+`SCOUT_EXPLORATION_XP_HUNDREDTHS` legt die EP je Feld in Hundertsteln fest;
+0 deaktiviert den Bonus. Die Änderung ist für neue Partien vorgesehen.
+
 ## Frühe Stammesüberfälle in Amerika
 
 Bis 1600 n. Chr. erscheinen im besiedelten Nordamerika, in Mesoamerika und
@@ -1050,3 +1226,254 @@ acht Runden nach Szenariobeginn; neue Städte ziehen sie erst nach acht Runden a
 Ohne geeignete Städte oder Felder pausieren sie; die Option „Keine Barbaren“
 unterbindet sie. Der spätere nordamerikanische Widerstand und die karibischen
 Piraten bleiben aktiv.
+
+
+## Geheimdienstnetze
+
+Automatische Einsatzgruppen ersetzen Spionageeinheiten und deren Missionen.
+Im Geheimdienstberater wählen Sie den Fokus jeder Gruppe. Standard ist
+**Keine Operationen**. In der Antike steht eine Gruppe bereit; jede durch
+Technologie erreichte neue Epoche schaltet eine weitere frei. Änderungen gelten
+ab der nächsten Spielerrunde. Zeigen auf einen Fokus erklärt seine Wirkung.
+
+Jede freigeschaltete Gruppe bringt 10% der Basisspionage zum Operationsbudget,
+einschließlich Gruppen ohne Operationen. Dieses Budget wird gleichmäßig auf
+Gruppen mit gültigen aktiven Aufträgen verteilt. Gruppen ohne Auftrag oder gültige
+Ziele erhalten keine Mittel und zählen nicht zum Teiler. Bei drei freigeschalteten
+Gruppen beträgt das Budget 130% der Basisspionage: Eine aktive Gruppe erhält 130%,
+zwei erhalten je 65%, drei je etwa 43,3%. Untätige Gruppen werden als Unterstützung
+angezeigt, sobald mindestens eine Gruppe aktiv ist. Eine Infokachel in der
+Gruppenliste erklärt das Budget und die Aufteilung.
+
+Alle fünf normalen Runden (zehn auf XL) wählt jede Gruppe automatisch bis zu
+drei Zielteams. Ein Fokuswechsel beginnt zur nächsten Runde eine neue Zuweisung.
+Zugang, Abwehr und erwarteter Nutzen bestimmen die Rangfolge. Militärspionage
+berücksichtigt Krieg, schlechte Beziehungen und Landnachbarschaft gemeinsam.
+Kooperation setzt ein Abkommen voraus und bevorzugt starke Geheimdienstpartner
+mit gegenseitigem Vertrauen. Technologie bevorzugt nutzbare Forschungsquellen,
+Wirtschaft hohe Goldeinnahmen und dynastische Politik geeignete Monarchien.
+
+Die Gruppe vergleicht die Summe der besten ein, zwei oder drei Zielwerte,
+multipliziert mit 100%, 70% beziehungsweise 57%. Jedes gewählte Ziel erhält
+diesen Anteil ihres Einsatzes. Drei ähnlich gute Ziele bringen insgesamt 171%
+des konzentrierten Einsatzes; deutlich schwächere Alternativen begünstigen ein
+oder zwei Ziele. Mehrere Gruppen dürfen dasselbe Land mit verschiedenen
+Schwerpunkten bearbeiten. Ungültige Ziele werden erst beim nächsten planmäßigen
+Termin ersetzt; bis dahin entfaltet die ungültige Zuweisung keine Wirkung.
+
+Der Netzaufbau gehört zur Gruppe und ihrem Fokus. Ein Zielwechsel erhält ihn.
+Pro normaler Runde bleiben 90% erhalten; hinzu kommt die doppelte zugeteilte
+Grundleistung. XL behält 95% und addiert die einfache Zuteilung. Inaktive
+Schwerpunkte verfallen weiter. Der Berater zeigt die Reife gegenüber der
+aktuellen Finanzierung einheitlich als Prozentsatz; ohne Operationen als Strich.
+Die Wirkung im Zielland berücksichtigt Konzentration, Zugang, Abwehr und
+gegebenenfalls den Kooperationsbonus. Die Formeln unten verwenden diesen
+abgeleiteten Zielaufbau. Dynastische Stufen bleiben an das jeweilige Land gebunden.
+
+Der Berater zeigt Gruppen, Ziele, Finanzierung und den nächsten Prüfzeitpunkt.
+Ein Klick auf ein Zielland wechselt nur die Detailansicht. Grundlegende
+demografische Daten bekannter Zivilisationen bleiben verfügbar. Spionagegebäude,
+Spezialisten und angesiedelte Große Spione bleiben nützlich. Große Spione können
+Scotland Yard errichten oder ein Goldenes Zeitalter unterstützen.
+
+Entfernung zwischen Hauptstädten senkt den Zugang um höchstens 60 Prozentpunkte.
+Eine Botschaft auf einer Seite bringt 20 Punkte, bis zu vier direkte ausgehende
+Handelswege jeweils 5. Der Zugang liegt zwischen 40 und 140%. Fremde
+Spionageleistung schwächt alle Operationen. Sicherheitsbüros erhöhen die nationale
+Abwehr entsprechend dem Bevölkerungsanteil ihrer Städte.
+
+- **Geheimdienstkooperation:** Ein gegenseitiges diplomatisches Abkommen schaltet
+  diesen Modus für beide Länder frei. Jede Seite entscheidet unabhängig über
+  ihren Einsatz. KI-Partner verlangen mindestens erfreute Beziehungen und keine
+  Kriegsvorbereitungen gegen den Partner. Gute Beziehungen und ein aufgebautes
+  Netz erhöhen den Beitrag aus der Spionage-Grundleistung des Partners.
+  Alle Partnerbeiträge zusammen sind auf 100% der eigenen Grundleistung begrenzt.
+  Kooperationsboni werden nicht weitergeteilt; Rückkopplungen sind ausgeschlossen.
+  Die erhöhte Leistung stärkt andere Operationen samt Forschungs-, Kultur- und
+  Goldbudgets, aber keine Operationen gegen Abkommenspartner und keine
+  Spionageabwehr. Oben links steht die Grundleistung, gefolgt von
+  der erhöhten Gesamtleistung in farbigen Klammern.
+  Beide Länder erhalten allmählich bis zu +3 Stabilität aus ihrer stärksten
+  eingehenden oder ausgehenden Kooperation. Mehrere Partner oder gegenseitige
+  Investitionen stapeln diesen Bonus nicht. Bei Kündigung oder Krieg endet der
+  Spionagebeitrag sofort; der Stabilitätsbonus klingt langsam ab. Kooperation
+  birgt kein Entdeckungsrisiko und beeinflusst weder Staatsformen noch Kultur
+  oder politische Unruhe. Die genauen Formeln stehen im englischen Regelwerk.
+- **Technologiediebstahl:** Eine zufällig gewählte Technologie mit erfüllten
+  Voraussetzungen bleibt bis zum Abschluss oder Wegfall das gemeinsame Ziel.
+  Mehr verfügbare Technologien erhöhen den Ertrag. Quellen addieren sich;
+  die Konzentration ist bereits eingerechnet. Der Ertrag ist auf die dreifache Spionageleistung
+  begrenzt. Fortschritt bleibt bei Moduswechseln erhalten. Ohne passende Quelle
+  ruht das Ziel. Überschüsse fließen in dieser Runde nicht in ein zweites Ziel.
+  Technologienetzwerke benötigen Aufbau: 10,0% Verfall und doppelte wirksame
+  Spionageleistung pro normaler Runde; XL halbiert beides. Mit aktueller wirksamer
+  Spionage `E`, `H = 20 * (20 + Forschungsleistung des Ziels)` und
+  `S(B) = B / (B + H)` wird der frühere Beitrag jeder Quelle mit
+  `min(1, S(B) / S(20 * E))` multipliziert. Bei gleichbleibender Finanzierung
+  nähert sich der Ertrag dem früheren Wert, ohne ihn zu überschreiten.
+  Höhere Finanzierung erfordert weiteren Aufbau; nach einer Senkung kann das
+  Netzwerk bereits ausgereift sein. Der Aufbau verfällt auch ohne Finanzierung
+  und in anderen Modi. Bei 100 wirksamer Spionage gegen 100 Forschungsleistung
+  werden nach 10 normalen Runden 77,4%, nach 20 Runden 93,0% und nach 40 Runden
+  99,2% des früheren Ertrags erreicht.
+  Erworbener Forschungsfortschritt bleibt erhalten; entgangene Anfangserträge
+  werden nicht nachträglich erstattet.
+
+Die KI nutzt dieselben Zielwerte zur Fokuswahl, priorisiert Militärspionage im
+Krieg und verteilt zusätzliche Gruppen bevorzugt auf nützliche Alternativen.
+Bei der Wahl feindlicher Schwerpunkte berücksichtigt sie keine Verbündeten;
+die automatische Zielzuweisung selbst folgt denselben Regeln wie beim Menschen.
+Die Finanzlage begrenzt ihre Ausgaben. Diese Heuristiken garantieren kein optimales Spiel.
+
+- **Militärspionage:** `B` ist der gemeinsame abgeleitete Aufbau der
+  zugewiesenen Gruppen gegen das Zielteam. Der Abbau läuft auch ohne Finanzierung und in anderen Modi weiter;
+  Effekte gelten nur im Militärmodus. Ohne Finanzierung halbiert sich der Aufbau
+  nach etwa 6,6 normalen Runden (13,5 auf XL). Bei `U` feindlichen Militäreinheiten ist der
+  gemeinsame Wirkungsanteil `B / (B + 20 * (40 + U))`. Kampfbonus und
+  Infiltrationschance nähern sich 30%, die Truppenaufklärung 100%. Effekte
+  behalten intern Hundertstelprozent und werden mit einer Nachkommastelle angezeigt.
+  Die endgültige Kampfstärke nutzt die normale Rundung des Spiels.
+  Große Armeen erfordern mehr Aufbau. Zusätzliche Investitionen bringen
+  abnehmenden Nutzen. Eine feste Auswahl feindlicher Land-, See- und
+  Luftkampfeinheiten wird auf ihren Bewegungen verfolgt. Sichtbar sind nur die
+  besetzten Felder; normale Unsichtbarkeitsregeln gelten weiter. Andere Einheiten
+  auf demselben Feld können dadurch ebenfalls sichtbar werden. Es entsteht keine
+  Sicht auf das Stadtumfeld. Beim Wegzug oder Tod endet die Sicht auf das Feld,
+  sofern keine andere Quelle es weiter aufklärt. Im Krieg ermöglicht eine
+  benachbarte angriffsfähige Landeinheit einen Infiltrationswurf pro Stadt und
+  Spielrunde, gemeinsam für alle Angreifer. Erfolg schaltet die Stadtverteidigung
+  für diese Spielrunde aus. Gelände-, Einheiten- und Verschanzungsboni sowie
+  gespeicherter Bombardierungsschaden bleiben erhalten.
+  Beispiel: Gegen 100 Militäreinheiten ergibt eine wirksame Spionageleistung von
+  100 pro normaler Runde nach 10, 20 und 40 Runden +9,5%, +11,6% und +12,4% Kampfstärke.
+  Langfristig sind es +12,5%, etwa 12,5% Infiltrationschance und 41,7% Truppenabdeckung.
+  Bei 400 beziehungsweise 1.000 Leistung erreicht der Kampfbonus langfristig +22,2%
+  beziehungsweise +26,3%.
+- **Politische Einmischung:** Nichtmonarchien bauen eine politische Fraktion auf.
+  Sie verbessert Beziehungen zum Geldgeber, fördert dessen Staatsformen, verbreitet
+  seine Stadtkultur und destabilisiert das Ziel. Seltene Klientelregierungen
+  erfordern starke Instabilität und unabhängige Länder. Monarchien nutzen weiterhin
+  dynastische Politik. Einzelheiten stehen unten.
+- **Wirtschaftliche Unterwanderung:** Netzwerke stehlen Gold, leiten
+  Nahrungslieferungen um und stehlen gelegentlich Kunst. Der Aufbau verfällt
+  um 10,0% pro normaler Runde, auf XL um 5,0%. Der normale Zuwachs beträgt die doppelte wirksame Spionageleistung. Der Einfluss beträgt
+  `B / (B + 400)`. Bei 50,0% Einfluss gelten pro normaler Runde h?chstens
+  2,5% des positiven Wachstums?berschusses und 0,5% Kunstraubchance. Alle
+  Angreifer teilen sich nach Einfluss Obergrenzen von 5,0% des Wachstums?berschusses
+  und 1,0% Kunstraubchance. Gold wird aus der aktuellen Schatzkammer entnommen;
+  ?bersteigen die Forderungen den Vorrat, wird das Gold proportional verteilt. Der
+  Finanzberater zeigt tatsächlich gestohlenes und durch Spionage verlorenes Gold
+  der letzten abgeschlossenen Spielrunde in den Einnahmen und Ausgaben.
+  Zeilen mit dem Wert null bleiben ausgeblendet. Diese Beträge sind bereits in
+  der Schatzkammer enthalten und ändern die normale Goldrate pro Runde nicht.
+  Das Goldbudget jedes Ziels beträgt höchstens 50,0% der ihm zugeteilten
+  Spionageleistung, multipliziert mit dem Einfluss.
+  Goldbruchteile sammeln sich an. Nahrungsbruchteile sammeln sich je Stadt
+  nach Wachstumsmodifikatoren an. Nur neuer positiver Wachstumsüberschuss
+  wird umgeleitet; Vorräte, Verbrauch und Nahrungsproduktion bleiben erhalten.
+  Lieferungen gehen an die nächste eigene Stadt ohne Unruhen. Gold und Nahrung
+  werden übertragen, nicht erzeugt. Kunstraub betrifft Städte mit mindestens
+  100 eigener Kultur und positivem Kulturertrag. Die nächste eigene Stadt ohne
+  Unruhen erhält fünf Runden des Kulturertrags der bestohlenen Stadt, höchstens
+  100 Kultur. Die bestohlene Stadt erleidet drei normale Runden Geheimdienstunruhen
+  (+2 Unzufriedenheit), ohne bestehende Geheimdienstunruhen zu addieren.
+  Historische Kultur und Grenzen bleiben erhalten. XL halbiert Aufbau, Verfall,
+  Transfers und Ereignischancen pro Runde; Kunstbelohnungen bleiben gleich.
+  Operationen laufen im Krieg weiter. Kartenberichte und ihre Stadtsicht entfallen.
+
+Das Entdeckungsrisiko steigt mit dem Aufwand und nähert sich den bisherigen
+festen Chancen als Obergrenzen: 1,0% für Technologie/wirtschaftliche Operationen,
+3,0% für Militär und 6,0% für politische Einmischung pro normaler Runde.
+Es gilt `Obergrenze * Aufwand / (Aufwand + 50)` mit
+`Aufwand = max(E, B / 20)`, aktueller wirksamer Spionage `E` und gespeichertem
+Aufbau `B` der gewählten Operation. Kleine Operationen sind unauffälliger.
+Nach einer Finanzierungssenkung bleibt das abklingende Netzwerk eine Zeit lang
+auffällig. Ohne Finanzierung und Aufbau ist das Risiko null. Dynastische Politik
+bleibt ausgenommen. Pro aktivem Fokus, Auftraggeber und Zielteam gibt es einen
+Wurf je Runde, auch bei mehreren Gruppen oder Spielern im Zielteam. XL halbiert die Chance.
+Entdeckungen verschlechtern die Haltung des
+Ziels um höchstens -1, -3 beziehungsweise -6. Bestehende Abzüge überdauern
+Moduswechsel und sinken pro normaler Runde um zwei Hundertstel eines
+Haltungspunkts, pro XL-Runde um ein Hundertstel. Nichtmilitärische
+Ereignischancen folgen dem Kalender; militärische Infiltration wird
+weiterhin jede Spielrunde geprüft.
+Berater und Diplomatie-Tooltip zeigen den Abzug. Die KI wählt passende Operationen
+und Budgets. Werte sind vorläufig; Darstellung, Balance und Mehrspielerbetrieb
+benötigen eine vom Benutzer durchgeführte Prüfung im Spiel. Das neue
+Speicherformat ist für neue Partien vorgesehen.
+
+### Politische Fraktionen
+
+Aufbau `B` verfällt wie beim Militärnetz: 10% je normaler Runde, auf XL 5% bei
+halbiertem Zuwachs. Normaler Zuwachs ist die doppelte wirksame Spionageleistung. Zugang und Gegenaufklärung senken die wirksame Finanzierung.
+Bei Zielbevölkerung `P` ist der Wirkungsanteil `F = B / (B + 20 * (20 + P))`.
+Ab 25% Einfluss verbessert sich die Haltung des Ziels zum Geldgeber um +1,
+ab 75% um +2. Krieg unterdrückt diesen Bonus; entdeckte Operationen können ihn
+überwiegen. Der Einfluss bewirkt bis zu 5% Staatsformübernahme pro normaler Runde,
+multipliziert mit `F`. Voraussetzungen und bestehende Beschränkungen gelten weiter.
+Anarchie oder ein laufender Revolutions-Timer blockieren den Wurf. Eine erfolgreiche
+Reform startet fünf normale Runden Wartezeit, ohne automatische Zusatzanarchie.
+
+Jedes politische Ziel erhält je normaler Runde Stadtkultur im Wert von bis zu
+einem Viertel der ihm zugeteilten Spionageleistung, multipliziert mit seinem `F`.
+Die Verteilung erfolgt nach Stadtbevölkerung.
+Es entsteht kein zusätzlicher kostenloser Feldkulturimpuls. Stabilitätsdruck beträgt
+bis zu `6 * F` je Netz; gemeinsam bleiben es höchstens -6. Bisherige Grenzen für
+Zusatzanarchie, lokale Unruhen und deren Wartezeiten gelten weiter.
+
+Klientelregierungen haben höchstens 0,1% Chance je normaler Runde, bei Republiken
+0,3%, bei Demokratien 1%, jeweils multipliziert mit `F`. Unter -20 Stabilität steigt
+die Anfälligkeit linear bis zur vollen Wirkung bei -40. Beide Länder müssen
+unabhängig sein, Städte besitzen und miteinander Frieden haben. Bestehende Vasallen
+werden nicht übernommen. Bei Teams bestimmt das am wenigsten anfällige Mitglied
+die Chance; alle müssen die Bedingungen erfüllen. Ein Erfolg schafft freiwillige
+Vasallenschaft und überträgt keine Städte. XL halbiert Übernahmechancen und Kultur
+je Spielrunde, nicht die Stärke von Beziehungen und Stabilitätsdruck.
+
+### Dynastische Politik
+
+Monarchien ersetzen politische Einmischung durch Heiratspolitik gegenüber anderen
+Monarchien. Einfluss wächst wie militärischer Aufbau und verliert pro normaler
+Runde 10%, auf XL 5%. Pro normaler Runde kommt die doppelte wirksame
+Spionageleistung hinzu. XL halbiert den Zuwachs. Jeder negative Stabilitätspunkt
+des Ziels erhöht den Zuwachs um 2%, bis zur Verdopplung bei -50; positive Stabilität
+wirkt nicht erschwerend. Größe und Religion sind keine Bedingungen dieser Operation.
+Der Wirkungsanteil ist `B / (B + 100)` bei Aufbau `B`.
+
+| Stufe | Chance pro normaler Runde |
+| --- | --- |
+| Unbedeutend | 0% bis +20% |
+| Entfernte Verwandte | -5% bis +15% |
+| Nahe Verwandte | -10% bis +10% |
+| Personalunion | -10% bis +10% |
+| Eingliederung | Keine weiteren Würfe |
+
+Die Chance ist `20% * B / (B + 100)` abzüglich 0, 5 oder 10 Prozentpunkten.
+XL halbiert die gesamte vorzeichenbehaftete Chance. Positive Chancen bewirken
+Aufstieg, negative Rückschritt um eine Stufe. Pro Zielteam gibt es je Spielrunde
+höchstens einen Wurf. Krieg stoppt Aufbau und Aufstieg; der Einfluss verfällt weiter.
+Entfernte Verwandte geben beidseitig +1 Beziehungen, nahe Verwandte und spätere
+Stufen +2. Eine Kriegserklärung gegen nahe Verwandte kostet den Angreifer für
+20 normale beziehungsweise 40 XL-Runden 6 Stabilität, ohne zusätzliche Anarchie.
+
+Die Personalunion macht das Ziel zum freiwilligen Vasallen. Fremde Vasallen können
+nicht übernommen werden; ein Vasall kann kein Lehnsherr werden. Die Spieloption
+ohne Vasallen verhindert diesen Schritt. Rückschritt beendet nur eine durch dieses
+Netz geschaffene Vasallenbindung. Eine anderweitig beendete Personalunion fällt
+auf nahe Verwandte zurück.
+
+Die Eingliederung überträgt jede Spielrunde die nächste Stadt zur nächstgelegenen
+Stadt des Erben, einmal je Zielteam. Garnisonen wechseln mit der Stadt; mit der
+letzten Stadt wechseln die übrigen Einheiten. Es gibt keine Eroberungsprämien.
+Es wird nicht mehr gewürfelt. Die Übertragungen laufen auch ohne Finanzierung und
+nach Staatsformwechseln weiter, ruhen aber bei Krieg oder beendeter Vasallenschaft.
+Solange die Union besteht, fällt die Stabilität des eingegliederten Landes nicht
+unter null. Politischer Druck löst dort auch keine zusätzliche Anarchie oder
+lokalen Unruhen aus. Andere Ursachen für Stadtverluste bleiben wirksam.
+
+Beim bisherigen Erbfall durch Zusammenbruch bleiben die 50%-Chance und alle
+Bedingungen bestehen. Kandidaten erhalten das Gewicht
+`100 + 100 * Stufe + 400 * B / (B + 100)`. Etablierte Dynastien und hoher Einfluss
+werden dadurch bevorzugt. Die KI bevorzugt Heiratspolitik gegenüber Monarchien
+maßvoll und hält ihre Wahl für zehn normale Runden. Krieg, großer technologischer
+Rückstand und Finanznot beeinflussen diese Wahl weiter.

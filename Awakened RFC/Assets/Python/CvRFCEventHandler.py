@@ -1,4 +1,5 @@
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import CvEventManager #Mercenaries
 import sys #Mercenaries
@@ -140,6 +141,8 @@ class CvRFCEventHandler:
                 'Called at the start of the game'
                 self.data.setupScriptData()
                 self.rnf.setup()
+                import IndianCivs
+                IndianCivs.setup(self.vic)
                 import Korea
                 Korea.setup(self.vic)
                 import NativeAmerica
@@ -151,6 +154,8 @@ class CvRFCEventHandler:
                 self.sta.setup()
                 self.aiw.setup()
                 self.rnf.warOnSpawn()
+                import Drought
+                Drought.setup()
 
                 
                 return 0
@@ -159,6 +164,8 @@ class CvRFCEventHandler:
         def onCityAcquired(self, argsList):
                 #'City Acquired'
                 owner,playerType,city,bConquest,bTrade = argsList
+                import BirthSuccession
+                BirthSuccession.record(owner, playerType, city)
                 #CvUtil.pyPrint('City Acquired Event: %s' %(city.getName()))
                 self.slave.onCityAcquired(owner, playerType, city, bConquest, bTrade)
                 self.cnm.renameCities(city, playerType)
@@ -176,7 +183,7 @@ class CvRFCEventHandler:
                 if (gc.getPlayer(con.iCeltia).getCivilizationType() == 4 and
                     not (bTrade and not bConquest and gc.getGame().isPapalState(playerType))):  #late start condition (RFCMP)
                         if (owner == iCeltia and gc.getPlayer(iCeltia).isAlive()):
-                                if ((city.getX() == 68 and city.getY() == 45) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
+                                if ((city.getX() == geo.value('CvRFCEventHandler.bound_1') and city.getY() == geo.value('CvRFCEventHandler.bound_2')) or gc.getPlayer(iCeltia).getNumCities() <= 2): #constantinopolis captured or empire size <=2
                                         print ("killed Byzantium")
                                         utils.killAndFragmentCiv(iCeltia, iIndependent, iIndependent2, -1, False)
 
@@ -303,7 +310,7 @@ class CvRFCEventHandler:
                 'Religion Founded'
                 iReligion, iFounder = argsList
 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == geo.turns(181) or gc.getGame().getGameTurn() == geo.turns(87) or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
         
                 self.vic.onReligionFounded(iReligion, iFounder)
@@ -344,6 +351,8 @@ class CvRFCEventHandler:
                 
         def onBeginGameTurn(self, argsList):
                 iGameTurn = argsList[0]
+                if not geo.historyBoundary(iGameTurn):
+                        return 0
 
                 print ("iGameTurn", iGameTurn)
                 #self.printDebug(iGameTurn) #RFCMP
@@ -352,6 +361,8 @@ class CvRFCEventHandler:
                 #utils.makeUnit(con.iAxeman, con.iAmerica, (0,0), 1)
 
                 
+                import Drought
+                Drought.checkTurn(iGameTurn)
                 self.rnf.checkTurn(iGameTurn)
                 self.barb.checkTurn(iGameTurn)
                 self.rel.checkTurn(iGameTurn)
@@ -370,12 +381,16 @@ class CvRFCEventHandler:
 
         def onBeginPlayerTurn(self, argsList):        
                 iGameTurn, iPlayer = argsList
+                import Administration
+                Administration.beginTurn(iGameTurn, iPlayer)
+                if not geo.historyBoundary(iGameTurn):
+                        return
 
-                # Democracy holds an election every ten turns. The synchronized game RNG
+                # Democracy has a 10% election chance every five reference turns. The synchronized game RNG
                 # selects one non-government civic column and one available replacement.
                 pPlayer = gc.getPlayer(iPlayer)
                 iDemocracy = CvUtil.findInfoTypeNum(gc.getCivicInfo, gc.getNumCivicInfos(), 'CIVIC_DEMOCRACY')
-                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % 10 == 0 and pPlayer.getCivics(0) == iDemocracy):
+                if (pPlayer.isAlive() and iGameTurn > 0 and iGameTurn % geo.turns(5) == 0 and pPlayer.getCivics(0) == iDemocracy and gc.getGame().getSorenRandNum(100, "Democracy election chance") < 10):
                         lEligibleColumns = []
                         for iOption in range(1, gc.getNumCivicOptionInfos()):
                                 lAvailableCivics = []
@@ -433,6 +448,8 @@ class CvRFCEventHandler:
                 iGameTurn, iPlayer = argsList
                 # CvPlayer.doTurn fires this after city updates, before input
                 # resumes. Expired slaves must not create a stale decision.
+                import Famine
+                self.sta.applyPopulationLossChange(iPlayer, Famine.checkPlayerTurn(iPlayer))
                 self.slave.checkPlayerTurn(iPlayer)
 
 
@@ -456,7 +473,6 @@ class CvRFCEventHandler:
                         return
 
                 iTeamX,iHasMetTeamY = argsList
-                self.rnf.onFirstContact(iTeamX, iHasMetTeamY)
                 self.pla.onFirstContact(iTeamX, iHasMetTeamY)
 
         #Rhye - start
@@ -465,7 +481,7 @@ class CvRFCEventHandler:
                 #print ("onTechAcquired", argsList)
                 iPlayer = argsList[2]
                 
-                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == 181 or gc.getGame().getGameTurn() == 87 or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
+                if (gc.getGame().getStartTurn() != 0 and (gc.getGame().getGameTurn() == geo.turns(181) or gc.getGame().getGameTurn() == geo.turns(87) or (Scenario1453AD.isScenario() and gc.getGame().getGameTurn() == Scenario1453AD.START_TURN) or (Scenario900AD.isScenario() and gc.getGame().getGameTurn() == Scenario900AD.START_TURN))): #late start condition (RFCMP)
                         return
                 
                 if (gc.getGame().getGameTurn() > con.tBirth[iPlayer]):                    
@@ -496,7 +512,7 @@ class CvRFCEventHandler:
                                 self.rnf.setAstronomyTurn(iPlayer, gc.getGame().getGameTurn())
                 if (argsList[0] == con.iCompass):
                         if (iPlayer == con.iVikings):
-                                gc.getMap().plot(49, 62).setTerrainType(con.iCoast, True, True)
+                                gc.getMap().plot(*geo.value('CvRFCEventHandler.plot_1')).setTerrainType(con.iCoast, True, True)
                 if (argsList[0] == con.iMedicine):
                         self.pla.onTechAcquired(argsList[0], argsList[2])
 
@@ -616,7 +632,7 @@ class CvRFCEventHandler:
                         #print (plotList)
                         #utils.setStability(con.iChina, -25)
                         
-                        #city = gc.getMap().plot( 79, 40 ).getPlotCity() 
+                        #city = gc.getMap().plot( 79, 40 ).getPlotCity()
                         #self.pla.infectCity(city)
                         #self.pla.spreadPlague(con.iPersia)
                         #self.pla.processPlague(con.iPersia)
@@ -747,8 +763,8 @@ class CvRFCEventHandler:
                 #              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
                 #              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
                 #              0, 0]
-                for x in range(0, 123):
-                        for y in range(0, 67):
+                for x in range(*geo.value('CvRFCEventHandler.range_5')):
+                        for y in range(*geo.value('CvRFCEventHandler.range_6')):
                                 pCurrent = gc.getMap().plot( x, y )
                                 iTotal += pCurrent.getNumUnits()
 ##                                if (pCurrent.getNumUnits() > 0):

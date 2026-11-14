@@ -5,6 +5,7 @@ from CvPythonExtensions import *
 import Popup
 import CvUtil
 import Consts as con
+import ScenarioGeography as geo
 
 gc = CyGlobalContext()
 
@@ -13,6 +14,7 @@ CAPTURE_AFTERMATH_POPUP = 7625
 CAPTURE_AFTERMATH_MINIMUM_POPULATION = 4
 CAPTURE_AFTERMATH_MAX_DISTANCE = 12
 CAPTURE_AFTERMATH_REFUGEE_TURNS = 20
+geo.bindTime(globals(), 'CAPTURE_AFTERMATH_REFUGEE_TURNS', 20)
 
 class Slavery:
 
@@ -92,7 +94,8 @@ class Slavery:
 			bPlayerSlaveMarket = bSlaveMarket and iPlayer != iOldOwner
 			target = self._nearbyCity(player, x, y, bPlayerSlaveMarket and self._hasSlavery(player))
 			if target is None: continue
-			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), price, culture)
+			playerPrice = price * (100 + player.calculateInflationRate()) / 100
+			data = (iOldOwner, cityName, bPlayerSlaveMarket, target.getID(), playerPrice, culture)
 			self._offerCaptureAftermath(iPlayer, data)
 
 	def _offerCaptureAftermath(self, iPlayer, data):
@@ -204,6 +207,7 @@ class Slavery:
 		return max(0, min(40, self._slaveCount(city) * 5 * unguardedPower / slavePower))
 
 	def checkPlayerTurn(self, iPlayer):
+		if not geo.historyBoundary(gc.getGame().getGameTurn()): return
 		player = gc.getPlayer(iPlayer)
 		if not player.isAlive() or not self._hasSlavery(player):
 			return
@@ -280,7 +284,7 @@ class Slavery:
 				for dy in range(-radius, radius + 1):
 					if max(abs(dx), abs(dy)) != radius: continue
 					plot = gc.getMap().plot(city.getX() + dx, city.getY() + dy)
-					if not plot.isNone() and not plot.isWater() and not plot.isPeak() and not plot.isCity():
+					if not plot.isNone() and not plot.isWater() and not plot.isPeak() and not plot.isImpassable() and not plot.isCity():
 						return plot
 		return city.plot()
 

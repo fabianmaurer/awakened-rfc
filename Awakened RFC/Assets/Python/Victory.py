@@ -2,11 +2,13 @@
 
 
 from CvPythonExtensions import *
+import ScenarioGeography as geo
 import CvUtil
 import PyHelpers   
 import Popup
 import cPickle as pickle
 import Consts as con
+import Harappa
 import RFCUtils
 utils = RFCUtils.RFCUtils()
 
@@ -20,48 +22,48 @@ PyPlayer = PyHelpers.PyPlayer
 
 ### Constants ###
 
-i850BC = con.i850BC #new timeline
-i700BC = con.i700BC
-i250BC = con.i250BC #new timeline
-i100BC = con.i100BC #new timeline
-i50AD = con.i50AD
-i140AD = con.i140AD #new timeline
-i170AD = con.i170AD
-i200AD = con.i200AD #new timeline
-i250AD = con.i250AD
-i350AD = con.i350AD
-i450AD = con.i450AD
-i470AD = con.i470AD #new timeline
-i500AD = con.i500AD #new timeline
-i600AD = con.i600AD
-i700AD = con.i700AD
-i900AD = con.i900AD
-i1000AD = con.i1000AD
-i1200AD = con.i1200AD
-i1300AD = con.i1300AD
-i1400AD = con.i1400AD
-i1450AD = con.i1450AD
-i1500AD = con.i1500AD
-i1600AD = con.i1600AD
-i1650AD = con.i1650AD
-i1700AD = con.i1700AD
-i1715AD = con.i1715AD
-i1730AD = con.i1730AD
-i1745AD = con.i1745AD
-i1760AD = con.i1760AD
-i1775AD = con.i1775AD
-i1800AD = con.i1800AD
-i1820AD = con.i1820AD
-i1850AD = con.i1850AD
-i1860AD = con.i1860AD
-i1870AD = con.i1870AD
-i1880AD = con.i1880AD
-i1900AD = con.i1900AD
-i1910AD = con.i1910AD
-i1930AD = con.i1930AD
-i1940AD = con.i1940AD
-i1950AD = con.i1950AD
-i2000AD = con.i2000AD
+geo.bindTime(globals(), 'i850BC', con._timeValues['i850BC']) #new timeline
+geo.bindTime(globals(), 'i700BC', con._timeValues['i700BC'])
+geo.bindTime(globals(), 'i250BC', con._timeValues['i250BC']) #new timeline
+geo.bindTime(globals(), 'i100BC', con._timeValues['i100BC']) #new timeline
+geo.bindTime(globals(), 'i50AD', con._timeValues['i50AD'])
+geo.bindTime(globals(), 'i140AD', con._timeValues['i140AD']) #new timeline
+geo.bindTime(globals(), 'i170AD', con._timeValues['i170AD'])
+geo.bindTime(globals(), 'i200AD', con._timeValues['i200AD']) #new timeline
+geo.bindTime(globals(), 'i250AD', con._timeValues['i250AD'])
+geo.bindTime(globals(), 'i350AD', con._timeValues['i350AD'])
+geo.bindTime(globals(), 'i450AD', con._timeValues['i450AD'])
+geo.bindTime(globals(), 'i470AD', con._timeValues['i470AD']) #new timeline
+geo.bindTime(globals(), 'i500AD', con._timeValues['i500AD']) #new timeline
+geo.bindTime(globals(), 'i600AD', con._timeValues['i600AD'])
+geo.bindTime(globals(), 'i700AD', con._timeValues['i700AD'])
+geo.bindTime(globals(), 'i900AD', con._timeValues['i900AD'])
+geo.bindTime(globals(), 'i1000AD', con._timeValues['i1000AD'])
+geo.bindTime(globals(), 'i1200AD', con._timeValues['i1200AD'])
+geo.bindTime(globals(), 'i1300AD', con._timeValues['i1300AD'])
+geo.bindTime(globals(), 'i1400AD', con._timeValues['i1400AD'])
+geo.bindTime(globals(), 'i1450AD', con._timeValues['i1450AD'])
+geo.bindTime(globals(), 'i1500AD', con._timeValues['i1500AD'])
+geo.bindTime(globals(), 'i1600AD', con._timeValues['i1600AD'])
+geo.bindTime(globals(), 'i1650AD', con._timeValues['i1650AD'])
+geo.bindTime(globals(), 'i1700AD', con._timeValues['i1700AD'])
+geo.bindTime(globals(), 'i1715AD', con._timeValues['i1715AD'])
+geo.bindTime(globals(), 'i1730AD', con._timeValues['i1730AD'])
+geo.bindTime(globals(), 'i1745AD', con._timeValues['i1745AD'])
+geo.bindTime(globals(), 'i1760AD', con._timeValues['i1760AD'])
+geo.bindTime(globals(), 'i1775AD', con._timeValues['i1775AD'])
+geo.bindTime(globals(), 'i1800AD', con._timeValues['i1800AD'])
+geo.bindTime(globals(), 'i1820AD', con._timeValues['i1820AD'])
+geo.bindTime(globals(), 'i1850AD', con._timeValues['i1850AD'])
+geo.bindTime(globals(), 'i1860AD', con._timeValues['i1860AD'])
+geo.bindTime(globals(), 'i1870AD', con._timeValues['i1870AD'])
+geo.bindTime(globals(), 'i1880AD', con._timeValues['i1880AD'])
+geo.bindTime(globals(), 'i1900AD', con._timeValues['i1900AD'])
+geo.bindTime(globals(), 'i1910AD', con._timeValues['i1910AD'])
+geo.bindTime(globals(), 'i1930AD', con._timeValues['i1930AD'])
+geo.bindTime(globals(), 'i1940AD', con._timeValues['i1940AD'])
+geo.bindTime(globals(), 'i1950AD', con._timeValues['i1950AD'])
+geo.bindTime(globals(), 'i2000AD', con._timeValues['i2000AD'])
 
 
 iAncient = con.iAncient
@@ -72,68 +74,68 @@ iIndustrial = con.iIndustrial
 iModern = con.iModern
 iFuture = con.iFuture
 
-tCoreAreasTL = con.tCoreAreasTL
-tCoreAreasBR = con.tCoreAreasBR
-tNormalAreasTL = con.tNormalAreasTL
-tNormalAreasBR = con.tNormalAreasBR
-tAmericasTL = con.tAmericasTL
-tAmericasBR = con.tAmericasBR
-tSAmericaTL = (24, 3)
-tSAmericaBR = (43, 32)
-tNCAmericaTL = (3, 33)
-tNCAmericaBR = (37, 63)
-tCAmericaTL = (12, 33)
-tCAmericaBR = (33, 43)
-tSiberiaTL = (82, 50)
-tSiberiaBR = (112, 64)
-tNECanadaTL = (22, 50)
-tNECanadaBR = (37, 60)
-tLouisianaTL = (19, 42)
-tLouisianaBR = (24, 50)
-tEastCoastTL = (25, 42)
-tEastCoastBR = (35, 52)
-tSouthAfricaTL = (61, 10)
-tSouthAfricaBR = (72, 18)
-tAustraliaTL = (103, 10)
-tAustraliaBR = (118, 22)
-tScandinaviaTL = (57, 55)
-tScandinaviaBR = (65, 65)
-tNearEastTL = (70, 37)
-tNearEastBR = (78, 45)
-tCarthageTL = (50, 36)
-tCarthageBR = (61, 39)
-tAfricaTL = (45, 10)
-tAfricaBR = (76, 39)
-tAsiaTL = (73, 29)
-tAsiaBR = (121, 64)
-tOceaniaTL = (99, 5)
-tOceaniaBR = (123, 28)
-tMediterraneanTL = (51, 36)
-tMediterraneanBR = (73, 47)
-tMediterraneanExceptions = ((51,36),(51,46),(52,46),(53,46),(53,47),(67,47),(67,46),(73,44),(73,45),(72,45),(71,44),(70,44),(73,36))
-tHokkaidoTL = (115, 50)
-tHokkaidoBR = (116, 52)
-tHonshuTL = (112, 44)
-tHonshuBR = (116, 49)
-tBalkansTL = (64, 40)
-tBalkansBR = (68, 47)
-tBlackSeaTL = (67, 44)
-tBlackSeaBR = (76, 50)
-tMesopotamiaTL = (73, 37)
-tMesopotamiaBR = (78, 42)
-tFranceTL = (51, 47)
-tEuropeTL = (44, 40)
-tEuropeBR = (68, 65)
+geo.bind(globals(), 'tCoreAreasTL', 'Consts.tCoreAreasTL')
+geo.bind(globals(), 'tCoreAreasBR', 'Consts.tCoreAreasBR')
+geo.bind(globals(), 'tNormalAreasTL', 'Consts.tNormalAreasTL')
+geo.bind(globals(), 'tNormalAreasBR', 'Consts.tNormalAreasBR')
+geo.bind(globals(), 'tAmericasTL', 'Consts.tAmericasTL')
+geo.bind(globals(), 'tAmericasBR', 'Consts.tAmericasBR')
+geo.bind(globals(), 'tSAmericaTL', 'Victory.tSAmericaTL')
+geo.bind(globals(), 'tSAmericaBR', 'Victory.tSAmericaBR')
+geo.bind(globals(), 'tNCAmericaTL', 'Victory.tNCAmericaTL')
+geo.bind(globals(), 'tNCAmericaBR', 'Victory.tNCAmericaBR')
+geo.bind(globals(), 'tCAmericaTL', 'Victory.tCAmericaTL')
+geo.bind(globals(), 'tCAmericaBR', 'Victory.tCAmericaBR')
+geo.bind(globals(), 'tSiberiaTL', 'Victory.tSiberiaTL')
+geo.bind(globals(), 'tSiberiaBR', 'Victory.tSiberiaBR')
+geo.bind(globals(), 'tNECanadaTL', 'Victory.tNECanadaTL')
+geo.bind(globals(), 'tNECanadaBR', 'Victory.tNECanadaBR')
+geo.bind(globals(), 'tLouisianaTL', 'Victory.tLouisianaTL')
+geo.bind(globals(), 'tLouisianaBR', 'Victory.tLouisianaBR')
+geo.bind(globals(), 'tEastCoastTL', 'Victory.tEastCoastTL')
+geo.bind(globals(), 'tEastCoastBR', 'Victory.tEastCoastBR')
+geo.bind(globals(), 'tSouthAfricaTL', 'Victory.tSouthAfricaTL')
+geo.bind(globals(), 'tSouthAfricaBR', 'Victory.tSouthAfricaBR')
+geo.bind(globals(), 'tAustraliaTL', 'Victory.tAustraliaTL')
+geo.bind(globals(), 'tAustraliaBR', 'Victory.tAustraliaBR')
+geo.bind(globals(), 'tScandinaviaTL', 'Victory.tScandinaviaTL')
+geo.bind(globals(), 'tScandinaviaBR', 'Victory.tScandinaviaBR')
+geo.bind(globals(), 'tNearEastTL', 'Victory.tNearEastTL')
+geo.bind(globals(), 'tNearEastBR', 'Victory.tNearEastBR')
+geo.bind(globals(), 'tCarthageTL', 'Victory.tCarthageTL')
+geo.bind(globals(), 'tCarthageBR', 'Victory.tCarthageBR')
+geo.bind(globals(), 'tAfricaTL', 'Victory.tAfricaTL')
+geo.bind(globals(), 'tAfricaBR', 'Victory.tAfricaBR')
+geo.bind(globals(), 'tAsiaTL', 'Victory.tAsiaTL')
+geo.bind(globals(), 'tAsiaBR', 'Victory.tAsiaBR')
+geo.bind(globals(), 'tOceaniaTL', 'Victory.tOceaniaTL')
+geo.bind(globals(), 'tOceaniaBR', 'Victory.tOceaniaBR')
+geo.bind(globals(), 'tMediterraneanTL', 'Victory.tMediterraneanTL')
+geo.bind(globals(), 'tMediterraneanBR', 'Victory.tMediterraneanBR')
+geo.bind(globals(), 'tMediterraneanExceptions', 'Victory.tMediterraneanExceptions')
+geo.bind(globals(), 'tHokkaidoTL', 'Victory.tHokkaidoTL')
+geo.bind(globals(), 'tHokkaidoBR', 'Victory.tHokkaidoBR')
+geo.bind(globals(), 'tHonshuTL', 'Victory.tHonshuTL')
+geo.bind(globals(), 'tHonshuBR', 'Victory.tHonshuBR')
+geo.bind(globals(), 'tBalkansTL', 'Victory.tBalkansTL')
+geo.bind(globals(), 'tBalkansBR', 'Victory.tBalkansBR')
+geo.bind(globals(), 'tBlackSeaTL', 'Victory.tBlackSeaTL')
+geo.bind(globals(), 'tBlackSeaBR', 'Victory.tBlackSeaBR')
+geo.bind(globals(), 'tMesopotamiaTL', 'Victory.tMesopotamiaTL')
+geo.bind(globals(), 'tMesopotamiaBR', 'Victory.tMesopotamiaBR')
+geo.bind(globals(), 'tFranceTL', 'Victory.tFranceTL')
+geo.bind(globals(), 'tEuropeTL', 'Victory.tEuropeTL')
+geo.bind(globals(), 'tEuropeBR', 'Victory.tEuropeBR')
 ##tNubiaTL = (67, 29)
 ##tNubiaBR = (74, 32)
 ##tEastAfricaTL = (67, 20)
 ##tEastAfricaBR = (77, 28)
-tSomaliaTL = (73, 24)
-tSomaliaBR = (77, 29)
-tSubeqAfricaTL = (60, 10)
-tSubeqAfricaBR = (72, 29)
-tBrazilTL = (32, 14)
-tBrazilBR = (43, 30)
+geo.bind(globals(), 'tSomaliaTL', 'Victory.tSomaliaTL')
+geo.bind(globals(), 'tSomaliaBR', 'Victory.tSomaliaBR')
+geo.bind(globals(), 'tSubeqAfricaTL', 'Victory.tSubeqAfricaTL')
+geo.bind(globals(), 'tSubeqAfricaBR', 'Victory.tSubeqAfricaBR')
+geo.bind(globals(), 'tBrazilTL', 'Victory.tBrazilTL')
+geo.bind(globals(), 'tBrazilBR', 'Victory.tBrazilBR')
 
 # initialise player variables
 iEgypt = con.iEgypt
@@ -259,6 +261,8 @@ class Victory:
                 return scriptDict['lGoals'][i][j]
 
         def setGoal( self, i, j, iNewValue ):
+                if not con.HISTORICAL_GOALS_ENABLED:
+                        return
                 import Caliphate
                 if Caliphate.realmOf(i) >= 0: return
                 scriptDict = pickle.loads( gc.getGame().getScriptData() )
@@ -494,7 +498,7 @@ class Victory:
         def checkPlayerTurn(self, iGameTurn, iPlayer):
 
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
                 
                 if (iPlayer == iEgypt):
@@ -512,13 +516,33 @@ class Victory:
                                         else:
                                                 self.setGoal(iEgypt, 2, 0)
                                                 
-                                if (iGameTurn == i100BC+1):
+                                if (iGameTurn == i100BC+geo.turns(1)):
                                         if (self.getGoal(iEgypt, 1) == -1):                                  
                                                 self.setGoal(iEgypt, 1, 0)                      
 
                                                 
+                elif iPlayer in (con.iGanges, con.iChola, con.iDelhi, con.iBengal, con.iVijayanagara):
+                        import IndianCivs
+                        if IndianCivs.isIndian(iPlayer) and gc.getPlayer(iPlayer).isAlive():
+                                IndianCivs.checkGoals(self, iPlayer)
+
+                elif Harappa.isHarappan(iPlayer):
+                        if gc.getPlayer(iPlayer).isAlive():
+                                Harappa.checkGoals(self, iPlayer)
+
                 elif (iPlayer == iIndia):
                         if (pIndia.isAlive()):                                                            
+                                if self.getGoal(iIndia, 1) == -1:
+                                        religions = [False] * con.iNumReligions
+                                        for pyCity in PyPlayer(iIndia).getCityList():
+                                                city = pyCity.GetCy()
+                                                for religion in range(con.iNumReligions):
+                                                        if city.isHasReligion(religion):
+                                                                religions[religion] = True
+                                        if sum(religions) >= 5:
+                                                self.setGoal(iIndia, 1, 1)
+                                        elif iGameTurn >= i1200AD:
+                                                self.setGoal(iIndia, 1, 0)
                                                                 
                                 if (iGameTurn == i1200AD):
                                         iPop = pIndia.getRealPopulation()
@@ -559,20 +583,20 @@ class Victory:
                 elif (iPlayer == iBabylonia):
                         if (pBabylonia.isAlive()):
                                 if (iGameTurn == i850BC):
-                                        bestCity = self.calculateTopCityPopulation(76, 40)                                        
+                                        bestCity = self.calculateTopCityPopulation(geo.value('Victory.bound_1'), geo.value('Victory.bound_2'))
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
-                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == 76 and bestCity.getY() == 40):
+                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_1') and bestCity.getY() == geo.value('Victory.bound_2')):
                                                         self.setGoal(iBabylonia, 1, 1)
                                                 else:
                                                         self.setGoal(iBabylonia, 1, 0)
                                         else:
                                                 self.setGoal(iBabylonia, 1, 0)
                                 if (iGameTurn == i700BC):           
-                                        bestCity = self.calculateTopCityCulture(76, 40)                                        
+                                        bestCity = self.calculateTopCityCulture(geo.value('Victory.bound_3'), geo.value('Victory.bound_4'))
                                         if (bestCity != -1):
                                                 print ("bestCity.getOwner()", bestCity.getOwner())
-                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == 76 and bestCity.getY() == 40):
+                                                if (bestCity.getOwner() == iBabylonia and bestCity.getX() == geo.value('Victory.bound_3') and bestCity.getY() == geo.value('Victory.bound_4')):
                                                         self.setGoal(iBabylonia, 2, 1)
                                                 else:
                                                         self.setGoal(iBabylonia, 2, 0)
@@ -719,7 +743,7 @@ class Victory:
                                                 if (iCounterBarracks >= 5 and iCounterAqueduct >= 5 and iCounterColosseum >= 5):
                                                         self.setGoal(iRome, 0, 1)
                                                         
-                                if (iGameTurn == i200AD+1):
+                                if (iGameTurn == i200AD+geo.turns(1)):
                                         if (self.getGoal(iRome, 0) == -1):
                                                 self.setGoal(iRome, 0, 0)  
                                     
@@ -819,11 +843,11 @@ class Victory:
                 elif (iPlayer == iMaya):
                         if (pMaya.isAlive()):
 
-                                if (iGameTurn == i600AD+1):
+                                if (iGameTurn == i600AD+geo.turns(1)):
                                         if (self.getGoal(iMaya, 0) == -1): #see onTechAcquired()                                        
                                                 self.setGoal(iMaya, 0, 0)
 
-                                if (iGameTurn == i900AD+1):
+                                if (iGameTurn == i900AD+geo.turns(1)):
                                         if (self.getGoal(iMaya, 1) == -1): #see onBuildingBuilt()
                                                 self.setGoal(iMaya, 1, 0)
 
@@ -876,7 +900,7 @@ class Victory:
 
 
                             
-                                if (iGameTurn >= con.tBirth[iSpain]+1 and iGameTurn <= i1300AD):
+                                if (iGameTurn >= con.tBirth[iSpain]+geo.turns(1) and iGameTurn <= i1300AD):
                                         if (self.getGoal(iArabia, 1) == -1):
                                                 bSpain = self.checkOwnedCiv(iArabia, iSpain)
                                                 if (teamSpain.isVassal(iArabia)):
@@ -969,9 +993,9 @@ class Victory:
                         if (pFrance.isAlive()):
                             
                                 if (iGameTurn == i1700AD):
-                                        bestCity = self.calculateTopCityCulture(55, 50)
+                                        bestCity = self.calculateTopCityCulture(geo.value('Victory.bound_7'), geo.value('Victory.bound_8'))
                                         if (bestCity != -1):
-                                                if (bestCity.getOwner() == iFrance and bestCity.getX() == 55 and bestCity.getY() == 50):
+                                                if (bestCity.getOwner() == iFrance and bestCity.getX() == geo.value('Victory.bound_7') and bestCity.getY() == geo.value('Victory.bound_8')):
                                                         self.setGoal(iFrance, 0, 1)
                                                 else:
                                                         self.setGoal(iFrance, 0, 0)
@@ -1028,7 +1052,7 @@ class Victory:
                                         if (self.getGoal(iRussia, 0) == -1):
                                                 self.setGoal(iRussia, 0, 0)
 
-                                if (iGameTurn == i1950AD+1):      
+                                if (iGameTurn == i1950AD+geo.turns(1)):
                                         if (self.getGoal(iRussia, 1) == -1): 
                                                 self.setGoal(iRussia, 1, 0)
 
@@ -1044,8 +1068,8 @@ class Victory:
                                 if (iGameTurn == i1600AD):
                                         lRevealedMap = con.l0Array
                                         for iCiv in range(iNumPlayers):
-                                                for x in range(124):
-                                                        for y in range(68):
+                                                for x in range(geo.width()):
+                                                        for y in range(geo.height()):
                                                                 if (gc.getMap().plot(x, y).isRevealed(iCiv, False)):
                                                                       lRevealedMap[iCiv] += 1
                                         bBestMap = True
@@ -1073,7 +1097,7 @@ class Victory:
                 elif (iPlayer == iMali):
                         if (pMali.isAlive()):
 
-                                if (iGameTurn == i1300AD-10): #temporary fix, they use too many specialist and make Mali UHV very hard
+                                if (iGameTurn == i1300AD-geo.turns(10)): #temporary fix, they use too many specialist and make Mali UHV very hard
                                         if (not pFrance.isHuman()):
                                                 if (pFrance.getGold() > 2000):
                                                         pFrance.setGold(pFrance.getGold()*50/100)
@@ -1107,9 +1131,9 @@ class Victory:
 
                                 if (self.getGoal(iTurkey, 0) == -1):
                                         if (iGameTurn <= i1500AD):
-                                                pIstanbulE = gc.getMap().plot( 68, 45 )
-                                                pIstanbulE2 = gc.getMap().plot( 67, 45 )
-                                                pIstanbulA = gc.getMap().plot( 69, 44 )
+                                                pIstanbulE = gc.getMap().plot(*geo.value('Victory.plot_1'))
+                                                pIstanbulE2 = gc.getMap().plot(*geo.value('Victory.plot_2'))
+                                                pIstanbulA = gc.getMap().plot(*geo.value('Victory.plot_3'))
                                                 if (pIstanbulE.isCity()):                                                        
                                                         if (pIstanbulE.getPlotCity().getOwner() == iTurkey):
                                                                 self.setGoal(iTurkey, 0, 1)
@@ -1125,7 +1149,7 @@ class Victory:
 
                                 if (iGameTurn == i1700AD):
                                         bBalkans = self.checkOwnedArea(iTurkey, tBalkansTL, tBalkansBR, 3)
-                                        bBlackSea = self.checkOwnedAreaAdjacentArea(iTurkey, tBlackSeaTL, tBlackSeaBR, 4, (71,47))
+                                        bBlackSea = self.checkOwnedAreaAdjacentArea(iTurkey, tBlackSeaTL, tBlackSeaBR, 4, geo.value('Victory.checkPlayerTurn.location_1'))
                                         bMesopotamia = self.checkOwnedArea(iTurkey, tMesopotamiaTL, tMesopotamiaBR, 3)
                                         if (bBalkans and bBlackSea and bMesopotamia):
                                                 self.setGoal(iTurkey, 1, 1)
@@ -1152,8 +1176,8 @@ class Victory:
                                 if (iGameTurn == i1500AD):
                                         lRevealedMap = con.l0Array
                                         for iCiv in range(iNumPlayers):
-                                                for x in range(124):
-                                                        for y in range(68):
+                                                for x in range(geo.width()):
+                                                        for y in range(geo.height()):
                                                                 if (gc.getMap().plot(x, y).isRevealed(iCiv, False)):
                                                                       lRevealedMap[iCiv] += 1
                                         bBestMap = True
@@ -1292,7 +1316,7 @@ class Victory:
                                         else:
                                                 self.setGoal(iAmerica, 0, 0)
 
-                                if (iGameTurn == i2000AD+1):
+                                if (iGameTurn == i2000AD+geo.turns(1)):
                                         if (self.getGoal(iAmerica, 1) == -1):
                                                 if (self.getWondersBuilt(iAmerica) != 3):                                    
                                                         self.setGoal(iAmerica, 1, 0)
@@ -1378,7 +1402,7 @@ class Victory:
 
         def onCityBuilt(self, city, iPlayer): #see onCityBuilt in CvRFCEventHandler
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
                     
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1485,15 +1509,15 @@ class Victory:
                         
         def onReligionFounded(self, iReligion, iFounder):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iPlayer = iFounder
 
-                if (iFounder == iIndia):
+                if (iFounder == iIndia and not Harappa.isHarappan(iIndia)):
                         self.setReligionFounded(iReligion, 1)
 
-                if (self.getGoal(iIndia, 0) == -1):
+                if (not Harappa.isHarappan(iIndia) and self.getGoal(iIndia, 0) == -1):
                         if (iReligion == con.iHinduism):
                                 if (iFounder != iIndia):
                                         self.setGoal(iIndia, 0, 0) 
@@ -1502,23 +1526,6 @@ class Victory:
                                         self.setGoal(iIndia, 0, 0)
                         if (self.getReligionFounded(con.iHinduism) == 1 and self.getReligionFounded(con.iBuddhism) == 1):
                                 self.setGoal(iIndia, 0, 1)     
-
-                if (self.getGoal(iIndia, 1) == -1):
-                        iCounter = 0
-                        for i in range(con.iNumReligions):
-                                if (self.getReligionFounded(i) == 1):
-                                        iCounter += 1
-                        if (iCounter >= 5):
-                                self.setGoal(iIndia, 1, 1)
-
-                        if (self.getGoal(iIndia, 1) == -1):
-                                iFounded = 0
-                                for iLoopReligion in range(con.iNumReligions):
-                                        if (gc.getGame().isReligionFounded(iLoopReligion)):
-                                                iFounded += 1
-                                if (iFounded == con.iNumReligions):
-                                        self.setGoal(iIndia, 1, 0)
-
 
                 if (iPlayer == iEthiopia):
                         if (pEthiopia.isAlive()):
@@ -1531,11 +1538,11 @@ class Victory:
 
 
         def onCityAcquired(self, owner, playerType, bConquest):
-                if (gc.getGame().isVictoryValid(7) and owner == con.iKorea and bConquest and
+                if ((con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7)) and owner == con.iKorea and bConquest and
                     gc.getGame().getGameTurnYear() < 1900 and self.getGoal(con.iKorea, 2) == -1):
                         self.setGoal(con.iKorea, 2, 0)
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iPlayer = owner
@@ -1582,7 +1589,7 @@ class Victory:
 
         def onCityRazed(self, iPlayer):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 if (iPlayer == iMongolia):
@@ -1597,7 +1604,7 @@ class Victory:
 
         def onTechAcquired(self, iTech, iPlayer):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1769,7 +1776,7 @@ class Victory:
 
         def onBuildingBuilt(self, iPlayer, iBuilding):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1864,7 +1871,7 @@ class Victory:
                             
         def onProjectBuilt(self, iPlayer, iProject):
 
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 iGameTurn = gc.getGame().getGameTurn()
@@ -1881,7 +1888,7 @@ class Victory:
 
         def onCombatResult(self, argsList):
             
-                if (not gc.getGame().isVictoryValid(7)): #7 == historical
+                if (not (con.HISTORICAL_GOALS_ENABLED and gc.getGame().isVictoryValid(7))): #7 == historical
                         return
 
                 pWinningUnit,pLosingUnit = argsList

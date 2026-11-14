@@ -225,10 +225,52 @@
 			<fScale>1.0</fScale>
 			<fInterfaceScale>1.0</fInterfaceScale>
 			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
-			<FeatureVariety>
+		<FeatureVariety>
 				<FeatureArtPieces>
 					<FeatureArtPiece>
 						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_baseALL.dds</ModelFile>
+						<Connections/>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_FLOOD_PLAINS_DROUGHT</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>1</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_Drought.dds</ModelFile>
+						<Connections/>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>1</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/TerrainFeatures/FloodPlains.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,3</Button>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Floodplain/FloodPlain_SevereDrought.dds</ModelFile>
 						<Connections/>
 					</FeatureArtPiece>
 				</FeatureArtPieces>
@@ -792,15 +834,334 @@
 				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
 			</FeatureVariety>
 		</FeatureArtInfo>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_IMPASSABLE</Type>
+			<bAnimated>1</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/ImpassableFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</VarietyButton>
+			</FeatureVariety>
+<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/ImpassableFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</VarietyButton>
+			</FeatureVariety>
+<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Terrain/Features/Wasteland/ImpassableFog.nif</ModelFile>
+						<Connections></Connections>
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes/>
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>,Art/Interface/Buttons/BaseTerrain/Desert.dds,Art/Interface/Buttons/BaseTerrain_TerrainFeatures_Atlas.dds,2,1</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+	<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_GOLD_OUTPUT_1</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold1.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
+
+
+
+
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_GOLD_OUTPUT_5</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
+
+
+
+
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_GOLD_OUTPUT_7</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold7.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold7.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold7.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
+
+
+
+
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_ARCHIVE_GOLD_OUTPUT_3</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold3.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
+
+
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_ARCHIVE_GOLD_OUTPUT_5</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/ArchiveGold5.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
+
+
+<FeatureArtInfo>
+			<Type>ART_DEF_FEATURE_GOLD_OUTPUT_10</Type>
+			<bAnimated>0</bAnimated>
+			<bRiverArt>0</bRiverArt>
+			<TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+			<LightType>LIGHT_TYPE_SUN</LightType>
+			<fScale>1.0</fScale>
+			<fInterfaceScale>1.0</fInterfaceScale>
+			<Button>Art/Interface/Buttons/Builds/BuildMine.dds</Button>
+			<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold10.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold10.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		<FeatureVariety>
+				<FeatureArtPieces>
+					<FeatureArtPiece>
+						<ModelFile>Art/Interface/GoldSymbols/Gold10.nif</ModelFile>
+						<Connections />
+					</FeatureArtPiece>
+				</FeatureArtPieces>
+				<FeatureDummyNodes />
+				<bGenerateRotations>0</bGenerateRotations>
+				<VarietyButton>Art/Interface/Buttons/TerrainFeatures/Fallout.dds</VarietyButton>
+			</FeatureVariety>
+		</FeatureArtInfo>
+
+
 </FeatureArtInfos>
 </Civ4ArtDefines>
