@@ -19,15 +19,24 @@ Historical objectives described below are inactive.
 
 Administration replaces stability penalties for city count, foreign territory
 and uncontrolled homeland cities. Base capacity is **50 on XL**, otherwise
-**33**, and grows by 25% of its initial value per era since Ancient, including
-late starts. Civic and wonder percentages add together before modifying this base.
+**33**. Writing, Code of Laws, Civil Service, Printing Press, Constitution,
+Radio and Computers each add **20 base capacity**. These bonuses
+add together, reaching +140 with all seven technologies; eras grant no capacity.
+Known starting technologies also count. Civic and wonder percentages add together
+before modifying the technology-adjusted base.
 
 City effort is `population × (1 + 0.05 × travel time) × (1 + local modifiers)`.
 City administration costs round up to one decimal place after all modifiers; national capacity rounds up to whole points. National effort is the sum of the rounded city costs.
 
-Fractional travel times use two land movement points and current road speeds.
-Each sea leg uses one, two or four movement points with zero, one or two harbors
-at its coastal transitions. Mixed land/sea routes start from the capital. Open borders and vassal territory allow
+Fractional travel times use **one land movement point**, rising to **two with
+Horseback Riding**, and current road speeds. Engineering improves roads;
+railroads retain their fixed movement cost regardless of courier speed.
+Sea travel starts at **0.5 movement points**, rising to **1 with Sailing**, **1.5
+with Compass**, **2 with Astronomy**, **3 with Steam Power** and **4 with
+Combustion**. The best known technology applies. Each harbor at a sea leg's
+coastal transitions doubles its speed, for a maximum multiplier of four.
+These speeds affect both administration costs and connection range. Mixed
+land/sea routes start from the capital. Open borders and vassal territory allow
 passage; troops and blockades are ignored. Ocean travel requires Astronomy.
 
 Connectivity and cost distance are separate. Continuous owned, passable land
@@ -82,7 +91,7 @@ Civilization-specific variants replace the generic value: **Pharaonic Kingship,
 Divine Kingship and Roman Legions 0%**, **Roman Republic +40%**, **Horde −10%**.
 Their existing special effects remain active. Organized Egyptian and Roman
 institutions do not inherit generic administration penalties. Early and late
-civic combinations can provide the same capacity bonus; era growth provides
+civic combinations can provide the same capacity bonus; technology provides
 progression.
 
 State religion reduces effort by 5%, each foreign religion adds 10%. Without a
@@ -91,7 +100,13 @@ State Atheism treats every religion as foreign. God State doubles religion's
 administrative effects, loses its production bonus and quarters foreign passive
 spread and missionary success chances.
 
-**F1** shows administration, overload effects, stability and a compact city list.
+**F1** shows administration, overload effects, stability and a compact city list. Hover over the stability heading or a category name, stars, value or trend arrow to see its breakdown. Category tooltips list signed effects from the last stability calculation, accumulated events and era adjustments. Administration?s stability penalty is included in Expansion. The category ratings are not an additive national stability total.
+Administration and its capacity breakdown occupy the left sidebar, with the city
+list alongside them and stability below. The maximum-administration tile lists
+base capacity, known technology bonuses and active civic and wonder modifiers.
+Positive modifiers are green; negative
+modifiers are red. The breakdown scrolls when needed.
+
 Non-capital cities may join an existing own vassal or revive an available extinct
 civilization whose historical birth/flip area includes the city. Otherwise,
 only direct independence is offered. Future spawns and human slots are protected.
@@ -607,7 +622,7 @@ Automation values it alongside commerce, without multiplying it by city gold bon
 
 Precious-metal inflation starts at zero and is saved per player. Each normal turn,
 its change in percentage points is
-**50 × (worked metal income / total commerce - 0.05 × (1 + current inflation / 12.5))**,
+**50 × (0.5 × worked metal income / total commerce - 0.05 × (1 + current inflation / 12.5))**,
 using the percentage number (20 for 20%). Recovery strengthens as inflation rises,
 balancing sustained metal income at an equilibrium. The change multiplier controls
 how quickly inflation approaches that equilibrium without changing it.
@@ -617,8 +632,8 @@ only productive cities count.
 Commerce is the empire's city commerce yield, including trade routes, before sliders.
 A zero-commerce economy uses one commerce for this calculation.
 
-- Ratios of 5% or less lead toward zero inflation. A sustained 15% ratio settles
-  at 25% inflation; 25% settles at 50%, and 35% at 75%.
+- Ratios of 10% or less lead toward zero inflation. A sustained 20% ratio settles
+  at 12.5% inflation; 25% settles at 18.75%, and 50% at 50%.
 - With no metal income, inflation falls by 4.5 points at 10% inflation,
   6.5 points at 20%, and 12.5 points at 50% per normal turn, stopping at zero.
 - There is no per-turn rise cap or overall ceiling; inflation cannot fall below zero.
@@ -628,8 +643,8 @@ A zero-commerce economy uses one commerce for this calculation.
   Recurring costs use fractional inflation; one-time prices use whole percentages.
   Inflation is not calendar-driven.
 
-For example, 21 metal income and 60 commerce increase inflation by about 15 points
-at zero inflation, or 11 points at 20%, per normal turn; the equilibrium is 75%.
+For example, 7 metal income and 28 commerce increase inflation by about 3.75 points
+at zero inflation, or 1.75 points at 10%, per normal turn; the equilibrium is 18.75%.
 The finance advisor's inflation tooltip shows the current level,
 projected change, metal income, commerce and added upkeep.
 

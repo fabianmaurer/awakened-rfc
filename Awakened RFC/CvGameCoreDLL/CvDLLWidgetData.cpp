@@ -42,6 +42,30 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7106)
+    {
+        if (widgetDataStruct.m_iData2 >= 0 && widgetDataStruct.m_iData2 < GC.getNumTechInfos())
+        {
+            int bonus = Administration::capacityTechModifier((TechTypes)widgetDataStruct.m_iData2);
+            if (bonus > 0)
+                szBuffer.assign(gDLL->getText("TXT_KEY_ADMIN_TECH_CAPACITY", bonus, gDLL->getSymbolID(MAP_CHAR)));
+        }
+        return;
+    }
+
+    if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7105)
+    {
+        if (widgetDataStruct.m_iData2 >= 0 && widgetDataStruct.m_iData2 <= 5)
+        {
+            CvWString szHelp;
+            CyArgsList argsList;
+            argsList.add(widgetDataStruct.m_iData2);
+            gDLL->getPythonIFace()->callFunction(PYScreensModule, "getStabilityHelp", argsList.makeFunctionArgs(), &szHelp);
+            szBuffer.assign(szHelp);
+        }
+        return;
+    }
+
     if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7102)
     {
         const char* aszRequirements[] = {"TXT_KEY_INTEL_TECH_REQUIRE", "TXT_KEY_INTEL_MILITARY_REQUIRE",

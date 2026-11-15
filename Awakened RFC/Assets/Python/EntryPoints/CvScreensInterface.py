@@ -1014,3 +1014,8 @@ HandleNavigationMap = {
 				
 				# add new screens here
 				}
+
+
+def getStabilityHelp(argsList):
+	import StabilityHelp
+	return StabilityHelp.getHelp(argsList[0])

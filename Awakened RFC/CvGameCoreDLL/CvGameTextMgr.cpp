@@ -5415,6 +5415,25 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 	buildPermanentAllianceString(szBuffer, eTech, true, bPlayerContext);
 
 	//	Enables bridge building...
+    if (eTech == GC.getInfoTypeForString("TECH_HORSEBACK_RIDING"))
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_TECH_LAND"));
+    }
+    int capacityModifier = Administration::capacityTechModifier(eTech);
+    if (capacityModifier > 0)
+    {
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_TECH_CAPACITY", capacityModifier, gDLL->getSymbolID(MAP_CHAR)));
+    }
+    int seaMovement = Administration::seaMovement100(eTech);
+    if (seaMovement > 0)
+    {
+        CvWString speed;
+        speed.Format(L"%d.%d", seaMovement / 100, seaMovement % 100 / 10);
+        szBuffer.append(NEWLINE);
+        szBuffer.append(gDLL->getText("TXT_KEY_ADMIN_TECH_SEA", speed.c_str()));
+    }
 	buildBridgeString(szBuffer, eTech, true, bPlayerContext);
 
 	//	Can spread irrigation...

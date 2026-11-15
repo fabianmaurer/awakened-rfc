@@ -72,8 +72,8 @@ SUMMARIES = {
         '+1 happiness in cities with the state religion; +100% production for its missionaries and +25% production for its religious buildings.',
         '+1 Zufriedenheit in St\xe4dten mit Staatsreligion; +100% Produktion f\xfcr Missionare und +25% Produktion f\xfcr Geb\xe4ude der Staatsreligion.'),
     'GOD_STATE': (
-        "Doubles religion's effects on administrative effort and strongly resists foreign religious spread. -1 happiness per non-state religion. Conquered cities are pacified by conversion.",
-        'Verdoppelt den Religionseinfluss auf den Verwaltungsaufwand und erschwert fremde Religionsverbreitung deutlich. -1 Zufriedenheit je fremder Religion. Eroberte St\xe4dte werden durch Konvertierung befriedet.'),
+        'Doubles religious effects on administrative effort. Foreign religion spread and missionary success chances are reduced by 75%. -1 happiness per non-state religion. Conquered cities are pacified by conversion.',
+        'Verdoppelt religi\xf6se Effekte auf den Verwaltungsaufwand. Verbreitungschancen fremder Religionen und Erfolgschancen ihrer Missionare sinken um 75%. -1 Zufriedenheit je fremder Religion. Bekehrung befriedet eroberte St\xe4dte.'),
     'TOLERANCE': (
         'No unhappiness from non-state religions and no different-religion diplomatic penalties involving your country. +2 relations toward you from countries with a different state religion, except State Atheism. +5 percentage points to incoming religion spread chances through trade routes. Allows training missionaries of any religion.',
         'Keine Unzufriedenheit durch fremde Religionen und keine diplomatischen Religionsmali mit eurem Land. +2 Beziehungen zu euch bei L\xe4ndern mit anderer Staatsreligion, au\xdfer Staatsatheismus. +5 Prozentpunkte auf die Chance der Religionsverbreitung durch Handelswege in eigene St\xe4dte. Erlaubt die Ausbildung von Missionaren aller Religionen.'),

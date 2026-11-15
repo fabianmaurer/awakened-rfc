@@ -310,6 +310,15 @@ class CvTechChooser:
 							WidgetTypes.WIDGET_GENERAL, 7104, unlock, False)
 						fX += X_INCREMENT
 
+			# Administration capacity uses the shared ledger glyph.
+			if gc.getTechInfo(i).getType() in ("TECH_WRITING", "TECH_CODE_OF_LAWS", "TECH_CIVIL_SERVICE",
+				"TECH_PRINTING_PRESS", "TECH_CONSTITUTION", "TECH_RADIO", "TECH_COMPUTERS"):
+				screen.setTextAt("AdminCapacity" + str(i), szTechRecord,
+					u"<font=3>%c</font>" % gc.getGame().getSymbolID(FontSymbols.MAP_CHAR),
+					CvUtil.FONT_LEFT_JUSTIFY, iX + fX, iY + Y_ROW, -0.1,
+					FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, 7106, i)
+				fX += X_INCREMENT
+
 			# Unlockable units...
 			for j in range( gc.getNumUnitClassInfos() ):
 				eLoopUnit = gc.getCivilizationInfo(gc.getPlayer(self.iCivSelected).getCivilizationType()).getCivilizationUnits(j)

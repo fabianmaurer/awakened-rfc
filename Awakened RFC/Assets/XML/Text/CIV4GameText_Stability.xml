@@ -187,4 +187,260 @@
 		<Italian>Successione dinastica: %s2_Heir eredita tutte le citt&#224; e le unit&#224; di %s1_Collapsed. Questo paese viene ereditato invece di dividersi in stati indipendenti.</Italian>
 		<Spanish>Sucesi&#243;n din&#225;stica: %s2_Heir hereda todas las ciudades y unidades de %s1_Collapsed. Este pa&#237;s se transmite por herencia en lugar de dividirse en estados independientes.</Spanish>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_PACT_TRADING</Tag>
+		<English>Defensive pact trading</English>
+		<French>Accords de pacte de d&#233;fense</French>
+		<German>Handel mit Verteidigungsb&#252;ndnissen</German>
+		<Italian>Accordi di patti difensivi</Italian>
+		<Spanish>Acuerdos de pactos defensivos</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_BORDER_TRADING</Tag>
+		<English>Open borders trading</English>
+		<French>Accords de libre passage</French>
+		<German>Handel mit offenen Grenzen</German>
+		<Italian>Accordi di confini aperti</Italian>
+		<Spanish>Acuerdos de fronteras abiertas</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_NEIGHBOURS</Tag>
+		<English>Unstable neighbours</English>
+		<French>Voisins instables</French>
+		<German>Instabile Nachbarn</German>
+		<Italian>Vicini instabili</Italian>
+		<Spanish>Vecinos inestables</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_VASSAL</Tag>
+		<English>Vassal status</English>
+		<French>Statut de vassal</French>
+		<German>Vasallenstatus</German>
+		<Italian>Stato di vassallo</Italian>
+		<Spanish>Condici&#243;n de vasallo</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_MASTER</Tag>
+		<English>Stability of your master</English>
+		<French>Stabilit&#233; du suzerain</French>
+		<German>Stabilit&#228;t des Lehnsherrn</German>
+		<Italian>Stabilit&#224; del signore</Italian>
+		<Spanish>Estabilidad del se&#241;or</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_SUBJECTS</Tag>
+		<English>Stability of your vassals</English>
+		<French>Stabilit&#233; des vassaux</French>
+		<German>Stabilit&#228;t der Vasallen</German>
+		<Italian>Stabilit&#224; dei vassalli</Italian>
+		<Spanish>Estabilidad de los vasallos</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_CONTACTS</Tag>
+		<English>Diplomatic contacts</English>
+		<French>Contacts diplomatiques</French>
+		<German>Diplomatische Kontakte</German>
+		<Italian>Contatti diplomatici</Italian>
+		<Spanish>Contactos diplom&#225;ticos</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_INTELLIGENCE</Tag>
+		<English>Foreign political interference</English>
+		<French>Ing&#233;rence politique &#233;trang&#232;re</French>
+		<German>Ausl&#228;ndische politische Einmischung</German>
+		<Italian>Interferenza politica straniera</Italian>
+		<Spanish>Injerencia pol&#237;tica extranjera</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_COOPERATION</Tag>
+		<English>Intelligence cooperation</English>
+		<French>Coop&#233;ration du renseignement</French>
+		<German>Geheimdienstkooperation</German>
+		<Italian>Cooperazione dei servizi segreti</Italian>
+		<Spanish>Cooperaci&#243;n de inteligencia</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_COMBINATION</Tag>
+		<English>Civic combination</English>
+		<French>Combinaison de doctrines</French>
+		<German>Staatsformkombination</German>
+		<Italian>Combinazione di forme di governo</Italian>
+		<Spanish>Combinaci&#243;n de principios</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_COMBINATION_LIMIT</Tag>
+		<English>Civic combination limit</English>
+		<French>Limite des combinaisons de doctrines</French>
+		<German>Begrenzung der Staatsformkombinationen</German>
+		<Italian>Limite delle combinazioni di governo</Italian>
+		<Spanish>L&#237;mite de combinaciones de principios</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_FOREIGN_CITIES</Tag>
+		<English>Cities in another civilization's homeland</English>
+		<French>Villes dans le territoire historique &#233;tranger</French>
+		<German>St&#228;dte im Kernland anderer Zivilisationen</German>
+		<Italian>Citt&#224; nella patria di altre civilt&#224;</Italian>
+		<Spanish>Ciudades en la patria de otras civilizaciones</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_TRADE</Tag>
+		<English>International trade</English>
+		<French>Commerce international</French>
+		<German>Internationaler Handel</German>
+		<Italian>Commercio internazionale</Italian>
+		<Spanish>Comercio internacional</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_COMMERCE</Tag>
+		<English>Commerce relative to population</English>
+		<French>Commerce par rapport &#224; la population</French>
+		<German>Kommerz im Verh&#228;ltnis zur Bev&#246;lkerung</German>
+		<Italian>Commercio rispetto alla popolazione</Italian>
+		<Spanish>Comercio en relaci&#243;n con la poblaci&#243;n</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_HAPPINESS</Tag>
+		<English>National happiness</English>
+		<French>Bonheur national</French>
+		<German>Nationale Zufriedenheit</German>
+		<Italian>Felicit&#224; nazionale</Italian>
+		<Spanish>Felicidad nacional</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_UNHAPPINESS</Tag>
+		<English>Unhappy cities</English>
+		<French>Villes m&#233;contentes</French>
+		<German>Unzufriedene St&#228;dte</German>
+		<Italian>Citt&#224; infelici</Italian>
+		<Spanish>Ciudades descontentas</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_RELIGION</Tag>
+		<English>Religious unrest</English>
+		<French>Troubles religieux</French>
+		<German>Religi&#246;se Unruhen</German>
+		<Italian>Disordini religiosi</Italian>
+		<Spanish>Disturbios religiosos</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_CROWDING</Tag>
+		<English>Large-city discontent</English>
+		<French>M&#233;contentement des grandes villes</French>
+		<German>Unzufriedenheit in Gro&#223;st&#228;dten</German>
+		<Italian>Malcontento nelle grandi citt&#224;</Italian>
+		<Spanish>Descontento en grandes ciudades</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_HURRY</Tag>
+		<English>Hurry anger</English>
+		<French>Col&#232;re li&#233;e &#224; la production acc&#233;l&#233;r&#233;e</French>
+		<German>Unmut durch beschleunigte Produktion</German>
+		<Italian>Rabbia per la produzione accelerata</Italian>
+		<Spanish>Descontento por producci&#243;n acelerada</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_GARRISON</Tag>
+		<English>Missing garrisons</English>
+		<French>Garnisons absentes</French>
+		<German>Fehlende Garnisonen</German>
+		<Italian>Guarnigioni assenti</Italian>
+		<Spanish>Falta de guarniciones</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_WAR_WEARINESS</Tag>
+		<English>War weariness</English>
+		<French>Lassitude de guerre</French>
+		<German>Kriegsm&#252;digkeit</German>
+		<Italian>Stanchezza di guerra</Italian>
+		<Spanish>Cansancio de guerra</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_FOREIGN_CULTURE</Tag>
+		<English>Foreign culture</English>
+		<French>Culture &#233;trang&#232;re</French>
+		<German>Fremde Kultur</German>
+		<Italian>Cultura straniera</Italian>
+		<Spanish>Cultura extranjera</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_CITY_LIMIT</Tag>
+		<English>City unrest limits</English>
+		<French>Limites des troubles urbains</French>
+		<German>Begrenzung st&#228;dtischer Unruhen</German>
+		<Italian>Limiti dei disordini cittadini</Italian>
+		<Spanish>L&#237;mites de disturbios urbanos</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_POPULATION_LOSS</Tag>
+		<English>Population losses</English>
+		<French>Pertes de population</French>
+		<German>Bev&#246;lkerungsverluste</German>
+		<Italian>Perdite di popolazione</Italian>
+		<Spanish>P&#233;rdidas de poblaci&#243;n</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_COMBAT</Tag>
+		<English>Recent combat results</English>
+		<French>R&#233;sultats des combats r&#233;cents</French>
+		<German>J&#252;ngste Kampfergebnisse</German>
+		<Italian>Risultati dei combattimenti recenti</Italian>
+		<Spanish>Resultados de combates recientes</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_ANARCHY</Tag>
+		<English>Anarchy</English>
+		<French>Anarchie</French>
+		<German>Anarchie</German>
+		<Italian>Anarchia</Italian>
+		<Spanish>Anarqu&#237;a</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_GOLDEN_AGE</Tag>
+		<English>Golden age</English>
+		<French>&#194;ge d'or</French>
+		<German>Goldenes Zeitalter</German>
+		<Italian>Et&#224; dell'oro</Italian>
+		<Spanish>Edad de oro</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_OTHER_CURRENT</Tag>
+		<English>Other effects from the last calculation</English>
+		<French>Autres effets du dernier calcul</French>
+		<German>Weitere Effekte der letzten Berechnung</German>
+		<Italian>Altri effetti dell'ultimo calcolo</Italian>
+		<Spanish>Otros efectos del &#250;ltimo c&#225;lculo</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_EVENTS</Tag>
+		<English>Accumulated events and adjustments</English>
+		<French>&#233;v&#233;nements et ajustements cumul&#233;s</French>
+		<German>Angesammelte Ereignisse und Anpassungen</German>
+		<Italian>Eventi e modifiche accumulati</Italian>
+		<Spanish>Sucesos y ajustes acumulados</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_ERA</Tag>
+		<English>Era adjustment to the rating</English>
+		<French>Ajustement du classement selon l'&#232;re</French>
+		<German>Epochenanpassung der Bewertung</German>
+		<Italian>Modifica della valutazione per epoca</Italian>
+		<Spanish>Ajuste de la valoraci&#243;n por era</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_NONE</Tag>
+		<English>No current bonuses or penalties.</English>
+		<French>Aucun bonus ou malus actuel.</French>
+		<German>Derzeit keine Boni oder Mali.</German>
+		<Italian>Nessun bonus o penalit&#224; attuale.</Italian>
+		<Spanish>No hay bonificaciones ni penalizaciones actuales.</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_STABILITY_HELP_OVERVIEW</Tag>
+		<English>Hover over each category for its bonuses and penalties. Category ratings include past events and era adjustments; they do not add up to national stability.</English>
+		<French>Survolez chaque cat&#233;gorie pour voir ses bonus et malus. Les classements incluent les &#233;v&#233;nements pass&#233;s et les ajustements d'&#232;re ; leur somme ne donne pas la stabilit&#233; nationale.</French>
+		<German>Jede Kategorie zeigt beim Ber&#252;hren ihre Boni und Mali. Die Bewertungen enthalten fr&#252;here Ereignisse und Epochenanpassungen; ihre Summe ergibt nicht die nationale Stabilit&#228;t.</German>
+		<Italian>Passa il mouse su ogni categoria per vederne bonus e penalit&#224;. Le valutazioni includono eventi passati e modifiche per epoca; la loro somma non corrisponde alla stabilit&#224; nazionale.</Italian>
+		<Spanish>Pasa el cursor por cada categor&#237;a para ver sus bonificaciones y penalizaciones. Las valoraciones incluyen sucesos pasados y ajustes por era; su suma no equivale a la estabilidad nacional.</Spanish>
+	</TEXT>
 </Civ4GameText>

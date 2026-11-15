@@ -10,6 +10,7 @@ import cPickle as pickle
 import Consts as con
 import RFCUtils
 import Famine
+import StabilityHelp
 utils = RFCUtils.RFCUtils()
 
 # globals
@@ -427,7 +428,7 @@ class Stability:
                 print ("Stability normalization:", self.getStability(iMonitorPlayer) - iTempNormalizationThreshold)
 
 
-        def getCivicCombinationStability(self, pPlayer):
+        def getCivicCombinationStability(self, pPlayer, effects=None):
                 # Resolve XML names at runtime, after the game has loaded its infos.
                 # This is a bounded base contribution, not a recurring permanent gain.
                 lCivics = [pPlayer.getCivics(iOption) for iOption in range(gc.getNumCivicOptionInfos())]
@@ -439,20 +440,46 @@ class Stability:
                 iScore = 0
                 if (hasCivic("CIVIC_TRIBAL_SYSTEM") and hasCivic("CIVIC_DESPOTISM")):
                         iScore += 1
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_TRIBAL_SYSTEM', 'CIVIC_DESPOTISM'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 1, names)
                 if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY")):
                         iScore += 1
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_MONARCHY', 'CIVIC_THEOCRATIC_LEGITIMACY'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 1, names)
                 if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_PLANNED_ECONOMY")):
                         iScore -= 1
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_DEMOCRACY', 'CIVIC_PLUTOCRACY', 'CIVIC_PLANNED_ECONOMY'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", -1, names)
                 if ((hasCivic("CIVIC_REPUBLIC") or hasCivic("CIVIC_DEMOCRACY")) and hasCivic("CIVIC_RULE_OF_LAW")):
                         iScore += 2
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_REPUBLIC', 'CIVIC_DEMOCRACY', 'CIVIC_RULE_OF_LAW'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 2, names)
                 if (hasCivic("CIVIC_MONARCHY") and hasCivic("CIVIC_FEUDAL_RETINUES")):
                         iScore += 2
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_MONARCHY', 'CIVIC_FEUDAL_RETINUES'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 2, names)
                 if (hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and (hasCivic("CIVIC_STATE_RELIGION") or hasCivic("CIVIC_GOD_STATE"))):
                         iScore += 2
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_THEOCRATIC_LEGITIMACY', 'CIVIC_STATE_RELIGION', 'CIVIC_GOD_STATE'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 2, names)
                 if (hasCivic("CIVIC_PLUTOCRACY") and hasCivic("CIVIC_CORPORATE_ECONOMY")):
                         iScore += 1
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_PLUTOCRACY', 'CIVIC_CORPORATE_ECONOMY'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", 1, names)
                 if (not hasCivic("CIVIC_DEMOCRACY") and hasCivic("CIVIC_THEOCRATIC_LEGITIMACY") and hasCivic("CIVIC_TOLERANCE")):
                         iScore -= 3
+                        if effects is not None:
+                                names = tuple([key for key in ['CIVIC_DEMOCRACY', 'CIVIC_THEOCRATIC_LEGITIMACY', 'CIVIC_TOLERANCE'] if hasCivic(key)])
+                                StabilityHelp.add(effects, 2, "COMBINATION", -3, names)
+                if effects is not None:
+                        StabilityHelp.add(effects, 2, "COMBINATION_LIMIT", max(-5, min(5, iScore)) - iScore)
                 return max(-5, min(5, iScore))
 
 
@@ -489,8 +516,10 @@ class Stability:
 
                 else:   #every 3 turns
                         iNewBaseStability = 0
+                        effects = {}
                
                         iNewBaseStability += 10*teamPlayer.getDefensivePactTradingCount()
+                        StabilityHelp.add(effects, 5, "PACT_TRADING", 10*teamPlayer.getDefensivePactTradingCount())
                         if (teamPlayer.getDefensivePactTradingCount() > 0):
                                 #print("iNewBaseStability defensive pact",iNewBaseStability, iPlayer)
                                 pass
@@ -500,6 +529,7 @@ class Stability:
                         #        #print("iNewBaseStability permanent alliance",iNewBaseStability, iPlayer)
                         
                         iNewBaseStability += 2*teamPlayer.getOpenBordersTradingCount()
+                        StabilityHelp.add(effects, 5, "BORDER_TRADING", 2*teamPlayer.getOpenBordersTradingCount())
                         #print("iNewBaseStability open borders",iNewBaseStability, iPlayer)
 
                         for iLoopCiv in range (iNumPlayers):
@@ -508,19 +538,23 @@ class Stability:
                                                 if (self.getStability(iLoopCiv) < -20):
                                                         if (self.getStability(iPlayer) >= 0):
                                                                 iNewBaseStability -= 5
+                                                                StabilityHelp.add(effects, 5, "NEIGHBOURS", -5)
                                                                 #print("iNewBaseStability neighbours", iNewBaseStability, iPlayer)
                                                                 break
                                 
                         for iLoopCiv in range( iNumPlayers ):                                
                                 if (teamPlayer.isVassal(iLoopCiv)):
                                         iNewBaseStability += 10                                
+                                        StabilityHelp.add(effects, 5, "VASSAL", 10)
                                         #print("iNewBaseStability vassal",iNewBaseStability, iPlayer)
                                         iNewBaseStability += min(5,max(-6,self.getStability(iLoopCiv)/4))
+                                        StabilityHelp.add(effects, 5, "MASTER", min(5,max(-6,self.getStability(iLoopCiv)/4)))
                                         break
 
                         for iLoopCiv2 in range( iNumPlayers ):                                
                                 if (gc.getTeam(gc.getPlayer(iLoopCiv2).getTeam()).isVassal(iPlayer)):
                                         iNewBaseStability += min(3,max(-3,self.getStability(iLoopCiv2)/4))                             
+                                        StabilityHelp.add(effects, 5, "SUBJECTS", min(3,max(-3,self.getStability(iLoopCiv2)/4)))
                                         #print("iNewBaseStability master",iNewBaseStability, iPlayer)
 
                         iNumContacts = 0
@@ -528,10 +562,13 @@ class Stability:
                                 if (pPlayer.canContact(iLoopCiv3) and iLoopCiv3 != iPlayer):
                                         iNumContacts += 1
                         iNewBaseStability -= (iNumContacts/3 - 4)
+                        StabilityHelp.add(effects, 5, "CONTACTS", -(iNumContacts/3 - 4))
                         #print("iNewBaseStability contacts",iNewBaseStability, iPlayer)
                         
                         iNewBaseStability -= pPlayer.getIntelligenceData(-1, 20)
+                        StabilityHelp.add(effects, 5, "INTELLIGENCE", -pPlayer.getIntelligenceData(-1, 20))
                         iNewBaseStability += pPlayer.getIntelligenceData(-1, 61)
+                        StabilityHelp.add(effects, 5, "COOPERATION", pPlayer.getIntelligenceData(-1, 61))
                         self.setParameter(iPlayer, iParDiplomacy3, False, iNewBaseStability) 
 
 
@@ -541,7 +578,7 @@ class Stability:
 
                                         
                         iTempCivicThreshold = iNewBaseStability
-                        iNewBaseStability += self.getCivicCombinationStability(pPlayer)
+                        iNewBaseStability += self.getCivicCombinationStability(pPlayer, effects)
 
                         self.setParameter(iPlayer, iParCivics3, False, iNewBaseStability - iTempCivicThreshold)
 
@@ -559,11 +596,13 @@ class Stability:
                                                         if (gc.getPlayer(iPlayer).getSettlersMaps( (geo.height() - 1) - iY, iX ) < 150):
                                                                 iNewBaseStability -= 3
                                                                 self.setParameter(iPlayer, iParExpansion3, True, -3)                                                                
+                                                                StabilityHelp.add(effects, 4, "FOREIGN_CITIES", -3)
                                                                 #print("city owned in unstable area: -3", pLoopCity.GetCy().getName(), iPlayer)
                                                                 break
                                                         else:
                                                                 iNewBaseStability -= 1
                                                                 self.setParameter(iPlayer, iParExpansion3, True, -1)
+                                                                StabilityHelp.add(effects, 4, "FOREIGN_CITIES", -1)
                                                                 #print("city owned in unstable area: -1", pLoopCity.GetCy().getName(), iPlayer)
                                                                 break
                             
@@ -575,18 +614,24 @@ class Stability:
 
                                 if (city.unhappyLevel(0) - city.getFamineUnhappiness() > city.happyLevel()):
                                         iTempCityStability -= 2
+                                        StabilityHelp.add(effects, 1, "UNHAPPINESS", -2)
                                 #if (city.healthRate(False, 0) < 0):
                                 #        iTempCityStability -= 2
                                 if (city.getReligionBadHappiness() > 0):
                                         iTempCityStability -= 2
+                                        StabilityHelp.add(effects, 1, "RELIGION", -2)
                                 if (city.getLargestCityHappiness() < 0):
                                         iTempCityStability -= 2
+                                        StabilityHelp.add(effects, 1, "CROWDING", -2)
                                 if (city.getHurryAngerModifier() > 0):
                                         iTempCityStability -= 2
+                                        StabilityHelp.add(effects, 1, "HURRY", -2)
                                 if (city.getNoMilitaryPercentAnger() > 0):
                                         iTempCityStability -= 1
+                                        StabilityHelp.add(effects, 1, "GARRISON", -1)
                                 if (city.getWarWearinessPercentAnger() > 0):
                                         iTempCityStability -= 1
+                                        StabilityHelp.add(effects, 1, "WAR_WEARINESS", -1)
 
                                 if (iTempCityStability <= -5): #middle check, for optimization
                                         iTotalTempCityStability += max(-5,iTempCityStability)
@@ -601,12 +646,15 @@ class Stability:
                                                 if (pCurrent.getCulture(iLoop) > 0):
                                                         if (pCurrent.getCulture(iPlayer) == 0): #division by zero may happen
                                                                 iTempCityStability -= 2
+                                                                StabilityHelp.add(effects, 1, "FOREIGN_CULTURE", -2)
                                                         else:
                                                                 if (pCurrent.getCulture(iLoop)*100/pCurrent.getCulture(iPlayer) >= 15):
                                                                         if (iPlayer == con.iTurkey or iPlayer == con.iAmerica or iPlayer == con.iPortugal or iPlayer == con.iNetherlands): #they have too much foreign culture
                                                                                 iTempCityStability -= 1
+                                                                                StabilityHelp.add(effects, 1, "FOREIGN_CULTURE", -1)
                                                                         else:
                                                                                 iTempCityStability -= 2
+                                                                                StabilityHelp.add(effects, 1, "FOREIGN_CULTURE", -2)
                                                                         break
 
                                 
@@ -620,6 +668,8 @@ class Stability:
                         if (iTotalTempCityStability < 0):
                                 iNewBaseStability += max(-12, iTotalTempCityStability)
                                 #print("iNewBaseStability city check", iNewBaseStability, iPlayer)
+                        rawCity = sum([value for (category, key, name), value in effects.items() if category == 1])
+                        StabilityHelp.add(effects, 1, "CITY_LIMIT", iTotalTempCityStability - rawCity)
                         self.setParameter(iPlayer, iParCities3, False, iTotalTempCityStability)
 
                         iTempEconomyThreshold = iNewBaseStability
@@ -634,6 +684,7 @@ class Stability:
                         if (iEraModifier >= 3):
                                 iEraModifier += 1
                         iNewBaseStability += min(10,(iImports+iExports)/(2*iEraModifier+1) -iImportExportOffset)
+                        StabilityHelp.add(effects, 3, "TRADE", min(10,(iImports+iExports)/(2*iEraModifier+1) -iImportExportOffset))
 
                         iEconomy = pPlayer.calculateTotalYield(YieldTypes.YIELD_COMMERCE) - pPlayer.calculateInflatedCosts()
                         iIndustry = pPlayer.calculateTotalYield(YieldTypes.YIELD_PRODUCTION)
@@ -657,6 +708,7 @@ class Stability:
                         iMaxEconomyGain = 3
                         iMaxEconomyLoss = -3
                         iNewBaseStability += min(iMaxEconomyGain,max(iMaxEconomyLoss,(iEconomy*100000/iPopulation - 5 + (iEraModifier - 3)*2))) #less important cos it's already counted in other parameters
+                        StabilityHelp.add(effects, 3, "COMMERCE", min(iMaxEconomyGain,max(iMaxEconomyLoss,(iEconomy*100000/iPopulation - 5 + (iEraModifier - 3)*2))))
 
                         self.setParameter(iPlayer, iParEconomy3, False, iNewBaseStability - iTempEconomyThreshold)
 
@@ -673,6 +725,7 @@ class Stability:
                                                 iNationalUnhappiness) * 100) - 60
                         iNewBaseStability += iHappiness/10
                         self.setParameter(iPlayer, iParCities3, True, iHappiness/10)                        
+                        StabilityHelp.add(effects, 1, "HAPPINESS", iHappiness/10)
                         #print("iNewBaseStability happiness check", iNewBaseStability, iPlayer)
 
                         #iHealth = -30
@@ -683,9 +736,11 @@ class Stability:
                         ##print("iNewBaseStability health check", iNewBaseStability, iPlayer)
                         
                         self.setPartialBaseStability(iPlayer, iNewBaseStability)
+                        StabilityHelp.store(iPlayer, effects)
 
 
                 #every turn
+                dailyEffects = {}
 
                 if (iGameTurn >= con.tBirth[iPlayer]+geo.turns(15)):
                         self.setGNPnew(iPlayer, self.getGNPnew(iPlayer) + (iEconomy + 4*iIndustry + 2*iAgriculture)/7)
@@ -731,6 +786,7 @@ class Stability:
                 # Legacy depression and post-planned-economy timers are ignored.
                 # Keep their stored fields so older save dictionaries remain readable.
                 iPopulationLoss = Famine.populationLossPenalty(iPlayer)
+                StabilityHelp.add(dailyEffects, 3, "POPULATION_LOSS", iPopulationLoss)
                 iNewBaseStability += iPopulationLoss
                 self.setParameter(iPlayer, iParEconomy1, False, iPopulationLoss)
 
@@ -745,6 +801,7 @@ class Stability:
 
                 if (self.getCombatResultTempModifier(iPlayer) != 0):
                         iTempExpansionThreshold = iNewBaseStability
+                        StabilityHelp.add(dailyEffects, 4, "COMBAT", max(-20, min(20,self.getCombatResultTempModifier(iPlayer))))
                         iNewBaseStability += max(-20, min(20,self.getCombatResultTempModifier(iPlayer)))
                         self.setParameter(iPlayer, iParExpansion1, True, iNewBaseStability - iTempExpansionThreshold) 
                         #print("iNewBaseStability combat result", iNewBaseStability, iPlayer)
@@ -760,12 +817,14 @@ class Stability:
                 if (pPlayer.getAnarchyTurns() != 0):
                         # Anarchy affects the current base only, with no lasting
                         # deduction from accumulated stability or civic events.
+                        StabilityHelp.add(dailyEffects, 2, "ANARCHY", -(self.getStability(iPlayer)+30)/2)
                         iNewBaseStability -= (self.getStability(iPlayer)+30)/2
                         self.setParameter(iPlayer, iParCivics1, True, -(self.getStability(iPlayer)+30)/2) 
                         #print("iNewBaseStability anarchy",iNewBaseStability, iPlayer)
                         
 
                 if (pPlayer.isGoldenAge()):
+                        StabilityHelp.add(dailyEffects, 3, "GOLDEN_AGE", 20)
                         iNewBaseStability += 20
                         #print("iNewBaseStability golden",iNewBaseStability, iPlayer)
                         self.setParameter(iPlayer, iParEconomy1, True, 20) 
@@ -782,6 +841,7 @@ class Stability:
                 self.setStability(iPlayer, max(-80, min(80, ordinary)) + iPopulationLoss)
                         
                 self.setBaseStabilityLastTurn(iPlayer, iNewBaseStability)
+                StabilityHelp.store(iPlayer, dailyEffects, True)
                                  
 
 
