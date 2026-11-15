@@ -254,7 +254,9 @@ class CvMainInterface:
 		screen.setStyle( "TurnLogButton", "Button_HUDLog_Style" )
 		screen.hide( "TurnLogButton" )
 		
-		iBtnX = xResolution - 277
+		iBtnWidth = 32
+		iBtnAdvance = 36
+		iBtnX = xResolution - 249
 		
 		# Advisor Buttons...
 		screen.setImageButton( "DomesticAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_DOMESTIC_SCREEN).getActionInfoIndex(), -1 )
@@ -271,16 +273,6 @@ class CvMainInterface:
 		screen.setStyle( "CivicsAdvisorButton", "Button_HUDAdvisorCivics_Style" )
 		screen.hide( "CivicsAdvisorButton" )
 		
-		iBtnX += iBtnAdvance 
-		screen.setImageButton( "ForeignAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_FOREIGN_SCREEN).getActionInfoIndex(), -1 )
-		screen.setStyle( "ForeignAdvisorButton", "Button_HUDAdvisorForeign_Style" )
-		screen.hide( "ForeignAdvisorButton" )
-		
-		iBtnX += iBtnAdvance
-		screen.setImageButton( "MilitaryAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_MILITARY_SCREEN).getActionInfoIndex(), -1 )
-		screen.setStyle( "MilitaryAdvisorButton", "Button_HUDAdvisorMilitary_Style" )
-		screen.hide( "MilitaryAdvisorButton" )
-		
 		iBtnX += iBtnAdvance
 		screen.setImageButton( "TechAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_TECH_CHOOSER).getActionInfoIndex(), -1 )
 		screen.setStyle( "TechAdvisorButton", "Button_HUDAdvisorTechnology_Style" )
@@ -290,16 +282,6 @@ class CvMainInterface:
 		screen.setImageButton( "ReligiousAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_RELIGION_SCREEN).getActionInfoIndex(), -1 )
 		screen.setStyle( "ReligiousAdvisorButton", "Button_HUDAdvisorReligious_Style" )
 		screen.hide( "ReligiousAdvisorButton" )
-		
-		iBtnX += iBtnAdvance
-		screen.setImageButton( "CorporationAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_CORPORATION_SCREEN).getActionInfoIndex(), -1 )
-		screen.setStyle( "CorporationAdvisorButton", "Button_HUDAdvisorCorporation_Style" )
-		screen.hide( "CorporationAdvisorButton" )
-		
-		iBtnX += iBtnAdvance
-		screen.setImageButton( "VictoryAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_VICTORY_SCREEN).getActionInfoIndex(), -1 )
-		screen.setStyle( "VictoryAdvisorButton", "Button_HUDAdvisorVictory_Style" )
-		screen.hide( "VictoryAdvisorButton" )
 		
 		iBtnX += iBtnAdvance
 		screen.setImageButton( "InfoAdvisorButton", "", iBtnX, iBtnY, iBtnWidth, iBtnWidth, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_INFO).getActionInfoIndex(), -1 )
@@ -956,14 +938,10 @@ class CvMainInterface:
 			screen.hide( "TurnLogButton" )
 			screen.hide( "EspionageAdvisorButton" )
 			screen.hide( "DomesticAdvisorButton" )
-			screen.hide( "ForeignAdvisorButton" )
 			screen.hide( "TechAdvisorButton" )
 			screen.hide( "CivicsAdvisorButton" )
 			screen.hide( "ReligiousAdvisorButton" )
-			screen.hide( "CorporationAdvisorButton" )
 			screen.hide( "FinanceAdvisorButton" )
-			screen.hide( "MilitaryAdvisorButton" )
-			screen.hide( "VictoryAdvisorButton" )
 			screen.hide( "InfoAdvisorButton" )
 			
 		elif ( CyInterface().isCityScreenUp() ):
@@ -978,14 +956,10 @@ class CvMainInterface:
 			screen.hide( "TurnLogButton" )
 			screen.hide( "EspionageAdvisorButton" )
 			screen.hide( "DomesticAdvisorButton" )
-			screen.hide( "ForeignAdvisorButton" )
 			screen.hide( "TechAdvisorButton" )
 			screen.hide( "CivicsAdvisorButton" )
 			screen.hide( "ReligiousAdvisorButton" )
-			screen.hide( "CorporationAdvisorButton" )
 			screen.hide( "FinanceAdvisorButton" )
-			screen.hide( "MilitaryAdvisorButton" )
-			screen.hide( "VictoryAdvisorButton" )
 			screen.hide( "InfoAdvisorButton" )
 			
 		elif ( CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_HIDE):
@@ -1000,26 +974,18 @@ class CvMainInterface:
 			screen.show( "TurnLogButton" )
 			screen.show( "EspionageAdvisorButton" )
 			screen.show( "DomesticAdvisorButton" )
-			screen.show( "ForeignAdvisorButton" )
 			screen.show( "TechAdvisorButton" )
 			screen.show( "CivicsAdvisorButton" )
 			screen.show( "ReligiousAdvisorButton" )
-			screen.show( "CorporationAdvisorButton" )
 			screen.show( "FinanceAdvisorButton" )
-			screen.show( "MilitaryAdvisorButton" )
-			screen.show( "VictoryAdvisorButton" )
 			screen.show( "InfoAdvisorButton" )
 			screen.moveToFront( "TurnLogButton" )
 			screen.moveToFront( "EspionageAdvisorButton" )
 			screen.moveToFront( "DomesticAdvisorButton" )
-			screen.moveToFront( "ForeignAdvisorButton" )
 			screen.moveToFront( "TechAdvisorButton" )
 			screen.moveToFront( "CivicsAdvisorButton" )
 			screen.moveToFront( "ReligiousAdvisorButton" )
-			screen.moveToFront( "CorporationAdvisorButton" )
 			screen.moveToFront( "FinanceAdvisorButton" )
-			screen.moveToFront( "MilitaryAdvisorButton" )
-			screen.moveToFront( "VictoryAdvisorButton" )
 			screen.moveToFront( "InfoAdvisorButton" )
 
 		elif (CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_ADVANCED_START):		
@@ -1034,14 +1000,10 @@ class CvMainInterface:
 			screen.hide( "TurnLogButton" )
 			screen.hide( "EspionageAdvisorButton" )
 			screen.hide( "DomesticAdvisorButton" )
-			screen.hide( "ForeignAdvisorButton" )
 			screen.hide( "TechAdvisorButton" )
 			screen.hide( "CivicsAdvisorButton" )
 			screen.hide( "ReligiousAdvisorButton" )
-			screen.hide( "CorporationAdvisorButton" )
 			screen.hide( "FinanceAdvisorButton" )
-			screen.hide( "MilitaryAdvisorButton" )
-			screen.hide( "VictoryAdvisorButton" )
 			screen.hide( "InfoAdvisorButton" )
 			
 		elif ( CyEngine().isGlobeviewUp() ):
@@ -1056,26 +1018,18 @@ class CvMainInterface:
 			screen.show( "TurnLogButton" )
 			screen.show( "EspionageAdvisorButton" )
 			screen.show( "DomesticAdvisorButton" )
-			screen.show( "ForeignAdvisorButton" )
 			screen.show( "TechAdvisorButton" )
 			screen.show( "CivicsAdvisorButton" )
 			screen.show( "ReligiousAdvisorButton" )
-			screen.show( "CorporationAdvisorButton" )
 			screen.show( "FinanceAdvisorButton" )
-			screen.show( "MilitaryAdvisorButton" )
-			screen.show( "VictoryAdvisorButton" )
 			screen.show( "InfoAdvisorButton" )			
 			screen.moveToFront( "TurnLogButton" )
 			screen.moveToFront( "EspionageAdvisorButton" )
 			screen.moveToFront( "DomesticAdvisorButton" )
-			screen.moveToFront( "ForeignAdvisorButton" )
 			screen.moveToFront( "TechAdvisorButton" )
 			screen.moveToFront( "CivicsAdvisorButton" )
 			screen.moveToFront( "ReligiousAdvisorButton" )
-			screen.moveToFront( "CorporationAdvisorButton" )
 			screen.moveToFront( "FinanceAdvisorButton" )
-			screen.moveToFront( "MilitaryAdvisorButton" )
-			screen.moveToFront( "VictoryAdvisorButton" )
 			screen.moveToFront( "InfoAdvisorButton" )
 			
 		else:
@@ -1090,26 +1044,18 @@ class CvMainInterface:
 			screen.show( "TurnLogButton" )
 			screen.show( "EspionageAdvisorButton" )
 			screen.show( "DomesticAdvisorButton" )
-			screen.show( "ForeignAdvisorButton" )
 			screen.show( "TechAdvisorButton" )
 			screen.show( "CivicsAdvisorButton" )
 			screen.show( "ReligiousAdvisorButton" )
-			screen.show( "CorporationAdvisorButton" )
 			screen.show( "FinanceAdvisorButton" )
-			screen.show( "MilitaryAdvisorButton" )
-			screen.show( "VictoryAdvisorButton" )
 			screen.show( "InfoAdvisorButton" )
 			screen.moveToFront( "TurnLogButton" )
 			screen.moveToFront( "EspionageAdvisorButton" )
 			screen.moveToFront( "DomesticAdvisorButton" )
-			screen.moveToFront( "ForeignAdvisorButton" )
 			screen.moveToFront( "TechAdvisorButton" )
 			screen.moveToFront( "CivicsAdvisorButton" )
 			screen.moveToFront( "ReligiousAdvisorButton" )
-			screen.moveToFront( "CorporationAdvisorButton" )
 			screen.moveToFront( "FinanceAdvisorButton" )
-			screen.moveToFront( "MilitaryAdvisorButton" )
-			screen.moveToFront( "VictoryAdvisorButton" )
 			screen.moveToFront( "InfoAdvisorButton" )
 			
 		screen.updateMinimapVisibility()

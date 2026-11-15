@@ -133,8 +133,8 @@ class CvEspionageAdvisor:
         count = player.getIntelligenceData(-1, 300)
         self.iForce = min(self.iForce, count - 1)
         scroll = self.name()
-        self.panel(20, 108, 302, 608)
-        screen.addScrollPanel(scroll, u"", 20, 108, 302, 608, PanelStyles.PANEL_STYLE_EMPTY)
+        self.panel(20, 108, 302, 432)
+        screen.addScrollPanel(scroll, u"", 20, 108, 302, 432, PanelStyles.PANEL_STYLE_EMPTY)
         for f in range(count):
             y = f * 112
             tile = self.name()
@@ -163,18 +163,15 @@ class CvEspionageAdvisor:
                 screen.setLabelAt(name, scroll, u"<font=%s>%s</font>" % (size, value),
                     CvUtil.FONT_LEFT_JUSTIFY, 14, y + offset, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, 7100, f)
                 screen.setHitTest(name, HitTestTypes.HITTEST_NOHIT)
-        infoY = count * 112 + 8
         if count < gc.getNumEraInfos():
             name = self.name()
             screen.setLabelAt(name, scroll, u"<font=2>%s</font>" % tr("FORCE_UNLOCK", (gc.getEraInfo(count).getDescription(),)),
                 CvUtil.FONT_LEFT_JUSTIFY, 14, count * 112 + 14, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-            infoY += 42
-        infoTile = self.name()
-        screen.attachPanelAt(scroll, infoTile, u"", u"", True, False, PanelStyles.PANEL_STYLE_TECH,
-            4, infoY, 274, 160, WidgetTypes.WIDGET_GENERAL, -1, -1)
-        screen.setPanelColor(infoTile, PANEL_COLOR[0], PANEL_COLOR[1], PANEL_COLOR[2])
-        screen.attachMultilineText(infoTile, self.name(), u"<font=2>%s</font>" % tr("FUNDING_HELP"),
-            WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+        # Multiline text cannot be attached to a panel created by attachPanelAt.
+        # Keep the funding help outside the scroll panel, with explicit bounds.
+        self.panel(20, 548, 302, 168)
+        screen.addMultilineText(self.name(), u"<font=2>%s</font>" % tr("FUNDING_HELP"),
+            30, 556, 282, 152, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
         self.targets = []
         for slot in range(3):
             target = player.getIntelligenceData(self.iForce, 320 + slot)
