@@ -7,6 +7,8 @@ class CvPlot;
 namespace Administration
 {
     void invalidateNetwork();
+    int seaMovement100(TechTypes tech);
+    int capacityTechModifier(TechTypes tech);
     bool penaltiesSuspended(const CvPlayer& player);
     int travelTime100(const CvCity& city);
     int travelTime100(const CvPlayer& player, const CvPlot& plot);

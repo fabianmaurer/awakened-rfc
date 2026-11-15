@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Civ4GameText xmlns="http://www.firaxis.com">
   <TEXT>
+    <Tag>TXT_KEY_ADMIN_MAXIMUM_VALUE</Tag>
+    <English>Maximum administration: %d1_Value</English>
+    <French>Administration maximale : %d1_Value</French>
+    <German>Maximale Verwaltung: %d1_Value</German>
+    <Italian>Amministrazione massima: %d1_Value</Italian>
+    <Spanish>Administraci&#243;n m&#225;xima: %d1_Value</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_BASE_VALUE</Tag>
+    <English>Base: %d1_Value</English>
+    <French>Base : %d1_Value</French>
+    <German>Basis: %d1_Value</German>
+    <Italian>Base: %d1_Value</Italian>
+    <Spanish>Base: %d1_Value</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_TECH_CAPACITY</Tag>
+    <English>+%d1_Bonus base %F2_Administration</English>
+    <French>+%d1_Bonus de base %F2_Administration</French>
+    <German>+%d1_Bonus Basis %F2_Administration</German>
+    <Italian>+%d1_Bonus base %F2_Administration</Italian>
+    <Spanish>+%d1_Bonus base %F2_Administration</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_TECH_LAND</Tag>
+    <English>Administrative land travel uses 2 movement points per turn.</English>
+    <French>Les trajets administratifs terrestres utilisent 2 points de mouvement par tour.</French>
+    <German>Verwaltungsreisen an Land nutzen 2 Bewegungspunkte pro Runde.</German>
+    <Italian>I viaggi amministrativi via terra usano 2 punti movimento per turno.</Italian>
+    <Spanish>Los viajes administrativos terrestres usan 2 puntos de movimiento por turno.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_ADMIN_TECH_SEA</Tag>
+    <English>Administrative sea travel uses %s1_Speed movement points per turn before harbor bonuses.</English>
+    <French>Les trajets administratifs maritimes utilisent %s1_Speed points de mouvement par tour avant les bonus des ports.</French>
+    <German>Verwaltungsreisen auf See nutzen %s1_Speed Bewegungspunkte pro Runde vor Hafenboni.</German>
+    <Italian>I viaggi amministrativi via mare usano %s1_Speed punti movimento per turno prima dei bonus dei porti.</Italian>
+    <Spanish>Los viajes administrativos por mar usan %s1_Speed puntos de movimiento por turno antes de las bonificaciones de los puertos.</Spanish>
+  </TEXT>
+  <TEXT>
     <Tag>TXT_KEY_ADMIN_NAME</Tag>
     <English>Administration</English>
     <French>Administration</French>

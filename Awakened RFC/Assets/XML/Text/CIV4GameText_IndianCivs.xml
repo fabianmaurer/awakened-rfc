@@ -68,7 +68,7 @@
     <Tag>TXT_KEY_BEN_PEDIA</Tag>
     <English>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</English>
     <French>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</French>
-    <German>Macht das Gangesdelta zu einem wohlhabenden Zentrum des Fluss- und &#220;berseehandels. Einzigartige F&#228;higkeit: Handel im Delta. Flussfelder erhalten +1 Handel.</German>
+    <German>Macht das Gangesdelta zu einem wohlhabenden Zentrum des Fluss- und &#220;berseehandels. Einzigartige F&#228;higkeit: Handel im Delta. Flussfelder erhalten +1 Kommerz.</German>
     <Italian>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</Italian>
     <Spanish>Turn the Bengal delta into a wealthy centre of river and overseas commerce. Its unique power is Delta Commerce: River tiles gain +1 commerce.</Spanish>
   </TEXT>
@@ -556,7 +556,7 @@
     <Tag>TXT_KEY_UP_BEN2</Tag>
     <English>River tiles gain +1 commerce.</English>
     <French>Les cases riveraines gagnent +1 commerce.</French>
-    <German>Flussfelder erhalten +1 Handel.</German>
+    <German>Flussfelder erhalten +1 Kommerz.</German>
     <Italian>Le caselle fluviali ottengono +1 commercio.</Italian>
     <Spanish>Las casillas de r&#237;o obtienen +1 de comercio.</Spanish>
   </TEXT>

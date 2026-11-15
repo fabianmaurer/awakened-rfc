@@ -92,7 +92,7 @@
     <Tag>TXT_KEY_METAL_INFLATION_RATIO</Tag>
     <English>Metal income: %d1_Gold. Commerce: %d2_Commerce.</English>
     <French>Revenu des m&#233;taux : %d1_Gold. Commerce : %d2_Commerce.</French>
-    <German>Metalleinkommen: %d1_Gold. Wirtschaft: %d2_Commerce.</German>
+    <German>Metalleinkommen: %d1_Gold. Kommerz: %d2_Commerce.</German>
     <Italian>Reddito dai metalli: %d1_Gold. Commercio: %d2_Commerce.</Italian>
     <Spanish>Ingresos de metales: %d1_Gold. Comercio: %d2_Commerce.</Spanish>
   </TEXT>

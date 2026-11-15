@@ -14,6 +14,10 @@
 
 namespace
 {
+    const char* capacityTechs[] = { "TECH_WRITING", "TECH_CODE_OF_LAWS", "TECH_CIVIL_SERVICE",
+        "TECH_PRINTING_PRESS", "TECH_CONSTITUTION", "TECH_RADIO", "TECH_COMPUTERS" };
+    const int capacityTechCount = sizeof(capacityTechs) / sizeof(capacityTechs[0]);
+    const int capacityPerTech = 20;
     // Keep the hundredths API: capacity uses whole points, city effort tenths.
     int roundedAdministration100(__int64 numerator, int denominator, int step = 100)
     {
@@ -84,12 +88,28 @@ namespace
         int astronomy = GC.getInfoTypeForString("TECH_ASTRONOMY");
         return astronomy >= 0 && GET_TEAM(team).isHasTech((TechTypes)astronomy);
     }
-    int landCost(const CvPlot* from, const CvPlot* to, TeamTypes team)
+    int landMovement(TeamTypes team)
+    {
+        return GET_TEAM(team).isHasTech((TechTypes)GC.getInfoTypeForString("TECH_HORSEBACK_RIDING")) ? 2 : 1;
+    }
+    int seaCost(TeamTypes team)
+    {
+        // Half a movement point before Sailing; take the best known technology.
+        int speed100 = 50;
+        const char* techs[] = {"TECH_SAILING", "TECH_COMPASS", "TECH_ASTRONOMY", "TECH_STEAM_POWER", "TECH_COMBUSTION"};
+        for (int i = 0; i < 5; ++i)
+        {
+            TechTypes tech = (TechTypes)GC.getInfoTypeForString(techs[i]);
+            if (GET_TEAM(team).isHasTech(tech)) speed100 = std::max(speed100, Administration::seaMovement100(tech));
+        }
+        return 120000 / speed100;
+    }
+    int landCost(const CvPlot* from, const CvPlot* to, TeamTypes team, int movement)
     {
         int moves = to->getFeatureType() == NO_FEATURE ? GC.getTerrainInfo(to->getTerrainType()).getMovementCost()
             : GC.getFeatureInfo(to->getFeatureType()).getMovementCost();
         if (to->isHills()) moves += GC.getHILLS_EXTRA_MOVEMENT();
-        int cost = std::max(1, std::min(2, moves)) * 600;
+        int cost = std::max(1, std::min(2, moves)) * 1200 / movement;
         if (from->getRouteType() != NO_ROUTE && to->getRouteType() != NO_ROUTE
             && (GET_TEAM(team).isBridgeBuilding() || !from->isRiverCrossing(directionXY(from, to))))
         {
@@ -97,7 +117,7 @@ namespace
             int route = std::max(GC.getRouteInfo(a).getMovementCost() + GET_TEAM(team).getRouteChange(a),
                 GC.getRouteInfo(b).getMovementCost() + GET_TEAM(team).getRouteChange(b));
             int flat = std::max(GC.getRouteInfo(a).getFlatMovementCost(), GC.getRouteInfo(b).getFlatMovementCost());
-            cost = std::min(cost, std::min(route * 600 / GC.getMOVE_DENOMINATOR(), flat * 1200 / GC.getMOVE_DENOMINATOR()));
+            cost = std::min(cost, std::min(route * 1200 / (movement * GC.getMOVE_DENOMINATOR()), flat * 1200 / GC.getMOVE_DENOMINATOR()));
         }
         return std::max(1, cost);
     }
@@ -106,6 +126,7 @@ namespace
     {
         CvMap& map = GC.getMapINLINE();
         TeamTypes team = player.getTeam();
+        const int movement = landMovement(team), seaStep = seaCost(team);
         int states = connections ? 7 : 5;
         int limit = connections ? GC.getDefineINT("ARFC_ADMIN_LINK_TURNS") * 1200 : INFINITY_TIME;
         while (!queue.empty())
@@ -137,7 +158,7 @@ namespace
                 int next = -1, value = limit;
                 if (land && !to->isWater())
                 {
-                    int step = landCost(to, from, team);
+                    int step = landCost(to, from, team, movement);
                     // A continuous owned land corridor has no range limit.
                     if (connections && from->getOwnerINLINE() == player.getID() && to->getOwnerINLINE() == player.getID()) step = 0;
                     next = index * states + state; value = time + step;
@@ -149,7 +170,7 @@ namespace
                     {
                         int sea = 1 + departure * 2 + arrival;
                         int speed = 1 << (departure + arrival);
-                        int seaNode = index * states + sea, seaTime = time + 1200 / speed;
+                        int seaNode = index * states + sea, seaTime = time + seaStep / speed;
                         if (seaTime < distance[seaNode])
                         {
                             distance[seaNode] = seaTime; origins[seaNode] = origins[node]; queue.push(Entry(seaTime, seaNode));
@@ -159,11 +180,11 @@ namespace
                 else if (!land && to->isWater() && oceanAllowed(team, to))
                 {
                     int flags = state - 1, speed = 1 << ((flags / 2) + (flags % 2));
-                    next = index * states + state; value = time + 1200 / speed;
+                    next = index * states + state; value = time + seaStep / speed;
                 }
                 else if (!land && !to->isWater() && int(ports[index]) == (state - 1) % 2)
                 {
-                    next = index * states + (connections ? 5 : 0); value = time + 600;
+                    next = index * states + (connections ? 5 : 0); value = time + 1200 / movement;
                 }
                 if (next >= 0 && value < distance[next])
                 {
@@ -260,6 +281,21 @@ namespace
 namespace Administration
 {
     void invalidateNetwork() { ++networkRevision; }
+    int capacityTechModifier(TechTypes tech)
+    {
+        for (int i = 0; i < capacityTechCount; ++i)
+            if (tech == GC.getInfoTypeForString(capacityTechs[i])) return capacityPerTech;
+        return 0;
+    }
+    int seaMovement100(TechTypes tech)
+    {
+        if (tech == GC.getInfoTypeForString("TECH_SAILING")) return 100;
+        if (tech == GC.getInfoTypeForString("TECH_COMPASS")) return 150;
+        if (tech == GC.getInfoTypeForString("TECH_ASTRONOMY")) return 200;
+        if (tech == GC.getInfoTypeForString("TECH_STEAM_POWER")) return 300;
+        if (tech == GC.getInfoTypeForString("TECH_COMBUSTION")) return 400;
+        return 0;
+    }
     bool penaltiesSuspended(const CvPlayer& player)
     {
         // The full jihad event can belong to another civilization as well.
@@ -357,9 +393,12 @@ namespace Administration
         CvString key = "ARFC_ADMIN_"; key += type;
         return GC.getDefineINT(key);
     }
+    int baseCapacity() { return historicalTurns(1) == 2 ? 50 : 33; }
     int modifiedCapacity100(const CvPlayer& player, int extraPercent)
     {
-        int base = historicalTurns(1) == 2 ? 50 : 33;
+        int base = baseCapacity();
+        for (int t = 0; t < capacityTechCount; ++t)
+            if (GET_TEAM(player.getTeam()).isHasTech((TechTypes)GC.getInfoTypeForString(capacityTechs[t]))) base += capacityPerTech;
         int percent = 100 + extraPercent;
         for (int c = 0; c < GC.getNumCivicOptionInfos(); ++c) percent += civicModifier(player, player.getCivics((CivicOptionTypes)c));
         const char* wonders[] = { "BUILDING_PYRAMID", "BUILDING_GREAT_LIBRARY", "BUILDING_VERSAILLES" };
@@ -368,7 +407,7 @@ namespace Administration
             int b = GC.getInfoTypeForString(wonders[w]);
             if (b >= 0) percent += player.getBuildingClassCount((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)b).getBuildingClassType()) * wonderModifier(b);
         }
-        return roundedAdministration100((__int64)base * (100 + 25 * std::max(0, (int)player.getCurrentEra())) * std::max(1, percent), 100);
+        return roundedAdministration100((__int64)base * std::max(1, percent), 1);
     }
     int capacity100(const CvPlayer& player)
     {
@@ -445,7 +484,7 @@ namespace Administration
                 int travel = travelTime100(*other);
                 if (seat && candidate->area() == other->area())
                 {
-                    int estimate = plotDistance(candidate->getX_INLINE(), candidate->getY_INLINE(), other->getX_INLINE(), other->getY_INLINE()) * landCost(candidate->plot(), candidate->plot(), player.getTeam()) / 12;
+                    int estimate = plotDistance(candidate->getX_INLINE(), candidate->getY_INLINE(), other->getX_INLINE(), other->getY_INLINE()) * landCost(candidate->plot(), candidate->plot(), player.getTeam(), landMovement(player.getTeam())) / 12;
                     int capitalPart = capitalTravelTime100(player, *candidate->plot()) * GC.getDefineINT("ARFC_ADMIN_RESIDENCE_CAPITAL_PERCENT") / 100;
                     score += other->getPopulation() * std::max(0, travel - estimate - capitalPart);
                 }
@@ -572,7 +611,7 @@ namespace Administration
 // One shared query interface for the advisor, city UI and synchronized Python rules.
 int CvPlayer::getAdministrationValue(int kind, int cityID) const
 {
-    CvCity* city = kind >= 7 && cityID >= 0 ? getCity(cityID) : NULL;
+    CvCity* city = kind >= 7 && kind <= 20 && cityID >= 0 ? getCity(cityID) : NULL;
     switch (kind)
     {
     case 0: return Administration::capacity100(*this);
@@ -594,6 +633,12 @@ int CvPlayer::getAdministrationValue(int kind, int cityID) const
     case 16: return city ? Administration::residenceCost100(*city) : 0;
     case 17: return city ? Administration::effortWithoutResidence100(*city) : 0;
     case 18: return city ? Administration::goldChangeWithoutResidence100(*city) : 0;
+    case 21: return Administration::baseCapacity();
+    case 22: return cityID >= 0 && cityID < GC.getNumTechInfos() ? Administration::capacityTechModifier((TechTypes)cityID) : 0;
+    case 23:
+        if (cityID >= 0 && cityID < GC.getNumBuildingInfos())
+            return getBuildingClassCount((BuildingClassTypes)GC.getBuildingInfo((BuildingTypes)cityID).getBuildingClassType()) * Administration::wonderModifier(cityID);
+        return 0;
     case 20:
         if (city && Administration::hasResidence(*city))
         {
