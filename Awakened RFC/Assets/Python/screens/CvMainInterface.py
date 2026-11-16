@@ -380,6 +380,10 @@ class CvMainInterface:
 		screen.setStyle( "EndTurnButton", "Button_HUDEndTurn_Style" )
 		screen.setEndTurnState( "EndTurnButton", "Red" )
 		screen.hide( "EndTurnButton" )
+		self.turnSkipButtonsState = None
+		for name, mode in (("TurnSkipAuto", 1), ("TurnSkipForce", 2)):
+			self.drawTurnSkipButton(screen, name, mode, False)
+			screen.hide(name)
 
 		# *********************************************************************************
 		# RESEARCH BUTTONS
@@ -900,6 +904,8 @@ class CvMainInterface:
 			else:
 				screen.hideEndTurn( "EndTurnButton" )
 			
+			self.updateTurnSkipButtons(bShow)
+
 			if ( g_eEndTurnButtonState == eState ):
 				return
 				
@@ -907,8 +913,42 @@ class CvMainInterface:
 			
 		else:
 			screen.hideEndTurn( "EndTurnButton" )
+			self.updateTurnSkipButtons(False)
 
 		return 0
+
+	def updateTurnSkipButtons(self, endTurnVisible):
+		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
+		game = gc.getGame()
+		# Keep the toggles usable while waiting for the next turn, but not in city selection.
+		visible = (game.getActivePlayer() >= 0 and gc.getActivePlayer().isHuman()
+			and (endTurnVisible or not gc.getActivePlayer().isTurnActive())
+			and CyInterface().getShowInterface() == InterfaceVisibility.INTERFACE_SHOW
+			and not CyInterface().isCitySelection() and not game.GetWorldBuilderMode()
+			and not CyInterface().isCityScreenUp() and not CyEngine().isGlobeviewUp()
+			and not game.isHotSeat() and not game.isPbem())
+		mode = game.getTurnSkipMode()
+		state = (visible, mode, screen.getXResolution(), screen.getYResolution())
+		if getattr(self, "turnSkipButtonsState", None) == state:
+			return
+		self.turnSkipButtonsState = state
+		for name, value in (("TurnSkipAuto", 1), ("TurnSkipForce", 2)):
+			if visible:
+				self.drawTurnSkipButton(screen, name, value, mode == value)
+				screen.show(name)
+			else:
+				screen.hide(name)
+
+	def drawTurnSkipButton(self, screen, name, mode, active):
+		icon = "Auto"
+		if mode == 2:
+			icon = "Force"
+		if active:
+			icon += "Active"
+		path = "Art/Interface/Buttons/TurnSkip/%s.dds" % icon
+		x = screen.getXResolution() - iEndOfTurnButtonSize / 2 - iEndOfTurnPosX
+		y = screen.getYResolution() - 119 + (mode - 1) * 38
+		screen.setButtonGFC(name, u"", path, x, y, iEndOfTurnButtonSize, iEndOfTurnButtonSize, WidgetTypes.WIDGET_GENERAL, 7107, mode, ButtonStyles.BUTTON_STYLE_LABEL)
 
 	# Update the miscellaneous buttons
 	def updateMiscButtons( self ):
@@ -3374,6 +3414,16 @@ class CvMainInterface:
 
 		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED:
 			name = inputClass.getFunctionName()
+			if name in ("TurnSkipAuto", "TurnSkipForce"):
+				mode = 1
+				if name == "TurnSkipForce":
+					mode = 2
+				game = gc.getGame()
+				if game.getTurnSkipMode() == mode:
+					mode = 0
+				game.setTurnSkipMode(mode)
+				self.updateEndTurnButton()
+				return 1
 			if name == "GovernorRemoveButton":
 				city = CyInterface().getHeadSelectedCity()
 				if city and not city.isNone() and city.getOwner() == gc.getGame().getActivePlayer():

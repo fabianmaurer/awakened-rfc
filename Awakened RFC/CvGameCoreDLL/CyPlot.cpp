@@ -830,14 +830,14 @@ int CyPlot::getRiverDrought() const
 	return m_pPlot ? m_pPlot->getRiverDrought() : 0;
 }
 
-int CyPlot::getRiverDroughtEdges() const
+void CyPlot::setFloodplainState(int iState)
 {
-	return m_pPlot ? m_pPlot->getRiverDroughtEdges() : 0;
+    if (m_pPlot) m_pPlot->setFloodplainState(iState);
 }
 
-void CyPlot::setRiverDrought(int iSouthEdge, int iEastEdge)
+void CyPlot::setFloodplainWeights(int iNormal, int iWeak, int iDrought, int iStrong, int iExtreme)
 {
-	if (m_pPlot) m_pPlot->setRiverDrought(iSouthEdge, iEastEdge);
+    if (m_pPlot) m_pPlot->setFloodplainWeights(iNormal, iWeak, iDrought, iStrong, iExtreme);
 }
 
 int CyPlot::getRiverID() const

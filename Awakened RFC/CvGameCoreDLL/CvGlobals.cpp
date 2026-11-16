@@ -2,6 +2,7 @@
 // globals.cpp
 //
 #include "CvGameCoreDLL.h"
+#include "CameraProfile.h"
 #include "CvGlobals.h"
 #include "CvRandom.h"
 #include "CvGameAI.h"
@@ -19,6 +20,12 @@
 #include "FProfiler.h"
 #include "FVariableSystem.h"
 #include "CvInitCore.h"
+
+namespace {
+    // Resolve once per XML info set, not once per plot in every sync checksum.
+    bool g_floodplainTypesCached = false;
+    int g_floodplainTypes[5];
+}
 
 #define COPY(dst, src, typeName) \
 	{ \
@@ -2659,6 +2666,7 @@ void CvGlobals::cacheGlobals()
 
 int CvGlobals::getDefineINT( const char * szName ) const
 {
+	CAMERA_LOOKUP(CAMERA_DEFINE_INT, szName);
 	int iReturn = 0;
 	GC.getDefinesVarSystem()->GetValue( szName, iReturn );
 	return iReturn;
@@ -2666,6 +2674,7 @@ int CvGlobals::getDefineINT( const char * szName ) const
 
 float CvGlobals::getDefineFLOAT( const char * szName ) const
 {
+	CAMERA_LOOKUP(CAMERA_DEFINE_FLOAT, szName);
 	float fReturn = 0;
 	GC.getDefinesVarSystem()->GetValue( szName, fReturn );
 	return fReturn;
@@ -2673,6 +2682,7 @@ float CvGlobals::getDefineFLOAT( const char * szName ) const
 
 const char * CvGlobals::getDefineSTRING( const char * szName ) const
 {
+	CAMERA_LOOKUP(CAMERA_DEFINE_STRING, szName);
 	const char * szReturn = NULL;
 	GC.getDefinesVarSystem()->GetValue( szName, szReturn );
 	return szReturn;
@@ -3479,6 +3489,7 @@ void CvGlobals::deleteInfoArrays()
 
 int CvGlobals::getInfoTypeForString(const char* szType, bool hideAssert) const
 	{
+	CAMERA_LOOKUP(CAMERA_INFO_TYPE, szType);
 	FAssertMsg(szType, "null info type string");
 	InfosMap::const_iterator it = m_infosMap.find(szType);
 	if (it!=m_infosMap.end())
@@ -3497,6 +3508,23 @@ int CvGlobals::getInfoTypeForString(const char* szType, bool hideAssert) const
 	return -1;
 }
 
+bool CvGlobals::isFloodplainFeature(FeatureTypes eFeature) const
+{
+    if (eFeature == NO_FEATURE) return false;
+    if (!g_floodplainTypesCached)
+    {
+        g_floodplainTypes[0] = getInfoTypeForString("FEATURE_FLOOD_PLAINS");
+        g_floodplainTypes[1] = getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT");
+        g_floodplainTypes[2] = getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
+        g_floodplainTypes[3] = getInfoTypeForString("FEATURE_FLOOD_PLAINS_STRONG");
+        g_floodplainTypes[4] = getInfoTypeForString("FEATURE_FLOOD_PLAINS_EXTREME");
+        g_floodplainTypesCached = true;
+    }
+    return eFeature == g_floodplainTypes[0] || eFeature == g_floodplainTypes[1] ||
+        eFeature == g_floodplainTypes[2] || eFeature == g_floodplainTypes[3] ||
+        eFeature == g_floodplainTypes[4];
+}
+
 void CvGlobals::setInfoTypeFromString(const char* szType, int idx)
 {
 	FAssertMsg(szType, "null info type string");
@@ -3506,11 +3534,13 @@ void CvGlobals::setInfoTypeFromString(const char* szType, int idx)
 	FAssertMsg(iExisting==-1 || iExisting==idx || strcmp(szType, "ERROR")==0, CvString::format("xml info type entry %s already exists", szType).c_str());
 #endif
 	m_infosMap[szType] = idx;
+    g_floodplainTypesCached = false;
 }
 
 void CvGlobals::infoTypeFromStringReset()
 {
 	m_infosMap.clear();
+    g_floodplainTypesCached = false;
 }
 
 void CvGlobals::addToInfosVectors(void *infoVector)

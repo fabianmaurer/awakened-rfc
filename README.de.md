@@ -127,7 +127,7 @@ die auf Gold, Forschung, Kultur und Spionage verteilt werden, nicht nur Gold.
    Den Namen beibehalten; der ursprüngliche Mod kann daneben installiert bleiben.
 2. Über das Mod-Menü oder [den Starter](<Launch Awakened RFC.bat>) laden
    (für Steam eingerichtet).
-3. **3000 v. Chr.**, **800 v. Chr.**, **600 n. Chr.** oder **840 n. Chr.** wählen. Alle Mitspieler
+3. **XL 3000 v. Chr.** oder **XL 800 v. Chr.** wählen. Kleinere Szenarien sind deaktiviert. Alle Mitspieler
    benötigen identische Mod-Dateien und DLLs.
 
 Nach Änderungen an XML-Staatsformenboni ein neues Spiel beginnen. Die Validierung der Überarbeitung

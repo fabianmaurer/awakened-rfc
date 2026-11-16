@@ -9,6 +9,11 @@ A multiplayer overhaul of **Rhye's and Fall Multiplayer** for
 more consistent economics, new civics, and trade that shapes culture and religion.
 RFC's world maps, historical spawns, unique powers and victory goals remain.
 
+For multiplayer, compare the small hash below the mod name in the main
+menu's top-right corner. It fingerprints the installed DLL, Python, XML and
+scenarios once per launch. Different hashes mean different gameplay files; matching hashes do not
+replace in-game multiplayer validation. Restart after changing mod files.
+
 ## Optional graphics upgrade
 
 [GraphicsUpgrade by Deliverator](https://github.com/deliverator23/Civ4BTS-GraphicsUpgrade)
@@ -154,7 +159,7 @@ culture and espionage, distinct from gold income.
    the original mod can remain alongside it.
 2. Load it from the game's mod menu or use [the launcher](<Launch Awakened RFC.bat>)
    (configured for Steam).
-3. Choose **3000 BC**, **800 BC**, **600 AD** or **1453 AD**. All multiplayer peers need identical
+3. Choose **XL 3000 BC** or **XL 800 BC**. Non-XL scenarios are disabled. All multiplayer peers need identical
    mod files and DLLs.
 
 Start a new game after changes

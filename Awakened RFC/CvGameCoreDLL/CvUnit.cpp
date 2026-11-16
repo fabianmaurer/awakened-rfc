@@ -6735,6 +6735,14 @@ bool CvUnit::build(BuildTypes eBuild)
 		return false;
 	}
 
+    // Retain the queued build and existing work without charging for paused work.
+    if (plot()->isFloodPlains() && plot()->getRiverDrought() == 4 &&
+        GC.getBuildInfo(eBuild).getImprovement() != NO_IMPROVEMENT)
+    {
+        finishMoves();
+        return false;
+    }
+
 	// Note: notify entity must come before changeBuildProgress - because once the unit is done building,
 	// that function will notify the entity to stop building.
 	NotifyEntity((MissionTypes)GC.getBuildInfo(eBuild).getMissionType());

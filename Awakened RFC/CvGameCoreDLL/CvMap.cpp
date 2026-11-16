@@ -9,6 +9,7 @@
 
 
 #include "CvGameCoreDLL.h"
+#include "CameraProfile.h"
 #include "ObserverPerformance.h"
 #include "CvMap.h"
 #include "CvRhyes.h"
@@ -430,6 +431,7 @@ void CvMap::updateFlagSymbols()
 
 void CvMap::updateFog()
 {
+	CAMERA_PROFILE(CAMERA_MAP_FOG);
 	int iI;
 
 	for (iI = 0; iI < numPlotsINLINE(); iI++)
@@ -441,6 +443,7 @@ void CvMap::updateFog()
 
 void CvMap::updateVisibility()
 {
+	CAMERA_PROFILE(CAMERA_MAP_VISIBILITY);
 	int iI;
 
 	for (iI = 0; iI < numPlotsINLINE(); iI++)
@@ -452,6 +455,7 @@ void CvMap::updateVisibility()
 
 void CvMap::updateSymbolVisibility()
 {
+	CAMERA_PROFILE(CAMERA_MAP_SYMBOL_VISIBILITY);
 	int iI;
 
 	for (iI = 0; iI < numPlotsINLINE(); iI++)
@@ -463,6 +467,7 @@ void CvMap::updateSymbolVisibility()
 
 void CvMap::updateSymbols()
 {
+	CAMERA_PROFILE(CAMERA_MAP_SYMBOLS);
 	int iI;
 
 	for (iI = 0; iI < numPlotsINLINE(); iI++)

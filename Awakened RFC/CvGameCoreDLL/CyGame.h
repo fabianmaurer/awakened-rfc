@@ -154,6 +154,8 @@ public:
 	void setObserverRevealMap(bool enabled);
 #endif
 	bool isObserverAutoPlay() const;
+	int getTurnSkipMode() const;
+	void setTurnSkipMode(int iMode);
 	bool isReportingEnabled() const;
 	int getAIAutoPlay() const;
 	void setAIAutoPlay(int iNewValue);

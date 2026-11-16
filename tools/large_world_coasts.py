@@ -283,7 +283,7 @@ def grid_sources(map_text):
     Explicit Caribbean names/preferences are applied afterwards by the island pass.
     """
     import re
-    source_path = Path(__file__).resolve().parents[1] / 'Awakened RFC/PublicMaps/Start 1 - 3000 BC.CivBeyondSwordWBSave'
+    source_path = Path(__file__).resolve().parents[1] / 'tools/scenario_templates/disabled/Start 1 - 3000 BC.CivBeyondSwordWBSave'
     source = {}
     for block in re.findall(r'BeginPlot\s*\n(.*?)EndPlot', source_path.read_text(encoding='utf-8-sig'), re.S):
         p = tuple(map(int, re.search(r'x=(\d+),y=(\d+)', block).groups()))

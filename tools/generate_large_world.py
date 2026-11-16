@@ -1,4 +1,4 @@
-"""Author the alternative 3000 BC world and its static Python 2.4 geography.
+"""Author the maintained XL 3000 BC world and its static Python 2.4 geography.
 
 Run with Python 3 from any directory. Never launches Civilization IV.
 The original RFC cartography supplies coastlines; this offline conversion also
@@ -549,6 +549,180 @@ FLOODPLAIN_FRINGES = {
 }
 
 
+# Coarse river corridors in RFC's compressed reference projection, not a soil
+# raster. Only actual river banks qualify. Highlands, marshes, forest resources
+# and mineral deposits are filtered separately. Do not turn every river into
+# floodplain or use this feature to represent rain-fed black-earth/volcanic soil.
+# Named middle/lower reaches follow the alluvial landform distinction in:
+# https://www.fao.org/4/y1899e/y1899e07.htm
+FLOODPLAIN_CORRIDORS = (
+    ('Nile', ((69, 25), (69, 33), (68, 35)), .75),
+    ('Tigris-Euphrates', ((76, 42), (77, 40), (78, 38)), 1.1),
+    ('Euphrates western branch', ((75, 42), (76, 40), (77, 38)), .65),
+    ('Indus', ((88, 42), (87, 38)), 1.),
+    ('Ganges', ((90, 40), (93, 39), (96, 38)), 1.),
+    ('Brahmaputra-Bengal', ((96, 40), (96, 38), (97, 37)), .8),
+    ('Lower Yellow River', ((103, 47), (105, 46), (107, 46)), 1.),
+    ('Yangtze', ((100, 43), (104, 43), (108, 43)), .9),
+    ('Pearl River', ((104, 40), (106, 40)), .7),
+    ('Red River', ((100, 38), (102, 37)), .7),
+    ('Mekong', ((102, 37), (103, 35), (105, 32)), .8),
+    ('Chao Phraya', ((100, 35), (100, 33)), .7),
+    ('Irrawaddy', ((98, 37), (98, 34)), .7),
+    ('Po', ((59, 47), (62, 47)), .7),
+    ('Danube', ((62, 49), (65, 48), (68, 47)), .75),
+    ('Lower Rhine', ((58, 51), (57, 53)), .6),
+    ('Rhone', ((57, 48), (57, 45)), .55),
+    ('Seine', ((54, 51), (56, 50)), .6),
+    ('Dnieper', ((71, 53), (71, 50), (72, 49)), .7),
+    ('Lower Volga', ((76, 55), (78, 52), (78, 49)), .7),
+    ('Niger', ((53, 30), (55, 32), (57, 29), (59, 28)), .8),
+    ('Senegal', ((50, 30), (52, 29)), .6),
+    ('Zambezi', ((66, 20), (69, 19), (72, 19)), .7),
+    ('Mississippi', ((23, 48), (23, 45), (24, 42), (25, 40)), .9),
+    ('Missouri', ((18, 48), (21, 46), (23, 45)), .75),
+    ('Ohio', ((24, 46), (27, 47)), .65),
+    ('St Lawrence', ((27, 50), (30, 52), (33, 52)), .6),
+    ('Orinoco', ((28, 32), (32, 31)), .8),
+    ('Amazon', ((28, 27), (34, 27), (39, 27)), .7),
+    ('Parana-Paraguay', ((37, 20), (37, 16), (38, 12)), .8),
+    ('Murray-Darling', ((116, 16), (115, 13), (113, 11)), .7),
+)
+
+
+def river_banks(plots):
+    """Civ4 stores south/east edges, including a neighbour's north/west bank."""
+    result = set()
+    for (x, y), fields in plots.items():
+        if 'isNOfRiver' in fields or 'isNOfRiver=1' in fields:
+            result.update(((x, y), (x, y - 1)))
+        if 'isWOfRiver' in fields or 'isWOfRiver=1' in fields:
+            result.update(((x, y), ((x + 1) % WIDTH, y)))
+    return result
+
+
+def place_floodplains(plots, excluded=()):
+    """Author selected alluvial river banks without altering terrain/resources."""
+    from large_world_resources import MINERALS
+    banks, excluded = river_banks(plots), set(excluded)
+    counts, woodland, removed = Counter(), 0, 0
+    allowed_terrain = {'TerrainType=TERRAIN_DESERT', 'TerrainType=TERRAIN_PLAINS',
+                       'TerrainType=TERRAIN_GRASS'}
+    for pos, fields in plots.items():
+        feature = next((f for f in fields if f.startswith('FeatureType=')), '')
+        existing = feature.startswith('FeatureType=FEATURE_FLOOD_PLAINS')
+        legal = (pos in banks and pos not in excluded and 'PlotType=2' in fields
+                 and bool(allowed_terrain.intersection(fields)))
+        if existing:
+            if legal:
+                counts['Retained authored floodplains'] += 1
+            else:
+                fields.remove(feature)
+                removed += 1
+            continue
+        if not legal:
+            continue
+        # Wetlands, oases and wilderness features keep their separate ecology.
+        wooded = feature.startswith(('FeatureType=FEATURE_FOREST,', 'FeatureType=FEATURE_JUNGLE,'))
+        if feature and not wooded:
+            continue
+        bonus = next((f[len('BonusType=BONUS_'):] for f in fields
+                      if f.startswith('BonusType=BONUS_')), '')
+        if bonus in MINERALS:
+            continue
+        if wooded:
+            if bonus and bonus not in ('WHEAT', 'RICE', 'CORN', 'COTTON', 'SUGAR'):
+                continue
+            if any(f in fields for f in ('ImprovementType=IMPROVEMENT_LUMBERMILL',
+                                          'ImprovementType=IMPROVEMENT_CAMP')):
+                continue
+        x, y = pos
+        rx, ry = (x + .5) * 124 / WIDTH - .5, (y + .5) * 68 / HEIGHT - .5
+        for name, path, radius in FLOODPLAIN_CORRIDORS:
+            if any(line_distance(rx, ry, a, b) <= radius for a, b in zip(path, path[1:])):
+                if feature:
+                    fields.remove(feature)
+                    woodland += 1
+                fields.append('FeatureType=FEATURE_FLOOD_PLAINS, FeatureVariety=0')
+                counts[name] += 1
+                break
+    print('Floodplain placement by corridor:', dict(counts))
+    print('Floodplain riparian woodland replaced: %d; invalid/excluded removed: %d' % (woodland, removed))
+    return counts
+
+
+# Regional soil belts, not a universal food bonus. The reference projection is
+# deliberately coarse; selected open farmland represents rich soils beyond the
+# active alluvial reaches. Preserve every existing feature and all base terrain.
+FERTILE_SOIL_REGIONS = (
+    ('Central European loess', ((55, 49), (62, 48), (67, 50), (65, 52), (58, 53), (55, 51))),
+    ('Pontic black-earth belt', ((68, 49), (73, 49), (77, 51), (76, 54), (71, 54), (68, 52))),
+    ('North American prairies', ((17, 45), (23, 44), (25, 48), (22, 52), (18, 53), (16, 50))),
+    ('Pampas', ((35, 8), (39, 9), (41, 13), (38, 16), (35, 14))),
+    ('Chinese loess margin', ((100, 44), (103, 44), (104, 46), (102, 48), (99, 47))),
+)
+
+
+def place_fertile_soil(plots):
+    """Static +1 food feature on selected flat open plains/grassland only."""
+    counts = Counter()
+    for (x, y), fields in plots.items():
+        feature = next((f for f in fields if f.startswith('FeatureType=')), '')
+        if feature.startswith('FeatureType=FEATURE_FERTILE_SOIL'):
+            counts['Retained fertile soil'] += 1
+            continue
+        if feature or 'PlotType=2' not in fields or not any(
+                f in fields for f in ('TerrainType=TERRAIN_PLAINS', 'TerrainType=TERRAIN_GRASS')):
+            continue
+        # Stable across dates and regenerations, without consuming gameplay RNG.
+        if ((x * 73856093) ^ (y * 19349663)) % 100 >= 40:
+            continue
+        rx, ry = (x + .5) * 124 / WIDTH - .5, (y + .5) * 68 / HEIGHT - .5
+        for name, polygon in FERTILE_SOIL_REGIONS:
+            if in_polygon(rx, ry, polygon):
+                fields.append('FeatureType=FEATURE_FERTILE_SOIL, FeatureVariety=0')
+                counts[name] += 1
+                break
+    print('Fertile soil placement by region:', dict(counts))
+    return counts
+
+
+def refresh_xl_features(floodplains=False, fertile_soil=False):
+    """Update only selected feature lines; preserve all scenario payloads."""
+    from indian_scenarios import HARAPPAN_DRYING
+    for path in sorted((MOD / 'PublicMaps').glob('Start * XL - *.CivBeyondSwordWBSave')):
+        source = path.read_text(encoding='utf-8-sig')
+        plots = {}
+        pattern = r'BeginPlot\b(.*?)EndPlot'
+        for block in re.findall(pattern, source, re.S):
+            pos = tuple(map(int, re.search(r'x=(\d+),y=(\d+)', block).groups()))
+            surface = re.sub(r'Begin(City|Unit)\b.*?End\1', '', block, flags=re.S)
+            plots[pos] = [line.strip() for line in surface.splitlines() if line.strip()]
+        excluded = set()
+        if '800BC' in path.name:
+            excluded = {pos for year, sites in HARAPPAN_DRYING for pos in sites if year <= -800}
+        print(path.name)
+        if floodplains:
+            place_floodplains(plots, excluded)
+        if fertile_soil:
+            place_fertile_soil(plots)
+
+        def update(match):
+            block = match[1]
+            pos = tuple(map(int, re.search(r'x=(\d+),y=(\d+)', block).groups()))
+            feature = next((f for f in plots[pos] if f.startswith('FeatureType=')), '')
+            old = re.search(r'^[ \t]*FeatureType=[^\r\n]*(?:\r?\n)?', block, re.M)
+            if old:
+                replacement = '\t' + feature + '\n' if feature else ''
+                block = block[:old.start()] + replacement + block[old.end():]
+            elif feature:
+                block = re.sub(r'(^[ \t]*x=\d+,y=\d+[^\r\n]*\r?\n)',
+                               lambda m: m[0] + '\t' + feature + '\n', block, count=1, flags=re.M)
+            return 'BeginPlot' + block + 'EndPlot'
+
+        path.write_text(re.sub(pattern, update, source, flags=re.S), encoding='utf-8', newline='\n')
+
+
 def harappan_floodplains(plots):
     """Concentrate the opening cities on a shared, drought-exposed corridor."""
     from indian_scenarios import HARAPPAN_CITIES
@@ -606,7 +780,8 @@ def correct_floodplains(plots, origins):
         river = ('isNOfRiver' in fields or 'isWOfRiver' in fields or
                  'isNOfRiver' in plots.get((x, y + 1), ()) or
                  'isWOfRiver' in plots.get(((x - 1) % WIDTH, y), ()))
-        if river and 'PlotType=2' in fields and 'TerrainType=TERRAIN_DESERT' in fields:
+        if river and 'PlotType=2' in fields and any('TerrainType=' + t in fields for t in
+                ('TERRAIN_DESERT', 'TERRAIN_PLAINS', 'TERRAIN_GRASS')):
             continue
         fields[:] = [f for f in fields if not f.startswith('FeatureType=FEATURE_FLOOD_PLAINS')]
         if ('PlotType=2' in fields and 'TerrainType=TERRAIN_DESERT' in fields
@@ -763,7 +938,7 @@ def refine_historic_regions(plots):
 
 
 def make_map(profile_values):
-    source = (MOD / 'PublicMaps/Start 1 - 3000 BC.CivBeyondSwordWBSave').read_text(encoding='utf-8-sig')
+    source = (ROOT / 'tools/scenario_templates/disabled/Start 1 - 3000 BC.CivBeyondSwordWBSave').read_text(encoding='utf-8-sig')
     header = source.split('BeginPlot', 1)[0]
     blocks, placements = {}, {}
     for block in re.findall(r'BeginPlot\s*\n(.*?)EndPlot', source, re.S):
@@ -1169,6 +1344,8 @@ def make_map(profile_values):
         header = header[:team.start()] + team[0].replace('TECH_MYSTICISM', 'TECH_AGRICULTURE') + header[team.end():]
     if NAME == 'Earth200x110':
         harappan_floodplains(plots)
+        place_floodplains(plots)
+        place_fertile_soil(plots)
     output = [header.rstrip() + '\n']
     for (x, y), fields in plots.items():
         output.append('BeginPlot\n\tx=%d,y=%d\n\t%s\nEndPlot\n' %
@@ -1256,10 +1433,21 @@ def feature_xml():
 def main():
     global WIDTH, HEIGHT, NAME, TARGET, DESCRIPTION, ATLAS_NAME, WILDS, HISTORICAL_ROUTES, SHARED_EDGE_ROUTES
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--huge', action='store_true', help='Author the additional 200 x 110 Eurocentric world.')
+    parser.add_argument('--huge', action='store_true', default=True,
+                        help='Compatibility flag: XL is now the default and only maintained map.')
     parser.add_argument('--city-names-only', action='store_true',
                         help='Refresh naming grids and profile only; leave terrain/resources unchanged.')
+    parser.add_argument('--floodplains-only', action='store_true',
+                        help='Refresh only floodplain placement on both maintained XL maps.')
+    parser.add_argument('--fertile-soil-only', action='store_true',
+                        help='Add fertile soil on selected open tiles in both maintained XL maps.')
     args = parser.parse_args()
+    if args.floodplains_only or args.fertile_soil_only:
+        if args.city_names_only:
+            parser.error('Feature-only refresh cannot combine with --city-names-only')
+        WIDTH, HEIGHT = 200, 110
+        refresh_xl_features(args.floodplains_only, args.fertile_soil_only)
+        return
     if args.huge:
         WIDTH, HEIGHT = 200, 110
         NAME = 'Earth200x110'

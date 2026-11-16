@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 MOD = ROOT / 'Awakened RFC'
-TARGET = MOD / 'PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave'
+TARGET = ROOT / 'tools/scenario_templates/disabled/Start 4 - 1453 AD.CivBeyondSwordWBSave'
 START_TURN = 271
 ACTIVE = tuple(i for i in range(26) if i != 3) + (30, 31)
 CHRISTIAN = 'RELIGION_CHRISTIANITY'

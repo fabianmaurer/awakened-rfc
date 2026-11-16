@@ -2952,8 +2952,9 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		if (pPlot->getRiverDrought() > 0)
 		{
 			szString.append(NEWLINE);
-			szString.append(gDLL->getText(pPlot->getRiverDrought() == 2 ?
-				"TXT_KEY_DROUGHT_SEVERE_HELP" : "TXT_KEY_DROUGHT_HELP"));
+            const char* keys[5] = {"", "TXT_KEY_FLOODPLAIN_WEAK_HELP", "TXT_KEY_DROUGHT_HELP",
+                "TXT_KEY_FLOODPLAIN_STRONG_HELP", "TXT_KEY_FLOODPLAIN_EXTREME_HELP"};
+            szString.append(gDLL->getText(keys[pPlot->getRiverDrought()]));
 		}
 
 		if (pPlot->hasYield())

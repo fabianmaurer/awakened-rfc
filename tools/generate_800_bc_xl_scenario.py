@@ -79,7 +79,7 @@ def shore(grid, pos):
 
 def main():
     world.WIDTH, world.HEIGHT = geography.WIDTH, geography.HEIGHT
-    header, original = read_map(MAPS / 'Start 2 - 800 BC.CivBeyondSwordWBSave')
+    header, original = read_map(ROOT / 'tools/scenario_templates/disabled/Start 2 - 800 BC.CivBeyondSwordWBSave')
     xl_header, xl = read_map(MAPS / 'Start 1 XL - 3000BC.CivBeyondSwordWBSave')
     source = {pos: fields(block) for pos, block in original.items()}
     plots = {pos: fields(block) for pos, block in xl.items()}

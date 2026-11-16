@@ -15,6 +15,21 @@ Historical goals are currently disabled for all civilizations. They grant no
 rewards or historical victory, and the scoreboard no longer shows goal progress.
 Historical objectives described below are inactive.
 
+## Automatic turn ending
+
+Two toggles beside the end-turn button select mutually exclusive modes. **Auto**
+uses the standard behavior: finish unit orders and automatic moves, then end the
+turn, but wait for confirmation if no unit moved. **Force** also ends idle turns
+without that confirmation or the usual short delay. It still waits for units
+needing orders, pending popups and open city screens.
+
+The circular arrow selects Auto; the arrow with an exclamation mark selects Force.
+An active button glows green. Click it again for manual turn ending.
+Modes apply only to your local player for the current session; loading a game
+restores the behavior selected by the normal **Wait at End of Turn** option.
+These controls are hidden in hotseat and play-by-email games, which retain manual
+confirmation. Multiplayer turn completion uses the normal synchronized command.
+
 ## Administration and empire size
 
 Administration replaces stability penalties for city count, foreign territory
@@ -72,6 +87,7 @@ contribution disappears immediately when capacity is sufficient again.
 City upkeep is **0.5 gold per point of administrative effort** plus the overload surcharge.
 Distance, colonies and corporations add no separate upkeep. Buildings reduce
 upkeep through their reductions to administrative effort.
+City upkeep is suspended during revolution or religious anarchy.
 
 Courthouses, Sacrificial Altars and Ziggurats reduce local effort by 20%; Rathaus
 and Delhi's replacement by 30%; Provincial Administration by 25%; Ikhanda by 5%;
@@ -2005,7 +2021,7 @@ troops, technology and diplomacy, with its palace at Pataliputra.
 
 | Civilization | Birth | Capital site | Unique power |
 |---|---|---|---|
-| Magadha | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +1 research. |
+| Magadha | 3000 BC | Pataliputra `(150, 65)` | Sacred Learning: Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point. |
 | Chola | 850 AD | Thanjavur `(147, 52)` | Oceanic Networks: coastal cities gain one trade route. |
 | Delhi | 1200 AD | Delhi `(145, 65)` | Mounted Conquest: mounted units gain +25% city attack. |
 | Bengal | 1350 AD | Gaur `(154, 65)` | Delta Commerce: river tiles gain +1 commerce. |
@@ -2210,69 +2226,77 @@ uses synchronized gameplay randomness. Ruins tooltips show the recoverable
 count, and AI settlement evaluation gives known recoverable ruins a modest bonus.
 Gameplay and multiplayer behavior remain unverified.
 
-## River droughts on XL maps
+## Fertile soil
 
-Flood plains no longer reduce city health. On XL maps, connected river systems
-with flood plains can experience drought, regardless of their inhabitants. Rivers
-remain present for fresh-water health, commerce, crossings and trade. Their flood
-plains normally add 3 food; ordinary drought reduces this to 1. Severe drought
-forces an affected floodplain tile's total food to zero, including farms,
-resources, city-centre food, technologies and unique-power food bonuses. It also
-stops that river supplying irrigation. Ordinary desert flood plains consequently
-yield 3/4 food without/with a farm normally, 1/2 during ordinary drought and 0/0
-during severe drought. Ordinary drought also removes up to two food from the
-resource's combined natural and improvement bonuses. A wheat floodplain with a
-farm consequently falls from five to three food during ordinary drought, before
-other technology or unique-power bonuses. Egypt's Nile power still applies
-outside severe drought. Farms remain in place and recover. Other water sources
-can preserve irrigation, but cannot override zero food on a severely dry floodplain.
-Conditions are stored on individual river edges. A tile bordering several rivers
-uses its healthiest bordering river for both flood-plain food and its appearance:
-one normal river preserves the normal yield; ordinary plus severe drought gives
-ordinary drought yields. River irrigation stops only when every bordering river
-is in severe drought. Both banks of a changed edge update together.
+Fertile soil adds **1 food** on selected flat plains and grassland. It remains
+under farms and cottages, with normal resource and technology bonuses. It has
+no seasonal fluctuations, depletion, health bonus or technology requirement.
+It occupies the usual feature slot, so it does not stack with forests, jungle
+or floodplains. Both XL starts have the same 46 selected soil tiles in the
+European loess and black-earth belts, North American prairies, Pampas and China.
+Brown humus and green grass patches identify it; the tooltip shows the food.
 
-Each random event follows one continuous river path for a randomly chosen six to
-twelve segments, anchored beside flood plains. Random events remain at ordinary
-severity. Only segments beside existing flood plains dry out, and notifications
-point to flood plains. Reaches without remaining flood plains cannot start events.
-Only Harappa's scripted event can cause severe drought. Segment counts follow bends, not a
-radius across land. Upstream forks select one branch with synchronized seeded
-randomness. Downstream traversal follows the flow and never turns upstream into
-a tributary joining later. Distributaries likewise select one continuation.
-River ends, missing flow directions and previously visited segments shorten the
-reach. No event spreads through every tributary of a connected system.
+## Floodplain fertility on XL maps
 
-After 20 reference-calendar turns of initial protection, each eligible connected
-river system gets exactly one initiation roll per reference turn, including while
-other events are ongoing. Its chance is proportional to the current length of
-river bordering flood plains, with a minimum weight of three tile-edge segments.
-Each segment counts once, even with flood plains on both banks. Systems without
-remaining flood plains have zero chance. There is no long protected period after
-an event. Events can coexist; overlapping conditions take
-the worse stage on each edge, and consecutive events can prolong a local dry spell.
-Notifications of recovery use actual tile conditions so an ending event does not
-announce recovery where another drought is still active.
+Floodplains can occupy flat desert, plains or grassland beside rivers, without
+reducing city health. Their food is the greater of terrain food and current
+floodplain fertility; resources, improvements, technologies and named unique
+powers add their bonuses afterward. Existing authored floodplains remain in
+place; this does not automatically add floodplains to every river bank.
 
-Random events have two reference turns of advance warning, followed by
-four to seven turns of ordinary drought and then recovery to normal conditions.
-XL doubles these durations in engine turns; food consumption continues each
-engine turn. Notifications go to human owners of affected flood plains, and tile
-help explains current conditions.
+| Conditions | Fertility | Ordinary irrigated desert farm |
+| --- | ---: | ---: |
+| Normal | 3 | 4 food |
+| Weak flood | 2 | 3 food |
+| Drought | 1 | 1 food, because desert irrigation stops |
+| Strong flood | 4 | 5 food while the farm remains |
+| Extreme flood | 1 | 2 food while the farm remains |
 
-At game start, seeded branch and size choices produce a saved catalogue of local
-reaches. The shared initiation rate per weighted river segment is calibrated against that
-catalogue and the map's flood-plain tiles against a baseline of **3.5 food per
-farmed desert flood-plain tile per turn**, averaged over random events in the
-long run. The actual initiation rate is **half this calibrated rate**, making
-normal droughts rarer and raising long-run food output above that baseline.
-Duration and severity are unchanged. The calibration includes overlapping events
-and healthy second rivers. The initiation chance
-depends on the seeded catalogue and models ordinary random droughts only. The initial grace
-period and Harappa's historical drought are excluded from this stationary estimate.
-Resources, technology, unique powers and irrigation from other sources can raise
-actual food output; local tiles can differ from the map average. This is an
-analytical balance target, not an observed gameplay result.
+Drought disables irrigation on desert floodplains, including irrigation passed
+through them. Fresh-water health, river commerce, crossings and trade remain.
+Other terrain retains irrigation during drought. Resource, technology and
+unique-power bonuses are not suppressed by the fertility floor.
+
+Random events follow a seeded continuous path of six to twelve river segments,
+shortened by river ends or missing flow directions. Branches choose one channel;
+events never spread through every tributary. A drought or extreme flood has a
+small core of two to three segments; the rest of the reach has weak or strong
+flooding respectively. Conditions apply only to existing floodplains on the banks.
+After 4–6 actual game turns, the surroundings return to normal and the core
+changes to weak or strong flooding for another independently chosen 4–6 turns.
+Standalone weak and strong floods also last 4–6 actual turns. XL does not double
+these durations. Droughts and extreme floods have one turn of advance warning.
+
+Event starts use equal weights for weak and strong floods, with droughts half as
+common as weak floods and extreme floods half as common as strong floods
+(2:1:2:1). These are event frequencies, not percentages of affected tiles or turns.
+Each connected river system has at most one random event at a time. There are
+40 actual turns of opening protection and 12 protected turns after a drought or
+extreme-flood recovery. When eligible, a system's initiation chance per actual
+turn is 0.5% per segment bordering remaining floodplains, using a minimum weight
+of three segments and a maximum chance of 25%. These are initial balance values.
+
+Damage is rolled once per exposed improved tile at event onset: 5% in strong
+flooding, including the surroundings of an extreme flood, and 50% in the extreme
+core. Farms and other improvements are destroyed; towns, villages and hamlets
+lose one level, and cottages are destroyed. Roads and cities are unaffected.
+Recovery never rolls damage again, so rebuilding during strong-flood recovery is
+safe from that event. Extreme flooding pauses improvement construction and
+improvement upgrades, including cottage growth, while retaining accumulated work
+and growth progress. Queued worker builds resume when extreme flooding ends;
+paused work does not charge construction gold. Roads can still be built.
+
+Settlement and improvement AI use per-tile long-run expected yields derived from
+the saved reach catalogue, event weights, durations, warning and protection
+periods. Expectations are rounded to the DLL's integer yield precision. Planning
+includes the desert irrigation loss, but excludes historical events and the
+opening grace period; it assumes the evaluated improvement remains in place,
+rather than estimating worker replacement costs or permanent flood damage.
+Citizen assignment continues to use current yields. Independent river systems
+sharing a tile use the more disruptive state, in this order: extreme flood,
+drought, weak flood, strong flood, normal. This rule also combines their expected
+state distributions. Harappa's scripted drought takes precedence over random
+conditions on its core and halo throughout its historical sequence.
 
 The 3000 BC XL start adds early alluvial farmland and a narrow eastern
 distributary around the three Harappan cities. Their centres and shared
@@ -2280,10 +2304,13 @@ floodplains are exposed together. Nearby grassland becomes plains, reducing
 food sources that would otherwise escape the drying. A historical sequence
 affects river edges in
 `(139, 60)`–`(145, 66)`, plus the joining river edge at `(138, 62)`:
-warning from 2100 BC, an abrupt onset of severe drought from 2000 BC,
-partial recovery from 1800 BC and an end to the scripted drought from 1700 BC.
-All 15 starting floodplain tiles in the Harappan homeland border this reach;
-random droughts can still delay their recovery.
+warning from 2100 BC and the onset of a scripted drought from 2000 BC. The
+script selects a seeded local river reach concentrated on this homeland, with
+the same two-to-three-segment drought core, weak-flood surroundings, 4–6-turn
+initial phase and 4–6-turn weak recovery as random droughts. The historical
+warning and onset dates remain; recovery follows the new phase clock rather
+than the former fixed 1800/1700 BC dates. Scripted conditions override random
+fertility and suppress random flood damage on their active footprint.
 Five added floodplains at `(141, 63)`, `(141, 66)`, `(142, 66)`,
 `(140, 62)` and `(141, 62)` disappear permanently from 1900 BC.
 This includes Rakhigarhi's and Mohenjo-daro's centres. These tiles retain their
@@ -2297,8 +2324,9 @@ Harappa. The 800 BC XL start uses the reduced floodplain footprint and random
 droughts without replaying this ancient sequence. Other maps retain
 ordinary flood-plain yields. No other historical droughts are scripted yet.
 
-Green, faded and dry ochre flood-plain textures distinguish the stages without
-changing river geometry. The dry source is
+Normal and wet states use the green floodplain texture; weak floods use the
+faded texture and drought uses dry ochre, without changing river geometry.
+Tile help identifies all five states. The dry source is
 `art/drought/FloodPlain_SevereDrought.png`, edited with the built-in imagegen tool
 from Civ4's flood-plain texture using the prompt: "Severe drought version; flat,
 homogeneous, fine-grained, tileable ochre/tan soil and dead vegetation; preserve

@@ -106,6 +106,11 @@ TRACKS = {
     'PORTUGAL_CARRACK': [('VISIBILITY', 1, 'HEAL', 5), ('CARGO', 1), ('MOVES', 2, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
     'NETHERLANDS_OOSTINDIEVAARDER': [('COMBAT', 15), ('CARGO', 1), ('MOVES', 2, 'SECOND_ATTACK', 1)],
     'ADENA_WOODLAND_WARRIOR': [('FOREST_DEFENSE', 15), ('FOREST_DOUBLE', 1), ('FOREST_ATTACK', 40, 'SAME_TILE_HEAL', 20)],
+    'GAN_UNIQUE': [('MELEE', 15), ('HEAL', 15, 'FIRST_IMMUNE', 1), ('COLLATERAL', 40, 'COLLATERAL_TARGETS', 4, 'COLLATERAL_LIMIT', 50)],
+    'CHO_UNIQUE': [('COMBAT', 15), ('CARGO', 1), ('MOVES', 1, 'ALWAYS_HEAL', 1, 'HEAL', 20)],
+    'DEL_UNIQUE': [('CITY_ATTACK', 15), ('RIVER', 1, 'HEAL', 10), ('COMBAT', 35, 'BLITZ', 1)],
+    'BEN_UNIQUE': [('CITY_DEFENSE', 15), ('FIRST_STRIKES', 1, 'JUNGLE_DEFENSE', 25), ('COMBAT', 35, 'SAME_TILE_HEAL', 20)],
+    'VIJ_UNIQUE': [('MOUNTED', 20), ('HILLS_DEFENSE', 25, 'FIRST_STRIKES', 1), ('MOUNTED', 40, 'COMBAT', 35)],
 }
 
 # Armed transports are deliberately excluded: mastery is for fighting units.
@@ -430,6 +435,8 @@ tracks; civilizations cannot research another civilization's replacement.
 Completing a tier ends that research selection. Any queued next technology
 continues normally; otherwise humans choose their next research and AI evaluates
 its choices again. Continuing the same mastery requires a new research choice.
+AI treats mastery and capped Military Research as finite research, preserving
+normal science spending, gold reserves and victory planning while selecting them.
 
 Each direct combat grants both participants' teams 1% of their exact unit type's
 next mastery level's total research cost, whether attacking, defending, losing

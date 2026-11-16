@@ -34,11 +34,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_SEVERE</Tag>
-    <English>Severe drought has stopped the river from supplying irrigation.</English>
-    <French>Une s&#233;cheresse intense emp&#234;che le fleuve de fournir de l&#8217;eau d&#8217;irrigation.</French>
-    <German>Wegen schwerer D&#252;rre liefert der Fluss kein Bew&#228;sserungswasser mehr.</German>
-    <Italian>Una grave siccit&#224; impedisce al fiume di fornire acqua per l&#8217;irrigazione.</Italian>
-    <Spanish>Una sequ&#237;a grave impide que el r&#237;o suministre agua de riego.</Spanish>
+    <English>Drought has stopped irrigation on desert floodplains.</English>
+    <French>La s&#233;cheresse a interrompu l&#8217;irrigation des plaines inondables d&#233;sertiques.</French>
+    <German>D&#252;rre hat die Bew&#228;sserung auf W&#252;stenschwemmland unterbrochen.</German>
+    <Italian>La siccit&#224; ha interrotto l&#8217;irrigazione delle pianure alluvionali desertiche.</Italian>
+    <Spanish>La sequ&#237;a ha interrumpido el riego en las llanuras aluviales des&#233;rticas.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_END</Tag>
@@ -50,26 +50,74 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_HELP</Tag>
-    <English>[COLOR_PLAYER_ORANGE_TEXT]Drought[COLOR_REVERT]</English>
-    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse[COLOR_REVERT]</French>
-    <German>[COLOR_PLAYER_ORANGE_TEXT]D&#252;rre[COLOR_REVERT]</German>
-    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Siccit&#224;[COLOR_REVERT]</Italian>
-    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a[COLOR_REVERT]</Spanish>
+    <English>Drought. Desert floodplains lose irrigation.</English>
+    <French>S&#233;cheresse. Les plaines inondables d&#233;sertiques perdent leur irrigation.</French>
+    <German>D&#252;rre. W&#252;stenschwemmland verliert seine Bew&#228;sserung.</German>
+    <Italian>Siccit&#224;. Le pianure alluvionali desertiche perdono l&#8217;irrigazione.</Italian>
+    <Spanish>Sequ&#237;a. Las llanuras aluviales des&#233;rticas pierden el riego.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_SEVERE_HELP</Tag>
-    <English>[COLOR_PLAYER_ORANGE_TEXT]Severe drought[COLOR_REVERT]</English>
-    <French>[COLOR_PLAYER_ORANGE_TEXT]S&#233;cheresse intense[COLOR_REVERT]</French>
-    <German>[COLOR_PLAYER_ORANGE_TEXT]Schwere D&#252;rre[COLOR_REVERT]</German>
-    <Italian>[COLOR_PLAYER_ORANGE_TEXT]Grave siccit&#224;[COLOR_REVERT]</Italian>
-    <Spanish>[COLOR_PLAYER_ORANGE_TEXT]Sequ&#237;a grave[COLOR_REVERT]</Spanish>
+    <English>Drought. Desert floodplains lose irrigation.</English>
+    <French>S&#233;cheresse. Les plaines inondables d&#233;sertiques perdent leur irrigation.</French>
+    <German>D&#252;rre. W&#252;stenschwemmland verliert seine Bew&#228;sserung.</German>
+    <Italian>Siccit&#224;. Le pianure alluvionali desertiche perdono l&#8217;irrigazione.</Italian>
+    <Spanish>Sequ&#237;a. Las llanuras aluviales des&#233;rticas pierden el riego.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FEATURE_FLOOD_PLAINS_DROUGHT_PEDIA</Tag>
-    <English>Flood plains add 3 food without reducing city health. On XL maps, river droughts reduce this bonus to 1 food. Severe drought also stops the river supplying irrigation. Farms remain and recover when water returns; other water sources can sustain irrigation. Resources, technologies and unique powers can change the final yields.</English>
-    <French>Les plaines inondables ajoutent 3 nourritures sans nuire &#224; la sant&#233; des villes. Sur les cartes XL, la s&#233;cheresse r&#233;duit ce bonus &#224; 1. Une s&#233;cheresse intense prive aussi le fleuve d&#8217;eau d&#8217;irrigation. Les fermes restent en place et retrouvent leur rendement au retour de l&#8217;eau ; d&#8217;autres sources peuvent maintenir l&#8217;irrigation. Les ressources, technologies et pouvoirs uniques peuvent modifier les rendements.</French>
-    <German>Schwemmland bringt 3 zus&#228;tzliche Nahrung und beeintr&#228;chtigt die Stadtgesundheit nicht. Auf XL-Karten senkt D&#252;rre diesen Bonus auf 1 Nahrung. Bei schwerer D&#252;rre liefert der Fluss auch kein Bew&#228;sserungswasser. Bauernh&#246;fe bleiben bestehen und erholen sich mit der Wasserversorgung; andere Wasserquellen k&#246;nnen die Bew&#228;sserung erhalten. Ressourcen, Technologien und einzigartige F&#228;higkeiten k&#246;nnen die Ertr&#228;ge ver&#228;ndern.</German>
-    <Italian>Le pianure alluvionali aggiungono 3 cibi senza danneggiare la salute delle citt&#224;. Sulle mappe XL, la siccit&#224; riduce questo bonus a 1. La siccit&#224; grave impedisce anche al fiume di fornire acqua per l&#8217;irrigazione. Le fattorie rimangono e recuperano quando torna l&#8217;acqua; altre fonti possono mantenere l&#8217;irrigazione. Risorse, tecnologie e poteri unici possono modificare le rese.</Italian>
-    <Spanish>Las llanuras aluviales aportan 3 alimentos sin perjudicar la salud de las ciudades. En los mapas XL, la sequ&#237;a reduce esta bonificaci&#243;n a 1. La sequ&#237;a grave tambi&#233;n impide que el r&#237;o suministre agua de riego. Las granjas permanecen y recuperan su rendimiento cuando vuelve el agua; otras fuentes pueden mantener el riego. Los recursos, las tecnolog&#237;as y los poderes &#250;nicos pueden modificar los rendimientos.</Spanish>
+    <English>Floodplains can cover flat desert, plains or grassland beside rivers. Food uses the higher of terrain food and floodplain fertility, then adds resource, improvement, technology and unique-power bonuses. Normal fertility is 3 food; weak floods give 2, droughts and extreme floods 1, and strong floods 4. On XL maps, phases last 4&#8211;6 turns. Droughts and extreme floods have a small core surrounded by weak or strong flooding; the core then recovers through the mild state. Desert droughts stop irrigation. Strong floods can damage improvements once at onset (5%); extreme floods have a 50% chance. Cottage-line improvements lose one level; others are destroyed. Extreme flooding pauses improvement construction and cottage growth, preserving progress.</English>
+    <French>Les plaines inondables peuvent couvrir les d&#233;serts, plaines et prairies plates au bord des fleuves. La nourriture utilise le maximum entre le terrain et la fertilit&#233; alluviale, puis ajoute les bonus des ressources, am&#233;nagements, technologies et pouvoirs uniques. La fertilit&#233; normale est de 3 nourritures : 2 en faible crue, 1 en s&#233;cheresse ou crue extr&#234;me et 4 en forte crue. Sur les cartes XL, chaque phase dure 4 &#224; 6 tours. Un petit noyau de s&#233;cheresse ou de crue extr&#234;me est entour&#233; de conditions mod&#233;r&#233;es, puis se r&#233;tablit dans cet &#233;tat mod&#233;r&#233;. La s&#233;cheresse d&#233;sertique coupe l&#8217;irrigation. Au d&#233;but, une forte crue peut endommager les am&#233;nagements (5%) et une crue extr&#234;me le peut &#224; 50%. Les cottages et leurs &#233;volutions perdent un niveau ; les autres am&#233;nagements sont d&#233;truits. Une crue extr&#234;me suspend leur construction et la croissance des cottages sans effacer leur progression.</French>
+    <German>Schwemmland kann auf flachen W&#252;sten, Ebenen und Grasland an Fl&#252;ssen liegen. Als Nahrung gilt der h&#246;here Wert aus Gel&#228;nde und Schwemmlandfruchtbarkeit; Ressourcen, Modernisierungen, Technologien und einzigartige F&#228;higkeiten kommen hinzu. Die normale Fruchtbarkeit betr&#228;gt 3 Nahrung, bei schwachem Hochwasser 2, bei D&#252;rre oder extremem Hochwasser 1 und bei starkem Hochwasser 4. Auf XL-Karten dauert jede Phase 4&#8211;6 Runden. Ein kleiner D&#252;rre- oder Extremhochwasserkern ist von milderen Bedingungen umgeben und erholt sich danach &#252;ber diesen milderen Zustand. W&#252;stend&#252;rre unterbricht die Bew&#228;sserung. Starkes Hochwasser kann Modernisierungen einmal zu Beginn besch&#228;digen (5%), extremes Hochwasser mit 50%. H&#252;tten und ihre Ausbaustufen verlieren eine Stufe; andere Modernisierungen werden zerst&#246;rt. Extremes Hochwasser pausiert den Bau von Modernisierungen und das H&#252;ttenwachstum, ohne den Fortschritt zu l&#246;schen.</German>
+    <Italian>Le pianure alluvionali possono coprire deserti, pianure e praterie pianeggianti lungo i fiumi. Il cibo usa il maggiore fra terreno e fertilit&#224; alluvionale, poi aggiunge i bonus di risorse, migliorie, tecnologie e poteri unici. La fertilit&#224; normale &#232; 3 cibi: 2 con piena debole, 1 con siccit&#224; o piena estrema e 4 con piena forte. Sulle mappe XL ogni fase dura 4&#8211;6 turni. Un piccolo nucleo di siccit&#224; o piena estrema &#232; circondato da condizioni moderate e poi recupera passando allo stato moderato. La siccit&#224; desertica interrompe l&#8217;irrigazione. Le piene forti possono danneggiare le migliorie una volta al loro inizio (5%); quelle estreme hanno il 50% di probabilit&#224;. I cottage e le loro evoluzioni perdono un livello; le altre migliorie sono distrutte. Le piene estreme sospendono costruzione delle migliorie e crescita dei cottage conservando i progressi.</Italian>
+    <Spanish>Las llanuras aluviales pueden cubrir desiertos, llanuras y praderas llanas junto a los r&#237;os. Los alimentos usan el mayor valor entre terreno y fertilidad aluvial y despu&#233;s suman las bonificaciones de recursos, mejoras, tecnolog&#237;as y poderes &#250;nicos. La fertilidad normal es de 3 alimentos: 2 con crecida d&#233;bil, 1 con sequ&#237;a o crecida extrema y 4 con crecida fuerte. En mapas XL cada fase dura 4&#8211;6 turnos. Un peque&#241;o n&#250;cleo de sequ&#237;a o crecida extrema est&#225; rodeado de condiciones moderadas y despu&#233;s se recupera pasando al estado moderado. La sequ&#237;a des&#233;rtica interrumpe el riego. Las crecidas fuertes pueden da&#241;ar mejoras una vez al inicio (5%); las extremas tienen un 50% de probabilidad. Las aldeas y sus evoluciones pierden un nivel; las dem&#225;s mejoras se destruyen. Las crecidas extremas pausan la construcci&#243;n de mejoras y el crecimiento de las aldeas conservando su progreso.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_WEAK_HELP</Tag>
+    <English>Weak flood. Floodplain fertility is 2 food.</English>
+    <French>Faible crue. La fertilit&#233; des plaines inondables est de 2 nourritures.</French>
+    <German>Schwaches Hochwasser. Die Schwemmlandfruchtbarkeit betr&#228;gt 2 Nahrung.</German>
+    <Italian>Piena debole. La fertilit&#224; alluvionale &#232; di 2 cibi.</Italian>
+    <Spanish>Crecida d&#233;bil. La fertilidad aluvial es de 2 alimentos.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_STRONG_HELP</Tag>
+    <English>Strong flood. Improvements face a 5% damage chance at onset.</English>
+    <French>Forte crue. Les am&#233;nagements ont 5% de risque de d&#233;g&#226;ts au d&#233;but.</French>
+    <German>Starkes Hochwasser. Zu Beginn besteht f&#252;r Modernisierungen eine Schadenschance von 5%.</German>
+    <Italian>Piena forte. Le migliorie rischiano danni al suo inizio con una probabilit&#224; del 5%.</Italian>
+    <Spanish>Crecida fuerte. Las mejoras tienen un 5% de probabilidad de sufrir da&#241;os al inicio.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_EXTREME_HELP</Tag>
+    <English>Extreme flood. Improvements face a 50% damage chance at onset. Improvement construction and cottage growth are paused.</English>
+    <French>Crue extr&#234;me. Les am&#233;nagements ont 50% de risque de d&#233;g&#226;ts au d&#233;but. Leur construction et la croissance des cottages sont suspendues.</French>
+    <German>Extremes Hochwasser. Zu Beginn besteht f&#252;r Modernisierungen eine Schadenschance von 50%. Ihr Bau und das Wachstum von H&#252;tten sind ausgesetzt.</German>
+    <Italian>Piena estrema. Le migliorie rischiano danni al suo inizio con una probabilit&#224; del 50%. La loro costruzione e la crescita dei cottage sono sospese.</Italian>
+    <Spanish>Crecida extrema. Las mejoras tienen un 50% de probabilidad de sufrir da&#241;os al inicio. Su construcci&#243;n y el crecimiento de las aldeas quedan en pausa.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_WARNING</Tag>
+    <English>The river is rising. Extreme flooding threatens your floodplains.</English>
+    <French>Le fleuve monte. Une crue extr&#234;me menace vos plaines inondables.</French>
+    <German>Der Fluss steigt. Extremes Hochwasser bedroht Euer Schwemmland.</German>
+    <Italian>Il fiume sale. Una piena estrema minaccia le vostre pianure alluvionali.</Italian>
+    <Spanish>El r&#237;o est&#225; creciendo. Una crecida extrema amenaza vuestras llanuras aluviales.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_DAMAGE</Tag>
+    <English>Flooding has destroyed or damaged improvements on your floodplains.</English>
+    <French>La crue a d&#233;truit ou endommag&#233; des am&#233;nagements de vos plaines inondables.</French>
+    <German>Hochwasser hat Modernisierungen auf Eurem Schwemmland zerst&#246;rt oder besch&#228;digt.</German>
+    <Italian>La piena ha distrutto o danneggiato migliorie sulle vostre pianure alluvionali.</Italian>
+    <Spanish>La crecida ha destruido o da&#241;ado mejoras en vuestras llanuras aluviales.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FLOODPLAIN_EXTREME</Tag>
+    <English>Extreme flooding has reduced food and paused improvement construction and cottage growth.</English>
+    <French>Une crue extr&#234;me r&#233;duit la nourriture et suspend la construction des am&#233;nagements ainsi que la croissance des cottages.</French>
+    <German>Extremes Hochwasser verringert die Nahrung und setzt den Bau von Modernisierungen sowie das Wachstum von H&#252;tten aus.</German>
+    <Italian>Una piena estrema riduce il cibo e sospende la costruzione delle migliorie e la crescita dei cottage.</Italian>
+    <Spanish>Una crecida extrema reduce los alimentos y pausa la construcci&#243;n de mejoras y el crecimiento de las aldeas.</Spanish>
   </TEXT>
 </Civ4GameText>

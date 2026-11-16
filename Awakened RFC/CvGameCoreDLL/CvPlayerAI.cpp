@@ -1691,6 +1691,7 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 // Improved as per Blake - thanks!
 int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStartingLoc) const
 {
+    CvFloodplainPlanningScope kFloodplainPlanning;
 	CvCity* pNearestCity;
 	CvArea* pArea;
 	CvPlot* pPlot;
@@ -2066,7 +2067,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 					if (eFeature != NO_FEATURE)
 					{
-						aiYield[eYield] -= GC.getFeatureInfo(eFeature).getYieldChange(eYield);
+						aiYield[eYield] -= pLoopPlot->getFeatureYieldChange(eYield);
 						iBasePlotYield = std::max(iBasePlotYield, aiYield[eYield]);
 					}
 
@@ -2227,7 +2228,7 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
 
 						if (eFeature != NO_FEATURE)
 						{
-							if (GC.getFeatureInfo(eFeature).getYieldChange(YIELD_FOOD) < 0)
+							if (pLoopPlot->getFeatureYieldChange(YIELD_FOOD) < 0)
 							{
 								iResourceValue -= 30;
 							}

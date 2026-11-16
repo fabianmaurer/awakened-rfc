@@ -159,8 +159,10 @@ class RFCUtils:
         def setStartingStabilityParameters(self, iCiv):
                 iHandicap = gc.getGame().getHandicapType()
 
-                for i in range(con.iNumStabilityParameters):
-                        self.setStabilityParameters(i, 0)
+                # These display parameters describe only the local player.
+                if iCiv == gc.getGame().getActivePlayer():
+                        for i in range(con.iNumStabilityParameters):
+                                self.setStabilityParameters(i, 0)
 
                 #RFCMP
                 self.setStability(iCiv, 5)

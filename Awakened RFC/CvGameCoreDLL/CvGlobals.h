@@ -212,6 +212,7 @@ public:
 	//
 	DllExport int getInfoTypeForString(const char* szType, bool hideAssert = false) const;			// returns the infos index, use this when searching for an info type string
 	DllExport void setInfoTypeFromString(const char* szType, int idx);
+	bool isFloodplainFeature(FeatureTypes eFeature) const;
 	DllExport void infoTypeFromStringReset();
 	DllExport void addToInfosVectors(void *infoVector);
 	DllExport void infosReset();

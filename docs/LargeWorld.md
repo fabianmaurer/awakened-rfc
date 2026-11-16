@@ -1,4 +1,9 @@
-# XL and Large World scenarios
+# XL world scenarios
+
+Only the 200 x 110 XL starts (3000 BC and 800 BC) are playable and maintained.
+Non-XL maps are archived under `tools/scenario_templates/disabled`, outside the
+mod and release ZIPs. Their map-specific data no longer requires updates.
+Archived source maps remain available to the XL authoring tools.
 
 ## XL pace and expansion
 
@@ -33,8 +38,8 @@ Select **Start 2 XL - 800BC** for the existing 800 BC setup on the 200 x 110
 XL world. It retains the standard start's 17 cities, 62 placed units, player
 choices, diplomacy, buildings and religions, plus its Python starting armies,
 technologies and gold. Cities and units use local land/water placements and the
-reviewed XL birth and historical-city anchors. The standard 800 BC scenario
-remains available.
+reviewed XL birth and historical-city anchors. The smaller 800 BC scenario is
+retained only as an archived authoring template.
 
 Both XL selection menus use the historical country-name previews. The 800 BC
 XL start also uses the same starting civic profiles as standard 800 BC;
@@ -154,12 +159,9 @@ omitted rather than moved far away. See [HugeWorldResources.tsv](HugeWorldResour
 All 982 original XL atlas sites remain represented, with 11 additional sites.
 The independent `Earth200x110` profile supplies all geography grids, event
 coordinates and its own resource schedule. Generate this variant with
-`python tools/generate_large_world.py --huge`; the command without that flag
-continues to author Large World.
-
-Large World is temporarily disabled: its WorldBuilder file is retained under
-`tools/scenario_templates/disabled`, outside the playable mod and release ZIPs.
-The generator without `--huge` writes to that archived location.
+`python tools/generate_large_world.py`; `--huge` remains accepted by existing
+commands. Both commands author XL. Smaller variants are no longer regenerated
+as part of the maintained workflow.
 
 Huge's event geography includes every reference-profile key. The Libyan raids
 use the open coastal approach west of the Nile, and the early chariot raids
@@ -186,15 +188,64 @@ The distribution follows productive coastal regions, not a uniform ocean quota;
 [NOAA's upwelling overview](https://oceanexplorer.noaa.gov/ocean-fact/upwelling/)
 provides the ecological basis for the richer current systems.
 
-All 48 remaining floodplain tiles are flat desert beside a river. Invalid
-off-river copies normally retain their underlying terrain: nine outer Nile
-tiles remain desert. Fourteen tiles in explicitly reviewed Niger inland-delta,
-Mesopotamian and Indus alluvial fringes use plains to represent broader seasonal
-flood/grazing land. There is no automatic grassland upgrade. This avoids widening
-Egypt's narrow farming belt simply because a source floodplain was enlarged;
-see [FAO on Nile soils and irrigation](https://www.fao.org/4/y5863e/y5863e06.htm)
-and [USGS on the Niger's seasonal flood extent](https://eros.usgs.gov/earthshots/inland-delta-seasonal-flooding).
-Mineral placements avoid these alluvial tiles.
+Floodplain placement now follows selected middle/lower river corridors on flat
+**desert, plains and grassland**, rather than being limited to desert valleys.
+Every floodplain must border an actual river edge, including north/west edges
+stored on neighbouring tiles. Terrain, resources, rivers, cities, units and
+improvements are unchanged. There is no blanket fertile halo around rivers.
+
+| XL start | Floodplain tiles | Desert | Plains | Grassland |
+| --- | ---: | ---: | ---: | ---: |
+| 3000 BC | 259 | 73 | 63 | 123 |
+| 800 BC | 251 | 64 | 63 | 124 |
+
+The corridor catalogue covers the Nile, Tigris-Euphrates, Indus, Ganges and
+Brahmaputra, major Chinese and Southeast Asian lowland rivers, European river
+valleys, Niger/Senegal/Zambezi, the Mississippi-Missouri-Ohio, St Lawrence,
+Orinoco, Amazon and Parana-Paraguay. Corridors without eligible flat riverbanks
+receive no new feature: this pass does not flatten hills, drain marshes or open
+impassable terrain. Wetlands and other special features remain distinct.
+Eighty-one ordinary riparian forest/jungle tiles per start become floodplains;
+woodland-dependent resource sites, camps and lumbermills are preserved. Mineral
+deposits are not converted. Harappa's five permanently lost floodplains remain
+absent in 800 BC; the earlier start retains its authored ancient channels and
+farmland. Existing terrain differences between the dates are preserved.
+
+Refresh only this placement with
+`python tools/generate_large_world.py --floodplains-only`; this edits feature
+lines in both XL maps while retaining all scenario payloads. The full XL
+generator applies the same placement rules after the Harappan geography pass.
+Regenerating the 800 BC start inherits the finished 3000 BC geography and then
+applies its historical floodplain losses.
+
+This improves **alluvial river fertility**, rather than providing an accurate
+world soil map. [FAO's alluvial-landform overview](https://www.fao.org/4/y1899e/y1899e07.htm)
+distinguishes depositional floodplains from upper river reaches and wetlands.
+The Ukraine/black-earth belt, North American prairies, Pampas and loess regions
+also owe fertility to soils beyond active floodplains; see
+[FAO's steppe-soil overview](https://www.fao.org/4/y1899e/y1899e11.htm).
+A simple permanent **Fertile soil** feature now supplies +1 food on selected
+flat, open plains and grassland: 46 tiles in each XL start. These represent the
+Central European loess (14), Pontic black-earth belt (14), North American
+prairies (13), Pampas (1) and Chinese loess margin (4). Forty percent of eligible
+open tiles within the authored regional polygons are selected with a stable
+coordinate hash; existing forests, jungle, wetlands and floodplains are retained.
+The feature does not require a river and adds no production, commerce, health or
+fresh water. Farms, cottages and ordinary resource/technology bonuses continue
+to work. Fertile soil has no growth, depletion, seasonal states or technology
+unlock, and cannot coexist with another feature. This is a deliberately small,
+coarse representation of fertile soils, rather than a soil-productivity survey.
+
+Refresh it with `python tools/generate_large_world.py --fertile-soil-only`.
+The full XL generator places it after floodplains; the 800 BC generator inherits
+the finished placement. Rebuild its art with
+`.venv-art/Scripts/python.exe tools/build_fertile_soil_art.py`. The generated
+source, exact prompt and art provenance are in [art/fertile-soil](../art/fertile-soil/README.md).
+Dark brown humus and short green grass patches are blended transparently over
+existing terrain using a ground-level NIF, independently of river rendering.
+Terrain contouring, layering under improvements and in-game balance remain
+user-operated validation.
+
 Named rocky districts prefer existing local hills; nine small hills/outcrops are
 authored where no suitable hill exists. Routes, starts, improvements and valley
 terrain are protected from these relief edits. Oil, sedimentary basins, alluvial

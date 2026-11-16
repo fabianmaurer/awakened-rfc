@@ -1,5 +1,10 @@
 # 1453 AD: after the fall of Constantinople
 
+This non-XL scenario is archived and no longer playable or maintained. Its map
+is retained under `tools/scenario_templates/disabled`; instructions below are
+historical.
+
+
 Open `PublicMaps/Start 4 - 1453 AD.CivBeyondSwordWBSave` through the scenario
 menu. The map belongs to `Mods\Awakened RFC` and uses the legacy game DLL.
 Its shared world geography is selected by the scenario registry; see

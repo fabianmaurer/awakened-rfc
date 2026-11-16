@@ -354,11 +354,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_PEDIA</Tag>
-    <English>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</English>
-    <French>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</French>
-    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit. Einzigartige F&#228;higkeit: Heilige Gelehrsamkeit. Priester erhalten +1 Forschung.</German>
-    <Italian>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Italian>
-    <Spanish>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research.</Spanish>
+    <English>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.</English>
+    <French>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.</French>
+    <German>Erschlie&#223;t die Gangesebene und gr&#252;ndet eine Zivilisation der heiligen Gelehrsamkeit. Einzigartige F&#228;higkeit: Heilige Gelehrsamkeit. Priester erhalten +1 Forschung, +1 Punkt f&#252;r Gro&#223;e Wissenschaftler und -1 Punkt f&#252;r Gro&#223;e Propheten.</German>
+    <Italian>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.</Italian>
+    <Spanish>Develop the Ganges plain and build a civilization of sacred learning. Its unique power is Sacred Learning: Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_GAN_SHORT</Tag>
@@ -602,11 +602,11 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_UP_GAN2</Tag>
-    <English>Priests gain +1 research.</English>
-    <French>Les pr&#234;tres gagnent +1 recherche.</French>
-    <German>Priester erhalten +1 Forschung.</German>
-    <Italian>I sacerdoti ottengono +1 ricerca.</Italian>
-    <Spanish>Los sacerdotes obtienen +1 de investigaci&#243;n.</Spanish>
+    <English>Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.</English>
+    <French>Les pr&#234;tres gagnent +1 recherche, +1 point de savant illustre et -1 point de proph&#232;te illustre.</French>
+    <German>Priester erhalten +1 Forschung, +1 Punkt f&#252;r Gro&#223;e Wissenschaftler und -1 Punkt f&#252;r Gro&#223;e Propheten.</German>
+    <Italian>I sacerdoti ottengono +1 ricerca, +1 punto Grande Scienziato e -1 punto Grande Profeta.</Italian>
+    <Spanish>Los sacerdotes obtienen +1 de investigaci&#243;n, +1 punto de Gran Cient&#237;fico y -1 punto de Gran Profeta.</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_UP_VIJ</Tag>

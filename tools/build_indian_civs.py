@@ -17,7 +17,7 @@ from IndianCivsData import CIVS, NAMES
 
 SPECS = (
     ('Tribes of Magadha', 'Magadha', 'Magadhan', 'Magadhan Council', 'ASOKA', 'YELLOW',
-     'Sacred Learning', 'Priests gain +1 research.', 'WAR_ELEPHANT', 'Mahout Elephant',
+     'Sacred Learning', 'Priests gain +1 research, +1 Great Scientist point and -1 Great Prophet point.', 'WAR_ELEPHANT', 'Mahout Elephant',
      'LIBRARY', 'Gurukula', 'Develop the Ganges plain and build a civilization of sacred learning.'),
     ('Chola Empire', 'Chola', 'Chola', 'Vijayalaya', 'SURYAVARMAN', 'DARK_RED',
      'Oceanic Networks', 'Coastal cities gain +1 trade route.', 'GALLEY', 'Kappal',
@@ -40,7 +40,7 @@ GOALS = (
     ('Control four cities in southern India by 1500 AD.', 'Have eight Hindu temples by 1600 AD.', 'Accumulate 50,000 culture by 1650 AD.'),
 )
 POWER_TRANSLATIONS = (
-    ('Les pr\u00eatres gagnent +1 recherche.', 'Priester erhalten +1 Forschung.', 'I sacerdoti ottengono +1 ricerca.', 'Los sacerdotes obtienen +1 de investigaci\u00f3n.'),
+    ('Les pr\u00eatres gagnent +1 recherche, +1 point de savant illustre et -1 point de proph\u00e8te illustre.', 'Priester erhalten +1 Forschung, +1 Punkt f\u00fcr Gro\u00dfe Wissenschaftler und -1 Punkt f\u00fcr Gro\u00dfe Propheten.', 'I sacerdoti ottengono +1 ricerca, +1 punto Grande Scienziato e -1 punto Grande Profeta.', 'Los sacerdotes obtienen +1 de investigaci\u00f3n, +1 punto de Gran Cient\u00edfico y -1 punto de Gran Profeta.'),
     ('Les villes c\u00f4ti\u00e8res gagnent une route commerciale.', 'K\u00fcstenst\u00e4dte erhalten einen zus\u00e4tzlichen Handelsweg.', 'Le citt\u00e0 costiere ottengono una rotta commerciale aggiuntiva.', 'Las ciudades costeras obtienen una ruta comercial adicional.'),
     ('Les unit\u00e9s mont\u00e9es gagnent +25 % en attaque urbaine.', 'Berittene Einheiten erhalten +25 % Stadtangriff.', 'Le unit\u00e0 montate ottengono +25% all\u2019attacco delle citt\u00e0.', 'Las unidades montadas obtienen +25% al atacar ciudades.'),
     ('Les cases riveraines gagnent +1 commerce.', 'Flussfelder erhalten +1 Handel.', 'Le caselle fluviali ottengono +1 commercio.', 'Las casillas de r\u00edo obtienen +1 de comercio.'),

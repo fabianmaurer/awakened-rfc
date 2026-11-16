@@ -20,12 +20,9 @@ from observer_safety import BatchSafety
 TESTING = Path(__file__).resolve().parent
 ROOT = TESTING.parent
 DEFAULT_EXE = Path("C:/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization IV Beyond the Sword/Beyond the Sword/Civ4BeyondSword.exe")
-SCENARIO = 'Start 1 - 3000 BC.CivBeyondSwordWBSave'
+SCENARIO = 'Start 1 XL - 3000BC.CivBeyondSwordWBSave'
 SCENARIOS = {'3000bc': SCENARIO,
-             '800bc': 'Start 2 - 800 BC.CivBeyondSwordWBSave',
-             '600ad': 'Start 3 - 600 AD.CivBeyondSwordWBSave'}
-XL_SCENARIOS = {'3000bc': 'Start 1 XL - 3000BC.CivBeyondSwordWBSave',
-                '800bc': 'Start 2 XL - 800BC.CivBeyondSwordWBSave'}
+             '800bc': 'Start 2 XL - 800BC.CivBeyondSwordWBSave'}
 
 
 def fingerprint(mod):
@@ -89,9 +86,9 @@ def main():
     parser.add_argument('--mode', choices=('balance', 'diagnostics', 'performance'))
     start = parser.add_mutually_exclusive_group()
     start.add_argument('--scenario', choices=tuple(SCENARIOS))
-    start.add_argument('--start', type=int, choices=range(3),
-                       help='0: 3000 BC, 1: 800 BC, 2: 600 AD')
-    parser.add_argument('--xl', action='store_true', help='Use the XL version of the selected start when installed; otherwise use the standard scenario')
+    start.add_argument('--start', type=int, choices=range(2),
+                       help='0: XL 3000 BC, 1: XL 800 BC')
+    parser.add_argument('--xl', action='store_true', help='Compatibility flag; all supported scenarios are XL')
     parser.add_argument('--games', '--runs', dest='games', type=int, default=1)
     parser.add_argument('--jobs', type=int, default=1, help='Concurrent games; setup is serialized (default: 1)')
     parser.add_argument('--turns', type=int)
@@ -148,14 +145,7 @@ def main():
     if game_running():
         parser.error('Close Civ4 before starting a batch; existing games are never terminated')
     installed = args.exe.resolve().parent / 'Mods/Awakened RFC'
-    using_xl = False
-    if args.xl:
-        xl_scenario = XL_SCENARIOS.get(args.scenario)
-        if xl_scenario and (installed / 'PublicMaps' / xl_scenario).is_file():
-            scenario = xl_scenario
-            using_xl = True
-        else:
-            print('XL scenario unavailable for %s; using the standard scenario.' % args.scenario, flush=True)
+    using_xl = True
     if not (installed / 'PublicMaps' / scenario).is_file():
         parser.error('Scenario not found: ' + scenario)
     print('Scenario: ' + scenario, flush=True)

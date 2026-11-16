@@ -1,5 +1,47 @@
 # AI-only observer recordings
 
+## Native camera timings
+
+Close Civ4 and run `testing/Capture Native Camera Profile.cmd`. It launches the
+installed mod using the path in ignored `Makefile.settings` (or pass
+`-GameExecutable` to the PowerShell script). Load the affected XL map, return to
+the console, enter the map/mode and follow the prompt. Switch back within eight
+seconds and pan/zoom for 10 seconds without ending the turn. The user runs this
+launcher; agents must not execute it or monitor the session.
+
+A reporting-enabled DLL records native lookup keys, caller addresses, enclosing
+display callbacks and 20 ms timing buckets under `testing/runs/camera-native-*`.
+It samples lookups/dirty flags at 1/64 and plot callbacks at 1/16; map callbacks
+and script-data getters are timed on every call. CSV `calls` rows are exact
+instrumented-entry counts; `total_sample_ms` is measured sampled time, not an
+exact total. Multiplying by `sample_stride` is an estimate. Nested scopes overlap
+and their times must not be added together. Timing changes absolute performance;
+compare the recurring shape and attribution rather than claiming clean gains.
+
+The private per-process control mapping arms collection only during the requested
+interval. Output is written afterward, with a save acknowledgement. Ordinary
+launches do not open a mapping or record timings. Production builds compile the
+hooks out. No observer control or synchronized gameplay state is changed. Matching
+PDB/map files are retained beside the CSV when available. Ask for analysis after
+the launcher reports that saving completed.
+
+## Manual camera-stutter capture
+
+Load the affected map, then run `testing/Capture Camera Stutter.cmd` and accept
+the Windows administrator prompt. Enter the map/mode, press Enter when ready,
+and switch back to Civ4 within eight seconds. Pan and zoom for 30 seconds without
+ending the turn. The script stops and saves automatically under
+`testing/runs/camera-stutter-*/camera-stutter.etl`, with PID/build metadata and a
+WPR log beside it. It never launches Civ4 or enables observer/autoplay controls.
+Ask for analysis afterward; do not run the launcher through an agent session.
+
+This uses WPR's built-in GeneralProfile and GPU profiles in memory mode to
+capture CPU stacks, scheduling, storage activity and graphics events. It requires
+Windows Performance Recorder; Windows Performance Analyzer opens the ETL.
+The trace covers system activity as well as Civ4. Exact mod function names depend
+on matching linker symbols; GPU events may identify stalls without exposing an
+engine-internal function. The script does not cancel other WPR recordings.
+
 Overseas settlement uses normally produced settlers and ships rather than free
 expedition packages. First contact no longer creates conqueror armies. In
 performance reports, `count.colony.*` tracks known overseas sites, port
@@ -114,7 +156,7 @@ From the repository root in PowerShell:
 
 ```powershell
 .\testing\run-test --mode diagnostics --start 0 --runs 5 --turns 150
-.\testing\run-test --mode performance --start 2 --runs 1 --turns 150 --seed 1
+.\testing\run-test --mode performance --start 1 --runs 1 --turns 150 --seed 1
 .\testing\run-test --help
 ```
 
@@ -122,15 +164,12 @@ Modes are `balance`, `diagnostics`, and `performance`. Starts are zero-based:
 
 | `--start` | Scenario | Observer |
 | --- | --- | --- |
-| 0 | 3000 BC | America |
-| 1 | 800 BC | America |
-| 2 | 600 AD | China |
+| 0 | XL 3000 BC | America |
+| 1 | XL 800 BC | America |
 
-Add `--xl` with either `--start` or `--scenario` to prefer the installed XL map
-for that date. XL starts currently exist for 3000 BC and 800 BC. If the date has
-no XL version, or its XL file is missing, the launcher prints a notice and uses
-the standard scenario. It prints the selected filename and records the actual
-variant; XL batches include `-xl` in their folder names.
+Both supported starts always use XL. `--xl` remains accepted for existing
+commands, but there is no smaller-map fallback. Historical 600 AD commands and
+results later in this document are archived and no longer supported.
 XL uses its slower game speed automatically. `--turns` counts actual turns:
 150 XL turns cover the calendar progression of 75 standard turns. The 800 BC
 XL scenario starts at engine turn 174; its observer still uses America.

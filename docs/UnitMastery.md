@@ -144,3 +144,8 @@ Gameplay and multiplayer validation are user-operated and remain unverified.
 | War Galley | 1125 | +15% combat strength. | +1 first strikes; Heals 10 extra HP per turn. | +1 movement; Can attack twice per turn. |
 | Arctic hunter | 100 | +25% against animals. | +1 visibility range; +20% hills defense. | Double movement in hills; +35% combat strength. |
 | Woodland Warrior | 100 | +15% forest defense. | Double movement in forests. | +40% forest attack; Units on the same tile heal 20 extra HP per turn. |
+| Mahout Elephant | 450 | +15% against melee units. | Heals 15 extra HP per turn; Immune to first strikes. | +40% collateral damage; +4 collateral targets; +50% collateral damage limit. |
+| Kappal | 105 | +15% combat strength. | +1 cargo capacity. | +1 movement; Can heal while moving; Heals 20 extra HP per turn. |
+| Ghulam | 1500 | +15% city attack. | No river attack penalty; Heals 10 extra HP per turn. | +35% combat strength; Can attack multiple times per turn. |
+| Paik | 1125 | +15% city defense. | +1 first strikes; +25% jungle defense. | +35% combat strength; Units on the same tile heal 20 extra HP per turn. |
+| Nayaka | 1500 | +20% against mounted units. | +25% hills defense; +1 first strikes. | +40% against mounted units; +35% combat strength. |

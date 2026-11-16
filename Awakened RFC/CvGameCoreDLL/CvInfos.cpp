@@ -19,6 +19,8 @@
 #include "CvGameCoreUtils.h"
 #include "CvRhyes.h" //Rhye
 #include "CvPlayerAI.h" //Rhye
+#include "CvDLLPythonIFaceBase.h"
+#include "CyArgsList.h"
 
 //------------------------------------------------------------------------------------------------------
 //
@@ -23136,6 +23138,13 @@ std::string CvMainMenuInfo::getSceneNoShader() const
 
 std::string CvMainMenuInfo::getSoundtrack() const
 {
+	// The executable opens the main menu here; game Update events do not run there.
+	if (gDLL->getPythonIFace()->isInitialized())
+	{
+		CyArgsList args;
+		args.add(gDLL->getModName());
+		gDLL->getPythonIFace()->callFunction("CvScreensInterface", "showMenuCompatibility", args.makeFunctionArgs());
+	}
 	return m_szSoundtrack;
 }
 

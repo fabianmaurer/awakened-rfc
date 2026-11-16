@@ -5985,6 +5985,7 @@ int CvCityAI::AI_countBestBuilds(CvArea* pArea)
 // Improved worker AI provided by Blake - thank you!
 void CvCityAI::AI_updateBestBuild()
 {
+    CvFloodplainPlanningScope kFloodplainPlanning;
 	OBSERVER_PERFORMANCE("CvCityAI::AI_updateBestBuild");
 	PROFILE_FUNC();
 	
@@ -6076,7 +6077,7 @@ void CvCityAI::AI_updateBestBuild()
 						aiFinalYields[iJ] = pLoopPlot->getYield((YieldTypes)iJ);
 						if (pLoopPlot->getFeatureType() != NO_FEATURE)
 						{
-							aiFinalYields[iJ] += std::max(0, -GC.getFeatureInfo(pLoopPlot->getFeatureType()).getYieldChange((YieldTypes)iJ));
+							aiFinalYields[iJ] += std::max(0, -pLoopPlot->getFeatureYieldChange((YieldTypes)iJ));
 						}
 					}
 				}
@@ -8604,6 +8605,7 @@ int CvCityAI::AI_buildUnitProb()
 // Improved worker AI provided by Blake - thank you!
 void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peBestBuild, int iFoodPriority, int iProductionPriority, int iCommercePriority, bool bChop, int iHappyAdjust, int iHealthAdjust, int iFoodChange)
 {
+    CvFloodplainPlanningScope kFloodplainPlanning;
 	PROFILE_FUNC();
 
 	CvCity* pCity;
@@ -8869,7 +8871,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 						{
 							bIgnoreFeature = true;
 
-							if (GC.getFeatureInfo(pPlot->getFeatureType()).getYieldChange(YIELD_PRODUCTION) > 0)
+							if (pPlot->getFeatureYieldChange(YIELD_PRODUCTION) > 0)
 							{
 								if (eNonObsoleteBonus == NO_BONUS)
 								{
@@ -8955,7 +8957,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 						aiFinalYields[iJ] += (pPlot->calculateImprovementYieldChange(eImprovement, ((YieldTypes)iJ), getOwnerINLINE(), false));
 						if (bIgnoreFeature && pPlot->getFeatureType() != NO_FEATURE)
 						{
-							aiFinalYields[iJ] -= 2 * GC.getFeatureInfo(pPlot->getFeatureType()).getYieldChange((YieldTypes)iJ);							
+							aiFinalYields[iJ] -= 2 * pPlot->getFeatureYieldChange((YieldTypes)iJ);
 						}
 						aiDiffYields[iJ] = (aiFinalYields[iJ] - (2 * pPlot->getYield(((YieldTypes)iJ))));
 					}
@@ -9194,7 +9196,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot* pPlot, int* piBestValue, BuildTypes* peB
 		
 		{
 			if ((GC.getFeatureInfo(pPlot->getFeatureType()).getHealthPercent() < 0) ||
-				((GC.getFeatureInfo(pPlot->getFeatureType()).getYieldChange(YIELD_FOOD) + GC.getFeatureInfo(pPlot->getFeatureType()).getYieldChange(YIELD_PRODUCTION) + GC.getFeatureInfo(pPlot->getFeatureType()).getYieldChange(YIELD_COMMERCE)) < 0))
+				((pPlot->getFeatureYieldChange(YIELD_FOOD) + pPlot->getFeatureYieldChange(YIELD_PRODUCTION) + pPlot->getFeatureYieldChange(YIELD_COMMERCE)) < 0))
 			{
 				for (iI = 0; iI < GC.getNumBuildInfos(); iI++)
 				{

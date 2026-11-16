@@ -1163,5 +1163,26 @@
 		</FeatureArtInfo>
 
 
+        <FeatureArtInfo>
+            <Type>ART_DEF_FEATURE_FERTILE_SOIL</Type>
+            <bAnimated>0</bAnimated>
+            <bRiverArt>0</bRiverArt>
+            <TileArtType>TILE_ART_TYPE_NONE</TileArtType>
+            <LightType>LIGHT_TYPE_SUN</LightType>
+            <fScale>1.0</fScale>
+            <fInterfaceScale>1.0</fInterfaceScale>
+            <Button>Art/Terrain/Features/FertileSoil/FertileSoilButton.dds</Button>
+            <FeatureVariety>
+                <FeatureArtPieces>
+                    <FeatureArtPiece>
+                        <ModelFile>Art/Terrain/Features/FertileSoil/FertileSoil.nif</ModelFile>
+                        <Connections/>
+                    </FeatureArtPiece>
+                </FeatureArtPieces>
+                <FeatureDummyNodes/>
+                <bGenerateRotations>1</bGenerateRotations>
+                <VarietyButton>Art/Terrain/Features/FertileSoil/FertileSoilButton.dds</VarietyButton>
+            </FeatureVariety>
+        </FeatureArtInfo>
 </FeatureArtInfos>
 </Civ4ArtDefines>

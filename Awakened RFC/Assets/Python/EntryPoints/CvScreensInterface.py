@@ -46,11 +46,15 @@ import CvPopupInterface
 import CvScreenUtilsInterface
 import ScreenInput as PyScreenInput
 import DebugExceptions
+import MenuCompatibility
 from CvScreenEnums import *
 from CvPythonExtensions import *
 
 
 g_bIsScreenActive = -1
+
+def showMenuCompatibility(argsList):
+    MenuCompatibility.show(argsList[0])
 
 #Rhye - start
 import Consts as con
@@ -940,6 +944,7 @@ HandleCloseMap = {  DAWN_OF_MAN : dawnOfMan,
 DebugExceptions.install()
 
 HandleInputMap = {  DebugExceptions.SCREEN_ID : DebugExceptions,
+					MenuCompatibility.SCREEN_ID : MenuCompatibility,
 					MAIN_INTERFACE : mainInterface,
 					DOMESTIC_ADVISOR : domesticAdvisor,
 					RELIGION_SCREEN : religionScreen,

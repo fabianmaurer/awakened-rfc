@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_FEATURE_FERTILE_SOIL</Tag>
+    <English>Fertile soil</English>
+    <French>Sol fertile</French>
+    <German>Fruchtbarer Boden</German>
+    <Italian>Suolo fertile</Italian>
+    <Spanish>Suelo f&#233;rtil</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_FEATURE_FERTILE_SOIL_PEDIA</Tag>
+    <English>Fertile soil adds 1 food on flat plains and grassland. It remains under farms and cottages and does not fluctuate with river flooding. Resources, improvements and technologies add their usual bonuses. It occupies the same feature slot as forests, jungle and floodplains.</English>
+    <French>Le sol fertile ajoute 1 nourriture aux plaines et prairies plates. Il reste sous les fermes et cottages et ne varie pas avec les crues. Les ressources, am&#233;nagements et technologies ajoutent leurs bonus habituels. Il occupe le m&#234;me emplacement que les for&#234;ts, jungles et plaines inondables.</French>
+    <German>Fruchtbarer Boden bringt auf flachen Ebenen und Grasland 1 zus&#228;tzliche Nahrung. Er bleibt unter Bauernh&#246;fen und H&#252;tten erhalten und schwankt nicht mit dem Hochwasser. Ressourcen, Modernisierungen und Technologien bringen ihre &#252;blichen Boni. Er belegt denselben Gel&#228;ndemerkmalplatz wie Wald, Dschungel und Schwemmland.</German>
+    <Italian>Il suolo fertile aggiunge 1 cibo a pianure e praterie pianeggianti. Rimane sotto fattorie e cottage e non varia con le piene. Risorse, migliorie e tecnologie aggiungono i consueti bonus. Occupa lo stesso spazio di foreste, giungle e pianure alluvionali.</Italian>
+    <Spanish>El suelo f&#233;rtil a&#241;ade 1 alimento a llanuras y praderas llanas. Permanece bajo granjas y aldeas y no fluct&#250;a con las crecidas. Los recursos, mejoras y tecnolog&#237;as suman sus bonificaciones habituales. Ocupa el mismo espacio que bosques, selvas y llanuras aluviales.</Spanish>
+  </TEXT>
+</Civ4GameText>

@@ -250,6 +250,9 @@ public:
 	int getInitWonders() const;																		// Exposed to Python
 	DllExport void initScoreCalculation();
 
+	int getTurnSkipMode() const;
+	void setTurnSkipMode(int iMode);
+
 #if ARFC_ENABLE_REPORTING
 	bool isObserverAutoPlay() const { return m_bObserverAutoPlay; }
 	bool isObserverNoAutosaves() const { return m_bObserverNoAutosaves; }
@@ -670,6 +673,7 @@ protected:
 	int m_iInitTech;
 	int m_iInitWonders;
 	int m_iAIAutoPlay;
+	int m_aiTurnSkipMode[MAX_PLAYERS]; // Local UI preference; not serialized. -1 inherits Options.
 #if ARFC_ENABLE_REPORTING
 	bool m_bObserverAutoPlay; // Process-local test control; deliberately not serialized.
 	bool m_bObserverNoAutosaves;

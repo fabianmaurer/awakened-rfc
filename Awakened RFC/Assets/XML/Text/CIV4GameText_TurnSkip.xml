@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Civ4GameText xmlns="http://www.firaxis.com">
+  <TEXT>
+    <Tag>TXT_KEY_TURN_SKIP_AUTO</Tag>
+    <English>Auto</English>
+    <French>Auto</French>
+    <German>Auto</German>
+    <Italian>Auto</Italian>
+    <Spanish>Auto</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_TURN_SKIP_FORCE</Tag>
+    <English>Force</English>
+    <French>Forcer</French>
+    <German>Zwang</German>
+    <Italian>Forza</Italian>
+    <Spanish>Forzar</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_TURN_SKIP_AUTO_HELP</Tag>
+    <English>Automatically end turns after your units finish. Wait if no unit moved this turn. Click again to turn off.</English>
+    <French>Termine automatiquement le tour lorsque vos unit&#233;s ont fini. Attend si aucune unit&#233; n&#8217;a boug&#233;. Cliquez &#224; nouveau pour d&#233;sactiver.</French>
+    <German>Beendet Runden automatisch, wenn eure Einheiten fertig sind. Wartet, wenn keine Einheit bewegt wurde. Erneut klicken zum Ausschalten.</German>
+    <Italian>Termina automaticamente il turno quando le unit&#224; hanno finito. Attende se nessuna unit&#224; si &#232; mossa. Clicca di nuovo per disattivare.</Italian>
+    <Spanish>Termina el turno autom&#225;ticamente cuando tus unidades hayan acabado. Espera si ninguna se ha movido. Pulsa de nuevo para desactivar.</Spanish>
+  </TEXT>
+  <TEXT>
+    <Tag>TXT_KEY_TURN_SKIP_FORCE_HELP</Tag>
+    <English>End turns immediately when no units need orders, even if none moved. Wait for pending choices. Click again to turn off.</English>
+    <French>Termine imm&#233;diatement le tour si aucune unit&#233; n&#8217;attend d&#8217;ordres, m&#234;me sans mouvement. Attend les choix en cours. Cliquez &#224; nouveau pour d&#233;sactiver.</French>
+    <German>Beendet Runden sofort, wenn keine Einheit Befehle braucht, auch ohne Bewegung. Wartet auf offene Entscheidungen. Erneut klicken zum Ausschalten.</German>
+    <Italian>Termina subito il turno se nessuna unit&#224; attende ordini, anche senza movimenti. Attende le scelte in sospeso. Clicca di nuovo per disattivare.</Italian>
+    <Spanish>Termina el turno al instante si ninguna unidad necesita &#243;rdenes, aunque ninguna se haya movido. Espera las decisiones pendientes. Pulsa de nuevo para desactivar.</Spanish>
+  </TEXT>
+</Civ4GameText>

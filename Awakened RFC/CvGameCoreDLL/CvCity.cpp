@@ -6072,6 +6072,11 @@ int CvCity::getMaintenance() const
 
 int CvCity::getMaintenanceTimes100() const
 {
+	if (GET_PLAYER(getOwnerINLINE()).isAnarchy())
+	{
+		return 0;
+	}
+
 	return (int)((__int64)Administration::effort100(*this) * (10000 + 2 * Administration::overload100(GET_PLAYER(getOwnerINLINE()))) / 20000) + Administration::residenceCost100(*this);
 }
 
@@ -10592,8 +10597,17 @@ int CvCity::getGreatPeopleUnitRate(UnitTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
-	return m_paiGreatPeopleUnitRate[eIndex] +
+	int iRate = m_paiGreatPeopleUnitRate[eIndex] +
 		(eIndex == GC.getInfoTypeForString("UNIT_SCIENTIST") && getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_ESKIMO") ? countWorkedDeepArchives() : 0);
+	if (getCivilizationType() == GC.getInfoTypeForString("CIVILIZATION_GANGES"))
+	{
+		// Sacred Learning redirects one point per priest without changing total GPP.
+		SpecialistTypes ePriest = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+		int iPriests = getSpecialistCount(ePriest) + getFreeSpecialistCount(ePriest);
+		if (eIndex == GC.getInfoTypeForString("UNIT_SCIENTIST")) iRate += iPriests;
+		if (eIndex == GC.getInfoTypeForString("UNIT_PROPHET")) iRate -= iPriests;
+	}
+	return iRate;
 }
 
 

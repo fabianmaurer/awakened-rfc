@@ -557,6 +557,16 @@ void CyGame::setObserverRevealMap(bool enabled)
 }
 
 #endif
+int CyGame::getTurnSkipMode() const
+{
+	return m_pGame ? m_pGame->getTurnSkipMode() : 0;
+}
+
+void CyGame::setTurnSkipMode(int iMode)
+{
+	if (m_pGame) m_pGame->setTurnSkipMode(iMode);
+}
+
 bool CyGame::isObserverAutoPlay() const
 {
 	return m_pGame && m_pGame->isObserverAutoPlay();

@@ -1,17 +1,16 @@
-"""Directed drought reaches and analytical food calibration. Python 2.4.
+"""Directed floodplain reaches and stationary fertility weights. Python 2.4."""
 
-No game imports: the runtime supplies geometry and synchronized random draws.
-"""
-
+NORMAL, WEAK, DROUGHT, STRONG, EXTREME = range(5)
+PRIORITY = (0, 2, 3, 1, 4)
 MIN_REACH, MAX_REACH = 6, 12
-MIN_MARGIN, MAX_MARGIN = 2, 4
-TARGET_FOOD = 3.5
-NORMAL_FREQUENCY_SCALE = .5
-ORDINARY_DRY = (1., 1., 1., 1., .75, .5, .25)
+INITIAL_PROTECTION = 40
+RECOVERY_PROTECTION = 12
+CHANCE_PER_EDGE = .005
+# Event starts, not time shares: drought:weak and extreme:strong are both 1:2.
+KINDS = (WEAK, WEAK, DROUGHT, STRONG, STRONG, EXTREME)
 
 
 def templates(ends, anchors, rand):
-    """Sample a saved, equally likely catalogue using the game's seeded RNG."""
     incoming, outgoing = {}, {}
     for edge in sorted(ends.keys()):
         start, end = ends[edge]
@@ -25,95 +24,61 @@ def templates(ends, anchors, rand):
             upstream, downstream = [], []
 
             def extend(path, count, reverse):
-                # Each direction follows only its channel: it never fans out.
                 current = anchor
                 if path: current = path[-1]
                 for step in range(count):
                     if current not in ends: break
                     start, end = ends[current]
-                    candidates = outgoing.get(end, [])
-                    if reverse: candidates = incoming.get(start, [])
-                    choices = [edge for edge in candidates if edge not in used]
+                    choices = outgoing.get(end, [])
+                    if reverse: choices = incoming.get(start, [])
+                    choices = [e for e in choices if e not in used]
                     if not choices: break
                     chosen = choices[0]
                     if len(choices) > 1:
-                        chosen = choices[rand(len(choices), 'Drought river branch')]
+                        chosen = choices[rand(len(choices), 'Floodplain river branch')]
                     used.add(chosen)
                     path.append(chosen)
                     current = chosen
 
-            size = MIN_REACH + rand(MAX_REACH - MIN_REACH + 1, 'Drought reach length')
-            before = rand(size, 'Drought reach position')
-            extend(upstream, before, True)
+            size = MIN_REACH + rand(MAX_REACH - MIN_REACH + 1, 'Floodplain reach length')
+            extend(upstream, rand(size, 'Floodplain reach position'), True)
             extend(downstream, size - 1 - len(upstream), False)
-            # If the mouth is close, try to use the remaining length upstream.
             extend(upstream, size - 1 - len(upstream) - len(downstream), True)
-            core = sorted(used)
-            extend(upstream, MIN_MARGIN + rand(MAX_MARGIN - MIN_MARGIN + 1,
-                'Drought upstream margin'), True)
-            extend(downstream, MIN_MARGIN + rand(MAX_MARGIN - MIN_MARGIN + 1,
-                'Drought downstream margin'), False)
-            result.append({'core': core, 'margin': sorted(used.difference(set(core)))})
+            path = list(reversed(upstream)) + [anchor] + downstream
+            count = 2 + rand(2, 'Floodplain core length')
+            first = max(0, min(len(path) - count, len(upstream) - count // 2))
+            core = path[first:first + count]
+            result.append({'core': sorted(core), 'reach': sorted(used)})
     return result
 
 
-def initiationWeight(length):
-    if length == 0: return 0
-    return max(3, length)
+def initiationChance(length):
+    if not length: return 0
+    return min(2500, int(max(3, length) * CHANCE_PER_EDGE * 10000 + .5))
 
 
-def calibrationRows(floodBanks, regions):
-    """Inclusion-exclusion keeps healthy second rivers in the food estimate."""
-    catalogues = []
-    for region in regions:
-        catalogue = [set(shape['core']) for shape in region['templates']]
-        catalogueEdges = set(region['edges'])
-        catalogues.append((catalogueEdges, catalogue, initiationWeight(len(region['floodEdges']))))
-    rows = []
-    for banks in floodBanks:
-        tileRows = []
-        for mask in range(1, 1 << len(banks)):
-            selected = set([banks[i] for i in range(len(banks)) if mask & (1 << i)])
-            sign = 1
-            if len(selected) % 2: sign = -1
-            dry = []
-            for catalogueEdges, catalogue, weight in catalogues:
-                if not selected.intersection(catalogueEdges): continue
-                core = sum([1 for c in catalogue if selected.intersection(c)]) / float(len(catalogue))
-                for age in range(7):
-                    dry.append((core * ORDINARY_DRY[age], weight))
-            tileRows.append((sign, dry))
-        rows.append(tileRows)
-    return rows
+def stationaryWeights(chance, fullCoverage, coreCoverage):
+    """Renewal weights for one river's uniform saved reach catalogue.
+
+    Initial phases average five turns. Severe events add five recovery turns,
+    one warning turn, and twelve protected turns after recovery. An expired
+    event can roll immediately, so normal waiting time is (1-p)/p.
+    Historical events and the opening grace period are excluded.
+    """
+    if not chance: return [1., 0., 0., 0., 0.]
+    probability = chance / 10000.
+    cycle = (1. - probability) / probability + 7. + RECOVERY_PROTECTION / 3.
+    mild = 5. * fullCoverage / (2. * cycle)
+    severe = 5. * coreCoverage / (6. * cycle)
+    return [1. - 2. * mild - 2. * severe, mild, severe, mild, severe]
 
 
-def expectedFood(rows, probability):
-    if not rows: return 4.
-    total = 0.
-    for tileRows in rows:
-        allDry = 1.
-        for sign, dry in tileRows:
-            noDry = 1.
-            for coverage, weight in dry:
-                # Match the runtime's integer roll and minimum river length.
-                chance = min(10000, int(probability * weight * 10000. + .5)) / 10000.
-                noDry *= 1. - chance * coverage
-            allDry += sign * noDry
-        # A floodplain without bordering edges cannot suffer river drought.
-        if not tileRows: allDry = 0.
-        total += 4. - 2. * allDry
-    return total / len(rows)
-
-
-def calibrate(floodBanks, regions):
-    rows = calibrationRows(floodBanks, regions)
-    if not rows: return 0, 4.
-    # One shared rate per weighted river segment; no river exceeds 100%.
-    low, high = 0., 1. / max([initiationWeight(len(region['floodEdges'])) for region in regions])
-    for step in range(24):
-        middle = (low + high) / 2.
-        if expectedFood(rows, middle) > TARGET_FOOD: low = middle
-        else: high = middle
-    # Halve ordinary initiations after calibrating the map-specific baseline.
-    chance = high * 10000. * NORMAL_FREQUENCY_SCALE
-    return chance, expectedFood(rows, chance / 10000.)
+def combineWeights(left, right):
+    """Independent rivers sharing a tile use the more disruptive state."""
+    result = [0.] * 5
+    for a in range(5):
+        for b in range(5):
+            state = a
+            if PRIORITY[b] > PRIORITY[a]: state = b
+            result[state] += left[a] * right[b]
+    return result

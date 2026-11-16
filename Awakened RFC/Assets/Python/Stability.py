@@ -1167,27 +1167,27 @@ class Stability:
                         if not gc.getPlayer(iPlayer).isAlive() or gc.getPlayer(iPlayer).getNumCities() == 0:
                                 continue
                         print ("COLLAPSE: CIVIL WAR", gc.getPlayer(iPlayer).getCivilizationAdjective(0))
-                        if (iPlayer != utils.getHumanID()): #not me
-                                #RFCMP
-                                if (not gc.getPlayer(iPlayer).isHuman()):
-                                        if (gc.getPlayer(utils.getHumanID()).canContact(iPlayer)):
-                                                CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
-                                                                                    CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                        if (iGameTurn < con.i1400AD):
-                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
-                                        else:
-                                                utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
-                                else: #another human
-                                        CyInterface().addMessage(utils.getHumanID(), False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
-                                                                CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
-                                        utils.killAndFragmentCiv(iPlayer, iIndependent, iIndependent2, -1, True)
-                                        self.setStability(iPlayer, -15)
-                        else:
-                                if (gc.getPlayer(iPlayer).getNumCities() > 1):
-                                        CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                        # Human collapse rules must be identical on every peer.
+                        # Only notification routing depends on the local player.
+                        iActivePlayer = game.getActivePlayer()
+                        if gc.getPlayer(iPlayer).isHuman():
+                                if gc.getPlayer(iPlayer).getNumCities() > 1:
+                                        if iActivePlayer == iPlayer:
+                                                CyInterface().addMessage(iPlayer, True, con.iDuration, CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR_HUMAN", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                                        elif iActivePlayer >= 0:
+                                                CyInterface().addMessage(iActivePlayer, False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
+                                                                        CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
                                         utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, True, reason='stability_civil_war')
                                         utils.setStartingStabilityParameters(iPlayer)
                                         self.setGNPold(iPlayer, 0)
                                         self.setGNPnew(iPlayer, 0)
+                        else:
+                                if iActivePlayer >= 0 and gc.getPlayer(iActivePlayer).canContact(iPlayer):
+                                        CyInterface().addMessage(iActivePlayer, False, con.iDuration, gc.getPlayer(iPlayer).getCivilizationDescription(0) + " " + \
+                                                                CyTranslator().getText("TXT_KEY_STABILITY_CIVILWAR", ()), "", 0, "", ColorTypes(con.iRed), -1, -1, True, True)
+                                if iGameTurn < con.i1400AD:
+                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, iBarbarian, False, reason='stability_civil_war')
+                                else:
+                                        utils.pickFragmentation(iPlayer, iIndependent, iIndependent2, -1, False, reason='stability_civil_war')
 
 

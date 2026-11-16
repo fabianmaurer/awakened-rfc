@@ -1,6 +1,7 @@
 // plot.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CameraProfile.h"
 #include "CvAdministration.h"
 #include "CvPlot.h"
 #include "ObserverPerformance.h"
@@ -31,6 +32,28 @@
 
 #define STANDARD_MINIMAP_ALPHA		(0.6f)
 
+
+int CvFloodplainPlanningScope::m_iDepth = 0;
+CvFloodplainPlanningScope::CvFloodplainPlanningScope() { ++m_iDepth; }
+CvFloodplainPlanningScope::~CvFloodplainPlanningScope() { --m_iDepth; }
+bool CvFloodplainPlanningScope::isActive() { return m_iDepth > 0; }
+
+namespace
+{
+    const CvPlot* g_pFloodplainEstimatePlot = NULL;
+    int g_iFloodplainEstimateState = 0;
+    class FloodplainStateScope
+    {
+        const CvPlot* m_pPrevious;
+        int m_iPrevious;
+    public:
+        FloodplainStateScope(const CvPlot* pPlot, int iState) :
+            m_pPrevious(g_pFloodplainEstimatePlot), m_iPrevious(g_iFloodplainEstimateState)
+        { g_pFloodplainEstimatePlot = pPlot; g_iFloodplainEstimateState = iState; }
+        ~FloodplainStateScope()
+        { g_pFloodplainEstimatePlot = m_pPrevious; g_iFloodplainEstimateState = m_iPrevious; }
+    };
+}
 
 // Public Functions...
 
@@ -173,7 +196,8 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	m_iForceUnownedTimer = 0;
 	m_iCityRadiusCount = 0;
 	m_iRiverID = -1;
-	m_iRiverDroughtEdges = 0;
+	m_iFloodplainState = 0;
+    for (int iFlood = 0; iFlood < 5; ++iFlood) m_aiFloodplainWeights[iFlood] = iFlood == 0 ? 10000 : 0;
     m_aeRuinsBuildings.clear();
 	m_iMinOriginalStartDist = -1;
 	m_iReconCount = 0;
@@ -512,6 +536,7 @@ void CvPlot::doImprovement()
 
 void CvPlot::doImprovementUpgrade()
 {
+    if (isFloodPlains() && getRiverDrought() == 4) return;
 	if (getImprovementType() != NO_IMPROVEMENT)
 	{
 		ImprovementTypes eImprovementUpdrade = (ImprovementTypes)GC.getImprovementInfo(getImprovementType()).getImprovementUpgrade();
@@ -582,6 +607,7 @@ void CvPlot::updateFog()
 
 void CvPlot::updateVisibility()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_VISIBILITY);
 	PROFILE("CvPlot::updateVisibility");
 
 	if (!GC.IsGraphicsInitialized())
@@ -635,6 +661,7 @@ void CvPlot::updateHuntingGroundsHerd()
 
 void CvPlot::updateSymbolDisplay()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_SYMBOL_DISPLAY);
 	PROFILE_FUNC();
 
 	CvSymbol* pLoopSymbol;
@@ -680,6 +707,7 @@ void CvPlot::updateSymbolDisplay()
 
 void CvPlot::updateSymbolVisibility()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_SYMBOL_VISIBILITY);
 	PROFILE_FUNC();
 
 	CvSymbol* pLoopSymbol;
@@ -721,6 +749,7 @@ void CvPlot::updateSymbolVisibility()
 
 void CvPlot::updateSymbols()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_SYMBOLS);
 	PROFILE_FUNC();
 
 	if (!GC.IsGraphicsInitialized())
@@ -1422,6 +1451,7 @@ bool CvPlot::isLake() const
 // XXX precalculate this???
 bool CvPlot::isFreshWater(bool bForIrrigation) const
 {
+    if (bForIrrigation && isFloodplainIrrigationSuppressed()) return false;
 	CvPlot* pLoopPlot;
 	int iDX, iDY;
 
@@ -1435,7 +1465,7 @@ bool CvPlot::isFreshWater(bool bForIrrigation) const
 		return false;
 	}
 
-	if (isRiver() && (!bForIrrigation || getRiverDrought() < 2))
+	if (isRiver())
 	{
 		return true;
 	}
@@ -1470,6 +1500,7 @@ bool CvPlot::isFreshWater(bool bForIrrigation) const
 
 bool CvPlot::isPotentialIrrigation() const
 {
+    if (isFloodplainIrrigationSuppressed()) return false;
 	if ((isCity() && !isHills()) || ((getImprovementType() != NO_IMPROVEMENT) && (GC.getImprovementInfo(getImprovementType()).isCarriesIrrigation())))
 	{
 		if ((getTeam() != NO_TEAM) && GET_TEAM(getTeam()).isIrrigation())
@@ -1508,6 +1539,9 @@ bool CvPlot::canHavePotentialIrrigation() const
 
 bool CvPlot::isIrrigationAvailable(bool bIgnoreSelf) const
 {
+    if (isFloodplainIrrigationSuppressed()) return false;
+    // Planning averages each fertility state without changing the cached network.
+    if (g_pFloodplainEstimatePlot == this && isRiver()) return true;
 	CvPlot* pAdjacentPlot;
 	int iI;
 
@@ -4701,6 +4735,8 @@ bool CvPlot::hasCoastAtSECorner() const
 
 bool CvPlot::isIrrigated() const
 {
+    if (isFloodplainIrrigationSuppressed()) return false;
+    if (g_pFloodplainEstimatePlot == this && isRiver() && isPotentialIrrigation()) return true;
 	return m_bIrrigated;
 }
 
@@ -4710,7 +4746,7 @@ void CvPlot::setIrrigated(bool bNewValue)
 	CvPlot* pLoopPlot;
 	int iDX, iDY;
 
-	if (isIrrigated() != bNewValue)
+	if (m_bIrrigated != bNewValue)
 	{
 		m_bIrrigated = bNewValue;
 
@@ -4913,6 +4949,7 @@ void CvPlot::updateShowCitySymbols()
 
 bool CvPlot::isFlagDirty() const
 {
+	CAMERA_PROFILE(CAMERA_PLOT_FLAG_DIRTY);
 	return m_bFlagDirty;
 }
 
@@ -5558,12 +5595,14 @@ void CvPlot::setFeatureType(FeatureTypes eNewValue, int iVariety)
 
 	eOldFeature = getFeatureType();
     const FeatureTypes flood = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS");
-    const FeatureTypes drought = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT");
-    const FeatureTypes severe = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
-    if (eNewValue == flood || eNewValue == drought || eNewValue == severe)
+    const FeatureTypes weak = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT");
+    const FeatureTypes drought = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
+    const FeatureTypes strong = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_STRONG");
+    const FeatureTypes extreme = (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_EXTREME");
+    if (eNewValue == flood || eNewValue == weak || eNewValue == drought || eNewValue == strong || eNewValue == extreme)
     {
-        const int stage = getRiverDrought();
-        eNewValue = stage == 2 ? severe : (stage == 1 ? drought : flood);
+        const FeatureTypes features[5] = {flood, weak, drought, strong, extreme};
+        eNewValue = features[getRiverDrought()];
         iVariety = 0;
     }
 
@@ -6235,58 +6274,54 @@ int CvPlot::getRuinsRecoveryCount() const
 
 int CvPlot::getRiverDrought() const
 {
-    // A usable second river protects the tile. Civ4 stores its south and east
-    // edges here, and its north/west edges on the neighbouring plots.
-    int iBest = 2;
-    bool bFound = false;
-    if (isNOfRiver())
-    {
-        iBest = std::min(iBest, m_iRiverDroughtEdges % 3);
-        bFound = true;
-    }
-    if (isWOfRiver())
-    {
-        iBest = std::min(iBest, m_iRiverDroughtEdges / 3);
-        bFound = true;
-    }
-    const CvPlot* pNorth = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_NORTH);
-    if (pNorth != NULL && pNorth->isNOfRiver())
-    {
-        iBest = std::min(iBest, pNorth->m_iRiverDroughtEdges % 3);
-        bFound = true;
-    }
-    const CvPlot* pWest = plotDirection(getX_INLINE(), getY_INLINE(), DIRECTION_WEST);
-    if (pWest != NULL && pWest->isWOfRiver())
-    {
-        iBest = std::min(iBest, pWest->m_iRiverDroughtEdges / 3);
-        bFound = true;
-    }
-    return bFound ? iBest : 0;
+    if (g_pFloodplainEstimatePlot == this) return g_iFloodplainEstimateState;
+    return m_iFloodplainState;
 }
 
-int CvPlot::getRiverDroughtEdges() const
+int CvPlot::getFloodplainChecksum() const
 {
-    return m_iRiverDroughtEdges;
+    if (!isFloodPlains()) return 0;
+    int iValue = m_iFloodplainState;
+    for (int i = 0; i < 5; ++i) iValue += (i + 1) * m_aiFloodplainWeights[i];
+    return iValue;
 }
 
-void CvPlot::setRiverDrought(int iSouthEdge, int iEastEdge)
+void CvPlot::setFloodplainWeights(int iNormal, int iWeak, int iDrought, int iStrong, int iExtreme)
 {
-    // Independent base-three digits: 0 normal, 1 drought, 2 severe drought.
-    int iNew = range(iSouthEdge, 0, 2) + 3 * range(iEastEdge, 0, 2);
-    if (m_iRiverDroughtEdges == iNew) return;
-    m_iRiverDroughtEdges = iNew;
-    for (int iDX = -1; iDX <= 1; ++iDX)
-    {
-        for (int iDY = -1; iDY <= 1; ++iDY)
-        {
-            CvPlot* pPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
-            if (pPlot == NULL) continue;
-            if (pPlot->isFloodPlains())
-                pPlot->setFeatureType(pPlot->getFeatureType(), pPlot->getRiverDrought());
-            pPlot->updateYield();
-            pPlot->setLayoutDirty(true);
-        }
-    }
+    FAssert(iNormal + iWeak + iDrought + iStrong + iExtreme == 10000);
+    m_aiFloodplainWeights[0] = iNormal;
+    m_aiFloodplainWeights[1] = iWeak;
+    m_aiFloodplainWeights[2] = iDrought;
+    m_aiFloodplainWeights[3] = iStrong;
+    m_aiFloodplainWeights[4] = iExtreme;
+}
+
+void CvPlot::setFloodplainState(int iState)
+{
+    iState = range(iState, 0, 4);
+    if (m_iFloodplainState == iState) return;
+    m_iFloodplainState = iState;
+    if (isFloodPlains()) setFeatureType(getFeatureType(), 0);
+    updateYield();
+    setLayoutDirty(true);
+}
+
+bool CvPlot::isFloodplainIrrigationSuppressed() const
+{
+    return isFloodPlains() && getRiverDrought() == 2 &&
+        getTerrainType() == GC.getInfoTypeForString("TERRAIN_DESERT");
+}
+
+int CvPlot::getFloodplainPlanningNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnoreFeature) const
+{
+    CvFloodplainPlanningScope kScope;
+    return calculateNatureYield(eYield, eTeam, bIgnoreFeature);
+}
+
+int CvPlot::getFloodplainPlanningImprovementYield(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
+{
+    CvFloodplainPlanningScope kScope;
+    return calculateImprovementYieldChange(eImprovement, eYield, ePlayer, bOptimal);
 }
 
 int CvPlot::getRiverID() const
@@ -6347,6 +6382,7 @@ short* CvPlot::getYield()
 
 int CvPlot::getYield(YieldTypes eIndex) const
 {
+    if (CvFloodplainPlanningScope::isActive() && isFloodPlains()) return calculateYield(eIndex, false);
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex is expected to be within maximum bounds (invalid Index)");
 	return m_aiYield[eIndex];
@@ -6355,21 +6391,41 @@ int CvPlot::getYield(YieldTypes eIndex) const
 
 bool CvPlot::isFloodPlains() const
 {
-    const FeatureTypes feature = getFeatureType();
-    return feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS") ||
-        feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_DROUGHT") ||
-        feature == GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS_SEVERE_DROUGHT");
+    return GC.isFloodplainFeature(getFeatureType());
 }
 
-bool CvPlot::isDroughtFoodSuppressed() const
+int CvPlot::getFeatureYieldChange(YieldTypes eYield) const
 {
-    return isFloodPlains() && getRiverDrought() == 2;
+    if (getFeatureType() == NO_FEATURE) return 0;
+    if (eYield != YIELD_FOOD || !isFloodPlains())
+        return GC.getFeatureInfo(getFeatureType()).getYieldChange(eYield);
+    const int fertility[5] = {3, 2, 1, 4, 1};
+    const int iTerrain = GC.getTerrainInfo(getTerrainType()).getYield(YIELD_FOOD);
+    if (CvFloodplainPlanningScope::isActive() && g_pFloodplainEstimatePlot != this)
+    {
+        int iWeighted = 0;
+        for (int i = 0; i < 5; ++i)
+            iWeighted += m_aiFloodplainWeights[i] * std::max(0, fertility[i] - iTerrain);
+        return (iWeighted + 5000) / 10000;
+    }
+    return std::max(0, fertility[getRiverDrought()] - iTerrain);
 }
-
 
 int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnoreFeature) const
 {
-    if (eYield == YIELD_FOOD && !bIgnoreFeature && isDroughtFoodSuppressed()) return 0;
+    if (CvFloodplainPlanningScope::isActive() && isFloodPlains() &&
+        g_pFloodplainEstimatePlot != this && !bIgnoreFeature)
+    {
+        int iWeighted = 0;
+        for (int iState = 0; iState < 5; ++iState)
+        {
+            if (m_aiFloodplainWeights[iState] == 0) continue;
+            FloodplainStateScope kState(this, iState);
+            iWeighted += m_aiFloodplainWeights[iState] * calculateNatureYield(eYield, eTeam, bIgnoreFeature);
+        }
+        return (iWeighted + 5000) / 10000;
+    }
+
 	BonusTypes eBonus;
 	int iYield;
 
@@ -6428,9 +6484,6 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 		if (eBonus != NO_BONUS)
 		{
             int bonusYield = GC.getBonusInfo(eBonus).getYieldChange(eYield);
-            if (eYield == YIELD_FOOD && !bIgnoreFeature &&
-                isFloodPlains() && getRiverDrought() == 1)
-                bonusYield = std::max(0, bonusYield - 2);
             iYield += bonusYield;
 		}
 	}
@@ -6449,10 +6502,7 @@ int CvPlot::calculateNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnor
 	{
 		if (getFeatureType() != NO_FEATURE)
 		{
-			iYield += GC.getFeatureInfo(getFeatureType()).getYieldChange(eYield);
-			if (eYield == YIELD_FOOD && getRiverDrought() > 0 &&
-				isFloodPlains())
-				iYield -= (getRiverDrought() == 2 ? 3 : 2);
+            iYield += getFeatureYieldChange(eYield);
 		}
 	}
 
@@ -6541,7 +6591,19 @@ int CvPlot::calculateGold(bool bDisplay) const
 
 int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal) const
 {
-    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
+    if (CvFloodplainPlanningScope::isActive() && isFloodPlains() &&
+        g_pFloodplainEstimatePlot != this)
+    {
+        int iWeighted = 0;
+        for (int iState = 0; iState < 5; ++iState)
+        {
+            if (m_aiFloodplainWeights[iState] == 0) continue;
+            FloodplainStateScope kState(this, iState);
+            iWeighted += m_aiFloodplainWeights[iState] * calculateImprovementYieldChange(eImprovement, eYield, ePlayer, bOptimal);
+        }
+        return (iWeighted + 5000) / 10000;
+    }
+
 	PROFILE_FUNC();
 
 	BonusTypes eBonus;
@@ -6572,7 +6634,7 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		iYield += GC.getImprovementInfo(eImprovement).getHillsYieldChange(eYield);
 	}
 
-	if (bOptimal || isIrrigationAvailable())
+	if ((bOptimal || isIrrigationAvailable()) && !isFloodplainIrrigationSuppressed())
 	{
 		iYield += GC.getImprovementInfo(eImprovement).getIrrigatedYieldChange(eYield);
 	}
@@ -6621,14 +6683,6 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 		if (eBonus != NO_BONUS)
 		{
             int bonusYield = GC.getImprovementInfo(eImprovement).getImprovementBonusYield(eBonus, eYield);
-            if (eYield == YIELD_FOOD &&
-                isFloodPlains() && getRiverDrought() == 1)
-            {
-                // The natural resource yield above consumes the first part of
-                // a shared two-food reduction; never subtract that part twice.
-                const int naturalBonus = std::max(0, GC.getBonusInfo(eBonus).getYieldChange(YIELD_FOOD));
-                bonusYield = std::max(0, bonusYield - std::max(0, 2 - naturalBonus));
-            }
             iYield += bonusYield;
 		}
 	}
@@ -6639,8 +6693,19 @@ int CvPlot::calculateImprovementYieldChange(ImprovementTypes eImprovement, Yield
 
 int CvPlot::calculateYield(YieldTypes eYield, bool bDisplay) const
 {
-    // Total food is zero, including city centres, resources and named bonuses.
-    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
+    if (CvFloodplainPlanningScope::isActive() && isFloodPlains() &&
+        g_pFloodplainEstimatePlot != this)
+    {
+        int iWeighted = 0;
+        for (int iState = 0; iState < 5; ++iState)
+        {
+            if (m_aiFloodplainWeights[iState] == 0) continue;
+            FloodplainStateScope kState(this, iState);
+            iWeighted += m_aiFloodplainWeights[iState] * calculateYield(eYield, bDisplay);
+        }
+        return (iWeighted + 5000) / 10000;
+    }
+
 	CvCity* pCity;
 	CvCity* pWorkingCity;
 	ImprovementTypes eImprovement;
@@ -8180,6 +8245,9 @@ int CvPlot::getBuildProgress(BuildTypes eBuild) const
 // Returns true if build finished...
 bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam)
 {
+    // Keep both queued orders and accumulated work; only improvement work pauses.
+    if (iChange > 0 && isFloodPlains() && getRiverDrought() == 4 &&
+        GC.getBuildInfo(eBuild).getImprovement() != NO_IMPROVEMENT) return false;
 	CvCity* pCity;
 	CvWString szBuffer;
 	int iProduction;
@@ -8254,6 +8322,7 @@ bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam
 
 void CvPlot::updateFeatureSymbolVisibility()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_FEATURE_VISIBILITY);
 	PROFILE_FUNC();
 
 	if (!GC.IsGraphicsInitialized())
@@ -8289,6 +8358,7 @@ void CvPlot::updateFeatureSymbolVisibility()
 
 void CvPlot::updateFeatureSymbol(bool bForce)
 {
+	CAMERA_PROFILE(CAMERA_PLOT_FEATURE);
 	PROFILE_FUNC();
 
 	FeatureTypes eFeature;
@@ -8963,6 +9033,7 @@ void CvPlot::deleteAllSymbols()
 
 CvString CvPlot::getScriptData() const
 {
+	CAMERA_PROFILE(CAMERA_PLOT_SCRIPT);
 	return m_szScriptData;
 }
 
@@ -9467,7 +9538,8 @@ void CvPlot::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iForceUnownedTimer);
 	pStream->Read(&m_iCityRadiusCount);
 	pStream->Read(&m_iRiverID);
-	pStream->Read(&m_iRiverDroughtEdges);
+	pStream->Read(&m_iFloodplainState);
+    pStream->Read(5, m_aiFloodplainWeights);
     int ruinsCount;
     pStream->Read(&ruinsCount);
     for (int iRuins = 0; iRuins < ruinsCount; ++iRuins)
@@ -9704,7 +9776,8 @@ void CvPlot::write(FDataStreamBase* pStream)
 	pStream->Write(m_iForceUnownedTimer);
 	pStream->Write(m_iCityRadiusCount);
 	pStream->Write(m_iRiverID);
-	pStream->Write(m_iRiverDroughtEdges);
+	pStream->Write(m_iFloodplainState);
+    pStream->Write(5, m_aiFloodplainWeights);
     pStream->Write((int)m_aeRuinsBuildings.size());
     for (size_t iRuins = 0; iRuins < m_aeRuinsBuildings.size(); ++iRuins)
         pStream->Write((int)m_aeRuinsBuildings[iRuins]);
@@ -9960,6 +10033,7 @@ bool CvPlot::updatePlotBuilder()
 
 bool CvPlot::isLayoutDirty() const
 {
+	CAMERA_PROFILE(CAMERA_PLOT_LAYOUT_DIRTY);
 	return m_bPlotLayoutDirty;	
 }
 
@@ -9982,6 +10056,7 @@ void CvPlot::setLayoutStateToCurrent()
 
 void CvPlot::getVisibleImprovementState(ImprovementTypes& eType, bool& bWorked)
 {
+	CAMERA_PROFILE(CAMERA_PLOT_IMPROVEMENT);
 	eType = NO_IMPROVEMENT;
 	bWorked = false;
 
@@ -10028,6 +10103,7 @@ void CvPlot::getVisibleImprovementState(ImprovementTypes& eType, bool& bWorked)
 
 void CvPlot::getVisibleBonusState(BonusTypes& eType, bool& bImproved, bool& bWorked)
 {
+	CAMERA_PROFILE(CAMERA_PLOT_BONUS);
 	eType = NO_BONUS;
 	bImproved = false;
 	bWorked = false;
@@ -10061,6 +10137,7 @@ void CvPlot::getVisibleBonusState(BonusTypes& eType, bool& bImproved, bool& bWor
 
 bool CvPlot::shouldUsePlotBuilder()
 {
+	CAMERA_PROFILE(CAMERA_PLOT_BUILDER);
 	bool bBonusImproved; bool bBonusWorked; bool bImprovementWorked;
 	BonusTypes eBonusType;
 	ImprovementTypes eImprovementType;
@@ -10076,7 +10153,6 @@ bool CvPlot::shouldUsePlotBuilder()
 
 int CvPlot::calculateMaxYield(YieldTypes eYield) const
 {
-    if (eYield == YIELD_FOOD && isDroughtFoodSuppressed()) return 0;
 	if (getTerrainType() == NO_TERRAIN)
 	{
 		return 0;
@@ -10136,6 +10212,19 @@ int CvPlot::calculateMaxYield(YieldTypes eYield) const
 
 int CvPlot::getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUpgrade) const
 {
+    if (CvFloodplainPlanningScope::isActive() && isFloodPlains() &&
+        g_pFloodplainEstimatePlot != this)
+    {
+        int iWeighted = 0;
+        for (int iState = 0; iState < 5; ++iState)
+        {
+            if (m_aiFloodplainWeights[iState] == 0) continue;
+            FloodplainStateScope kState(this, iState);
+            iWeighted += m_aiFloodplainWeights[iState] * getYieldWithBuild(eBuild, eYield, bWithUpgrade);
+        }
+        return (iWeighted + 5000) / 10000;
+    }
+
 	int iYield = 0;
 
 	bool bIgnoreFeature = false;
@@ -10146,8 +10235,6 @@ int CvPlot::getYieldWithBuild(BuildTypes eBuild, YieldTypes eYield, bool bWithUp
 			bIgnoreFeature = true;
 		}
 	}
-		
-	if (eYield == YIELD_FOOD && !bIgnoreFeature && isDroughtFoodSuppressed()) return 0;
 	iYield += calculateNatureYield(eYield, getTeam(), bIgnoreFeature);
     if (eBuild == GC.getInfoTypeForString("BUILD_DRAIN_MARSH") &&
         getTerrainType() == GC.getInfoTypeForString("TERRAIN_MARSH"))

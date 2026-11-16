@@ -351,6 +351,9 @@ class CvRFCEventHandler:
                 
         def onBeginGameTurn(self, argsList):
                 iGameTurn = argsList[0]
+                # Fertility phases use actual turns, independently of the RFC calendar.
+                import Drought
+                Drought.checkTurn(iGameTurn)
                 if not geo.historyBoundary(iGameTurn):
                         return 0
 
@@ -361,8 +364,6 @@ class CvRFCEventHandler:
                 #utils.makeUnit(con.iAxeman, con.iAmerica, (0,0), 1)
 
                 
-                import Drought
-                Drought.checkTurn(iGameTurn)
                 self.rnf.checkTurn(iGameTurn)
                 self.barb.checkTurn(iGameTurn)
                 self.rel.checkTurn(iGameTurn)

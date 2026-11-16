@@ -1,4 +1,5 @@
 #include "CvGameCoreDLL.h"
+#include "CameraProfile.h"
 #include "CvGame.h"
 #include "CvInitCore.h"
 #include "CyPlot.h"
@@ -13,6 +14,7 @@
 
 void CvGame::updateColoredPlots()
 {
+	CAMERA_PROFILE(CAMERA_COLORED_PLOTS);
 	PROFILE_FUNC();
 
 	CLLNode<IDInfo>* pSelectedCityNode;
@@ -342,6 +344,7 @@ void CvGame::updateColoredPlots()
 
 void CvGame::updateBlockadedPlots()
 {
+	CAMERA_PROFILE(CAMERA_BLOCKADED_PLOTS);
 	PROFILE_FUNC();
 
 	gDLL->getEngineIFace()->clearAreaBorderPlots(AREA_BORDER_LAYER_BLOCKADED);
@@ -397,6 +400,22 @@ void CvGame::updateSelectionList()
 }
 
 
+// These modes only decide when this client sends the normal synchronized turn-end message.
+int CvGame::getTurnSkipMode() const
+{
+	if (getActivePlayer() == NO_PLAYER) return 0;
+	const int iMode = m_aiTurnSkipMode[getActivePlayer()];
+	return iMode < 0 ? (GET_PLAYER(getActivePlayer()).isOption(PLAYEROPTION_WAIT_END_TURN) ? 0 : 1) : iMode;
+}
+
+void CvGame::setTurnSkipMode(int iMode)
+{
+	if (getActivePlayer() == NO_PLAYER || iMode < 0 || iMode > 2) return;
+	m_aiTurnSkipMode[getActivePlayer()] = iMode;
+	gDLL->getInterfaceIFace()->setEndTurnMessage(false);
+	gDLL->getInterfaceIFace()->setEndTurnCounter(3);
+}
+
 void CvGame::updateTestEndTurn()
 {
 	bool bAny;
@@ -431,13 +450,17 @@ void CvGame::updateTestEndTurn()
 					}
 					else
 					{
-						if (GET_PLAYER(getActivePlayer()).isOption(PLAYEROPTION_WAIT_END_TURN) || !(gDLL->getInterfaceIFace()->isHasMovedUnit()) || isHotSeat() || isPbem())
+						if (getTurnSkipMode() == 0 || (getTurnSkipMode() != 2 && !(gDLL->getInterfaceIFace()->isHasMovedUnit())) || isHotSeat() || isPbem())
 						{
 							gDLL->getInterfaceIFace()->setEndTurnMessage(true);
 						}
 						else
 						{
-							if (gDLL->getInterfaceIFace()->getEndTurnCounter() > 0)
+							// Forced idle turns still allow decisions and city screens to finish.
+							if (getTurnSkipMode() == 2 && (gDLL->getInterfaceIFace()->isPopupUp() ||
+								gDLL->getInterfaceIFace()->isPopupQueued() || gDLL->getInterfaceIFace()->isCityScreenUp() ||
+								gDLL->getInterfaceIFace()->isFocused())) return;
+							if (getTurnSkipMode() != 2 && gDLL->getInterfaceIFace()->getEndTurnCounter() > 0)
 							{
 								gDLL->getInterfaceIFace()->changeEndTurnCounter(-1);
 							}

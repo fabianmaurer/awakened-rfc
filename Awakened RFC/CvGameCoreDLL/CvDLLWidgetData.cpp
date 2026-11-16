@@ -42,6 +42,11 @@ void CvDLLWidgetData::freeInstance()
 
 void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &widgetDataStruct)
 {
+	if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7107)
+	{
+		szBuffer.assign(gDLL->getText(widgetDataStruct.m_iData2 == 2 ? "TXT_KEY_TURN_SKIP_FORCE_HELP" : "TXT_KEY_TURN_SKIP_AUTO_HELP"));
+		return;
+	}
     if (widgetDataStruct.m_eWidgetType == WIDGET_GENERAL && widgetDataStruct.m_iData1 == 7106)
     {
         if (widgetDataStruct.m_iData2 >= 0 && widgetDataStruct.m_iData2 < GC.getNumTechInfos())

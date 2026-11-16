@@ -1,6 +1,7 @@
 // game.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CameraProfile.h"
 #include "CvAdministration.h"
 #include "CvUnitMastery.h"
 #include "CvGameCoreUtils.h"
@@ -747,6 +748,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_iInitTech = 0;
 	m_iInitWonders = 0;
 	m_iAIAutoPlay = 0;
+	for (int i = 0; i < MAX_PLAYERS; ++i) m_aiTurnSkipMode[i] = -1;
 #if ARFC_ENABLE_REPORTING
 	m_bObserverAutoPlay = false;
 	m_bObserverNoAutosaves = false;
@@ -2437,6 +2439,7 @@ int CvGame::getTeamClosenessScore(int** aaiDistances, int* aiStartingLocs)
 
 void CvGame::update()
 {
+	CAMERA_PROFILE(CAMERA_GAME_UPDATE);
 	OBSERVER_PERFORMANCE("CvGame::update");
 	PROFILE("CvGame::update");
 	//logMsg("update"); //Rhye
@@ -6561,6 +6564,7 @@ void CvGame::castVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes ePla
 
 std::string CvGame::getScriptData() const
 {
+	CAMERA_PROFILE(CAMERA_GAME_SCRIPT);
 	return m_szScriptData;
 }
 
@@ -8291,7 +8295,7 @@ int CvGame::calculateSyncChecksum()
 	for (int iDrought = 0; iDrought < GC.getMapINLINE().numPlotsINLINE(); ++iDrought)
     {
         CvPlot* plot = GC.getMapINLINE().plotByIndexINLINE(iDrought);
-        iValue += (plot->getRiverDroughtEdges() * 109 + plot->getRuinsBuildingChecksum() * 127) * (iDrought + 1);
+        iValue += (plot->getFloodplainChecksum() * 109 + plot->getRuinsBuildingChecksum() * 127) * (iDrought + 1);
     }
 	iValue += getSorenRand().getSeed();
     for (int iEmbargoTeam = 0; iEmbargoTeam < MAX_TEAMS; iEmbargoTeam++)

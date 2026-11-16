@@ -144,7 +144,7 @@ def field(block, key, value):
 
 
 def main():
-    text = (MAPS / 'Start 3 - 600 AD.CivBeyondSwordWBSave').read_text(encoding='utf-8')
+    text = (ROOT / 'tools/scenario_templates/disabled/Start 3 - 600 AD.CivBeyondSwordWBSave').read_text(encoding='utf-8')
     text = re.sub(r'GameTurn=181\b', 'GameTurn=211', text)
     text = text.replace('Description=TXT_KEY_RHYES_WB_DESC',
                         'Description=TXT_KEY_RFCMP_900_DESC')

@@ -26,6 +26,19 @@ class CvFlagEntity;
 typedef bool (*ConstPlotUnitFunc)( const CvUnit* pUnit, int iData1, int iData2);
 typedef bool (*PlotUnitFunc)(CvUnit* pUnit, int iData1, int iData2);
 
+// Pure long-term AI evaluation. Citizen assignment continues to use actual yields.
+class CvFloodplainPlanningScope
+{
+public:
+    CvFloodplainPlanningScope();
+    ~CvFloodplainPlanningScope();
+    static bool isActive();
+private:
+    static int m_iDepth;
+    CvFloodplainPlanningScope(const CvFloodplainPlanningScope&);
+    CvFloodplainPlanningScope& operator=(const CvFloodplainPlanningScope&);
+};
+
 class CvPlot
 {
 
@@ -332,10 +345,14 @@ public:
     int getRuinsBuildingChecksum() const;
     int getRuinsRecoveryCount() const;
 	int getRiverDrought() const;
-	bool isDroughtFoodSuppressed() const;
+	bool isFloodplainIrrigationSuppressed() const;
     bool isFloodPlains() const;
-	int getRiverDroughtEdges() const;
-	void setRiverDrought(int iSouthEdge, int iEastEdge);
+    int getFloodplainChecksum() const;
+    void setFloodplainState(int iState);
+    void setFloodplainWeights(int iNormal, int iWeak, int iDrought, int iStrong, int iExtreme);
+    int getFeatureYieldChange(YieldTypes eYield) const;
+    int getFloodplainPlanningNatureYield(YieldTypes eYield, TeamTypes eTeam, bool bIgnoreFeature = false) const;
+    int getFloodplainPlanningImprovementYield(ImprovementTypes eImprovement, YieldTypes eYield, PlayerTypes ePlayer, bool bOptimal = false) const;
 	int getRiverID() const;																																							// Exposed to Python
 	void setRiverID(int iNewValue);																																			// Exposed to Python
 
@@ -514,7 +531,8 @@ protected:
 	short m_iForceUnownedTimer;
 	short m_iCityRadiusCount;
 	int m_iRiverID;
-	int m_iRiverDroughtEdges;
+	int m_iFloodplainState;
+    short m_aiFloodplainWeights[5];
     std::vector<BuildingTypes> m_aeRuinsBuildings;
 	short m_iMinOriginalStartDist;
 	short m_iReconCount;

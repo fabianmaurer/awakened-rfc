@@ -46,6 +46,17 @@ Keep the archive's top-level mod folder named `Awakened RFC`. The packager's
 
 The user explicitly does not require compatibility with existing saves. Implement gameplay changes for new games; do not add save migrations or preserve old mechanics solely for existing saves.
 
+## Supported maps and scenarios
+
+Only the XL (200 x 110) scenarios are playable and maintained. Keep non-XL
+scenarios outside `Awakened RFC/PublicMaps`, under
+`tools/scenario_templates/disabled`, so they are not offered in-game or packaged
+in releases. Smaller maps and their scenario-specific data no longer need
+updates, parity work or validation. Retain archived maps as read-only source
+templates where XL generators still depend on them; do not regenerate or
+re-enable them as a side effect of XL work. Apply geography and placement changes
+to both XL starts, preserving their historical differences.
+
 ## Civilization modifiers and unique powers
 
 General civilization-specific growth, production, research and maintenance tuning is removed. Named civilization unique powers must remain active. Apply them separately from bypassed cost-tuning switches: China trains melee/gunpowder units at 1.5x speed, Maya receive their 40% research discount through the Medieval era, and Persia gains +2 stability per conquered city. When changing a broad modifier block, check for embedded unique powers before disabling it. See `docs/UniquePowersAudit.md` for the audit against the original Rhye's and Fall MP source.
@@ -121,8 +132,8 @@ tradeoff and distinguish measured gains from estimates for the user's review.
 
 See `testing/README.md`. `testing/run_observer.py` activates recordings only in
 its own child process with a token and PID; ordinary launches stay disabled.
-Modes are `balance`, `diagnostics` and `performance`. Balance/diagnostics use
-3000 BC; performance also supports the 600 AD scenario (turn 181, China).
+Modes are `balance`, `diagnostics` and `performance`. Supported starts are
+XL 3000 BC and XL 800 BC; archived non-XL starts are not supported.
 Use the dedicated `setObserverAutoPlay` control, never `setAIAutoPlay` for
 testing an existing civilization: the latter deletes its cities and units.
 The observer control is transient, excluded from saves, and refused in

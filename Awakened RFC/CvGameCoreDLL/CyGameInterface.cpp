@@ -148,6 +148,8 @@ void CyGamePythonInterface()
 #endif
 		.def("isReportingEnabled", &CyGame::isReportingEnabled)
 		.def("isObserverAutoPlay", &CyGame::isObserverAutoPlay)
+		.def("getTurnSkipMode", &CyGame::getTurnSkipMode)
+		.def("setTurnSkipMode", &CyGame::setTurnSkipMode)
 
 		.def("isScoreDirty", &CyGame::isScoreDirty, "bool ()")
 		.def("setScoreDirty", &CyGame::setScoreDirty)
