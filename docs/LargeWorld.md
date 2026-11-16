@@ -257,6 +257,14 @@ upland sites, while Nile limestone and Suez oil remain flat where appropriate.
 and [Sinai material](https://www.ucl.ac.uk/museums-static/digitalegypt/sinai/index.html)
 support that regional distinction.
 
+Both XL starts separate the Odisha and Chota Nagpur iron sites from the lower
+Bengal delta, placing them farther west/southwest. Bengal coal moves west toward
+the Raniganj belt, while cotton and indigo move slightly inland. Rice, sugar and
+coastal fisheries remain in place; resource counts and availability dates are
+unchanged. These are coarse regional placements, following
+[Odisha's mineral districts](https://www.odishaminerals.gov.in/ResourceStatistics/MineralProduction1)
+and the [Raniganj coalfield location](https://www.coal.gov.in/sites/default/files/2022-06/29-06-2022-Draft-National-Coal-Logistics-plan.pdf).
+
 Fifteen source-footprint tiles in the Bolivian plateau belt retain their relief
 with open plains and no tropical jungle, protected from the overlapping Amazon
 mask. A narrow Andean plateau branch connects them to the existing route; Potosi

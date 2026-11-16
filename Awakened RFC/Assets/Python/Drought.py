@@ -90,8 +90,6 @@ def setup():
     data['droughtRegions'] = regions
     data['droughtScriptLevel'] = 0
     data['droughtScriptWarned'] = False
-    data['droughtScriptStarted'] = False
-    data['droughtHistoricalEvent'] = None
     data['droughtLastTick'] = -1
     updateAverages(regions)
     gc.getGame().setScriptData(pickle.dumps(data))
@@ -104,11 +102,14 @@ def historicalEdges(regions):
     if geo.profile_name() != 'Earth200x110Harappa':
         return []
     width = gc.getMap().getGridWidth()
-    # Include the lower junction's west bank so a healthy second edge cannot
-    # shield the opening farmland. The river farther south remains a refuge.
-    return sorted(set([(i, side) for region in regions for i, side in region['edges']
-        if (139 <= i % width <= 145 and 60 <= i // width <= 66) or
-        (i % width, i // width, side) == (138, 62, 1)]))
+    # The eastern Harappan distributary joins the Indus. Select its whole
+    # connected basin, rather than nearby edges of the Ganges or coastal rivers.
+    anchor = (64 * width + 141, 1)
+    edges = set()
+    for region in regions:
+        if anchor in region['edges']:
+            edges.update(region['edges'])
+    return sorted(edges)
 
 
 def historicalDrying(year):
@@ -267,42 +268,20 @@ def advance(region, turn, protected):
 
 
 
-def historicalEvent(data, regions, turn, year):
-    """Historical onset, but the same reach, core and phase clock as random droughts."""
+def historicalEvent(data, regions, year):
+    """A prolonged, basin-wide historical drought, independent of random phases."""
     if geo.profile_name() != 'Earth200x110Harappa': return {}
-    edges = set(historicalEdges(regions))
-    sites = currentSites(edges)
+    sites = currentSites(historicalEdges(regions))
     if -2100 <= year < -2000 and not data['droughtScriptWarned']:
         notify(sites, 'TXT_KEY_DROUGHT_HARAPPA_WARNING')
         data['droughtScriptWarned'] = True
-    if year >= -2000 and not data['droughtScriptStarted']:
-        data['droughtScriptStarted'] = True
-        choices = []
-        best = 0
-        for r in range(len(regions)):
-            region = regions[r]
-            for shapeID in region['eligible']:
-                shape = region['templates'][shapeID]
-                if not edges.intersection(shape['core']): continue
-                score = len(edges.intersection(shape['reach']))
-                if score > best:
-                    best, choices = score, []
-                if score == best: choices.append((r, shapeID))
-        if choices:
-            r, shape = choices[gc.getGame().getSorenRandNum(len(choices), 'Historical drought reach')]
-            data['droughtHistoricalEvent'] = {'region': r, 'ready': 0, 'event': {
-                'shape': shape, 'kind': model.DROUGHT, 'phase': 'active',
-                'due': turn + phaseDuration()}}
-    historical = data['droughtHistoricalEvent']
-    if not historical: return {}
-    advance(historical, turn, set())
-    event = historical['event']
-    if not event:
-        data['droughtScriptLevel'] = model.NORMAL
-        return {}
-    data['droughtScriptLevel'] = model.DROUGHT
-    if event['phase'] == 'recovery': data['droughtScriptLevel'] = model.WEAK
-    return eventStates(regions[historical['region']], event)
+    level = model.NORMAL
+    if -2000 <= year < -1800: level = model.DROUGHT
+    elif -1800 <= year < -1700: level = model.WEAK
+    data['droughtScriptLevel'] = level
+    if level == model.NORMAL: return {}
+    return dict([(index, level) for index in sites])
+
 
 def checkTurn(turn):
     if not enabled(): return
@@ -314,7 +293,7 @@ def checkTurn(turn):
     year = game.getGameTurnYear()
     width = world.getGridWidth()
     if historicalDrying(year): updateAverages(regions)
-    scripted = historicalEvent(data, regions, turn, year)
+    scripted = historicalEvent(data, regions, year)
     protected = set(scripted.keys())
     levels = {}
     for region in regions:

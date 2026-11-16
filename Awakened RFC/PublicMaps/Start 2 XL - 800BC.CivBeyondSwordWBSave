@@ -106136,6 +106136,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
 
+	BonusType=BONUS_IRON
 EndPlot
 BeginPlot
 	x=149,y=62
@@ -107562,6 +107563,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
+	BonusType=BONUS_IRON
 EndPlot
 BeginPlot
 	x=151,y=61
@@ -108277,15 +108279,14 @@ BeginPlot
 	x=152,y=61
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
-	BonusType=BONUS_IRON
 
 EndPlot
 BeginPlot
 	x=152,y=62
 	TerrainType=TERRAIN_PLAINS
 	PlotType=2
-	BonusType=BONUS_IRON
 
+	BonusType=BONUS_COAL
 EndPlot
 BeginPlot
 	x=152,y=63
@@ -108989,7 +108990,6 @@ BeginPlot
 	x=153,y=63
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
-	BonusType=BONUS_COTTON
 
 EndPlot
 BeginPlot
@@ -108998,6 +108998,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
+	BonusType=BONUS_COTTON
 EndPlot
 BeginPlot
 	x=153,y=65
@@ -109007,6 +109008,7 @@ BeginPlot
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
 
+	BonusType=BONUS_DYE
 EndPlot
 BeginPlot
 	x=153,y=66
@@ -109679,7 +109681,6 @@ BeginPlot
 	x=154,y=62
 	TerrainType=TERRAIN_GRASS
 	PlotType=2
-	BonusType=BONUS_DYE
 
 EndPlot
 BeginPlot
@@ -111083,7 +111084,6 @@ BeginPlot
 	FeatureType=FEATURE_JUNGLE, FeatureVariety=0
 	TerrainType=TERRAIN_GRASS
 	PlotType=1
-	BonusType=BONUS_COAL
 
 EndPlot
 BeginPlot

@@ -185,6 +185,34 @@ XL_METAL_REPLACED = {
 }
 
 
+# Keep the inland ore belt distinct from the lower Bengal crop cluster.
+# Apply after general placement to avoid displacing unrelated atlas sites.
+XL_BENGAL_RELOCATIONS = {
+    ('IRON', 'Odisha'): (151, 60),
+    ('IRON', 'Chota Nagpur'): (149, 61),
+    ('COAL', 'Bengal'): (152, 62),  # Raniganj, west of the delta.
+    ('COTTON', 'Bengal'): (153, 64),
+    ('DYE', 'Bengal indigo'): (153, 65),
+}
+
+
+def review_xl_bengal(plots, catalog, reserved, settlements):
+    moved = [site for site in catalog if (site[0], site[2]) in XL_BENGAL_RELOCATIONS]
+    for bonus, year, label, old in moved:
+        plots[old][:] = [f for f in plots[old] if not f.startswith('BonusType=')]
+        reserved.remove(old)
+    for bonus, year, label, old in moved:
+        pos = XL_BENGAL_RELOCATIONS[bonus, label]
+        fields = plots[pos]
+        if (pos in reserved or pos in settlements
+                or any(f in fields for f in ('PlotType=0', 'PlotType=3', 'TerrainType=TERRAIN_MARSH'))
+                or any('_IMPASSABLE' in f for f in fields)):
+            raise ValueError('Invalid Bengal resource placement: %s %s' % (label, pos))
+        fields.append('BonusType=BONUS_' + bonus)
+        reserved.add(pos)
+        catalog[catalog.index((bonus, year, label, old))] = (bonus, year, label, pos)
+
+
 def review_xl_metals(plots, catalog, reserved, settlements):
     """Retain other atlas sites; represent giant provinces with several tiles."""
     for bonus, year, label, pos in catalog[:]:
@@ -509,6 +537,7 @@ def place_resources(plots, origins, axis, data_dir, profile='Earth160x88', atlas
         catalog.append((bonus, year, label, pos))
     if review:
         review_xl_metals(plots, catalog, reserved, settlements)
+        review_xl_bengal(plots, catalog, reserved, settlements)
         omitted[:] = [site for site in omitted if site not in XL_METAL_REPLACED]
     # Swamp is decorative terrain art, not a traded economic resource. Rebuild
     # it from the finished marsh rather than retaining source-map positions.

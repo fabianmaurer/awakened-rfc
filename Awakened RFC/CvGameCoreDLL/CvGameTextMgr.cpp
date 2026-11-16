@@ -2959,13 +2959,16 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 
 		if (pPlot->hasYield())
 		{
+			szString.append(NEWLINE);
+			bool bFirstYield = true;
 			for (iI = 0; iI < NUM_YIELD_TYPES; ++iI)
 			{
 				iYield = pPlot->calculateYield(((YieldTypes)iI), true);
 
 				if (iYield != 0)
 				{
-					szTempBuffer.Format(L", %d%c", iYield, GC.getYieldInfo((YieldTypes) iI).getChar());
+					szTempBuffer.Format(bFirstYield ? L"%d%c" : L", %d%c", iYield, GC.getYieldInfo((YieldTypes) iI).getChar());
+					bFirstYield = false;
 					szString.append(szTempBuffer);
 				}
 			}

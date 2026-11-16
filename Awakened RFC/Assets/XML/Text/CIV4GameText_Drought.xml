@@ -50,19 +50,19 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_HELP</Tag>
-    <English>Drought. Desert floodplains lose irrigation.</English>
-    <French>S&#233;cheresse. Les plaines inondables d&#233;sertiques perdent leur irrigation.</French>
-    <German>D&#252;rre. W&#252;stenschwemmland verliert seine Bew&#228;sserung.</German>
-    <Italian>Siccit&#224;. Le pianure alluvionali desertiche perdono l&#8217;irrigazione.</Italian>
-    <Spanish>Sequ&#237;a. Las llanuras aluviales des&#233;rticas pierden el riego.</Spanish>
+    <English>Drought</English>
+    <French>S&#233;cheresse</French>
+    <German>D&#252;rre</German>
+    <Italian>Siccit&#224;</Italian>
+    <Spanish>Sequ&#237;a</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_DROUGHT_SEVERE_HELP</Tag>
-    <English>Drought. Desert floodplains lose irrigation.</English>
-    <French>S&#233;cheresse. Les plaines inondables d&#233;sertiques perdent leur irrigation.</French>
-    <German>D&#252;rre. W&#252;stenschwemmland verliert seine Bew&#228;sserung.</German>
-    <Italian>Siccit&#224;. Le pianure alluvionali desertiche perdono l&#8217;irrigazione.</Italian>
-    <Spanish>Sequ&#237;a. Las llanuras aluviales des&#233;rticas pierden el riego.</Spanish>
+    <English>Drought</English>
+    <French>S&#233;cheresse</French>
+    <German>D&#252;rre</German>
+    <Italian>Siccit&#224;</Italian>
+    <Spanish>Sequ&#237;a</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FEATURE_FLOOD_PLAINS_DROUGHT_PEDIA</Tag>
@@ -74,27 +74,27 @@
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FLOODPLAIN_WEAK_HELP</Tag>
-    <English>Weak flood. Floodplain fertility is 2 food.</English>
-    <French>Faible crue. La fertilit&#233; des plaines inondables est de 2 nourritures.</French>
-    <German>Schwaches Hochwasser. Die Schwemmlandfruchtbarkeit betr&#228;gt 2 Nahrung.</German>
-    <Italian>Piena debole. La fertilit&#224; alluvionale &#232; di 2 cibi.</Italian>
-    <Spanish>Crecida d&#233;bil. La fertilidad aluvial es de 2 alimentos.</Spanish>
+    <English>Weak flood</English>
+    <French>Faible crue</French>
+    <German>Schwaches Hochwasser</German>
+    <Italian>Piena debole</Italian>
+    <Spanish>Crecida d&#233;bil</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FLOODPLAIN_STRONG_HELP</Tag>
-    <English>Strong flood. Improvements face a 5% damage chance at onset.</English>
-    <French>Forte crue. Les am&#233;nagements ont 5% de risque de d&#233;g&#226;ts au d&#233;but.</French>
-    <German>Starkes Hochwasser. Zu Beginn besteht f&#252;r Modernisierungen eine Schadenschance von 5%.</German>
-    <Italian>Piena forte. Le migliorie rischiano danni al suo inizio con una probabilit&#224; del 5%.</Italian>
-    <Spanish>Crecida fuerte. Las mejoras tienen un 5% de probabilidad de sufrir da&#241;os al inicio.</Spanish>
+    <English>Strong flood</English>
+    <French>Forte crue</French>
+    <German>Starkes Hochwasser</German>
+    <Italian>Piena forte</Italian>
+    <Spanish>Crecida fuerte</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FLOODPLAIN_EXTREME_HELP</Tag>
-    <English>Extreme flood. Improvements face a 50% damage chance at onset. Improvement construction and cottage growth are paused.</English>
-    <French>Crue extr&#234;me. Les am&#233;nagements ont 50% de risque de d&#233;g&#226;ts au d&#233;but. Leur construction et la croissance des cottages sont suspendues.</French>
-    <German>Extremes Hochwasser. Zu Beginn besteht f&#252;r Modernisierungen eine Schadenschance von 50%. Ihr Bau und das Wachstum von H&#252;tten sind ausgesetzt.</German>
-    <Italian>Piena estrema. Le migliorie rischiano danni al suo inizio con una probabilit&#224; del 50%. La loro costruzione e la crescita dei cottage sono sospese.</Italian>
-    <Spanish>Crecida extrema. Las mejoras tienen un 50% de probabilidad de sufrir da&#241;os al inicio. Su construcci&#243;n y el crecimiento de las aldeas quedan en pausa.</Spanish>
+    <English>Extreme flood</English>
+    <French>Crue extr&#234;me</French>
+    <German>Extremes Hochwasser</German>
+    <Italian>Piena estrema</Italian>
+    <Spanish>Crecida extrema</Spanish>
   </TEXT>
   <TEXT>
     <Tag>TXT_KEY_FLOODPLAIN_WARNING</Tag>

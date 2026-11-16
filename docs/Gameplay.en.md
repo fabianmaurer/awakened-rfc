@@ -2296,31 +2296,28 @@ Citizen assignment continues to use current yields. Independent river systems
 sharing a tile use the more disruptive state, in this order: extreme flood,
 drought, weak flood, strong flood, normal. This rule also combines their expected
 state distributions. Harappa's scripted drought takes precedence over random
-conditions on its core and halo throughout its historical sequence.
+conditions throughout the affected Indus river systems during its historical sequence.
 
 The 3000 BC XL start adds early alluvial farmland and a narrow eastern
 distributary around the three Harappan cities. Their centres and shared
 floodplains are exposed together. Nearby grassland becomes plains, reducing
 food sources that would otherwise escape the drying. A historical sequence
-affects river edges in
-`(139, 60)`–`(145, 66)`, plus the joining river edge at `(138, 62)`:
-warning from 2100 BC and the onset of a scripted drought from 2000 BC. The
-script selects a seeded local river reach concentrated on this homeland, with
-the same two-to-three-segment drought core, weak-flood surroundings, 4–6-turn
-initial phase and 4–6-turn weak recovery as random droughts. The historical
-warning and onset dates remain; recovery follows the new phase clock rather
-than the former fixed 1800/1700 BC dates. Scripted conditions override random
-fertility and suppress random flood damage on their active footprint.
+affects all surviving floodplains along the connected river systems crossing
+its homeland, including the lower Indus and tributaries. A warning begins in
+2100 BC. Severe drought covers this entire footprint from 2000 to 1800 BC,
+followed by weak flooding until 1700 BC. These fixed historical phases replace
+the short, local core-and-halo cycle used by random events. Scripted conditions
+override random fertility and suppress random flood damage across their active
+footprint.
 Five added floodplains at `(141, 63)`, `(141, 66)`, `(142, 66)`,
 `(140, 62)` and `(141, 62)` disappear permanently from 1900 BC.
 This includes Rakhigarhi's and Mohenjo-daro's centres. These tiles retain their
 desert substrate, rivers, farms and cities, but lose the floodplain food bonus.
 Recovery does not restore them. Harappa retains its added city-centre
 floodplain, and the original Indus floodplains remain.
-These dates and boundaries are gameplay approximations. The western/lower Indus
-farther south remains outside this scripted reach, though it can suffer random
-drought. This sequence depends on geography, not the survival or ownership of
-Harappa. The 800 BC XL start uses the reduced floodplain footprint and random
+These dates and boundaries are gameplay approximations. This sequence depends
+on geography, not the survival or ownership of Harappa. The 800 BC XL start
+uses the reduced floodplain footprint and random
 droughts without replaying this ancient sequence. Other maps retain
 ordinary flood-plain yields. No other historical droughts are scripted yet.
 

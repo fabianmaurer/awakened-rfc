@@ -45,7 +45,7 @@ COW	-3000	Po valley	97	76
 COW	-3000	Sahel east	94	47
 COW	-3000	Sahel west	84	49
 DYE	-3000	Anatolian madder	117	70
-DYE	-3000	Bengal indigo	154	62
+DYE	-3000	Bengal indigo	153	65
 DYE	-3000	Britain woad	86	88
 DYE	-3000	China indigo	170	68
 DYE	-3000	European woad	88	80
@@ -224,7 +224,7 @@ CORN	0	Iroquois country	47	81
 CORN	0	Mississippi lower	37	71
 CORN	0	southeastern US	43	72
 CORN	-3000	southern Brazil	62	29
-COTTON	-3000	Bengal	153	63
+COTTON	-3000	Bengal	153	64
 COTTON	1000	Egypt	111	58
 COTTON	1000	Iberian south	83	67
 COTTON	1000	Syria	120	65
@@ -644,7 +644,7 @@ COAL	-3000	Alberta	24	83
 COAL	-3000	Appalachian north	44	76
 COAL	-3000	Appalachian south	41	74
 COAL	-3000	Asturias	83	73
-COAL	-3000	Bengal	156	62
+COAL	-3000	Bengal	152	62
 COAL	-3000	Bohemia	99	83
 COAL	-3000	Colombia	45	50
 COAL	-3000	Donbas	118	81
@@ -794,7 +794,7 @@ IRON	-3000	Angara	159	88
 IRON	-3000	Asturias	83	74
 IRON	-3000	California	18	77
 IRON	-3000	Carajas	64	43
-IRON	-3000	Chota Nagpur	152	62
+IRON	-3000	Chota Nagpur	149	61
 IRON	-3000	Congo	106	37
 IRON	-3000	Cumbria	83	90
 IRON	-3000	Dacia	109	79
@@ -827,7 +827,7 @@ IRON	-3000	Nigeria	95	47
 IRON	-3000	Noricum	101	79
 IRON	-3000	Normandy	87	81
 IRON	-3000	Nubia	111	48
-IRON	-3000	Odisha	152	61
+IRON	-3000	Odisha	151	60
 IRON	-3000	Pilbara	169	29
 IRON	-3000	Quebec	47	86
 IRON	-3000	Senegal	81	48
