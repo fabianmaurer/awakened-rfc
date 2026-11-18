@@ -17,7 +17,7 @@ HARAPPAN_FLOODPLAINS = (
 )
 # Only authored extra farmland retreats; the original Indus floodplains stay.
 HARAPPAN_DRYING = (
-    (-1900, ((141, 63), (141, 66), (142, 66), (140, 62), (141, 62))),
+    (-1950, ((141, 63), (141, 66), (142, 66), (140, 62), (141, 62))),
 )
 
 FIRST_SLOT = 33

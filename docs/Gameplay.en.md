@@ -2310,7 +2310,7 @@ the short, local core-and-halo cycle used by random events. Scripted conditions
 override random fertility and suppress random flood damage across their active
 footprint.
 Five added floodplains at `(141, 63)`, `(141, 66)`, `(142, 66)`,
-`(140, 62)` and `(141, 62)` disappear permanently from 1900 BC.
+`(140, 62)` and `(141, 62)` disappear permanently from 1950 BC.
 This includes Rakhigarhi's and Mohenjo-daro's centres. These tiles retain their
 desert substrate, rivers, farms and cities, but lose the floodplain food bonus.
 Recovery does not restore them. Harappa retains its added city-centre

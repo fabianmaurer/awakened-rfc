@@ -247,6 +247,8 @@ void CyGamePythonInterface()
 
 		.def("getScriptData", &CyGame::getScriptData, "str () - Returns ScriptData member (used to store custom data)")
 		.def("setScriptData", &CyGame::setScriptData, "void (str) - Sets ScriptData member (used to store custom data)")
+		.def("getDroughtData", &CyGame::getDroughtData, "str () - Returns the separate saved drought state")
+		.def("setDroughtData", &CyGame::setDroughtData, "void (str) - Sets the separate saved drought state")
 
 		.def("setName", &CyGame::setName)
 		.def("getName", &CyGame::getName)

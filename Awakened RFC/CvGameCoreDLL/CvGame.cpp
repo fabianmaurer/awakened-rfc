@@ -776,6 +776,7 @@ void CvGame::reset(HandicapTypes eHandicap, bool bConstructorCall)
 	m_eGameState = GAMESTATE_ON;
 
 	m_szScriptData = "";
+	m_szDroughtData = "";
 
 	for (iI = 0; iI < MAX_PLAYERS; iI++)
 	{
@@ -6574,6 +6575,17 @@ void CvGame::setScriptData(std::string szNewValue)
 	m_szScriptData = szNewValue;
 }
 
+std::string CvGame::getDroughtData() const
+{
+	return m_szDroughtData;
+}
+
+void CvGame::setDroughtData(std::string szNewValue)
+{
+	// CvString's assignment operator uses c_str() and truncates binary pickles.
+	m_szDroughtData.assign(szNewValue.data(), szNewValue.size());
+}
+
 const CvWString & CvGame::getName()
 {
 	return GC.getInitCore().getGameName();
@@ -8884,6 +8896,13 @@ void CvGame::read(FDataStreamBase* pStream)
 	} 
 	//Rhye - end
 
+	// Drought has its own payload so RFC lookups never deserialize its catalogue.
+	// Explicit byte lengths preserve binary Python pickles, including embedded NULs.
+	int droughtBytes;
+	pStream->Read(&droughtBytes);
+	m_szDroughtData.resize(droughtBytes);
+	if (droughtBytes > 0) pStream->Read(droughtBytes, &m_szDroughtData[0]);
+
 	if (uiFlag < 1)
 	{
 		std::vector<int> aiEndTurnMessagesReceived(MAX_PLAYERS);
@@ -9097,7 +9116,7 @@ void CvGame::write(FDataStreamBase* pStream)
 {
 	int iI;
 
-	uint uiFlag=1;
+	uint uiFlag=2;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iElapsedGameTurns);
@@ -9143,6 +9162,8 @@ void CvGame::write(FDataStreamBase* pStream)
 	pStream->Write(m_eGameState);
 
 	pStream->WriteString(m_szScriptData);
+	pStream->Write((int)m_szDroughtData.size());
+	if (!m_szDroughtData.empty()) pStream->Write((int)m_szDroughtData.size(), m_szDroughtData.c_str());
 
 	pStream->Write(MAX_PLAYERS, m_aiRankPlayer);
 	pStream->Write(MAX_PLAYERS, m_aiPlayerRank);

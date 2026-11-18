@@ -585,6 +585,15 @@ parent unit-AI/path timers. Detailed per-node/path-destination logging remains
 disabled. Additional profiling changes benchmark overhead, so compare future
 implementations using this same instrumentation configuration.
 
+### Drought state storage
+
+Drought state, including the river reach catalogue, is saved in its own DLL
+payload using Python 2.4's binary pickle protocol 2. Shared RFC script-data
+lookups no longer deserialize or rewrite that catalogue. The drought update
+reads and writes its payload once per turn; event rules and RNG order are
+unchanged. This save-layout change targets new games. Turn-time gains and
+save/load and multiplayer behavior still need user-operated validation.
+
 ### Plot-culture follow-up
 
 The same `Run Expanded Performance Profile.cmd` includes targeted culture

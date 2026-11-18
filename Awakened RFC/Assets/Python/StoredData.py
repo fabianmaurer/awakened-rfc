@@ -25,10 +25,6 @@ class StoredData:
                                     'lFamineCrisisReference': [None] * con.iNumMajorPlayers,
                                     'cityStarvationLossTurns': {},
                                     'cityFamineEpisodes': {},
-                                    'droughtRegions': [],
-                                    'droughtScriptLevel': 0,
-                                    'droughtScriptWarned': False,
-                                    'droughtLastTick': -1,
                                     'bMongoliaReplaced': False,
                                     'lColonistsAlreadyGiven': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], #active players
                                     'lAstronomyTurn': [geo.turns(500)] * 31, #active players

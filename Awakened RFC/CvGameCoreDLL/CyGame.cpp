@@ -1010,6 +1010,17 @@ void CyGame::setScriptData(std::string szNewValue)
 		m_pGame->setScriptData(szNewValue);
 }
 
+std::string CyGame::getDroughtData() const
+{
+	return m_pGame ? m_pGame->getDroughtData() : "";
+}
+
+void CyGame::setDroughtData(std::string szNewValue)
+{
+	if (m_pGame)
+		m_pGame->setDroughtData(szNewValue);
+}
+
 void CyGame::setName(TCHAR* szNewValue)
 {
 	if (m_pGame)

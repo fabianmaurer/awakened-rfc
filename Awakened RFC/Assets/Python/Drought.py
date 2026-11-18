@@ -86,13 +86,12 @@ def setup():
         regions.append({'sites': sites, 'flood': floodSites, 'edges': sorted(groupEdges[root]),
             'floodEdges': anchors, 'templates': catalogue, 'event': None,
             'ready': gc.getGame().getGameTurn() + model.INITIAL_PROTECTION})
-    data = pickle.loads(gc.getGame().getScriptData())
-    data['droughtRegions'] = regions
-    data['droughtScriptLevel'] = 0
-    data['droughtScriptWarned'] = False
-    data['droughtLastTick'] = -1
+    # Keep the catalogue out of the shared RFC dictionary: its many small
+    # getters/setters must not unpickle every river template on each access.
+    data = {'droughtRegions': regions, 'droughtScriptLevel': 0,
+        'droughtScriptWarned': False, 'droughtLastTick': -1}
     updateAverages(regions)
-    gc.getGame().setScriptData(pickle.dumps(data))
+    gc.getGame().setDroughtData(pickle.dumps(data, 2))
     for region in regions:
         for index in region['flood']:
             world.plot(index % width, index // width).setFloodplainState(model.NORMAL)
@@ -286,7 +285,7 @@ def historicalEvent(data, regions, year):
 def checkTurn(turn):
     if not enabled(): return
     game, world = gc.getGame(), gc.getMap()
-    data = pickle.loads(game.getScriptData())
+    data = pickle.loads(game.getDroughtData())
     if data['droughtLastTick'] == turn: return
     data['droughtLastTick'] = turn
     regions = data['droughtRegions']
@@ -340,4 +339,4 @@ def checkTurn(turn):
     for state, key in ((model.NORMAL, 'TXT_KEY_DROUGHT_END'),
         (model.DROUGHT, 'TXT_KEY_DROUGHT_START'), (model.EXTREME, 'TXT_KEY_FLOODPLAIN_EXTREME')):
         notify(notices[state], key)
-    game.setScriptData(pickle.dumps(data))
+    game.setDroughtData(pickle.dumps(data, 2))

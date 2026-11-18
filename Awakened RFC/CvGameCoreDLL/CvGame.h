@@ -434,6 +434,9 @@ public:
 	void setPlayerVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes eNewValue);
 	DllExport void castVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes ePlayerVote);
 
+	std::string getDroughtData() const;
+	void setDroughtData(std::string szNewValue);
+
 	DllExport const CvWString & getName();
 	DllExport void setName(const TCHAR* szName);
 
@@ -702,6 +705,7 @@ protected:
 	PlayerTypes m_eEventPlayer;
 
 	CvString m_szScriptData;
+	CvString m_szDroughtData;
 
 	int* m_aiRankPlayer;        // Ordered by rank...
 	int* m_aiPlayerRank;        // Ordered by player ID...

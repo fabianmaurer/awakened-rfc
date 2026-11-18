@@ -253,6 +253,8 @@ public:
 
 	std::string getScriptData() const;
 	void setScriptData(std::string szNewValue);
+	std::string getDroughtData() const;
+	void setDroughtData(std::string szNewValue);
 
 	void setName(TCHAR* szName);
 	std::wstring getName();
